@@ -123,6 +123,23 @@ public class SupplierController {
         }
     }
 
+    @RequestMapping("submitSupplierById")
+    @ResponseBody
+    public String submitSupplierById(String supplierId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 提交客户信息
+            supplierService.setCheckStateExamining(supplierId);
+            res.put("status", "success");
+            res.put("message", "操作成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "操作失败");
+        }
+        return res.toString();
+    }
+
     /**
      * 根据供应商编号删除
      * @param supplierId 供应商编号
@@ -142,15 +159,6 @@ public class SupplierController {
             res.put("message", "操作失败");
         }
         return res.toString();
-    }
-
-    @RequestMapping("updateSupplier")
-    public ModelAndView updateSupplier(Supplier supplier) {
-        ModelAndView mav = new ModelAndView();
-
-        supplierService.update(supplier);
-
-        return null;
     }
 
     /**

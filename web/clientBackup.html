@@ -390,6 +390,9 @@
         } else { }
     }
 
+    /**
+     * 提交客户的信息
+     */
     function submitClients() {
         var items = $("input[type='checkbox']:checked");
 
@@ -405,7 +408,6 @@
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        window.location.reload();
                     } else {
                         console.log("fail: " + result);
                     }
@@ -419,8 +421,9 @@
         items.each(function () {
             var id = getIdByCheckBox($(this));
             submitClientById(id);
-            alert("提交成功");
         });
+        alert("提交成功");
+        window.location.reload();
     }
 
     function getIdByCheckBox(item) {

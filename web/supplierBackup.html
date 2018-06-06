@@ -189,7 +189,7 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary" href="supplierInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                        <a class="btn btn-primary" onclick="submitSuppliers();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
@@ -311,6 +311,45 @@
                 }
             });
         }
+    }
+    /**
+     * 提交供应商的信息
+     */
+    function submitSuppliers() {
+        var items = $("input[type='checkbox']:checked");
+
+        function submitSupplierById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "submitSupplierById",            // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'supplierId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+
+        items.each(function () {
+            var id = getIdByCheckBox($(this));
+            submitSupplierById(id);
+        });
+        alert("提交成功");
+        window.location.reload();
+    }
+
+    function getIdByCheckBox(item) {
+        return item.parent().parent().next().next().text();
     }
 </script>
 </html>
