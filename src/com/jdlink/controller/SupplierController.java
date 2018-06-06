@@ -123,6 +123,11 @@ public class SupplierController {
         }
     }
 
+    /**
+     * 根据供应商编号删除
+     * @param supplierId 供应商编号
+     * @return 操作成功与否
+     */
     @RequestMapping("deleteSupplier")
     @ResponseBody
     public String deleteSupplier(String supplierId) {
@@ -148,10 +153,25 @@ public class SupplierController {
         return null;
     }
 
-    @RequestMapping("getSupplier")
-    public ModelAndView getSupplier(String keyword) {
-        ModelAndView mav = new ModelAndView();
-
-        return mav;
+    /**
+     * 查询供应商信息
+     * @param keyword 关键字
+     * @return 供应商信息列表
+     */
+    @RequestMapping("searchSupplier")
+    @ResponseBody
+    public String searchSupplier(String keyword) {
+        try {
+            List<Supplier> supplierList = supplierService.getByKeyword(keyword);
+            JSONArray array = JSONArray.fromArray(supplierList.toArray(new Supplier[supplierList.size()]));
+            // 返回结果
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONObject res = new JSONObject();
+            res.put("status", "fail");
+            res.put("message", "操作失败");
+            return res.toString();
+        }
     }
 }

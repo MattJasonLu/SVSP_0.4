@@ -17,7 +17,7 @@ public interface SupplierService {
 
     Supplier getByName(String companyName);
 
-    List<Supplier> get(String keyword);
+    List<Supplier> getByKeyword(String keyword);
 
     void update(Supplier supplier);
 
