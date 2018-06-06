@@ -250,11 +250,11 @@
     }
     function viewSupplier(item) {
         var id = getId(item);
-        alert(id);
+        $(location).attr('href', 'viewSupplier?supplierId=' + id);
     }
     function adjustSupplier(item) {
         var id = getId(item);
-        alert(id);
+        $(location).attr('href', 'showSupplier?supplierId=' + id);
     }
     function deleteSupplier(item) {
         var id = getId(item);

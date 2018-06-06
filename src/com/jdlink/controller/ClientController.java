@@ -116,10 +116,10 @@ public class ClientController {
     @RequestMapping("submitClient")
     @ResponseBody
     public String submitClient(@RequestBody Client client) {
+        // 审核状态为审批中
+        client.setCheckState(CheckState.Examining);
         Client resultClient = clientService.getByClientId(client.getClientId());
         if (resultClient == null) {
-            // 审核状态为审批中
-            client.setCheckState(CheckState.Examining);
             return addClient(client);
         } else {
             JSONObject res = new JSONObject();

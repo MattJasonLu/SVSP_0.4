@@ -48,51 +48,7 @@ public class SupplierController {
             Supplier supplier = supplierService.getBySupplierId(supplierId);
             mav.addObject("supplier", supplier);
         }
-        // 获取枚举列表
-        // 企业类型
-        List<String> enterpriseTypeStrList = new ArrayList<>();
-        for (EnterpriseType enterpriseType : EnterpriseType.values()) {
-            enterpriseTypeStrList.add(enterpriseType.getName());
-        }
-        // 经营方式
-        List<String> operationModeStrList = new ArrayList<>();
-        for (OperationMode operationMode : OperationMode.values()) {
-            operationModeStrList.add(operationMode.getName());
-        }
-        // 经营单位类别
-        List<String> operationTypeStrList = new ArrayList<>();
-        for (OperationType operationType : OperationType.values()) {
-            operationTypeStrList.add(operationType.getName());
-        }
-        // 应急预案
-        List<String> contingencyPlanStrList = new ArrayList<>();
-        for (ContingencyPlan contingencyPlan : ContingencyPlan.values()) {
-            contingencyPlanStrList.add(contingencyPlan.getName());
-        }
-        // 危废记录
-        List<String> operationRecordStrList = new ArrayList<>();
-        for (OperationRecord operationRecord : OperationRecord.values()) {
-            operationRecordStrList.add(operationRecord.getName());
-        }
-        // 申报状态
-        List<String> applicationStatusStrList = new ArrayList<>();
-        for (ApplicationStatus applicationStatus : ApplicationStatus.values()) {
-            applicationStatusStrList.add(applicationStatus.getName());
-        }
-        // 供应商类型
-        List<String> supplierTypeStrList = new ArrayList<>();
-        for (SupplierType supplierType : SupplierType.values()) {
-            supplierTypeStrList.add(supplierType.getName());
-        }
-
-        mav.addObject("operationModeStrList", operationModeStrList);
-        mav.addObject("enterpriseTypeStrList", enterpriseTypeStrList);
-        mav.addObject("operationTypeStrList", operationTypeStrList);
-        mav.addObject("contingencyPlanStrList", contingencyPlanStrList);
-        mav.addObject("operationRecordStrList", operationRecordStrList);
-        mav.addObject("applicationStatusStrList", applicationStatusStrList);
-        mav.addObject("supplierTypeStrList", supplierTypeStrList);
-        mav.setViewName("showSupplier");
+        mav.setViewName("jsp/showSupplier.jsp");
         return mav;
     }
 
@@ -148,9 +104,9 @@ public class SupplierController {
     @RequestMapping("submitSupplier")
     @ResponseBody
     public String submitSupplier(@RequestBody Supplier supplier) {
+        supplier.setCheckState(CheckState.Examining);
         Supplier resultSupplier = supplierService.getBySupplierId(supplier.getSupplierId());
         if (resultSupplier == null) {
-            supplier.setCheckState(CheckState.Examining);
             return addSupplier(supplier);
         } else {
             JSONObject res = new JSONObject();
