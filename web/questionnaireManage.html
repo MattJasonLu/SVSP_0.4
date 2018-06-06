@@ -45,7 +45,7 @@
                         break;
                         // 填报人
                     case (7):
-                        $(this).html(obj.author);
+                        $(this).html(obj.contactName);
                         break;
                         // 填报日期
                     case (8):
@@ -67,6 +67,30 @@
             url: "listQuestionnaire",           // url
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    setQuestionnaireList(result);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 查询问卷
+     */
+    function searchQuestionnaire() {
+        var keyword = $("#searchContent").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchQuestionnaire",                  // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'keyword': keyword
+            },
             dataType: "json",
             success: function (result) {
                 console.log(result);
@@ -168,16 +192,16 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary" href="questionnaire1.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
+                        <a class="btn btn-primary" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
+                        <a class="btn btn-primary" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索...">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchQuestionnaire();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         </span>
                     </div>
                 </div>
@@ -210,10 +234,10 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">查看</a></li>
-                                    <li><a href="#">修改信息</a></li>
-                                    <li><a href="#">签收</a></li>
-                                    <li><a href="#">退回</a></li>
+                                    <li><a href="#" onclick="viewQuestionnaire(this);">查看</a></li>
+                                    <li><a href="#" onclick="adjustQuestionnaire(this);">修改信息</a></li>
+                                    <li><a href="#" onclick="signInQuestionnaire(this);">签收</a></li>
+                                    <li><a href="#" onclick="backQuestionnaire(this);">退回</a></li>
                                     <li><a href="#">预约送样</a></li>
                                 </ul>
                             </div>
@@ -253,6 +277,150 @@
             </div>
         </div>
     </div>
-
 </body>
+<script type="text/javascript">
+    /**
+     * 获取编号
+     * @param item
+     * @returns {string}
+     */
+    function getQuestionnaireId(item) {
+        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
+    function viewQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        alert("待完善");
+    }
+    function adjustQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        alert("待完善");
+    }
+    /**
+     * 签收问卷
+     */
+    function signInQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "signInQuestionnaire",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("签收成功");
+                    window.location.reload();
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 退回问卷
+     * @param item
+     */
+    function backQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "backQuestionnaire",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("退回成功");
+                    window.location.reload();
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 签收勾选问卷
+     */
+    function signInQuestionnaireByCheckBox() {
+        var items = $("input[type='checkbox']:checked");
+
+        function signInQuestionnaireById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "signInQuestionnaire",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
+        if (items.length > 0) {
+            items.each(function () {
+                var id = getIdByCheckBox($(this));
+                signInQuestionnaireById(id);
+            });
+            alert("签收成功");
+            window.location.reload();
+        } else {
+            alert("未选择任何调查表");
+        }
+    }
+    /**
+     * 退回勾选问卷
+     */
+    function backQuestionnaireByCheckBox() {
+        var items = $("input[type='checkbox']:checked");
+
+        function backQuestionnaireById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "backQuestionnaire",           // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
+        if (items.length > 0) {
+            items.each(function () {
+                var id = getIdByCheckBox($(this));
+                backQuestionnaireById(id);
+            });
+            alert("退回成功");
+            window.location.reload();
+        } else {
+            alert("未选择任何调查表");
+        }
+    }
+    /**
+     * 通过勾选框获取编号
+     * @param item
+     * @returns {*}
+     */
+    function getIdByCheckBox(item) {
+        return item.parent().parent().next().next().text();
+    }
+</script>
 </html>
