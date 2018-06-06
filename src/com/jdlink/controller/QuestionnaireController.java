@@ -3,11 +3,14 @@ package com.jdlink.controller;
 import com.jdlink.domain.*;
 import com.jdlink.service.*;
 import com.jdlink.util.RandomUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,22 +47,23 @@ public class QuestionnaireController {
     @Autowired
     SensitiveElementService sensitiveElementService;
 
+    /**
+     * 列出所有问卷
+     * @return 问卷列表
+     */
     @RequestMapping("listQuestionnaire")
-    public ModelAndView listQuestionnaire(HttpSession session) {
-        ModelAndView mav = new ModelAndView();
+    @ResponseBody
+    public String listQuestionnaire() {
         try {
-            // 通过session获取到客户编号clientId
-            Client client = (Client) session.getAttribute("client");
-            List<Questionnaire> questionnaireList = questionnaireService.getByClientId(client.getClientId());
-            mav.addObject("questionnaireList", questionnaireList);
-            mav.addObject("client", client);
-            mav.setViewName("assessment");
+            List<QuestionnaireAdmin> questionnaireList = questionnaireService.listQuestionnaireAdmin();
+            JSONArray array = JSONArray.fromArray(questionnaireList.toArray(new QuestionnaireAdmin[questionnaireList.size()]));
+            return array.toString();
         } catch (Exception e) {
-            mav.addObject("message", "用户信息获取失败，请重新登录");
-            mav.setViewName("fail");
+            JSONObject res = new JSONObject();
+            res.put("status", "fail");
+            e.printStackTrace();
+            return res.toString();
         }
-
-        return mav;
     }
 
     @RequestMapping("deleteQuestionnaire")
