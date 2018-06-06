@@ -20,5 +20,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.85" level="application_server_libraries" />
+    <orderEntry type="library" name="JSON" level="project" />
+    <orderEntry type="library" name="SSM" level="project" />
+    <orderEntry type="library" name="File" level="project" />
   </component>
 </module>

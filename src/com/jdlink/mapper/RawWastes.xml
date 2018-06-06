@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.RawWastesMapper">
+    <insert id="add" parameterType="RawWastes" >
+        insert into t_rawWastes ( materialId, code, mainMaterial, auxMaterial, draginMaterial )
+        values (#{materialId}, #{code}, #{mainMaterial}, #{auxMaterial}, #{draginMaterial});
+    </insert>
+
+    <delete id="delete" parameterType="String" >
+        delete from t_rawWastes where materialId= #{materialId}
+    </delete>
+
+    <select id="get" parameterType="String" resultType="RawWastes">
+        select * from t_rawWastes WHERE materialId = #{materialId}
+    </select>
+
+    <select id="getByQuestionnaireId" parameterType="String" resultType="RawWastes">
+        SELECT * FROM t_rawWastes WHERE materialId in (
+          SELECT r_questionnaireAndRawWastes.rawWastesId FROM r_questionnaireAndRawWastes
+          WHERE questionnaireId=#{questionnaireId});
+    </select>
+
+    <update id="update" parameterType="RawWastes" >
+        update t_rawWastes set code=#{code}, mainMaterial=#{mainMaterial}, auxMaterial=#{auxMaterial},
+          draginMaterial=#{draginMaterial} where materialId=#{materialId}
+    </update>
+    <select id="list" resultType="RawWastes">
+        select * from t_rawWastes
+    </select>
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.DeriveWastesMapper">
+    <resultMap type="DeriveWastes" id="getDeriveWastesRM">
+        <result property="id" column="id" javaType="String"/>
+        <collection property="mixingElementList" select="getMixingElement" column="id"
+                    ofType="com.jdlink.domain.MixingElement" javaType="ArrayList"/>
+        <collection property="sensitiveElementList" select="getSensitiveElement" column="id"
+                    ofType="com.jdlink.domain.SensitiveElement" javaType="ArrayList"/>
+        <collection property="wasteCharacterList" select="getWasteCharacter" column="id"
+                    ofType="com.jdlink.domain.WasteCharacter" javaType="ArrayList"/>
+        <collection property="wasteProtectList" select="getWasteProtect" column="id"
+                    ofType="com.jdlink.domain.WasteProtect" javaType="ArrayList"/>
+    </resultMap>
+    <insert id="add" parameterType="DeriveWastes" >
+        insert into t_deriveWastes ( id, name, code, formType, formTypeDetail,
+        smellType, smellTypeDetail, solubility, solubilityDetail, isLowTemp,
+        lowTemp, solubleTemp, isMixture, eyeMeasures, skinMeasures, swallowMeasures,
+        suctionMeasures, putOutFireMeasures, leakMeasures )
+        values ( #{id}, #{name}, #{code}, #{formType}, #{formTypeDetail},
+        #{smellType}, #{smellTypeDetail}, #{solubility}, #{solubilityDetail},
+        #{isLowTemp}, #{lowTemp}, #{solubleTemp}, #{isMixture}, #{eyeMeasures},
+        #{skinMeasures}, #{swallowMeasures}, #{suctionMeasures}, #{putOutFireMeasures},
+        #{leakMeasures} );
+        <if test="mixingElementList != null and mixingElementList.size() > 0">
+            insert into r_deriveWastesAndMixingElement (deriveWastesId,mixingElementId)
+            values
+            <foreach collection="mixingElementList" item="mixingElement" index="index" separator="," close=";">
+                (#{id,jdbcType=VARCHAR},#{mixingElement.id,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+        <if test="sensitiveElementList != null and sensitiveElementList.size() > 0">
+            insert into r_deriveWastesAndSensitiveElement (deriveWastesId,sensitiveElementId)
+            values
+            <foreach collection="sensitiveElementList" item="sensitiveElement" index="index" separator="," close=";">
+                (#{id,jdbcType=VARCHAR},#{sensitiveElement.id,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+        <if test="wasteCharacterList != null and wasteCharacterList.size() > 0">
+            insert into r_deriveWastesAndWasteCharacter (deriveWastesId, wasteCharacter)
+            values
+            <foreach collection="wasteCharacterList" item="wasteCharacter" index="index" separator="," close=";">
+                (#{id,jdbcType=VARCHAR},#{wasteCharacter,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+        <if test="wasteProtectList != null and wasteProtectList.size() > 0">
+            insert into r_deriveWastesAndWasteProtect (deriveWastesId, wasteProtect)
+            values
+            <foreach collection="wasteProtectList" item="wasteProtect" index="index" separator="," close=";">
+                (#{id,jdbcType=VARCHAR},#{wasteProtect,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+    </insert>
+
+    <delete id="delete" parameterType="String" >
+        delete from t_deriveWastes where id= #{id}
+    </delete>
+
+    <select id="get" parameterType="map" resultType="DeriveWastes">
+        select * from client
+        <where>
+            <if test="id!=null and id!=''">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getById" parameterType="String" resultType="DeriveWastes">
+        SELECT * FROM t_deriveWastes WHERE id = #{id}
+    </select>
+
+    <select id="getByQuestionnaireId" parameterType="String" resultMap="getDeriveWastesRM">
+        SELECT * from t_deriveWastes WHERE t_deriveWastes.id in
+          (select r_questionnaireAndDeriveWastes.deriveWastesId from
+            r_questionnaireAndDeriveWastes WHERE questionnaireId=#{questionnaireId});
+    </select>
+
+    <select id="getMixingElement" parameterType="String" resultType="MixingElement">
+        SELECT * from t_mixingElement WHERE t_mixingElement.id in
+          (SELECT r_deriveWastesAndMixingElement.mixingElementId
+            FROM r_deriveWastesAndMixingElement WHERE deriveWastesId=#{id});
+    </select>
+
+    <select id="getSensitiveElement" parameterType="String" resultType="SensitiveElement">
+        SELECT * from t_sensitiveElement WHERE t_sensitiveElement.id in
+          (SELECT r_deriveWastesAndSensitiveElement.sensitiveElementId
+            FROM r_deriveWastesAndSensitiveElement WHERE deriveWastesId=#{id});
+    </select>
+
+    <select id="getWasteCharacter" parameterType="String" resultType="WasteCharacter">
+        SELECT r_deriveWastesAndWasteCharacter.wasteCharacter
+          FROM r_deriveWastesAndWasteCharacter WHERE deriveWastesId=#{id};
+    </select>
+
+    <select id="getWasteProtect" parameterType="String" resultType="WasteProtect">
+        SELECT r_deriveWastesAndWasteProtect.wasteProtect
+        FROM r_deriveWastesAndWasteProtect WHERE deriveWastesId=#{id};
+    </select>
+
+    <select id="list" resultType="DeriveWastes">
+        select * from t_deriveWastes
+    </select>
+
+    <update id="update" parameterType="DeriveWastes">
+        UPDATE t_deriveWastes set name=#{name}, code=#{code}, formType=#{formType}, formTypeDetail=#{formTypeDetail},
+        smellType=#{smellType}, smellTypeDetail=#{smellTypeDetail}, solubility=#{solubility}, solubilityDetail=#{solubilityDetail},
+        isLowTemp=#{isLowTemp}, lowTemp=#{lowTemp}, solubleTemp=#{solubleTemp}, isMixture=#{isMixture}, eyeMeasures=#{eyeMeasures},
+        skinMeasures=#{skinMeasures}, swallowMeasures=#{swallowMeasures}, suctionMeasures=#{suctionMeasures},
+        putOutFireMeasures=#{putOutFireMeasures}, leakMeasures=#{leakMeasures}
+        WHERE t_deriveWastes.id=#{id};
+
+        DELETE FROM r_deriveWastesAndWasteCharacter WHERE r_deriveWastesAndWasteCharacter.deriveWastesId=#{id};
+
+        <if test="wasteCharacterList != null and wasteCharacterList.size() > 0">
+            insert into r_deriveWastesAndWasteCharacter (deriveWastesId, wasteCharacter)
+            values
+            <foreach collection="wasteCharacterList" item="wasteCharacter" index="index" separator="," close=";">
+                <if test="wasteCharacter != null">
+                    (#{id,jdbcType=VARCHAR},#{wasteCharacter,jdbcType=VARCHAR})
+                </if>
+            </foreach>
+        </if>
+
+        DELETE FROM r_deriveWastesAndWasteProtect WHERE r_deriveWastesAndWasteProtect.deriveWastesId=#{id};
+
+        <if test="wasteProtectList != null and wasteProtectList.size() > 0">
+            insert into r_deriveWastesAndWasteProtect (deriveWastesId, wasteProtect)
+            values
+            <foreach collection="wasteProtectList" item="wasteProtect" index="index" separator="," close=";">
+                <if test="wasteProtect != null">
+                    (#{id,jdbcType=VARCHAR},#{wasteProtect,jdbcType=VARCHAR})
+                </if>
+            </foreach>
+        </if>
+    </update>
+</mapper>

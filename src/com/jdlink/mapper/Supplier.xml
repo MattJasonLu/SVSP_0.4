@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.SupplierMapper">
+
+    <resultMap id="SupplierRM" type="Supplier">
+        <result property="enterpriseType" column="enterpriseType" javaType="com.jdlink.domain.EnterpriseType"/>
+        <result property="operationMode" column="operationMode" javaType="com.jdlink.domain.OperationMode"/>
+        <result property="operationType" column="operationType" javaType="com.jdlink.domain.OperationType"/>
+        <result property="contingencyPlan" column="contingencyPlan" javaType="com.jdlink.domain.ContingencyPlan"/>
+        <result property="operationRecord" column="operationRecord" javaType="com.jdlink.domain.OperationRecord"/>
+        <result property="applicationStatus" column="applicationStatus" javaType="com.jdlink.domain.ApplicationStatus"/>
+        <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
+        <result property="supplierType" column="supplierType" javaType="com.jdlink.domain.SupplierType"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Supplier" >
+        INSERT INTO t_supplier ( supplierId, groupId, companyName,
+          organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
+          operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
+          contactName, phone, mobile, email, industry, product, supplierType, checkState )
+        VALUES (#{supplierId}, #{groupId}, #{companyName}, #{organizationCode}, #{licenseCode},
+        #{representative}, #{postCode}, #{enterpriseType}, #{operationMode}, #{operationType},
+        #{contingencyPlan}, #{operationRecord}, #{location}, #{street}, #{applicationStatus},
+        #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
+        #{checkState})
+    </insert>
+
+    <delete id="delete" parameterType="String" >
+        DELETE FROM t_supplier WHERE supplierId=#{supplierId}
+    </delete>
+
+    <select id="get" parameterType="String" resultMap="SupplierRM">
+        select * from t_supplier
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
+                or supplierType like "%"#{keyword}"%" or mobile like "%"#{keyword}"%"
+                or applicationStatus like "%"#{keyword}"%" or contactName like "%"#{keyword}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getBySupplierId" parameterType="String" resultMap="SupplierRM">
+        SELECT * FROM t_supplier WHERE supplierId=#{supplierId}
+    </select>
+
+    <select id="getByName" parameterType="String" resultMap="SupplierRM">
+        SELECT * FROM t_supplier WHERE companyName=#{companyName}
+    </select>
+
+    <update id="update" parameterType="Supplier">
+        UPDATE t_supplier SET groupId=#{groupId},companyName=#{companyName},organizationCode=#{organizationCode},
+         licenseCode=#{licenseCode}, representative=#{representative}, postCode=#{postCode},
+         enterpriseType=#{enterpriseType}, operationMode=#{operationMode}, operationType=#{operationType},
+         contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
+         street=#{street}, contactName=#{contactName}, supplierType=#{supplierType}, phone=#{phone},
+         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}
+         WHERE supplierId=#{supplierId}
+    </update>
+
+    <update id="setCheckStateToSubmit" parameterType="String">
+        UPDATE t_supplier SET checkState='ToSubmit' WHERE supplierId=#{supplierId};
+    </update>
+
+    <update id="setCheckStateExamining" parameterType="String">
+        UPDATE t_supplier SET checkState='Examining' WHERE supplierId=#{supplierId};
+    </update>
+
+    <update id="setCheckStateFinished" parameterType="String">
+        UPDATE t_supplier SET checkState='Finished' WHERE supplierId=#{supplierId};
+    </update>
+
+    <select id="list" resultMap="SupplierRM">
+        select * from t_supplier;
+    </select>
+</mapper>

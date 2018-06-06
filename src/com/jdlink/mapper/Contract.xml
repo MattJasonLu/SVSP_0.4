@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.ContractMapper">
+
+    <resultMap id="ContractRM" type="Contract">
+        <result property="contractType" column="contractType" javaType="com.jdlink.domain.ContractType"/>
+        <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Contract" >
+        insert into t_contract (contractId, contractType, companyName, clientId, isCompanyContract, area,
+        checkState, beginTime, endTime, agreedQuantity, contactName, telephone, reviewer, reviewDepartment,
+        reviewDate)
+        values (#{contractID}, #{contractType}, #{companyName}, #{clientId}, #{isCompanyContract}, #{area},
+        #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
+        #{reviewDepartment}, #{reviewDate});
+    </insert>
+
+    <delete id="delete" parameterType="Contract" >
+        delete from t_contract where contractId;
+    </delete>
+
+    <select id="getByKeyword" parameterType="String" resultMap="ContractRM">
+        select * from t_contract
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or checkState like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or telephone like "%"#{keyword}"%"
+                OR area LIKE "%"#{keyword}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getByContractId" parameterType="String" resultMap="ContractRM">
+        SELECT * FROM t_contract WHERE contractId = #{contractId};
+    </select>
+
+    <update id="update" parameterType="Contract">
+        UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
+        area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
+        contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
+        reviewDate=#{reviewDate} WHERE contractId=#{contractId};
+    </update>
+
+    <update id="setCheckStateToExamine" parameterType="Contract">
+        UPDATE t_contract SET checkState='ToExamine' WHERE contractId=#{contractId};
+    </update>
+
+    <update id="setCheckStateKeeping" parameterType="Contract">
+        UPDATE t_contract SET checkState='Keeping' WHERE contractId=#{contractId};
+    </update>
+
+    <update id="setCheckStateInvalid" parameterType="Contract">
+        UPDATE t_contract SET checkState='Invalid' WHERE contractId=#{contractId};
+    </update>
+
+    <select id="list" resultMap="ContractRM">
+        select * from t_contract;
+    </select>
+</mapper>

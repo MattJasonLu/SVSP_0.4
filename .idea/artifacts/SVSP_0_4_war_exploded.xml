@@ -7,6 +7,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="SVSP_0.4" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="File" />
+          <element id="library" level="project" name="JSON" />
+          <element id="library" level="project" name="SSM" />
+        </element>
       </element>
     </root>
   </artifact>

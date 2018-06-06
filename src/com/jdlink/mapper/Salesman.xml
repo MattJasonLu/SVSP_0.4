@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.SalesmanMapper">
+    <insert id="add" parameterType="Salesman" >
+        insert into salesman ( salesmanId, name, age, sex )
+        values (#{salesmanId}, #{name}, #{age}, #{sex})
+    </insert>
+
+    <delete id="delete" parameterType="Salesman" >
+        delete from salesman where salesmanId= #{salesmanId}
+    </delete>
+
+    <select id="get" parameterType="map" resultType="Salesman">
+        select * from salesman
+        <where>
+            <if test="salesmanId!=null and salesmanId!=''">
+                and salesmanId like "%"#{salesmanId}"%"
+            </if>
+            <if test="clientId!=null and clientId!=''">
+                and clientId like "%"#{clientId}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getBySalesmanId" parameterType="String" resultType="Salesman">
+        select * from salesman WHERE salesmanId=#{salesmanId};
+    </select>
+
+    <select id="getByClientId" parameterType="String" resultType="Salesman">
+        select * from salesman
+        <where>
+            <if test="_parameter!=null and _parameter!=''">
+                and clientId like "%"#{clientId}"%"
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="Salesman">
+        update salesman set name=#{name},age=#{age},sex=#{sex} where salesmanId=#{salesmanId};
+    </update>
+
+    <update id="assignClient" parameterType="Salesman">
+        UPDATE salesman SET clientId=#{clientId},companyName=#{companyName} WHERE salesmanId=#{salesmanId};
+    </update>
+
+    <select id="list" resultType="Salesman">
+        select * from salesman
+    </select>
+</mapper>

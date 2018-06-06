@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.SampleCheckMapper">
+    <insert id="add" parameterType="SampleCheck" >
+        INSERT INTO t_sampleCheck (checkId, clientId, appointId, companyName,
+        productName, code, contactName, telephone, createTime, recipient,
+        formType, color, quantity, packageType) VALUES (#{checkId}, #{clientId},
+        #{appointId}, #{companyName}, #{productName}, #{code}, #{contactName},
+        #{telephone}, #{createTime}, #{recipient}, #{formType}, #{color},
+        #{quantity}, #{packageType} );
+    </insert>
+
+    <delete id="delete" parameterType="SampleCheck" >
+        DELETE FROM t_sampleCheck WHERE checkId=#{checkId};
+    </delete>
+
+    <select id="getById" parameterType="String" resultType="SampleCheck">
+        SELECT * FROM t_sampleCheck WHERE checkId=#{checkId};
+    </select>
+
+    <select id="list" resultType="SampleCheck">
+        select * from t_sampleCheck;
+    </select>
+</mapper>

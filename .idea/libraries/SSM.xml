@@ -1,0 +1,34 @@
+<component name="libraryTable">
+  <library name="SSM">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/SSM/com.springsource.org.aopalliance-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/com.springsource.org.apache.commons.logging-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/com.springsource.org.apache.log4j-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/druid-1.0.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/fastjson-1.2.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/hamcrest-all-1.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/jackson-annotations-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/jackson-core-2.5.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/jackson-databind-2.5.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/jstl-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/junit-4.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/mybatis-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/mybatis-spring-1.2.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/mysql-connector-java-5.1.6-bin.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/servlet-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-aop-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-aspects-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-beans-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-context-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-core-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-expression-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-jdbc-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-test-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-tx-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-web-3.2.16.RELEASE.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/SSM/spring-webmvc-3.2.16.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

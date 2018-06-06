@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.ClientMapper">
+
+    <resultMap id="ClientRM" type="Client">
+        <result property="clientState" column="state" javaType="com.jdlink.domain.ClientState"/>
+        <result property="enterpriseType" column="enterpriseType" javaType="com.jdlink.domain.EnterpriseType"/>
+        <result property="operationMode" column="operationMode" javaType="com.jdlink.domain.OperationMode"/>
+        <result property="operationType" column="operationType" javaType="com.jdlink.domain.OperationType"/>
+        <result property="contingencyPlan" column="contingencyPlan" javaType="com.jdlink.domain.ContingencyPlan"/>
+        <result property="operationRecord" column="operationRecord" javaType="com.jdlink.domain.OperationRecord"/>
+        <result property="applicationStatus" column="applicationStatus" javaType="com.jdlink.domain.ApplicationStatus"/>
+        <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
+    </resultMap>
+
+    <insert id="add" parameterType="Client" >
+        insert into client ( clientId, temporaryId, groupId, companyName,
+          organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
+          operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
+          materialAttachmentUrl, processAttachmentUrl, processDesp, contactName, phone, mobile,
+          email, state, industry, product, checkState )
+        values (#{clientId}, #{temporaryId}, #{groupId}, #{companyName},
+          #{organizationCode}, #{licenseCode}, #{representative}, #{postCode}, #{enterpriseType},
+          #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
+          #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
+          #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, #{clientState}, #{industry},
+          #{product}, #{checkState})
+    </insert>
+
+    <delete id="delete" parameterType="Client" >
+        delete from client where clientId= #{clientId}
+    </delete>
+
+    <select id="get" parameterType="map" resultMap="ClientRM">
+        select * from client
+        <where>
+            <if test="clientId!=null and clientId!=''">
+                and clientId = #{clientId}
+            </if>
+            <if test="username != null and username != ''">
+                and temporaryId = #{temporaryId}
+            </if>
+            <if test="groupId != null and groupId != ''">
+                and groupId = #{groupId}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+                or applicationStatus like "%"#{keyword}"%" or state like "%"#{keyword}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getByKeyword" parameterType="String" resultMap="ClientRM">
+        SELECT * FROM client WHERE companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+                or applicationStatus like "%"#{keyword}"%" or state like "%"#{keyword}"%";
+    </select>
+
+    <select id="getByClientId" parameterType="String" resultMap="ClientRM">
+        SELECT * FROM client WHERE clientId = #{clientId}
+    </select>
+
+    <select id="getByName" parameterType="String" resultMap="ClientRM">
+        SELECT * FROM client WHERE companyName=#{companyName}
+    </select>
+
+    <update id="update" parameterType="Client">
+        UPDATE client SET groupId=#{groupId},companyName=#{companyName},organizationCode=#{organizationCode},
+         licenseCode=#{licenseCode}, representative=#{representative}, postCode=#{postCode},
+         enterpriseType=#{enterpriseType}, operationMode=#{operationMode}, operationType=#{operationType},
+         contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
+         street=#{street}, materialAttachmentUrl=#{materialAttachmentUrl}, applicationStatus=#{applicationStatus},
+         processAttachmentUrl=#{processAttachmentUrl}, processDesp=#{processDesp}, contactName=#{contactName},
+         phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}
+         WHERE clientId=#{clientId}
+    </update>
+
+    <update id="enableState" parameterType="String">
+        UPDATE client SET state='Enabled' WHERE clientId=#{clientId};
+    </update>
+
+    <update id="disableState" parameterType="String">
+        UPDATE client SET state='Disabled' WHERE clientId=#{clientId};
+    </update>
+
+    <update id="setCheckStateToSubmit" parameterType="String">
+        UPDATE client SET checkState='ToSubmit' WHERE clientId=#{clientId};
+    </update>
+
+    <update id="setCheckStateExamining" parameterType="String">
+        UPDATE client SET checkState='Examining' WHERE clientId=#{clientId};
+    </update>
+
+    <update id="setCheckStateFinished" parameterType="String">
+        UPDATE client SET checkState='Finished' WHERE clientId=#{clientId};
+    </update>
+
+    <select id="list" resultMap="ClientRM">
+        select * from client
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="total" resultType="int">
+        SELECT COUNT(*) FROM client;
+    </select>
+</mapper>

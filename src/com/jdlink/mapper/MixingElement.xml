@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.MixingElementMapper">
+    <insert id="add" parameterType="MixingElement" >
+        insert into t_mixingElement ( id, name, minimum, average, maximum )
+        values (#{id}, #{name}, #{minimum}, #{average}, #{maximum} );
+    </insert>
+
+    <delete id="delete" parameterType="String" >
+        delete from t_mixingElement where id= #{id}
+    </delete>
+
+    <select id="get" parameterType="String" resultType="MixingElement">
+        select * from t_mixingElement WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="MixingElement" >
+        update t_mixingElement set name=#{name}, minimum=#{minimum}, average=#{average},
+          maximum=#{maximum} where id=#{id}
+    </update>
+    <select id="list" resultType="MixingElement">
+        select * from t_mixingElement
+    </select>
+</mapper>

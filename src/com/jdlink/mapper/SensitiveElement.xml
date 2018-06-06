@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.SensitiveElementMapper">
+    <insert id="add" parameterType="SensitiveElement" >
+        insert into t_sensitiveElement ( id, chemicalType, isOrganic )
+        values (#{id}, #{chemicalType}, #{isOrganic} );
+    </insert>
+
+    <delete id="delete" parameterType="String" >
+        delete from t_sensitiveElement where id= #{id}
+    </delete>
+
+    <select id="get" parameterType="String" resultType="SensitiveElement">
+        select * from t_sensitiveElement WHERE id = #{id}
+    </select>
+
+    <update id="update" parameterType="SensitiveElement" >
+        update t_sensitiveElement set chemicalType=#{chemicalType}, isOrganic=#{isOrganic} where id=#{id}
+    </update>
+
+    <select id="list" resultType="SensitiveElement">
+        select * from t_sensitiveElement
+    </select>
+</mapper>

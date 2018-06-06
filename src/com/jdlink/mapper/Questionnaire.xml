@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.QuestionnaireMapper">
+    <resultMap type="Questionnaire" id="getQuestionnaireRM">
+        <result property="questionnaireId" column="questionnaireId" javaType="String"/>
+        <result property="applyState" column="state" javaType="com.jdlink.domain.ApplyState"/>
+        <collection property="wasteInclusionTypeList" select="getInclusionType" column="questionnaireId"
+                    ofType="com.jdlink.domain.WasteInclusionType" javaType="ArrayList"/>
+    </resultMap>
+    <insert id="add" parameterType="Questionnaire" >
+        insert into questionnaire ( questionnaireId, clientId, evaluationnaireId, time, author, state )
+        values ( #{questionnaireId}, #{clientId}, #{evaluationnaireId} ,#{time}, #{author}, 'ToSignIn' );
+
+        <if test="rawWastesList.size() > 0">
+            insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)
+            values
+            <foreach collection="rawWastesList" item="rawWastes" index="index" separator="," close=";">
+                (#{questionnaireId,jdbcType=VARCHAR},#{rawWastes.materialId,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+        <if test="wasteInclusionTypeList != null and wasteInclusionTypeList.size() > 0">
+            insert into r_questionnaireAndWasteInclusionType (questionnaireId, wasteInclusionType)
+            values
+            <foreach collection="wasteInclusionTypeList" item="wasteInclusionType" index="index" separator="," close=";">
+                <if test="wasteInclusionType != null">
+                  (#{questionnaireId,jdbcType=VARCHAR},#{wasteInclusionType,jdbcType=VARCHAR})
+                </if>
+            </foreach>
+        </if>
+        <if test="wasteProcessList.size() > 0">
+            insert into r_questionnaireAndWasteProcess (questionnaireId,wasteProcessId)
+            values
+            <foreach collection="wasteProcessList" item="wasteProcess" index="index" separator="," close=";">
+                (#{questionnaireId,jdbcType=VARCHAR},#{wasteProcess.processId,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+
+        <if test="deriveWastesList.size() > 0">
+            insert into r_questionnaireAndDeriveWastes (questionnaireId,deriveWastesId)
+            values
+            <foreach collection="deriveWastesList" item="deriveWastes" index="index" separator="," close=";">
+                (#{questionnaireId,jdbcType=VARCHAR},#{deriveWastes.id,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+
+    </insert>
+
+    <delete id="delete" parameterType="Questionnaire" >
+        delete from questionnaire where questionnaireId= #{questionnaireId}
+    </delete>
+
+    <select id="get" parameterType="String" resultType="Questionnaire">
+        select * from questionnaire where clientId = #{0} and questionnaireId like "%"#{1}"%"
+    </select>
+
+    <select id="getById" parameterType="String" resultMap="getQuestionnaireRM">
+        select * from questionnaire where questionnaireId = #{questionnaireId};
+    </select>
+
+    <select id="getInclusionType" parameterType="String" resultType="WasteInclusionType" >
+        select wasteInclusionType from r_questionnaireAndWasteInclusionType WHERE questionnaireId=#{questionnaireId}
+    </select>
+
+    <select id="getByClientId" parameterType="String" resultType="Questionnaire">
+        SELECT * FROM questionnaire WHERE clientId = #{clientId}
+    </select>
+
+    <update id="update" parameterType="Questionnaire" >
+        update questionnaire set author=#{author}, state=#{applyState} where questionnaireId=#{questionnaireId};
+
+        DELETE FROM r_questionnaireAndWasteInclusionType WHERE questionnaireId=#{questionnaireId};
+
+        <if test="wasteInclusionTypeList != null and wasteInclusionTypeList.size() > 0">
+            insert into r_questionnaireAndWasteInclusionType (questionnaireId, wasteInclusionType)
+            values
+            <foreach collection="wasteInclusionTypeList" item="wasteInclusionType" index="index" separator="," close=";">
+                <if test="wasteInclusionType != null">
+                    (#{questionnaireId,jdbcType=VARCHAR},#{wasteInclusionType,jdbcType=VARCHAR})
+                </if>
+            </foreach>
+        </if>
+    </update>
+
+    <update id="signIn" parameterType="String">
+        UPDATE questionnaire SET state='SignedIn' WHERE questionnaireId=#{quesionnaireId}
+    </update>
+
+    <update id="back" parameterType="String">
+        UPDATE questionnaire SET state='Backed' WHERE questionnaireId=#{quesionnaireId}
+    </update>
+
+    <update id="updateAttachmentUrl" parameterType="Questionnaire">
+        UPDATE questionnaire SET attachmentUrl=#{attachmentUrl} WHERE questionnaireId=#{questionnaireId}
+    </update>
+
+    <select id="list" resultType="Questionnaire" resultMap="getQuestionnaireRM">
+        select * from questionnaire
+    </select>
+
+    <select id="listQuestionnaireAdmin" resultType="QuestionnaireAdmin">
+        SELECT questionnaire.questionnaireId, client.companyName, client.industry,
+          client.product, questionnaire.state, questionnaire.author AS contactName, questionnaire.time
+            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId;
+    </select>
+</mapper>
