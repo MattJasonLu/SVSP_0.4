@@ -171,7 +171,7 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary" href="#" onclick="appointModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                        <a class="btn btn-primary" onclick="checkModal();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 确认收样</a>
+                        <a class="btn btn-primary" href="#" onclick="checkModal();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 确认收样</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
@@ -251,8 +251,8 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <!-- 预约模态框 -->
+    <div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -263,16 +263,16 @@
                     <form id="model-assign" method="post">
                         <div class="form-group">
                             <label for="model-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model-companyName" name="model-companyName" readonly>
+                            <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
                         </div>
                         <div class="form-group">
                             <label for="model-contactName" class="control-label">联系人</label>
-                            <input type="text" class="form-control" id="model-contactName" name="model-contactName">
+                            <input type="text" class="form-control" id="model-contactName" name="contactName">
                         </div>
                         <div class="form-group">
                             <label for="dtp_input1" class="control-label">取样时间</label>
                             <div class="input-group date form_datetime" data-date="" data-date-format="yyyy MM dd - HH:ii p" data-link-field="dtp_input1">
-                                <input class="form-control" type="text" value="" id="model-appointTime" name="model-appointTime" readonly>
+                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                             </div>
@@ -289,6 +289,77 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" onclick="">预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认模态框 -->
+    <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="checkModalLabel">样品信息登记</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-check" method="post">
+                        <div class="form-group">
+                            <label for="model2-companyName" class="control-label">公司名称</label>
+                            <input type="text" class="form-control" id="model2-companyName" name="companyName" readonly>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model2-contactName" class="control-label">联系人</label>
+                                    <input type="text" class="form-control" id="model2-contactName" name="contactName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-productName" class="control-label">样品名称</label>
+                                    <input type="text" class="form-control" id="model2-productName" name="productName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-recipient" class="control-label">样品接收人</label>
+                                    <input type="text" class="form-control" id="model2-recipient" name="recipient">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-formType" class="control-label">状态</label>
+                                    <select class="form-control" id="model2-formType" name="formType"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-quantity" class="control-label">拟处置量</label>
+                                    <input type="text" class="form-control" id="model2-quantity" name="quantity">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model2-telephone" class="control-label">联系方式</label>
+                                    <input type="text" class="form-control" id="model2-telephone" name="telephone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-contactName" class="control-label">危废代码</label>
+                                    <input type="text" class="form-control" id="model2-code" name="code">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-color" class="control-label">颜色</label>
+                                    <input type="text" class="form-control" id="model2-color" name="color">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-packageType" class="control-label">包装</label>
+                                    <select class="form-control" id="model2-packageType" name="packageType"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="model2-mainComponent" class="control-label">主要成分</label>
+                            <div>
+                                <textarea class="form-control" id="model2-mainComponent" name="mainComponent" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="">确认</button>
                 </div>
             </div>
         </div>
@@ -313,7 +384,13 @@
      * 显示预约框
      */
     function appointModal() {
-        $('#myModal').modal('show');
+        $('#appointModal').modal('show');
+    }
+    /**
+     * 显示收样框
+     */
+    function checkModal() {
+        $('#checkModal').modal('show');
     }
 </script>
 </html>
