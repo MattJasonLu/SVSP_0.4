@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface QuestionnaireService {
     List<Questionnaire> list();
-    List<Questionnaire> get(String clientId, String questionnaireId);
+    List<QuestionnaireAdmin> search(String keyword);
     Questionnaire getById(String questionnaireId);
     List<Questionnaire> getByClientId(String clientId);
     List<QuestionnaireAdmin> listQuestionnaireAdmin();

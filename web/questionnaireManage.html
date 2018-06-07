@@ -9,29 +9,102 @@
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
-    function loadClientList() {
+    function setQuestionnaireList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                        // 调查表编号
+                    case (2):
+                        $(this).html(obj.questionnaireId);
+                        break;
+                        // 企业名称
+                    case (3):
+                        $(this).html(obj.companyName);
+                        break;
+                        // 所属行业
+                    case (4):
+                        $(this).html(obj.industry);
+                        break;
+                        // 主要产品
+                    case (5):
+                        $(this).html(obj.product);
+                        break;
+                        // 审批状态
+                    case (6):
+                        $(this).html(obj.state.name);
+                        break;
+                        // 填报人
+                    case (7):
+                        $(this).html(obj.contactName);
+                        break;
+                        // 填报日期
+                    case (8):
+                        $(this).html(obj.time);
+                        break;
+
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    function loadQuestionnaireList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
+            url: "listQuestionnaire",           // url
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    jQuery.each(result, function(i,item){
-                        console.log(item.clientId + ", " + item.companyName);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
+                    setQuestionnaireList(result);
+                } else { }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 查询问卷
+     */
+    function searchQuestionnaire() {
+        var keyword = $("#searchContent").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchQuestionnaire",                  // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'keyword': keyword
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    setQuestionnaireList(result);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
             }
         });
     }
 </script>
-<body onload="">
+<body onload="loadQuestionnaireList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -119,16 +192,16 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary" href="questionnaire1.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
+                        <a class="btn btn-primary" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
+                        <a class="btn btn-primary" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索...">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchQuestionnaire();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         </span>
                     </div>
                 </div>
@@ -151,7 +224,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr">
                         <td class="text-center">
                             <label>
                                 <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -161,10 +234,10 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">查看</a></li>
-                                    <li><a href="#">修改信息</a></li>
-                                    <li><a href="#">签收</a></li>
-                                    <li><a href="#">退回</a></li>
+                                    <li><a href="#" onclick="viewQuestionnaire(this);">查看</a></li>
+                                    <li><a href="#" onclick="adjustQuestionnaire(this);">修改信息</a></li>
+                                    <li><a href="#" onclick="signInQuestionnaire(this);">签收</a></li>
+                                    <li><a href="#" onclick="backQuestionnaire(this);">退回</a></li>
                                     <li><a href="#">预约送样</a></li>
                                 </ul>
                             </div>
@@ -176,292 +249,6 @@
                         <td>consectetur</td>
                         <td>dolor</td>
                         <td>sit</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>consectetur</td>
-                        <td>adipiscing</td>
-                        <td>elit</td>
-                        <td>ipsum</td>
-                        <td>dolor</td>
-                        <td>elit</td>
-                        <td>dolor</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Sed</td>
-                        <td>cursus</td>
-                        <td>odio</td>
-                        <td>dolor</td>
-                        <td>ante</td>
-                        <td>nibh</td>
-                        <td>elementum</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>diam</td>
-                        <td>dolor</td>
-                        <td>Sed</td>
-                        <td>ante</td>
-                        <td>nisi</td>
-                        <td>Sed</td>
-                        <td>cursus</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>quis</td>
-                        <td>sem</td>
-                        <td>at</td>
-                        <td>diam</td>
-                        <td>dolor</td>
-                        <td>diam</td>
-                        <td>Sed</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>elementum</td>
-                        <td>imperdiet</td>
-                        <td>at</td>
-                        <td>dolor</td>
-                        <td>Duis</td>
-                        <td>sagittis</td>
-                        <td>ipsum</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>dolor</td>
-                        <td>ipsum</td>
-                        <td>Praesent</td>
-                        <td>mauris</td>
-                        <td>elementum</td>
-                        <td>imperdiet</td>
-                        <td>imperdiet</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>nec</td>
-                        <td>dolor</td>
-                        <td>tellus</td>
-                        <td>sed</td>
-                        <td>ipsum</td>
-                        <td>Praesent</td>
-                        <td>mauris</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>semper</td>
-                        <td>porta</td>
-                        <td>Mauris</td>
-                        <td>nec</td>
-                        <td>dolor</td>
-                        <td>sed</td>
-                        <td>tellus</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Vestibulum</td>
-                        <td>lacinia</td>
-                        <td>porta</td>
-                        <td>arcu</td>
-                        <td>dolor</td>
-                        <td>semper</td>
-                        <td>porta</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>nulla</td>
-                        <td>Class</td>
-                        <td>dolor</td>
-                        <td>aptent</td>
-                        <td>Vestibulum</td>
-                        <td>porta</td>
-                        <td>lacinia</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>sociosqu</td>
-                        <td>ad</td>
-                        <td>dolor</td>
-                        <td>litora</td>
-                        <td>nulla</td>
-                        <td>porta</td>
-                        <td>Class</td>
                     </tr>
                     </tbody>
                 </table>
@@ -490,6 +277,150 @@
             </div>
         </div>
     </div>
-
 </body>
+<script type="text/javascript">
+    /**
+     * 获取编号
+     * @param item
+     * @returns {string}
+     */
+    function getQuestionnaireId(item) {
+        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
+    function viewQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        alert("待完善");
+    }
+    function adjustQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        alert("待完善");
+    }
+    /**
+     * 签收问卷
+     */
+    function signInQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "signInQuestionnaire",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("签收成功");
+                    window.location.reload();
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 退回问卷
+     * @param item
+     */
+    function backQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "backQuestionnaire",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("退回成功");
+                    window.location.reload();
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 签收勾选问卷
+     */
+    function signInQuestionnaireByCheckBox() {
+        var items = $("input[type='checkbox']:checked");
+
+        function signInQuestionnaireById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "signInQuestionnaire",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
+        if (items.length > 0) {
+            items.each(function () {
+                var id = getIdByCheckBox($(this));
+                signInQuestionnaireById(id);
+            });
+            alert("签收成功");
+            window.location.reload();
+        } else {
+            alert("未选择任何调查表");
+        }
+    }
+    /**
+     * 退回勾选问卷
+     */
+    function backQuestionnaireByCheckBox() {
+        var items = $("input[type='checkbox']:checked");
+
+        function backQuestionnaireById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "backQuestionnaire",           // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
+        if (items.length > 0) {
+            items.each(function () {
+                var id = getIdByCheckBox($(this));
+                backQuestionnaireById(id);
+            });
+            alert("退回成功");
+            window.location.reload();
+        } else {
+            alert("未选择任何调查表");
+        }
+    }
+    /**
+     * 通过勾选框获取编号
+     * @param item
+     * @returns {*}
+     */
+    function getIdByCheckBox(item) {
+        return item.parent().parent().next().next().text();
+    }
+</script>
 </html>

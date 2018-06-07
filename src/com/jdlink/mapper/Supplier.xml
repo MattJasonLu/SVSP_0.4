@@ -32,15 +32,10 @@
         DELETE FROM t_supplier WHERE supplierId=#{supplierId}
     </delete>
 
-    <select id="get" parameterType="String" resultMap="SupplierRM">
-        select * from t_supplier
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
-                or supplierType like "%"#{keyword}"%" or mobile like "%"#{keyword}"%"
-                or applicationStatus like "%"#{keyword}"%" or contactName like "%"#{keyword}"%"
-            </if>
-        </where>
+    <select id="getByKeyword" parameterType="String" resultMap="SupplierRM">
+        select * from t_supplier WHERE companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
+          or supplierType like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+          or applicationStatus like "%"#{keyword}"%" or contactName like "%"#{keyword}"%";
     </select>
 
     <select id="getBySupplierId" parameterType="String" resultMap="SupplierRM">
