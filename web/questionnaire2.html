@@ -60,6 +60,17 @@
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.insertAfter(tr);
     }
+    function addNewLine1() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr2");
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 获取编号
+        var id = clonedTr.children().get(0).innerHTML;
+        var num = parseInt(id)+1;
+        clonedTr.children().get(0).innerHTML = num;
+        clonedTr.insertAfter(tr);
+    }
 </script>
 <body onload="loadSelectList()">
     <!--导航条-->
@@ -188,144 +199,91 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="checkbox">
+                    <div class="form-horizontal col-md-3">
                         <label>
                             <input type="checkbox"> 过氯化物
                         </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="11" name="11" placeholder="">
-                            </div>
-                            <label for="11" class="col-sm-3 control-label">过氯化物</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 过氧化物
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="12" name="12" placeholder="">
-                            </div>
-                            <label for="12" class="col-sm-3 control-label">过氧化物</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 有机氯
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="13" name="13" placeholder="">
-                            </div>
-                            <label for="13" class="col-sm-3 control-label">有机氯</label>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="14" name="14" placeholder="">
-                            </div>
-                            <label for="14" class="col-sm-3 control-label">爆炸物</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 爆炸物
+                        </label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="21" name="21" placeholder="">
-                            </div>
-                            <label for="21" class="col-sm-3 control-label">有机氮</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 有机氮
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="22" name="22" placeholder="">
-                            </div>
-                            <label for="22" class="col-sm-3 control-label">放射性物质</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 放射性物质
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="23" name="23" placeholder="">
-                            </div>
-                            <label for="23" class="col-sm-3 control-label">酸酐</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 酸酐
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="24" name="24" placeholder="">
-                            </div>
-                            <label for="24" class="col-sm-3 control-label">生化废料</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 生化废料
+                        </label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="31" name="31" placeholder="">
-                            </div>
-                            <label for="31" class="col-sm-3 control-label">乙醚</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 乙醚
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="32" name="32" placeholder="">
-                            </div>
-                            <label for="32" class="col-sm-3 control-label">催泪物质</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 催泪物质
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="33" name="33" placeholder="">
-                            </div>
-                            <label for="33" class="col-sm-3 control-label">硒化物</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 硒化物
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="34" name="34" placeholder="">
-                            </div>
-                            <label for="34" class="col-sm-3 control-label">苯酚</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 苯酚
+                        </label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="41" name="41" placeholder="">
-                            </div>
-                            <label for="41" class="col-sm-3 control-label">苯</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 苯
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="42" name="42" placeholder="">
-                            </div>
-                            <label for="42" class="col-sm-3 control-label">多氯联苯-聚氯三联苯</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 多氯联苯-聚氯三联苯
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="43" name="43" placeholder="">
-                            </div>
-                            <label for="43" class="col-sm-3 control-label">氧化剂</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 氧化剂
+                        </label>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <div class="col-xs-5">
-                                <input type="checkbox" class="form-control" id="44" name="44" placeholder="">
-                            </div>
-                            <label for="44" class="col-sm-3 control-label">还原剂</label>
-                        </div>
+                    <div  class="form-horizontal col-md-3">
+                        <label>
+                            <input type="checkbox"> 还原剂
+                        </label>
                     </div>
                 </div>
                 <div class="row">
@@ -338,8 +296,14 @@
                                     <td>含化学物质辅料</td>
                                     <td>可能带入的化学物质</td>
                                 </tr>
+                                <tr id="cloneTr2">
+                                    <td>1</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                                 <tr>
-                                    <td><p id="cloneTr2" align="center" onclick="setClientList(this);">+</p></td>
+                                    <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
