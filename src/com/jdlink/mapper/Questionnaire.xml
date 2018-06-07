@@ -52,8 +52,14 @@
         delete from questionnaire where questionnaireId= #{questionnaireId}
     </delete>
 
-    <select id="get" parameterType="String" resultType="Questionnaire">
-        select * from questionnaire where clientId = #{0} and questionnaireId like "%"#{1}"%"
+    <select id="search" parameterType="String" resultType="QuestionnaireAdmin">
+        SELECT questionnaire.questionnaireId, client.companyName, client.industry,
+          client.product, questionnaire.state, questionnaire.author AS contactName, questionnaire.time
+            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId AND
+            (questionnaire.questionnaireId LIKE "%"#{keyword}"%" OR
+            client.companyName LIKE "%"#{keyword}"%" OR client.industry LIKE "%"#{keyword}"%" OR
+            client.product LIKE "%"#{keyword}"%" OR questionnaire.state LIKE "%"#{keyword}"%" OR
+            questionnaire.author LIKE "%"#{keyword}"%" OR questionnaire.time LIKE "%"#{keyword}"%");
     </select>
 
     <select id="getById" parameterType="String" resultMap="getQuestionnaireRM">
