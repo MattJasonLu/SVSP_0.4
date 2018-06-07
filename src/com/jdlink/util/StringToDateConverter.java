@@ -14,7 +14,7 @@ public class StringToDateConverter implements Converter<String, Date> {
     public Date convert(String source) {
         // TODO Auto-generated method stub
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss");
+                "yyyy-MM-dd HH:mm");
 
         try {
             // 转成直接返回
@@ -34,7 +34,7 @@ public class StringToDateConverter implements Converter<String, Date> {
     }
 
     public String convert(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time;
         try {
             time = simpleDateFormat.format(date);
