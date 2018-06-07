@@ -5,10 +5,13 @@ import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleAppointService;
 import com.jdlink.service.SampleCheckService;
 import com.jdlink.util.RandomUtil;
+import net.sf.json.JSON;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,27 +34,38 @@ public class SampleController {
     ClientService clientService;
 
     @RequestMapping("listSample")
-    public ModelAndView listSample() {
-        ModelAndView mav = new ModelAndView();
-        // 获取两个列表
-        List<SampleAppoint> sampleAppointList = sampleAppointService.list();
-        List<SampleCheck> sampleCheckList = sampleCheckService.list();
-        mav.addObject("sampleAppointList", sampleAppointList);
-        mav.addObject("sampleCheckList", sampleCheckList);
+    @ResponseBody
+    public String listSample() {
+        try {
+            // 获取样品列表
+            List<SampleAppoint> sampleAppointList = sampleAppointService.list();
+            JSONArray array = JSONArray.fromArray(sampleAppointList.toArray(new SampleAppoint[sampleAppointList.size()]));
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSONObject res = new JSONObject();
+            res.put("status", "fail");
+            res.put("message", "获取样品列表失败");
+            res.put("exception", e.getMessage());
+            return res.toString();
+        }
+    }
+    @RequestMapping("getSampleSelectList")
+    @ResponseBody
+    public String getSampleSelectList() {
+        JSONObject res = new JSONObject();
         // 获取枚举
         List<String> formTypeStrList = new ArrayList<>();
         for (FormType formType : FormType.values()) {
             formTypeStrList.add(formType.getName());
         }
+        res.put("formTypeStrList", formTypeStrList);
         List<String> packageTypeStrList = new ArrayList<>();
         for (PackageType packageType : PackageType.values()) {
             packageTypeStrList.add(packageType.getName());
         }
-        // 添加枚举
-        mav.addObject("formTypeStrList", formTypeStrList);
-        mav.addObject("packageTypeStrList", packageTypeStrList);
-        mav.setViewName("sample");
-        return mav;
+        res.put("packageTypeStrList", packageTypeStrList);
+        return res.toString();
     }
 
     @RequestMapping("addSampleAppoint")
@@ -74,7 +88,7 @@ public class SampleController {
         // 添加预约表
         sampleAppointService.add(sampleAppoint);
         // 刷新列表
-        return listSample();
+        return null;
     }
 
     @RequestMapping("getSampleAppoint")
@@ -145,6 +159,6 @@ public class SampleController {
         // 更新产品和危废代码
         sampleAppointService.updatePdtAndCode(sampleCheck);
         // 刷新列表
-        return listSample();
+        return null;
     }
 }

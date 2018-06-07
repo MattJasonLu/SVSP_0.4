@@ -5,33 +5,85 @@
     <title>样品信息管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+
 </head>
 <script type="text/javascript">
-    function loadClientList() {
+    function setSampleList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                        // 样品预约号
+                    case (2):
+                        $(this).html(obj.appointId);
+                        break;
+                        // 公司名称
+                    case (3):
+                        $(this).html(obj.companyName);
+                        break;
+                        // 样品名称
+                    case (4):
+                        $(this).html(obj.productName);
+                        break;
+                        // 危废代码
+                    case (5):
+                        $(this).html(obj.code);
+                        break;
+                        // 联系人
+                    case (6):
+                        $(this).html(obj.contactName);
+                        break;
+                        // 联系方式
+                    case (7):
+                        $(this).html(obj.telephone);
+                        break;
+
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    /**
+     * 加载样品列表
+     */
+    function loadSampleList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
+            url: "listSample",                  // url
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    jQuery.each(result, function(i,item){
-                        console.log(item.clientId + ", " + item.companyName);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
+                    setSampleList(result);
+                } else { }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
 </script>
-<body onload="">
+<body onload="loadSampleList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -118,16 +170,16 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 确认收样</a>
+                        <a class="btn btn-primary" href="#" onclick="appointModal();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
+                        <a class="btn btn-primary" href="#" onclick="checkModal();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 确认收样</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索...">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchSample();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         </span>
                     </div>
                 </div>
@@ -149,7 +201,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr">
                         <td class="text-center">
                             <label>
                                 <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -159,9 +211,9 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">查看</a></li>
-                                    <li><a href="#">修改信息</a></li>
-                                    <li><a href="#">登记收样</a></li>
+                                    <li><a href="#" onclick="viewSample(this);">查看</a></li>
+                                    <li><a href="#" onclick="adjustSample(this);">修改信息</a></li>
+                                    <li><a href="#" onclick="checkSample(this);">登记收样</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -171,281 +223,6 @@
                         <td>amet</td>
                         <td>consectetur</td>
                         <td>dolor</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>consectetur</td>
-                        <td>adipiscing</td>
-                        <td>elit</td>
-                        <td>ipsum</td>
-                        <td>dolor</td>
-                        <td>elit</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Sed</td>
-                        <td>cursus</td>
-                        <td>odio</td>
-                        <td>dolor</td>
-                        <td>nibh</td>
-                        <td>elementum</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>diam</td>
-                        <td>dolor</td>
-                        <td>Sed</td>
-                        <td>ante</td>
-                        <td>Sed</td>
-                        <td>cursus</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>quis</td>
-                        <td>sem</td>
-                        <td>at</td>
-                        <td>diam</td>
-                        <td>diam</td>
-                        <td>Sed</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>elementum</td>
-                        <td>imperdiet</td>
-                        <td>at</td>
-                        <td>Duis</td>
-                        <td>sagittis</td>
-                        <td>ipsum</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>dolor</td>
-                        <td>Praesent</td>
-                        <td>mauris</td>
-                        <td>elementum</td>
-                        <td>imperdiet</td>
-                        <td>imperdiet</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>nec</td>
-                        <td>dolor</td>
-                        <td>tellus</td>
-                        <td>ipsum</td>
-                        <td>Praesent</td>
-                        <td>mauris</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>porta</td>
-                        <td>Mauris</td>
-                        <td>nec</td>
-                        <td>dolor</td>
-                        <td>sed</td>
-                        <td>tellus</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Vestibulum</td>
-                        <td>lacinia</td>
-                        <td>porta</td>
-                        <td>dolor</td>
-                        <td>semper</td>
-                        <td>porta</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>nulla</td>
-                        <td>Class</td>
-                        <td>aptent</td>
-                        <td>Vestibulum</td>
-                        <td>porta</td>
-                        <td>lacinia</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>sociosqu</td>
-                        <td>ad</td>
-                        <td>dolor</td>
-                        <td>nulla</td>
-                        <td>porta</td>
-                        <td>Class</td>
                     </tr>
                     </tbody>
                 </table>
@@ -474,6 +251,146 @@
             </div>
         </div>
     </div>
-
+    <!-- 预约模态框 -->
+    <div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-assign" method="post">
+                        <div class="form-group">
+                            <label for="model-companyName" class="control-label">公司名称</label>
+                            <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-contactName" class="control-label">联系人</label>
+                            <input type="text" class="form-control" id="model-contactName" name="contactName">
+                        </div>
+                        <div class="form-group">
+                            <label for="dtp_input1" class="control-label">取样时间</label>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="yyyy MM dd - HH:ii p" data-link-field="dtp_input1">
+                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                            <input type="hidden" id="dtp_input1" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="model-comment" class="control-label">备注</label>
+                            <div>
+                                <textarea class="form-control" id="model-comment" name="model-comment" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="">预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 确认模态框 -->
+    <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="checkModalLabel">样品信息登记</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-check" method="post">
+                        <div class="form-group">
+                            <label for="model2-companyName" class="control-label">公司名称</label>
+                            <input type="text" class="form-control" id="model2-companyName" name="companyName" readonly>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model2-contactName" class="control-label">联系人</label>
+                                    <input type="text" class="form-control" id="model2-contactName" name="contactName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-productName" class="control-label">样品名称</label>
+                                    <input type="text" class="form-control" id="model2-productName" name="productName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-recipient" class="control-label">样品接收人</label>
+                                    <input type="text" class="form-control" id="model2-recipient" name="recipient">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-formType" class="control-label">状态</label>
+                                    <select class="form-control" id="model2-formType" name="formType"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-quantity" class="control-label">拟处置量</label>
+                                    <input type="text" class="form-control" id="model2-quantity" name="quantity">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model2-telephone" class="control-label">联系方式</label>
+                                    <input type="text" class="form-control" id="model2-telephone" name="telephone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-contactName" class="control-label">危废代码</label>
+                                    <input type="text" class="form-control" id="model2-code" name="code">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-color" class="control-label">颜色</label>
+                                    <input type="text" class="form-control" id="model2-color" name="color">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model2-packageType" class="control-label">包装</label>
+                                    <select class="form-control" id="model2-packageType" name="packageType"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="model2-mainComponent" class="control-label">主要成分</label>
+                            <div>
+                                <textarea class="form-control" id="model2-mainComponent" name="mainComponent" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script type="text/javascript">
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+//        language:  'zh-CN',
+//        format: 'yyyy-mm-dd HH:mm',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+    /**
+     * 显示预约框
+     */
+    function appointModal() {
+        $('#appointModal').modal('show');
+    }
+    /**
+     * 显示收样框
+     */
+    function checkModal() {
+        $('#checkModal').modal('show');
+    }
+</script>
 </html>
