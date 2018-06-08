@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>用户注册</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/signin.css" rel="stylesheet">
@@ -51,23 +52,49 @@
     </nav>
 
 
-    <form class="form-signin gap" action="addUser" method="post">
+    <form class="form-signin gap" method="post" id="form-signUp">
         <h2 class="form-signin-heading">注册</h2>
         <label for="inputAccount" class="sr-only">账号</label>
-        <input type="text" id="inputAccount" class="form-control" placeholder="账号" required autofocus>
+        <input type="text" id="inputAccount" class="form-control" name="username" placeholder="账号" required autofocus>
         <label for="inputPassword" class="sr-only">密码</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="密码" required>
         <label for="inputPassword" class="sr-only">确认密码</label>
-        <input type="password" id="inputCfmPassword" class="form-control" placeholder="确认密码" required>
+        <input type="password" id="inputCfmPassword" class="form-control" name="cfmPassword" placeholder="确认密码" required>
         <div class="checkbox">
             <label>
                 <input type="checkbox" value="remember-me"> 记住我
             </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+        <button class="btn btn-lg btn-primary btn-block" onclick="signUp();">注册</button>
         <span>已有账号？<a class="text-primary" href="signin.html">登录</a></span>
     </form>
-
-
 </body>
+<script type="text/javascript">
+    function signUp() {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "addUser",                     // url
+            cache: false,
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: $('#form-signUp').serialize(),  // 请求参数
+            dataType: "json",
+            success: function (result) {
+                console.log(result);   // 调试用
+                if (result != undefined) {
+                    var data = eval(result);
+                    alert(data.message);
+                    $(location).attr('href', 'wastesPlatform.html');
+                } else {
+                    var data = eval(result);
+                    alert(data.message);
+                }
+            },
+            error:function (result) {
+                var data = eval(result);
+                console.log(data);
+                alert(data.message);
+            }
+        });
+    }
+</script>
 </html>
