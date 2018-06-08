@@ -71,4 +71,8 @@
     <select id="list" resultMap="SupplierRM">
         select * from t_supplier;
     </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_supplier;
+    </select>
 </mapper>

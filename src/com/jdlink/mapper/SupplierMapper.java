@@ -3,7 +3,6 @@ package com.jdlink.mapper;
 import com.jdlink.domain.Supplier;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by matt on 2018/4/23.
@@ -29,5 +28,7 @@ public interface SupplierMapper {
     void setCheckStateExamining(String supplierId);
 
     void setCheckStateFinished(String supplierId);
+
+    int count();
 
 }

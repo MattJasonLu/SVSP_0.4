@@ -66,4 +66,9 @@ public class SupplierServiceImpl implements SupplierService {
     public void setCheckStateFinished(String supplierId) {
         supplierMapper.setCheckStateFinished(supplierId);
     }
+
+    @Override
+    public int count() {
+        return supplierMapper.count();
+    }
 }
