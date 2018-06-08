@@ -77,7 +77,10 @@
             </ol>
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <a href="signin.html"><div class="item-img" style="background-image: url(image/P2.jpg);"></div></a>
+                    <a href="signin.html">
+                        <img src="image/P1.jpg" class="item-img">
+                        <!--<div class="item-img" style="background-image: url(image/P2.jpg);"></div>-->
+                    </a>
                     <div class="carousel-caption">
                         <h1>产废服务平台</h1>
                         <p>搭建物联网平台，打通生产企业和经营单位的沟通壁垒，实现常态管理自动化</p>
@@ -110,4 +113,31 @@
         </div>
     </div>
 </body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".item-img").each(function() {
+            var maxWidth = document.body.clientWidth; // 图片最大宽度
+            var maxHeight = document.body.clientHeight;    // 图片最大高度
+            var ratio = 0;  // 缩放比例
+            var width = $(this).width();    // 图片实际宽度
+            var height = $(this).height();  // 图片实际高度
+
+            // 检查图片是否超宽
+            if(width > maxWidth){
+                ratio = maxWidth / width;   // 计算缩放比例
+                $(this).css("width", maxWidth); // 设定实际显示宽度
+                height = height * ratio;    // 计算等比例缩放后的高度
+                $(this).css("height", height);  // 设定等比例缩放后的高度
+            }
+
+            // 检查图片是否超高
+            if(height > maxHeight){
+                ratio = maxHeight / height; // 计算缩放比例
+                $(this).css("height", maxHeight);   // 设定实际显示高度
+                width = width * ratio;    // 计算等比例缩放后的高度
+                $(this).css("width", width * ratio);    // 设定等比例缩放后的高度
+            }
+        });
+    });
+</script>
 </html>
