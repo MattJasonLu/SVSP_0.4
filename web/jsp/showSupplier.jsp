@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" import="java.util.*" isELIgnored="false"%>
+         pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <html lang="en">
@@ -29,60 +29,74 @@
                     var data = eval(result);
                     // 各下拉框数据填充
                     var enterpriseType = $("#enterpriseType");
+                    enterpriseType.children().remove();
                     $.each(data.enterpriseTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         enterpriseType.append(option);
                     });
+                    enterpriseType.get(0).selectedIndex = ${supplier.enterpriseType.index}-1;
                     var operationType = $("#operationType");
+                    operationType.children().remove();
                     $.each(data.operationTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         operationType.append(option);
                     });
+                    operationType.get(0).selectedIndex = ${supplier.operationType.index}-1;
                     var operationRecord = $("#operationRecord");
+                    operationRecord.children().remove();
                     $.each(data.operationRecordStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         operationRecord.append(option);
                     });
+                    operationRecord.get(0).selectedIndex = ${supplier.operationRecord.index}-1;
                     var operationMode = $("#operationMode");
+                    operationMode.children().remove();
                     $.each(data.operationModeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         operationMode.append(option);
                     });
+                    operationMode.get(0).selectedIndex = ${supplier.operationMode.index}-1;
                     var contingencyPlan = $("#contingencyPlan");
+                    contingencyPlan.children().remove();
                     $.each(data.contingencyPlanStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         contingencyPlan.append(option);
                     });
+                    contingencyPlan.get(0).selectedIndex = ${supplier.contingencyPlan.index}-1;
                     var applicationStatus = $("#applicationStatus");
+                    applicationStatus.children().remove();
                     $.each(data.applicationStatusStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         applicationStatus.append(option);
                     });
+                    applicationStatus.get(0).selectedIndex = ${supplier.applicationStatus.index}-1;
                     var supplierType = $("#supplierType");
+                    supplierType.children().remove();
                     $.each(data.supplierTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         supplierType.append(option);
                     });
+                    supplierType.get(0).selectedIndex = ${supplier.supplierType.index}-1;
                 } else {
-                    console.log("fail: " + result);
+                    console.log(result);
                 }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
@@ -387,19 +401,13 @@
      * 界面加载完成后延时10ms再进行jq操作，ajax的post请求后会发生短暂的局部刷新
      */
     $(document).ready(function(){
-        setTimeout('setSelectValue()', 10);
+        setTimeout('setSelectValue()', 20);
     });
     /**
      * 设置界面中下拉框的选中情况
      */
     function setSelectValue() {
-        $("#enterpriseType").val(${supplier.enterpriseType.index});
-        $("#operationType").val(${supplier.operationType.index});
-        $("#operationRecord").val(${supplier.operationRecord.index});
-        $("#operationMode").val(${supplier.operationMode.index});
-        $("#contingencyPlan").val(${supplier.contingencyPlan.index});
-        $("#applicationStatus").val(${supplier.applicationStatus.index});
-        $("#supplierType").val(${supplier.supplierType.index});
+
     }
 </script>
 </html>

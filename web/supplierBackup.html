@@ -33,10 +33,12 @@
                         break;
                         // 供应商类型
                     case (4):
+                        if (obj.supplierType != null)
                         $(this).html(obj.supplierType.name);
                         break;
                         // 供应商状态
                     case (5):
+                        if (obj.checkState != null)
                         $(this).html(obj.checkState.name);
                         break;
                         // 联系人

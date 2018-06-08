@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" import="java.util.*" isELIgnored="false"%>
+         pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <html lang="en">
@@ -87,53 +87,65 @@
                     var data = eval(result);
                     // 各下拉框数据填充
                     var enterpriseType = $("#enterpriseType");
+                    enterpriseType.children().remove();
                     $.each(data.enterpriseTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         enterpriseType.append(option);
                     });
+                    enterpriseType.get(0).selectedIndex = ${client.enterpriseType.index}-1;;
                     var operationType = $("#operationType");
+                    operationType.children().remove();
                     $.each(data.operationTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         operationType.append(option);
                     });
+                    operationType.get(0).selectedIndex = ${client.operationType.index}-1;;
                     var operationRecord = $("#operationRecord");
+                    operationRecord.children().remove();
                     $.each(data.operationRecordStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         operationRecord.append(option);
                     });
+                    operationRecord.get(0).selectedIndex = ${client.operationRecord.index}-1;
                     var operationMode = $("#operationMode");
+                    operationMode.children().remove();
                     $.each(data.operationModeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         operationMode.append(option);
                     });
+                    operationMode.get(0).selectedIndex = ${client.operationMode.index}-1;
                     var contingencyPlan = $("#contingencyPlan");
+                    contingencyPlan.children().remove();
                     $.each(data.contingencyPlanStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         contingencyPlan.append(option);
                     });
+                    contingencyPlan.get(0).selectedIndex = ${client.contingencyPlan.index}-1;
                     var applicationStatus = $("#applicationStatus");
+                    applicationStatus.children().remove();
                     $.each(data.applicationStatusStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
+                        option.val(index);
+                        option.text(item.name);
                         applicationStatus.append(option);
                     });
+                    applicationStatus.get(0).selectedIndex = ${client.applicationStatus.index}-1;
                 } else {
-                    console.log("fail: " + result);
+                    console.log(result);
                 }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
@@ -251,25 +263,19 @@
                         <div class="form-group">
                             <label for="enterpriseType" class="col-sm-4 control-label">企业类型</label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="enterpriseType" id="enterpriseType">
-                                    <option value="0">--请选择--</option>
-                                </select>
+                                <select class="form-control" name="enterpriseType" id="enterpriseType"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="operationType" class="col-sm-4 control-label">经营单位类别</label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationType" id="operationType">
-                                    <option value="0">--请选择--</option>
-                                </select>
+                                <select class="form-control" name="operationType" id="operationType"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="operationRecord" class="col-sm-4 control-label">建立危废经营记录情况</label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationRecord" id="operationRecord">
-                                    <option value="0">--请选择--</option>
-                                </select>
+                                <select class="form-control" name="operationRecord" id="operationRecord"></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -307,25 +313,19 @@
                         <div class="form-group">
                             <label for="operationMode" class="col-sm-4 control-label">经营方式</label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationMode" id="operationMode">
-                                    <option value="0">--请选择--</option>
-                                </select>
+                                <select class="form-control" name="operationMode" id="operationMode"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="contingencyPlan" class="col-sm-4 control-label">事故防范和应急预案</label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="contingencyPlan" id="contingencyPlan">
-                                    <option value="0">--请选择--</option>
-                                </select>
+                                <select class="form-control" name="contingencyPlan" id="contingencyPlan"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="applicationStatus" class="col-sm-4 control-label">申报状态</label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="applicationStatus" id="applicationStatus">
-                                    <option value="0">--请选择--</option>
-                                </select>
+                                <select class="form-control" name="applicationStatus" id="applicationStatus"></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -403,22 +403,5 @@
     </div>
 </body>
 <script type="text/javascript">
-    /**
-     * 界面加载完成后延时10ms再进行jq操作，ajax的post请求后会发生短暂的局部刷新
-     */
-    $(document).ready(function(){
-        setTimeout('setSelectValue()', 10);
-    });
-    /**
-     * 设置界面中下拉框的选中情况
-     */
-    function setSelectValue() {
-        $("#enterpriseType").val(${client.enterpriseType.index});
-        $("#operationType").val(${client.operationType.index});
-        $("#operationRecord").val(${client.operationRecord.index});
-        $("#operationMode").val(${client.operationMode.index});
-        $("#contingencyPlan").val(${client.contingencyPlan.index});
-        $("#applicationStatus").val(${client.applicationStatus.index});
-    }
 </script>
 </html>

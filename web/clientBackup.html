@@ -33,14 +33,17 @@
                         break;
                         // 申报状态
                     case (4):
+                        if (obj.applicationStatus != null)
                         $(this).html(obj.applicationStatus.name);
                         break;
                         // 审核状态
                     case (5):
+                        if (obj.checkState != null)
                         $(this).html(obj.checkState.name);
                         break;
                         // 账号状态
                     case (6):
+                        if (obj.clientState != null)
                         $(this).html(obj.clientState.name);
                         break;
                         // 联系人
@@ -397,35 +400,37 @@
      */
     function submitClients() {
         var items = $("input[type='checkbox']:checked");
-
-        function submitClientById(id) {
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "submitClientById",            // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {
-                    'clientId': id
-                },
-                dataType: "json",
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                    } else {
-                        console.log("fail: " + result);
+        if (items.length > 0) {
+            function submitClientById(id) {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "submitClientById",            // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: {
+                        'clientId': id
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result != undefined) {
+                            console.log(result);
+                        } else {
+                            console.log("fail: " + result);
+                        }
+                    },
+                    error: function (result) {
+                        console.log("error: " + result);
                     }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
+                });
+            }
+            items.each(function () {
+                var id = getIdByCheckBox($(this));
+                submitClientById(id);
             });
+            alert("提交成功!");
+            window.location.reload();
+        } else {
+            alert("未选择任何客户!");
         }
-
-        items.each(function () {
-            var id = getIdByCheckBox($(this));
-            submitClientById(id);
-        });
-        alert("提交成功");
-        window.location.reload();
     }
 
     function getIdByCheckBox(item) {

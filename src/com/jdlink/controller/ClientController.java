@@ -3,22 +3,18 @@ package com.jdlink.controller;
 import com.jdlink.domain.*;
 import com.jdlink.service.ClientService;
 import com.jdlink.util.RandomUtil;
-import com.sun.org.apache.bcel.internal.generic.InstructionConstants;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
 
 /**
  * Created by matt on 2018/4/23.
@@ -194,53 +190,20 @@ public class ClientController {
     @ResponseBody
     public String getSelectedList() {
         JSONObject res = new JSONObject();
-        List<String> enterpriseTypeStrList = new ArrayList<>();
-        for (EnterpriseType enterpriseType : EnterpriseType.values()) {
-            enterpriseTypeStrList.add(enterpriseType.getName());
-        }
-        JSONArray array1 = JSONArray.fromArray(enterpriseTypeStrList.toArray(new String[enterpriseTypeStrList.size()]));
+        // 获取枚举
+        JSONArray array1 = JSONArray.fromArray(EnterpriseType.values());
         res.put("enterpriseTypeStrList", array1);
-        // 经营方式
-        List<String> operationModeStrList = new ArrayList<>();
-        for (OperationMode operationMode : OperationMode.values()) {
-            operationModeStrList.add(operationMode.getName());
-        }
-        JSONArray array2 = JSONArray.fromArray(operationModeStrList.toArray(new String[operationModeStrList.size()]));
+        JSONArray array2 = JSONArray.fromArray(OperationMode.values());
         res.put("operationModeStrList", array2);
-        // 经营单位类别
-        List<String> operationTypeStrList = new ArrayList<>();
-        for (OperationType operationType : OperationType.values()) {
-            operationTypeStrList.add(operationType.getName());
-        }
-        JSONArray array3 = JSONArray.fromArray(operationTypeStrList.toArray(new String[operationTypeStrList.size()]));
+        JSONArray array3 = JSONArray.fromArray(OperationType.values());
         res.put("operationTypeStrList", array3);
-        // 应急预案
-        List<String> contingencyPlanStrList = new ArrayList<>();
-        for (ContingencyPlan contingencyPlan : ContingencyPlan.values()) {
-            contingencyPlanStrList.add(contingencyPlan.getName());
-        }
-        JSONArray array4 = JSONArray.fromArray(contingencyPlanStrList.toArray(new String[contingencyPlanStrList.size()]));
+        JSONArray array4 = JSONArray.fromArray(ContingencyPlan.values());
         res.put("contingencyPlanStrList", array4);
-        // 危废记录
-        List<String> operationRecordStrList = new ArrayList<>();
-        for (OperationRecord operationRecord : OperationRecord.values()) {
-            operationRecordStrList.add(operationRecord.getName());
-        }
-        JSONArray array5 = JSONArray.fromArray(operationRecordStrList.toArray(new String[operationRecordStrList.size()]));
+        JSONArray array5 = JSONArray.fromArray(OperationRecord.values());
         res.put("operationRecordStrList", array5);
-        // 申报状态
-        List<String> applicationStatusStrList = new ArrayList<>();
-        for (ApplicationStatus applicationStatus : ApplicationStatus.values()) {
-            applicationStatusStrList.add(applicationStatus.getName());
-        }
-        JSONArray array6 = JSONArray.fromArray(applicationStatusStrList.toArray(new String[applicationStatusStrList.size()]));
+        JSONArray array6 = JSONArray.fromArray(ApplicationStatus.values());
         res.put("applicationStatusStrList", array6);
-        // 供应商类型
-        List<String> supplierTypeStrList = new ArrayList<>();
-        for (SupplierType supplierType : SupplierType.values()) {
-            supplierTypeStrList.add(supplierType.getName());
-        }
-        JSONArray array7 = JSONArray.fromArray(supplierTypeStrList.toArray(new String[supplierTypeStrList.size()]));
+        JSONArray array7 = JSONArray.fromArray(SupplierType.values());
         res.put("supplierTypeStrList", array7);
         return res.toString();
     }
