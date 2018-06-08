@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>样品信息管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <link href="css/dashboard.css" rel="stylesheet">
@@ -263,7 +264,7 @@
                     <form id="model-assign" method="post">
                         <div class="form-group">
                             <label for="model-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
+                            <input type="text" class="form-control" id="model-companyName" name="companyName" placeholder="搜索...">
                         </div>
                         <div class="form-group">
                             <label for="model-contactName" class="control-label">联系人</label>
@@ -271,7 +272,7 @@
                         </div>
                         <div class="form-group">
                             <label for="dtp_input1" class="control-label">取样时间</label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="yyyy MM dd - HH:ii p" data-link-field="dtp_input1">
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
                                 <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
@@ -288,7 +289,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="">预约</button>
+                    <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
                 </div>
             </div>
         </div>
@@ -370,27 +371,92 @@
      * 日期格式
      */
     $('.form_datetime').datetimepicker({
-//        language:  'zh-CN',
-//        format: 'yyyy-mm-dd HH:mm',
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii',
         weekStart: 1,
         todayBtn:  1,
         autoclose: 1,
         todayHighlight: 1,
         startView: 2,
-        forceParse: 0,
         showMeridian: 1
     });
     /**
      * 显示预约框
      */
     function appointModal() {
+        // 显示框体
         $('#appointModal').modal('show');
     }
     /**
      * 显示收样框
      */
     function checkModal() {
+        // 添加下拉框信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSampleSelectList",         // url
+            cache: false,
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var formType = $("#model2-formType");
+                    // 清空遗留元素
+                    formType.children().remove();
+                    $.each(data.formTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.index);
+                        option.text(item.name);
+                        formType.append(option);
+                    });
+                    formType.get(0).selectedIndex = -1;
+                    var packageType = $("#model2-packageType");
+                    // 清空遗留元素
+                    packageType.children().remove();
+                    $.each(data.packageTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.index);
+                        option.text(item.name);
+                        packageType.append(option);
+                    });
+                    packageType.get(0).selectedIndex = -1;
+                } else { }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        // 显示框体
         $('#checkModal').modal('show');
+    }
+
+    function addAppoint() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "addAppoint",                       // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("success: " + result);
+                    alert("保存成功!");
+                    $(location).attr('href', 'sclientBackup.html');
+                } else {
+                    console.log("fail: " + result);
+                    alert("保存失败!");
+                }
+            },
+            error:function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
     }
 </script>
 </html>

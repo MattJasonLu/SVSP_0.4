@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <title>调查表管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <script type="text/javascript">
     function setQuestionnaireList(result) {
@@ -238,7 +242,7 @@
                                     <li><a href="#" onclick="adjustQuestionnaire(this);">修改信息</a></li>
                                     <li><a href="#" onclick="signInQuestionnaire(this);">签收</a></li>
                                     <li><a href="#" onclick="backQuestionnaire(this);">退回</a></li>
-                                    <li><a href="#">预约送样</a></li>
+                                    <li><a href="#" onclick="appointModal(this);">预约送样</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -277,6 +281,49 @@
             </div>
         </div>
     </div>
+
+    <!-- 预约模态框 -->
+    <div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-appoint" method="post">
+                        <div class="form-group">
+                            <label for="model-companyName" class="control-label">公司名称</label>
+                            <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-contactName" class="control-label">联系人</label>
+                            <input type="text" class="form-control" id="model-contactName" name="contactName">
+                        </div>
+                        <div class="form-group">
+                            <label for="dtp_input1" class="control-label">取样时间</label>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
+                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                            <input type="hidden" id="dtp_input1" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="model-comment" class="control-label">备注</label>
+                            <div>
+                                <textarea class="form-control" id="model-comment" name="model-comment" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="addAppoint(this);">预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
     /**
@@ -286,6 +333,9 @@
      */
     function getQuestionnaireId(item) {
         return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
+    function getCompanyName(item) {
+        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
     }
     function viewQuestionnaire(item) {
         var id = getQuestionnaireId(item);
@@ -421,6 +471,57 @@
      */
     function getIdByCheckBox(item) {
         return item.parent().parent().next().next().text();
+    }
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii:ss',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        showMeridian: 1
+    });
+    /**
+     * 显示预约框
+     */
+    function appointModal(item) {
+        var companyName = getCompanyName(item);
+        $("#model-companyName").val(companyName);
+        // 显示框体
+        $('#appointModal').modal('show');
+    }
+    /**
+     * 增加预约单
+     */
+    function addAppoint() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "addSampleAppoint",                       // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify($('#model-appoint').serializeJSON()),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("保存成功!");
+                    window.location.reload();
+                } else {
+                    alert("保存失败!");
+                }
+            },
+            error:function(data,type, err){
+                var that = this;
+                console.log(that.data);
+                console.log("ajax错误类型："+type);
+                console.log(err);
+                alert("服务器异常!");
+            }
+        });
     }
 </script>
 </html>

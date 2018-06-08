@@ -18,38 +18,10 @@
 
     <mvc:default-servlet-handler/>
 
-    <!-- 视图定位 -->
-    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-        <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>-->
-        <!--<property name="prefix" value="/WEB-INF/jsp/"/>-->
-        <!--<property name="suffix" value=".jsp"/>-->
-    <!--</bean>-->
-
-
-
-    <!--自定义枚举类封装 -->
-    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+    <!-- 时间转换 -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <!--<bean class="com.jdlink.util.StringToEnterpriseTypeConverter" />-->
-                <!--<bean class="com.jdlink.util.StringToOperationModeConverter" />-->
-                <!--<bean class="com.jdlink.util.StringToOperationTypeConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToContingencyPlanConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToOperationRecordConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToApplicationStatusConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToWasteInclusionType"/>-->
-
-                <!--<bean class="com.jdlink.util.StringToFormTypeConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToSmellTypeConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToSolubilityConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToWasteCharacterConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToWasteProtectConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToChemicalTypeConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToApplyStateConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToPackageTypeConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToClientStateConverter"/>-->
-                <!--<bean class="com.jdlink.util.StringToSupplierTypeConverter"/>-->
-                <bean class="com.jdlink.util.StringToEnumConverterFactory"/>
                 <bean class="com.jdlink.util.StringToDateConverter"/>
             </set>
         </property>

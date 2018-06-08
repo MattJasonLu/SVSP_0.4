@@ -5,17 +5,15 @@ import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleAppointService;
 import com.jdlink.service.SampleCheckService;
 import com.jdlink.util.RandomUtil;
-import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,45 +48,53 @@ public class SampleController {
             return res.toString();
         }
     }
+
+    /**
+     * 获取确认收样模态框所需要的下拉列表数据
+     * @return
+     */
     @RequestMapping("getSampleSelectList")
     @ResponseBody
     public String getSampleSelectList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        List<String> formTypeStrList = new ArrayList<>();
-        for (FormType formType : FormType.values()) {
-            formTypeStrList.add(formType.getName());
-        }
-        res.put("formTypeStrList", formTypeStrList);
-        List<String> packageTypeStrList = new ArrayList<>();
-        for (PackageType packageType : PackageType.values()) {
-            packageTypeStrList.add(packageType.getName());
-        }
-        res.put("packageTypeStrList", packageTypeStrList);
+        JSONArray array1 = JSONArray.fromArray(FormType.values());
+        res.put("formTypeStrList", array1);
+        JSONArray array2 = JSONArray.fromArray(PackageType.values());
+        res.put("packageTypeStrList", array2);
         return res.toString();
     }
 
     @RequestMapping("addSampleAppoint")
-    public ModelAndView addSampleAppoint(SampleAppoint sampleAppoint) {
-        ModelAndView mav = new ModelAndView();
-        // 生成预约号
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        String prefix = simpleDateFormat.format(date);
-        int count = sampleAppointService.countById(prefix)+1;
-        String suffix = "";
-        if (count > 9) suffix = "0" + count;
-        else suffix = count + "";
-        sampleAppoint.setAppointId(RandomUtil.getAppointId(prefix, suffix));
-        // 通过用户输入的公司名称匹配客户
-        Client client = clientService.getByName(sampleAppoint.getCompanyName());
-        // 若匹配到客户则更新预约表中的客户编号
-        if (client != null) sampleAppoint.setClientId(client.getClientId());
-        sampleAppoint.setState(ApplyState.Appointed);
-        // 添加预约表
-        sampleAppointService.add(sampleAppoint);
-        // 刷新列表
-        return null;
+    @ResponseBody
+    public String addSampleAppoint(@RequestBody SampleAppoint sampleAppoint) {
+        JSONObject res = new JSONObject();
+        try {
+            // 生成预约号
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+            String prefix = simpleDateFormat.format(date);
+            int count = sampleAppointService.countById(prefix) + 1;
+            String suffix = "";
+            if (count <= 9) suffix = "0" + count;
+            else suffix = count + "";
+            sampleAppoint.setAppointId(RandomUtil.getAppointId(prefix, suffix));
+            // 通过用户输入的公司名称匹配客户
+            Client client = clientService.getByName(sampleAppoint.getCompanyName());
+            // 若匹配到客户则更新预约表中的客户编号
+            if (client != null) sampleAppoint.setClientId(client.getClientId());
+            sampleAppoint.setState(ApplyState.Appointed);
+            // 添加预约表
+            sampleAppointService.add(sampleAppoint);
+            res.put("status", "success");
+            res.put("message", "增加成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
     }
 
     @RequestMapping("getSampleAppoint")

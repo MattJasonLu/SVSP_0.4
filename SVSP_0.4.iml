@@ -23,5 +23,6 @@
     <orderEntry type="library" name="JSON" level="project" />
     <orderEntry type="library" name="SSM" level="project" />
     <orderEntry type="library" name="File" level="project" />
+    <orderEntry type="library" name="Date" level="project" />
   </component>
 </module>

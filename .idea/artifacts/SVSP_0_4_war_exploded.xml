@@ -11,6 +11,7 @@
           <element id="library" level="project" name="File" />
           <element id="library" level="project" name="JSON" />
           <element id="library" level="project" name="SSM" />
+          <element id="library" level="project" name="Date" />
         </element>
       </element>
     </root>
