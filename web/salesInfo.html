@@ -39,8 +39,28 @@
             }
         });
     }
+    /**
+     * 获取数据库中的业务员编号
+     */
+    function getCurrentSalesmanId() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCurrentSalesmanId",                  // url
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#salesmanId").val(data.salesmanId);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
 </script>
-<body>
+<body onload="getCurrentSalesmanId();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">

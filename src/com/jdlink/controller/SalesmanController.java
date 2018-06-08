@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,6 +165,34 @@ public class SalesmanController {
             res.put("status", "fail");
             res.put("message", "操作失败!");
         }
+        return res.toString();
+    }
+
+    /**
+     * 获取目前的业务员编号
+     * @return
+     */
+    @RequestMapping("getCurrentSalesmanId")
+    @ResponseBody
+    public String getCurrentSalesmanId() {
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        // 获取最新编号
+        String id;
+        int index = salesmanService.count();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (salesmanService.getBySalesmanId(id) != null);
+        JSONObject res = new JSONObject();
+        res.put("salesmanId", id);
         return res.toString();
     }
 

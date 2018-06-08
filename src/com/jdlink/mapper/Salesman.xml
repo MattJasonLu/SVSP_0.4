@@ -49,4 +49,8 @@
     <select id="list" resultType="Salesman">
         select * from salesman
     </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM salesman;
+    </select>
 </mapper>

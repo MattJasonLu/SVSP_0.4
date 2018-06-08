@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -280,6 +281,34 @@ public class ClientController {
         mav.addObject("client", client);
         mav.setViewName("jsp/showClient.jsp");
         return mav;
+    }
+
+    /**
+     * 获取目前的客户编号
+     * @return
+     */
+    @RequestMapping("getCurrentClientId")
+    @ResponseBody
+    public String getCurrentClientId() {
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        // 获取最新编号
+        String id;
+        int index = clientService.total();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (clientService.getByClientId(id) != null);
+        JSONObject res = new JSONObject();
+        res.put("clientId", id);
+        return res.toString();
     }
 
 

@@ -29,4 +29,6 @@ public interface SupplierService {
 
     void setCheckStateFinished(String supplierId);
 
+    int count();
+
 }

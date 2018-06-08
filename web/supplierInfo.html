@@ -16,6 +16,8 @@
 </style>
 <script type="text/javascript">
     function loadSelectList() {
+        // 获取供应商编号
+        getCurrentSupplierId();
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getSelectedList",                  // url
@@ -142,6 +144,26 @@
             error:function (result) {
                 console.log("error: " + result);
                 alert("服务器异常!");
+            }
+        });
+    }
+    /**
+     * 获取数据库中的供应商编号
+     */
+    function getCurrentSupplierId() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCurrentSupplierId",             // url
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#supplierId").val(data.supplierId);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
             }
         });
     }

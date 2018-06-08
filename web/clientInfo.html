@@ -64,6 +64,9 @@
         });
     }
     function loadSelectList() {
+        // 设置客户编号
+        getCurrentClientId();
+        // 设置下拉列表
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getSelectedList",                  // url
@@ -129,6 +132,27 @@
                 } else {
                     console.log(result);
                 }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    /**
+     * 获取数据库中的客户编号
+     */
+    function getCurrentClientId() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCurrentClientId",                  // url
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#clientId").val(data.clientId);
+                } else { }
             },
             error:function (result) {
                 console.log(result);

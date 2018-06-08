@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.*;
+import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Supplier;
 import com.jdlink.service.SupplierService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -181,5 +182,33 @@ public class SupplierController {
             res.put("message", "操作失败");
             return res.toString();
         }
+    }
+
+    /**
+     * 获取目前的客户编号
+     * @return
+     */
+    @RequestMapping("getCurrentSupplierId")
+    @ResponseBody
+    public String getCurrentSupplierId() {
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        // 获取最新编号
+        String id;
+        int index = supplierService.count();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (supplierService.getBySupplierId(id) != null);
+        JSONObject res = new JSONObject();
+        res.put("supplierId", id);
+        return res.toString();
     }
 }
