@@ -62,9 +62,14 @@ public class UserController {
         JSONObject res = new JSONObject();
         if (cfmPassword.equals(user.getPassword())) {
             try {
-                userService.add(user);
-                res.put("status", "success");
-                res.put("message", "注册成功");
+                if (userService.getByUsername(user.getUsername()).size() > 0) {
+                    res.put("status", "fail");
+                    res.put("message", "用户名已存在");
+                } else {
+                    userService.add(user);
+                    res.put("status", "success");
+                    res.put("message", "注册成功");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 res.put("status", "error");
