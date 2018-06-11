@@ -24,4 +24,6 @@ public interface UserMapper {
 
     public int count();
 
+    List<User> getByUsername(String username);
+
 }

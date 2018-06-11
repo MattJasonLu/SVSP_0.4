@@ -16,6 +16,10 @@
         select * from user where username = #{username} and password = #{password}
     </select>
 
+    <select id="getByUsername" parameterType="String" resultType="User">
+        SELECT * FROM user WHERE username=#{username};
+    </select>
+
     <update id="update" parameterType="User" >
         update user set password=#{password} where id=#{id}
     </update>

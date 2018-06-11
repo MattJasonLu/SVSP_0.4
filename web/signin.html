@@ -17,17 +17,18 @@
                 data: $('#loginForm').serialize(),  // 请求参数
                 dataType: "json",
                 success: function (result) {
-                    console.log(result.username);   // 调试用
                     if (result != undefined) {
-//                        alert("登录成功!");
-                        window.location.href = 'wastesPlatform.html';
-                        console.log("页面跳转");
-                    } else {
-                        alert("账号或密码错误，请重试!");
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            window.location.href = 'wastesPlatform.html';
+                        } else {
+                            alert(data.message);
+                        }
                     }
                 },
                 error:function (result) {
-                    alert("账号或密码错误，请重试!");
+                    var data = eval(result);
+                    alert(data.message);
                 }
             });
         }

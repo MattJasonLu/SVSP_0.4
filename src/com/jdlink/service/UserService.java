@@ -15,6 +15,6 @@ public interface UserService {
     List<User> get(Map params);
 
     void add(User user);
-
+    List<User> getByUsername(String username);
 
 }
