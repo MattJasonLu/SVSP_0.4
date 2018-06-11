@@ -257,6 +257,7 @@
                 </table>
             </div>
             <!--分页-->
+            <nav class="navbar navbar-default navbar-fixed-bottom">
             <div class="text-center">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
@@ -278,12 +279,38 @@
                     </ul>
                 </nav>
             </div>
+            </nav>
         </div>
     </div>
 
 </body>
+<style>
+    .text-center{
+        margin-bottom: -1px;
+    }
+</style>
 <script type="text/javascript">
-//    软用没有
+    /**
+     * 导航问题
+     * */
+    $(function(){
+        autoNav();
+    });
+
+    //解决底部自动导航的问题
+    function autoNav(){
+        //获取内容的高度
+        var bodyHeight = $("body").height();
+        //获取底部导航的高度
+        var navHeight = $(".navbar").height();
+        //获取显示屏的高度
+        var iHeight = document.documentElement.clientHeight||document.body.clientHeight;
+        //如果内容的高度大于（窗口的高度 - 导航的高度）,z则需要添加一个div，设置其高度
+        if(bodyHeight > (iHeight - navHeight)){
+            $("body").append('<div style="height: '+navHeight+'px"></div>');
+        }
+    }
+    //    软用没有
 //    $(document).ready(function(){
 //        $("a[class=adjust-client]").click(function(){
 //            alert("click");
