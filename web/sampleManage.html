@@ -261,7 +261,7 @@
                     <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="model-assign" method="post">
+                    <form id="model-appoint" method="post">
                         <div class="form-group">
                             <label for="model-companyName" class="control-label">公司名称</label>
                             <input type="text" class="form-control" id="model-companyName" name="companyName" placeholder="搜索...">
@@ -271,18 +271,17 @@
                             <input type="text" class="form-control" id="model-contactName" name="contactName">
                         </div>
                         <div class="form-group">
-                            <label for="dtp_input1" class="control-label">取样时间</label>
+                            <label class="control-label">取样时间</label>
                             <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
                                 <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                             </div>
-                            <input type="hidden" id="dtp_input1" value="" />
                         </div>
                         <div class="form-group">
                             <label for="model-comment" class="control-label">备注</label>
                             <div>
-                                <textarea class="form-control" id="model-comment" name="model-comment" rows="3"></textarea>
+                                <textarea class="form-control" id="model-comment" name="comment" rows="3"></textarea>
                             </div>
                         </div>
                     </form>
@@ -391,72 +390,107 @@
      * 显示收样框
      */
     function checkModal() {
-        // 添加下拉框信息
+        var items = $("input[type='checkbox']:checked");
+        if (items.length == 1) {
+            var id = getAppointIdByCheckbox(items[0]);
+            var companyName = getCompanyNameByCheckbox(items[0]);
+            $("#model2-companyName").val(companyName);
+            // 添加下拉框信息
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getSampleSelectList",         // url
+                cache: false,
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        // 各下拉框数据填充
+                        var formType = $("#model2-formType");
+                        // 清空遗留元素
+                        formType.children().remove();
+                        $.each(data.formTypeStrList, function (index, item) {
+                            var option = $('<option />');
+                            option.val(item.index);
+                            option.text(item.name);
+                            formType.append(option);
+                        });
+                        formType.get(0).selectedIndex = -1;
+                        var packageType = $("#model2-packageType");
+                        // 清空遗留元素
+                        packageType.children().remove();
+                        $.each(data.packageTypeStrList, function (index, item) {
+                            var option = $('<option />');
+                            option.val(item.index);
+                            option.text(item.name);
+                            packageType.append(option);
+                        });
+                        packageType.get(0).selectedIndex = -1;
+                    } else {
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            // 显示框体
+            $('#checkModal').modal('show');
+        } else if (items.length > 1) {
+            alert("请勿选择多个预约单");
+        } else {
+            alert("未选择任何预约单");
+        }
+    }
+    /**
+     * 添加预约单
+     */
+    function addAppoint() {
         $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getSampleSelectList",         // url
-            cache: false,
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            type: "POST",                            // 方法类型
+            url: "addSampleAppoint",                 // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'companyName': $("#model-companyName").val(),
+                'contactName': $("#model-contactName").val(),
+                'appointTime': $("#model-appointTime").val(),
+                'comment': $("#model-comment").val()
+            },
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
-                    // 各下拉框数据填充
-                    var formType = $("#model2-formType");
-                    // 清空遗留元素
-                    formType.children().remove();
-                    $.each(data.formTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.index);
-                        option.text(item.name);
-                        formType.append(option);
-                    });
-                    formType.get(0).selectedIndex = -1;
-                    var packageType = $("#model2-packageType");
-                    // 清空遗留元素
-                    packageType.children().remove();
-                    $.each(data.packageTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.index);
-                        option.text(item.name);
-                        packageType.append(option);
-                    });
-                    packageType.get(0).selectedIndex = -1;
-                } else { }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-        // 显示框体
-        $('#checkModal').modal('show');
-    }
-
-    function addAppoint() {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "addAppoint",                       // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("保存成功!");
-                    $(location).attr('href', 'sclientBackup.html');
-                } else {
-                    console.log("fail: " + result);
-                    alert("保存失败!");
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
                 }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.dir(result);
                 alert("服务器异常!");
             }
         });
+    }
+    /**
+     * 通过勾选框获取到预约单编号
+     * @param checkbox 勾选框
+     * @returns {string} 预约单编号
+     */
+    function getAppointIdByCheckbox(checkbox) {
+        return checkbox.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+    }
+    /**
+     * 根据勾选框获取到公司名称
+     * @param checkbox 勾选框
+     * @returns {string} 公司名称
+     */
+    function getCompanyNameByCheckbox(checkbox) {
+        return checkbox.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
     }
 </script>
 </html>

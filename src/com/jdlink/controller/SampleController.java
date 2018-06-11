@@ -9,7 +9,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -67,7 +66,7 @@ public class SampleController {
 
     @RequestMapping("addSampleAppoint")
     @ResponseBody
-    public String addSampleAppoint(@RequestBody SampleAppoint sampleAppoint) {
+    public String addSampleAppoint(SampleAppoint sampleAppoint) {
         JSONObject res = new JSONObject();
         try {
             // 生成预约号
@@ -75,10 +74,17 @@ public class SampleController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String prefix = simpleDateFormat.format(date);
             int count = sampleAppointService.countById(prefix) + 1;
-            String suffix = "";
+            String suffix;
             if (count <= 9) suffix = "0" + count;
             else suffix = count + "";
-            sampleAppoint.setAppointId(RandomUtil.getAppointId(prefix, suffix));
+            String id = RandomUtil.getAppointId(prefix, suffix);
+            // 确保编号唯一
+            while (sampleAppointService.getById(id) != null) {
+                int index = Integer.parseInt(id);
+                index += 1;
+                id = index + "";
+            }
+            sampleAppoint.setAppointId(id);
             // 通过用户输入的公司名称匹配客户
             Client client = clientService.getByName(sampleAppoint.getCompanyName());
             // 若匹配到客户则更新预约表中的客户编号
