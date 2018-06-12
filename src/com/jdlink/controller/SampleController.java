@@ -31,6 +31,10 @@ public class SampleController {
     @Autowired
     ClientService clientService;
 
+    /**
+     * 列出所有样品
+     * @return
+     */
     @RequestMapping("listSample")
     @ResponseBody
     public String listSample() {
@@ -67,7 +71,7 @@ public class SampleController {
 
     @RequestMapping("addSampleAppoint")
     @ResponseBody
-    public String addSampleAppoint(@RequestBody SampleAppoint sampleAppoint) {
+    public String addSampleAppoint(SampleAppoint sampleAppoint) {
         JSONObject res = new JSONObject();
         try {
             // 生成预约号
@@ -75,10 +79,17 @@ public class SampleController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String prefix = simpleDateFormat.format(date);
             int count = sampleAppointService.countById(prefix) + 1;
-            String suffix = "";
+            String suffix;
             if (count <= 9) suffix = "0" + count;
             else suffix = count + "";
-            sampleAppoint.setAppointId(RandomUtil.getAppointId(prefix, suffix));
+            String id = RandomUtil.getAppointId(prefix, suffix);
+            // 确保编号唯一
+            while (sampleAppointService.getById(id) != null) {
+                int index = Integer.parseInt(id);
+                index += 1;
+                id = index + "";
+            }
+            sampleAppoint.setAppointId(id);
             // 通过用户输入的公司名称匹配客户
             Client client = clientService.getByName(sampleAppoint.getCompanyName());
             // 若匹配到客户则更新预约表中的客户编号
@@ -97,17 +108,52 @@ public class SampleController {
         return res.toString();
     }
 
+    /**
+     * 根据预约单号获取到预约单对象
+     * @param appointId
+     * @return
+     */
     @RequestMapping("getSampleAppoint")
-    public ModelAndView getSampleAppoint(String appointId) {
-        ModelAndView mav = new ModelAndView();
-
-        SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
-        JSONObject jsonObject = JSONObject.fromBean(sampleAppoint);
+    @ResponseBody
+    public String getSampleAppoint(String appointId) {
         JSONObject res = new JSONObject();
-        res.put("data", jsonObject);
-        mav.addObject("message", res);
-        mav.setViewName("data");
-        return mav;
+        try {
+            SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
+            String time = new SimpleDateFormat("yyyy-MM-dd HH:SS").format(sampleAppoint.getAppointTime());
+            JSONObject data = JSONObject.fromBean(sampleAppoint);
+            data.remove("appointTime");
+            data.put("appointTime", time);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新样品预约单
+     * @param sampleAppoint 样品预约单
+     * @return 成功与否
+     */
+    @RequestMapping("updateSampleAppoint")
+    @ResponseBody
+    public String updateSampleAppoint(SampleAppoint sampleAppoint) {
+        JSONObject res = new JSONObject();
+        try {
+            sampleAppointService.update(sampleAppoint);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
     }
 
     @RequestMapping("searchSampleAppoint")
@@ -147,24 +193,64 @@ public class SampleController {
         return mav;
     }
 
+    /**
+     * 增加样品接收单
+     * @param sampleCheck 样品接收单
+     * @return 成功与否
+     */
     @RequestMapping("addSampleCheck")
-    public ModelAndView addSampleCheck(SampleCheck sampleCheck) {
-        ModelAndView mav = new ModelAndView();
-        // 取得预约号
-        String appointId = sampleCheck.getCheckId().split("R")[0];
-        // 设置预约号
-        sampleCheck.setAppointId(appointId);
-        // 取得预约数据
-        SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
-        sampleCheck.setClientId(sampleAppoint.getClientId());
-        sampleCheck.setCreateTime(new Date());
-        // 添加登记表
-        sampleCheckService.add(sampleCheck);
-        // 更新状态
-        sampleAppointService.setSampleTaked(sampleAppoint);
-        // 更新产品和危废代码
-        sampleAppointService.updatePdtAndCode(sampleCheck);
-        // 刷新列表
-        return null;
+    @ResponseBody
+    public String addSampleCheck(@RequestBody SampleCheck sampleCheck) {
+        JSONObject res = new JSONObject();
+        try {
+            SampleCheck oldSampleCheck = sampleCheckService.getById(sampleCheck.getCheckId());
+            if (oldSampleCheck == null) {
+                // 取得预约号
+                String appointId = sampleCheck.getCheckId().split("R")[0];
+                // 设置预约号
+                sampleCheck.setAppointId(appointId);
+                // 取得预约数据
+                SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
+                sampleCheck.setClientId(sampleAppoint.getClientId());
+                // 添加登记表
+                sampleCheckService.add(sampleCheck);
+                // 更新状态
+                sampleAppointService.setSampleTaked(sampleAppoint);
+                // 更新产品和危废代码
+                sampleAppointService.updatePdtAndCode(sampleCheck);
+                res.put("message", "登记成功");
+            } else {
+                sampleCheckService.update(sampleCheck);
+                res.put("message", "修改成功");
+            }
+            res.put("status", "success");
+        } catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "登记失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("getSampleCheck")
+    @ResponseBody
+    public String getSampleCheck(String checkId) {
+        JSONObject res = new JSONObject();
+        try {
+            SampleCheck sampleCheck = sampleCheckService.getById(checkId);
+            if (sampleCheck != null) {
+                res.put("data", JSONObject.fromBean(sampleCheck));
+                res.put("status", "success");
+                res.put("message", "获取成功");
+            } else {
+                throw new Exception("获取数据为空");
+            }
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
     }
 }

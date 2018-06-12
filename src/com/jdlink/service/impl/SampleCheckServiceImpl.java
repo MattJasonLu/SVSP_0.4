@@ -27,6 +27,11 @@ public class SampleCheckServiceImpl implements SampleCheckService {
     }
 
     @Override
+    public void update(SampleCheck sampleCheck) {
+        sampleCheckMapper.update(sampleCheck);
+    }
+
+    @Override
     public SampleCheck getById(String checkId) {
         return sampleCheckMapper.getById(checkId);
     }

@@ -13,6 +13,8 @@ public interface SampleCheckService {
 
     void delete(String checkId);
 
+    void update(SampleCheck sampleCheck);
+
     SampleCheck getById(String checkId);
 
     List<SampleCheck> list();
