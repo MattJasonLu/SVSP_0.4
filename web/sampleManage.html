@@ -7,13 +7,23 @@
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
-
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
 </head>
 <script type="text/javascript">
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            style: 'btn-info',
+            size: 4
+        });
+    });
     function setSampleList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
@@ -264,7 +274,7 @@
                     <form id="model-appoint" method="post">
                         <div class="form-group">
                             <label for="model-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model-companyName" name="companyName" placeholder="搜索...">
+                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="model-companyName" name="companyName"></select>
                         </div>
                         <div class="form-group">
                             <label for="model-contactName" class="control-label">联系人</label>
@@ -288,7 +298,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="addAppoint();">预约</button>
+                    <button type="button" class="btn btn-primary" id="appointBtn" onclick="addAppoint();">预约</button>
                 </div>
             </div>
         </div>
@@ -366,6 +376,40 @@
     </div>
 </body>
 <script type="text/javascript">
+    // 页面准备完成后载入客户信息
+    $(document).ready(function(){
+        // 添加客户信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getAllClients",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("success: " + result);
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var clientList = $("#model-companyName");
+                    // 清空遗留元素
+                    clientList.children().first().siblings().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.clientId);
+                        option.text(item.companyName);
+                        clientList.append(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
     /**
      * 日期格式
      */
@@ -383,8 +427,97 @@
      * 显示预约框
      */
     function appointModal() {
+        $("#model-companyName").val("");
+        $("#model-contactName").val("");
+        $("#model-appointTime").val("");
+        $("#model-comment").val("");
+        $("#appointBtn").val("预约");
         // 显示框体
         $('#appointModal').modal('show');
+    }
+    /**
+     * 查看预约单
+     */
+    function viewSample(menu) {
+        alert("待完善");
+    }
+    function updateAppointByAppointId(appointId) {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "updateSampleAppoint",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'appointId': appointId,
+                'clientId': $("#model-companyName").find("option:selected").val(),
+                'companyName': $("#model-companyName").find("option:selected").text(),
+                'contactName': $("#model-contactName").val(),
+                'appointTime': $("#model-appointTime").val(),
+                'comment': $("#model-comment").val()
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                        console.log(data.exception);
+                    }
+                }
+            },
+            error: function (result) {
+                console.dir(result);
+                alert("服务器异常!");
+            }
+        });
+    }
+    /**
+     * 修改预约样品
+     */
+    function adjustSample(menu) {
+        var appointId = getAppointIdByMenu(menu);
+        var appointBtn = $("#appointBtn");
+        appointBtn.text("修改");
+        // 点击后更新
+        appointBtn.removeAttr("onclick");
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getSampleAppoint",                 // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'appointId': appointId
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $('.selectpicker').selectpicker('val',data.data.clientId);
+                        $("#model-companyName").val(data.data.clientId);
+                        $("#model-contactName").val(data.data.contactName);
+                        $("#model-appointTime").val(data.data.appointTime);
+                        $("#model-comment").val(data.data.comment);
+                        // 显示框体
+                        $('#appointModal').modal('show');
+                    } else {
+                        alert(data.message);
+                        console.log(data.exception);
+                    }
+                }
+            },
+            error:function (result) {
+                console.dir(result);
+                alert("服务器异常!");
+            }
+        });
+        appointBtn.unbind();
+        appointBtn.click(function(){
+            updateAppointByAppointId(appointId);
+        });
     }
     /**
      * 显示收样框
@@ -444,15 +577,67 @@
         }
     }
     /**
+     * 显示操作按钮对应收样框
+     */
+    function checkSample(menu) {
+        var id = getAppointIdByMenu(menu);
+        var companyName = getCompanyNameByMenu(menu);
+        $("#model2-companyName").val(companyName);
+        // 添加下拉框信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSampleSelectList",         // url
+            cache: false,
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var formType = $("#model2-formType");
+                    // 清空遗留元素
+                    formType.children().remove();
+                    $.each(data.formTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.index);
+                        option.text(item.name);
+                        formType.append(option);
+                    });
+                    formType.get(0).selectedIndex = -1;
+                    var packageType = $("#model2-packageType");
+                    // 清空遗留元素
+                    packageType.children().remove();
+                    $.each(data.packageTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.index);
+                        option.text(item.name);
+                        packageType.append(option);
+                    });
+                    packageType.get(0).selectedIndex = -1;
+                } else {
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        // 显示框体
+        $('#checkModal').modal('show');
+    }
+    /**
      * 添加预约单
      */
     function addAppoint() {
+        console.log($("#model-companyName").text());
         $.ajax({
             type: "POST",                            // 方法类型
             url: "addSampleAppoint",                 // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                'companyName': $("#model-companyName").val(),
+                'clientId': $("#model-companyName").find("option:selected").val(),
+                'companyName': $("#model-companyName").find("option:selected").text(),
                 'contactName': $("#model-contactName").val(),
                 'appointTime': $("#model-appointTime").val(),
                 'comment': $("#model-comment").val()
@@ -491,6 +676,22 @@
      */
     function getCompanyNameByCheckbox(checkbox) {
         return checkbox.parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+    }
+    /**
+     * 根据操作菜单获取编号
+     * @param menu
+     * @returns {string}
+     */
+    function getAppointIdByMenu(menu) {
+        return menu.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
+    /**
+     * 根据操作菜单获取公司名称
+     * @param menu
+     * @returns {string}
+     */
+    function getCompanyNameByMenu(menu) {
+        return menu.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
     }
 </script>
 </html>

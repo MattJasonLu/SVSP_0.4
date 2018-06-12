@@ -104,16 +104,41 @@ public class SampleController {
     }
 
     @RequestMapping("getSampleAppoint")
-    public ModelAndView getSampleAppoint(String appointId) {
-        ModelAndView mav = new ModelAndView();
-
-        SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
-        JSONObject jsonObject = JSONObject.fromBean(sampleAppoint);
+    @ResponseBody
+    public String getSampleAppoint(String appointId) {
         JSONObject res = new JSONObject();
-        res.put("data", jsonObject);
-        mav.addObject("message", res);
-        mav.setViewName("data");
-        return mav;
+        try {
+            SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
+            String time = new SimpleDateFormat("yyyy-MM-dd HH:SS").format(sampleAppoint.getAppointTime());
+            JSONObject data = JSONObject.fromBean(sampleAppoint);
+            data.remove("appointTime");
+            data.put("appointTime", time);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("updateSampleAppoint")
+    @ResponseBody
+    public String updateSampleAppoint(SampleAppoint sampleAppoint) {
+        JSONObject res = new JSONObject();
+        try {
+            sampleAppointService.update(sampleAppoint);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
     }
 
     @RequestMapping("searchSampleAppoint")

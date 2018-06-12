@@ -53,6 +53,11 @@ public class SampleAppointServiceImpl implements SampleAppointService {
     }
 
     @Override
+    public void update(SampleAppoint sampleAppoint) {
+        sampleAppointMapper.update(sampleAppoint);
+    }
+
+    @Override
     public void setAppointed(SampleAppoint sampleAppoint) {
         sampleAppointMapper.setAppointed(sampleAppoint);
     }
