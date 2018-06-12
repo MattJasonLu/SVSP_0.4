@@ -39,8 +39,8 @@
     </update>
 
     <update id="update" parameterType="SampleAppoint">
-        UPDATE t_sampleappoint SET companyName=#{companyName}, contactName=#{contactName}, clientId=#{clientId},
-          appointTime=#{appointTime}, comment=#{comment} WHERE appointId=#{appointId};
+        UPDATE t_sampleappoint SET companyName=#{companyName}, contactName=#{contactName}, telephone=#{telephone},
+          clientId=#{clientId}, appointTime=#{appointTime}, comment=#{comment} WHERE appointId=#{appointId};
     </update>
 
     <update id="setAppointed" parameterType="SampleAppoint">

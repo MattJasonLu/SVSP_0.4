@@ -9,6 +9,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,6 +31,10 @@ public class SampleController {
     @Autowired
     ClientService clientService;
 
+    /**
+     * 列出所有样品
+     * @return
+     */
     @RequestMapping("listSample")
     @ResponseBody
     public String listSample() {
@@ -124,6 +129,11 @@ public class SampleController {
         return res.toString();
     }
 
+    /**
+     * 更新样品预约单
+     * @param sampleAppoint 样品预约单
+     * @return 成功与否
+     */
     @RequestMapping("updateSampleAppoint")
     @ResponseBody
     public String updateSampleAppoint(SampleAppoint sampleAppoint) {
@@ -178,24 +188,37 @@ public class SampleController {
         return mav;
     }
 
+    /**
+     * 增加样品接收单
+     * @param sampleCheck 样品接收单
+     * @return 成功与否
+     */
     @RequestMapping("addSampleCheck")
-    public ModelAndView addSampleCheck(SampleCheck sampleCheck) {
-        ModelAndView mav = new ModelAndView();
-        // 取得预约号
-        String appointId = sampleCheck.getCheckId().split("R")[0];
-        // 设置预约号
-        sampleCheck.setAppointId(appointId);
-        // 取得预约数据
-        SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
-        sampleCheck.setClientId(sampleAppoint.getClientId());
-        sampleCheck.setCreateTime(new Date());
-        // 添加登记表
-        sampleCheckService.add(sampleCheck);
-        // 更新状态
-        sampleAppointService.setSampleTaked(sampleAppoint);
-        // 更新产品和危废代码
-        sampleAppointService.updatePdtAndCode(sampleCheck);
-        // 刷新列表
-        return null;
+    @ResponseBody
+    public String addSampleCheck(@RequestBody SampleCheck sampleCheck) {
+        JSONObject res = new JSONObject();
+        try {
+            // 取得预约号
+            String appointId = sampleCheck.getCheckId().split("R")[0];
+            // 设置预约号
+            sampleCheck.setAppointId(appointId);
+            // 取得预约数据
+            SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
+            sampleCheck.setClientId(sampleAppoint.getClientId());
+            // 添加登记表
+            sampleCheckService.add(sampleCheck);
+            // 更新状态
+            sampleAppointService.setSampleTaked(sampleAppoint);
+            // 更新产品和危废代码
+            sampleAppointService.updatePdtAndCode(sampleCheck);
+            res.put("status", "success");
+            res.put("message", "登记成功");
+        } catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "登记失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
     }
 }
