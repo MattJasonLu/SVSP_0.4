@@ -1,7 +1,5 @@
 package com.jdlink.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 /**
@@ -43,7 +41,6 @@ public class SampleAppoint {
     /**
      * 预约取样时间
      */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date appointTime;
     /**
      * 备注

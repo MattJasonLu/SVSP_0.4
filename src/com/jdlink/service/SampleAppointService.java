@@ -24,6 +24,8 @@ public interface SampleAppointService {
 
     void updatePdtAndCode(SampleCheck sampleCheck);
 
+    void update(SampleAppoint sampleAppoint);
+
     void setAppointed(SampleAppoint sampleAppoint);
 
     void setSampleTaked(SampleAppoint sampleAppoint);

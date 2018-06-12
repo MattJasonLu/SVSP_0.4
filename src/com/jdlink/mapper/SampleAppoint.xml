@@ -38,6 +38,11 @@
         appointId=#{appointId}
     </update>
 
+    <update id="update" parameterType="SampleAppoint">
+        UPDATE t_sampleappoint SET companyName=#{companyName}, contactName=#{contactName}, clientId=#{clientId},
+          appointTime=#{appointTime}, comment=#{comment} WHERE appointId=#{appointId};
+    </update>
+
     <update id="setAppointed" parameterType="SampleAppoint">
         UPDATE t_sampleAppoint SET state='Appointed' WHERE appointId=#{appointId}
     </update>

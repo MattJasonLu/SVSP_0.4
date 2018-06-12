@@ -9,7 +9,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -67,7 +66,7 @@ public class SampleController {
 
     @RequestMapping("addSampleAppoint")
     @ResponseBody
-    public String addSampleAppoint(@RequestBody SampleAppoint sampleAppoint) {
+    public String addSampleAppoint(SampleAppoint sampleAppoint) {
         JSONObject res = new JSONObject();
         try {
             // 生成预约号
@@ -75,10 +74,17 @@ public class SampleController {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String prefix = simpleDateFormat.format(date);
             int count = sampleAppointService.countById(prefix) + 1;
-            String suffix = "";
+            String suffix;
             if (count <= 9) suffix = "0" + count;
             else suffix = count + "";
-            sampleAppoint.setAppointId(RandomUtil.getAppointId(prefix, suffix));
+            String id = RandomUtil.getAppointId(prefix, suffix);
+            // 确保编号唯一
+            while (sampleAppointService.getById(id) != null) {
+                int index = Integer.parseInt(id);
+                index += 1;
+                id = index + "";
+            }
+            sampleAppoint.setAppointId(id);
             // 通过用户输入的公司名称匹配客户
             Client client = clientService.getByName(sampleAppoint.getCompanyName());
             // 若匹配到客户则更新预约表中的客户编号
@@ -98,16 +104,41 @@ public class SampleController {
     }
 
     @RequestMapping("getSampleAppoint")
-    public ModelAndView getSampleAppoint(String appointId) {
-        ModelAndView mav = new ModelAndView();
-
-        SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
-        JSONObject jsonObject = JSONObject.fromBean(sampleAppoint);
+    @ResponseBody
+    public String getSampleAppoint(String appointId) {
         JSONObject res = new JSONObject();
-        res.put("data", jsonObject);
-        mav.addObject("message", res);
-        mav.setViewName("data");
-        return mav;
+        try {
+            SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
+            String time = new SimpleDateFormat("yyyy-MM-dd HH:SS").format(sampleAppoint.getAppointTime());
+            JSONObject data = JSONObject.fromBean(sampleAppoint);
+            data.remove("appointTime");
+            data.put("appointTime", time);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("updateSampleAppoint")
+    @ResponseBody
+    public String updateSampleAppoint(SampleAppoint sampleAppoint) {
+        JSONObject res = new JSONObject();
+        try {
+            sampleAppointService.update(sampleAppoint);
+            res.put("status", "success");
+            res.put("message", "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
     }
 
     @RequestMapping("searchSampleAppoint")
