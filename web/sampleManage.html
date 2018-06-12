@@ -777,6 +777,31 @@
         $('#checkModal').modal('show');
     }
     /**
+     * 查询预约单
+     */
+    function searchSample() {
+        var keyword = $("#searchContent").val();
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchSampleAppoint",                 // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'keyword': keyword
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined) {
+                    setSampleList(result.data);
+                }
+            },
+            error:function (result) {
+                console.dir(result);
+                alert("服务器异常!");
+            }
+        });
+    }
+    /**
      * 添加预约单
      */
     function addAppoint() {
