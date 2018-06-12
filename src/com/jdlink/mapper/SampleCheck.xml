@@ -7,11 +7,17 @@
     <insert id="add" parameterType="SampleCheck" >
         INSERT INTO t_sampleCheck (checkId, clientId, appointId, companyName,
         productName, code, contactName, telephone, createTime, recipient,
-        formType, color, quantity, packageType) VALUES (#{checkId}, #{clientId},
+        formType, color, quantity, packageType, mainComponent) VALUES (#{checkId}, #{clientId},
         #{appointId}, #{companyName}, #{productName}, #{code}, #{contactName},
         #{telephone}, #{createTime}, #{recipient}, #{formType}, #{color},
-        #{quantity}, #{packageType} );
+        #{quantity}, #{packageType}, #{mainComponent});
     </insert>
+
+    <update id="update" parameterType="SampleCheck">
+        UPDATE t_samplecheck SET contactName=#{contactName}, telephone=#{telephone}, productName=#{productName},
+        code=#{code}, recipient=#{recipient}, color=#{color}, formType=#{formType}, packageType=#{packageType},
+        mainComponent=#{mainComponent} WHERE checkId=#{checkId};
+    </update>
 
     <delete id="delete" parameterType="SampleCheck" >
         DELETE FROM t_sampleCheck WHERE checkId=#{checkId};

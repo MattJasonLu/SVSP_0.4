@@ -406,7 +406,7 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                    console.log("success: " + result);
+//                    console.log("success: " + result);
                     var data = eval(result);
                     // 各下拉框数据填充
                     var clientList = $("#model-companyName");
@@ -445,11 +445,16 @@
      * 显示预约框
      */
     function appointModal() {
-        $("#model-companyName").val("");
+        $('.selectpicker').selectpicker('val', '');
         $("#model-contactName").val("");
         $("#model-appointTime").val("");
+        $("#model-telephone").val("");
         $("#model-comment").val("");
-        $("#appointBtn").val("预约");
+        $("#appointBtn").text("预约");
+        $("#appointBtn").unbind();
+        $("#appointBtn").click(function(){
+            addAppoint();
+        });
         // 显示框体
         $('#appointModal').modal('show');
     }
@@ -555,6 +560,49 @@
             $("#model2-companyName").val(companyName);
             $("#model2-checkId").val(checkId);
             $("#model2-createTime").val(getNowDate());
+            var formTypeIndex, packageTypeIndex;
+            // 添加已填写的登记信息
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getSampleCheck",              // url
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'checkId': checkId
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            $("#model2-contactName").val(data.data.contactName);
+                            $("#model2-telephone").val(data.data.telephone);
+                            $("#model2-productName").val(data.data.productName);
+                            $("#model2-recipient").val(data.data.recipient);
+                            $("#model2-quantity").val(data.data.quantity);
+                            $("#model2-code").val(data.data.code);
+                            $("#model2-color").val(data.data.color);
+                            $("#model2-mainComponent").val(data.data.mainComponent);
+                            formTypeIndex = data.data.formType.index-1;
+                            packageTypeIndex = data.data.packageType.index-1;
+                        } else {
+                            $("#model2-contactName").val("");
+                            $("#model2-telephone").val("");
+                            $("#model2-productName").val("");
+                            $("#model2-recipient").val("");
+                            $("#model2-quantity").val("");
+                            $("#model2-code").val("");
+                            $("#model2-color").val("");
+                            $("#model2-mainComponent").val("");
+                            formTypeIndex = -1;
+                            packageTypeIndex = -1;
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
             // 添加下拉框信息
             $.ajax({
                 type: "POST",                       // 方法类型
@@ -577,7 +625,7 @@
                             option.text(item.name);
                             formType.append(option);
                         });
-                        formType.get(0).selectedIndex = -1;
+                        formType.get(0).selectedIndex = formTypeIndex;
                         var packageType = $("#model2-packageType");
                         // 清空遗留元素
                         packageType.children().remove();
@@ -587,7 +635,7 @@
                             option.text(item.name);
                             packageType.append(option);
                         });
-                        packageType.get(0).selectedIndex = -1;
+                        packageType.get(0).selectedIndex = packageTypeIndex;
                     } else {
                     }
                 },
@@ -642,6 +690,49 @@
         $("#model2-checkId").val(checkId);
         $("#model2-companyName").val(companyName);
         $("#model2-createTime").val(getNowDate());
+        var formTypeIndex, packageTypeIndex;
+        // 添加已填写的登记信息
+        console.log(checkId);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSampleCheck",              // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'checkId': checkId
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $("#model2-contactName").val(data.data.contactName);
+                        $("#model2-telephone").val(data.data.telephone);
+                        $("#model2-productName").val(data.data.productName);
+                        $("#model2-recipient").val(data.data.recipient);
+                        $("#model2-quantity").val(data.data.quantity);
+                        $("#model2-code").val(data.data.code);
+                        $("#model2-color").val(data.data.color);
+                        $("#model2-mainComponent").val(data.data.mainComponent);
+                        formTypeIndex = data.data.formType.index-1;
+                        packageTypeIndex = data.data.packageType.index-1;
+                    } else {
+                        $("#model2-contactName").val("");
+                        $("#model2-telephone").val("");
+                        $("#model2-productName").val("");
+                        $("#model2-recipient").val("");
+                        $("#model2-quantity").val("");
+                        $("#model2-code").val("");
+                        $("#model2-color").val("");
+                        $("#model2-mainComponent").val("");
+                        formTypeIndex = -1;
+                        packageTypeIndex = -1;
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
         // 添加下拉框信息
         $.ajax({
             type: "POST",                       // 方法类型
@@ -651,7 +742,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-//                console.log(result);
+                console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
@@ -664,7 +755,7 @@
                         option.text(item.name);
                         formType.append(option);
                     });
-                    formType.get(0).selectedIndex = -1;
+                    formType.get(0).selectedIndex = formTypeIndex;
                     var packageType = $("#model2-packageType");
                     // 清空遗留元素
                     packageType.children().remove();
@@ -674,7 +765,7 @@
                         option.text(item.name);
                         packageType.append(option);
                     });
-                    packageType.get(0).selectedIndex = -1;
+                    packageType.get(0).selectedIndex = packageTypeIndex;
                 } else {
                 }
             },

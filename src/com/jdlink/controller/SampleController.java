@@ -108,6 +108,11 @@ public class SampleController {
         return res.toString();
     }
 
+    /**
+     * 根据预约单号获取到预约单对象
+     * @param appointId
+     * @return
+     */
     @RequestMapping("getSampleAppoint")
     @ResponseBody
     public String getSampleAppoint(String appointId) {
@@ -198,25 +203,52 @@ public class SampleController {
     public String addSampleCheck(@RequestBody SampleCheck sampleCheck) {
         JSONObject res = new JSONObject();
         try {
-            // 取得预约号
-            String appointId = sampleCheck.getCheckId().split("R")[0];
-            // 设置预约号
-            sampleCheck.setAppointId(appointId);
-            // 取得预约数据
-            SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
-            sampleCheck.setClientId(sampleAppoint.getClientId());
-            // 添加登记表
-            sampleCheckService.add(sampleCheck);
-            // 更新状态
-            sampleAppointService.setSampleTaked(sampleAppoint);
-            // 更新产品和危废代码
-            sampleAppointService.updatePdtAndCode(sampleCheck);
+            SampleCheck oldSampleCheck = sampleCheckService.getById(sampleCheck.getCheckId());
+            if (oldSampleCheck == null) {
+                // 取得预约号
+                String appointId = sampleCheck.getCheckId().split("R")[0];
+                // 设置预约号
+                sampleCheck.setAppointId(appointId);
+                // 取得预约数据
+                SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
+                sampleCheck.setClientId(sampleAppoint.getClientId());
+                // 添加登记表
+                sampleCheckService.add(sampleCheck);
+                // 更新状态
+                sampleAppointService.setSampleTaked(sampleAppoint);
+                // 更新产品和危废代码
+                sampleAppointService.updatePdtAndCode(sampleCheck);
+                res.put("message", "登记成功");
+            } else {
+                sampleCheckService.update(sampleCheck);
+                res.put("message", "修改成功");
+            }
             res.put("status", "success");
-            res.put("message", "登记成功");
         } catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "登记失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("getSampleCheck")
+    @ResponseBody
+    public String getSampleCheck(String checkId) {
+        JSONObject res = new JSONObject();
+        try {
+            SampleCheck sampleCheck = sampleCheckService.getById(checkId);
+            if (sampleCheck != null) {
+                res.put("data", JSONObject.fromBean(sampleCheck));
+                res.put("status", "success");
+                res.put("message", "获取成功");
+            } else {
+                throw new Exception("获取数据为空");
+            }
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();
