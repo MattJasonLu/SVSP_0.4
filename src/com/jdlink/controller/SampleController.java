@@ -12,10 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,6 +67,11 @@ public class SampleController {
         return res.toString();
     }
 
+    /**
+     * 增加样品预约单
+     * @param sampleAppoint 样品预约单
+     * @return 成功与否
+     */
     @RequestMapping("addSampleAppoint")
     @ResponseBody
     public String addSampleAppoint(SampleAppoint sampleAppoint) {
@@ -157,40 +160,23 @@ public class SampleController {
     }
 
     @RequestMapping("searchSampleAppoint")
-    public ModelAndView searchSampleAppoint(String keyword) {
-        ModelAndView mav = new ModelAndView();
-        switch (keyword) {
-            case "已预约":
-                keyword = "Appointed";
-                break;
-            case "已取样":
-                keyword = "SampleTaked";
-                break;
-            case "预约取消":
-                keyword = "Canceld";
-                break;
-            default:
-                break;
+    @ResponseBody
+    public String searchSampleAppoint(String keyword) {
+        JSONObject res = new JSONObject();
+        try {
+            // 查询集合
+            List<SampleAppoint> sampleAppointList = sampleAppointService.getByKeyword(keyword);
+            JSONArray array = JSONArray.fromArray(sampleAppointList.toArray(new SampleAppoint[sampleAppointList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", array);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+            res.put("exception", e.getMessage());
         }
-        // 查询集合
-        List<SampleAppoint> sampleAppointList = sampleAppointService.getByKeyword(keyword);
-        mav.addObject("sampleAppointList", sampleAppointList);
-        // 获取枚举
-        List<String> formTypeStrList = new ArrayList<>();
-        for (FormType formType : FormType.values()) {
-            formTypeStrList.add(formType.getName());
-        }
-        List<String> packageTypeStrList = new ArrayList<>();
-        for (PackageType packageType : PackageType.values()) {
-            packageTypeStrList.add(packageType.getName());
-        }
-
-        // 添加枚举
-        mav.addObject("formTypeStrList", formTypeStrList);
-        mav.addObject("packageTypeStrList", packageTypeStrList);
-        mav.setViewName("sample");
-
-        return mav;
+        return res.toString();
     }
 
     /**
@@ -233,6 +219,11 @@ public class SampleController {
         return res.toString();
     }
 
+    /**
+     * 通过样品登记号查找登记单
+     * @param checkId 登记号
+     * @return 登记单
+     */
     @RequestMapping("getSampleCheck")
     @ResponseBody
     public String getSampleCheck(String checkId) {

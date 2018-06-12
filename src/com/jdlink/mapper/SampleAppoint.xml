@@ -20,9 +20,8 @@
     </select>
 
     <select id="getByKeyword" parameterType="String" resultType="SampleAppoint">
-        SELECT * FROM t_sampleAppoint WHERE companyName LIKE "%"#{keyword}"%"
-        OR contactName LIKE "%"#{keyword}"%" OR productName LIKE "%"#{keyword}"%"
-        OR state=#{keyword}
+        SELECT * FROM t_sampleAppoint WHERE appointId LIKE "%"#{keyword}"%" OR companyName LIKE "%"#{keyword}"%"
+        OR contactName LIKE "%"#{keyword}"%" OR telephone LIKE "%"#{keyword}"%" OR productName LIKE "%"#{keyword}"%" OR state=#{keyword}
     </select>
 
     <select id="countById" parameterType="String" resultType="_int">
