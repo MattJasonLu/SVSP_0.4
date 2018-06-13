@@ -10,26 +10,32 @@
 </head>
 <style>
 
-    /*div.item img {*/
-        /*max-width: 100%;*/
-        /*max-height: 70%;*/
-    /*}*/
+    div.item img {
+        max-width: 100%;
+        max-height: 70%;
+    }
     div#carousel-example-generic {
         width: 100%;
         margin: 0 auto;
     }
-    /*.float {*/
-        /*overflow: auto;*/
-        /*overflow-y: hidden;*/
-    /*}*/
-    /*.img-responsive center-block {*/
-        /*display: inline-block;*/
-        /*height: auto;*/
-        /*max-width: 100%;*/
-    /*}*/
-    /*.item active{*/
-        /*width: 100%;*/
-    /*}*/
+    .float {
+        overflow: auto;
+        overflow-y: hidden;
+    }
+    .img-responsive center-block {
+        display: inline-block;
+        height: auto;
+        max-width: 100%;
+    }
+    .item active{
+        width: 100%;
+    }
+    .img-responsive  {
+        padding-top: 44.8%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
 </style>
 <body>
     <!--导航条-->
@@ -78,27 +84,27 @@
                 <li data-target="#carousel-example-generic" data-slide-to="4"></li>
             </ol>
             <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <a href="signin.html"><img class="img-responsive center-block" src="image/P1.jpg"></a>
+                <div class="item active"  data-image-lg="img/slide_01_2000x410.jpg">
+                    <a href="signin.html"><div class="img-responsive center-block" style="background-image: url(image/P1.jpg);"></div></a>
                     <div class="carousel-caption">
                         <h1>产废服务平台</h1>
                         <p>搭建物联网平台，打通生产企业和经营单位的沟通壁垒，实现常态管理自动化</p>
                     </div>
                 </div>
                 <div class="item">
-                    <img class="img-responsive center-block" src="image/P2.jpg">
+                    <div class="img-responsive center-block" style="background-image: url(image/P2.jpg);"></div>
                     <div class="carousel-caption">其他服务平台</div>
                 </div>
                 <div class="item">
-                    <img class="img-responsive center-block" src="image/P3.jpg">
+                    <div class="img-responsive center-block" style="background-image: url(image/P3.jpg);"></div>
                     <div class="carousel-caption">其他服务平台</div>
                 </div>
                 <div class="item">
-                    <img class="img-responsive center-block" src="image/P1.jpg">
+                    <div class="img-responsive center-block" style="background-image: url(image/P1.jpg);"></div>
                     <div class="carousel-caption">其他服务平台</div>
                 </div>
                 <div class="item">
-                    <img class="img-responsive center-block" src="image/P2.jpg">
+                    <div class="img-responsive center-block" style="background-image: url(image/P2.jpg);"></div>
                     <div class="carousel-caption">其他服务平台</div>
                 </div>
             </div>
@@ -112,31 +118,31 @@
         </div>
     </div>
 </body>
-<!--<script type="text/javascript">-->
-    <!--$(document).load(function() {-->
-        <!--$("img-responsive center-block").each(function() {-->
-            <!--var maxWidth = document.body.clientWidth; // 图片最大宽度-->
-            <!--var maxHeight = document.body.clientHeight;    // 图片最大高度-->
-            <!--var ratio = 0;  // 缩放比例-->
-            <!--var width = $(this).width();    // 图片实际宽度-->
-            <!--var height = $(this).height();  // 图片实际高度-->
+<script type="text/javascript">
+    $(document).load(function() {
+        $("img-responsive center-block").each(function() {
+            var maxWidth = document.body.clientWidth; // 图片最大宽度
+            var maxHeight = document.body.clientHeight;    // 图片最大高度
+            var ratio = 0;  // 缩放比例
+            var width = $(this).width();    // 图片实际宽度
+            var height = $(this).height();  // 图片实际高度
 
-            <!--// 检查图片是否超宽1-->
-            <!--if(width > maxWidth){-->
-                <!--ratio = maxWidth / width;   // 计算缩放比例-->
-                <!--$(this).css("width", maxWidth); // 设定实际显示宽度-->
-                <!--height = height * ratio;    // 计算等比例缩放后的高度-->
-                <!--$(this).css("height", height);  // 设定等比例缩放后的高度-->
-            <!--}-->
+            // 检查图片是否超宽1
+            if(width > maxWidth){
+                ratio = maxWidth / width;   // 计算缩放比例
+                $(this).css("width", maxWidth); // 设定实际显示宽度
+                height = height * ratio;    // 计算等比例缩放后的高度
+                $(this).css("height", height);  // 设定等比例缩放后的高度
+            }
 
-            <!--// 检查图片是否超高-->
-            <!--if(height > maxHeight){-->
-                <!--ratio = maxHeight / height; // 计算缩放比例-->
-                <!--$(this).css("height", maxHeight);   // 设定实际显示高度-->
-                <!--width = width * ratio;    // 计算等比例缩放后的高度-->
-                <!--$(this).css("width", width * ratio);    // 设定等比例缩放后的高度-->
-            <!--}-->
-        <!--});-->
-    <!--});-->
-<!--</script>-->
+            // 检查图片是否超高
+            if(height > maxHeight){
+                ratio = maxHeight / height; // 计算缩放比例
+                $(this).css("height", maxHeight);   // 设定实际显示高度
+                width = width * ratio;    // 计算等比例缩放后的高度
+                $(this).css("width", width * ratio);    // 设定等比例缩放后的高度
+            }
+        });
+    });
+</script>
 </html>

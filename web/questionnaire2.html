@@ -10,64 +10,37 @@
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 <script>
-    function setClientList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 含化学物质主要原材料
-                    case (2):
-                        $(this).html(obj.clientId);
-                        break;
-                    // 含化学物质辅料
-                    case (3):
-                        $(this).html(obj.companyName);
-                        break;
-                    // 可能带入的化学物质
-                    case (4):
-                        $(this).html(obj.applicationStatus.name);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
 
     /**
      * 增加新行
      */
     function addNewLine() {
         // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr1");
+        var tr = $("#plusBtn").prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         // 获取编号
-        var id = clonedTr.children().get(0).innerHTML;
-        var num = parseInt(id)+1;
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        var btnNum = event.button;
+        if(btnNum==0){
+            num++;
+        }
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.insertAfter(tr);
     }
     function addNewLine1() {
         // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr2");
+        var tr = $("#plusBtn1").prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         // 获取编号
-        var id = clonedTr.children().get(0).innerHTML;
-        var num = parseInt(id)+1;
+        var id = $("#plusBtn1").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        var btnNum = event.button;
+        if(btnNum==0){
+            num++;
+        }
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.insertAfter(tr);
     }
@@ -158,11 +131,12 @@
             <h2 class="sub-header">调查表新增</h2>
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="form-horizontal col-md-8">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group" align="left">
                             <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
+                    <div class="form-horizontal col-md-2"></div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group" align="right">
                             <label class="col-sm-4 control-label">调查单号</label>
@@ -188,7 +162,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr>
+                                <tr id="plusBtn">
                                     <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                     <td></td>
                                     <td></td>
@@ -302,7 +276,7 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-                                <tr>
+                                <tr id="plusBtn1">
                                     <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                     <td></td>
                                     <td></td>
@@ -313,7 +287,7 @@
                     </div>
                 </div>
                 <div class="row text-center">
-                    <a class="btn btn-primary" href="#">下一页</a>
+                    <a class="btn btn-primary" href="questionnaire3.html">下一页</a>
                     <a class="btn btn-danger" href="clientBackup.html">返回</a>
                 </div>
             </form>
