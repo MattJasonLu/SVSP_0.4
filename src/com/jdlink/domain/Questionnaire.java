@@ -2,7 +2,6 @@ package com.jdlink.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,9 +16,9 @@ public class Questionnaire {
      */
     private String questionnaireId;
     /**
-     * 客户编号
+     * 客户
      */
-    private String clientId;
+    private Client client;
     /**
      * 评估表编号
      */
@@ -52,26 +51,14 @@ public class Questionnaire {
      * 填写时间
      */
     private Date time;
-
+    /**
+     * 附件
+     */
     private MultipartFile attachment;
-
+    /**
+     * 附件地址
+     */
     private String attachmentUrl;
-
-    public String getAttachmentUrl() {
-        return attachmentUrl;
-    }
-
-    public void setAttachmentUrl(String attachmentUrl) {
-        this.attachmentUrl = attachmentUrl;
-    }
-
-    public MultipartFile getAttachment() {
-        return attachment;
-    }
-
-    public void setAttachment(MultipartFile attachment) {
-        this.attachment = attachment;
-    }
 
     public String getQuestionnaireId() {
         return questionnaireId;
@@ -81,12 +68,12 @@ public class Questionnaire {
         this.questionnaireId = questionnaireId;
     }
 
-    public String getClientId() {
-        return clientId;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public String getEvaluationnaireId() {
@@ -105,48 +92,20 @@ public class Questionnaire {
         this.author = author;
     }
 
+    public ApplyState getApplyState() {
+        return applyState;
+    }
+
+    public void setApplyState(ApplyState applyState) {
+        this.applyState = applyState;
+    }
+
     public List<RawWastes> getRawWastesList() {
         return rawWastesList;
     }
 
     public void setRawWastesList(List<RawWastes> rawWastesList) {
         this.rawWastesList = rawWastesList;
-    }
-
-    public void addRawWastes(RawWastes rawWastes) {
-        rawWastesList.add(rawWastes);
-    }
-
-    public List<WasteProcess> getWasteProcessList() {
-        return wasteProcessList;
-    }
-
-    public void setWasteProcessList(List<WasteProcess> wasteProcessList) {
-        this.wasteProcessList = wasteProcessList;
-    }
-
-    public void addWasteProcess(WasteProcess wasteProcess) {
-        wasteProcessList.add(wasteProcess);
-    }
-
-    public List<DeriveWastes> getDeriveWastesList() {
-        return deriveWastesList;
-    }
-
-    public void setDeriveWastesList(List<DeriveWastes> deriveWastesList) {
-        this.deriveWastesList = deriveWastesList;
-    }
-
-    public void addDeriveWastesList(DeriveWastes deriveWastes) {
-        deriveWastesList.add(deriveWastes);
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
     }
 
     public List<WasteInclusionType> getWasteInclusionTypeList() {
@@ -157,31 +116,51 @@ public class Questionnaire {
         this.wasteInclusionTypeList = wasteInclusionTypeList;
     }
 
-    public ApplyState getApplyState() {
-        return applyState;
+    public List<WasteProcess> getWasteProcessList() {
+        return wasteProcessList;
     }
 
-    public void setApplyState(ApplyState applyState) {
-        this.applyState = applyState;
+    public void setWasteProcessList(List<WasteProcess> wasteProcessList) {
+        this.wasteProcessList = wasteProcessList;
     }
 
-    public String getTimeStr() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String timeStr;
-        try {
-            timeStr = simpleDateFormat.format(time);
-            return timeStr;
-        } catch (Exception e) {
-            return "时间错误";
-        }
+    public List<DeriveWastes> getDeriveWastesList() {
+        return deriveWastesList;
+    }
 
+    public void setDeriveWastesList(List<DeriveWastes> deriveWastesList) {
+        this.deriveWastesList = deriveWastesList;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public MultipartFile getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(MultipartFile attachment) {
+        this.attachment = attachment;
+    }
+
+    public String getAttachmentUrl() {
+        return attachmentUrl;
+    }
+
+    public void setAttachmentUrl(String attachmentUrl) {
+        this.attachmentUrl = attachmentUrl;
     }
 
     @Override
     public String toString() {
         return "Questionnaire{" +
                 "questionnaireId='" + questionnaireId + '\'' +
-                ", clientId='" + clientId + '\'' +
+                ", client=" + client +
                 ", evaluationnaireId='" + evaluationnaireId + '\'' +
                 ", author='" + author + '\'' +
                 ", applyState=" + applyState +
@@ -190,6 +169,8 @@ public class Questionnaire {
                 ", wasteProcessList=" + wasteProcessList +
                 ", deriveWastesList=" + deriveWastesList +
                 ", time=" + time +
+                ", attachment=" + attachment +
+                ", attachmentUrl='" + attachmentUrl + '\'' +
                 '}';
     }
 }

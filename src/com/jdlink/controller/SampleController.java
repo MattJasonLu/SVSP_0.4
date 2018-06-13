@@ -179,6 +179,23 @@ public class SampleController {
         return res.toString();
     }
 
+    @RequestMapping("deleteSampleAppoint")
+    @ResponseBody
+    public String deleteSampleAppoint(String appointId) {
+        JSONObject res = new JSONObject();
+        try {
+            sampleAppointService.delete(appointId);
+            res.put("status", "success");
+            res.put("message", "删除成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "删除失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
     /**
      * 增加样品接收单
      * @param sampleCheck 样品接收单

@@ -225,6 +225,7 @@
                                     <li><a href="#" onclick="viewSample(this);">查看</a></li>
                                     <li><a href="#" onclick="adjustSample(this);">修改信息</a></li>
                                     <li><a href="#" onclick="checkSample(this);">登记收样</a></li>
+                                    <li><a href="#" onclick="deleteSample(this);">删除</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -302,7 +303,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" id="appointBtn" onclick="addAppoint();">预约</button>
+                    <button type="button" class="btn btn-primary" id="appointBtn">预约</button>
                 </div>
             </div>
         </div>
@@ -836,6 +837,36 @@
                 alert("服务器异常!");
             }
         });
+    }
+    /**
+     * 删除预约单
+     */
+    function deleteSample(menu) {
+        var id = getAppointIdByMenu(menu);
+        var msg = "是否删除该条记录？";
+        if (confirm(msg)==true) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "deleteSampleAppoint",              // url
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'appointId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result != undefined) {
+                        var data = eval(result);
+                        alert(data.message);
+                        if (data.status == "success") {
+                            window.location.reload();
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        }
     }
     /**
      * 通过勾选框获取到预约单编号
