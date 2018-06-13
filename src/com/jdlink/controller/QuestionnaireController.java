@@ -40,7 +40,6 @@ public class QuestionnaireController {
 
     /**
      * 列出所有问卷
-     *
      * @return 问卷列表
      */
     @RequestMapping("listQuestionnaire")
@@ -57,6 +56,38 @@ public class QuestionnaireController {
             return res.toString();
         }
     }
+
+    /**
+     * 列出客户的问卷
+     * @return 问卷列表
+     */
+    @RequestMapping("client/listQuestionnaire")
+    @ResponseBody
+    public String listClientQuestionnaire() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Questionnaire> questionnaireList = questionnaireService.list();
+            JSONArray array = JSONArray.fromArray(questionnaireList.toArray(new Questionnaire[questionnaireList.size()]));
+            res.put("data", array);
+            res.put("message", "获取信息成功");
+            res.put("status", "success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("message", "获取信息失败");
+            res.put("status", "fail");
+        }
+        return res.toString();
+    }
+
+
+
+
+
+
+
+
+
+    /**************************************************下面暂时不用****************************************/
 
     @RequestMapping("deleteQuestionnaire")
     public ModelAndView deleteQuestionnaire(HttpSession session, String questionnaireId) {
