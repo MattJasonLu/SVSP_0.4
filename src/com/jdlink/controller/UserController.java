@@ -41,9 +41,10 @@ public class UserController {
             // 更新用户，通过数据查询后得到的用户为准
             if (userList.size() > 0) {
                 user = userList.get(0);
+                JSONObject jsonObject = JSONObject.fromBean(user);
                 res.put("status", "success");
                 res.put("message", "登录成功");
-                res.put("user", user);
+                res.put("user", jsonObject);
             } else {
                 res.put("status", "fail");
                 res.put("message", "用户名或密码错误");

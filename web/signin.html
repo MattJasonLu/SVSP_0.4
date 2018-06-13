@@ -20,7 +20,12 @@
                     if (result != undefined) {
                         var data = eval(result);
                         if (data.status == "success") {
-                            window.location.href = 'wastesPlatform.html';
+                            console.log(data.user.isAdmin);
+                            if (data.user.isAdmin == true)
+                                window.location.href = 'wastesPlatform.html';
+                            else {
+                                window.location.href = 'client/wastesPlatform.html';
+                            }
                         } else {
                             alert(data.message);
                         }
