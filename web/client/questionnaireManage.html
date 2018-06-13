@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>调查表管理</title>
-    <script src="js/jquery/2.0.0/jquery.min.js"></script>
-    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
-    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-    <link href="css/dashboard.css" rel="stylesheet">
-    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
-    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="/js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <link href="/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <script src="/js/bootstrap/bootstrap-datetimepicker.js" type="text/javascript" charset="UTF-8"></script>
+    <script src="/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="/js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <script type="text/javascript">
     function setQuestionnaireList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
         tr.siblings().remove();
-        $.each(result, function (index, item) {
+        $.each(result.data, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
@@ -33,23 +33,24 @@
                         break;
                         // 企业名称
                     case (3):
-                        $(this).html(obj.companyName);
+                        $(this).html(obj.client.companyName);
                         break;
                         // 所属行业
                     case (4):
-                        $(this).html(obj.industry);
+                        $(this).html(obj.client.industry);
                         break;
                         // 主要产品
                     case (5):
-                        $(this).html(obj.product);
+                        $(this).html(obj.client.product);
                         break;
                         // 审批状态
                     case (6):
-                        $(this).html(obj.state.name);
+                        if (obj.applyState != null)
+                        $(this).html(obj.applyState.name);
                         break;
                         // 填报人
                     case (7):
-                        $(this).html(obj.contactName);
+                        $(this).html(obj.author);
                         break;
                         // 填报日期
                     case (8):
@@ -123,43 +124,15 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li><a href="../wastesPlatform.html">首页</a></li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="clientBackup.html">客户备案</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="salesManage.html">业务员管理</a></li>
+                            <li><a href="../clientBackup.html">客户备案</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="sampleManage.html">客户样品登记</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="supplierBackup.html">供应商备案</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="contractManage.html">合同列表</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="contractTemplate.html">合同模板</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="quotation.html">报价管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="cost.html">成本管理</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">一企一档</a></li>
-
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -169,7 +142,7 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="wastesPlatform.html">概览</a></li>
+                    <li><a href="../wastesPlatform.html">概览</a></li>
                     <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
                     <li><a href="#">接收管理</a></li>
                     <li><a href="#">贮存管理</a></li>
@@ -186,7 +159,7 @@
             <!--面包屑导航-->
             <div>
                 <ol class="breadcrumb">
-                    <li><a href="businessModel.html">商务管理</a></li>
+                    <li><a href="../businessModel.html">商务管理</a></li>
                     <li><a href="#">客户管理</a></li>
                     <li class="active">危废数据调查表管理</li>
                 </ol>
@@ -195,9 +168,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="client/questionnaire1.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
-                        <a class="btn btn-primary" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
+                        <a class="btn btn-primary" href="questionnaire1.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
@@ -240,8 +211,6 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="viewQuestionnaire(this);">查看</a></li>
                                     <li><a href="#" onclick="adjustQuestionnaire(this);">修改信息</a></li>
-                                    <li><a href="#" onclick="signInQuestionnaire(this);">签收</a></li>
-                                    <li><a href="#" onclick="backQuestionnaire(this);">退回</a></li>
                                     <li><a href="#" onclick="appointModal(this);">预约送样</a></li>
                                 </ul>
                             </div>
