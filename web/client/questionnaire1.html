@@ -7,10 +7,29 @@
     <script src="../js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="../css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="../js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="../js/data-format.js"></script>
     <link href="../css/dashboard.css" rel="stylesheet">
 </head>
 <script>
     function setClientData() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCurrentQuestionnaireId",                       // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        $("#questionnaireId").val(result.questionnaireId);
+                    } else { }
+                }
+            },
+            error:function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getClientBySession",                       // url
@@ -20,10 +39,15 @@
                 if (result != undefined) {
                     console.log(result);
                     if (result.status == "success") {
-
-                    } else {
-
-                    }
+                        var data = eval(result);
+                        $("#companyName").val(data.data.companyName);
+                        $("#location").val(data.data.location);
+                        $("#contactName").val(data.data.contactName);
+                        $("#phone").val(data.data.phone);
+                        $("#industry").val(data.data.industry);
+                        $("#product").val(data.data.product);
+                        $("#time").val(getNowDate());
+                    } else { }
                 }
             },
             error:function (result) {
@@ -89,7 +113,7 @@
                 </ol>
             </div>
             <h2 class="sub-header">调查表新增</h2>
-            <form method="post" id="clientInfoForm" enctype="multipart/form-data">
+            <form method="post" id="page1Info" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group" align="left">
@@ -110,15 +134,15 @@
                         <div class="form-group">
                             <label for="companyName" class="col-sm-4 control-label">企业名称</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="companyName" name="companyName" placeholder="">
+                                <input type="text" class="form-control" id="companyName" name="client.companyName" placeholder="" readonly>
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="address" class="col-sm-4 control-label">地址</label>
+                            <label for="time" class="col-sm-4 control-label">填表日期</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="address" name="address" placeholder="">
+                                <input type="text" class="form-control" id="time" name="time" placeholder="" readonly>
                             </div>
                         </div>
                     </div>
@@ -128,7 +152,7 @@
                         <div class="form-group">
                             <label for="contactName" class="col-sm-4 control-label">联系人</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="contactName" name="contactName" placeholder="">
+                                <input type="text" class="form-control" id="contactName" name="client.contactName" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -136,7 +160,7 @@
                         <div class="form-group">
                             <label for="phone" class="col-sm-4 control-label">联系电话</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="">
+                                <input type="text" class="form-control" id="phone" name="client.phone" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -146,7 +170,7 @@
                         <div class="form-group">
                             <label for="industry" class="col-sm-4 control-label">所属行业</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="industry" name="industry" placeholder="">
+                                <input type="text" class="form-control" id="industry" name="client.industry" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -154,7 +178,7 @@
                         <div class="form-group">
                             <label for="product" class="col-sm-4 control-label">主要产品</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="product" name="product" placeholder="">
+                                <input type="text" class="form-control" id="product" name="client.product" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -164,28 +188,62 @@
                         <div class="form-group">
                             <label for="author" class="col-sm-4 control-label">填报人</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="author" name="author" placeholder="">
+                                <input type="text" class="form-control" id="author" name="author" placeholder="填报人姓名">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="time" class="col-sm-4 control-label">填表日期</label>
+                            <label for="location" class="col-sm-4 control-label">地址</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="time" name="time" placeholder="">
+                                <input type="text" class="form-control" id="location" name="client.location" placeholder="">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row text-center">
-                    <a class="btn btn-primary" href="questionnaire2.html">下一页</a>
+                    <a class="btn btn-primary" onclick="savePage1Info();">下一页</a>
                     <a class="btn btn-danger" href="../questionnaireManage.html">返回</a>
                 </div>
             </form>
         </div>
-
     </div>
-
-
 </body>
+<script type="text/javascript">
+    function savePage1Info() {
+        console.log(JSON.stringify($('#page1Info').serializeJSON()));
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "savePage1Info",               // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify({
+                'questionnaireId': $("#questionnaireId").val(),
+                'time': $("#time").val(),
+                'author': $("#author").val(),
+                'client': {
+                    'companyName': $("#companyName").val(),
+                    'contactName': $("#contactName").val(),
+                    'industry': $("#industry").val(),
+                    'product': $("#product").val(),
+                    'phone': $("#phone").val(),
+                    'location': $("#location").val()
+                }
+            }),
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        $(location).attr('href', 'questionnaire2.html');
+                    } else { }
+                }
+            },
+            error:function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
+    }
+</script>
 </html>

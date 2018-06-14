@@ -58,6 +58,11 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
+    public int count() {
+        return questionnaireMapper.count();
+    }
+
+    @Override
     public void signIn(String questionnaireId) {
         questionnaireMapper.signIn(questionnaireId);
     }
