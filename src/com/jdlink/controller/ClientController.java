@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -311,5 +312,24 @@ public class ClientController {
         return res.toString();
     }
 
-
+    @RequestMapping("client/getClientBySession")
+    @ResponseBody
+    public String getClientBySession(HttpSession session) {
+        JSONObject res = new JSONObject();
+        try {
+            User user = (User) session.getAttribute("user");
+            String clientId = user.getClientId();
+            Client client = clientService.getByClientId(clientId);
+            JSONObject data = JSONObject.fromBean(client);
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "获取客户信息成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取客户信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
 }

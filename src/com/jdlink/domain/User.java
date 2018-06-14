@@ -9,7 +9,7 @@ public class User {
     private String username;
     private String password;
     private String clientId;
-    private String adminId;
+    private boolean isAdmin;
 
     public int getId() {
         return id;
@@ -43,19 +43,22 @@ public class User {
         this.clientId = clientId;
     }
 
-    public String getAdminId() {
-        return adminId;
+    public boolean getIsAdmin() {
+        return isAdmin;
     }
 
-    public void setAdminId(String adminId) {
-        this.adminId = adminId;
+    public void setIsAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", isAdmin=" + isAdmin +
                 '}';
     }
 }
