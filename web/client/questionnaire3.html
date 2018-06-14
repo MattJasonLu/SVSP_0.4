@@ -44,6 +44,12 @@
         clonedTr.insertAfter(tr);
     }
 </script>
+<style>
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+</style>
 <body onload="loadSelectList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -104,7 +110,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-8">
                         <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                            <label class="col-sm-8 control-label text-danger">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-4">
@@ -121,136 +127,205 @@
                         <div class="form-group">
                             <table class="table table-bordered">
                                 <tr>
-                                    <td>序号</td>
-                                    <td>含化学物质只主要原材料</td>
-                                    <td>含化学物质辅料</td>
-                                    <td>可能带入的化学物质</td>
-                                </tr>
-                                <tr id="cloneTr1">
-                                    <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr id="plusBtn">
-                                    <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 过氯化物
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 过氧化物
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 有机氯
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 爆炸物
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 有机氮
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 放射性物质
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 酸酐
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 生化废料
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 乙醚
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 催泪物质
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 硒化物
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 苯酚
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 苯
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 多氯联苯-聚氯三联苯
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 氧化剂
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 还原剂
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-12">
-                        <div class="form-group">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>序号</td>
-                                    <td>含化学物质只主要原材料</td>
-                                    <td>含化学物质辅料</td>
-                                    <td>可能带入的化学物质</td>
-                                </tr>
-                                <tr id="cloneTr2">
-                                    <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="text-center">序号</td>
+                                    <td class="text-center">危废名称</td>
+                                    <td class="text-center">危废代码</td>
+                                    <td class="text-center" colspan="2">物理形态</td>
+                                    <td class="text-center" colspan="6">均质与混合多项物</td>
+                                    <td class="text-center" colspan="3">敏感酸性组份</td>
                                 </tr>
                                 <tr>
-                                    <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td class="text-center" rowspan="11">1</td>
+                                    <td class="text-center" rowspan="11"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center" rowspan="11">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                <span class="glyphicon glyphicon-search">&nbsp;检索&nbsp;</span><span class="
+    glyphicon glyphicon-chevron-down"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><span class="#">。。。</span></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" rowspan="2">物质形态</td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                <span>--请选择--&nbsp;</span><span class="
+    glyphicon glyphicon-chevron-down"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><span class="#">。。。</span></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" colspan="6">
+                                        <input type="radio" name="1">均质&nbsp;
+                                        <input type="radio" name="1">混合多项物
+                                    </td>
+                                    <td class="text-center">组份</td>
+                                    <td class="text-center">有机</td>
+                                    <td class="text-center">无机</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><input type="text" placeholder="说明" class="focus" style="width:100px"></td>
+                                    <td class="text-center" rowspan="2" colspan="3">混合多项物混合成分</td>
+                                    <td class="text-center" colspan="3">预估含量(%)</td>
+                                    <td class="text-center">
+                                        <input type="checkbox">氯
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="2">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="2">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" rowspan="2">物质气味</td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                <span>--请选择--&nbsp;</span><span class="
+    glyphicon glyphicon-chevron-down"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><span class="#">。。。</span></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">最低</td>
+                                    <td class="text-center">平均</td>
+                                    <td class="text-center">最高</td>
+                                    <td class="text-center">
+                                        <input type="checkbox">氟
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="3">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="3">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><input type="text" placeholder="说明" class="focus" style="width:100px"></td>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center">
+                                        <input type="checkbox">溴
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="4">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="4">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" rowspan="2">可溶性</td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                <span>--请选择--&nbsp;</span><span class="
+    glyphicon glyphicon-chevron-down"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><span class="#">。。。</span></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center">
+                                        <input type="checkbox">碘
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="5">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="5">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center"><input type="text" placeholder="说明" class="focus" style="width:100px"></td>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center">
+                                        <input type="checkbox">硫
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="6">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="6">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" rowspan="2">储存温度</td>
+                                    <td class="text-center">
+                                        <input type="radio">常温
+                                    </td>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center">
+                                        <input type="checkbox">磷
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="7">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="7">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="radio">低温______℃
+                                    </td>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center">
+                                        <input type="checkbox">氮
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="8">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="radio" name="8">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" rowspan="3">其他</td>
+                                    <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:______℃</td>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center" colspan="3" rowspan="3">
+                                        <p class="text-danger">备注:主要成分避免使用废溶剂、废油等笼统描述，尽可能详尽估算出含量</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" colspan="3"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:100px"></td>
                                 </tr>
                             </table>
                         </div>
@@ -259,7 +334,7 @@
                 <div class="row text-center">
                     <a class="btn btn-primary" href="questionnaire2.html">上一页</a>
                     <a class="btn btn-primary" href="questionnaire4.html">下一页</a>
-                    <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
+                    <a class="btn btn-danger" href="../questionnaireManage.html">返回</a>
                 </div>
             </form>
         </div>
