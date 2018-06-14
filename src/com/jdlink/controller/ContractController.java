@@ -27,7 +27,7 @@ public class ContractController {
         List<Contract> contractList = contractService.list();
         JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
         // 返回结果
-        System.out.println(array.toString());
+        //System.out.println(array.toString());
 
         return array.toString();
     }
