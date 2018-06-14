@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class UserController {
 
     @RequestMapping("getUser")
     @ResponseBody
-    public String getUser(User user) {
+    public String getUser(User user, HttpSession session) {
         JSONObject res = new JSONObject();
         try {
             // 查询参数
@@ -41,6 +42,7 @@ public class UserController {
             // 更新用户，通过数据查询后得到的用户为准
             if (userList.size() > 0) {
                 user = userList.get(0);
+                session.setAttribute("user", user);
                 JSONObject jsonObject = JSONObject.fromBean(user);
                 res.put("status", "success");
                 res.put("message", "登录成功");
