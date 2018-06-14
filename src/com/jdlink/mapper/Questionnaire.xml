@@ -117,6 +117,10 @@
             FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId;
     </select>
 
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM questionnaire;
+    </select>
+
     <select id="listQuestionnaireAdmin" resultType="QuestionnaireAdmin">
         SELECT questionnaire.questionnaireId, client.companyName, client.industry,
           client.product, questionnaire.state, questionnaire.author AS contactName, questionnaire.time

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -104,7 +105,41 @@ public class QuestionnaireController {
         return res.toString();
     }
 
-
+    /**
+     * 获取问卷编号
+     * @return 问卷编号
+     */
+    @RequestMapping("client/getCurrentQuestionnareId")
+    @ResponseBody
+    public String getCurrentQuestionnareId() {
+        JSONObject res = new JSONObject();
+        try {
+            //得到一个NumberFormat的实例
+            NumberFormat nf = NumberFormat.getInstance();
+            //设置是否使用分组
+            nf.setGroupingUsed(false);
+            //设置最大整数位数
+            nf.setMaximumIntegerDigits(4);
+            //设置最小整数位数
+            nf.setMinimumIntegerDigits(4);
+            // 获取最新编号
+            String id;
+            int index = questionnaireService.count();
+            // 获取唯一的编号
+            do {
+                index += 1;
+                id = nf.format(index);
+            } while (questionnaireService.getById(id) != null);
+            res.put("status", "success");
+            res.put("message", "获取问卷编号成功");
+            res.put("questionnaireId", id);
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取问卷编号失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
 
 
 
