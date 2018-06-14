@@ -8,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +18,7 @@ import java.util.List;
 
 /**
  * Created by matt on 2018/4/28.
+ * 调查表控制器
  */
 @Controller
 public class QuestionnaireController {
@@ -37,6 +39,10 @@ public class QuestionnaireController {
     MixingElementService mixingElementService;
     @Autowired
     SensitiveElementService sensitiveElementService;
+    /**
+     * 保存的问卷对象
+     */
+    static Questionnaire questionnaire;
 
     /**
      * 列出所有问卷
@@ -79,7 +85,24 @@ public class QuestionnaireController {
         return res.toString();
     }
 
-
+    /**
+     * 保存问卷页面1的信息
+     * @return 成功与否
+     */
+    @RequestMapping("client/savePage1Info")
+    @ResponseBody
+    public String savePage1Info(@RequestBody Questionnaire questionnaire) {
+        JSONObject res = new JSONObject();
+        if (questionnaire != null) {
+            this.questionnaire = questionnaire;
+            res.put("status", "success");
+            res.put("message", "页面1数据保存成功");
+        } else {
+            res.put("status", "fail");
+            res.put("message", "页面1数据保存失败");
+        }
+        return res.toString();
+    }
 
 
 
