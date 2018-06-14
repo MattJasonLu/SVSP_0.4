@@ -320,12 +320,13 @@ public class ClientController {
             User user = (User) session.getAttribute("user");
             String clientId = user.getClientId();
             Client client = clientService.getByClientId(clientId);
+            if (client == null) throw new Exception("客户信息为空");
             JSONObject data = JSONObject.fromBean(client);
             res.put("data", data);
             res.put("status", "success");
             res.put("message", "获取客户信息成功");
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取客户信息失败");
             res.put("exception", e.getMessage());
