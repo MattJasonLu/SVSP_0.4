@@ -10,121 +10,30 @@
     <link href="../css/dashboard.css" rel="stylesheet">
 </head>
 <script>
-    function printClient() {
-        console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
-    }
-    function clientSave() {
-        printClient();
+    function setClientData() {
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "saveClient",                       // url
+            url: "getClientBySession",                       // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("保存成功!");
-                    $(location).attr('href', 'sclientBackup.html');
-                } else {
-                    console.log("fail: " + result);
-                    alert("保存失败!");
+                    console.log(result);
+                    if (result.status == "success") {
+
+                    } else {
+
+                    }
                 }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
                 alert("服务器异常!");
-            }
-        });
-    }
-    function clientSubmit() {
-        printClient();
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "submitClient",                     // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("提交成功!");
-                    $(location).attr('href', 'sclientBackup.html');
-                } else {
-                    console.log("fail: " + result);
-                    alert("提交失败!");
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-                alert("服务器异常!");
-            }
-        });
-    }
-    function loadSelectList() {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getSelectedList",                  // url
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var enterpriseType = $("#enterpriseType");
-                    $.each(data.enterpriseTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
-                        enterpriseType.append(option);
-                    });
-                    var operationType = $("#operationType");
-                    $.each(data.operationTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
-                        operationType.append(option);
-                    });
-                    var operationRecord = $("#operationRecord");
-                    $.each(data.operationRecordStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
-                        operationRecord.append(option);
-                    });
-                    var operationMode = $("#operationMode");
-                    $.each(data.operationModeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
-                        operationMode.append(option);
-                    });
-                    var contingencyPlan = $("#contingencyPlan");
-                    $.each(data.contingencyPlanStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
-                        contingencyPlan.append(option);
-                    });
-                    var applicationStatus = $("#applicationStatus");
-                    $.each(data.applicationStatusStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index+1);
-                        option.text(item);
-                        applicationStatus.append(option);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
             }
         });
     }
 </script>
-<body onload="loadSelectList()">
+<body onload="setClientData();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -139,7 +48,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="../wastesPlatform.html">首页</a></li>
+                    <li><a href="wastesPlatform.html">首页</a></li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">

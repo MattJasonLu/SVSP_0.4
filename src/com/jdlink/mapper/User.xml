@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jdlink.mapper.UserMapper">
     <insert id="add" parameterType="User" >
-        insert into user ( username, password, clientId, adminId ) values (#{username}, #{password}, #{clientId}, #{adminId})
+        insert into user ( username, password, clientId, isAdmin ) values (#{username}, #{password}, #{clientId}, #{isAdmin})
     </insert>
 
     <delete id="delete" parameterType="User" >
@@ -14,6 +14,10 @@
 
     <select id="get" parameterType="map" resultType="User">
         select * from user where username = #{username} and password = #{password}
+    </select>
+
+    <select id="getById" parameterType="int">
+        SELECT * FROM user WHERE id=#{id} LIMIT 1;
     </select>
 
     <select id="getByUsername" parameterType="String" resultType="User">

@@ -17,4 +17,6 @@ public interface UserService {
     void add(User user);
     List<User> getByUsername(String username);
 
+    User getById(String id);
+
 }
