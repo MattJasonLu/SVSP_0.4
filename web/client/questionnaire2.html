@@ -45,7 +45,13 @@
         clonedTr.insertAfter(tr);
     }
 </script>
-<body onload="loadSelectList()">
+<style>
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+</style>
+<body>
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -103,12 +109,12 @@
             <h2 class="sub-header">调查表新增</h2>
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="form-horizontal col-md-6">
+                    <div class="form-horizontal col-md-5">
                         <div class="form-group" align="left">
                             <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-2"></div>
+                    <div class="form-horizontal col-md-3"></div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group" align="right">
                             <label class="col-sm-4 control-label">调查单号</label>
@@ -130,9 +136,9 @@
                                 </tr>
                                 <tr id="cloneTr1">
                                     <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td><input type="text" class="focus" name="mainMaterial"></td>
+                                    <td><input type="text" class="focus" name="auxMaterial"></td>
+                                    <td><input type="text" class="focus" name="draginMaterial"></td>
                                 </tr>
                                 <tr id="plusBtn">
                                     <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -141,6 +147,19 @@
                                     <td></td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-2">
+                        <div class="form-group" align="left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">特别关注的物质</label>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-10">
+                        <div class="form-group" align="right">
+                            <label class="col-sm-4 control-label">请确认原料、辅料、废料或工艺是否含有下列物质</label>
                         </div>
                     </div>
                 </div>
@@ -233,23 +252,50 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group" align="left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">产废生产工艺流程描述</label>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-9"></div>
+                </div>
+                <div class="row">
                     <div class="form-horizontal col-md-12">
                         <div class="form-group">
                             <table class="table table-bordered">
                                 <tr>
                                     <td>序号</td>
-                                    <td>含化学物质只主要原材料</td>
-                                    <td>含化学物质辅料</td>
-                                    <td>可能带入的化学物质</td>
+                                    <td>危废编码</td>
+                                    <td>产生流程描述</td>
+                                    <td>现有量(吨)</td>
+                                    <td>上次处理时间</td>
+                                    <td>年预计量(吨)</td>
+                                    <td>包装现状</td>
                                 </tr>
                                 <tr id="cloneTr2">
                                     <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                <span class="glyphicon glyphicon-search">&nbsp;检索&nbsp;</span><span class="
+glyphicon glyphicon-chevron-down"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                            <li><span class="#">。。。</span></li>
+                                        </ul>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="focus" name="description"></td>
+                                    <td><input type="text" class="focus" name="quantity"></td>
+                                    <td><input type="text" class="focus" name="lastProcessTime"></td>
+                                    <td><input type="text" class="focus" name="yearQuantity"></td>
+                                    <td><input type="text" class="focus" name="packageSituation"></td>
                                 </tr>
                                 <tr id="plusBtn1">
                                     <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
