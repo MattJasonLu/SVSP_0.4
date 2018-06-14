@@ -43,7 +43,7 @@ public class QuestionnaireController {
     /**
      * 保存的问卷对象
      */
-    static Questionnaire questionnaire;
+    private static Questionnaire questionnaire = new Questionnaire();
 
     /**
      * 列出所有问卷
@@ -88,14 +88,21 @@ public class QuestionnaireController {
 
     /**
      * 保存问卷页面1的信息
+     * @param questionnaire 问卷对象
      * @return 成功与否
      */
     @RequestMapping("client/savePage1Info")
     @ResponseBody
     public String savePage1Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
+        // 如果获取的问卷不为空
         if (questionnaire != null) {
-            this.questionnaire = questionnaire;
+            // 设置问卷的编号
+            QuestionnaireController.questionnaire.setQuestionnaireId(questionnaire.getQuestionnaireId());
+            // 设置问卷的归属客户信息
+            QuestionnaireController.questionnaire.setClient(questionnaire.getClient());
+            // 设置问卷的填报人
+            QuestionnaireController.questionnaire.setAuthor(questionnaire.getAuthor());
             res.put("status", "success");
             res.put("message", "页面1数据保存成功");
         } else {
@@ -106,12 +113,25 @@ public class QuestionnaireController {
     }
 
     /**
+     * 保存问卷页面2的信息
+     * @param questionnaire 问卷对象
+     * @return 成功与否
+     */
+    @RequestMapping("client/savePage2Info")
+    @ResponseBody
+    public String savePage2Info(@RequestBody Questionnaire questionnaire) {
+        JSONObject res = new JSONObject();
+
+        return res.toString();
+    }
+
+    /**
      * 获取问卷编号
      * @return 问卷编号
      */
-    @RequestMapping("client/getCurrentQuestionnareId")
+    @RequestMapping("client/getCurrentQuestionnaireId")
     @ResponseBody
-    public String getCurrentQuestionnareId() {
+    public String getCurrentQuestionnaireId() {
         JSONObject res = new JSONObject();
         try {
             //得到一个NumberFormat的实例
@@ -145,7 +165,7 @@ public class QuestionnaireController {
 
 
 
-    /**************************************************下面暂时不用****************************************/
+    /********************************************下面暂时不用****************************************/
 
     @RequestMapping("deleteQuestionnaire")
     public ModelAndView deleteQuestionnaire(HttpSession session, String questionnaireId) {
