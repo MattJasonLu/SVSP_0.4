@@ -10,42 +10,6 @@
     <link href="../css/dashboard.css" rel="stylesheet">
 </head>
 <script>
-    function setClientList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 含化学物质主要原材料
-                    case (2):
-                        $(this).html(obj.clientId);
-                        break;
-                    // 含化学物质辅料
-                    case (3):
-                        $(this).html(obj.companyName);
-                        break;
-                    // 可能带入的化学物质
-                    case (4):
-                        $(this).html(obj.applicationStatus.name);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-
     /**
      * 增加新行
      */
@@ -72,7 +36,7 @@
         clonedTr.insertAfter(tr);
     }
 </script>
-<body onload="loadSelectList()">
+<body>
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -130,11 +94,12 @@
             <h2 class="sub-header">调查表新增</h2>
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="form-horizontal col-md-8">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 15px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
+                    <div class="form-horizontal col-md-2"></div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group" align="right">
                             <label class="col-sm-4 control-label">调查单号</label>
@@ -150,133 +115,64 @@
                             <table class="table table-bordered">
                                 <tr>
                                     <td>序号</td>
-                                    <td>危废名称</td>
-                                    <td>废物代码</td>
-                                    <td>物理形态</td>
-                                    <td>均质与混合多项物</td>
+                                    <td style="width: 270px">危废名称</td>
+                                    <td>特性</td>
+                                    <td>危废处理个人防护</td>
+                                    <td colspan="2">应急对应措施</td>
                                 </tr>
-                                <tr id="cloneTr1">
-                                    <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr>
+                                    <td rowspan="6">1</td>
+                                    <td rowspan="6" style="width: 270px"><input type="text" style="width:256px" class="focus"></td>
+                                    <td rowspan="6" style="width: 120px" align="left">
+                                        <input type="checkbox">毒性<br>
+                                        <input type="checkbox">易燃<br>
+                                        <input type="checkbox">酸性<br>
+                                        <input type="checkbox">碱性<br>
+                                        <input type="checkbox">易爆性<br>
+                                        <input type="checkbox">氧化性<br>
+                                        <input type="checkbox">还原性<br>
+                                        <input type="checkbox">遇水易燃<br>
+                                        <input type="checkbox">遇水易释放有毒气体<br>
+                                        <input type="checkbox">接触空气可发生自燃<br>
+                                    </td>
+                                    <td rowspan="6" style="width: 200px" align="left">
+                                        <input type="checkbox">防护眼镜<br>
+                                        <input type="checkbox">防护服<br>
+                                        <input type="checkbox">防护面罩<br>
+                                        <ul><span style="font-weight: bold;font-size: 18px">呼吸保护</span><br>
+                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus">半面罩</li><br>
+                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus">全面罩</li><br>
+                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus">正压呼吸器</li><br>
+                                        </ul>
+                                        <input type="checkbox" class="focus">防护手套<br>
+                                    </td>
+                                    <td style="width: 130px">若不慎入眼</td><br>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 130px">若接触到皮肤</td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 130px">若吞食</td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 130px">若吸入</td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 130px">灭火方法</td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 130px">泄露处理方法</td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
                                 </tr>
                                 <tr>
                                     <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                     <td></td>
                                     <td></td>
-                                    <td></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 过氯化物
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 过氧化物
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 有机氯
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 爆炸物
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 有机氮
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 放射性物质
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 酸酐
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 生化废料
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 乙醚
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 催泪物质
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 硒化物
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 苯酚
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 苯
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 多氯联苯-聚氯三联苯
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 氧化剂
-                        </label>
-                    </div>
-                    <div  class="form-horizontal col-md-3">
-                        <label>
-                            <input type="checkbox"> 还原剂
-                        </label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-12">
-                        <div class="form-group">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>序号</td>
-                                    <td>含化学物质只主要原材料</td>
-                                    <td>含化学物质辅料</td>
-                                    <td>可能带入的化学物质</td>
-                                </tr>
-                                <tr id="cloneTr2">
-                                    <td>1</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -296,4 +192,19 @@
 
 
 </body>
+<style>
+    table th, table td {
+        vertical-align: middle!important;
+    }
+    li{
+        margin: 5px;
+    }
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+    table{
+        margin: auto;
+    }
+</style>
 </html>
