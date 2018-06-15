@@ -4,64 +4,128 @@
     <meta charset="UTF-8">
     <title>客户新增</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/jquery.validate.min.js"></script>
+    <script src="js/jquery/additional-methods.js"></script>
+    <script src="js/jquery/messages_zh.js"></script>
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/validation.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 <script>
+    var validator;
+    // 校验表单信息
+    $().ready(function () {
+        validator = $("#clientInfoForm").validate({
+            // 在失去焦点时验证
+            onfocusout: function (element) {
+                $(element).valid();
+            },
+            rules: {
+                materialAttachment: {
+                    required: true,
+                    accept: "application/*"
+                },
+                processAttachment: {
+                    required: true,
+                    accept: "image/*"
+                },
+                mobile: {
+                    minlength : 11,
+                    isMobile : true
+                },
+                phone: {
+                    isFixMobile: true
+                },
+                email: {
+                    email: true
+                }
+            },
+            message: {
+                materialAttachment: {
+                    required: "文件未上传",
+                    accept: "文件格式错误"
+                },
+                processAttachment: {
+                    required: "文件未上传",
+                    accept: "文件格式错误"
+                },
+                mobile : {
+                    required : "请输入手机号",
+                    minlength : "确认手机不能小于11个字符",
+                    isMobile : "请正确填写您的手机号码"
+                },
+                phone: {
+                    required : "请输入固定电话号码",
+                    isFixMobile: "请正确填写固定电话号码"
+                }
+            },
+            errorPlacement: function (error, element) {
+                error.appendTo(element.parent());
+            },
+            submitHandler: function (form) { //通过之后回调
+                alert('通过');
+            }
+        });
+    });
+
     function printClient() {
         console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
     }
     function clientSave() {
-        printClient();
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "saveClient",                       // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("保存成功!");
-                    $(location).attr('href', 'clientBackup.html');
-                } else {
-                    console.log("fail: " + result);
-                    alert("保存失败!");
+//        printClient();
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveClient",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log("success: " + result);
+                        alert("保存成功!");
+                        $(location).attr('href', 'clientBackup.html');
+                    } else {
+                        console.log("fail: " + result);
+                        alert("保存失败!");
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    alert("服务器异常!");
                 }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
     }
     function clientSubmit() {
-        printClient();
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "submitClient",                     // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("提交成功!");
-                    $(location).attr('href', 'clientBackup.html');
-                } else {
-                    console.log("fail: " + result);
-                    alert("提交失败!");
+//        printClient();
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "submitClient",                     // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log("success: " + result);
+                        alert("提交成功!");
+                        $(location).attr('href', 'clientBackup.html');
+                    } else {
+                        console.log("fail: " + result);
+                        alert("提交失败!");
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    alert("服务器异常!");
                 }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
     }
     function loadSelectList() {
         // 设置客户编号
@@ -257,49 +321,49 @@
                         <div class="form-group">
                             <label for="companyName" class="col-sm-4 control-label">企业名称 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="companyName" name="companyName" placeholder="">
+                                <input type="text" class="form-control" id="companyName" name="companyName" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="organizationCode" class="col-sm-4 control-label">组织机构代码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="">
+                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="representative" class="col-sm-4 control-label">法人代表 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="representative" name="representative" placeholder="">
+                                <input type="text" class="form-control" id="representative" name="representative" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="industry" class="col-sm-4 control-label">所属行业 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="industry" name="industry" placeholder="">
+                                <input type="text" class="form-control" id="industry" name="industry" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="enterpriseType" class="col-sm-4 control-label">企业类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="enterpriseType" id="enterpriseType"></select>
+                                <select class="form-control" name="enterpriseType" id="enterpriseType" required></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="operationType" class="col-sm-4 control-label">经营单位类别 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationType" id="operationType"></select>
+                                <select class="form-control" name="operationType" id="operationType" required></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="operationRecord" class="col-sm-4 control-label">危废经营记录情况 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationRecord" id="operationRecord"></select>
+                                <select class="form-control" name="operationRecord" id="operationRecord" required></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="street" class="col-sm-4 control-label">所属街道 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="street" name="street" placeholder="">
+                                <input type="text" class="form-control" id="street" name="street" placeholder="" required>
                             </div>
                         </div>
                     </div>
@@ -313,43 +377,43 @@
                         <div class="form-group">
                             <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="licenseCode" name="licenseCode" placeholder="">
+                                <input type="text" class="form-control" id="licenseCode" name="licenseCode" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="postCode" class="col-sm-4 control-label">工商注册地邮编 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="postCode" name="postCode" placeholder="">
+                                <input type="text" class="form-control" id="postCode" name="postCode" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="product" class="col-sm-4 control-label">主要产品 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="product" name="product" placeholder="">
+                                <input type="text" class="form-control" id="product" name="product" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="operationMode" class="col-sm-4 control-label">经营方式 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationMode" id="operationMode"></select>
+                                <select class="form-control" name="operationMode" id="operationMode" required></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="contingencyPlan" class="col-sm-4 control-label">事故防范和应急预案 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="contingencyPlan" id="contingencyPlan"></select>
+                                <select class="form-control" name="contingencyPlan" id="contingencyPlan" required></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="applicationStatus" class="col-sm-4 control-label">申报状态 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="applicationStatus" id="applicationStatus"></select>
+                                <select class="form-control" name="applicationStatus" id="applicationStatus" required></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="location" class="col-sm-4 control-label">工商注册地址 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="location" name="location" placeholder="">
+                                <input type="text" class="form-control" id="location" name="location" placeholder="" required>
                             </div>
                         </div>
                     </div>
@@ -366,7 +430,7 @@
                         <div class="form-group">
                             <label for="processDesp" class="col-sm-4 control-label">工艺描述 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <textarea class="form-control" id="processDesp" name="processDesp" rows="3"></textarea>
+                                <textarea class="form-control" id="processDesp" name="processDesp" rows="3" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -385,27 +449,27 @@
                         <div class="form-group">
                             <label for="contactName" class="col-sm-4 control-label">联系人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="contactName" name="contactName" placeholder="">
+                                <input type="text" class="form-control" id="contactName" name="contactName" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">手机号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="mobile" class="col-sm-4 control-label">手机号码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="">
+                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="" required>
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="phone" class="col-sm-4 control-label">联系电话 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="phone" class="col-sm-4 control-label">固定电话 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="">
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="email" class="col-sm-4 control-label">邮箱 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="" required>
                             </div>
                         </div>
                     </div>
@@ -417,9 +481,6 @@
                 </div>
             </form>
         </div>
-
     </div>
-
-
 </body>
 </html>
