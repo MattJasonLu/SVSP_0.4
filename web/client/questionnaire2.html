@@ -107,7 +107,7 @@
                 </ol>
             </div>
             <h2 class="sub-header">调查表新增</h2>
-            <form method="post" id="clientInfoForm" enctype="multipart/form-data">
+            <form method="post" id="page2Info" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-5">
                         <div class="form-group" align="left">
@@ -119,7 +119,7 @@
                         <div class="form-group" align="right">
                             <label class="col-sm-4 control-label">调查单号</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" name="number" placeholder="******" style="border: none">
+                                <input type="text" class="form-control" name="questionnaireId" placeholder="****" style="border: none">
                             </div>
                         </div>
                     </div>
@@ -136,9 +136,9 @@
                                 </tr>
                                 <tr id="cloneTr1">
                                     <td>1</td>
-                                    <td><input type="text" class="focus" name="mainMaterial"></td>
-                                    <td><input type="text" class="focus" name="auxMaterial"></td>
-                                    <td><input type="text" class="focus" name="draginMaterial"></td>
+                                    <td><input type="text" class="focus" name="mainMaterial" id="mainMaterial_0"></td>
+                                    <td><input type="text" class="focus" name="auxMaterial" id="auxMaterial_0"></td>
+                                    <td><input type="text" class="focus" name="draginMaterial" id="draginMaterial_0"></td>
                                 </tr>
                                 <tr id="plusBtn">
                                     <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -277,19 +277,18 @@
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                <span class="glyphicon glyphicon-search">&nbsp;检索&nbsp;</span><span class="
-glyphicon glyphicon-chevron-down"></span>
+                                                <span class="glyphicon glyphicon-search">&nbsp;检索&nbsp;</span><span class="glyphicon glyphicon-chevron-down"></span>
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
                                             <li><span class="#">。。。</span></li>
                                         </ul>
                                         </div>
                                     </td>
-                                    <td><input type="text" class="focus" name="description"></td>
-                                    <td><input type="text" class="focus" name="quantity"></td>
-                                    <td><input type="text" class="focus" name="lastProcessTime"></td>
-                                    <td><input type="text" class="focus" name="yearQuantity"></td>
-                                    <td><input type="text" class="focus" name="packageSituation"></td>
+                                    <td><input type="text" class="focus" name="description" id="description_0"></td>
+                                    <td><input type="text" class="focus" name="quantity" id="quantity_0"></td>
+                                    <td><input type="text" class="focus" name="lastProcessTime" id="lastProcessTime"></td>
+                                    <td><input type="text" class="focus" name="yearQuantity" id="yearQuantity_0"></td>
+                                    <td><input type="text" class="focus" name="packageSituation" id="packageSituation_0"></td>
                                 </tr>
                                 <tr id="plusBtn1">
                                     <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -307,7 +306,7 @@ glyphicon glyphicon-chevron-down"></span>
                 <div class="row text-center">
                     <a class="btn btn-primary" href="questionnaire1.html">上一页</a>
                     <a class="btn btn-primary" href="questionnaire3.html">下一页</a>
-                    <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
+                    <a class="btn btn-danger" href="../questionnaireManage.html">返回</a>
                 </div>
             </form>
         </div>

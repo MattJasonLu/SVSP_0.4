@@ -17,6 +17,7 @@ public interface QuestionnaireService {
     void add(Questionnaire questionnaire);
     void delete(String questionnaireId);
     void update(Questionnaire questionnaire);
+    int count();
     void signIn(String questionnaireId);
     void updateAttachmentUrl(Questionnaire questionnaire);
     void back(String quesionnaireId);
