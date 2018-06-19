@@ -1,8 +1,6 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Questionnaire;
-import com.jdlink.domain.QuestionnaireAdmin;
+import com.jdlink.domain.*;
 import com.jdlink.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -52,16 +50,7 @@ public class QuestionnaireController {
     @RequestMapping("listQuestionnaire")
     @ResponseBody
     public String listQuestionnaire() {
-        try {
-            List<QuestionnaireAdmin> questionnaireList = questionnaireService.listQuestionnaireAdmin();
-            JSONArray array = JSONArray.fromArray(questionnaireList.toArray(new QuestionnaireAdmin[questionnaireList.size()]));
-            return array.toString();
-        } catch (Exception e) {
-            JSONObject res = new JSONObject();
-            res.put("status", "fail");
-            e.printStackTrace();
-            return res.toString();
-        }
+        return listClientQuestionnaire();
     }
 
     /**
@@ -161,7 +150,23 @@ public class QuestionnaireController {
         return res.toString();
     }
 
-
+    /**
+     * 问卷页面3中三个枚举数据
+     * @return 枚举数据
+     */
+    @RequestMapping(value={"getQuestionnaireSelectedList", "client/getQuestionnaireSelectedList"})
+    @ResponseBody
+    public String getQuestionnaireSelectedList() {
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        JSONArray array1 = JSONArray.fromArray(FormType.values());
+        res.put("formTypeStrList", array1);
+        JSONArray array2 = JSONArray.fromArray(SmellType.values());
+        res.put("smellTypeStrList", array2);
+        JSONArray array3 = JSONArray.fromArray(Solubility.values());
+        res.put("solubilityStrList", array3);
+        return res.toString();
+    }
 
 
 
