@@ -17,7 +17,7 @@
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
         tr.siblings().remove();
-        $.each(result, function (index, item) {
+        $.each(result.data, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
@@ -33,23 +33,24 @@
                         break;
                         // 企业名称
                     case (3):
-                        $(this).html(obj.companyName);
+                        $(this).html(obj.client.companyName);
                         break;
                         // 所属行业
                     case (4):
-                        $(this).html(obj.industry);
+                        $(this).html(obj.client.industry);
                         break;
                         // 主要产品
                     case (5):
-                        $(this).html(obj.product);
+                        $(this).html(obj.client.product);
                         break;
                         // 审批状态
                     case (6):
-                        $(this).html(obj.state.name);
+                        if (obj.applyState != null)
+                            $(this).html(obj.applyState.name);
                         break;
                         // 填报人
                     case (7):
-                        $(this).html(obj.contactName);
+                        $(this).html(obj.author);
                         break;
                         // 填报日期
                     case (8):

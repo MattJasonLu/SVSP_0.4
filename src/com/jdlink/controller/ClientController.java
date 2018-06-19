@@ -158,13 +158,18 @@ public class ClientController {
     @RequestMapping("listClient")
     @ResponseBody
     public String listClient(Page page) {
-        // 取出所有客户
-        List<Client> clientList = clientService.list(page);
-        // 计算最后页
-        page.caculateLast(clientService.total());
-        JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
-        // 返回结果
-        return array.toString();
+        try {
+            // 取出所有客户
+            List<Client> clientList = clientService.list(page);
+            // 计算最后页
+            page.caculateLast(clientService.total());
+            JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+            // 返回结果
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @RequestMapping("getAllClients")
