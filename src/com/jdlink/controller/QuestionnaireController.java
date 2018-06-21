@@ -110,7 +110,21 @@ public class QuestionnaireController {
     @ResponseBody
     public String savePage2Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
-
+        try {
+            // 更新原材料的信息
+            QuestionnaireController.questionnaire.setRawWastesList(questionnaire.getRawWastesList());
+            // 更新特别关注物质的信息
+            QuestionnaireController.questionnaire.setWasteInclusionTypeList(questionnaire.getWasteInclusionTypeList());
+            // 更新工艺流程的信息
+            QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
+            res.put("status", "success");
+            res.put("message", "页面2数据保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "页面2数据保存失败");
+            res.put("exception", e.getMessage());
+        }
         return res.toString();
     }
 
