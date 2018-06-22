@@ -55,6 +55,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public void assignSalesman(Client client) {
+        clientMapper.assignSalesman(client);
+    }
+
+    @Override
     public List<Client> list() {
         return clientMapper.list();
     }

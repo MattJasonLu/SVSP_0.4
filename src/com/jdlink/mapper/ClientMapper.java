@@ -27,6 +27,8 @@ public interface ClientMapper {
 
     void update(Client client);
 
+    void assignSalesman(Client client);
+
     List<Client> list();
 
     List<Client> list(Page page);

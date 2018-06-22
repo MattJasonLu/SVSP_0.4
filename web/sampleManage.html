@@ -14,6 +14,7 @@
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
     $(window).on('load', function () {
@@ -115,7 +116,14 @@
                         <ul class="dropdown-menu">
                             <li><a href="clientBackup.html">客户备案</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="salesManage.html">业务员管理</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">业务员分配管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="salesManage.html">业务员管理</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
                             <li role="separator" class="divider"></li>

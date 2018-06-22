@@ -132,7 +132,10 @@ public class Client {
      * 审核状态
      */
     private CheckState checkState;
-
+    /**
+     * 业务员
+     */
+    private Salesman salesman;
 
     public String getClientId() {
         return clientId;
@@ -366,6 +369,14 @@ public class Client {
         this.checkState = checkState;
     }
 
+    public Salesman getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(Salesman salesman) {
+        this.salesman = salesman;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -398,6 +409,7 @@ public class Client {
                 ", email='" + email + '\'' +
                 ", clientState=" + clientState +
                 ", checkState=" + checkState +
+                ", salesman=" + salesman +
                 '}';
     }
 }

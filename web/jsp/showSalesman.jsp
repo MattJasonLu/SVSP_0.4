@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" import="java.util.*" isELIgnored="false"%>
+         pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <html lang="en">
@@ -67,7 +67,14 @@
                         <ul class="dropdown-menu">
                             <li><a href="clientBackup.html">客户备案</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="salesManage.html">业务员分配管理</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">业务员分配管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="salesManage.html">业务员管理</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
                             <li role="separator" class="divider"></li>
