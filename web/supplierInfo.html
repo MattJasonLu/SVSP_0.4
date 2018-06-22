@@ -103,7 +103,7 @@
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveSupplier",                       // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            async : false,                           // 同步：意思是当有返回值才会进行后面以后的js程序
             data: JSON.stringify($('#supplierInfoForm').serializeJSON()),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
