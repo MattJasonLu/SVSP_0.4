@@ -237,11 +237,10 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="clientInfo.html">新增</a></li>
                                     <li><a class="adjust-client" href="#" onclick="adjustClient(this);">修改</a></li>
                                     <li><a class="disable-client" href="#" onclick="disableClient(this);">禁用</a></li>
                                     <li><a class="enable-client" href="#" onclick="enableClient(this);">启用</a></li>
-                                    <li><a class="delete-client" href="#" onclick="deleteClient(this);">删除</a></li>
+                                    <li><a class="" href="#" onclick="setSales(this);">分配业务员</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -283,6 +282,40 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">分配业务员</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-assign" method="post">
+                        <div class="form-group">
+                            <label for="model-clientId" class="control-label">客户编号</label>
+                            <input type="text" class="form-control" id="model-clientId" name="model-clientId" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-companyName" class="control-label">公司名称</label>
+                            <input type="text" class="form-control" id="model-companyName" name="model-companyName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-salesmanList" class="control-label">分配业务员</label>
+                            <select class="form-control" name="model-salesmanList" id="model-salesmanList">
+                                <option value="0">--请选择--</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="assignSales();">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <!--<style>-->
     <!--.table { padding-bottom: 70px; }-->
@@ -291,6 +324,9 @@
     <!--}-->
 <!--</style>-->
 <script type="text/javascript">
+
+    var clientId;
+
     /**
      * 导航问题
      * */
@@ -391,6 +427,102 @@
             }
         });
     }
+    /**
+     * 分配业务员
+     * @param item 用户
+     */
+    function setSales(item) {
+        var id = getClientId(item);
+        clientId = id;
+        // 添加客户信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getClient",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'id': id
+            },
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("success: " + result);
+                    $("#model-clientId").val(result.clientId);
+                    $("#model-companyName").val(result.companyName);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+        // 添加业务员信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listSalesman",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("success: " + result);
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var salesmanList = $("#model-salesmanList");
+                    // 清空遗留元素
+                    salesmanList.children().first().siblings().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.salesmanId);
+                        option.text(item.name);
+                        salesmanList.append(option);
+                    });
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+        $('#myModal').modal('show');
+
+    }
+
+    /**
+     * 分配业务员提交
+     */
+    function assignSales() {
+        var salesmanId = $("#model-salesmanList").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "assignClient",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'salesmanId': salesmanId,
+                'clientId': clientId
+            },
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("success: " + result);
+                    alert("保存成功!");
+                    window.location.reload();
+                } else {
+                    console.log("fail: " + result);
+                    alert("保存失败!");
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(this.data);
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
+    }
+
     /**
      * 删除用户
      * @param item

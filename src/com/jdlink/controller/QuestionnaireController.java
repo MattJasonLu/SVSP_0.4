@@ -1,8 +1,6 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Questionnaire;
-import com.jdlink.domain.QuestionnaireAdmin;
+import com.jdlink.domain.*;
 import com.jdlink.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -52,16 +50,7 @@ public class QuestionnaireController {
     @RequestMapping("listQuestionnaire")
     @ResponseBody
     public String listQuestionnaire() {
-        try {
-            List<QuestionnaireAdmin> questionnaireList = questionnaireService.listQuestionnaireAdmin();
-            JSONArray array = JSONArray.fromArray(questionnaireList.toArray(new QuestionnaireAdmin[questionnaireList.size()]));
-            return array.toString();
-        } catch (Exception e) {
-            JSONObject res = new JSONObject();
-            res.put("status", "fail");
-            e.printStackTrace();
-            return res.toString();
-        }
+        return listClientQuestionnaire();
     }
 
     /**
@@ -121,7 +110,43 @@ public class QuestionnaireController {
     @ResponseBody
     public String savePage2Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
+        try {
+            // 更新原材料的信息
+            QuestionnaireController.questionnaire.setRawWastesList(questionnaire.getRawWastesList());
+            // 更新特别关注物质的信息
+            QuestionnaireController.questionnaire.setWasteInclusionTypeList(questionnaire.getWasteInclusionTypeList());
+            // 更新工艺流程的信息
+            QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
+            res.put("status", "success");
+            res.put("message", "页面2数据保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "页面2数据保存失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
 
+    /**
+     * 保存问卷页面3的信息
+     * @param questionnaire 问卷对象
+     * @return 成功与否
+     */
+    @RequestMapping("client/savePage3Info")
+    @ResponseBody
+    public String savePage3Info(@RequestBody Questionnaire questionnaire) {
+        JSONObject res = new JSONObject();
+        try {
+
+            res.put("status", "success");
+            res.put("message", "页面3数据保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "页面3数据保存失败");
+            res.put("exception", e.getMessage());
+        }
         return res.toString();
     }
 
@@ -161,7 +186,23 @@ public class QuestionnaireController {
         return res.toString();
     }
 
-
+    /**
+     * 问卷页面3中三个枚举数据
+     * @return 枚举数据
+     */
+    @RequestMapping(value={"getQuestionnaireSelectedList", "client/getQuestionnaireSelectedList"})
+    @ResponseBody
+    public String getQuestionnaireSelectedList() {
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        JSONArray array1 = JSONArray.fromArray(FormType.values());
+        res.put("formTypeStrList", array1);
+        JSONArray array2 = JSONArray.fromArray(SmellType.values());
+        res.put("smellTypeStrList", array2);
+        JSONArray array3 = JSONArray.fromArray(Solubility.values());
+        res.put("solubilityStrList", array3);
+        return res.toString();
+    }
 
 
 
