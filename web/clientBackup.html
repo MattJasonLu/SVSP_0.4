@@ -7,6 +7,7 @@
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
     function setClientList(result) {
@@ -131,7 +132,14 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">客户备案</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="salesManage.html">业务员分配管理</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">业务员分配管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="salesManage.html">业务员管理</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
                             <li role="separator" class="divider"></li>
@@ -224,6 +232,7 @@
                         <th>账号状态</th>
                         <th>联系人</th>
                         <th>联系电话</th>
+                        <th>客户类型</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -237,13 +246,17 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="adjust-client" href="#" onclick="adjustClient(this);">修改</a></li>
-                                    <li><a class="disable-client" href="#" onclick="disableClient(this);">禁用</a></li>
-                                    <li><a class="enable-client" href="#" onclick="enableClient(this);">启用</a></li>
-                                    <li><a class="" href="#" onclick="setSales(this);">分配业务员</a></li>
+                                    <li><a href="#" onclick="viewClient(this);">查看</a></li>
+                                    <li><a href="#" onclick="commitClient(this);">提交</a></li>
+                                    <li><a href="#" onclick="adjustClient(this);">修改</a></li>
+                                    <li><a href="#" onclick="examineClient(this);">审批</a></li>
+                                    <li><a href="#" onclick="enableClient(this);">启用</a></li>
+                                    <li><a href="#" onclick="disableClient(this);">禁用</a></li>
+                                    <li><a href="#" onclick="setSales(this);">分配业务员</a></li>
                                 </ul>
                             </div>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -316,6 +329,35 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">客户审批</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-examine" method="post">
+                        <div class="form-group">
+                            <label for="model-clientId" class="control-label">客户编号</label>
+                            <input type="text" class="form-control" id="model2-clientId" name="model-clientId" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-companyName" class="control-label">公司名称</label>
+                            <input type="text" class="form-control" id="model2-companyName" name="model-companyName" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="passClient();">审批通过</button>
+                    <button type="button" class="btn btn-danger" onclick="backClient();">驳回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <!--<style>-->
     <!--.table { padding-bottom: 70px; }-->
@@ -347,13 +389,6 @@
             $("body").append('<div style="height: '+navHeight+'px"></div>');
         }
     }
-    //    软用没有
-//    $(document).ready(function(){
-//        $("a[class=adjust-client]").click(function(){
-//            alert("click");
-//            alert($(this).html());
-//        });
-//    });
     /**
      * 获取用户的编号
      * @param item
@@ -362,6 +397,140 @@
     function getClientId(item) {
         return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
     }
+
+    /**
+     * 查看用户
+     * @param item 客户
+     */
+    function viewClient(item) {
+        var id = getClientId(item);
+        alert("待完善");
+    }
+
+    /**
+     * 审批通过客户
+     */
+    function passClient() {
+        var id = $("#model2-clientId").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "passClient",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'clientId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        alert("审批成功");
+                        window.location.reload();
+                    } else if (result.status == "fail") {
+                        alert("审批失败");
+                    }
+                }
+            },
+            error:function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+
+    /**
+     * 驳回客户
+     */
+    function backClient() {
+        var id = $("#model2-clientId").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "backClient",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'clientId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        alert("驳回成功");
+                        window.location.reload();
+                    } else if (result.status == "fail") {
+                        alert("驳回失败");
+                    }
+                }
+            },
+            error:function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+
+    /**
+     * 审批用户
+     * @param item 客户
+     */
+    function examineClient(item) {
+        var id = getClientId(item);
+        clientId = id;
+        // 添加客户信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getClient",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'id': id
+            },
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    $("#model2-clientId").val(result.clientId);
+                    $("#model2-companyName").val(result.companyName);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        $('#examineModal').modal('show');
+    }
+
+    /**
+     * 提交用户
+     * @param item 客户
+     */
+    function commitClient(item) {
+        var id = getClientId(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "submitClientById",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'clientId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        alert("提交成功");
+                        window.location.reload();
+                    } else if (result.status == "fail") {
+                        alert("提交失败");
+                    }
+                }
+            },
+            error:function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+
     /**
      * 修改用户
      * @param item
@@ -386,16 +555,19 @@
             },
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("禁用成功");
-                    window.location.reload();
-                } else {
-                    console.log("fail: " + result);
+                    if (result.status == "success") {
+                        alert("禁用成功");
+                        window.location.reload();
+                    } else if (result.status == "fail") {
+                        alert("禁用失败");
+                    }
                 }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
+                alert("服务器异常");
             }
         });
     }
@@ -414,16 +586,19 @@
             },
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("启用成功");
-                    window.location.reload();
-                } else {
-                    console.log("fail: " + result);
+                    if (result.status == "success") {
+                        alert("启用成功");
+                        window.location.reload();
+                    } else if (result.status == "fail") {
+                        alert("启用失败");
+                    }
                 }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
+                alert("服务器异常");
             }
         });
     }
@@ -497,7 +672,7 @@
         var salesmanId = $("#model-salesmanList").val();
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "assignClient",              // url
+            url: "assignSalesman",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: {

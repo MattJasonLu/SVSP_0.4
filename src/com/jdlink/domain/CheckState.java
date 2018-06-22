@@ -9,10 +9,11 @@ public enum CheckState implements CodeBaseEnum{
     Examining("审批中", 1),
     ToSubmit("待提交", 2),
     Finished("已完成", 3),
+    Backed("已驳回", 4),
 
-    ToExamine("待审批", 4),
-    Keeping("履约中", 5),
-    Invalid("已作废", 6),
+    ToExamine("待审批", 5),
+    Keeping("履约中", 6),
+    Invalid("已作废", 7),
     ;
 
     private String name;

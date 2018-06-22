@@ -25,6 +25,8 @@ public interface ClientService {
 
     void update(Client client);
 
+    void assignSalesman(Client client);
+
     List<Client> list();
 
     List<Client> list(Page page);
@@ -49,6 +51,8 @@ public interface ClientService {
     void setCheckStateExamining(String clientId);
 
     void setCheckStateFinished(String clientId);
+
+    void setCheckStateBacked(String clientId);
 
     int count();
 

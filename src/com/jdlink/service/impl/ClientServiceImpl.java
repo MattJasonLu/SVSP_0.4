@@ -55,6 +55,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public void assignSalesman(Client client) {
+        clientMapper.assignSalesman(client);
+    }
+
+    @Override
     public List<Client> list() {
         return clientMapper.list();
     }
@@ -97,6 +102,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void setCheckStateFinished(String clientId) {
         clientMapper.setCheckStateFinished(clientId);
+    }
+
+    @Override
+    public void setCheckStateBacked(String clientId) {
+        clientMapper.setCheckStateBacked(clientId);
     }
 
     @Override

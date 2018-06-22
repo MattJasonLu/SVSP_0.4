@@ -27,6 +27,8 @@ public interface ClientMapper {
 
     void update(Client client);
 
+    void assignSalesman(Client client);
+
     List<Client> list();
 
     List<Client> list(Page page);
@@ -42,6 +44,8 @@ public interface ClientMapper {
     void setCheckStateExamining(String clientId);
 
     void setCheckStateFinished(String clientId);
+
+    void setCheckStateBacked(String clientId);
 
     int count();
 

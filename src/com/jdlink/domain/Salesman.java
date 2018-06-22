@@ -1,6 +1,5 @@
 package com.jdlink.domain;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -90,11 +89,6 @@ public class Salesman {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public String getCommonTime() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return simpleDateFormat.format(time);
     }
 
     @Override

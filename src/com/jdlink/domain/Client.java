@@ -7,11 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
  * 客户类
  */
 public class Client {
-
-    /**
-     * 预存编号
-     */
-    private String temporaryId;
     /**
      * 集团编号
      */
@@ -132,7 +127,10 @@ public class Client {
      * 审核状态
      */
     private CheckState checkState;
-
+    /**
+     * 业务员
+     */
+    private Salesman salesman;
 
     public String getClientId() {
         return clientId;
@@ -140,14 +138,6 @@ public class Client {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-
-    public String getTemporaryId() {
-        return temporaryId;
-    }
-
-    public void setTemporaryId(String temporaryId) {
-        this.temporaryId = temporaryId;
     }
 
     public String getGroupId() {
@@ -366,11 +356,18 @@ public class Client {
         this.checkState = checkState;
     }
 
+    public Salesman getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(Salesman salesman) {
+        this.salesman = salesman;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
-                "temporaryId='" + temporaryId + '\'' +
-                ", groupId='" + groupId + '\'' +
+                "groupId='" + groupId + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", clientId='" + clientId + '\'' +
                 ", organizationCode='" + organizationCode + '\'' +
@@ -398,6 +395,7 @@ public class Client {
                 ", email='" + email + '\'' +
                 ", clientState=" + clientState +
                 ", checkState=" + checkState +
+                ", salesman=" + salesman +
                 '}';
     }
 }
