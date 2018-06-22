@@ -45,6 +45,8 @@ public interface ClientMapper {
 
     void setCheckStateFinished(String clientId);
 
+    void setCheckStateBacked(String clientId);
+
     int count();
 
 }
