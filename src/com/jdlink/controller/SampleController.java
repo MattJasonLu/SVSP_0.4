@@ -178,15 +178,17 @@ public class SampleController {
         }
         return res.toString();
     }
-
-    @RequestMapping("deleteSampleAppoint")
+//作废合同 将合同状态修改
+    @RequestMapping("cancelSampleAppoint")
     @ResponseBody
     public String deleteSampleAppoint(String appointId) {
         JSONObject res = new JSONObject();
         try {
-            sampleAppointService.delete(appointId);
+            //sampleAppointService.delete(appointId);
+           sampleAppointService.updateApplyState(appointId);
             res.put("status", "success");
-            res.put("message", "删除成功");
+            res.put("message", "作废成功");
+
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

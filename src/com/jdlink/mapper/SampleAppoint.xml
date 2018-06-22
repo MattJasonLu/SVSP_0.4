@@ -53,4 +53,7 @@
     <update id="setCanceld" parameterType="SampleAppoint">
         UPDATE t_sampleAppoint SET state='Canceld' WHERE appointId=#{appointId}
     </update>
+    <update id="updateApplyState" parameterType="_int">
+UPDATE  t_sampleappoint set state='Invalid' where appointId=#{appointId}
+   </update>
 </mapper>

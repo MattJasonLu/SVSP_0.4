@@ -22,6 +22,9 @@
             // 在失去焦点时验证
             onfocusout: function (element) {
                 $(element).valid();
+                if(element.id=='phone'||element.id=='mobile'){//判断手机和固定电话
+                    console.log(element.required);
+                }
             },
             rules: {
                 materialAttachment: {
@@ -32,11 +35,11 @@
                     required: true,
                     accept: "image/*"
                 },
-                mobile: {
+                mobile: {   //手机
                     minlength : 11,
                     isMobile : true
                 },
-                phone: {
+                phone: { //电话
                     isFixMobile: true
                 },
                 email: {
@@ -52,12 +55,12 @@
                     required: "文件未上传",
                     accept: "文件格式错误"
                 },
-                mobile : {
+                mobile : { //手机
                     required : "请输入手机号",
                     minlength : "确认手机不能小于11个字符",
                     isMobile : "请正确填写您的手机号码"
                 },
-                phone: {
+                phone: {  //电话
                     required : "请输入固定电话号码",
                     isFixMobile: "请正确填写固定电话号码"
                 }
@@ -72,7 +75,7 @@
     });
 
     function printClient() {
-        console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
+        //console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
     }
     function clientSave() {
 //        printClient();
@@ -88,7 +91,7 @@
                     if (result != undefined) {
                         console.log("success: " + result);
                         alert("保存成功!");
-                        $(location).attr('href', 'clientBackup.html');
+                        $(location).attr('href', 'clientBackup.html');//跳转
                     } else {
                         console.log("fail: " + result);
                         alert("保存失败!");
@@ -213,7 +216,7 @@
             url: "getCurrentClientId",                  // url
             dataType: "json",
             success: function (result) {
-                console.log(result);
+               // console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     $("#clientId").val(data.clientId);
@@ -413,9 +416,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="applicationStatus" class="col-sm-4 control-label">申报状态 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="applicationStatus" class="col-sm-4 control-label">申报状态</label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="applicationStatus" id="applicationStatus" required></select>
+                                <select class="form-control" name="applicationStatus" id="applicationStatus" ></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -432,13 +435,7 @@
                         <div class="form-group">
                             <label for="materialAttachment" class="col-sm-4 control-label">原辅材料 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="file" class="form-control" id="materialAttachment" name="materialAttachment" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="processDesp" class="col-sm-4 control-label">工艺描述 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <textarea class="form-control" id="processDesp" name="processDesp" rows="3" required></textarea>
+                                <input type="file"  id="materialAttachment" name="materialAttachment" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -446,7 +443,17 @@
                         <div class="form-group">
                             <label for="processAttachment" class="col-sm-4 control-label">工艺流程图 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="file" class="form-control" id="processAttachment" name="processAttachment" placeholder="">
+                                <input type="file"  id="processAttachment" name="processAttachment" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <div class="form-group">
+                            <label for="processDesp" class="col-sm-2 control-label">工艺描述 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-7">
+                                <textarea class="form-control " id="processDesp" name="processDesp" rows="4"  required></textarea>
                             </div>
                         </div>
                     </div>

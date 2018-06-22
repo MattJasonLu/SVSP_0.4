@@ -7,11 +7,84 @@
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
-    <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/contract.css" rel="stylesheet">
-    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
 </head>
-<body>
+<script type="text/javascript">
+function loadContractSelectList() {
+//取得下拉菜单的选项
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getContractList",                  // url
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 各下拉框数据填充
+                var contractName = $("#contractName");
+                contractName.children().remove();
+                $.each(data.contractNameStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    contractName.append(option);
+                });
+                contractName.get(0).selectedIndex = -1;
+                var province = $("#province");
+                province.children().remove();
+                //var obj=eval(data.provinceStrList);
+                //console.log(obj.length);
+                $.each(data.provinceStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    province.append(option);
+                });
+                province.get(0).selectedIndex = -1;
+            } else {
+                console.log(result);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+    });
+}
+
+function changeSelect(index) {
+var index1=index+1;//获得province_id
+    console.log(index1);
+    //调用ajax
+$.ajax({
+    type: "POST",                            // 方法类型
+    url: "getCityList",                  // url
+    dataType: "json",
+    data:{
+        'provinceId': index1
+    },
+    success: function (result) {
+        if (result != undefined) {
+            var data = eval(result);
+            // 各下拉框数据填充
+            var contractName = $("#contractName");
+
+
+        } else {
+            console.log(result);
+        }
+    },
+    error:function (result) {
+        console.log(result);
+    }
+
+
+
+
+});
+
+}
+</script>
+<body onload="loadContractSelectList();">
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -31,14 +104,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="clientBackup.html">客户备案</a></li>
                         <li role="separator" class="divider"></li>
-                        <li class="dropdown-submenu">
-                            <a href="#">业务员分配管理</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="salesManage.html">业务员管理</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="clientSalesManage.html">客户分配管理</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="salesManage.html">业务员分配管理</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
@@ -89,17 +155,15 @@
             </ul>
         </div>
     </div>
-
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <div class="row">
             <ol class="breadcrumb">
                 <li><a href="businessModel.html">商务管理</a></li>
                 <li><a href="#">合同管理</a></li>
-                <li class="active">合同新增</li>
+                <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
         <h2 class="sub-header">危废合同申请表</h2>
-
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
             <div class="row">
                 <div class="form-horizontal col-md-4">
@@ -127,7 +191,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
@@ -143,33 +206,25 @@
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label class="col-sm-4 control-label" for="region">所属区域 </label>
+                        <label class="col-sm-4 control-label" for="province">所属区域 </label>
+                        <form name="form1" method="post" action="">
                         <div class="form-inline">
                          <div class="form-group col-xs-4">
-                                <select class="form-control" id="region">
-                                    <option>--请选择省市--</option>
+                                <select class="form-control" id="province"  onchange="changeSelect(this.selectedIndex)">
                                 </select>
                             </div>
                             <div class="form-group col-xs-1 ">
-                                <select class="form-control">
-                                    <option>--全部--</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                <select class="form-control"  id="city">
                                 </select>
                             </div>
                         </div>
+                        </form>
                     </div>
                     <div class="form-group" >
                         <label for="contractName" class="col-sm-4 control-label">合同名称</label>
                         <div class="col-xs-5">
                             <select class="form-control" id="contractName">
-                                <option>--此处为系统中已备选客户--</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <option value="0">--请选择--</option>
                             </select>
                         </div>
                     </div>
@@ -237,7 +292,9 @@
                 </div>
             </div>
             <div class="row text-center">
-                        <a class="btn btn-danger " href="image/test.html">提交</a>
+                     <a class="btn btn-success" onclick="supplierSave();">保存</a>
+                        <a class="btn btn-primary">提交</a>
+                       <a class="btn btn-danger">返回</a>
                     </div>
         </form>
 

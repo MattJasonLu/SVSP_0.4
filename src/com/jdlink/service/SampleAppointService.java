@@ -32,4 +32,6 @@ public interface SampleAppointService {
 
     void setCanceld(SampleAppoint sampleAppoint);
 
+    void updateApplyState(String appointId);
+
 }
