@@ -5,7 +5,13 @@
 
 <mapper namespace="com.jdlink.mapper.ClientMapper">
 
-    <resultMap id="ClientRM" type="Client">
+    <resultMap id="SalesmanRM" type="Salesman">
+        <result property="salesmanId" column="salesmanId"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+    </resultMap>
+    <resultMap id="ClientRM" type="Client" autoMapping="true">
         <result property="clientState" column="state" javaType="com.jdlink.domain.ClientState"/>
         <result property="enterpriseType" column="enterpriseType" javaType="com.jdlink.domain.EnterpriseType"/>
         <result property="operationMode" column="operationMode" javaType="com.jdlink.domain.OperationMode"/>
@@ -14,6 +20,7 @@
         <result property="operationRecord" column="operationRecord" javaType="com.jdlink.domain.OperationRecord"/>
         <result property="applicationStatus" column="applicationStatus" javaType="com.jdlink.domain.ApplicationStatus"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
+        <association property="salesman" javaType="Salesman" resultMap="SalesmanRM"/>
     </resultMap>
 
     <insert id="add" parameterType="Client" >
@@ -99,8 +106,12 @@
         UPDATE client SET checkState='Finished' WHERE clientId=#{clientId};
     </update>
 
+    <update id="assignSalesman" parameterType="Client">
+        UPDATE client SET salesmanId=#{salesman.salesmanId} WHERE clientId=#{clientId};
+    </update>
+
     <select id="list" resultMap="ClientRM">
-        select * from client
+        select client.*, salesman.salesmanId, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>

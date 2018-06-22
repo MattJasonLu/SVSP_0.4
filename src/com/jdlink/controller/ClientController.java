@@ -289,6 +289,21 @@ public class ClientController {
         return mav;
     }
 
+    @RequestMapping("assignSalesman")
+    @ResponseBody
+    public String assignSalesman(@RequestBody Client client) {
+        JSONObject res = new JSONObject();
+        try {
+            clientService.assignSalesman(client);
+            res.put("status", "success");
+            res.put("message", "操作成功!");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "操作失败!");
+        }
+        return res.toString();
+    }
+
     /**
      * 获取目前的客户编号
      * @return
