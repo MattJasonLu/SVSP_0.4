@@ -71,4 +71,9 @@ public class SampleAppointServiceImpl implements SampleAppointService {
     public void setCanceld(SampleAppoint sampleAppoint) {
         sampleAppointMapper.setCanceld(sampleAppoint);
     }
+
+    @Override
+    public void updateApplyState(String appointId) {
+sampleAppointMapper.updateApplyState(appointId);
+    }
 }

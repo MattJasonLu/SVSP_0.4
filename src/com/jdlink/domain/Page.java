@@ -12,7 +12,7 @@ public class Page {
     /**
      * 每页的个数
      */
-    private int count = 12;
+    private int count = 20;
     /**
      * 最后一页的位置
      */

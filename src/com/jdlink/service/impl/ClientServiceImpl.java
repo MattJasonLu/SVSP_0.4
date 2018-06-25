@@ -105,6 +105,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public void setCheckStateBacked(String clientId) {
+        clientMapper.setCheckStateBacked(clientId);
+    }
+
+    @Override
     public int count() {
         return clientMapper.count();
     }

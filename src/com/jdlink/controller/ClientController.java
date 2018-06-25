@@ -2,7 +2,6 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.ClientService;
-import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +60,6 @@ public class ClientController {
             res.put("status", "fail");
             res.put("message", "创建客户失败，请完善信息!");
         }
-        // TODO: 修改暂时编号（规则未定）
-        client.setTemporaryId(RandomUtil.getRandomFileName());
         // 启用账户
         client.setClientState(ClientState.Enabled);
 
@@ -175,9 +172,15 @@ public class ClientController {
     @RequestMapping("getAllClients")
     @ResponseBody
     public String getAllClients() {
-        List<Client> clientList = clientService.list();
-        JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
-        return array.toString();
+        try {
+            List<Client> clientList = clientService.list();
+            JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @RequestMapping("searchClient")
@@ -287,6 +290,48 @@ public class ClientController {
         mav.addObject("client", client);
         mav.setViewName("jsp/showClient.jsp");
         return mav;
+    }
+
+    /**
+     * 审批通过客户
+     * @param clientId 客户编号
+     * @return 成功与否
+     */
+    @RequestMapping("passClient")
+    @ResponseBody
+    public String passClient(String clientId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 设置客户审批状态为已完成
+            clientService.setCheckStateFinished(clientId);
+            res.put("status", "success");
+            res.put("message", "客户信息审批通过");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "客户信息审批未通过");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 驳回客户
+     * @param clientId 客户编号
+     * @return 成功与否
+     */
+    @RequestMapping("backClient")
+    @ResponseBody
+    public String backClient(String clientId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 设置客户审批状态为已驳回
+            clientService.setCheckStateBacked(clientId);
+            res.put("status", "success");
+            res.put("message", "客户信息驳回成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "客户信息驳回失败");
+        }
+        return res.toString();
     }
 
     @RequestMapping("assignSalesman")
