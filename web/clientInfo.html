@@ -22,8 +22,33 @@
             // 在失去焦点时验证
             onfocusout: function (element) {
                 $(element).valid();
-                if(element.id=='phone'||element.id=='mobile'){//判断手机和固定电话
-                    console.log(element.required);
+                var phone=$("#phone");//获得电话的对象
+                var mobile=$("#mobile")//获得手机对象
+                  if(element.id=='mobile'){// 手机输入
+                    //  console.log("手机");
+                    var mobile1=  mobile.valid();//获得手机校验的结果
+                      console.log("手机校验结果"+mobile1);
+                    if(mobile1){
+                        $("#phone1").hide();
+                        $("#mobile1").show();
+                     phone.rules("remove")//删除规则
+                    }
+                    if(!mobile1){
+                        phone.rules("add",{required:true})
+                    }
+                }
+                if(element.id=='phone'){//电话输入
+                      //console.log("电话");
+                    var phone2= phone.valid();//获得电话的校验结果
+                   console.log("电话校验结果"+phone2);
+                    if(phone2){
+                        $("#mobile1").hide();
+                        $("#phone1").show();
+                       mobile.rules("remove");
+                    }
+                    if(!phone2){
+                        mobile.rules("add",{required:true});
+                    }
                 }
             },
             rules: {
@@ -36,11 +61,14 @@
                     accept: "image/*"
                 },
                 mobile: {   //手机
+                    required:true,
+                    maxlength:11,
                     minlength : 11,
                     isMobile : true
                 },
                 phone: { //电话
-                    isFixMobile: true
+                  required:true,
+                   isFixMobile: true
                 },
                 email: {
                     email: true
@@ -58,11 +86,12 @@
                 mobile : { //手机
                     required : "请输入手机号",
                     minlength : "确认手机不能小于11个字符",
-                    isMobile : "请正确填写您的手机号码"
+                    maxlength:"确认手机不能大于11个字符",
+                    isMobile:"请输入正确的手机号"
                 },
                 phone: {  //电话
-                    required : "请输入固定电话号码",
-                    isFixMobile: "请正确填写固定电话号码"
+                     required : "请正确填写固定电话号码(区号-8位号码)",
+                    isFixMobile:"123"
                 }
             },
             errorPlacement: function (error, element) {
@@ -468,17 +497,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="mobile" class="col-sm-4 control-label">手机号码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="mobile" class="col-sm-4 control-label">手机号码 <sup><span id="mobile1" class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="" required>
+                                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="" >
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="phone" class="col-sm-4 control-label">固定电话 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="phone"  class="col-sm-4 control-label">固定电话 <sup><span id="phone1" class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="phone" name="phone" placeholder="" required>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
