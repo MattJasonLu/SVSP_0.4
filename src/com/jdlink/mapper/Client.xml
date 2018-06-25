@@ -24,12 +24,12 @@
     </resultMap>
 
     <insert id="add" parameterType="Client" >
-        insert into client ( clientId, temporaryId, groupId, companyName,
+        insert into client ( clientId, groupId, companyName,
           organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
           materialAttachmentUrl, processAttachmentUrl, processDesp, contactName, phone, mobile,
           email, state, industry, product, checkState )
-        values (#{clientId}, #{temporaryId}, #{groupId}, #{companyName},
+        values (#{clientId}, #{groupId}, #{companyName},
           #{organizationCode}, #{licenseCode}, #{representative}, #{postCode}, #{enterpriseType},
           #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
           #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
@@ -104,6 +104,10 @@
 
     <update id="setCheckStateFinished" parameterType="String">
         UPDATE client SET checkState='Finished' WHERE clientId=#{clientId};
+    </update>
+
+    <update id="setCheckStateBacked" parameterType="String">
+        UPDATE client SET checkState='Backed' WHERE clientId=#{clientId};
     </update>
 
     <update id="assignSalesman" parameterType="Client">

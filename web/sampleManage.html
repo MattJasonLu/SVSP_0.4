@@ -43,24 +43,31 @@
                     case (2):
                         $(this).html(obj.appointId);
                         break;
-                        // 公司名称
+                        //样品状态
                     case (3):
+                       if(obj.state!=null){
+                     obj.name= obj.state.name;
+                       }
+                       $(this).html(obj.name);
+                        break;
+                        // 公司名称
+                    case (4):
                         $(this).html(obj.companyName);
                         break;
                         // 样品名称
-                    case (4):
+                    case (5):
                         $(this).html(obj.productName);
                         break;
                         // 危废代码
-                    case (5):
+                    case (6):
                         $(this).html(obj.code);
                         break;
                         // 联系人
-                    case (6):
+                    case (7):
                         $(this).html(obj.contactName);
                         break;
                         // 联系方式
-                    case (7):
+                    case (8):
                         $(this).html(obj.telephone);
                         break;
 
@@ -212,6 +219,7 @@
                         <th></th>
                         <th>操作</th>
                         <th>样品预约号</th>
+                        <th>样品状态</th>
                         <th>公司名称</th>
                         <th>样品名称</th>
                         <th>危废代码</th>
@@ -233,16 +241,17 @@
                                     <li><a href="#" onclick="viewSample(this);">查看</a></li>
                                     <li><a href="#" onclick="adjustSample(this);">修改信息</a></li>
                                     <li><a href="#" onclick="checkSample(this);">登记收样</a></li>
-                                    <li><a href="#" onclick="deleteSample(this);">删除</a></li>
+                                    <li><a href="#" onclick="deleteSample(this);">作废</a></li>
                                 </ul>
                             </div>
                         </td>
-                        <td>ipsum</td>
-                        <td>dolor</td>
-                        <td>sit</td>
-                        <td>amet</td>
-                        <td>consectetur</td>
-                        <td>dolor</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -847,15 +856,15 @@
         });
     }
     /**
-     * 删除预约单
+     * 删除预约单----->改作废
      */
     function deleteSample(menu) {
         var id = getAppointIdByMenu(menu);
-        var msg = "是否删除该条记录？";
+        var msg = "是否作废该条记录？";
         if (confirm(msg)==true) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "deleteSampleAppoint",              // url
+                url: "cancelSampleAppoint",              // url
                 async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: {
                     'appointId': id

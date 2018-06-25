@@ -4,15 +4,16 @@ import com.jdlink.util.CodeBaseEnum;
 
 /**
  * Created by matt on 2018/5/8.
+ * 样品预约单状态
  */
 public enum ApplyState implements CodeBaseEnum {
     ToSignIn("待签收", 1),
     SignedIn("已签收", 2),
     Backed("已退回", 3),
-
     Appointed("已预约", 4),
     SampleTaked("已取样", 5),
     Canceld("预约取消", 6),
+    Invalid("已作废",7),
     ;
 
     @Override

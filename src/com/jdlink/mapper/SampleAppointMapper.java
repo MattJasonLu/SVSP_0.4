@@ -32,4 +32,6 @@ public interface SampleAppointMapper {
 
     void setCanceld(SampleAppoint sampleAppoint);
 
+    void updateApplyState(String appointId);
+
 }

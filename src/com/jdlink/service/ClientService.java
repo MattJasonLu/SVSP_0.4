@@ -52,6 +52,8 @@ public interface ClientService {
 
     void setCheckStateFinished(String clientId);
 
+    void setCheckStateBacked(String clientId);
+
     int count();
 
 }
