@@ -26,15 +26,7 @@
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
-                    var formType = $("#formType");
-                    formType.children().remove();
-                    $.each(data.formTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        formTypee.append(option);
-                    });
-                    formType.get(0).selectedIndex = -1;
+                    console.log(data);
                     var formType = $("#formType");
                     formType.children().remove();
                     $.each(data.formTypeStrList, function (index, item) {
@@ -43,7 +35,9 @@
                         option.text(item.name);
                         formType.append(option);
                     });
-                    smellTypeRecord.get(0).selectedIndex = -1;
+                    formType.get(0).selectedIndex = -1;
+
+
                     var smellType = $("#smellType");
                     smellType.children().remove();
                     $.each(data.smellTypeStrList, function (index, item) {
@@ -52,7 +46,8 @@
                         option.text(item.name);
                         smellType.append(option);
                     });
-                    solubilityRecord.get(0).selectedIndex = -1;
+                    smellType.get(0).selectedIndex = -1;
+
                     var solubility = $("#solubility");
                     solubility.children().remove();
                     $.each(data.solubilityStrList, function (index, item) {
@@ -61,7 +56,7 @@
                         option.text(item.name);
                         solubility.append(option);
                     });
-
+                    solubility.get(0).selectedIndex = -1;
                 } else {
                     console.log(result);
                 }
@@ -112,40 +107,7 @@
             size: 4
         });
     });
-    // 页面准备完成后载入客户信息
-    $(document).ready(function(){
-        // 添加客户信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getWastesId",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-//                    console.log("success: " + result);
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var clientList = $("#model-companyName");
-                    // 清空遗留元素
-                    clientList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.clientId);
-                        option.text(item.companyName);
-                        clientList.append(option);
-                    });
-                    $('.selectpicker').selectpicker('refresh');
-                } else {
-                    console.log(result);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    });
+
 </script>
 <style>
     .focus {
@@ -252,13 +214,17 @@
                                     <td class="text-center" rowspan="11"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center" rowspan="11">
                                         <div class="btn-group">
-                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="wasteId" name="wasteId"></select>
+                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code">
+                                                <option value="0001">0001-危废01</option>
+                                            </select>
                                         </div>
                                     </td>
                                     <td class="text-center" rowspan="2">物质形态</td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="--请选择--&nbsp;" id="formType" name="formType"></select>
+                                            <select class="form-control" id="formType" name="formType">
+                                                <option value="0">--请选择--</option>
+                                            </select>
                                         </div>
                                     </td>
                                     <td class="text-center" colspan="6">
@@ -287,7 +253,9 @@
                                     <td class="text-center" rowspan="2">物质气味</td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="--请选择--&nbsp;" id="smellType" name="smellType"></select>
+                                            <select class="form-control" id="smellType" name="smellType">
+                                                <option value="0">--请选择--</option>
+                                            </select>
                                         </div>
                                     </td>
                                     <td class="text-center">最低</td>
@@ -323,7 +291,9 @@
                                     <td class="text-center" rowspan="2">可溶性</td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="--请选择--&nbsp;" id="solubility" name="solubility"></select>
+                                            <select class="form-control" id="solubility" name="solubility">
+                                                <option value="0">--请选择--</option>
+                                            </select>
                                         </div>
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
