@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>客户新增</title>
+    <script src="../js/jquery/2.0.0/jquery.2.0.0.js"></script>
     <script src="../js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="../js/jquery/2.0.0/jquery.confirm.js"></script>
     <script src="../js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="../css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="../js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -34,6 +36,41 @@
         var num = parseInt(id)+1;
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.insertAfter(tr);
+    }
+    function Confirm() {
+            $.confirm({
+                title: '提示！',
+                content: "感谢贵公司的支持，北控安耐得环保科技发展常州有限公司将上以述资料作为运输" +
+                "、储存和处理依据，为了保证我司员工之安全，请您再次确认上述数氢的准确性！" +
+                "<br>"+"如确认无误，请打印盖章后，在列表界面中上传其扫描件，同时随附如下文件：" +
+                "1.请提供《环境影响评价报告表/书》中的“工艺流程与产废环节”相关章节内容(必须提供)"+"<br>"
+                +"2.请提供危险废物成分检测报告(非必须，有则提供)",
+                buttons: {
+                    ok: {
+                        text: "打印",//打印按钮
+                        btnClass: 'btn-primary',
+                        keys: ['enter'],
+                        action: function(){
+                            bdhtml=window.document.body.innerHTML;
+                            sprnstr="<!--startprint-->"; //开始打印标识字符串有17个字符
+                            eprnstr="<!--endprint-->"; //结束打印标识字符串
+                            prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); //从开始打印标识之后的内容
+                            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); //截取开始标识和结束标识之间的内容
+                            window.document.body.innerHTML=prnhtml; //把需要打印的指定内容赋给body.innerHTML
+                            window.print(); //调用浏览器的打印功能打印指定区域
+                            window.document.body.innerHTML=bdhtml; // 最后还原页面
+                        }
+                    },
+                    cancel: {
+                        text: "关闭",//关闭按钮(实为提交数据)
+                        btnClass: 'btn-primary',
+                        keys: ['esc'],
+                        action:function () {
+                            alert("你点击了关闭按钮！")
+                        }
+                    }
+                }
+            },{});
     }
 </script>
 <body>
@@ -91,6 +128,7 @@
                     <li class="active">调查表新增</li>
                 </ol>
             </div>
+            <!--startprint-->
             <h2 class="sub-header">调查表新增</h2>
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
@@ -124,27 +162,27 @@
                                     <td rowspan="6">1</td>
                                     <td rowspan="6" style="width: 270px"><input type="text" style="width:256px" class="focus"></td>
                                     <td rowspan="6" style="width: 120px" align="left">
-                                        <input type="checkbox">毒性<br>
-                                        <input type="checkbox">易燃<br>
-                                        <input type="checkbox">酸性<br>
-                                        <input type="checkbox">碱性<br>
-                                        <input type="checkbox">易爆性<br>
-                                        <input type="checkbox">氧化性<br>
-                                        <input type="checkbox">还原性<br>
-                                        <input type="checkbox">遇水易燃<br>
-                                        <input type="checkbox">遇水易释放有毒气体<br>
-                                        <input type="checkbox">接触空气可发生自燃<br>
+                                        <input type="checkbox" name="Virulence">毒性<br>
+                                        <input type="checkbox" name="Flammable">易燃<br>
+                                        <input type="checkbox" name="Sour">酸性<br>
+                                        <input type="checkbox" name="Alkaline">碱性<br>
+                                        <input type="checkbox" name="Explosion">易爆性<br>
+                                        <input type="checkbox" name="Oxidability">氧化性<br>
+                                        <input type="checkbox" name="Reducibility">还原性<br>
+                                        <input type="checkbox" name="WaterFlammable">遇水易燃<br>
+                                        <input type="checkbox" name="WaterVirulence">遇水易释放有毒气体<br>
+                                        <input type="checkbox" name="AirFlammable">接触空气可发生自燃<br>
                                     </td>
                                     <td rowspan="6" style="width: 200px" align="left">
-                                        <input type="checkbox">防护眼镜<br>
-                                        <input type="checkbox">防护服<br>
-                                        <input type="checkbox">防护面罩<br>
+                                        <input type="checkbox" name="ProtectiveGlasses">防护眼镜<br>
+                                        <input type="checkbox" name="ProtectiveGarment">防护服<br>
+                                        <input type="checkbox" name="ProtectiveMask">防护面罩<br>
                                         <ul><span style="font-weight: bold;font-size: 18px">呼吸保护</span><br>
-                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus">半面罩</li><br>
-                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus">全面罩</li><br>
-                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus">正压呼吸器</li><br>
+                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus" name="HalfMask">半面罩</li><br>
+                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus" name="CoverMask">全面罩</li><br>
+                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus" name="PositiveRespirator">正压呼吸器</li><br>
                                         </ul>
-                                        <input type="checkbox" class="focus">防护手套<br>
+                                        <input type="checkbox" class="focus" name="ProtectiveGloves">防护手套<br>
                                     </td>
                                     <td style="width: 130px">若不慎入眼</td><br>
                                     <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
@@ -183,11 +221,12 @@
                 </div>
                 <div class="row text-center">
                     <a class="btn btn-primary" href="questionnaire3.html">上一页</a>
+                    <button type="button" class="btn btn-primary" onclick="Confirm()">提交</button>
                     <a class="btn btn-danger" href="../questionnaireManage.html">返回</a>
                 </div>
             </form>
+            <!--endprint-->
         </div>
-
     </div>
 
 

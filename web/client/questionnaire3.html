@@ -16,6 +16,61 @@
     <script src="../js/bootstrap/defaults-zh_CN.min.js"></script>
 </head>
 <script>
+    function loadSelectList() {
+        // 设置下拉列表
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getQuestionnaireSelectedList",                  // url
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var formType = $("#formType");
+                    formType.children().remove();
+                    $.each(data.formTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        formTypee.append(option);
+                    });
+                    formType.get(0).selectedIndex = -1;
+                    var formType = $("#formType");
+                    formType.children().remove();
+                    $.each(data.formTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        formType.append(option);
+                    });
+                    smellTypeRecord.get(0).selectedIndex = -1;
+                    var smellType = $("#smellType");
+                    smellType.children().remove();
+                    $.each(data.smellTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        smellType.append(option);
+                    });
+                    solubilityRecord.get(0).selectedIndex = -1;
+                    var solubility = $("#solubility");
+                    solubility.children().remove();
+                    $.each(data.solubilityStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        solubility.append(option);
+                    });
+
+                } else {
+                    console.log(result);
+                }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
     /**
      * 增加新行
      */
@@ -203,18 +258,12 @@
                                     <td class="text-center" rowspan="2">物质形态</td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                <span>--请选择--&nbsp;</span><span class="
-    glyphicon glyphicon-chevron-down"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><span class="#">。。。</span></li>
-                                            </ul>
+                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="--请选择--&nbsp;" id="formType" name="formType"></select>
                                         </div>
                                     </td>
                                     <td class="text-center" colspan="6">
-                                        <input maxlength="8" type="radio" name="1">均质&nbsp;
-                                        <input maxlength="8" type="radio" name="1">混合多项物
+                                        <input maxlength="8" type="radio" name="isOrganic_1">均质&nbsp;
+                                        <input maxlength="8" type="radio" name="isOrganic_1">混合多项物
                                     </td>
                                     <td class="text-center">组份</td>
                                     <td class="text-center">有机</td>
@@ -225,39 +274,33 @@
                                     <td class="text-center" rowspan="2" colspan="3">混合多项物混合成分</td>
                                     <td class="text-center" colspan="3">预估含量(%)</td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="checkbox">氯
+                                        <input maxlength="8" type="checkbox" name="Chlorine">氯
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="2">
+                                        <input maxlength="8" type="radio" name="isOrganic_2">
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="2">
+                                        <input maxlength="8" type="radio" name="isOrganic_2">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center" rowspan="2">物质气味</td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                <span>--请选择--&nbsp;</span><span class="
-    glyphicon glyphicon-chevron-down"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><span class="#">。。。</span></li>
-                                            </ul>
+                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="--请选择--&nbsp;" id="smellType" name="smellType"></select>
                                         </div>
                                     </td>
                                     <td class="text-center">最低</td>
                                     <td class="text-center">平均</td>
                                     <td class="text-center">最高</td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="checkbox">氟
+                                        <input maxlength="8" type="checkbox" name="Fluorine">氟
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="3">
+                                        <input maxlength="8" type="radio" name="isOrganic_3">
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="3">
+                                        <input maxlength="8" type="radio" name="isOrganic_3">
                                     </td>
                                 </tr>
                                 <tr>
@@ -267,26 +310,20 @@
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="checkbox">溴
+                                        <input maxlength="8" type="checkbox" name="Bromine">溴
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="4">
+                                        <input maxlength="8" type="radio" name="isOrganic_4">
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="4">
+                                        <input maxlength="8" type="radio" name="isOrganic_4">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center" rowspan="2">可溶性</td>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                <span>--请选择--&nbsp;</span><span class="
-    glyphicon glyphicon-chevron-down"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><span class="#">。。。</span></li>
-                                            </ul>
+                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="--请选择--&nbsp;" id="solubility" name="solubility"></select>
                                         </div>
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
@@ -294,13 +331,13 @@
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="checkbox">碘
+                                        <input maxlength="8" type="checkbox" name="Iodine">碘
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="5">
+                                        <input maxlength="8" type="radio" name="isOrganic_5">
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="5">
+                                        <input maxlength="8" type="radio" name="isOrganic_5">
                                     </td>
                                 </tr>
                                 <tr>
@@ -310,50 +347,50 @@
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="checkbox">硫
+                                        <input maxlength="8" type="checkbox" name="Sulphur">硫
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="6">
+                                        <input maxlength="8" type="radio" name="isOrganic_6">
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="6">
+                                        <input maxlength="8" type="radio" name="isOrganic_6">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center" rowspan="2">储存温度</td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="9">常温
+                                        <input maxlength="8" type="radio" name="isLowTemp_0" value="false">常温
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="checkbox">磷
+                                        <input maxlength="8" type="checkbox" name="Phosphorus">磷
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="7">
+                                        <input maxlength="8" type="radio" name="isOrganic_7">
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="7">
+                                        <input maxlength="8" type="radio" name="isOrganic_7">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="9">低温<input maxlength="8" type="text" class="focus" style="width:50px">℃
+                                        <input maxlength="8" type="radio" name="isLowTemp_0" value="true">低温<input maxlength="8" type="text" class="focus" style="width:50px">℃
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px"></td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="checkbox">氮
+                                        <input maxlength="8" type="checkbox" name="Nitrogen">氮
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="8">
+                                        <input maxlength="8" type="radio" name="isOrganic_8">
                                     </td>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="8">
+                                        <input maxlength="8" type="radio" name="isOrganic_8">
                                     </td>
                                 </tr>
                                 <tr>

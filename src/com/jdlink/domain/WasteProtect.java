@@ -6,7 +6,7 @@ package com.jdlink.domain;
 public enum WasteProtect {
     ProtectiveGlasses("防护眼镜", 1),
     ProtectiveGarment("防护服", 2),
-    ProtectiveMask("防护面罩呼吸保护", 3),
+    ProtectiveMask("防护面罩", 3),
     HalfMask("半面罩", 4),
     CoverMask("全面罩", 5),
     PositiveRespirator("正压呼吸器", 6),
