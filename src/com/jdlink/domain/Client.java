@@ -131,6 +131,10 @@ public class Client {
      * 业务员
      */
     private Salesman salesman;
+    /**
+     * 客户类型
+     */
+    private ClientType clientType;
 
     public String getClientId() {
         return clientId;
@@ -362,6 +366,14 @@ public class Client {
 
     public void setSalesman(Salesman salesman) {
         this.salesman = salesman;
+    }
+
+    public ClientType getClientType() {
+        return clientType;
+    }
+
+    public void setClientType(ClientType clientType) {
+        this.clientType = clientType;
     }
 
     @Override
