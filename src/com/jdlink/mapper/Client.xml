@@ -20,6 +20,7 @@
         <result property="operationRecord" column="operationRecord" javaType="com.jdlink.domain.OperationRecord"/>
         <result property="applicationStatus" column="applicationStatus" javaType="com.jdlink.domain.ApplicationStatus"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
+        <result property="clientType" column="clientType" javaType="com.jdlink.domain.ClientType"/>
         <association property="salesman" javaType="Salesman" resultMap="SalesmanRM"/>
     </resultMap>
 
