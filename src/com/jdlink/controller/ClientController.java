@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.ClientService;
+import com.sun.deploy.util.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -131,7 +133,7 @@ public class ClientController {
         }
     }
 
-    @RequestMapping("submitClientById")
+    @RequestMapping("submitClientById")//提交客户备案
     @ResponseBody
     public String submitClientById(String clientId) {
         JSONObject res = new JSONObject();
@@ -217,15 +219,25 @@ public class ClientController {
         res.put("supplierTypeStrList", array7);
         return res.toString();
     }
-
+//业务员分配
     @RequestMapping("getClient")
     @ResponseBody
     public String getClient(String id) {
-        Client client = clientService.getByClientId(id);
+        Client client = clientService.getByClientId(id);//获得用户
         JSONObject res = JSONObject.fromBean(client);
         return res.toString();
     }
+    @RequestMapping("getClient1")
+    @ResponseBody
+    public String getClient1(String[] clientArray) {
+        for (String s:clientArray) {
+            System.out.println(s);
+        }
 
+       // JSONObject res = JSONObject.fromBean(client);
+       //return res.toString();
+        return  null;
+    }
     @RequestMapping("enableClient")
     @ResponseBody
     public String enableClient(String clientId) {
@@ -334,7 +346,7 @@ public class ClientController {
         return res.toString();
     }
 
-    @RequestMapping("assignSalesman")
+    @RequestMapping("assignSalesman")//分配业务员到客户属性中
     @ResponseBody
     public String assignSalesman(@RequestBody Client client) {
         JSONObject res = new JSONObject();
