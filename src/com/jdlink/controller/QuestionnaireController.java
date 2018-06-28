@@ -151,6 +151,28 @@ public class QuestionnaireController {
     }
 
     /**
+     * 保存问卷页面4的信息
+     * @param questionnaire 问卷对象
+     * @return 成功与否
+     */
+    @RequestMapping("client/savePage4Info")
+    @ResponseBody
+    public String savePage4Info(@RequestBody Questionnaire questionnaire) {
+        JSONObject res = new JSONObject();
+        try {
+
+            res.put("status", "success");
+            res.put("message", "页面4数据保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "页面4数据保存失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取问卷编号
      * @return 问卷编号
      */
