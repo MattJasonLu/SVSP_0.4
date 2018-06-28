@@ -78,7 +78,7 @@ public class WasteProcess {
     }
 
     public String getLastProcessTimeStr() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String time;
         try {
             time = simpleDateFormat.format(lastProcessTime);
