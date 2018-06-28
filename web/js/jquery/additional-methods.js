@@ -1006,7 +1006,7 @@ jQuery.validator.addMethod("isMobile", function(value, element) {
 jQuery.validator.addMethod("isFixMobile", function(value, element) {
     var fixMobile = /^0\d{2,3}-\d{7,8}$/;
     return this.optional(element) || (fixMobile.test(value));
-}, "请正确填写固定电话号码");
+}, "请正确填写固定电话号码(区号-8位号码)");
 // 邮政编码验证   
 jQuery.validator.addMethod("isZipCode", function(value, element) {
     var tel = /^[0-9]{6}$/;

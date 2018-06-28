@@ -3,8 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.CityMapper" >
+    <resultMap id="CityRM" type="City" autoMapping="true">
+        <result property="cityid" column="cityId"></result>
+        <result property="cityname" column="cityName"></result>
+        <result property="provincedId" column="provincedId"></result>
+    </resultMap>
 
-    <select id="getCity" parameterType="String" resultType="City">
-            select cityName from   t_city  where provinceId= #{provinceId}
+    <select id="getCity" parameterType="City"  resultMap="CityRM">
+            select * from   t_city  where provinceId= #{provinceId}
         </select>
 </mapper>
