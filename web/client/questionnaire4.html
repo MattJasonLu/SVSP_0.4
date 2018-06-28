@@ -161,7 +161,7 @@
                         <div class="form-group">
                             <table class="table table-bordered">
                                 <tr>
-                                    <td>序号</td>
+                                    <td width="50px">序号</td>
                                     <td style="width: 270px">危废名称</td>
                                     <td>特性</td>
                                     <td>危废处理个人防护</td>
@@ -169,7 +169,7 @@
                                 </tr>
                                 <tr>
                                     <td rowspan="6">1</td>
-                                    <td rowspan="6" style="width: 270px"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
+                                    <td rowspan="6" style="width: 270px" onclick="focusInput(this);"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
                                     <td rowspan="6" style="width: 120px" align="left">
                                         <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Virulence">毒性<br>
                                         <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Flammable">易燃<br>
@@ -229,6 +229,14 @@
     </div>
 </body>
 <script>
+    /**
+     * 聚焦输入框
+     * @param e
+     */
+    function focusInput(e) {
+        // console.log("you click the td!");
+        e.firstChild.focus();
+    }
     function savePage4Info(e) {
         // 获取按钮的名字
         var btnName = e.innerHTML;

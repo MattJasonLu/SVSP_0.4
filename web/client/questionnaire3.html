@@ -220,7 +220,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center" rowspan="11">1</td>
-                                    <td class="text-center" rowspan="11"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
+                                    <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
                                     <td class="text-center" rowspan="11">
                                         <div class="btn-group">
                                             <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="deriveWastesList[0].code">
@@ -407,6 +407,14 @@
     </div>
 </body>
 <script type="text/javascript">
+    /**
+     * 聚焦输入框
+     * @param e
+     */
+    function focusInput(e) {
+        // console.log("you click the td!");
+        e.firstChild.focus();
+    }
     function savePage3Info(e) {
         // 获取按钮的名字
         var btnName = e.innerHTML;
