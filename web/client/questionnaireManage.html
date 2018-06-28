@@ -177,7 +177,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="questionnaire1.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary" href="questionnaire1.html" onclick="clearQuestionnaire();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
@@ -304,6 +304,21 @@
     </div>
 </body>
 <script type="text/javascript">
+
+    function clearQuestionnaire() {
+        $.ajax({
+            type: 'POST',
+            url: 'clearCurrentQuestionnaire',
+            async: false,
+            dataType: 'json',
+            success: function (result) {
+                console.log("信息清空");
+            },
+            error: function (result) {
+                console.log("清空失败");
+            }
+        });
+    }
     /**
      * 获取编号
      * @param item
