@@ -72,7 +72,7 @@
             dataType: "json",
             success: function (result) {
                 if (result != undefined) {
-                    console.log(result);
+                   // console.log(result);
                     setClientList(result);
                 } else {
                     console.log("fail: " + result);
@@ -98,7 +98,7 @@
             dataType: "json",
             success: function (result) {
                 if (result != undefined) {
-                    console.log(result);
+                   // console.log(result);
                     setClientList(result);
                 } else {
                     console.log("fail: " + result);
@@ -108,6 +108,85 @@
                 console.log("error: " + result);
             }
         });
+    }
+
+    /***
+     * 批量分配
+     *
+     */
+    clientId1="";
+    companyName1="";
+    function  distribute(){
+       // console.log("12");
+        clientId1="";
+        companyName1="";
+        var items = $("input[type='checkbox']:checked");//判断复选框是否选中
+        if(items.length>0){
+            function getClientById(id) {
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "getClient",              // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: {
+                        'id': id
+                    },
+                    success: function (result) {
+                        if (result != undefined) {
+                            //console.log("success: " + result);
+                            clientId1+=result.clientId.toString()+" ";
+                            // clientId1.replace(/[\r\n]/g,"");
+                            //console.log(clientId1);
+                            companyName1+=result.companyName+"  ";
+                        } else {
+                            console.log("fail: " + result);
+                        }
+                    },
+                    error: function (result) {
+                        console.log("error: " + result);
+                    }
+                });
+            }
+            items.each(function () {//遍历
+                var id = getClientId1(this);
+                clientId = id;
+                getClientById(id);
+            });
+        }
+        $("#model-clientId").val(clientId1);
+        $("#model-companyName").val(companyName1);
+        // 添加客户信息
+        // 添加业务员信息
+        $.ajax({  //用来显示业务员的请求结果
+            type: "POST",                       // 方法类型
+            url: "listSalesman",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log("success: " + result);
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var salesmanList = $("#model-salesmanList");
+                    // 清空遗留元素
+                    salesmanList.children().first().siblings().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.salesmanId);//将业务员的ID添加到value属性中
+                        option.text(item.name);//在文本处显示业务员姓名
+                        salesmanList.append(option);
+                    });
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+        $('#myModal').modal('show');
     }
 </script>
 <body onload="loadClientList()">
@@ -194,7 +273,7 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="businessModel.html">商务管理</a></li>
+     V                    <li><a href="businessModel.html">商务管理</a></li>
                         <li><a href="#">客户管理</a></li>
                         <li><a href="#">业务员分配管理</a></li>
                         <li class="active">业务员分配</li>
@@ -203,7 +282,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left">
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 分配</a>
+                        <a class="btn btn-primary" onclick="distribute()"><span class="glyphicon glyphicon-user" aria-hidden="true" ></span> 分配</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
@@ -338,6 +417,9 @@
 <!--</style>-->
 <script type="text/javascript">
 
+
+
+
     var clientId;
 
     /**
@@ -375,13 +457,15 @@
     function getClientId(item) {
         return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
     }
-
+    function getClientId1(item) {
+        return item.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+    }
     /**
      * 分配业务员
      * @param item 用户
      */
-    function setSales(item) {
-        var id = getClientId(item);
+    function setSales(item) { //ajax请求
+        var id = getClientId(item);//获得客户的编号
         clientId = id;
         // 添加客户信息
         $.ajax({
@@ -406,7 +490,7 @@
             }
         });
         // 添加业务员信息
-        $.ajax({
+        $.ajax({  //用来显示业务员的请求结果
             type: "POST",                       // 方法类型
             url: "listSalesman",              // url
             cache: false,
@@ -423,8 +507,8 @@
                     salesmanList.children().first().siblings().remove();
                     $.each(data, function (index, item) {
                         var option = $('<option />');
-                        option.val(item.salesmanId);
-                        option.text(item.name);
+                        option.val(item.salesmanId);//将业务员的ID添加到value属性中
+                        option.text(item.name);//在文本处显示业务员姓名
                         salesmanList.append(option);
                     });
                 } else {
@@ -443,36 +527,79 @@
      * 分配业务员提交
      */
     function assignSales() {
-        var salesmanId = $("#model-salesmanList").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "assignSalesman",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            data: JSON.stringify({
-                'clientId': clientId,
-                'salesman': {
-                    'salesmanId': salesmanId
-                }
-            }),
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("保存成功!");
-                    window.location.reload();
-                } else {
-                    console.log("fail: " + result);
-                    alert("保存失败!");
-                }
-            },
-            error: function (result) {
-                var that = this;
-                console.log(this.data);
-                console.log("error: " + result);
-                alert("服务器异常!");
-            }
-        });
+        var salesmanId = $("#model-salesmanList").val();//获取业务员的IDd
+       if(clientId1=="") {
+           $.ajax({
+               type: "POST",                       // 方法类型
+               url: "assignSalesman",              // url
+               async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+               dataType: "json",
+               contentType: 'application/json;charset=utf-8',
+               data: JSON.stringify({
+                   'clientId': clientId,
+                   'salesman': {
+                       'salesmanId': salesmanId
+                   }
+               }),
+               success: function (result) {
+                   if (result != undefined) {
+                       console.log("success: " + result);
+                       alert("保存成功!");
+                       window.location.reload();
+                   } else {
+                       console.log("fail: " + result);
+                       alert("保存失败!");
+                   }
+               },
+               error: function (result) {
+                   var that = this;
+                   console.log(this.data);
+                   console.log("error: " + result);
+                   alert("服务器异常!");
+               }
+           });
+       }
+           if(clientId1!=""){
+               //console.log(clientId1)
+               var cilentIdArray=clientId1.split(" ");
+               for(var i=0;i<cilentIdArray.length;i++){
+                   setSales1(cilentIdArray[i]);
+                  // console.log(cilentIdArray[i]);
+               }
+               function setSales1(i){
+                   $.ajax({
+                       type: "POST",                       // 方法类型
+                       url: "assignSalesman",              // url
+                       async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                       dataType: "json",
+                       contentType: 'application/json;charset=utf-8',
+                       data: JSON.stringify({
+                           'clientId': i,
+                           'salesman': {
+                               'salesmanId': salesmanId
+                           }
+                       }),
+                       success: function (result) {
+                           if (result != undefined) {
+                               //console.log("success: " + result);
+                               window.location.reload();
+                           } else {
+                               console.log("fail: " + result);
+                               alert("保存失败!");
+                           }
+                       },
+                       error: function (result) {
+                           var that = this;
+                           // console.log(this.data);
+                           console.log("error: " + result);
+                           alert("服务器异常!");
+                       }
+                   });
+               }
+               alert("保存成功!");
+           }
+
+
     }
 
     function getIdByCheckBox(item) {
