@@ -138,7 +138,7 @@ public class QuestionnaireController {
     public String savePage3Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
-
+            QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             res.put("status", "success");
             res.put("message", "页面3数据保存成功");
         } catch (Exception e) {

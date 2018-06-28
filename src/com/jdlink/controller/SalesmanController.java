@@ -101,11 +101,11 @@ public class SalesmanController {
         return res.toString();
     }
 
-    @RequestMapping("listSalesman")
+    @RequestMapping("listSalesman")//查看业务员
     @ResponseBody
     public String listSalesman() {
         try {
-            List<Salesman> salesmanList = salesmanService.list();
+            List<Salesman> salesmanList = salesmanService.list();//查询业务员 是一个list数组
             JSONArray array = JSONArray.fromArray(salesmanList.toArray(new Salesman[salesmanList.size()]));
             // 返回结果
             return array.toString();

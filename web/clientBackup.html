@@ -488,18 +488,22 @@
                                     <button class="btn btn-default" id="modal3_materialAttachment">下载查看</button>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="modal3_processDesp" class="col-sm-4 control-label">工艺描述 </label>
-                                <div class="col-xs-5">
-                                    <textarea class="form-control focus" id="modal3_processDesp" name="processDesp" rows="3"></textarea>
-                                </div>
-                            </div>
                         </div>
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
                                 <label for="modal3_processAttachment" class="col-sm-4 control-label">工艺流程图 </label>
                                 <div class="col-xs-5">
                                     <button class="btn btn-default" id="modal3_processAttachment">下载查看</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-12">
+                            <div class="form-group">
+                                <label for="modal3_processDesp" class="col-sm-2 control-label">工艺描述 </label>
+                                <div class="col-xs-8">
+                                    <textarea class="form-control focus" id="modal3_processDesp" name="processDesp" rows="4"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -593,8 +597,8 @@
         // 添加客户信息
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getClient",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            url: "getClient",                   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: {
                 'id': id
@@ -988,17 +992,17 @@
      * 提交客户的信息
      */
     function submitClients() {
-        var items = $("input[type='checkbox']:checked");
+        var items = $("input[type='checkbox']:checked");//判断复选框是否选中
         if (items.length > 0) {
-            function submitClientById(id) {
+            function submitClientById(id) {//该方法是一个ajax请求
                 $.ajax({
                     type: "POST",                       // 方法类型
                     url: "submitClientById",            // url
                     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                     data: {
-                        'clientId': id
+                        'clientId': id//数据是json格式的
                     },
-                    dataType: "json",
+                    dataType: "json",//返回值是json字符串
                     success: function (result) {
                         if (result != undefined) {
                             console.log(result);
@@ -1011,9 +1015,9 @@
                     }
                 });
             }
-            items.each(function () {
-                var id = getIdByCheckBox($(this));
-                submitClientById(id);
+            items.each(function () {//遍历
+                var id = getIdByCheckBox($(this));//获取到了客户编号
+                submitClientById(id);//调用该方法使用ajax
             });
             alert("提交成功!");
             window.location.reload();
