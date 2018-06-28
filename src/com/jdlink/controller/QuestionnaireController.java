@@ -138,7 +138,66 @@ public class QuestionnaireController {
     public String savePage3Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
-            QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
+            // 更新危废名称、代码、物理形态、混合物列表、敏感酸性列表
+            // 新的引入物质数量
+            int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
+            int newCount = questionnaire.getDeriveWastesList().size();
+            // 如果旧数据不存在，则直接赋值
+            if (oldCount == 0) {
+                QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
+            // 如果旧数据存在，且数量小于新数据
+            } else if (oldCount <= newCount) {
+                for (int i = 0; i < oldCount; i++) {
+                    DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
+                    DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    oldDeriveWastes.setName(newDeriveWastes.getName());
+                    oldDeriveWastes.setCode(newDeriveWastes.getCode());
+                    oldDeriveWastes.setFormType(newDeriveWastes.getFormType());
+                    oldDeriveWastes.setFormTypeDetail(newDeriveWastes.getFormTypeDetail());
+                    oldDeriveWastes.setSmellType(newDeriveWastes.getSmellType());
+                    oldDeriveWastes.setSmellTypeDetail(newDeriveWastes.getSmellTypeDetail());
+                    oldDeriveWastes.setSolubility(newDeriveWastes.getSolubility());
+                    oldDeriveWastes.setSolubilityDetail(newDeriveWastes.getSolubilityDetail());
+                    oldDeriveWastes.setIsLowTemp(newDeriveWastes.getIsLowTemp());
+                    oldDeriveWastes.setIsMixture(newDeriveWastes.getIsMixture());
+                    oldDeriveWastes.setMixingElementList(newDeriveWastes.getMixingElementList());
+                    oldDeriveWastes.setSensitiveElementList(newDeriveWastes.getSensitiveElementList());
+                    // 新的混合物列表数量
+//                    int newMixCount = newDeriveWastes.getMixingElementList().size();
+//                    if (oldDeriveWastes.getMixingElementList() == null) {
+//                        oldDeriveWastes.setMixingElementList(newDeriveWastes.getMixingElementList());
+//                    } else {
+//                        int oldMixCount = oldDeriveWastes.getMixingElementList().size();
+//                        for (int j = 0; j < oldMixCount; j++) {
+//                            oldDeriveWastes.getMixingElementList().get(j).setName(newDeriveWastes.getMixingElementList().get(j).getName());
+//                            oldDeriveWastes.getMixingElementList().get(j).setMinimum(newDeriveWastes.getMixingElementList().get(j).getMinimum());
+//                            oldDeriveWastes.getMixingElementList().get(j).setAverage(newDeriveWastes.getMixingElementList().get(j).getAverage());
+//                            oldDeriveWastes.getMixingElementList().get(j).setMaximum(newDeriveWastes.getMixingElementList().get(j).getMaximum());
+//                        }
+//                        for (int j = oldMixCount; j < newMixCount; j++) {
+//                            oldDeriveWastes.getMixingElementList().add(newDeriveWastes.getMixingElementList().get(j));
+//                        }
+//                    }
+                    // 新的敏感成分列表
+//                    int newSenCount = newDeriveWastes.getSensitiveElementList().size();
+//                    if (oldDeriveWastes.getSensitiveElementList() == null) {
+//                        oldDeriveWastes.setSensitiveElementList(newDeriveWastes.getSensitiveElementList());
+//                    } else {
+//                        int oldSenCount = oldDeriveWastes.getSensitiveElementList().size();
+//                        for (int j = 0; j < oldSenCount; j++) {
+//                            oldDeriveWastes.getSensitiveElementList().get(j).setChemicalType(newDeriveWastes.getSensitiveElementList().get(j).getChemicalType());
+//                            oldDeriveWastes.getSensitiveElementList().get(j).setIsOrganic(newDeriveWastes.getSensitiveElementList().get(j).getIsOrganic());
+//                        }
+//                        for (int j = oldSenCount; j < newSenCount; j++) {
+//                            oldDeriveWastes.getSensitiveElementList().add(newDeriveWastes.getSensitiveElementList().get(j));
+//                        }
+//                    }
+                }
+                // 对于新增加的数据则直接添加
+                for (int i = oldCount; i < newCount; i++) {
+                    QuestionnaireController.questionnaire.getDeriveWastesList().add(questionnaire.getDeriveWastesList().get(i));
+                }
+            }
             res.put("status", "success");
             res.put("message", "页面3数据保存成功");
         } catch (Exception e) {
@@ -160,7 +219,29 @@ public class QuestionnaireController {
     public String savePage4Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
-
+            // 更新危废特性、防护处理和对应措施
+            int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
+            int newCount = questionnaire.getDeriveWastesList().size();
+            if (oldCount == 0) {
+                QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
+            } else if (oldCount <= newCount) {
+                for (int i = 0; i < oldCount; i++) {
+                    DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
+                    DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    oldDeriveWastes.setEyeMeasures(newDeriveWastes.getEyeMeasures());
+                    oldDeriveWastes.setSkinMeasures(newDeriveWastes.getSkinMeasures());
+                    oldDeriveWastes.setSwallowMeasures(newDeriveWastes.getSwallowMeasures());
+                    oldDeriveWastes.setSuctionMeasures(newDeriveWastes.getSuctionMeasures());
+                    oldDeriveWastes.setPutOutFireMeasures(newDeriveWastes.getSuctionMeasures());
+                    oldDeriveWastes.setPutOutFireMeasures(newDeriveWastes.getPutOutFireMeasures());
+                    oldDeriveWastes.setLeakMeasures(newDeriveWastes.getLeakMeasures());
+                    oldDeriveWastes.setWasteCharacterList(newDeriveWastes.getWasteCharacterList());
+                    oldDeriveWastes.setWasteProtectList(newDeriveWastes.getWasteProtectList());
+                }
+                for (int i = oldCount; i < newCount; i++) {
+                    QuestionnaireController.questionnaire.getDeriveWastesList().add(questionnaire.getDeriveWastesList().get(i));
+                }
+            }
             res.put("status", "success");
             res.put("message", "页面4数据保存成功");
         } catch (Exception e) {
