@@ -33,6 +33,8 @@
         var tr = $("#plusBtn").prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(1),td:eq(2),td:eq(3)").find("input").val("");
         // 获取编号
         var id = $("#plusBtn").prev().children().get(0).innerHTML;
         var num = parseInt(id);
@@ -48,6 +50,8 @@
         var tr = $("#plusBtn1").prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(4),td:eq(2),td:eq(3),td:eq(5),td:eq(6)").find("input").val("");
         // 获取编号
         var id = $("#plusBtn1").prev().children().get(0).innerHTML;
         var num = parseInt(id);
@@ -163,9 +167,9 @@
                                     </tr>
                                     <tr id="cloneTr1">
                                         <td>1</td>
-                                        <td><input type="text" class="focus" name="mainMaterial"></td>
-                                        <td><input type="text" class="focus" name="auxMaterial"></td>
-                                        <td><input type="text" class="focus" name="draginMaterial"></td>
+                                        <td><input type="text" class="focus" name="mainMaterial" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="auxMaterial" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="draginMaterial" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn">
                                         <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -313,11 +317,11 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td><input type="text" class="focus" name="description"></td>
-                                        <td><input type="text" class="focus" name="quantity"></td>
-                                        <td><input type="text" class="focus" name="lastProcessTime"></td>
-                                        <td><input type="text" class="focus" name="yearQuantity"></td>
-                                        <td><input type="text" class="focus" name="packageSituation"></td>
+                                        <td><input type="text" class="focus" name="description" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="quantity" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="lastProcessTime" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="yearQuantity" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="packageSituation" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn1">
                                         <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
