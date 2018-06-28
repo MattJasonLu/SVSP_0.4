@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>调查表管理</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+</head>
+<script type="text/javascript">
+    function setQuestionnaireList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result.data, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                        // 调查表编号
+                    case (2):
+                        $(this).html(obj.questionnaireId);
+                        break;
+                        // 企业名称
+                    case (3):
+                        $(this).html(obj.client.companyName);
+                        break;
+                        // 所属行业
+                    case (4):
+                        $(this).html(obj.client.industry);
+                        break;
+                        // 主要产品
+                    case (5):
+                        $(this).html(obj.client.product);
+                        break;
+                        // 审批状态
+                    case (6):
+                        if (obj.applyState != null)
+                            $(this).html(obj.applyState.name);
+                        break;
+                        // 填报人
+                    case (7):
+                        $(this).html(obj.author);
+                        break;
+                        // 填报日期
+                    case (8):
+                        $(this).html(obj.time);
+                        break;
+
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    function loadQuestionnaireList() {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listQuestionnaire",           // url
+            cache: false,
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    setQuestionnaireList(result);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 查询问卷
+     */
+    function searchQuestionnaire() {
+        var keyword = $("#searchContent").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchQuestionnaire",                  // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'keyword': keyword
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    setQuestionnaireList(result);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+<body onload="loadQuestionnaireList();">
+    <!--导航条-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">产废服务平台</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="clientBackup.html">客户备案</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">业务员分配管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="salesManage.html">业务员管理</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                                </ul>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sampleManage.html">客户样品登记</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="supplierBackup.html">供应商备案</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="contractManage.html">合同列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="contractTemplate.html">合同模板</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quotation.html">报价管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="cost.html">成本管理</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">一企一档</a></li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li><a href="#">待办事项</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li><a href="wastesPlatform.html">概览</a></li>
+                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">接收管理</a></li>
+                    <li><a href="#">贮存管理</a></li>
+                    <li><a href="#">预处理管理</a></li>
+                    <li><a href="#">处置管理</a></li>
+                    <li><a href="#">次生管理</a></li>
+                    <li><a href="#">基础数据</a></li>
+                    <li><a href="#">系统设置</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--面包屑导航-->
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="businessModel.html">商务管理</a></li>
+                    <li><a href="#">合同管理</a></li>
+                </ol>
+            </div>
+            <h2 class="sub-header">调查表列表</h2>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6">
+                        <a class="btn btn-primary" href="client/questionnaire1.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-xs-4 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchQuestionnaire();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <ul class="nav nav-pills">
+                <li role="presentation" class="active"><a href="contractList.html">危废合同</a></li>
+                <li role="presentation"><a href="#">应急处置合同</a></li>
+                <li role="presentation"><a href="#">物流合同</a></li>
+                <li role="presentation"><a href="#">次生合同</a></li>
+            </ul>
+            <div class="table">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>操作</th>
+                        <th>公司名称</th>
+                        <th>所属区域</th>
+                        <th>状态</th>
+                        <th>签订日期</th>
+                        <th>危废品名</th>
+                        <th>物质状态</th>
+                        <th>类别</th>
+                        <th>合约量</th>
+                        <th>总量(吨)</th>
+                        <th>联系人&电话</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="cloneTr">
+                        <td class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                            </label>
+                        </td>
+                        <td>
+                            <div class="dropdown">
+                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" onclick="viewQuestionnaire(this);">查看</a></li>
+                                    <li><a href="#" onclick="adjustQuestionnaire(this);">修改信息</a></li>
+                                    <li><a href="#" onclick="signInQuestionnaire(this);">签收</a></li>
+                                    <li><a href="#" onclick="backQuestionnaire(this);">退回</a></li>
+                                    <li><a href="#" onclick="appointModal(this);">预约送样</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td>常州***有限公司</td>
+                        <td>新北区</td>
+                        <td>履约中</td>
+                        <td>2017/12/12</td>
+                        <td>废活性炭</td>
+                        <td>固态</td>
+                        <td>265-103-13</td>
+                        <td>10</td>
+                        <td>15</td>
+                        <td>张三189****6874</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!--分页-->
+            <div class="text-center">
+                <nav class="navbar navbar-default navbar-fixed-bottom">
+                    <ul class="pagination">
+                        <li class="disabled">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预约模态框 -->
+    <div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-appoint" method="post">
+                        <div class="form-group">
+                            <label for="model-companyName" class="control-label">公司名称</label>
+                            <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-contactName" class="control-label">联系人</label>
+                            <input type="text" class="form-control" id="model-contactName" name="contactName">
+                        </div>
+                        <div class="form-group">
+                            <label for="model-contactPhone" class="control-label">联系电话</label>
+                            <input type="text" class="form-control" id="model-contactPhone" name="contactPhone">
+                        </div>
+                        <div class="form-group">
+                            <label for="dtp_input1" class="control-label">取样时间</label>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
+                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                            <input type="hidden" id="dtp_input1" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="model-comment" class="control-label">备注</label>
+                            <div>
+                                <textarea class="form-control" id="model-comment" name="model-comment" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="addAppoint(this);">预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    /**
+     * 获取编号
+     * @param item
+     * @returns {string}
+     */
+    function getQuestionnaireId(item) {
+        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
+    function getCompanyName(item) {
+        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+    }
+    function viewQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        alert("待完善");
+    }
+    function adjustQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        alert("待完善");
+    }
+    /**
+     * 签收问卷
+     */
+    function signInQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "signInQuestionnaire",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("签收成功");
+                    window.location.reload();
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 退回问卷
+     * @param item
+     */
+    function backQuestionnaire(item) {
+        var id = getQuestionnaireId(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "backQuestionnaire",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("退回成功");
+                    window.location.reload();
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    /**
+     * 签收勾选问卷
+     */
+    function signInQuestionnaireByCheckBox() {
+        var items = $("input[type='checkbox']:checked");
+
+        function signInQuestionnaireById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "signInQuestionnaire",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
+        if (items.length > 0) {
+            items.each(function () {
+                var id = getIdByCheckBox($(this));
+                signInQuestionnaireById(id);
+            });
+            alert("签收成功");
+            window.location.reload();
+        } else {
+            alert("未选择任何调查表");
+        }
+    }
+    /**
+     * 退回勾选问卷
+     */
+    function backQuestionnaireByCheckBox() {
+        var items = $("input[type='checkbox']:checked");
+
+        function backQuestionnaireById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "backQuestionnaire",           // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
+        if (items.length > 0) {
+            items.each(function () {
+                var id = getIdByCheckBox($(this));
+                backQuestionnaireById(id);
+            });
+            alert("退回成功");
+            window.location.reload();
+        } else {
+            alert("未选择任何调查表");
+        }
+    }
+    /**
+     * 通过勾选框获取编号
+     * @param item
+     * @returns {*}
+     */
+    function getIdByCheckBox(item) {
+        return item.parent().parent().next().next().text();
+    }
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii:ss',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        showMeridian: 1
+    });
+    /**
+     * 显示预约框
+     */
+    function appointModal(item) {
+        var companyName = getCompanyName(item);
+        $("#model-companyName").val(companyName);
+        // 显示框体
+        $('#appointModal').modal('show');
+    }
+    /**
+     * 增加预约单
+     */
+    function addAppoint() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "addSampleAppoint",                       // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify($('#model-appoint').serializeJSON()),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    alert("保存成功!");
+                    window.location.reload();
+                } else {
+                    alert("保存失败!");
+                }
+            },
+            error:function(data,type, err){
+                var that = this;
+                console.log(that.data);
+                console.log("ajax错误类型："+type);
+                console.log(err);
+                alert("服务器异常!");
+            }
+        });
+    }
+</script>
+</html>
