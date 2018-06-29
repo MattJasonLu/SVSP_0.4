@@ -89,6 +89,8 @@ public class QuestionnaireController {
             // 设置问卷的编号
             QuestionnaireController.questionnaire.setQuestionnaireId(questionnaire.getQuestionnaireId());
             // 设置问卷的归属客户信息
+            // 更新id
+            questionnaire.getClient().setClientId(clientService.getByName(questionnaire.getClient().getCompanyName()).getClientId());
             QuestionnaireController.questionnaire.setClient(questionnaire.getClient());
             // 设置问卷的填报人
             QuestionnaireController.questionnaire.setAuthor(questionnaire.getAuthor());
