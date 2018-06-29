@@ -152,41 +152,44 @@
                 clientId = id;
                 getClientById(id);
             });
-        }
-        $("#model-clientId").val(clientId1);
-        $("#model-companyName").val(companyName1);
-        // 添加客户信息
-        // 添加业务员信息
-        $.ajax({  //用来显示业务员的请求结果
-            type: "POST",                       // 方法类型
-            url: "listSalesman",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    // console.log("success: " + result);
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var salesmanList = $("#model-salesmanList");
-                    // 清空遗留元素
-                    salesmanList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.salesmanId);//将业务员的ID添加到value属性中
-                        option.text(item.name);//在文本处显示业务员姓名
-                        salesmanList.append(option);
-                    });
-                } else {
-                    console.log("fail: " + result);
+            $("#model-clientId").val(clientId1);
+            $("#model-companyName").val(companyName1);
+            // 添加客户信息
+            // 添加业务员信息
+            $.ajax({  //用来显示业务员的请求结果
+                type: "POST",                       // 方法类型
+                url: "listSalesman",              // url
+                cache: false,
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log("success: " + result);
+                        var data = eval(result);
+                        // 各下拉框数据填充
+                        var salesmanList = $("#model-salesmanList");
+                        // 清空遗留元素
+                        salesmanList.children().first().siblings().remove();
+                        $.each(data, function (index, item) {
+                            var option = $('<option />');
+                            option.val(item.salesmanId);//将业务员的ID添加到value属性中
+                            option.text(item.name);//在文本处显示业务员姓名
+                            salesmanList.append(option);
+                        });
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
                 }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-        $('#myModal').modal('show');
+            });
+            $('#myModal').modal('show');
+        }
+else {
+            alert("请勾选业务员");
+        }
     }
 </script>
 <body onload="loadClientList()">
@@ -283,7 +286,7 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-     V                    <li><a href="businessModel.html">商务管理</a></li>
+                        <li><a href="businessModel.html">商务管理</a></li>
                         <li><a href="#">客户管理</a></li>
                         <li><a href="#">业务员分配管理</a></li>
                         <li class="active">业务员分配</li>
