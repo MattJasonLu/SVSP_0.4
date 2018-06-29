@@ -98,6 +98,15 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li><a href="#">待办事项</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div><!--/.nav-collapse  -->
         </div>
     </nav>
@@ -152,7 +161,7 @@
                         <div class="form-group">
                             <table class="table table-bordered">
                                 <tr>
-                                    <td>序号</td>
+                                    <td width="50px">序号</td>
                                     <td style="width: 270px">危废名称</td>
                                     <td>特性</td>
                                     <td>危废处理个人防护</td>
@@ -160,77 +169,153 @@
                                 </tr>
                                 <tr>
                                     <td rowspan="6">1</td>
-                                    <td rowspan="6" style="width: 270px"><input type="text" style="width:256px" class="focus"></td>
+                                    <td rowspan="6" style="width: 270px" onclick="focusInput(this);"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
                                     <td rowspan="6" style="width: 120px" align="left">
-                                        <input type="checkbox" name="Virulence">毒性<br>
-                                        <input type="checkbox" name="Flammable">易燃<br>
-                                        <input type="checkbox" name="Sour">酸性<br>
-                                        <input type="checkbox" name="Alkaline">碱性<br>
-                                        <input type="checkbox" name="Explosion">易爆性<br>
-                                        <input type="checkbox" name="Oxidability">氧化性<br>
-                                        <input type="checkbox" name="Reducibility">还原性<br>
-                                        <input type="checkbox" name="WaterFlammable">遇水易燃<br>
-                                        <input type="checkbox" name="WaterVirulence">遇水易释放有毒气体<br>
-                                        <input type="checkbox" name="AirFlammable">接触空气可发生自燃<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Virulence">毒性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Flammable">易燃<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Sour">酸性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Alkaline">碱性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Explosion">易爆性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Oxidability">氧化性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Reducibility">还原性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="WaterFlammable">遇水易燃<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="WaterVirulence">遇水易释放有毒气体<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="AirFlammable">接触空气可发生自燃<br>
                                     </td>
                                     <td rowspan="6" style="width: 200px" align="left">
-                                        <input type="checkbox" name="ProtectiveGlasses">防护眼镜<br>
-                                        <input type="checkbox" name="ProtectiveGarment">防护服<br>
-                                        <input type="checkbox" name="ProtectiveMask">防护面罩<br>
-                                        <ul><span style="font-weight: bold;font-size: 18px">呼吸保护</span><br>
-                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus" name="HalfMask">半面罩</li><br>
-                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus" name="CoverMask">全面罩</li><br>
-                                            <li style="margin-bottom:5px"><input type="checkbox" class="focus" name="PositiveRespirator">正压呼吸器</li><br>
-                                        </ul>
-                                        <input type="checkbox" class="focus" name="ProtectiveGloves">防护手套<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveGlasses">防护眼镜<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveGarment">防护服<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveMask">防护面罩<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="HalfMask">半面罩<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="CoverMask">全面罩<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="PositiveRespirator">正压呼吸器<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveGloves">防护手套<br>
                                     </td>
                                     <td style="width: 130px">若不慎入眼</td><br>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 130px">若接触到皮肤</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 130px">若吞食</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 130px">若吸入</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 130px">灭火方法</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 130px">泄露处理方法</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus"></td>
-                                </tr>
-                                <tr>
-                                    <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
                 <div class="row text-center">
-                    <a class="btn btn-primary" href="questionnaire3.html">上一页</a>
-                    <button type="button" class="btn btn-primary" onclick="Confirm()">提交</button>
+                    <a class="btn btn-primary" onclick="savePage4Info(this);">上一页</a>
+                    <button type="button" class="btn btn-primary" onclick="savePage4Info(this);">提交</button>
                     <a class="btn btn-danger" href="../questionnaireManage.html">返回</a>
                 </div>
             </form>
             <!--endprint-->
         </div>
     </div>
-
-
 </body>
+<script>
+    /**
+     * 聚焦输入框
+     * @param e
+     */
+    function focusInput(e) {
+        // console.log("you click the td!");
+        e.firstChild.focus();
+    }
+    function savePage4Info(e) {
+        // 获取按钮的名字
+        var btnName = e.innerHTML;
+        // 制作json数据
+        var data = {};
+        data['questionnaireId'] = $("input[name='questionnaireId']").val();
+        // 获取引入化学物质的数量
+        // TODO: 数量修改为从上一个页面获取
+        var deriveWastesCount = 1;
+        for (var i = 0; i < deriveWastesCount; i++) {
+            var $i = i;
+            // 可能引入化学物质列表
+            data['deriveWastesList'] = [];
+            var deriveWastes = {};
+            deriveWastes.eyeMeasures = $("input[name='deriveWastesList[" + $i + "].eyeMeasures']").val();
+            deriveWastes.skinMeasures = $("input[name='deriveWastesList[" + $i + "].skinMeasures']").val();
+            deriveWastes.swallowMeasures = $("input[name='deriveWastesList[" + $i + "].swallowMeasures']").val();
+            deriveWastes.suctionMeasures = $("input[name='deriveWastesList[" + $i + "].suctionMeasures']").val();
+            deriveWastes.putOutFireMeasures = $("input[name='deriveWastesList[" + $i + "].putOutFireMeasures']").val();
+            deriveWastes.leakMeasures = $("input[name='deriveWastesList[" + $i + "].leakMeasures']").val();
+            deriveWastes['wasteCharacterList'] = [];
+            deriveWastes['wasteProtectList'] = [];
+
+            // 特性列表
+            var wasteCharacterList = $("input[name^='deriveWastesList[" + $i + "]'][name*='wasteCharacterList']:checked");
+            wasteCharacterList.each(function () {
+                console.log($(this).val());
+                deriveWastes.wasteCharacterList.push($(this).val());
+            });
+            // 防护措施列表
+            var wasteProtectList = $("input[name^='deriveWastesList[" + $i + "]'][name*='wasteProtectList']:checked");
+            wasteProtectList.each(function(){
+                deriveWastes.wasteProtectList.push($(this).val());
+            });
+
+            data['deriveWastesList'].push(deriveWastes);
+        }
+        console.log(data);
+
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "savePage4Info",               // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+            traditional: true,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        if (btnName == "提交") {
+                            $.ajax({
+                                type: "POST",
+                                url: "addQuestionnaire",
+                                async: false,
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.status == "success") {
+                                        alert(result.message);
+                                        $(location).attr('href', 'questionnaireManage.html');
+                                    }
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                    alert("服务器异常");
+                                    console.log("错误信息:" + XMLHttpRequest.responseText);
+                                }
+                            });
+                        }
+                        else if (btnName == "上一页") $(location).attr('href', 'questionnaire3.html');
+                    } else { }
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log("错误信息:" + XMLHttpRequest.responseText);
+            }
+        });
+    }
+</script>
 <style>
     table th, table td {
         vertical-align: middle!important;

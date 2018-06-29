@@ -150,6 +150,15 @@
                         </ul>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li><a href="#">待办事项</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div><!--/.nav-collapse -->
         </div>
     </nav>
@@ -211,7 +220,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center" rowspan="11">1</td>
-                                    <td class="text-center" rowspan="11"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
+                                    <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
                                     <td class="text-center" rowspan="11">
                                         <div class="btn-group">
                                             <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="deriveWastesList[0].code">
@@ -341,7 +350,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="isLowTemp" value="true">低温<input maxlength="8" type="text" class="focus" style="width:50px">℃
+                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" class="focus" style="width:50px">℃
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].name"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
@@ -380,6 +389,10 @@
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].average"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].maximum"></td>
                                 </tr>
+                                <tr id="plusBtn">
+                                    <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                    <td colspan="13"></td>
+                                </tr>
                             </table>
                         </div>
                     </div>
@@ -394,6 +407,14 @@
     </div>
 </body>
 <script type="text/javascript">
+    /**
+     * 聚焦输入框
+     * @param e
+     */
+    function focusInput(e) {
+        // console.log("you click the td!");
+        e.firstChild.focus();
+    }
     function savePage3Info(e) {
         // 获取按钮的名字
         var btnName = e.innerHTML;
@@ -415,10 +436,10 @@
             deriveWastes.smellTypeDetail = $("input[name='deriveWastesList[" + $i + "].smellTypeDetail']").val();
             deriveWastes.solubility = $("select[name='deriveWastesList[" + $i + "].solubility']").val();
             deriveWastes.solubilityDetail = $("input[name='deriveWastesList[" + $i + "].solubilityDetail']").val();
-            deriveWastes.isLowTemp = $("input[name='deriveWastesList[" + $i + "].isLowTemp']").val();
+            deriveWastes.isLowTemp = $("input[name='deriveWastesList[" + $i + "].isLowTemp']:checked").val();
             deriveWastes.lowTemp = $("input[name='deriveWastesList[" + $i + "].lowTemp']").val();
             deriveWastes.solubleTemp = $("input[name='deriveWastesList[" + $i + "].solubleTemp']").val();
-            deriveWastes.isMixture = $("input[name='deriveWastesList[" + $i + "].isMixture']").val();
+            deriveWastes.isMixture = $("input[name='deriveWastesList[" + $i + "].isMixture']:checked").val();
             deriveWastes['mixingElementList'] = [];
             deriveWastes['sensitiveElementList'] = [];
 
@@ -457,7 +478,7 @@
                 var $j = sensitiveElementArray[j];
                 var sensitiveElement = {};
                 sensitiveElement.chemicalType = $("input[name='deriveWastesList[" + $i + "].sensitiveElementList["+ $j +"].chemicalType']").val();
-                sensitiveElement.isOrganic = $("input[name='deriveWastesList[" + $i + "].sensitiveElementList["+ $j +"].isOrganic']").val();
+                sensitiveElement.isOrganic = $("input[name='deriveWastesList[" + $i + "].sensitiveElementList["+ $j +"].isOrganic']:checked").val();
                 deriveWastes.sensitiveElementList.push(sensitiveElement);
             }
             data['deriveWastesList'].push(deriveWastes);

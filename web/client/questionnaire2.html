@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>客户新增</title>
+    <script src="../js/data-format.js"></script>
     <script src="../js/jquery/2.0.0/jquery.min.js"></script>
     <script src="../js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="../css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
@@ -33,13 +34,15 @@
         var tr = $("#plusBtn").prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(1),td:eq(2),td:eq(3)").find("input").val("");
         // 获取编号
         var id = $("#plusBtn").prev().children().get(0).innerHTML;
         var num = parseInt(id);
-        var btnNum = event.button;
-        if(btnNum==0){
+//        var btnNum = event.button;
+//        if(btnNum==0){
             num++;
-        }
+//        }
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.insertAfter(tr);
     }
@@ -48,13 +51,15 @@
         var tr = $("#plusBtn1").prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)").find("input").val("");
         // 获取编号
         var id = $("#plusBtn1").prev().children().get(0).innerHTML;
         var num = parseInt(id);
-        var btnNum = event.button;
-        if(btnNum==0){
+//        var btnNum = event.button;
+//        if(btnNum==0){
             num++;
-        }
+//        }
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.insertAfter(tr);
     }
@@ -68,7 +73,7 @@
         vertical-align: middle!important;
     }
 </style>
-<body>
+<body onload="loadPage2Info()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -90,6 +95,15 @@
                             <li><a href="../clientBackup.html">客户备案</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li><a href="#">待办事项</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -154,9 +168,9 @@
                                     </tr>
                                     <tr id="cloneTr1">
                                         <td>1</td>
-                                        <td><input type="text" class="focus" name="mainMaterial"></td>
-                                        <td><input type="text" class="focus" name="auxMaterial"></td>
-                                        <td><input type="text" class="focus" name="draginMaterial"></td>
+                                        <td><input type="text" class="focus" name="mainMaterial" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="auxMaterial" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="draginMaterial" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn">
                                         <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -304,11 +318,11 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td><input type="text" class="focus" name="description"></td>
-                                        <td><input type="text" class="focus" name="quantity"></td>
-                                        <td><input type="text" class="focus" name="lastProcessTime"></td>
-                                        <td><input type="text" class="focus" name="yearQuantity"></td>
-                                        <td><input type="text" class="focus" name="packageSituation"></td>
+                                        <td><input type="text" class="focus" name="description" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="quantity" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="lastProcessTime" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="yearQuantity" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="packageSituation" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn1">
                                         <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -334,6 +348,46 @@
     </div>
 </body>
 <script type="text/javascript">
+    function loadPage2Info() {
+        $.ajax({
+            type: "POST",
+            url: "getCurrentQuestionnaire",
+            async: false,
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        var data = eval(result);
+                        $("#questionnaireId").val(data.data.questionnaireId);
+                        for (var i = 0; i < data.data.wasteInclusionTypeList.length; i++) {
+                            var $i = data.data.wasteInclusionTypeList[i].index;
+                            $("input[name='wasteInclusionTypeList'][value='" + $i + "']").attr("checked",true);
+                        }
+                        for (var i = 0; i < data.data.rawWastesList.length; i++) {
+                            if (i > 0) addNewLine();
+//                            console.log($("input[name='mainMaterial']"));
+                            $("input[name='mainMaterial']").eq(i).val(data.data.rawWastesList[i].mainMaterial);
+                            $("input[name='auxMaterial']").eq(i).val(data.data.rawWastesList[i].auxMaterial);
+                            $("input[name='draginMaterial']").eq(i).val(data.data.rawWastesList[i].draginMaterial);
+                        }
+                        for (var i = 0; i < data.data.wasteProcessList.length; i++) {
+                            if (i > 0) addNewLine1();
+                            $("input[name='code']").eq(i).val(data.data.wasteProcessList[i].code);
+                            $("input[name='description']").eq(i).val(data.data.wasteProcessList[i].description);
+                            $("input[name='quantity']").eq(i).val(data.data.wasteProcessList[i].quantity);
+                            $("input[name='lastProcessTime']").eq(i).val(data.data.wasteProcessList[i].lastProcessTimeStr);
+                            $("input[name='yearQuantity']").eq(i).val(data.data.wasteProcessList[i].yearQuantity);
+                            $("input[name='packageSituation']").eq(i).val(data.data.wasteProcessList[i].packageSituation);
+                        }
+                    }
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log("错误信息:" + XMLHttpRequest.responseText);
+            }
+        });
+    }
     function savePage2Info(e) {
         // 获取按钮的名字
         var btnName = e.innerHTML;
