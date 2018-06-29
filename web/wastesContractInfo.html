@@ -15,6 +15,7 @@
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script src="locales/bootstrap-datetimepicker.fr.js"></script>
 </head>
 <script type="text/javascript">
 function loadContractSelectList() {
@@ -55,7 +56,9 @@ function loadContractSelectList() {
             console.log(result);
         }
     });
+
 }
+
 
 function changeSelect(index) {
 var index1=index+1;//获得province_id
@@ -93,14 +96,6 @@ $.ajax({
 });
 
 }
-
-$('.input-dateranger').datetimepicker({
-    language:  'zh-CN',
-    format: 'yyyy-mm-dd hh:ii',
-
-});
-
-
 
 </script>
 <body onload="loadContractSelectList();">
@@ -272,10 +267,12 @@ $('.input-dateranger').datetimepicker({
                     </div>
                     <div class="form-group" >
                             <label class="col-sm-3 control-label">合同有效期 </label>
-                        <div class="input-dateranger input-group" id="datepicker">
-                            <input type="text" class="input-sm form-control" name="start">
+                        <div class="input-group date">
+                            <input type="text" class="input-sm form-control form_datetime1" name="start"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             <span class="input-group-addon">to</span>
-                            <input type="text" class="input-sm form-control" name="end">
+                            <input type="text" class="input-sm form-control form_datetime2" name="end"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
 
                     </div>
@@ -330,5 +327,30 @@ $('.input-dateranger').datetimepicker({
 
 </div>
 </div>
+
 </body>
+<script>
+    $('.form_datetime1').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_datetime2').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
 </html>
