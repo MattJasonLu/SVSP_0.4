@@ -289,8 +289,22 @@
                     console.log(result);
                     if (result.status == "success") {
                         if (btnName == "提交") {
-                            alert("提交成功");
-                            $(location).attr('href', 'questionnaireManage.html');
+                            $.ajax({
+                                type: "POST",
+                                url: "addQuestionnaire",
+                                async: false,
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.status == "success") {
+                                        alert(result.message);
+                                        $(location).attr('href', 'questionnaireManage.html');
+                                    }
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                    alert("服务器异常");
+                                    console.log("错误信息:" + XMLHttpRequest.responseText);
+                                }
+                            });
                         }
                         else if (btnName == "上一页") $(location).attr('href', 'questionnaire3.html');
                     } else { }

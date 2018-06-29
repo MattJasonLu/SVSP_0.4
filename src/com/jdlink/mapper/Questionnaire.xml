@@ -20,40 +20,40 @@
                     ofType="com.jdlink.domain.WasteInclusionType" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Questionnaire" >
-        insert into questionnaire ( questionnaireId, clientId, evaluationnaireId, time, author, state )
-        values ( #{questionnaireId}, #{clientId}, #{evaluationnaireId} ,#{time}, #{author}, 'ToSignIn' );
+        insert into questionnaire ( questionnaireId, clientId, time, author, state )
+        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState} );
 
-        <if test="rawWastesList.size() > 0">
-            insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)
-            values
-            <foreach collection="rawWastesList" item="rawWastes" index="index" separator="," close=";">
-                (#{questionnaireId,jdbcType=VARCHAR},#{rawWastes.materialId,jdbcType=VARCHAR})
-            </foreach>
-        </if>
-        <if test="wasteInclusionTypeList != null and wasteInclusionTypeList.size() > 0">
-            insert into r_questionnaireAndWasteInclusionType (questionnaireId, wasteInclusionType)
-            values
-            <foreach collection="wasteInclusionTypeList" item="wasteInclusionType" index="index" separator="," close=";">
-                <if test="wasteInclusionType != null">
-                  (#{questionnaireId,jdbcType=VARCHAR},#{wasteInclusionType,jdbcType=VARCHAR})
-                </if>
-            </foreach>
-        </if>
-        <if test="wasteProcessList.size() > 0">
-            insert into r_questionnaireAndWasteProcess (questionnaireId,wasteProcessId)
-            values
-            <foreach collection="wasteProcessList" item="wasteProcess" index="index" separator="," close=";">
-                (#{questionnaireId,jdbcType=VARCHAR},#{wasteProcess.processId,jdbcType=VARCHAR})
-            </foreach>
-        </if>
+        <!--<if test="rawWastesList.size() > 0">-->
+            <!--insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)-->
+            <!--values-->
+            <!--<foreach collection="rawWastesList" item="rawWastes" index="index" separator="," close=";">-->
+                <!--(#{questionnaireId,jdbcType=VARCHAR},#{rawWastes.materialId,jdbcType=VARCHAR})-->
+            <!--</foreach>-->
+        <!--</if>-->
+        <!--<if test="wasteInclusionTypeList != null and wasteInclusionTypeList.size() > 0">-->
+            <!--insert into r_questionnaireAndWasteInclusionType (questionnaireId, wasteInclusionType)-->
+            <!--values-->
+            <!--<foreach collection="wasteInclusionTypeList" item="wasteInclusionType" index="index" separator="," close=";">-->
+                <!--<if test="wasteInclusionType != null">-->
+                  <!--(#{questionnaireId,jdbcType=VARCHAR},#{wasteInclusionType,jdbcType=VARCHAR})-->
+                <!--</if>-->
+            <!--</foreach>-->
+        <!--</if>-->
+        <!--<if test="wasteProcessList.size() > 0">-->
+            <!--insert into r_questionnaireAndWasteProcess (questionnaireId,wasteProcessId)-->
+            <!--values-->
+            <!--<foreach collection="wasteProcessList" item="wasteProcess" index="index" separator="," close=";">-->
+                <!--(#{questionnaireId,jdbcType=VARCHAR},#{wasteProcess.processId,jdbcType=VARCHAR})-->
+            <!--</foreach>-->
+        <!--</if>-->
 
-        <if test="deriveWastesList.size() > 0">
-            insert into r_questionnaireAndDeriveWastes (questionnaireId,deriveWastesId)
-            values
-            <foreach collection="deriveWastesList" item="deriveWastes" index="index" separator="," close=";">
-                (#{questionnaireId,jdbcType=VARCHAR},#{deriveWastes.id,jdbcType=VARCHAR})
-            </foreach>
-        </if>
+        <!--<if test="deriveWastesList.size() > 0">-->
+            <!--insert into r_questionnaireAndDeriveWastes (questionnaireId,deriveWastesId)-->
+            <!--values-->
+            <!--<foreach collection="deriveWastesList" item="deriveWastes" index="index" separator="," close=";">-->
+                <!--(#{questionnaireId,jdbcType=VARCHAR},#{deriveWastes.id,jdbcType=VARCHAR})-->
+            <!--</foreach>-->
+        <!--</if>-->
 
     </insert>
 

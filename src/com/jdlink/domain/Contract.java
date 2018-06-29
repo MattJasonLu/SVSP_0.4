@@ -65,6 +65,20 @@ public class Contract {
     private Date reviewDate;
 
     private ContractType contractType;
+    /**
+     * 合同版本
+     */
+private  ContractVersion contractVersion;
+    public void setCompanyContract(boolean companyContract) {
+        isCompanyContract = companyContract;
+    }
+    public ContractVersion getContractVersion() {
+        return contractVersion;
+    }
+
+    public void setContractVersion(ContractVersion contractVersion) {
+        this.contractVersion = contractVersion;
+    }
 
     public String getCompanyName() {
         return companyName;

@@ -92,6 +92,8 @@ public class QuestionnaireController {
             QuestionnaireController.questionnaire.setClient(questionnaire.getClient());
             // 设置问卷的填报人
             QuestionnaireController.questionnaire.setAuthor(questionnaire.getAuthor());
+            // 设置问卷的时间
+            QuestionnaireController.questionnaire.setTime(questionnaire.getTime());
             res.put("status", "success");
             res.put("message", "页面1数据保存成功");
         } else {
@@ -254,6 +256,30 @@ public class QuestionnaireController {
     }
 
     /**
+     * 增加调查表
+     * @return 成功与否
+     */
+    @RequestMapping("client/addQuestionnaire")
+    @ResponseBody
+    public String addQuestionnaire(){
+        JSONObject res = new JSONObject();
+        try {
+            // 更改状态为待签收
+            QuestionnaireController.questionnaire.setApplyState(ApplyState.ToSignIn);
+            questionnaireService.add(QuestionnaireController.questionnaire);
+            QuestionnaireController.questionnaire = new Questionnaire();
+            res.put("status", "success");
+            res.put("message", "增加调查表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加调查表失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取问卷编号
      * @return 问卷编号
      */
@@ -285,6 +311,43 @@ public class QuestionnaireController {
             res.put("status", "fail");
             res.put("message", "获取问卷编号失败");
             res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取调查表的数据
+     * @return 成功与否
+     */
+    @RequestMapping("client/getCurrentQuestionnaire")
+    @ResponseBody
+    public String getCurrentQuestionnaire() {
+        JSONObject res = new JSONObject();
+        try {
+            if (QuestionnaireController.questionnaire.getQuestionnaireId() == null) throw new Exception("无数据");
+            // 数据转换JSON
+            JSONObject data = JSONObject.fromBean(QuestionnaireController.questionnaire);
+            res.put("status", "success");
+            res.put("data", data);
+            res.put("message", "获取调查表数据成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取调查表数据失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("client/clearCurrentQuestionnaire")
+    @ResponseBody
+    public String clearCurrentQuestionnaire() {
+        JSONObject res = new JSONObject();
+        try {
+            QuestionnaireController.questionnaire = new Questionnaire();
+            res.put("status", "success");
+            res.put("message", "清空数据成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "清空数据失败");
         }
         return res.toString();
     }

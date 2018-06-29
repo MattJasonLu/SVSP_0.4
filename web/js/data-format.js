@@ -6,6 +6,9 @@ function getNowDate() {
     var now = new Date();
     return now.format('yyyy-MM-dd');
 }
+function getFormatDate(date) {
+    return date.format('yyyy-MM-dd');
+}
 // 对Date原型进行改造，增加方法format
 Date.prototype.format = function(format) {
     var o = {

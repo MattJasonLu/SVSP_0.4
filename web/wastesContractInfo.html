@@ -6,9 +6,16 @@
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
-    <link href="css/contract.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script src="locales/bootstrap-datetimepicker.fr.js"></script>
 </head>
 <script type="text/javascript">
 function loadContractSelectList() {
@@ -49,7 +56,9 @@ function loadContractSelectList() {
             console.log(result);
         }
     });
+
 }
+
 
 function changeSelect(index) {
 var index1=index+1;//获得province_id
@@ -65,10 +74,18 @@ $.ajax({
     success: function (result) {
         if (result != undefined) {
             var data = eval(result);
-            // 各下拉框数据填充
-            var contractName = $("#contractName");
-
-
+            console.log(data);
+            //var contractName = $("#contractName");
+          //下拉框填充
+            var city=$("#city");
+           city.children().remove();
+            $.each(data, function (index, item) {
+                var option1 = $('<option />');
+                option1.val(item.name);
+                option1.text(item.cityname);
+               city.append(option1);
+            });
+            city.get(0).selectedIndex = -1;
         } else {
             console.log(result);
         }
@@ -76,13 +93,10 @@ $.ajax({
     error:function (result) {
         console.log(result);
     }
-
-
-
-
 });
 
 }
+
 </script>
 <body onload="loadContractSelectList();">
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -218,12 +232,13 @@ $.ajax({
                         <label class="col-sm-4 control-label" for="province">所属区域 </label>
                         <form name="form1" method="post" action="">
                         <div class="form-inline">
-                         <div class="form-group col-xs-4">
+                         <div class="form-group col-xs-3">
                                 <select class="form-control" id="province"  onchange="changeSelect(this.selectedIndex)">
+                                <option class="form-control">请选择省市</option>
                                 </select>
                             </div>
-                            <div class="form-group col-xs-1 ">
-                                <select class="form-control"  id="city">
+                            <div class="form-group col-xs-1">
+                                <select class="form-control" id="city">
                                 </select>
                             </div>
                         </div>
@@ -251,17 +266,15 @@ $.ajax({
                         </div>
                     </div>
                     <div class="form-group" >
-                        <div class="form-inline">
                             <label class="col-sm-3 control-label">合同有效期 </label>
-                            <div class="form-group col-sm-6">
-                                <label class="sr-only " for="startTime">startTime</label>
-                                <input type="text" class="form-control " id="startTime" placeholder="起始日期">
-                            </div>
-                            <div class="form-group col-sm-1">
-                                <label class="sr-only" for="startTime">endTime</label>
-                                <input type="text" class="form-control" id="endTime" placeholder="终止日期">
-                            </div>
+                        <div class="input-group date">
+                            <input type="text" class="input-sm form-control form_datetime1" name="start"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-addon">to</span>
+                            <input type="text" class="input-sm form-control form_datetime2" name="end"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
+
                     </div>
                     <div class="form-group" >
                         <label for="mainProducts" class="col-sm-3 control-label">预约处置费</label>
@@ -293,7 +306,7 @@ $.ajax({
             <div class="row">
                 <div class="form-horizontal col-md-6" >
                     <div class="form-group ">
-                        <label class="col-sm-4 control-label sr-only" > 联系人</label>
+                        <label class="col-sm-4 control-label sr-only" > 1111111</label>
                         <label class="checkbox-inline col-xs-5">
                             是否包含运费<input type="checkbox" id="inlineCheckbox1" value="option1" class="col-xs-3" >
                         </label>
@@ -314,5 +327,30 @@ $.ajax({
 
 </div>
 </div>
+
 </body>
+<script>
+    $('.form_datetime1').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_datetime2').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
 </html>

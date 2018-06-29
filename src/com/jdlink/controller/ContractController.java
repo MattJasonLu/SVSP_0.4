@@ -4,6 +4,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.*;
 import com.jdlink.service.CityService;
 import com.jdlink.service.ContractService;
+import com.sun.script.javascript.JSAdapter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ import java.util.List;
  */
 @Controller
 public class ContractController {
-
+    @Autowired
+    CityService cityService;
     @Autowired
     ContractService contractService;
-    CityService cityService;
     @RequestMapping("listContract")
     @ResponseBody
     public String listContract() {
@@ -50,18 +51,19 @@ public class ContractController {
      *获得相应城市的下拉选项
      */
 
+
     @RequestMapping("getCityList")
     @ResponseBody
-    public String getCityList( @RequestBody String provinceId) {
-        System.out.println(provinceId);
-        System.out.println("123");
-        JSONObject res = new JSONObject();
+    public String getCityList(String provinceId) {
+        //System.out.println(provinceId instanceof String);
+        //JSONObject res = new JSONObject();
        //根据provinceId找到相应的城市
-//      List<City> city= cityService.getCity(provinceId);
-//        for ( City c:city) {
-//            System.out.print(c+" ");
-//        }
-        return res.toString();
+      List<City> city= cityService.getCity(provinceId);
+          for ( City c:city) {
+              System.out.print(c.getCityname()+" ");
+          }
+        JSONArray json=JSONArray.fromObject(city);
+        return json.toString();
     }
     @RequestMapping("addContract")
     public ModelAndView addContract() {

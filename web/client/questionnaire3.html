@@ -65,6 +65,7 @@
                 console.log(result);
             }
         });
+        setTimeout("loadPage3Info()", 50);
     }
     /**
      * 增加新行
@@ -125,7 +126,7 @@
         vertical-align: middle!important;
     }
 </style>
-<body onload="loadSelectList()">
+<body onload="loadSelectList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -201,7 +202,7 @@
                         <div class="form-group" align="right">
                             <label class="col-sm-4 control-label">调查单号</label>
                             <div class="col-xs-5">
-                                <input maxlength="8" type="text" class="form-control" name="questionnaireId" placeholder="******" style="border: none">
+                                <input maxlength="8" type="text" class="form-control" name="questionnaireId" id="questionnaireId" placeholder="******" style="border: none">
                             </div>
                         </div>
                     </div>
@@ -350,7 +351,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" class="focus" style="width:50px">℃
+                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" class="focus" style="width:50px" name="deriveWastesList[0].lowTemp">℃
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].name"></td>
                                     <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
@@ -414,6 +415,58 @@
     function focusInput(e) {
         // console.log("you click the td!");
         e.firstChild.focus();
+    }
+    /**
+     * 装载页面3的数据
+     */
+    function loadPage3Info() {
+        $.ajax({
+            type: "POST",
+            url: "getCurrentQuestionnaire",
+            async: false,
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        var data = eval(result);
+                        $("#questionnaireId").val(data.data.questionnaireId);
+                        for (var i = 0; i < data.data.deriveWastesList.length; i++) {
+                            var $i = i;
+                            $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
+                            $("input[name='deriveWastesList[" + $i + "].code']").val(data.data.deriveWastesList[i].code);
+                            if (data.data.deriveWastesList[i].formType != null) $("select[name='deriveWastesList[" + $i + "].formType']").get(0).selectedIndex = data.data.deriveWastesList[i].formType.index-1;
+                            $("input[name='deriveWastesList[" + $i + "].formTypeDetail']").val(data.data.deriveWastesList[i].formTypeDetail);
+                            if (data.data.deriveWastesList[i].smellType != null) $("select[name='deriveWastesList[" + $i + "].smellType']").get(0).selectedIndex = data.data.deriveWastesList[i].smellType.index-1;
+                            $("input[name='deriveWastesList[" + $i + "].smellTypeDetail']").val(data.data.deriveWastesList[i].smellTypeDetail);
+                            if (data.data.deriveWastesList[i].solubility != null) $("select[name='deriveWastesList[" + $i + "].solubility']").get(0).selectedIndex = data.data.deriveWastesList[i].solubility.index-1;
+                            $("input[name='deriveWastesList[" + $i + "].solubilityDetail']").val(data.data.deriveWastesList[i].solubilityDetail);
+                            $("input[name='deriveWastesList[" + $i + "].lowTemp']").val(data.data.deriveWastesList[i].lowTemp);
+                            $("input[name='deriveWastesList[" + $i + "].solubleTemp']").val(data.data.deriveWastesList[i].solubleTemp);
+                            if (data.data.deriveWastesList[i].isLowTemp) $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='true']").attr("checked",true);
+                            else $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='false']").attr("checked",true);
+                            if (data.data.deriveWastesList[i].isMixture) $("input[name='deriveWastesList[" + $i + "].isMixture'][value='true']").attr("checked",true);
+                            else $("input[name='deriveWastesList[" + $i + "].isMixture'][value='false']").attr("checked",true);
+                            for (var j = 0; j < data.data.deriveWastesList[i].mixingElementList.length; j++) {
+                                var $j = j;
+                                $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].name']").val(data.data.deriveWastesList[i].mixingElementList[j].name);
+                                $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].minimum']").val(data.data.deriveWastesList[i].mixingElementList[j].minimum);
+                                $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].average']").val(data.data.deriveWastesList[i].mixingElementList[j].average);
+                                $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].maximum']").val(data.data.deriveWastesList[i].mixingElementList[j].maximum);
+                            }
+                            for (var j = 0; j < data.data.deriveWastesList[i].sensitiveElementList.length; j++) {
+                                var $j = data.data.deriveWastesList[i].sensitiveElementList[j].chemicalType.index - 1;
+                                $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].chemicalType']").attr("checked",true);
+                                if (data.data.deriveWastesList[i].sensitiveElementList[j].isOrganic) $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].isOrganic'][value='true']").attr("checked",true);
+                                else $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].isOrganic'][value='false']").attr("checked",true);
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (result) {
+
+            }
+        });
     }
     function savePage3Info(e) {
         // 获取按钮的名字
