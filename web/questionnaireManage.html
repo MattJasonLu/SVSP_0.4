@@ -176,6 +176,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
+                            <li><a href="index.html">注销</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -214,7 +215,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="client/questionnaire1.html" onclick="clearQuestionnaire();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary" href="questionnaire1.html" onclick="clearQuestionnaire();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
                         <a class="btn btn-primary" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
@@ -277,27 +278,25 @@
                 </table>
             </div>
             <!--分页-->
-            <div class="text-center">
-                <nav class="navbar navbar-default navbar-fixed-bottom">
-                    <ul class="pagination">
-                        <li class="disabled">
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <nav aria-label="Page navigation" style="text-align: center">
+                <ul class="pagination">
+                    <li class="disabled">
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 

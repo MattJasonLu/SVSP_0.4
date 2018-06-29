@@ -82,11 +82,10 @@ public class WasteProcess {
         String time;
         try {
             time = simpleDateFormat.format(lastProcessTime);
-            return time;
         } catch (Exception e) {
-//            e.printStackTrace();
-            return "时间错误";
+            time = simpleDateFormat.format(new Date());
         }
+        return time;
     }
 
     public float getYearQuantity() {

@@ -9,6 +9,12 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
+<style>
+    p{
+        margin-left:10px;
+        margin-top:10px;
+    }
+</style>
 <script type="text/javascript">
     function loadContractList() {
         $.ajax({
@@ -189,6 +195,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
+                            <li><a href="index.html">注销</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -223,109 +230,134 @@
                 </ol>
             </div>
             <h2 class="sub-header">合同列表</h2>
-            <div class="row">
-                <div>
-                    <!--操作按钮-->
-                    <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="wastesContractInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+            <div class="navbar navbar-default">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a href="#A" data-toggle="tab">危废合同</a></li>
+                    <li><a href="#B" data-toggle="tab">应急处置合同</a></li>
+                    <li><a href="#C" data-toggle="tab">物流合同</a></li>
+                    <li><a href="#D" data-toggle="tab">次生合同</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="A">
+                        <p></p>
                     </div>
-                    <!--查询框-->
-                    <div class="input-group col-xs-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索...">
-                        <span class="input-group-btn">
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                        </span>
+                    <div class="tab-pane fade" id="B">
+                        <p></p>
+                    </div>
+                    <div class="tab-pane fade" id="C">
+                        <p></p>
+                        <p></p>
+                    </div>
+                    <div class="tab-pane fade" id="D">
+                        <p></p>
                     </div>
                 </div>
 
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>操作</th>
-                        <th>合同编号</th>
-                        <th>合同名称</th>
-                        <th>
-                            <div class="form-inline">
-                                <label class="control-label">状态</label>
-                                <select class="form-control" id="state" style="height: 80%; font-size: x-small;">
-                                    <option value="0"></option>
-                                    <option value="1">待审批</option>
-                                    <option value="2">审批中</option>
-                                    <option value="3">履约中</option>
-                                    <option value="4">已作废</option>
-                                </select>
+                <div style="height:700px">
+                    <div class="row">
+                        <div>
+                            <!--操作按钮-->
+                            <div class="pull-left col-md-6">
+                                <a class="btn btn-primary" href="wastesContractInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                                <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                                <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                                <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                             </div>
-
-
-                        </th>
-                        <th>公司名称</th>
-                        <th>所属区域</th>
-                        <th>合约量</th>
-                        <th>联系人</th>
-                        <th>联系方式</th>
-                        <th>签订日期</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr id="cloneTr1">
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">查看</a></li>
-                                    <li><a href="#">修改信息</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
+                            <!--查询框-->
+                            <div class="input-group col-xs-3 pull-right">
+                                <input type="text" class="form-control" placeholder="搜索...">
+                                <span class="input-group-btn">
+                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        </span>
                             </div>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+                        </div>
 
-                    </tbody>
-                </table>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>操作</th>
+                                <th>合同编号</th>
+                                <th>合同名称</th>
+                                <th>
+                                    <div class="form-inline">
+                                        <label class="control-label">状态</label>
+                                        <select class="form-control" id="state" style="height: 80%; font-size: x-small;">
+                                            <option value="0"></option>
+                                            <option value="1">待审批</option>
+                                            <option value="2">审批中</option>
+                                            <option value="3">履约中</option>
+                                            <option value="4">已作废</option>
+                                        </select>
+                                    </div>
+
+
+                                </th>
+                                <th>公司名称</th>
+                                <th>所属区域</th>
+                                <th>合约量</th>
+                                <th>联系人</th>
+                                <th>联系方式</th>
+                                <th>签订日期</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="cloneTr1">
+                                <td class="text-center">
+                                    <label>
+                                        <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="dropdown">
+                                        <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">查看</a></li>
+                                            <li><a href="#">修改信息</a></li>
+                                            <li><a href="#">删除</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--分页-->
+                    <nav aria-label="Page navigation" style="text-align: center">
+                        <ul class="pagination">
+                            <li class="disabled">
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
-            <!--分页-->
-            <div class="text-center">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="disabled">
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+
         </div>
     </div>
 

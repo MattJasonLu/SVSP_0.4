@@ -80,7 +80,7 @@ public class QuestionnaireController {
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
-    @RequestMapping("client/savePage1Info")
+    @RequestMapping(value = {"savePage1Info", "client/savePage1Info"})
     @ResponseBody
     public String savePage1Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
@@ -89,6 +89,8 @@ public class QuestionnaireController {
             // 设置问卷的编号
             QuestionnaireController.questionnaire.setQuestionnaireId(questionnaire.getQuestionnaireId());
             // 设置问卷的归属客户信息
+            // 更新id
+            questionnaire.getClient().setClientId(clientService.getByName(questionnaire.getClient().getCompanyName()).getClientId());
             QuestionnaireController.questionnaire.setClient(questionnaire.getClient());
             // 设置问卷的填报人
             QuestionnaireController.questionnaire.setAuthor(questionnaire.getAuthor());
@@ -108,7 +110,7 @@ public class QuestionnaireController {
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
-    @RequestMapping("client/savePage2Info")
+    @RequestMapping(value = {"savePage2Info", "client/savePage2Info"})
     @ResponseBody
     public String savePage2Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
@@ -135,7 +137,7 @@ public class QuestionnaireController {
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
-    @RequestMapping("client/savePage3Info")
+    @RequestMapping(value = {"savePage3Info", "client/savePage3Info"})
     @ResponseBody
     public String savePage3Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
@@ -216,7 +218,7 @@ public class QuestionnaireController {
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
-    @RequestMapping("client/savePage4Info")
+    @RequestMapping(value = {"savePage4Info", "client/savePage4Info"})
     @ResponseBody
     public String savePage4Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
@@ -230,6 +232,7 @@ public class QuestionnaireController {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    oldDeriveWastes.setName(newDeriveWastes.getName());
                     oldDeriveWastes.setEyeMeasures(newDeriveWastes.getEyeMeasures());
                     oldDeriveWastes.setSkinMeasures(newDeriveWastes.getSkinMeasures());
                     oldDeriveWastes.setSwallowMeasures(newDeriveWastes.getSwallowMeasures());
@@ -259,7 +262,7 @@ public class QuestionnaireController {
      * 增加调查表
      * @return 成功与否
      */
-    @RequestMapping("client/addQuestionnaire")
+    @RequestMapping(value = {"addQuestionnaire", "client/addQuestionnaire"})
     @ResponseBody
     public String addQuestionnaire(){
         JSONObject res = new JSONObject();
@@ -283,7 +286,7 @@ public class QuestionnaireController {
      * 获取问卷编号
      * @return 问卷编号
      */
-    @RequestMapping("client/getCurrentQuestionnaireId")
+    @RequestMapping(value = {"getCurrentQuestionnaireId", "client/getCurrentQuestionnaireId"})
     @ResponseBody
     public String getCurrentQuestionnaireId() {
         JSONObject res = new JSONObject();
@@ -319,7 +322,7 @@ public class QuestionnaireController {
      * 获取调查表的数据
      * @return 成功与否
      */
-    @RequestMapping("client/getCurrentQuestionnaire")
+    @RequestMapping(value = {"getCurrentQuestionnaire", "client/getCurrentQuestionnaire"})
     @ResponseBody
     public String getCurrentQuestionnaire() {
         JSONObject res = new JSONObject();

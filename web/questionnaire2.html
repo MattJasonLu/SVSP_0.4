@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户新增</title>
+    <script src="js/data-format.js"></script>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+</head>
+<script>
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            style: 'btn-info',
+            size: 4
+        });
+    });
+
+    /**
+     * 增加新行
+     */
+    function addNewLine() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(1),td:eq(2),td:eq(3)").find("input").val("");
+        // 获取编号
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+//        var btnNum = event.button;
+//        if(btnNum==0){
+            num++;
+//        }
+        clonedTr.children().get(0).innerHTML = num;
+        clonedTr.insertAfter(tr);
+    }
+    function addNewLine1() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn1").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)").find("input").val("");
+        // 获取编号
+        var id = $("#plusBtn1").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+//        var btnNum = event.button;
+//        if(btnNum==0){
+            num++;
+//        }
+        clonedTr.children().get(0).innerHTML = num;
+        clonedTr.insertAfter(tr);
+    }
+</script>
+<style>
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+    table th, table td {
+        vertical-align: middle!important;
+    }
+</style>
+<body onload="loadPage2Info()">
+    <!--导航条-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">产废服务平台</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">客户备案</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">业务员分配管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="salesManage.html">业务员管理</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                                </ul>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sampleManage.html">客户样品登记</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="supplierBackup.html">供应商备案</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="contractManage.html">合同列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="contractTemplate.html">合同模板</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quotation.html">报价管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="cost.html">成本管理</a></li>
+                        </ul>
+                    </li>
+                    <li><a>一企一档</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li><a href="#">待办事项</a></li>
+                            <li><a href="index.html">注销</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li><a href="wastesPlatform.html">概览</a></li>
+                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">接收管理</a></li>
+                    <li><a href="#">贮存管理</a></li>
+                    <li><a href="#">预处理管理</a></li>
+                    <li><a href="#">处置管理</a></li>
+                    <li><a href="#">次生管理</a></li>
+                    <li><a href="#">基础数据</a></li>
+                    <li><a href="#">系统设置</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <ol class="breadcrumb">
+                    <li><a href="businessModel.html">商务管理</a></li>
+                    <li><a href="#">客户管理</a></li>
+                    <li><a href="questionnaire1.html">危险数据调查表管理</a></li>
+                    <li class="active">调查表新增</li>
+                </ol>
+            </div>
+            <h2 class="sub-header">调查表新增</h2>
+            <!--<form method="post" id="page2Info" enctype="multipart/form-data">-->
+                <div class="row">
+                    <div class="form-horizontal col-md-5">
+                        <div class="form-group" align="left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3"></div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group" align="right">
+                            <label class="col-sm-4 control-label">调查单号</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" name="questionnaireId" id="questionnaireId" placeholder="****" style="border: none">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <div class="form-group">
+                            <form method="post" id="rawWastesListForm">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>序号</td>
+                                        <td>含化学物质只主要原材料</td>
+                                        <td>含化学物质辅料</td>
+                                        <td>可能带入的化学物质</td>
+                                    </tr>
+                                    <tr id="cloneTr1">
+                                        <td>1</td>
+                                        <td><input type="text" class="focus" name="mainMaterial" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="auxMaterial" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="draginMaterial" style="width:100%; height:100%;"></td>
+                                    </tr>
+                                    <tr id="plusBtn">
+                                        <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-2">
+                        <div class="form-group" align="left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">特别关注的物质</label>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-10">
+                        <div class="form-group" align="right">
+                            <label class="col-sm-4 control-label">请确认原料、辅料、废料或工艺是否含有下列物质</label>
+                        </div>
+                    </div>
+                </div>
+                <form method="post" id="wasteInclusionTypeListForm">
+                    <div class="row">
+
+                        <div class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="1"> 过氯化物
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="5"> 过氧化物
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="9"> 有机氰
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="13"> 爆炸物
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="2"> 有机氮
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="6"> 放射性物质
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="10"> 酸酐
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="14"> 生化废料
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="3"> 乙醚
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="7"> 催泪物质
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="11"> 硒化物
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="15"> 苯酚
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="4"> 苯
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="8"> 多氯联苯-聚氯三联苯
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="12"> 氧化剂
+                            </label>
+                        </div>
+                        <div  class="form-horizontal col-md-3">
+                            <label>
+                                <input type="checkbox" name="wasteInclusionTypeList" value="16"> 还原剂
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group" align="left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">产废生产工艺流程描述</label>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-9"></div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <div class="form-group">
+                            <form method="post" id="wasteProcessList">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>序号</td>
+                                        <td>危废编码</td>
+                                        <td>产生流程描述</td>
+                                        <td>现有量(吨)</td>
+                                        <td>上次处理时间</td>
+                                        <td>年预计量(吨)</td>
+                                        <td>包装现状</td>
+                                    </tr>
+                                    <tr id="cloneTr2">
+                                        <td>1</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code">
+                                                    <option value="0001">0001-危废01</option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td><input type="text" class="focus" name="description" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="quantity" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="lastProcessTime" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="yearQuantity" style="width:100%; height:100%;"></td>
+                                        <td><input type="text" class="focus" name="packageSituation" style="width:100%; height:100%;"></td>
+                                    </tr>
+                                    <tr id="plusBtn1">
+                                        <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <a class="btn btn-primary" onclick="savePage2Info(this)">上一页</a>
+                    <a class="btn btn-primary" onclick="savePage2Info(this)">下一页</a>
+                    <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
+                </div>
+            <!--</form>-->
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    function loadPage2Info() {
+        $.ajax({
+            type: "POST",
+            url: "getCurrentQuestionnaire",
+            async: false,
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        var data = eval(result);
+                        $("#questionnaireId").val(data.data.questionnaireId);
+                        for (var i = 0; i < data.data.wasteInclusionTypeList.length; i++) {
+                            var $i = data.data.wasteInclusionTypeList[i].index;
+                            $("input[name='wasteInclusionTypeList'][value='" + $i + "']").attr("checked",true);
+                        }
+                        for (var i = 0; i < data.data.rawWastesList.length; i++) {
+                            if (i > 0) addNewLine();
+//                            console.log($("input[name='mainMaterial']"));
+                            $("input[name='mainMaterial']").eq(i).val(data.data.rawWastesList[i].mainMaterial);
+                            $("input[name='auxMaterial']").eq(i).val(data.data.rawWastesList[i].auxMaterial);
+                            $("input[name='draginMaterial']").eq(i).val(data.data.rawWastesList[i].draginMaterial);
+                        }
+                        for (var i = 0; i < data.data.wasteProcessList.length; i++) {
+                            if (i > 0) addNewLine1();
+                            $("input[name='code']").eq(i).val(data.data.wasteProcessList[i].code);
+                            $("input[name='description']").eq(i).val(data.data.wasteProcessList[i].description);
+                            $("input[name='quantity']").eq(i).val(data.data.wasteProcessList[i].quantity);
+                            $("input[name='lastProcessTime']").eq(i).val(data.data.wasteProcessList[i].lastProcessTimeStr);
+                            $("input[name='yearQuantity']").eq(i).val(data.data.wasteProcessList[i].yearQuantity);
+                            $("input[name='packageSituation']").eq(i).val(data.data.wasteProcessList[i].packageSituation);
+                        }
+                    }
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log("错误信息:" + XMLHttpRequest.responseText);
+            }
+        });
+    }
+    function savePage2Info(e) {
+        // 获取按钮的名字
+        var btnName = e.innerHTML;
+        // 主要原料的jsonArray
+        var rawWastesList = $("#rawWastesListForm").serializeRawWastes();
+        // 工艺流程jsonArray
+        var wasteProcessList = $("#wasteProcessList").serializeWasteProcess();
+        // 特别关注物质jsonArray
+        var wasteInclusionTypeList = $("#wasteInclusionTypeListForm").serializeWasteInclusionType();
+        // json数据
+        var data = {
+            'questionnaireId': $("#questionnaireId").val(),
+            'rawWastesList': rawWastesList,
+            'wasteInclusionTypeList': wasteInclusionTypeList,
+            'wasteProcessList': wasteProcessList
+        };
+        console.log(data);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "savePage2Info",               // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html');
+                        else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html');
+                    } else { }
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log("错误信息:" + XMLHttpRequest.responseText);
+            }
+        });
+    }
+    // 序列化RawWastes到json格式
+    $.fn.serializeRawWastes=function(){
+        var json = [];
+        var map=this.serializeArray();
+        for (var i = 0; i < map.length; i+=3) {
+            var mainMaterialValue = map[i].value;
+            var auxMaterialValue = map[i+1].value;
+            var draginMaterialValue = map[i+2].value;
+            // 创建条目
+            var item = {
+                mainMaterial : mainMaterialValue,
+                auxMaterial: auxMaterialValue,
+                draginMaterial: draginMaterialValue
+            };
+            json.push(item);
+        }
+        return json;
+    };
+    // 序列化WasteInclusionType到json格式
+    $.fn.serializeWasteInclusionType=function(){
+        var json = [];
+        var map=this.serializeArray();
+        console.log(map);
+        for (var i = 0; i < map.length; i++) {
+            var value = parseInt(map[i].value) - 1;
+            json.push(value);
+        }
+        return json;
+    };
+    // 序列化DeriveWastes到json格式
+    $.fn.serializeWasteProcess=function(){
+        var json = [];
+        var map=this.serializeArray();
+        console.log(map);
+        for (var i = 0; i < map.length; i+=6) {
+            var codeValue = map[i].value;
+            var descriptionValue = map[i+1].value;
+            var quantityValue = map[i+2].value;
+            var lastProcessTimeValue = map[i+3].value;
+            var yearQuantityValue = map[i+4].value;
+            var packageSituationValue = map[i+5].value;
+            // 创建条目
+            var item = {
+                code : codeValue,
+                description: descriptionValue,
+                quantity: quantityValue,
+                lastProcessTime: lastProcessTimeValue,
+                yearQuantity: yearQuantityValue,
+                packageSituation: packageSituationValue
+            };
+            json.push(item);
+        }
+        return json;
+    };
+</script>
+</html>
