@@ -230,6 +230,7 @@ public class QuestionnaireController {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    oldDeriveWastes.setName(newDeriveWastes.getName());
                     oldDeriveWastes.setEyeMeasures(newDeriveWastes.getEyeMeasures());
                     oldDeriveWastes.setSkinMeasures(newDeriveWastes.getSkinMeasures());
                     oldDeriveWastes.setSwallowMeasures(newDeriveWastes.getSwallowMeasures());
