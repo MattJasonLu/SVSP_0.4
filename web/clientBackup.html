@@ -33,6 +33,12 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
+                    case (1):
+                        if(obj.checkState.name == "审批中") {
+                            $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
+                        }
+                        break;
                         // 客户编号
                     case (2):
                         $(this).html(obj.clientId);
@@ -48,8 +54,11 @@
                         break;
                         // 审核状态
                     case (5):
-                        if (obj.checkState != null)
-                        $(this).html(obj.checkState.name);
+                        if (obj.checkState != null) {
+                            $(this).html(obj.checkState.name);
+
+                            // $("#commit").attr(addClass("disabled"));
+                        }
                         break;
                         // 账号状态
                     case (6):
@@ -268,8 +277,12 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="viewClient(this);">查看</a></li>
-                                    <li><a href="#" onclick="commitClient(this);">提交</a></li>
+                                    <li>
+                                        <a href="#" onclick="viewClient(this);">查看</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" onclick="commitClient(this);">提交</a>
+                                    </li>
                                     <li><a href="#" onclick="adjustClient(this);">修改</a></li>
                                     <li><a href="#" onclick="examineClient(this);">审批</a></li>
                                     <li><a href="#" onclick="enableClient(this);">启用</a></li>
@@ -291,9 +304,8 @@
                 </table>
             </div>
             <!--分页1-->
-            <nav class="navbar navbar-default navbar-fixed-bottom">
-            <div class="text-center">
-                <nav aria-label="Page navigation">
+
+                <nav aria-label="Page navigation" style="text-align: center">
                     <ul class="pagination">
                         <li class="disabled">
                             <a href="#" aria-label="Previous">
@@ -312,10 +324,14 @@
                         </li>
                     </ul>
                 </nav>
-            </div>
-            </nav>
+
         </div>
     </div>
+
+
+
+
+
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -350,7 +366,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
