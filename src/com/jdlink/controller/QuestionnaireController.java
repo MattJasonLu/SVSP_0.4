@@ -89,6 +89,8 @@ public class QuestionnaireController {
             // 设置问卷的编号
             QuestionnaireController.questionnaire.setQuestionnaireId(questionnaire.getQuestionnaireId());
             // 设置问卷的归属客户信息
+            // 更新id
+            questionnaire.getClient().setClientId(clientService.getByName(questionnaire.getClient().getCompanyName()).getClientId());
             QuestionnaireController.questionnaire.setClient(questionnaire.getClient());
             // 设置问卷的填报人
             QuestionnaireController.questionnaire.setAuthor(questionnaire.getAuthor());
@@ -230,6 +232,7 @@ public class QuestionnaireController {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    oldDeriveWastes.setName(newDeriveWastes.getName());
                     oldDeriveWastes.setEyeMeasures(newDeriveWastes.getEyeMeasures());
                     oldDeriveWastes.setSkinMeasures(newDeriveWastes.getSkinMeasures());
                     oldDeriveWastes.setSwallowMeasures(newDeriveWastes.getSwallowMeasures());

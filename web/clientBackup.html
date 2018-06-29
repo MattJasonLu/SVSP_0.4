@@ -943,10 +943,13 @@
             url: "assignSalesman",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: {
-                'salesmanId': salesmanId,
+            data: JSON.stringify({
+                'salesman': {
+                    'salesmanId': salesmanId
+                },
                 'clientId': clientId
-            },
+            }),
+            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
                     console.log("success: " + result);

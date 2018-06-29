@@ -73,7 +73,7 @@
             },{});
     }
 </script>
-<body>
+<body onload="loadPage4Info();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -151,7 +151,7 @@
                         <div class="form-group" align="right">
                             <label class="col-sm-4 control-label">调查单号</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" name="number" placeholder="******" style="border: none">
+                                <input type="text" class="form-control" name="questionnaireId" id="questionnaireId" placeholder="******" style="border: none">
                             </div>
                         </div>
                     </div>
@@ -171,25 +171,25 @@
                                     <td rowspan="6">1</td>
                                     <td rowspan="6" style="width: 270px" onclick="focusInput(this);"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
                                     <td rowspan="6" style="width: 120px" align="left">
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Virulence">毒性<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Flammable">易燃<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Sour">酸性<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Alkaline">碱性<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Explosion">易爆性<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Oxidability">氧化性<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="Reducibility">还原性<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="WaterFlammable">遇水易燃<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="WaterVirulence">遇水易释放有毒气体<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList" value="AirFlammable">接触空气可发生自燃<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[0]" value="Virulence">毒性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[1]" value="Flammable">易燃<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[2]" value="Sour">酸性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[3]" value="Alkaline">碱性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[4]" value="Explosion">易爆性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[5]" value="Oxidability">氧化性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[6]" value="Reducibility">还原性<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[7]" value="WaterFlammable">遇水易燃<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[8]" value="WaterVirulence">遇水易释放有毒气体<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[9]" value="AirFlammable">接触空气可发生自燃<br>
                                     </td>
                                     <td rowspan="6" style="width: 200px" align="left">
-                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveGlasses">防护眼镜<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveGarment">防护服<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveMask">防护面罩<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="HalfMask">半面罩<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="CoverMask">全面罩<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="PositiveRespirator">正压呼吸器<br>
-                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList" value="ProtectiveGloves">防护手套<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList[0]" value="ProtectiveGlasses">防护眼镜<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList[1]" value="ProtectiveGarment">防护服<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList[2]" value="ProtectiveMask">防护面罩<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList[3]" value="HalfMask">半面罩<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList[4]" value="CoverMask">全面罩<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList[5]" value="PositiveRespirator">正压呼吸器<br>
+                                        <input type="checkbox" name="deriveWastesList[0].wasteProtectList[6]" value="ProtectiveGloves">防护手套<br>
                                     </td>
                                     <td style="width: 130px">若不慎入眼</td><br>
                                     <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
@@ -237,6 +237,45 @@
         // console.log("you click the td!");
         e.firstChild.focus();
     }
+    function loadPage4Info() {
+        $.ajax({
+            type: "POST",
+            url: "getCurrentQuestionnaire",
+            async: false,
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        var data = eval(result);
+                        $("#questionnaireId").val(data.data.questionnaireId);
+                        for (var i = 0; i < data.data.deriveWastesList.length; i++) {
+                            var $i = i;
+                            $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
+                            $("input[name='deriveWastesList[" + $i + "].eyeMeasures']").val(data.data.deriveWastesList[i].eyeMeasures);
+                            $("input[name='deriveWastesList[" + $i + "].skinMeasures']").val(data.data.deriveWastesList[i].skinMeasures);
+                            $("input[name='deriveWastesList[" + $i + "].swallowMeasures']").val(data.data.deriveWastesList[i].swallowMeasures);
+                            $("input[name='deriveWastesList[" + $i + "].suctionMeasures']").val(data.data.deriveWastesList[i].suctionMeasures);
+                            $("input[name='deriveWastesList[" + $i + "].putOutFireMeasures']").val(data.data.deriveWastesList[i].putOutFireMeasures);
+                            $("input[name='deriveWastesList[" + $i + "].leakMeasures']").val(data.data.deriveWastesList[i].leakMeasures);
+
+                            for (var j = 0; j < data.data.deriveWastesList[i].wasteCharacterList.length; j++) {
+                                var $j = data.data.deriveWastesList[i].wasteCharacterList[j].index - 1;
+                                $("input[name*='wasteCharacterList[" + $j + "]']").attr("checked",true);
+                            }
+                            for (var j = 0; j < data.data.deriveWastesList[i].wasteProtectList.length; j++) {
+                                var $j = data.data.deriveWastesList[i].wasteProtectList[j].index - 1;
+                                $("input[name*='wasteProtectList[" + $j + "]']").attr("checked",true);
+                            }
+                        }
+                    }
+                }
+            },
+            error: function (result) {
+
+            }
+        });
+    }
     function savePage4Info(e) {
         // 获取按钮的名字
         var btnName = e.innerHTML;
@@ -251,6 +290,7 @@
             // 可能引入化学物质列表
             data['deriveWastesList'] = [];
             var deriveWastes = {};
+            deriveWastes.name = $("input[name='deriveWastesList[" + $i + "].name']").val();
             deriveWastes.eyeMeasures = $("input[name='deriveWastesList[" + $i + "].eyeMeasures']").val();
             deriveWastes.skinMeasures = $("input[name='deriveWastesList[" + $i + "].skinMeasures']").val();
             deriveWastes.swallowMeasures = $("input[name='deriveWastesList[" + $i + "].swallowMeasures']").val();
@@ -263,7 +303,7 @@
             // 特性列表
             var wasteCharacterList = $("input[name^='deriveWastesList[" + $i + "]'][name*='wasteCharacterList']:checked");
             wasteCharacterList.each(function () {
-                console.log($(this).val());
+//                console.log($(this).val());
                 deriveWastes.wasteCharacterList.push($(this).val());
             });
             // 防护措施列表
