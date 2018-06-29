@@ -6,11 +6,11 @@
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
@@ -314,7 +314,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">取样时间</label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1" id="time">
                                 <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
@@ -490,7 +490,50 @@
      * 查看预约单
      */
     function viewSample(menu) {
-        alert("待完善");
+        var appointId = getAppointIdByMenu(menu);
+        var appointBtn = $("#appointBtn");
+        appointBtn.remove();
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getSampleAppoint",                 // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'appointId': appointId
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $("input").prop("readonly",true);
+                        $("textarea").prop("readonly",true);
+                        $("select").attr("disabled","disabled");
+                        $('#time').readOnly();
+
+                        $('.selectpicker').selectpicker('val',data.data.clientId);
+                        $("#model-companyName").val(data.data.clientId);
+                        $("#model-contactName").val(data.data.contactName);
+                        $("#model-telephone").val(data.data.telephone);
+                        $("#model-appointTime").val(data.data.appointTime);
+                        $("#model-comment").val(data.data.comment);
+                        // 显示框体
+                        $('#appointModal').modal('show');
+                    } else {
+                        alert(data.message);
+                        console.log(data.exception);
+                    }
+                }
+            },
+            error:function (result) {
+                console.dir(result);
+                alert("服务器异常!");
+            }
+        });
+        appointBtn.unbind();
+        appointBtn.click(function(){
+            updateAppointByAppointId(appointId);
+        });
     }
     /**
      * 通过预约单号对预约单进行修改
@@ -551,12 +594,17 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
+                        $("input").removeAttr("readonly");
+                        $("textarea").removeAttr("readonly");
+                       // $("select").attr("disabled","disabled");
+                        $("select").removeAttr("disabled");
                         $('.selectpicker').selectpicker('val',data.data.clientId);
                         $("#model-companyName").val(data.data.clientId);
                         $("#model-contactName").val(data.data.contactName);
                         $("#model-telephone").val(data.data.telephone);
                         $("#model-appointTime").val(data.data.appointTime);
                         $("#model-comment").val(data.data.comment);
+
                         // 显示框体
                         $('#appointModal').modal('show');
                     } else {
@@ -735,7 +783,7 @@
                     if (data.status == "success") {
                         $("#model2-contactName").val(data.data.contactName);
                         $("#model2-telephone").val(data.data.telephone);
-                        $("#model2-productName").val(data.data.productName);
+                        $("#model2-companyName").val(data.data.companyName);
                         $("#model2-recipient").val(data.data.recipient);
                         $("#model2-quantity").val(data.data.quantity);
                         $("#model2-code").val(data.data.code);
