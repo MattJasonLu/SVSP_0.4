@@ -10,7 +10,20 @@
         <result property="product" column="product"/>
         <result property="industry" column="industry"/>
     </resultMap>
+    <resultMap id="MixingElementRM" type="MixingElement">
+        <result property="id" column="id"></result>
+    </resultMap>
+    <resultMap id="SensitiveElementRM" type="SensitiveElement">
+        <result property="id" column="id"></result>
+    </resultMap>
+    <resultMap id="RawWastesRM" type="RawWastes">
+        <result property="materialId" column="materialId"></result>
+    </resultMap>
+    <resultMap id="WasteProcessRM" type="WasteProcess">
+        <result property="processId" column="processId"></result>
+    </resultMap>
     <resultMap type="DeriveWastes" id="DeriveWastesRM">
+        <result property="id" column="id"/>
         <collection property="mixingElementList" select="getMixingElement" column="id"
                     ofType="com.jdlink.domain.MixingElement" javaType="ArrayList"/>
         <collection property="sensitiveElementList" select="getSensitiveElement" column="id"
@@ -178,16 +191,66 @@
     </select>
 
     <update id="update" parameterType="Questionnaire" >
-        update questionnaire set author=#{author}, state=#{applyState} where questionnaireId=#{questionnaireId};
-
+        update questionnaire set clientId=#{client.clientId}, author=#{author}, state=#{applyState} where questionnaireId=#{questionnaireId};
+        <if test="rawWastesList.size() > 0">
+            <foreach collection="rawWastesList" item="rawWastes" index="index">
+                UPDATE t_rawWastes SET code=#{rawWastes.code}, mainMaterial=#{rawWastes.mainMaterial},
+                auxMaterial=#{rawWastes.auxMaterial}, draginMaterial=#{rawWastes.draginMaterial}
+                WHERE materialId=#{rawWastes.materialId};
+            </foreach>
+        </if>
         DELETE FROM r_questionnaireAndWasteInclusionType WHERE questionnaireId=#{questionnaireId};
-
         <if test="wasteInclusionTypeList != null and wasteInclusionTypeList.size() > 0">
             insert into r_questionnaireAndWasteInclusionType (questionnaireId, wasteInclusionType)
             values
             <foreach collection="wasteInclusionTypeList" item="wasteInclusionType" index="index" separator="," close=";">
                 <if test="wasteInclusionType != null">
                     (#{questionnaireId,jdbcType=VARCHAR},#{wasteInclusionType,jdbcType=VARCHAR})
+                </if>
+            </foreach>
+        </if>
+        <if test="wasteProcessList.size() > 0">
+            <foreach collection="wasteProcessList" item="wasteProcess" index="index">
+                UPDATE t_wasteProcess SET code=#{wasteProcess.code}, description=#{wasteProcess.description},
+                quantity=#{wasteProcess.quantity}, lastProcessTime=#{wasteProcess.lastProcessTime},
+                yearQuantity=#{wasteProcess.yearQuantity}, packageSituation=#{wasteProcess.packageSituation}
+                WHERE processId=#{wasteProcess.processId};
+            </foreach>
+        </if>
+        <if test="deriveWastesList.size() > 0">
+            <foreach collection="deriveWastesList" item="deriveWastes" index="index">
+                UPDATE t_deriveWastes SET name=#{deriveWastes.name}, code=#{deriveWastes.code}, formType=#{deriveWastes.formType},
+                formTypeDetail=#{deriveWastes.formTypeDetail}, smellType=#{deriveWastes.smellType}, smellTypeDetail=#{deriveWastes.smellTypeDetail},
+                solubility=#{deriveWastes.solubility}, solubilityDetail=#{deriveWastes.solubilityDetail}, isLowTemp=#{deriveWastes.isLowTemp},
+                lowTemp=#{deriveWastes.lowTemp}, solubleTemp=#{deriveWastes.solubleTemp}, isMixture=#{deriveWastes.isMixture}, eyeMeasures=#{deriveWastes.eyeMeasures},
+                skinMeasures=#{deriveWastes.skinMeasures}, swallowMeasures=#{deriveWastes.swallowMeasures}, suctionMeasures=#{deriveWastes.suctionMeasures},
+                putOutFireMeasures=#{deriveWastes.putOutFireMeasures}, leakMeasures=#{deriveWastes.leakMeasures} WHERE id=#{deriveWastes.id};
+                <if test="deriveWastes.mixingElementList != null and deriveWastes.mixingElementList.size() > 0">
+                    <foreach collection="deriveWastes.mixingElementList" item="mixingElement" index="index">
+                        UPDATE t_mixingElement SET  name=#{mixingElement.name}, minimum=#{mixingElement.minimum}, average=#{mixingElement.average}, maximum=#{mixingElement.maximum} WHERE id=#{mixingElement.id};
+                    </foreach>
+                </if>
+                <if test="deriveWastes.sensitiveElementList != null and deriveWastes.sensitiveElementList.size() > 0">
+
+                    <foreach collection="deriveWastes.sensitiveElementList" item="sensitiveElement" index="index">
+                        UPDATE t_sensitiveElement SET chemicalType=#{sensitiveElement.chemicalType}, isOrganic=#{sensitiveElement.isOrganic} WHERE id=#{sensitiveElement.id};
+                    </foreach>
+                </if>
+                DELETE FROM r_deriveWastesAndWasteCharacter WHERE deriveWastesId=#{deriveWastes.id};
+                <if test="deriveWastes.wasteCharacterList != null and deriveWastes.wasteCharacterList.size() > 0">
+                    insert into r_deriveWastesAndWasteCharacter (deriveWastesId, wasteCharacter)
+                    values
+                    <foreach collection="deriveWastes.wasteCharacterList" item="wasteCharacter" index="index" separator="," close=";">
+                        (#{deriveWastes.id,jdbcType=VARCHAR},#{wasteCharacter,jdbcType=VARCHAR})
+                    </foreach>
+                </if>
+                DELETE FROM r_deriveWastesAndWasteProtect WHERE deriveWastesId=#{deriveWastes.id};
+                <if test="deriveWastes.wasteProtectList != null and deriveWastes.wasteProtectList.size() > 0">
+                    insert into r_deriveWastesAndWasteProtect (deriveWastesId, wasteProtect)
+                    values
+                    <foreach collection="deriveWastes.wasteProtectList" item="wasteProtect" index="index" separator="," close=";">
+                        (#{deriveWastes.id,jdbcType=VARCHAR},#{wasteProtect,jdbcType=VARCHAR})
+                    </foreach>
                 </if>
             </foreach>
         </if>

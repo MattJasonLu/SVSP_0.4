@@ -119,7 +119,8 @@ public class QuestionnaireController {
             // 设置原材料的编号
             for (RawWastes rawWastes : questionnaire.getRawWastesList()) {
                 // 如果不存在编号再进行赋值
-                if (rawWastes.getMaterialId() == null || rawWastes.getMaterialId().equals("")) rawWastes.setMaterialId(RandomUtil.getRandomEightNumber());
+                if (rawWastes.getMaterialId() == null || rawWastes.getMaterialId().equals(""))
+                    rawWastes.setMaterialId(RandomUtil.getRandomEightNumber());
             }
             // 设置处理流程的编号
             for (WasteProcess wasteProcess : questionnaire.getWasteProcessList()) {
@@ -321,6 +322,27 @@ public class QuestionnaireController {
     }
 
     /**
+     * 更新调查表
+     * @return 成功与否
+     */
+    @RequestMapping("updateQuestionnaire")
+    @ResponseBody
+    public String updateQuestionnaire() {
+        JSONObject res = new JSONObject();
+        try {
+            questionnaireService.update(QuestionnaireController.questionnaire);
+            res.put("status", "success");
+            res.put("message", "更新调查表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新调查表失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取问卷编号
      * @return 问卷编号
      */
@@ -362,10 +384,17 @@ public class QuestionnaireController {
      */
     @RequestMapping(value = {"getCurrentQuestionnaire", "client/getCurrentQuestionnaire"})
     @ResponseBody
-    public String getCurrentQuestionnaire() {
+    public String getCurrentQuestionnaire(String questionnaireId) {
         JSONObject res = new JSONObject();
         try {
-            if (QuestionnaireController.questionnaire.getQuestionnaireId() == null) throw new Exception("无数据");
+            if (questionnaireId != null && !questionnaireId.equals("")) {
+                Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
+                if (questionnaire != null) {
+                    QuestionnaireController.questionnaire = questionnaire;
+                }
+            } else {
+                if (QuestionnaireController.questionnaire.getQuestionnaireId() == null) throw new Exception("无数据");
+            }
             // 数据转换JSON
             JSONObject data = JSONObject.fromBean(QuestionnaireController.questionnaire);
             res.put("status", "success");

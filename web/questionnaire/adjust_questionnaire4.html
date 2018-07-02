@@ -168,7 +168,7 @@
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
                     <li><a href="#">客户管理</a></li>
-                    <li><a href="questionnaire1.html">危险数据调查表管理</a></li>
+                    <li><a href="adjust_questionnaire1.html">危险数据调查表管理</a></li>
                     <li class="active">调查表新增</li>
                 </ol>
             </div>
@@ -255,7 +255,7 @@
                 </div>
                 <div class="row text-center">
                     <a class="btn btn-primary" onclick="savePage4Info(this);">上一页</a>
-                    <button type="button" class="btn btn-primary" id="btnCfm" onclick="savePage4Info(this);">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="savePage4Info(this);">提交</button>
                     <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
                 </div>
             </form>
@@ -264,16 +264,6 @@
     </div>
 </body>
 <script>
-    // 获取问卷编号
-    var url=location.search;
-    var Request = {};
-    if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
-        strs = str.split("&");
-        for(var i=0;i<strs.length;i++) {
-            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
-        }
-    }
     /**
      * 聚焦输入框
      * @param e
@@ -283,9 +273,6 @@
         e.firstChild.focus();
     }
     function loadPage4Info() {
-        if (Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
-            $("#btnCfm").text("修改");
-        }
         $.ajax({
             type: "POST",
             url: "getCurrentQuestionnaire",
@@ -393,30 +380,8 @@
                                     console.log("错误信息:" + XMLHttpRequest.responseText);
                                 }
                             });
-                        } else if (btnName == "修改") {
-                            $.ajax({
-                                type: "POST",
-                                url: "updateQuestionnaire",
-                                async: false,
-                                dataType: "json",
-                                success: function (result) {
-                                    if (result.status == "success") {
-                                        alert(result.message);
-                                        $(location).attr('href', 'questionnaireManage.html');
-                                    }
-                                },
-                                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                    alert("服务器异常");
-                                    console.log("错误信息:" + XMLHttpRequest.responseText);
-                                }
-                            });
-                        } else if (btnName == "上一页") {
-                            if (Request["questionnaireId"] == null && Request["questionnaireId"] == '') {
-                                $(location).attr('href', 'questionnaire3.html');
-                            } else {
-                                $(location).attr('href', 'questionnaire3.html?questionnaireId=' + Request["questionnaireId"]);
-                            }
                         }
+                        else if (btnName == "上一页") $(location).attr('href', 'questionnaire3.html');
                     } else { }
                 }
             },

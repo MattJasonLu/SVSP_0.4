@@ -168,7 +168,7 @@
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
                     <li><a href="#">客户管理</a></li>
-                    <li><a href="questionnaire1.html">危险数据调查表管理</a></li>
+                    <li><a href="adjust_questionnaire1.html">危险数据调查表管理</a></li>
                     <li class="active">调查表新增</li>
                 </ol>
             </div>
@@ -383,16 +383,6 @@
     </div>
 </body>
 <script type="text/javascript">
-    // 获取问卷编号
-    var url=location.search;
-    var Request = {};
-    if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
-        strs = str.split("&");
-        for(var i=0;i<strs.length;i++) {
-            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
-        }
-    }
     function loadPage2Info() {
         $.ajax({
             type: "POST",
@@ -461,13 +451,8 @@
                 if (result != undefined) {
                     console.log(result);
                     if (result.status == "success") {
-                        if (Request["questionnaireId"] == null || Request["questionnaireId"] == '') {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html');
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html');
-                        } else {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html?questionnaireId=' + Request["questionnaireId"]);
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html?questionnaireId=' + Request["questionnaireId"]);
-                        }
+                        if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html');
+                        else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html');
                     } else { }
                 }
             },
