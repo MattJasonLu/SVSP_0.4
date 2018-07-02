@@ -595,12 +595,15 @@
                 if (result != undefined) {
                     console.log(result);
                     if (result.status == "success") {
-                        if (Request["questionnaireId"] == null || Request["questionnaireId"] == '') {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html');
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html');
-                        } else {
+                        if (Request["type"] != null && Request["type"] != '') {
+                            if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
+                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
+                        } else if(Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
                             if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html?questionnaireId=' + Request["questionnaireId"]);
                             else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html?questionnaireId=' + Request["questionnaireId"]);
+                        } else {
+                            if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html');
+                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html');
                         }
                     }
                 }
