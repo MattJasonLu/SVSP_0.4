@@ -328,7 +328,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" id="appoint">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="appointBtn">预约</button>
                 </div>
@@ -492,7 +492,6 @@
     function viewSample(menu) {
         var appointId = getAppointIdByMenu(menu);
         var appointBtn = $("#appointBtn");
-        appointBtn.remove();
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getSampleAppoint",                 // url
@@ -506,11 +505,7 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("input").prop("readonly",true);
-                        $("textarea").prop("readonly",true);
-                        $("select").attr("disabled","disabled");
-                        $('#time').readOnly();
-
+                        appointBtn.hide();
                         $('.selectpicker').selectpicker('val',data.data.clientId);
                         $("#model-companyName").val(data.data.clientId);
                         $("#model-contactName").val(data.data.contactName);
@@ -519,6 +514,11 @@
                         $("#model-comment").val(data.data.comment);
                         // 显示框体
                         $('#appointModal').modal('show');
+                        $("input").prop("readonly",true);
+                        $("textarea").prop("readonly",true);
+                        $("select").attr("disabled","disabled");
+                        $('#time').readOnly();
+                        appointBtn.hide();
                     } else {
                         alert(data.message);
                         console.log(data.exception);
@@ -577,6 +577,7 @@
      */
     function adjustSample(menu) {
         var appointId = getAppointIdByMenu(menu);
+       var appoint= $('#appoint');
         var appointBtn = $("#appointBtn");
         appointBtn.text("修改");
         // 点击后更新
@@ -591,6 +592,7 @@
             dataType: "json",
             success: function (result) {
                 console.log(result);
+                appointBtn.hide();
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
@@ -604,9 +606,9 @@
                         $("#model-telephone").val(data.data.telephone);
                         $("#model-appointTime").val(data.data.appointTime);
                         $("#model-comment").val(data.data.comment);
-
                         // 显示框体
                         $('#appointModal').modal('show');
+                        appointBtn.show();
                     } else {
                         alert(data.message);
                         console.log(data.exception);
@@ -622,6 +624,7 @@
         appointBtn.click(function(){
             updateAppointByAppointId(appointId);
         });
+       appoint.appendChild(appointBtn);
     }
     /**
      * 显示收样框
