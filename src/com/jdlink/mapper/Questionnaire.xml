@@ -11,16 +11,16 @@
         <result property="industry" column="industry"/>
     </resultMap>
     <resultMap id="MixingElementRM" type="MixingElement">
-        <result property="id" column="id"></result>
+        <result property="id" column="id"/>
     </resultMap>
     <resultMap id="SensitiveElementRM" type="SensitiveElement">
-        <result property="id" column="id"></result>
+        <result property="id" column="id"/>
     </resultMap>
     <resultMap id="RawWastesRM" type="RawWastes">
-        <result property="materialId" column="materialId"></result>
+        <result property="materialId" column="materialId"/>
     </resultMap>
     <resultMap id="WasteProcessRM" type="WasteProcess">
-        <result property="processId" column="processId"></result>
+        <result property="processId" column="processId"/>
     </resultMap>
     <resultMap type="DeriveWastes" id="DeriveWastesRM">
         <result property="id" column="id"/>
@@ -142,7 +142,7 @@
         select * from questionnaire where questionnaireId = #{questionnaireId};
     </select>
 
-    <select id="getRawWastes" parameterType="String" resultType="RawWastes">
+    <select id="getRawWastes" parameterType="String" resultMap="RawWastesRM">
         SELECT * FROM t_rawWastes WHERE materialId in (
           SELECT r_questionnaireAndRawWastes.rawWastesId FROM r_questionnaireAndRawWastes
           WHERE questionnaireId=#{questionnaireId});
@@ -152,7 +152,7 @@
         SELECT wasteInclusionType FROM r_questionnaireAndWasteInclusionType WHERE questionnaireId=#{questionnaireId};
     </select>
 
-    <select id="getWasteProcess" parameterType="String" resultType="WasteProcess">
+    <select id="getWasteProcess" parameterType="String" resultMap="WasteProcessRM">
         SELECT * FROM t_wasteProcess WHERE processId in (
         SELECT r_questionnaireAndWasteProcess.wasteProcessId FROM r_questionnaireAndWasteProcess
         WHERE questionnaireId=#{questionnaireId});
@@ -164,13 +164,13 @@
         r_questionnaireAndDeriveWastes WHERE questionnaireId=#{questionnaireId});
     </select>
 
-    <select id="getMixingElement" parameterType="String" resultType="MixingElement">
+    <select id="getMixingElement" parameterType="String" resultMap="MixingElementRM">
         SELECT * from t_mixingElement WHERE t_mixingElement.id in
         (SELECT r_deriveWastesAndMixingElement.mixingElementId
         FROM r_deriveWastesAndMixingElement WHERE deriveWastesId=#{id});
     </select>
 
-    <select id="getSensitiveElement" parameterType="String" resultType="SensitiveElement">
+    <select id="getSensitiveElement" parameterType="String" resultMap="SensitiveElementRM">
         SELECT * from t_sensitiveElement WHERE t_sensitiveElement.id in
         (SELECT r_deriveWastesAndSensitiveElement.sensitiveElementId
         FROM r_deriveWastesAndSensitiveElement WHERE deriveWastesId=#{id});

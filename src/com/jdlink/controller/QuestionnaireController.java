@@ -117,14 +117,28 @@ public class QuestionnaireController {
         JSONObject res = new JSONObject();
         try {
             // 设置原材料的编号
-            for (RawWastes rawWastes : questionnaire.getRawWastesList()) {
+            int oldCount = 0;
+            if (QuestionnaireController.questionnaire.getRawWastesList() != null)
+                oldCount = QuestionnaireController.questionnaire.getRawWastesList().size();
+            int newCount = questionnaire.getRawWastesList().size();
+            // 固定旧编号
+            for (int i = 0; i < oldCount; i++) {
+                questionnaire.getRawWastesList().get(i).setMaterialId(QuestionnaireController.questionnaire.getRawWastesList().get(i).getMaterialId());
+            }
+            for (int i = oldCount; i < newCount; i++) {
                 // 如果不存在编号再进行赋值
-                if (rawWastes.getMaterialId() == null || rawWastes.getMaterialId().equals(""))
-                    rawWastes.setMaterialId(RandomUtil.getRandomEightNumber());
+                questionnaire.getRawWastesList().get(i).setMaterialId(RandomUtil.getRandomEightNumber());
             }
             // 设置处理流程的编号
-            for (WasteProcess wasteProcess : questionnaire.getWasteProcessList()) {
-                if (wasteProcess.getProcessId() == null || wasteProcess.getProcessId().equals("")) wasteProcess.setProcessId(RandomUtil.getRandomEightNumber());
+            oldCount = 0;
+            if (QuestionnaireController.questionnaire.getWasteProcessList() != null)
+                oldCount = QuestionnaireController.questionnaire.getWasteProcessList().size();
+            newCount = questionnaire.getWasteProcessList().size();
+            for (int i = 0; i < oldCount; i++) {
+                questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
+            }
+            for (int i = oldCount; i < newCount; i++) {
+                questionnaire.getWasteProcessList().get(i).setProcessId(RandomUtil.getRandomEightNumber());
             }
             // 更新原材料的信息
             QuestionnaireController.questionnaire.setRawWastesList(questionnaire.getRawWastesList());
@@ -158,19 +172,19 @@ public class QuestionnaireController {
             int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
             int newCount = questionnaire.getDeriveWastesList().size();
             // 设置引入物质的编号
-            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
-                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
-                // 混合物成分编号
-                if (deriveWastes.getMixingElementList().size() > 0)
-                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
-                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
-                    }
-                // 敏感成分编号
-                if (deriveWastes.getSensitiveElementList().size() > 0)
-                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
-                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
-                    }
-            }
+//            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+//                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
+//                // 混合物成分编号
+//                if (deriveWastes.getMixingElementList().size() > 0)
+//                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+//                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//                // 敏感成分编号
+//                if (deriveWastes.getSensitiveElementList().size() > 0)
+//                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+//                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//            }
             // 如果旧数据不存在，则直接赋值
             if (oldCount == 0) {
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
@@ -179,6 +193,28 @@ public class QuestionnaireController {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    // 混合物成分编号
+                    int innerOldCount = 0;
+                    if (oldDeriveWastes.getMixingElementList() != null)
+                        innerOldCount = oldDeriveWastes.getMixingElementList().size();
+                    int innerNewCount = newDeriveWastes.getMixingElementList().size();
+                    for (int j = 0; j < innerOldCount; j++) {
+                        newDeriveWastes.getMixingElementList().get(j).setId(oldDeriveWastes.getMixingElementList().get(j).getId());
+                    }
+                    for (int j = innerOldCount; j < innerNewCount; j++) {
+                        newDeriveWastes.getMixingElementList().get(j).setId(RandomUtil.getRandomEightNumber());
+                    }
+                    // 敏感成分编号
+                    innerOldCount = 0;
+                    if (oldDeriveWastes.getSensitiveElementList() != null)
+                        innerOldCount = oldDeriveWastes.getSensitiveElementList().size();
+                    innerNewCount = newDeriveWastes.getSensitiveElementList().size();
+                    for (int j = 0; j < innerOldCount; j++) {
+                        newDeriveWastes.getSensitiveElementList().get(j).setId(oldDeriveWastes.getSensitiveElementList().get(j).getId());
+                    }
+                    for (int j = innerOldCount; j < innerNewCount; j++) {
+                        newDeriveWastes.getSensitiveElementList().get(j).setId(RandomUtil.getRandomEightNumber());
+                    }
                     oldDeriveWastes.setName(newDeriveWastes.getName());
                     oldDeriveWastes.setCode(newDeriveWastes.getCode());
                     oldDeriveWastes.setFormType(newDeriveWastes.getFormType());
