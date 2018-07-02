@@ -1,8 +1,5 @@
 package com.jdlink.util;
 
-import com.jdlink.service.SampleAppointService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -32,6 +29,20 @@ public class RandomUtil {
         int rannum = (int) (random.nextDouble() * (99999 - 10000 + 1)) + 10000;// 获取5位随机数
 
         return rannum + str;// 当前时间
+    }
+
+    /**
+     * 获取八位随机数
+     * @return 八位随机数
+     */
+    public static String getRandomEightNumber() {
+        StringBuilder str=new StringBuilder();//定义变长字符串
+        Random random=new Random();
+        //随机生成数字，并添加到字符串
+        for(int i=0;i<8;i++){
+            str.append(random.nextInt(10));
+        }
+        return str.toString();
     }
 
     /**

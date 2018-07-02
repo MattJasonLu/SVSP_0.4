@@ -10,51 +10,105 @@
         <result property="product" column="product"/>
         <result property="industry" column="industry"/>
     </resultMap>
+    <resultMap type="DeriveWastes" id="DeriveWastesRM">
+        <collection property="mixingElementList" select="getMixingElement" column="id"
+                    ofType="com.jdlink.domain.MixingElement" javaType="ArrayList"/>
+        <collection property="sensitiveElementList" select="getSensitiveElement" column="id"
+                    ofType="com.jdlink.domain.SensitiveElement" javaType="ArrayList"/>
+        <collection property="wasteCharacterList" select="getWasteCharacter" column="id"
+                    ofType="com.jdlink.domain.WasteCharacter" javaType="ArrayList"/>
+        <collection property="wasteProtectList" select="getWasteProtect" column="id"
+                    ofType="com.jdlink.domain.WasteProtect" javaType="ArrayList"/>
+    </resultMap>
     <resultMap type="Questionnaire" id="QuestionnaireRM">
         <result property="questionnaireId" column="questionnaireId"/>
         <result property="applyState" column="state" javaType="com.jdlink.domain.ApplyState"/>
         <result property="author" column="author"/>
         <result property="time" column="time"/>
         <association property="client" javaType="Client" resultMap="ClientRM"/>
+        <collection property="rawWastesList" select="getRawWastes" column="questionnaireId"
+                    ofType="com.jdlink.domain.RawWastes" javaType="ArrayList"/>
         <collection property="wasteInclusionTypeList" select="getInclusionType" column="questionnaireId"
                     ofType="com.jdlink.domain.WasteInclusionType" javaType="ArrayList"/>
+        <collection property="wasteProcessList" select="getWasteProcess" column="questionnaireId"
+                    ofType="com.jdlink.domain.WasteProcess" javaType="ArrayList"/>
+        <collection property="deriveWastesList" select="getDeriveWastes" column="questionnaireId"
+                    ofType="com.jdlink.domain.DeriveWastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Questionnaire" >
         insert into questionnaire ( questionnaireId, clientId, time, author, state )
         values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState} );
+        <if test="rawWastesList.size() > 0">
+            <foreach collection="rawWastesList" item="rawWastes" index="index">
+            insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)
+            values (#{questionnaireId,jdbcType=VARCHAR},#{rawWastes.materialId,jdbcType=VARCHAR});
+            insert into t_rawWastes ( materialId, code, mainMaterial, auxMaterial, draginMaterial )
+            values (#{rawWastes.materialId}, #{rawWastes.code}, #{rawWastes.mainMaterial}, #{rawWastes.auxMaterial}, #{rawWastes.draginMaterial});
+            </foreach>
+        </if>
+        <if test="wasteInclusionTypeList != null and wasteInclusionTypeList.size() > 0">
+            insert into r_questionnaireAndWasteInclusionType (questionnaireId, wasteInclusionType)
+            values
+            <foreach collection="wasteInclusionTypeList" item="wasteInclusionType" index="index" separator="," close=";">
+                <if test="wasteInclusionType != null">
+                  (#{questionnaireId,jdbcType=VARCHAR},#{wasteInclusionType,jdbcType=VARCHAR})
+                </if>
+            </foreach>
+        </if>
+        <if test="wasteProcessList.size() > 0">
+            <foreach collection="wasteProcessList" item="wasteProcess" index="index">
+            insert into r_questionnaireAndWasteProcess (questionnaireId,wasteProcessId)
+            values (#{questionnaireId,jdbcType=VARCHAR},#{wasteProcess.processId,jdbcType=VARCHAR});
+            insert into t_wasteProcess ( processId, code, description, quantity, lastProcessTime, yearQuantity, packageSituation )
+            values (#{wasteProcess.processId}, #{wasteProcess.code}, #{wasteProcess.description}, #{wasteProcess.quantity}, #{wasteProcess.lastProcessTime}, #{wasteProcess.yearQuantity}, #{wasteProcess.packageSituation});
+            </foreach>
+        </if>
+        <if test="deriveWastesList.size() > 0">
+            <foreach collection="deriveWastesList" item="deriveWastes" index="index">
+              insert into r_questionnaireAndDeriveWastes (questionnaireId,deriveWastesId)
+              values (#{questionnaireId,jdbcType=VARCHAR},#{deriveWastes.id,jdbcType=VARCHAR});
+                insert into t_deriveWastes ( id, name, code, formType, formTypeDetail,
+                smellType, smellTypeDetail, solubility, solubilityDetail, isLowTemp,
+                lowTemp, solubleTemp, isMixture, eyeMeasures, skinMeasures, swallowMeasures,
+                suctionMeasures, putOutFireMeasures, leakMeasures )
+                values ( #{deriveWastes.id}, #{deriveWastes.name}, #{deriveWastes.code}, #{deriveWastes.formType}, #{deriveWastes.formTypeDetail},
+                #{deriveWastes.smellType}, #{deriveWastes.smellTypeDetail}, #{deriveWastes.solubility}, #{deriveWastes.solubilityDetail},
+                #{deriveWastes.isLowTemp}, #{deriveWastes.lowTemp}, #{deriveWastes.solubleTemp}, #{deriveWastes.isMixture}, #{deriveWastes.eyeMeasures},
+                #{deriveWastes.skinMeasures}, #{deriveWastes.swallowMeasures}, #{deriveWastes.suctionMeasures}, #{deriveWastes.putOutFireMeasures},
+                #{deriveWastes.leakMeasures} );
+                <if test="deriveWastes.mixingElementList != null and deriveWastes.mixingElementList.size() > 0">
+                    <foreach collection="deriveWastes.mixingElementList" item="mixingElement" index="index">
+                        insert into r_deriveWastesAndMixingElement (deriveWastesId,mixingElementId)
+                        values (#{deriveWastes.id,jdbcType=VARCHAR},#{mixingElement.id,jdbcType=VARCHAR});
+                        insert into t_mixingElement ( id, name, minimum, average, maximum )
+                        values (#{mixingElement.id}, #{mixingElement.name}, #{mixingElement.minimum}, #{mixingElement.average}, #{mixingElement.maximum} );
+                    </foreach>
+                </if>
+                <if test="deriveWastes.sensitiveElementList != null and deriveWastes.sensitiveElementList.size() > 0">
 
-        <!--<if test="rawWastesList.size() > 0">-->
-            <!--insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)-->
-            <!--values-->
-            <!--<foreach collection="rawWastesList" item="rawWastes" index="index" separator="," close=";">-->
-                <!--(#{questionnaireId,jdbcType=VARCHAR},#{rawWastes.materialId,jdbcType=VARCHAR})-->
-            <!--</foreach>-->
-        <!--</if>-->
-        <!--<if test="wasteInclusionTypeList != null and wasteInclusionTypeList.size() > 0">-->
-            <!--insert into r_questionnaireAndWasteInclusionType (questionnaireId, wasteInclusionType)-->
-            <!--values-->
-            <!--<foreach collection="wasteInclusionTypeList" item="wasteInclusionType" index="index" separator="," close=";">-->
-                <!--<if test="wasteInclusionType != null">-->
-                  <!--(#{questionnaireId,jdbcType=VARCHAR},#{wasteInclusionType,jdbcType=VARCHAR})-->
-                <!--</if>-->
-            <!--</foreach>-->
-        <!--</if>-->
-        <!--<if test="wasteProcessList.size() > 0">-->
-            <!--insert into r_questionnaireAndWasteProcess (questionnaireId,wasteProcessId)-->
-            <!--values-->
-            <!--<foreach collection="wasteProcessList" item="wasteProcess" index="index" separator="," close=";">-->
-                <!--(#{questionnaireId,jdbcType=VARCHAR},#{wasteProcess.processId,jdbcType=VARCHAR})-->
-            <!--</foreach>-->
-        <!--</if>-->
-
-        <!--<if test="deriveWastesList.size() > 0">-->
-            <!--insert into r_questionnaireAndDeriveWastes (questionnaireId,deriveWastesId)-->
-            <!--values-->
-            <!--<foreach collection="deriveWastesList" item="deriveWastes" index="index" separator="," close=";">-->
-                <!--(#{questionnaireId,jdbcType=VARCHAR},#{deriveWastes.id,jdbcType=VARCHAR})-->
-            <!--</foreach>-->
-        <!--</if>-->
-
+                    <foreach collection="deriveWastes.sensitiveElementList" item="sensitiveElement" index="index">
+                        insert into r_deriveWastesAndSensitiveElement (deriveWastesId,sensitiveElementId)
+                        values (#{deriveWastes.id,jdbcType=VARCHAR},#{sensitiveElement.id,jdbcType=VARCHAR});
+                        insert into t_sensitiveElement ( id, chemicalType, isOrganic )
+                        values (#{sensitiveElement.id}, #{sensitiveElement.chemicalType}, #{sensitiveElement.isOrganic} );
+                    </foreach>
+                </if>
+                <if test="deriveWastes.wasteCharacterList != null and deriveWastes.wasteCharacterList.size() > 0">
+                    insert into r_deriveWastesAndWasteCharacter (deriveWastesId, wasteCharacter)
+                    values
+                    <foreach collection="deriveWastes.wasteCharacterList" item="wasteCharacter" index="index" separator="," close=";">
+                        (#{deriveWastes.id,jdbcType=VARCHAR},#{wasteCharacter,jdbcType=VARCHAR})
+                    </foreach>
+                </if>
+                <if test="deriveWastes.wasteProtectList != null and deriveWastes.wasteProtectList.size() > 0">
+                    insert into r_deriveWastesAndWasteProtect (deriveWastesId, wasteProtect)
+                    values
+                    <foreach collection="deriveWastes.wasteProtectList" item="wasteProtect" index="index" separator="," close=";">
+                        (#{deriveWastes.id,jdbcType=VARCHAR},#{wasteProtect,jdbcType=VARCHAR})
+                    </foreach>
+                </if>
+            </foreach>
+        </if>
     </insert>
 
     <delete id="delete" parameterType="Questionnaire" >
@@ -75,8 +129,48 @@
         select * from questionnaire where questionnaireId = #{questionnaireId};
     </select>
 
+    <select id="getRawWastes" parameterType="String" resultType="RawWastes">
+        SELECT * FROM t_rawWastes WHERE materialId in (
+          SELECT r_questionnaireAndRawWastes.rawWastesId FROM r_questionnaireAndRawWastes
+          WHERE questionnaireId=#{questionnaireId});
+    </select>
+
     <select id="getInclusionType" parameterType="String" resultType="WasteInclusionType" >
-        select wasteInclusionType from r_questionnaireAndWasteInclusionType WHERE questionnaireId=#{questionnaireId}
+        SELECT wasteInclusionType FROM r_questionnaireAndWasteInclusionType WHERE questionnaireId=#{questionnaireId};
+    </select>
+
+    <select id="getWasteProcess" parameterType="String" resultType="WasteProcess">
+        SELECT * FROM t_wasteProcess WHERE processId in (
+        SELECT r_questionnaireAndWasteProcess.wasteProcessId FROM r_questionnaireAndWasteProcess
+        WHERE questionnaireId=#{questionnaireId});
+    </select>
+
+    <select id="getDeriveWastes" parameterType="String" resultMap="DeriveWastesRM">
+        SELECT * from t_deriveWastes WHERE t_deriveWastes.id in
+        (select r_questionnaireAndDeriveWastes.deriveWastesId from
+        r_questionnaireAndDeriveWastes WHERE questionnaireId=#{questionnaireId});
+    </select>
+
+    <select id="getMixingElement" parameterType="String" resultType="MixingElement">
+        SELECT * from t_mixingElement WHERE t_mixingElement.id in
+        (SELECT r_deriveWastesAndMixingElement.mixingElementId
+        FROM r_deriveWastesAndMixingElement WHERE deriveWastesId=#{id});
+    </select>
+
+    <select id="getSensitiveElement" parameterType="String" resultType="SensitiveElement">
+        SELECT * from t_sensitiveElement WHERE t_sensitiveElement.id in
+        (SELECT r_deriveWastesAndSensitiveElement.sensitiveElementId
+        FROM r_deriveWastesAndSensitiveElement WHERE deriveWastesId=#{id});
+    </select>
+
+    <select id="getWasteCharacter" parameterType="String" resultType="WasteCharacter">
+        SELECT r_deriveWastesAndWasteCharacter.wasteCharacter
+        FROM r_deriveWastesAndWasteCharacter WHERE deriveWastesId=#{id};
+    </select>
+
+    <select id="getWasteProtect" parameterType="String" resultType="WasteProtect">
+        SELECT r_deriveWastesAndWasteProtect.wasteProtect
+        FROM r_deriveWastesAndWasteProtect WHERE deriveWastesId=#{id};
     </select>
 
     <select id="getByClientId" parameterType="String" resultType="Questionnaire">

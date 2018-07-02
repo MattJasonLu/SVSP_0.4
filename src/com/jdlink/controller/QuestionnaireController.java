@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.*;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,15 @@ public class QuestionnaireController {
     public String savePage2Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
+            // 设置原材料的编号
+            for (RawWastes rawWastes : questionnaire.getRawWastesList()) {
+                // 如果不存在编号再进行赋值
+                if (rawWastes.getMaterialId() == null || rawWastes.getMaterialId().equals("")) rawWastes.setMaterialId(RandomUtil.getRandomEightNumber());
+            }
+            // 设置处理流程的编号
+            for (WasteProcess wasteProcess : questionnaire.getWasteProcessList()) {
+                if (wasteProcess.getProcessId() == null || wasteProcess.getProcessId().equals("")) wasteProcess.setProcessId(RandomUtil.getRandomEightNumber());
+            }
             // 更新原材料的信息
             QuestionnaireController.questionnaire.setRawWastesList(questionnaire.getRawWastesList());
             // 更新特别关注物质的信息
@@ -146,6 +156,20 @@ public class QuestionnaireController {
             // 新的引入物质数量
             int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
             int newCount = questionnaire.getDeriveWastesList().size();
+            // 设置引入物质的编号
+            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
+                // 混合物成分编号
+                if (deriveWastes.getMixingElementList().size() > 0)
+                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+                // 敏感成分编号
+                if (deriveWastes.getSensitiveElementList().size() > 0)
+                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+            }
             // 如果旧数据不存在，则直接赋值
             if (oldCount == 0) {
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
@@ -226,6 +250,20 @@ public class QuestionnaireController {
             // 更新危废特性、防护处理和对应措施
             int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
             int newCount = questionnaire.getDeriveWastesList().size();
+            // 设置引入物质的编号
+            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
+                // 混合物成分编号
+                if (deriveWastes.getMixingElementList() != null)
+                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+                // 敏感成分编号
+                if (deriveWastes.getSensitiveElementList() != null)
+                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+            }
             if (oldCount == 0) {
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             } else if (oldCount <= newCount) {
