@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新建模板</title>
+    <script src="/js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <link href="/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="/js/data-format.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <script src="js/word/config.js"></script>
+    <link href="css/word/editor.css">
+    <script src="js/word/zh-cn.js"></script>
+    <script src="js/word/styles.js"></script>
+    <link href="css/word/scayt.css">
+    <link href="css/word/dialog.css">
+    <link href="css/word/tableselection.css">
+    <link href="css/word/wsc.css">
+    <script src="js/word/link.js"></script>
+    <script src="js/word/image.js"></script>
+    <script src="js/word/plugins/specialchar.js"></script>
+    <script src="js/word/plugins/zh-cn.js"></script>
+    <style>.cke{visibility:hidden;}</style>
+</head>
+<script>
+    CKEDITOR.editorConfig = function( config ) {
+        config.toolbarGroups = [
+            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+            { name: 'links', groups: [ 'links' ] },
+            { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+            { name: 'insert', groups: [ 'insert' ] },
+            { name: 'forms', groups: [ 'forms' ] },
+            { name: 'tools', groups: [ 'tools' ] },
+            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+            { name: 'others', groups: [ 'others' ] },
+            '/',
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+            { name: 'styles', groups: [ 'styles' ] },
+            { name: 'colors', groups: [ 'colors' ] },
+            { name: 'about', groups: [ 'about' ] }
+        ];
+
+        config.removeButtons = 'Underline,Subscript,Superscript';
+    };
+
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            style: 'btn-info',
+            size: 4
+        });
+    });
+
+    function setClientData() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCurrentQuestionnaireId",                       // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+//                    console.log(result);
+                    if (result.status == "success") {
+                        $("#questionnaireId").val(result.questionnaireId);
+                    } else {
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
+        $("#time").val(getNowDate());
+    }
+</script>
+<body onload="setClientData();loadPage1Info();">
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">产废服务平台</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="wastesPlatform.html">首页</a></li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">客户备案</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">业务员分配管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="salesManage.html">业务员管理</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                            </ul>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="sampleManage.html">客户样品登记</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="supplierBackup.html">供应商备案</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">合同管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="contractManage.html">合同列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="contractTemplate.html">合同模板</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">价格管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="quotation.html">报价管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="cost.html">成本管理</a></li>
+                    </ul>
+                </li>
+                <li><a>一企一档</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人信息</a></li>
+                        <li><a href="#">待办事项</a></li>
+                        <li><a href="index.html">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="wastesPlatform.html">概览</a></li>
+                <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">接收管理</a></li>
+                <li><a href="#">贮存管理</a></li>
+                <li><a href="#">预处理管理</a></li>
+                <li><a href="#">处置管理</a></li>
+                <li><a href="#">次生管理</a></li>
+                <li><a href="#">基础数据</a></li>
+                <li><a href="#">系统设置</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="businessModel.html">商务管理</a></li>
+                <li><a href="#">合同管理</a></li>
+                <li class="active">新建模板</li>
+            </ol>
+        </div>
+        <h2 class="sub-header">新建模板</h2>
+        <form method="post" id="page1Info" enctype="multipart/form-data">
+            <div class="row">
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">模板名称：</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" name="templateName">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4"></div>
+                <div class="form-horizontal col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label for="contractType" class="col-sm-4 control-label">合同类型：</label>
+                        <div class="col-xs-5">
+                            <select class="selectpicker input-xlarge form-control" data-live-search="true"
+                                    data-live-search-placeholder="选择" id="contractType" name="contractType"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label for="year" class="col-sm-4 control-label">年份：</label>
+                        <div class="col-xs-5">
+                            <select class="selectpicker input-xlarge form-control" data-live-search="true"
+                                    data-live-search-placeholder="选择" id="year" name="year"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label for="term" class="col-sm-4 control-label">适用期限：</label>
+                        <div class="col-xs-5">
+                            <select class="selectpicker input-xlarge form-control" data-live-search="true"
+                                    data-live-search-placeholder="选择" id="term" name="term"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    合同正文：<br>
+                    <textarea style="height: 100%;width: 100%" >
+                        word
+                    </textarea>
+                    <!--<div class="adjoined-bottom">-->
+                        <!--<div class="grid-container">-->
+                            <!--<div class="grid-width-100">-->
+                                <!--<div id="editor" style="visibility: hidden; display: none;">-->
+                                    <!--<h1>Hello world!</h1>-->
+                                    <!--<p>I'm an instance of <a href="https://ckeditor.com">CKEditor</a>.</p>-->
+                                <!--</div>-->
+                                <!--<div class="cke_inner cke_reset" role="presentation">-->
+                                    <!--<span id="cke_1_top" class="cke_top cke_reset_all" role="presentation" style="height: auto; user-select: none;">-->
+                            <!--<span id="cke_8" class="cke_voice_label">工具栏</span>-->
+                            <!--<span id="cke_1_toolbox" class="cke_toolbox" role="group" aria-labelledby="cke_8" onmousedown="return false;">-->
+                                <!--<span id="cke_11" class="cke_toolbar" aria-labelledby="cke_11_label" role="toolbar">-->
+                                    <!--<span id="cke_11_label" class="cke_voice_label">剪贴板/撤销</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_12" class="cke_button cke_button__cut cke_button_disabled " href="javascript:void('剪切')" title="剪切 (Ctrl+X)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_12_label" aria-describedby="cke_12_description" aria-haspopup="false" aria-disabled="true" onkeydown="return CKEDITOR.tools.callFunction(2,event);" onfocus="return CKEDITOR.tools.callFunction(3,event);" onclick="CKEDITOR.tools.callFunction(4,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__cut_icon" style="background-image:url('image/icons.png');background-position:0 -264px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_12_label" class="cke_button_label cke_button__cut_label" aria-hidden="false">剪切</span>-->
+                                            <!--<span id="cke_12_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+X</span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_13" class="cke_button cke_button__copy cke_button_disabled " href="javascript:void('复制')" title="复制 (Ctrl+C)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_13_label" aria-describedby="cke_13_description" aria-haspopup="false" aria-disabled="true" onkeydown="return CKEDITOR.tools.callFunction(5,event);" onfocus="return CKEDITOR.tools.callFunction(6,event);" onclick="CKEDITOR.tools.callFunction(7,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__copy_icon" style="background-image:url('image/icons.png');background-position:0 -216px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_13_label" class="cke_button_label cke_button__copy_label" aria-hidden="false">复制</span>-->
+                                            <!--<span id="cke_13_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+C</span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_14" class="cke_button cke_button__paste cke_button_off" href="javascript:void('粘贴')" title="粘贴 (Ctrl+V)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_14_label" aria-describedby="cke_14_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(8,event);" onfocus="return CKEDITOR.tools.callFunction(9,event);" onclick="CKEDITOR.tools.callFunction(10,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__paste_icon" style="background-image:url('image/icons.png');background-position:0 -312px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_14_label" class="cke_button_label cke_button__paste_label" aria-hidden="false">粘贴</span>-->
+                                            <!--<span id="cke_14_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+V</span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_15" class="cke_button cke_button__pastetext cke_button_off" href="javascript:void('粘贴为无格式文本')" title="粘贴为无格式文本 (Ctrl+Shift+V)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_15_label" aria-describedby="cke_15_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(11,event);" onfocus="return CKEDITOR.tools.callFunction(12,event);" onclick="CKEDITOR.tools.callFunction(13,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__pastetext_icon" style="background-image:url('image/icons.png');background-position:0 -720px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_15_label" class="cke_button_label cke_button__pastetext_label" aria-hidden="false">粘贴为无格式文本</span>-->
+                                            <!--<span id="cke_15_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+Shift+V</span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_16" class="cke_button cke_button__pastefromword cke_button_off" href="javascript:void('从 MS Word 粘贴')" title="从 MS Word 粘贴" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_16_label" aria-describedby="cke_16_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(14,event);" onfocus="return CKEDITOR.tools.callFunction(15,event);" onclick="CKEDITOR.tools.callFunction(16,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__pastefromword_icon" style="background-image:url('image/icons.png');background-position:0 -768px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_16_label" class="cke_button_label cke_button__pastefromword_label" aria-hidden="false">从 MS Word 粘贴</span>-->
+                                            <!--<span id="cke_16_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<span class="cke_toolbar_separator" role="separator"></span>-->
+                                        <!--<a id="cke_17" class="cke_button cke_button__undo cke_button_disabled " href="javascript:void('撤消')" title="撤消 (Ctrl+Z)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_17_label" aria-describedby="cke_17_description" aria-haspopup="false" aria-disabled="true" onkeydown="return CKEDITOR.tools.callFunction(17,event);" onfocus="return CKEDITOR.tools.callFunction(18,event);" onclick="CKEDITOR.tools.callFunction(19,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__undo_icon" style="background-image:url('image/icons.png');background-position:0 -1008px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_17_label" class="cke_button_label cke_button__undo_label" aria-hidden="false">撤消</span>-->
+                                            <!--<span id="cke_17_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+Z</span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_18" class="cke_button cke_button__redo cke_button_disabled " href="javascript:void('重做')" title="重做 (Ctrl+Y)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_18_label" aria-describedby="cke_18_description" aria-haspopup="false" aria-disabled="true" onkeydown="return CKEDITOR.tools.callFunction(20,event);" onfocus="return CKEDITOR.tools.callFunction(21,event);" onclick="CKEDITOR.tools.callFunction(22,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__redo_icon" style="background-image:url('image/icons.png');background-position:0 -960px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_18_label" class="cke_button_label cke_button__redo_label" aria-hidden="false">重做</span>-->
+                                            <!--<span id="cke_18_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+Y</span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_19" class="cke_toolbar" aria-labelledby="cke_19_label" role="toolbar">-->
+                                    <!--<span id="cke_19_label" class="cke_voice_label">编辑</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_20" class="cke_button cke_button__scayt cke_button_off" href="javascript:void('拼写检查')" title="拼写检查" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_20_label" aria-describedby="cke_20_description" aria-haspopup="true" onkeydown="return CKEDITOR.tools.callFunction(23,event);" onfocus="return CKEDITOR.tools.callFunction(24,event);" onclick="CKEDITOR.tools.callFunction(25,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__scayt_icon" style="background-image:url('image/icons.png');background-position:0 -888px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_20_label" class="cke_button_label cke_button__scayt_label" aria-hidden="false">即时拼写检查</span>-->
+                                            <!--<span id="cke_20_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                            <!--<span class="cke_button_arrow"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_21" class="cke_toolbar" aria-labelledby="cke_21_label" role="toolbar">-->
+                                    <!--<span id="cke_21_label" class="cke_voice_label">链接</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                    <!--<a id="cke_22" class="cke_button cke_button__link cke_button_off" href="javascript:void('插入/编辑超链接')" title="插入/编辑超链接 (Ctrl+L)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_22_label" aria-describedby="cke_22_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(26,event);" onfocus="return CKEDITOR.tools.callFunction(27,event);" onclick="CKEDITOR.tools.callFunction(28,this);return false;">-->
+                                        <!--<span class="cke_button_icon cke_button__link_icon" style="background-image:url('image/icons.png');background-position:0 -528px;background-size:auto;">&nbsp;</span>-->
+                                        <!--<span id="cke_22_label" class="cke_button_label cke_button__link_label" aria-hidden="false">插入/编辑超链接</span>-->
+                                        <!--<span id="cke_22_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+L</span>-->
+                                    <!--</a>-->
+                                        <!--<a id="cke_23" class="cke_button cke_button__unlink cke_button_disabled " href="javascript:void('取消超链接')" title="取消超链接" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_23_label" aria-describedby="cke_23_description" aria-haspopup="false" aria-disabled="true" onkeydown="return CKEDITOR.tools.callFunction(29,event);" onfocus="return CKEDITOR.tools.callFunction(30,event);" onclick="CKEDITOR.tools.callFunction(31,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__unlink_icon" style="background-image:url('image/icons.png');background-position:0 -552px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_23_label" class="cke_button_label cke_button__unlink_label" aria-hidden="false">取消超链接</span>-->
+                                            <!--<span id="cke_23_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_24" class="cke_button cke_button__anchor cke_button_off" href="javascript:void('插入/编辑锚点链接')" title="插入/编辑锚点链接" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_24_label" aria-describedby="cke_24_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(32,event);" onfocus="return CKEDITOR.tools.callFunction(33,event);" onclick="CKEDITOR.tools.callFunction(34,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__anchor_icon" style="background-image:url('image/icons.png');background-position:0 -504px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_24_label" class="cke_button_label cke_button__anchor_label" aria-hidden="false">插入/编辑锚点链接</span>-->
+                                            <!--<span id="cke_24_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_25" class="cke_toolbar" aria-labelledby="cke_25_label" role="toolbar">-->
+                                    <!--<span id="cke_25_label" class="cke_voice_label">插入</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_26" class="cke_button cke_button__image cke_button_off" href="javascript:void('图像')" title="图像" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_26_label" aria-describedby="cke_26_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(35,event);" onfocus="return CKEDITOR.tools.callFunction(36,event);" onclick="CKEDITOR.tools.callFunction(37,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__image_icon" style="background-image:url('image/icons.png');background-position:0 -360px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_26_label" class="cke_button_label cke_button__image_label" aria-hidden="false">图像</span>-->
+                                            <!--<span id="cke_26_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_27" class="cke_button cke_button__table cke_button_off" href="javascript:void('表格')" title="表格" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_27_label" aria-describedby="cke_27_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(38,event);" onfocus="return CKEDITOR.tools.callFunction(39,event);" onclick="CKEDITOR.tools.callFunction(40,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__table_icon" style="background-image:url('image/icons.png');background-position:0 -912px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_27_label" class="cke_button_label cke_button__table_label" aria-hidden="false">表格</span>-->
+                                            <!--<span id="cke_27_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_28" class="cke_button cke_button__horizontalrule cke_button_off" href="javascript:void('插入水平线')" title="插入水平线" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_28_label" aria-describedby="cke_28_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(41,event);" onfocus="return CKEDITOR.tools.callFunction(42,event);" onclick="CKEDITOR.tools.callFunction(43,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__horizontalrule_icon" style="background-image:url('image/icons.png');background-position:0 -336px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_28_label" class="cke_button_label cke_button__horizontalrule_label" aria-hidden="false">插入水平线</span>-->
+                                            <!--<span id="cke_28_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_29" class="cke_button cke_button__specialchar cke_button_off" href="javascript:void('插入特殊符号')" title="插入特殊符号" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_29_label" aria-describedby="cke_29_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(44,event);" onfocus="return CKEDITOR.tools.callFunction(45,event);" onclick="CKEDITOR.tools.callFunction(46,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__specialchar_icon" style="background-image:url('image/icons.png');background-position:0 -864px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_29_label" class="cke_button_label cke_button__specialchar_label" aria-hidden="false">插入特殊符号</span>-->
+                                            <!--<span id="cke_29_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_30" class="cke_toolbar" aria-labelledby="cke_30_label" role="toolbar">-->
+                                    <!--<span id="cke_30_label" class="cke_voice_label">工具</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_31" class="cke_button cke_button__maximize cke_button_off" href="javascript:void('全屏')" title="全屏" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_31_label" aria-describedby="cke_31_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(47,event);" onfocus="return CKEDITOR.tools.callFunction(48,event);" onclick="CKEDITOR.tools.callFunction(49,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__maximize_icon" style="background-image:url('image/icons.png');background-position:0 -672px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_31_label" class="cke_button_label cke_button__maximize_label" aria-hidden="false">全屏</span>-->
+                                            <!--<span id="cke_31_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_32" class="cke_toolbar" aria-labelledby="cke_32_label" role="toolbar">-->
+                                    <!--<span id="cke_32_label" class="cke_voice_label">文档</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_33" class="cke_button cke_button__source cke_button_off" href="javascript:void('源码')" title="源码" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_33_label" aria-describedby="cke_33_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(50,event);" onfocus="return CKEDITOR.tools.callFunction(51,event);" onclick="CKEDITOR.tools.callFunction(52,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__source_icon" style="background-image:url('image/icons.png');background-position:0 -840px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_33_label" class="cke_button_label cke_button__source_label" aria-hidden="false">源码</span>-->
+                                            <!--<span id="cke_33_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span class="cke_toolbar_break"></span>-->
+                                <!--<span id="cke_34" class="cke_toolbar" aria-labelledby="cke_34_label" role="toolbar">-->
+                                    <!--<span id="cke_34_label" class="cke_voice_label">基本格式</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_35" class="cke_button cke_button__bold cke_button_off" href="javascript:void('加粗')" title="加粗 (Ctrl+B)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_35_label" aria-describedby="cke_35_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(53,event);" onfocus="return CKEDITOR.tools.callFunction(54,event);" onclick="CKEDITOR.tools.callFunction(55,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__bold_icon" style="background-image:url('image/icons.png');background-position:0 -24px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_35_label" class="cke_button_label cke_button__bold_label" aria-hidden="false">加粗</span>-->
+                                            <!--<span id="cke_35_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+B</span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_36" class="cke_button cke_button__italic cke_button_off" href="javascript:void('倾斜')" title="倾斜 (Ctrl+I)" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_36_label" aria-describedby="cke_36_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(56,event);" onfocus="return CKEDITOR.tools.callFunction(57,event);" onclick="CKEDITOR.tools.callFunction(58,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__italic_icon" style="background-image:url('image/icons.png');background-position:0 -48px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_36_label" class="cke_button_label cke_button__italic_label" aria-hidden="false">倾斜</span>-->
+                                            <!--<span id="cke_36_description" class="cke_button_label" aria-hidden="false">快捷键 Ctrl+I</span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_37" class="cke_button cke_button__strike cke_button_off" href="javascript:void('删除线')" title="删除线" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_37_label" aria-describedby="cke_37_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(59,event);" onfocus="return CKEDITOR.tools.callFunction(60,event);" onclick="CKEDITOR.tools.callFunction(61,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__strike_icon" style="background-image:url('image/icons.png');background-position:0 -72px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_37_label" class="cke_button_label cke_button__strike_label" aria-hidden="false">删除线</span>-->
+                                            <!--<span id="cke_37_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<span class="cke_toolbar_separator" role="separator"></span>-->
+                                        <!--<a id="cke_38" class="cke_button cke_button__removeformat cke_button_off" href="javascript:void('清除格式')" title="清除格式" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_38_label" aria-describedby="cke_38_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(62,event);" onfocus="return CKEDITOR.tools.callFunction(63,event);" onclick="CKEDITOR.tools.callFunction(64,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__removeformat_icon" style="background-image:url('image/icons.png');background-position:0 -792px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_38_label" class="cke_button_label cke_button__removeformat_label" aria-hidden="false">清除格式</span>-->
+                                            <!--<span id="cke_38_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_39" class="cke_toolbar" aria-labelledby="cke_39_label" role="toolbar">-->
+                                    <!--<span id="cke_39_label" class="cke_voice_label">段落</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_40" class="cke_button cke_button__numberedlist cke_button_off" href="javascript:void('编号列表')" title="编号列表" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_40_label" aria-describedby="cke_40_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(65,event);" onfocus="return CKEDITOR.tools.callFunction(66,event);" onclick="CKEDITOR.tools.callFunction(67,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__numberedlist_icon" style="background-image:url('image/icons.png');background-position:0 -648px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_40_label" class="cke_button_label cke_button__numberedlist_label" aria-hidden="false">编号列表</span>-->
+                                            <!--<span id="cke_40_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_41" class="cke_button cke_button__bulletedlist cke_button_off" href="javascript:void('项目列表')" title="项目列表" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_41_label" aria-describedby="cke_41_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(68,event);" onfocus="return CKEDITOR.tools.callFunction(69,event);" onclick="CKEDITOR.tools.callFunction(70,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__bulletedlist_icon" style="background-image:url('image/icons.png');background-position:0 -600px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_41_label" class="cke_button_label cke_button__bulletedlist_label" aria-hidden="false">项目列表</span>-->
+                                            <!--<span id="cke_41_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<span class="cke_toolbar_separator" role="separator"></span>-->
+                                        <!--<a id="cke_42" class="cke_button cke_button__outdent cke_button_disabled " href="javascript:void('减少缩进量')" title="减少缩进量" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_42_label" aria-describedby="cke_42_description" aria-haspopup="false" aria-disabled="true" onkeydown="return CKEDITOR.tools.callFunction(71,event);" onfocus="return CKEDITOR.tools.callFunction(72,event);" onclick="CKEDITOR.tools.callFunction(73,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__outdent_icon" style="background-image:url('image/icons.png');background-position:0 -456px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_42_label" class="cke_button_label cke_button__outdent_label" aria-hidden="false">减少缩进量</span>-->
+                                            <!--<span id="cke_42_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<a id="cke_43" class="cke_button cke_button__indent cke_button_off" href="javascript:void('增加缩进量')" title="增加缩进量" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_43_label" aria-describedby="cke_43_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(74,event);" onfocus="return CKEDITOR.tools.callFunction(75,event);" onclick="CKEDITOR.tools.callFunction(76,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__indent_icon" style="background-image:url('image/icons.png');background-position:0 -408px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_43_label" class="cke_button_label cke_button__indent_label" aria-hidden="false">增加缩进量</span>-->
+                                            <!--<span id="cke_43_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                        <!--<span class="cke_toolbar_separator" role="separator"></span>-->
+                                        <!--<a id="cke_44" class="cke_button cke_button__blockquote cke_button_off" href="javascript:void('块引用')" title="块引用" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_44_label" aria-describedby="cke_44_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(77,event);" onfocus="return CKEDITOR.tools.callFunction(78,event);" onclick="CKEDITOR.tools.callFunction(79,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__blockquote_icon" style="background-image:url('image/icons.png');background-position:0 -168px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_44_label" class="cke_button_label cke_button__blockquote_label" aria-hidden="false">块引用</span>-->
+                                            <!--<span id="cke_44_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_45" class="cke_toolbar" aria-labelledby="cke_45_label" role="toolbar">-->
+                                    <!--<span id="cke_45_label" class="cke_voice_label">样式</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span id="cke_9" class="cke_combo cke_combo__styles cke_combo_off" role="presentation">-->
+                                        <!--<span id="cke_9_label" class="cke_combo_label">样式</span>-->
+                                        <!--<a class="cke_combo_button" title="样式" tabindex="-1" href="javascript:void('样式')" hidefocus="true" role="button" aria-labelledby="cke_9_label" aria-haspopup="true" onkeydown="return CKEDITOR.tools.callFunction(81,event,this);" onfocus="return CKEDITOR.tools.callFunction(82,event);" onclick="CKEDITOR.tools.callFunction(80,this);return false;">-->
+                                            <!--<span id="cke_9_text" class="cke_combo_text cke_combo_inlinelabel">样式</span>-->
+                                            <!--<span class="cke_combo_open">-->
+                                                <!--<span class="cke_combo_arrow"></span>-->
+                                            <!--</span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span id="cke_10" class="cke_combo cke_combo__format cke_combo_off" role="presentation">-->
+                                        <!--<span id="cke_10_label" class="cke_combo_label">格式</span>-->
+                                        <!--<a class="cke_combo_button" title="格式" tabindex="-1" href="javascript:void('格式')" hidefocus="true" role="button" aria-labelledby="cke_10_label" aria-haspopup="true" onkeydown="return CKEDITOR.tools.callFunction(84,event,this);" onfocus="return CKEDITOR.tools.callFunction(85,event);" onclick="CKEDITOR.tools.callFunction(83,this);return false;">-->
+                                            <!--<span id="cke_10_text" class="cke_combo_text cke_combo_inlinelabel">格式</span>-->
+                                            <!--<span class="cke_combo_open">-->
+                                                <!--<span class="cke_combo_arrow"></span>-->
+                                            <!--</span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                                <!--<span id="cke_46" class="cke_toolbar cke_toolbar_last" aria-labelledby="cke_46_label" role="toolbar">-->
+                                    <!--<span id="cke_46_label" class="cke_voice_label">about</span>-->
+                                    <!--<span class="cke_toolbar_start"></span>-->
+                                    <!--<span class="cke_toolgroup" role="presentation">-->
+                                        <!--<a id="cke_47" class="cke_button cke_button__about cke_button_off" href="javascript:void('关于 CKEditor 4')" title="关于 CKEditor 4" tabindex="-1" hidefocus="true" role="button" aria-labelledby="cke_47_label" aria-describedby="cke_47_description" aria-haspopup="false" onkeydown="return CKEDITOR.tools.callFunction(86,event);" onfocus="return CKEDITOR.tools.callFunction(87,event);" onclick="CKEDITOR.tools.callFunction(88,this);return false;">-->
+                                            <!--<span class="cke_button_icon cke_button__about_icon" style="background-image:url('image/icons.png');background-position:0 0px;background-size:auto;">&nbsp;</span>-->
+                                            <!--<span id="cke_47_label" class="cke_button_label cke_button__about_label" aria-hidden="false">关于 CKEditor 4</span>-->
+                                            <!--<span id="cke_47_description" class="cke_button_label" aria-hidden="false"></span>-->
+                                        <!--</a>-->
+                                    <!--</span>-->
+                                    <!--<span class="cke_toolbar_end"></span>-->
+                                <!--</span>-->
+                            <!--</span>-->
+                        <!--</span>-->
+                                    <!--<div id="cke_1_contents" class="cke_contents cke_reset" role="presentation" style="height: 150px;">-->
+                                        <!--<span id="cke_136" class="cke_voice_label">按 ALT+0 获得帮助</span>-->
+                                        <!--<iframe src="" frameborder="0" class="cke_wysiwyg_frame cke_reset" title="所见即所得编辑器, editor" aria-describedby="cke_136" tabindex="0" allowtransparency="true" style="width: 100%; height: 100%;"></iframe>-->
+                                    <!--</div>-->
+                                    <!--<span id="cke_1_bottom" class="cke_bottom cke_reset_all" role="presentation" style="user-select: none;">-->
+                            <!--<span id="cke_1_resizer" class="cke_resizer cke_resizer_vertical cke_resizer_ltr" title="拖拽以改变大小" onmousedown="CKEDITOR.tools.callFunction(0, event)">◢</span>-->
+                            <!--<span id="cke_1_path_label" class="cke_voice_label">元素路径</span>-->
+                            <!--<span id="cke_1_path" class="cke_path" role="group" aria-labelledby="cke_1_path_label">-->
+                                <!--<span class="cke_path_empty">&nbsp;</span>-->
+                            <!--</span>-->
+                        <!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <p style="font-size: 16px">说明：</p>
+                    <p style="font-size: 16px">&nbsp;&nbsp;&nbsp;&nbsp;此菜单用于制作公司版本的合同模板，供合同列表调用，功能同word文档的编辑功能。</p>
+                </div>
+            </div>
+            <div class="row text-center">
+                <a class="btn btn-primary" onclick="submit();">确认</a>
+                <a class="btn btn-danger" href="contractTemplate.html">返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    // 页面准备完成后载入客户信息
+    $(document).ready(function () {
+        // 添加客户信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getAllClients",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+//                    console.log("success: " + result);
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var clientList = $("#companyName");
+                    // 清空遗留元素
+                    clientList.children().first().siblings().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.clientId);
+                        option.text(item.companyName);
+                        clientList.append(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+//                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+
+    function loadPage1Info() {
+        $('.selectpicker').selectpicker('val', '');
+        $.ajax({
+            type: "POST",
+            url: "getCurrentQuestionnaire",
+            async: false,
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        var data = eval(result);
+                        $("#questionnaireId").val(data.data.questionnaireId);
+                        $("#companyName").val(data.data.client.companyName);
+                        $("#location").val(data.data.client.location);
+                        $("#contactName").val(data.data.client.contactName);
+                        $("#phone").val(data.data.client.phone);
+                        $("#industry").val(data.data.client.industry);
+                        $("#product").val(data.data.client.product);
+                        $("#author").val(data.data.author);
+                        $("#time").val(getFormatDate(data.data.time));
+                    }
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log("错误信息:" + XMLHttpRequest.responseText);
+            }
+        });
+    }
+
+    function savePage1Info() {
+        if ($("#companyName").find("option:selected").text() == '') alert("未选择任何企业");
+        else {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "savePage1Info",               // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify({
+                    'questionnaireId': $("#questionnaireId").val(),
+                    'time': $("#time").val(),
+                    'author': $("#author").val(),
+                    'client': {
+                        'companyName': $("#companyName").find("option:selected").text(),
+                        'contactName': $("#contactName").val(),
+                        'industry': $("#industry").val(),
+                        'product': $("#product").val(),
+                        'phone': $("#phone").val(),
+                        'location': $("#location").val()
+                    }
+                }),
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        if (result.status == "success") {
+                            $(location).attr('href', 'questionnaire2.html');
+                        } else {
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
+                }
+            });
+        }
+    }
+</script>
+</html>
