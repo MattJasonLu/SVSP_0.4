@@ -18,5 +18,7 @@ public interface ContractMapper {
     void setCheckStateKeeping(Contract contract);
     void setCheckStateInvalid(Contract contract);
     List<Contract> list();
+    List getContractIdList();
+    void toSubmit(String id);
 
 }

@@ -64,7 +64,6 @@ public class ClientController {
         }
         // 启用账户
         client.setClientState(ClientState.Enabled);
-
         try {
             clientService.add(client);
             res.put("status", "success");
@@ -82,7 +81,7 @@ public class ClientController {
      * @param client 客户
      * @return 成功与否
      */
-    @RequestMapping("saveClient")
+    @RequestMapping("saveClient")//保存客户
     @ResponseBody
     public String saveClient(@RequestBody Client client) {
         Client resultClient = clientService.getByClientId(client.getClientId());
