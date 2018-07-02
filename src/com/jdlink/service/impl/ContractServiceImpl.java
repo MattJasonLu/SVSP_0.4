@@ -60,4 +60,14 @@ public class ContractServiceImpl implements ContractService {
     public List<Contract> list() {
         return contractMapper.list();
     }
+
+    @Override
+    public List getContractIdList() {
+        return contractMapper.getContractIdList();
+    }
+
+    @Override
+    public void toSubmit(String id) {
+        contractMapper.toSubmit(id);
+    }
 }
