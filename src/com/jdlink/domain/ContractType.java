@@ -7,9 +7,9 @@ public enum ContractType {
     Wastes("危废合同", 1),
     Emergency("应急处置合同", 2),
     Derive("次生合同", 3),
-    Purchase("采购合同", 4),
+    //Purchase("采购合同", 4),
+    Logistics("物流合同",5)
     ;
-
     private String name;
     private int index;
     ContractType(String name, int index) {

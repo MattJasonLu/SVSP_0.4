@@ -68,7 +68,65 @@ public class Contract {
     /**
      * 合同版本
      */
-private  ContractVersion contractVersion;
+    private ContractVersion contractVersion;
+    /**
+     * 省市地区
+     */
+    private Province province;
+    private  String city;
+    /**
+     * 预约处置费
+     */
+private  String order1;
+    /**
+     * 是否包含运费
+     */
+    private  boolean isFreight;
+    /**
+     * 客户列表(数据库存在)
+     */
+    private  String clientId;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getOrder1() {
+        return order1;
+    }
+
+    public void setOrder1(String order1) {
+        this.order1 = order1;
+    }
+
+    public Province getProvince() {
+        return province;
+    }
+
+    public void setProvince(Province province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public boolean isFreight() {
+        return isFreight;
+    }
+
+    public void setFreight(boolean freight) {
+        isFreight = freight;
+    }
+
     public void setCompanyContract(boolean companyContract) {
         isCompanyContract = companyContract;
     }
