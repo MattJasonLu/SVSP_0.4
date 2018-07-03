@@ -375,11 +375,11 @@
     }
     function viewQuestionnaire(item) {
         var id = getQuestionnaireId(item);
-        alert("待完善");
+        $(location).attr('href', 'questionnaire1.html?questionnaireId='+id+'&type=view');
     }
     function adjustQuestionnaire(item) {
         var id = getQuestionnaireId(item);
-        alert("待完善");
+        $(location).attr('href', 'questionnaire1.html?questionnaireId='+id);
     }
     /**
      * 签收问卷
