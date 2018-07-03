@@ -7,12 +7,12 @@
 <head>
     <meta charset="UTF-8">
     <title>客户修改</title>
-    <script src="../js/jquery/2.0.0/jquery.min.js"></script>
-    <script src="../js/jquery/2.0.0/jquery.serializejson.js"></script>
-    <link href="../css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
-    <script src="../js/bootstrap/3.3.6/bootstrap.min.js"></script>
-    <link href="../css/dashboard.css" rel="stylesheet">
-    <link href="../css/dropdown-submenu.css" rel="stylesheet">
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script>
     /**
@@ -403,7 +403,7 @@
                 <div class="row text-center">
                     <a class="btn btn-success" onclick="clientSave()">保存信息</a>
                     <a class="btn btn-primary" onclick="clientSubmit()">提交修改</a>
-                    <a class="btn btn-danger" href="../clientBackup.html">返回</a>
+                    <a class="btn btn-danger" href="clientBackup.html">返回</a>
                 </div>
             </form>
         </div>
