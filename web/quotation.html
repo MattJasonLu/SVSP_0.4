@@ -182,7 +182,10 @@
                                     <li><a href="#">查看</a></li>
                                     <li><a href="#">修改信息</a></li>
                                     <li><a href="#">升级</a></li>
-                                    <li><a href="#">有效期变更</a></li>
+                                    <li><a href="#" onclick="function dateChange() {
+                                        $('#modalId').modal('show');
+                                    }
+                                    dateChange()">有效期变更</a></li>
                                     <li><a href="#">送审</a></li>
                                     <li><a href="#">作废</a></li>
                                 </ul>
@@ -496,5 +499,39 @@
         </div>
     </div>
 
+    //modal
+    <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">客户报价单-有效期变更</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-2">
+                            <input type="button" value="关闭">
+                        </div>
+                        <div class="form-horizontal col-md-2">
+                            <input type="button" value="更新">
+                        </div>
+                        <br>
+                        <div class="form-horizontal col-md-8"></div>
+                    </div>
+                    <form id="model-assign" method="post">
+                        <div class="form-group">
+                            <label for="model-validity" class="control-label"><input type="checkbox" onclick="validity()" class="">结束有效期</label>
+                            <input type="text" class="form-control" id="model-validity" name="model-validity" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
