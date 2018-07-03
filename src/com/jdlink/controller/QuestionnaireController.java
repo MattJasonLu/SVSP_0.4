@@ -187,12 +187,22 @@ public class QuestionnaireController {
 //            }
             // 如果旧数据不存在，则直接赋值
             if (oldCount == 0) {
+                for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+                    deriveWastes.setId(RandomUtil.getRandomEightNumber());
+                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+                        mixingElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+                        sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+                }
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             // 如果旧数据存在，且数量小于新数据
             } else if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    newDeriveWastes.setId(oldDeriveWastes.getId());
                     // 混合物成分编号
                     int innerOldCount = 0;
                     if (oldDeriveWastes.getMixingElementList() != null)
@@ -288,25 +298,29 @@ public class QuestionnaireController {
             int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
             int newCount = questionnaire.getDeriveWastesList().size();
             // 设置引入物质的编号
-            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
-                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
-                // 混合物成分编号
-                if (deriveWastes.getMixingElementList() != null)
-                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
-                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
-                    }
-                // 敏感成分编号
-                if (deriveWastes.getSensitiveElementList() != null)
-                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
-                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
-                    }
-            }
+//            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+//                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
+//                // 混合物成分编号
+//                if (deriveWastes.getMixingElementList() != null)
+//                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+//                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//                // 敏感成分编号
+//                if (deriveWastes.getSensitiveElementList() != null)
+//                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+//                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//            }
             if (oldCount == 0) {
+                for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+                    deriveWastes.setId(RandomUtil.getRandomEightNumber());
+                }
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             } else if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    newDeriveWastes.setId(oldDeriveWastes.getId());
                     oldDeriveWastes.setName(newDeriveWastes.getName());
                     oldDeriveWastes.setEyeMeasures(newDeriveWastes.getEyeMeasures());
                     oldDeriveWastes.setSkinMeasures(newDeriveWastes.getSkinMeasures());

@@ -330,6 +330,7 @@
                     if (result != undefined) {
                         if (result.status == "success") {
                             var data = eval(result);
+                            console.log(data.data.client);
                             $("#questionnaireId").val(data.data.questionnaireId);
                             $("#companyName").selectpicker('val', data.data.client.clientId);
                             $("#location").val(data.data.client.location);
@@ -338,7 +339,7 @@
                             $("#industry").val(data.data.client.industry);
                             $("#product").val(data.data.client.product);
                             $("#author").val(data.data.author);
-                            $("#time").val(getFormatDate(data.data.time));
+//                            $("#time").val(getFormatDate(data.data.time));
                         }
                     }
                 },
@@ -392,5 +393,38 @@
             });
         }
     }
+
+    function setClientInfo() {
+        var id = $("#companyName").find("option:selected").val();
+        $.ajax({
+            type: "POST",                           // 方法类型
+            url: "getClient",                       // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#contactName").val(data.contactName);
+                    $("#industry").val(data.industry);
+                    $("#product").val(data.product);
+                    $("#phone").val(data.phone);
+                    $("#location").val(data.location);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
+    }
+    /**
+     * 下拉框选中事件
+     */
+    $('#companyName').on('changed.bs.select', function (e) {
+        setClientInfo();
+    });
 </script>
 </html>
