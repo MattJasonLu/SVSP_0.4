@@ -81,7 +81,7 @@
                             <li><a href="contractTemplate.html">合同模板</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="quotation.html">报价管理</a></li>
@@ -128,8 +128,8 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">一企一档</a></li>
-                    <li class="active">价格管理</li>
+                    <li><a href="#">价格管理</a></li>
+                    <li class="active">报价管理</li>
                 </ol>
             </div>
             <h2 class="sub-header">报价单列表</h2>
@@ -476,7 +476,7 @@
                     </tbody>
                 </table>
             </div>
-            <!--分页-->qige
+            <!--分页-->
             <nav aria-label="Page navigation" style="text-align: center">
                 <ul class="pagination">
                     <li class="disabled">
@@ -508,27 +508,20 @@
                     <h4 class="modal-title" id="myModalLabel">客户报价单-有效期变更</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="form-horizontal col-md-2">
-                            <input type="button" value="关闭">
-                        </div>
-                        <div class="form-horizontal col-md-2">
-                            <input type="button" value="更新">
-                        </div>
-                        <br>
-                        <div class="form-horizontal col-md-8"></div>
-                    </div>
+                    <br>
                     <form id="model-assign" method="post">
                         <div class="form-group">
-                            <label for="model-validity" class="control-label"><input type="checkbox" onclick="validity()" class="">结束有效期</label>
-                            <input type="text" class="form-control" id="model-validity" name="model-validity" readonly>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 结束有效期</label>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input2" id="time2">
+                                <input type="text" class="form-control" id="model-validity" name="model-validity" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+                    <button type="button" class="btn btn-primary" onclick="update();">更新</button>
                 </div>
             </div>
         </div>
