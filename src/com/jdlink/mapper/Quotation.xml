@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.QuotationMapper">
+
+    <insert id="add" parameterType="Quotation" >
+        INSERT INTO t_quotation VALUES (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight)
+        VALUES (#{quotationId}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight});
+    </insert>
+
+    <update id="update" parameterType="Quotation">
+        UPDATE t_quotation SET clientId=#{client.clientId}, contactName=#{client.contactName}, phone=#{client.phone}, location=#{client.location}, startDate=#{startDate}, endDate=#{endDate},
+        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight} WHERE quotationId=#{quotationId}
+    </update>
+
+    <select id="list" resultType="Quotation">
+        SELECT * FROM t_quotation
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+</mapper>
