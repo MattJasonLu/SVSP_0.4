@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.*;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,30 @@ public class QuestionnaireController {
     public String savePage2Info(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
+            // 设置原材料的编号
+            int oldCount = 0;
+            if (QuestionnaireController.questionnaire.getRawWastesList() != null)
+                oldCount = QuestionnaireController.questionnaire.getRawWastesList().size();
+            int newCount = questionnaire.getRawWastesList().size();
+            // 固定旧编号
+            for (int i = 0; i < oldCount; i++) {
+                questionnaire.getRawWastesList().get(i).setMaterialId(QuestionnaireController.questionnaire.getRawWastesList().get(i).getMaterialId());
+            }
+            for (int i = oldCount; i < newCount; i++) {
+                // 如果不存在编号再进行赋值
+                questionnaire.getRawWastesList().get(i).setMaterialId(RandomUtil.getRandomEightNumber());
+            }
+            // 设置处理流程的编号
+            oldCount = 0;
+            if (QuestionnaireController.questionnaire.getWasteProcessList() != null)
+                oldCount = QuestionnaireController.questionnaire.getWasteProcessList().size();
+            newCount = questionnaire.getWasteProcessList().size();
+            for (int i = 0; i < oldCount; i++) {
+                questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
+            }
+            for (int i = oldCount; i < newCount; i++) {
+                questionnaire.getWasteProcessList().get(i).setProcessId(RandomUtil.getRandomEightNumber());
+            }
             // 更新原材料的信息
             QuestionnaireController.questionnaire.setRawWastesList(questionnaire.getRawWastesList());
             // 更新特别关注物质的信息
@@ -146,14 +171,60 @@ public class QuestionnaireController {
             // 新的引入物质数量
             int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
             int newCount = questionnaire.getDeriveWastesList().size();
+            // 设置引入物质的编号
+//            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+//                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
+//                // 混合物成分编号
+//                if (deriveWastes.getMixingElementList().size() > 0)
+//                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+//                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//                // 敏感成分编号
+//                if (deriveWastes.getSensitiveElementList().size() > 0)
+//                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+//                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//            }
             // 如果旧数据不存在，则直接赋值
             if (oldCount == 0) {
+                for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+                    deriveWastes.setId(RandomUtil.getRandomEightNumber());
+                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+                        mixingElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+                        sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+                    }
+                }
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             // 如果旧数据存在，且数量小于新数据
             } else if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    newDeriveWastes.setId(oldDeriveWastes.getId());
+                    // 混合物成分编号
+                    int innerOldCount = 0;
+                    if (oldDeriveWastes.getMixingElementList() != null)
+                        innerOldCount = oldDeriveWastes.getMixingElementList().size();
+                    int innerNewCount = newDeriveWastes.getMixingElementList().size();
+                    for (int j = 0; j < innerOldCount; j++) {
+                        newDeriveWastes.getMixingElementList().get(j).setId(oldDeriveWastes.getMixingElementList().get(j).getId());
+                    }
+                    for (int j = innerOldCount; j < innerNewCount; j++) {
+                        newDeriveWastes.getMixingElementList().get(j).setId(RandomUtil.getRandomEightNumber());
+                    }
+                    // 敏感成分编号
+                    innerOldCount = 0;
+                    if (oldDeriveWastes.getSensitiveElementList() != null)
+                        innerOldCount = oldDeriveWastes.getSensitiveElementList().size();
+                    innerNewCount = newDeriveWastes.getSensitiveElementList().size();
+                    for (int j = 0; j < innerOldCount; j++) {
+                        newDeriveWastes.getSensitiveElementList().get(j).setId(oldDeriveWastes.getSensitiveElementList().get(j).getId());
+                    }
+                    for (int j = innerOldCount; j < innerNewCount; j++) {
+                        newDeriveWastes.getSensitiveElementList().get(j).setId(RandomUtil.getRandomEightNumber());
+                    }
                     oldDeriveWastes.setName(newDeriveWastes.getName());
                     oldDeriveWastes.setCode(newDeriveWastes.getCode());
                     oldDeriveWastes.setFormType(newDeriveWastes.getFormType());
@@ -226,12 +297,30 @@ public class QuestionnaireController {
             // 更新危废特性、防护处理和对应措施
             int oldCount = QuestionnaireController.questionnaire.getDeriveWastesList().size();
             int newCount = questionnaire.getDeriveWastesList().size();
+            // 设置引入物质的编号
+//            for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+//                if (deriveWastes.getId() == null || deriveWastes.getId().equals("")) deriveWastes.setId(RandomUtil.getRandomEightNumber());
+//                // 混合物成分编号
+//                if (deriveWastes.getMixingElementList() != null)
+//                    for (MixingElement mixingElement : deriveWastes.getMixingElementList()) {
+//                        if (mixingElement.getId() == null || mixingElement.getId().equals("")) mixingElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//                // 敏感成分编号
+//                if (deriveWastes.getSensitiveElementList() != null)
+//                    for (SensitiveElement sensitiveElement : deriveWastes.getSensitiveElementList()) {
+//                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
+//                    }
+//            }
             if (oldCount == 0) {
+                for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
+                    deriveWastes.setId(RandomUtil.getRandomEightNumber());
+                }
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             } else if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    newDeriveWastes.setId(oldDeriveWastes.getId());
                     oldDeriveWastes.setName(newDeriveWastes.getName());
                     oldDeriveWastes.setEyeMeasures(newDeriveWastes.getEyeMeasures());
                     oldDeriveWastes.setSkinMeasures(newDeriveWastes.getSkinMeasures());
@@ -283,6 +372,27 @@ public class QuestionnaireController {
     }
 
     /**
+     * 更新调查表
+     * @return 成功与否
+     */
+    @RequestMapping("updateQuestionnaire")
+    @ResponseBody
+    public String updateQuestionnaire() {
+        JSONObject res = new JSONObject();
+        try {
+            questionnaireService.update(QuestionnaireController.questionnaire);
+            res.put("status", "success");
+            res.put("message", "更新调查表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新调查表失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取问卷编号
      * @return 问卷编号
      */
@@ -324,10 +434,17 @@ public class QuestionnaireController {
      */
     @RequestMapping(value = {"getCurrentQuestionnaire", "client/getCurrentQuestionnaire"})
     @ResponseBody
-    public String getCurrentQuestionnaire() {
+    public String getCurrentQuestionnaire(String questionnaireId) {
         JSONObject res = new JSONObject();
         try {
-            if (QuestionnaireController.questionnaire.getQuestionnaireId() == null) throw new Exception("无数据");
+            if (questionnaireId != null && !questionnaireId.equals("")) {
+                Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
+                if (questionnaire != null) {
+                    QuestionnaireController.questionnaire = questionnaire;
+                }
+            } else {
+                if (QuestionnaireController.questionnaire.getQuestionnaireId() == null) throw new Exception("无数据");
+            }
             // 数据转换JSON
             JSONObject data = JSONObject.fromBean(QuestionnaireController.questionnaire);
             res.put("status", "success");

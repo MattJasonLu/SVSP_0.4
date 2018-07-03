@@ -139,7 +139,7 @@
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
                     <li><a href="#">客户管理</a></li>
-                    <li><a href="questionnaire1.html">危险数据调查表管理</a></li>
+                    <li><a href="adjust_questionnaire1.html">危险数据调查表管理</a></li>
                     <li class="active">调查表新增</li>
                 </ol>
             </div>
@@ -241,17 +241,6 @@
     </div>
 </body>
 <script type="text/javascript">
-    // 获取问卷编号
-    var url=location.search;
-    var Request = {};
-    if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
-        strs = str.split("&");
-        for(var i=0;i<strs.length;i++) {
-            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
-        }
-    }
-//    console.log(Request["type"]);
     // 页面准备完成后载入客户信息
     $(document).ready(function(){
         // 添加客户信息
@@ -288,66 +277,32 @@
     });
     function loadPage1Info() {
         $('.selectpicker').selectpicker('val', '');
-
-        if (Request["questionnaireId"] == null || Request["questionnaireId"] == '') {
-            $.ajax({
-                type: "POST",
-                url: "getCurrentQuestionnaire",
-                async: false,
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    if (result != undefined) {
-                        if (result.status == "success") {
-                            var data = eval(result);
-                            $("#questionnaireId").val(data.data.questionnaireId);
-                            $("#companyName").selectpicker('val', data.data.client.clientId);
-                            $("#location").val(data.data.client.location);
-                            $("#contactName").val(data.data.client.contactName);
-                            $("#phone").val(data.data.client.phone);
-                            $("#industry").val(data.data.client.industry);
-                            $("#product").val(data.data.client.product);
-                            $("#author").val(data.data.author);
-//                            $("#time").val(getFormatDate(data.data.time));
-                        }
+        $.ajax({
+            type: "POST",
+            url: "getCurrentQuestionnaire",
+            async: false,
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        var data = eval(result);
+                        $("#questionnaireId").val(data.data.questionnaireId);
+                        $("#companyName").val(data.data.client.companyName);
+                        $("#location").val(data.data.client.location);
+                        $("#contactName").val(data.data.client.contactName);
+                        $("#phone").val(data.data.client.phone);
+                        $("#industry").val(data.data.client.industry);
+                        $("#product").val(data.data.client.product);
+                        $("#author").val(data.data.author);
+                        $("#time").val(getFormatDate(data.data.time));
                     }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    console.log("错误信息:" + XMLHttpRequest.responseText);
                 }
-            });
-        } else {
-            $.ajax({
-                type: "POST",
-                url: "getCurrentQuestionnaire",
-                async: false,
-                data: {
-                    questionnaireId: Request["questionnaireId"]
-                },
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    if (result != undefined) {
-                        if (result.status == "success") {
-                            var data = eval(result);
-                            console.log(data.data.client);
-                            $("#questionnaireId").val(data.data.questionnaireId);
-                            $("#companyName").selectpicker('val', data.data.client.clientId);
-                            $("#location").val(data.data.client.location);
-                            $("#contactName").val(data.data.client.contactName);
-                            $("#phone").val(data.data.client.phone);
-                            $("#industry").val(data.data.client.industry);
-                            $("#product").val(data.data.client.product);
-                            $("#author").val(data.data.author);
-//                            $("#time").val(getFormatDate(data.data.time));
-                        }
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    console.log("错误信息:" + XMLHttpRequest.responseText);
-                }
-            });
-        }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                console.log("错误信息:" + XMLHttpRequest.responseText);
+            }
+        });
     }
     function savePage1Info() {
         if ($("#companyName").find("option:selected").text() == '') alert("未选择任何企业");
@@ -375,14 +330,8 @@
                     if (result != undefined) {
                         console.log(result);
                         if (result.status == "success") {
-                            // 如果存在编号则增加url路径
-                            if (Request["type"] != null && Request["type"] != '') {
-                                $(location).attr('href', 'questionnaire2.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
-                            } else if(Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
-                                $(location).attr('href', 'questionnaire2.html?questionnaireId=' + Request["questionnaireId"]);
-                            } else {
-                                $(location).attr('href', 'questionnaire2.html');
-                            }
+                            $(location).attr('href', 'questionnaire2.html');
+                        } else {
                         }
                     }
                 },
@@ -393,38 +342,5 @@
             });
         }
     }
-
-    function setClientInfo() {
-        var id = $("#companyName").find("option:selected").val();
-        $.ajax({
-            type: "POST",                           // 方法类型
-            url: "getClient",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result != undefined) {
-                    var data = eval(result);
-                    $("#contactName").val(data.contactName);
-                    $("#industry").val(data.industry);
-                    $("#product").val(data.product);
-                    $("#phone").val(data.phone);
-                    $("#location").val(data.location);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
-    }
-    /**
-     * 下拉框选中事件
-     */
-    $('#companyName').on('changed.bs.select', function (e) {
-        setClientInfo();
-    });
 </script>
 </html>

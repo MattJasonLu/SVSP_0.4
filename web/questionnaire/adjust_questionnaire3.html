@@ -443,16 +443,6 @@
     </div>
 </body>
 <script type="text/javascript">
-    // 获取问卷编号
-    var url=location.search;
-    var Request = {};
-    if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
-        strs = str.split("&");
-        for(var i=0;i<strs.length;i++) {
-            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
-        }
-    }
     /**
      * 聚焦输入框
      * @param e
@@ -595,17 +585,9 @@
                 if (result != undefined) {
                     console.log(result);
                     if (result.status == "success") {
-                        if (Request["type"] != null && Request["type"] != '') {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
-                        } else if(Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html?questionnaireId=' + Request["questionnaireId"]);
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html?questionnaireId=' + Request["questionnaireId"]);
-                        } else {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html');
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html');
-                        }
-                    }
+                        if (btnName == "下一页") $(location).attr('href', 'questionnaire4.html');
+                        else if (btnName == "上一页") $(location).attr('href', 'questionnaire2.html');
+                    } else { }
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
