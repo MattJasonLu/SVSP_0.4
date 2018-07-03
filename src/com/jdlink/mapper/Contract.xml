@@ -8,16 +8,15 @@
     <resultMap id="ContractRM" type="Contract">
         <result property="contractType" column="contractType" javaType="com.jdlink.domain.ContractType"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
-        <result property="contractId" column="contractId" javaType="String"/>
     </resultMap>
 
-    <insert id="add" parameterType="Contract"  >
-        insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
-        checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city )
-        values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
+    <insert id="add" parameterType="Contract" >
+        insert into t_contract (contractId, contractType, companyName, clientId, isCompanyContract, area,
+        checkState, beginTime, endTime, agreedQuantity, contactName, telephone, reviewer, reviewDepartment,
+        reviewDate)
+        values (#{contractID}, #{contractType}, #{companyName}, #{clientId}, #{isCompanyContract}, #{area},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city})
+        #{reviewDepartment}, #{reviewDate});
     </insert>
 
     <delete id="delete" parameterType="Contract" >
@@ -57,13 +56,8 @@
     <update id="setCheckStateInvalid" parameterType="Contract">
         UPDATE t_contract SET checkState='Invalid' WHERE contractId=#{contractId};
     </update>
-    <update id="toSubmit" >
-        UPDATE t_contract SET checkState='Examining' WHERE contractId=#{id};
-    </update>
+
     <select id="list" resultMap="ContractRM">
         select * from t_contract;
-    </select>
-    <select id="getContractIdList" resultType="String">
-        select contractId from t_contract;
     </select>
 </mapper>

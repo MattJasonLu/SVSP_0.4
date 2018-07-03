@@ -3,7 +3,6 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.CityService;
-import com.jdlink.service.ClientService;
 import com.jdlink.service.ContractService;
 import com.sun.script.javascript.JSAdapter;
 import net.sf.json.JSONArray;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,8 +25,6 @@ public class ContractController {
     CityService cityService;
     @Autowired
     ContractService contractService;
-    @Autowired
-    ClientService clientService;
     @RequestMapping("listContract")
     @ResponseBody
     public String listContract() {
@@ -50,10 +44,6 @@ public class ContractController {
         res.put("contractNameStrList", array1);
         JSONArray array2 = JSONArray.fromArray(Province.values());
         res.put("provinceStrList", array2);
-        //查询客户list形式返回
-              List client= clientService.list();
-              JSONArray json=JSONArray.fromObject(client);
-              res.put("companyNameList",json);
         return res.toString();
     }
 
@@ -69,107 +59,17 @@ public class ContractController {
         //JSONObject res = new JSONObject();
        //根据provinceId找到相应的城市
       List<City> city= cityService.getCity(provinceId);
+          for ( City c:city) {
+              System.out.print(c.getCityname()+" ");
+          }
         JSONArray json=JSONArray.fromObject(city);
         return json.toString();
     }
     @RequestMapping("addContract")
-    @ResponseBody
-    public String addContract(@RequestBody Contract contract) {
-        JSONObject res = new JSONObject();
-        try {
-            contractService.add(contract);
-            res.put("status", "success");
-            res.put("message", "保存成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "信息输入错误，请重试!");
-        }
-        return res.toString();
+    public ModelAndView addContract() {
+        ModelAndView mav = new ModelAndView();
+        return mav;
     }
-
-    /**
-     *保存合同
-     */
-    @RequestMapping("saveContract")
-    @ResponseBody
-    public String  saveContract(@RequestBody Contract contract) {
-        //1.获取合同ID
-        List<String> list= contractService.getContractIdList();//合同id集合
-        List<Integer> list1 = new ArrayList<>();
-        for (String s:list
-             ) {
-           int i=Integer.parseInt(s);
-           list1.add(i);
-        }
-        Collections.sort(list1);
-        for (Integer s1:list1
-                ) {
-            //System.out.println(s1);
-        }
-        String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
-        contract.setContractId(newId);
-        System.out.println("当前合同编号:"+contract.getContractId());
-        contract.setCheckState(CheckState.ToSubmit);
-        JSONObject res = JSONObject.fromBean(contract);
-       //给予合同的状态
-        try{
-            contractService.add(contract);
-            res.put("status", "success");
-            res.put("message", "添加成功");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "创建合同失败，请完善信息!");
-        }
-        return  res.toString();
-    }
-
-@RequestMapping("submitContract")
-@ResponseBody
-public String  submitContract(@RequestBody Contract contract) {
-    //1.获取合同ID
-    List<String> list= contractService.getContractIdList();//合同id集合
-    List<Integer> list1 = new ArrayList<>();
-    for (String s:list
-            ) {
-        int i=Integer.parseInt(s);
-        list1.add(i);
-    }
-    Collections.sort(list1);
-    for (Integer s1:list1
-            ) {
-        //System.out.println(s1);
-    }
-    String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
-    contract.setContractId(newId);
-    System.out.println("当前合同编号:"+contract.getContractId());
-    contract.setCheckState(CheckState.Examining);
-    JSONObject res = JSONObject.fromBean(contract);
-    //给予合同的状态
-    try{
-        contractService.add(contract);
-        res.put("status", "success");
-        res.put("message", "提交成功");
-    }
-    catch (Exception e) {
-        e.printStackTrace();
-        res.put("status", "fail");
-        res.put("message", "提交合同失败，请完善信息!");
-    }
-    return  res.toString();
-}
-
-@RequestMapping("submitContract1")
-@ResponseBody
-public String  submitContract1( String id) {
-//1修改状态
-JSONObject res=new JSONObject();
-contractService.toSubmit(id);
-res.put("state","提交成功");
-return  res.toString();
-}
 
     @RequestMapping("deleteContract")
     public ModelAndView deleteContract(String contractId) {
