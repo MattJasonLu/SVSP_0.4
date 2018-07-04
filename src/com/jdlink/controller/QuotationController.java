@@ -1,7 +1,9 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Quotation;
+import com.jdlink.domain.Wastes;
 import com.jdlink.service.QuotationService;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,10 @@ public class QuotationController {
     public String addQuotation(@RequestBody Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
+            // 设置每个危废的编码,唯一
+            for (Wastes wastes : quotation.getWastesList()) {
+                wastes.setId(RandomUtil.getRandomEightNumber());
+            }
             quotationService.add(quotation);
             res.put("status", "success");
             res.put("message", "报价单增加成功");
