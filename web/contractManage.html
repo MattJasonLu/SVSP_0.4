@@ -40,6 +40,7 @@
         });
     }
     function setContractList(result) {
+       // console.log(eval(result));//可以取到
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr1");//克隆一行
         tr.siblings().remove();
@@ -47,12 +48,14 @@
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
-            var _index = index;
+           var _index = index;
+            var obj = eval(item);
+           // console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
+
                 // 根据索引为部分td赋值
-               // console.log(obj);
+                // console.log(obj);
                 switch (inner_index) {
                     // 合同编号
                     case (2):
@@ -61,7 +64,7 @@
                     // 合同名称
                     case (3):
                         if (obj.contractType != null)
-                           obj.contractName =obj.contractType.name;
+                            obj.contractName =obj.contractType.name;
                         $(this).html(obj.contractName);
                         break;
                     // 状态
@@ -71,11 +74,11 @@
                         break;
                     // 公司名称
                     case (5):
-                            $(this).html(obj.companyName);
+                        $(this).html(obj.companyName);
                         break;
                     // 所属区域
                     case (6):
-                            $(this).html(obj.province.name+""+obj.city);
+                        $(this).html(obj.province.name+obj.city);
                         break;
                     // 合约量
                     case (7):
@@ -89,18 +92,16 @@
                     case (9):
                         $(this).html(obj.telephone);
                         break;
-                        // 签订日期
+                    // 签订日期
                     case (10):
                         //console.log(obj.beginTime);
-                       var time= gettime(obj.beginTime);
-                      //console.log(obj.beginTime);
-                       // var year=(parseInt(obj.beginTime.year)+1900).toString();
+                        var time= gettime(obj.beginTime);
+                        //console.log(obj.beginTime);
+                        // var year=(parseInt(obj.beginTime.year)+1900).toString();
                         //var mouth=parseInt((obj.beginTime.month)+3).toString();
                         //var  day=parseInt((obj.beginTime.date)).toString();
                         $(this).html(time);
                         break;
-
-
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -109,8 +110,6 @@
         });
         // 隐藏无数据的tr
         tr.hide();
-
-
     }
     //获取时间
     function gettime(obj) {
@@ -175,7 +174,8 @@ else {
     /***
      * 查看合同
      */
-    function viewContract(item) {
+    function viewContract(item)
+    {
         var contractId=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
         $('#btn').text();
         $.ajax({
@@ -187,12 +187,15 @@ else {
                 'contractId': contractId
             },
             success: function (result) {
+
+
+
                 console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     var begin=gettime(data.beginTime);
                     var end=gettime(data.endTime);
-                    $("#modal3_contractName").val(data.contractType.name)//合同名称
+                    $("#modal3_contractName").val(data.contractType.name);//合同名称
                     $("#modal3_contractState").val(data.checkState.name);
                     $("#modal3_contractVersion").val(data.contractVersion.name);
                     $("#modal3_companyName").val(data.companyName);
@@ -227,18 +230,7 @@ else {
             },
             error: function (result) {
                 console.log(result);
-                $("#modal3_contactName").val("");
-                $("#modal3_contractState").val("");
-                $("#modal3_contractVersion").val("");
-                $("#modal3_companyName").val("");
-                $("#modal3_contactName").val("");
-                $("#modal3_contractId").val("");
-                $("#modal3_beginTime").val("");
-                $("#modal3_endTime").val("");
-                $("#modal3_area").val("");
-                $("#modal3_telephone").val("");
-                $("#modal3_order").val("");
-                $("input").prop("readonly",true);
+
             }
         });
         $('#contractInfoForm').modal('show');
@@ -248,90 +240,11 @@ else {
      * 修改合同
      */
     function adjustContract(item) {
+       //1获取合同id
         var contractId=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
-        $('#btn').text();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getContractId",                   // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {
-                'contractId': contractId
-            },
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    var data = eval(result);
-                    $("#modal3_contactName").val();
-                    $("#modal3_contractState").val();
-                    $("#modal3_contractVersion").val();
-                    $("#modal3_companyName").val();
-                    $("#modal3_contactName").val();
-                    $("#modal3_contractId").val();
-                    $("#modal3_beginTime").val();
-                    $("#modal3_endTime").val();
-                    $("#modal3_area").val();
-                    $("#modal3_telephone").val();
-                    $("#modal3_order").val();
-                    if($('#modal3_freight').val()==true){//需要运费
-                        $('#modal3_freight').removeAttr("checked");
-                        $('#modal3_freight').prop("checked","");
-                    }
-                    if($('#modal3_freight').val()==false){//不需要运费
-                        $('#modal3_freight').removeAttr("checked");
-                    }
-                    $("input").prop("readonly",true);
-                } else {
-                    $("#modal3_contactName").val("");
-                    $("#modal3_contractState").val("");
-                    $("#modal3_contractVersion").val("");
-                    $("#modal3_companyName").val("");
-                    $("#modal3_contactName").val("");
-                    $("#modal3_contractId").val("");
-                    $("#modal3_beginTime").val("");
-                    $("#modal3_endTime").val("");
-                    $("#modal3_area").val("");
-                    $("#modal3_telephone").val("");
-                    $("#modal3_order").val("");
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                $("#modal3_contactName").val("");
-                $("#modal3_contractState").val("");
-                $("#modal3_contractVersion").val("");
-                $("#modal3_companyName").val("");
-                $("#modal3_contactName").val("");
-                $("#modal3_contractId").val("");
-                $("#modal3_beginTime").val("");
-                $("#modal3_endTime").val("");
-                $("#modal3_area").val("");
-                $("#modal3_telephone").val("");
-                $("#modal3_order").val("");
-                // $("input").prop("readonly",true);
-                $('input').removeAttr("readonly");
-            }
-        });
-        $('#contractInfoForm').modal('show');
-        
-        $('#btn').text("修改");
-        $('#btn').click(function () {
-            updateContractByContractId(contractId);
-        });
-
+        window.location.href = "showContract?contractId="+contractId;
     }
-    function updateContractByContractId(contractId) {
-        $.ajax({
-            type:"POST",
-            url:"",
-            async: false,
-            data:{
 
-            },
-
-
-        });
-    }
 </script>
 <body onload="loadContractList()">
     <!--导航条-->
@@ -579,7 +492,7 @@ else {
                                 <div class="form-group">
                                     <label for="modal3_contractName" class="col-sm-4 control-label">合同名称 </label>
                                     <div class="col-xs-5">
-                                            <input type="text" class="form-control focus" id="modal3_contractName" name="contractName">
+                                        <input type="text" class="form-control focus" id="modal3_contractName" name="contractName">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -664,6 +577,10 @@ else {
             </div>
         </div>
     </div>
+<!--修改页面-->
+
+
+
 </body>
 <script>
     $('.form_datetime1').datetimepicker({

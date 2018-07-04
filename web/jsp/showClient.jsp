@@ -28,7 +28,7 @@
         printClient();
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "saveClient",                       // url
+            url: "data.contractType.name",                       // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify($('#clientInfoForm').serializeJSON()),
             dataType: "json",
