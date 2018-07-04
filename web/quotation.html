@@ -10,29 +10,87 @@
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
-    function loadClientList() {
+    function setQuotationList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result.data, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                        // 报价单编号
+                    case (2):
+                        $(this).html(obj.quotationId);
+                        break;
+                        // 报价单名称
+                    case (3):
+                        break;
+                        // 客户名称
+                    case (4):
+                        $(this).html(obj.client.companyName);
+                        break;
+                        // 报价部门
+                    case (5):
+                        break;
+                        // 申请人
+                    case (6):
+                        break;
+                        // 到期日期
+                    case (7):
+                        $(this).html(getTimeStr(obj.endDate));
+                        break;
+                        // 填报日期
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    function loadQuotationList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
+            url: "listQuotation",           // url
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    jQuery.each(result, function(i,item){
-                        console.log(item.clientId + ", " + item.companyName);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
+                    setQuotationList(result);
+                } else { }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
+    //获取时间
+    function getTimeStr(obj) {
+        var year=(parseInt(obj.year)+1900).toString();
+        var mouth=parseInt((obj.month)+1).toString();
+        if(mouth.length!=2){
+            mouth=0+mouth;
+        }
+        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+        var  day=parseInt((obj.date)).toString();
+        //ataLeftCompleting(2, "0", day.toString()).toString();
+        if(day.length!=2){
+            day=0+day;
+        }
+        var time1=year+"-"+mouth+"-"+day;
+        return time1;
+    }
 </script>
-<body onload="">
+<body onload="loadQuotationList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -169,7 +227,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr">
                         <td class="text-center">
                             <label>
                                 <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">

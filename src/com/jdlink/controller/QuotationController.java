@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -84,6 +85,42 @@ public class QuotationController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "报价单信息获取失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取报价单号
+     * @return 报价单号
+     */
+    @RequestMapping(value = {"getCurrentQuotationId", "client/getCurrentQuotationId"})
+    @ResponseBody
+    public String getCurrentQuotationId() {
+        JSONObject res = new JSONObject();
+        try {
+            //得到一个NumberFormat的实例
+            NumberFormat nf = NumberFormat.getInstance();
+            //设置是否使用分组
+            nf.setGroupingUsed(false);
+            //设置最大整数位数
+            nf.setMaximumIntegerDigits(4);
+            //设置最小整数位数
+            nf.setMinimumIntegerDigits(4);
+            // 获取最新编号
+            String id;
+            int index = quotationService.count();
+            // 获取唯一的编号
+            do {
+                index += 1;
+                id = nf.format(index);
+            } while (quotationService.getById(id) != null);
+            res.put("status", "success");
+            res.put("message", "获取报价单编号成功");
+            res.put("quotationId", id);
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取报价单编号失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();

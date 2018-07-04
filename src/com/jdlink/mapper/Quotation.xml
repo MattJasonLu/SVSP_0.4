@@ -4,9 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.QuotationMapper">
-
+    <resultMap id="ClientRM" type="Client" autoMapping="true">
+        <result property="clientId" column="clientId"/>
+        <result property="companyName" column="companyName"/>
+        <result property="contactName" column="contactName"/>
+        <result property="location" column="location"/>
+    </resultMap>
+    <resultMap type="Quotation" id="QuotationRM" autoMapping="true">
+        <association property="client" javaType="Client" resultMap="ClientRM"/>
+    </resultMap>
     <insert id="add" parameterType="Quotation" >
-        INSERT INTO t_quotation VALUES (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight)
+        INSERT INTO t_quotation (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight)
         VALUES (#{quotationId}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight});
     </insert>
 
@@ -15,10 +23,18 @@
         isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight} WHERE quotationId=#{quotationId}
     </update>
 
-    <select id="list" resultType="Quotation">
-        SELECT * FROM t_quotation
+    <select id="list" resultMap="QuotationRM">
+        SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_quotation;
+    </select>
+
+    <select id="getById" resultMap="QuotationRM" parameterType="String">
+        SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND quotationId=#{quotationId}
     </select>
 </mapper>

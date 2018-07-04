@@ -15,4 +15,7 @@ public interface QuotationMapper {
 
     List<Quotation> list();
 
+    int count();
+
+    Quotation getById(String quotationId);
 }
