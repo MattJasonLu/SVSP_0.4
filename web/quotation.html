@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>价格管理</title>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <script type="text/javascript">
     function setQuotationList(result) {
@@ -570,8 +573,9 @@
                     <form id="model-assign" method="post">
                         <div class="form-group">
                             <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 结束有效期</label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input2" id="time2">
-                                <input type="text" class="form-control" id="model-validity" name="model-validity" readonly>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1" id="time">
+                                <input class="form-control" type="text" value="" id="model-validity" name="model-validity" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                             </div>
                         </div>
@@ -585,4 +589,19 @@
         </div>
     </div>
 </body>
+<script>
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+        format: 'yyyy-mm-dd hh:ii',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        showMeridian: 1
+    });
+</script>
 </html>
