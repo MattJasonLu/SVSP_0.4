@@ -39,6 +39,12 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
+                    case (1):
+                        if(obj.state.name == "已作废"){
+                            $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
+                        }
+                        break;
                         // 样品预约号
                     case (2):
                         $(this).html(obj.appointId);
@@ -160,7 +166,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archives.html">一企一档</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
