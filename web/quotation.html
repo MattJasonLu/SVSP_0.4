@@ -10,29 +10,87 @@
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
-    function loadClientList() {
+    function setQuotationList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result.data, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                        // 报价单编号
+                    case (2):
+                        $(this).html(obj.quotationId);
+                        break;
+                        // 报价单名称
+                    case (3):
+                        break;
+                        // 客户名称
+                    case (4):
+                        $(this).html(obj.client.companyName);
+                        break;
+                        // 报价部门
+                    case (5):
+                        break;
+                        // 申请人
+                    case (6):
+                        break;
+                        // 到期日期
+                    case (7):
+                        $(this).html(getTimeStr(obj.endDate));
+                        break;
+                        // 填报日期
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    function loadQuotationList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
+            url: "listQuotation",           // url
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    jQuery.each(result, function(i,item){
-                        console.log(item.clientId + ", " + item.companyName);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
+                    setQuotationList(result);
+                } else { }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
+    //获取时间
+    function getTimeStr(obj) {
+        var year=(parseInt(obj.year)+1900).toString();
+        var mouth=parseInt((obj.month)+1).toString();
+        if(mouth.length!=2){
+            mouth=0+mouth;
+        }
+        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+        var  day=parseInt((obj.date)).toString();
+        //ataLeftCompleting(2, "0", day.toString()).toString();
+        if(day.length!=2){
+            day=0+day;
+        }
+        var time1=year+"-"+mouth+"-"+day;
+        return time1;
+    }
 </script>
-<body onload="">
+<body onload="loadQuotationList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -81,7 +139,7 @@
                             <li><a href="contractTemplate.html">合同模板</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="quotation.html">报价管理</a></li>
@@ -89,7 +147,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archives.html">一企一档</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -128,8 +186,8 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">一企一档</a></li>
-                    <li class="active">价格管理</li>
+                    <li><a href="#">价格管理</a></li>
+                    <li class="active">报价管理</li>
                 </ol>
             </div>
             <h2 class="sub-header">报价单列表</h2>
@@ -169,7 +227,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr">
                         <td class="text-center">
                             <label>
                                 <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -182,7 +240,10 @@
                                     <li><a href="#">查看</a></li>
                                     <li><a href="#">修改信息</a></li>
                                     <li><a href="#">升级</a></li>
-                                    <li><a href="#">有效期变更</a></li>
+                                    <li><a href="#" onclick="function dateChange() {
+                                        $('#modalId').modal('show');
+                                    }
+                                    dateChange()">有效期变更</a></li>
                                     <li><a href="#">送审</a></li>
                                     <li><a href="#">作废</a></li>
                                 </ul>
@@ -473,7 +534,7 @@
                     </tbody>
                 </table>
             </div>
-            <!--分页-->qige
+            <!--分页-->
             <nav aria-label="Page navigation" style="text-align: center">
                 <ul class="pagination">
                     <li class="disabled">
@@ -496,5 +557,32 @@
         </div>
     </div>
 
+    //modal
+    <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">客户报价单-有效期变更</h4>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <form id="model-assign" method="post">
+                        <div class="form-group">
+                            <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 结束有效期</label>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input2" id="time2">
+                                <input type="text" class="form-control" id="model-validity" name="model-validity" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="update();">更新</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

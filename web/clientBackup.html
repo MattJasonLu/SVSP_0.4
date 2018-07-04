@@ -34,9 +34,29 @@
                 // 根据索引为部分td赋值
                 switch (inner_index) {
                     case (1):
-                        if(obj.checkState.name == "审批中") {
+                        if(obj.checkState.name == "审批中"||obj.checkState.name == "已完成") {
                             $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
                             $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
+                        }
+                        if(obj.clientState.name == "已禁用"){
+                            $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
+                            $(this).children().eq(0).children().eq(1).children().eq(2).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(2).children().eq(0).removeAttr("onclick");
+                            $(this).children().eq(0).children().eq(1).children().eq(3).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(3).children().eq(0).removeAttr("onclick");
+                            $(this).children().eq(0).children().eq(1).children().eq(5).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(5).children().eq(0).removeAttr("onclick");
+                            $(this).children().eq(0).children().eq(1).children().eq(6).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(6).children().eq(0).removeAttr("onclick");
+                        }
+                        if(obj.clientState.name == "已启用"){
+                            $(this).children().eq(0).children().eq(1).children().eq(4).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(4).children().eq(0).removeAttr("onclick");
+                        }
+                        if(obj.clientState.name == "已禁用"){
+                            $(this).children().eq(0).children().eq(1).children().eq(5).attr("class","disabled");
+                            $(this).children().eq(0).children().eq(1).children().eq(5).children().eq(0).removeAttr("onclick");
                         }
                         break;
                         // 客户编号
@@ -56,7 +76,6 @@
                     case (5):
                         if (obj.checkState != null) {
                             $(this).html(obj.checkState.name);
-
                             // $("#commit").attr(addClass("disabled"));
                         }
                         break;
@@ -189,7 +208,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a>一企一档</a></li>
+                    <li><a href="archives.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -278,12 +297,8 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#" onclick="viewClient(this);">查看</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" onclick="commitClient(this);">提交</a>
-                                    </li>
+                                    <li><a href="#" onclick="viewClient(this);">查看</a></li>
+                                    <li><a href="#" onclick="commitClient(this);">提交</a></li>
                                     <li><a href="#" onclick="adjustClient(this);">修改</a></li>
                                     <li><a href="#" onclick="examineClient(this);">审批</a></li>
                                     <li><a href="#" onclick="enableClient(this);">启用</a></li>
@@ -306,25 +321,25 @@
             </div>
             <!--分页1-->
 
-                <nav aria-label="Page navigation" style="text-align: center">
-                    <ul class="pagination">
-                        <li class="disabled">
-                            <a href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+            <nav aria-label="Page navigation" style="text-align: center">
+                <ul class="pagination">
+                    <li class="disabled">
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
         </div>
     </div>
@@ -368,8 +383,8 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
                     <h2 class="sub-header">客户信息</h2>

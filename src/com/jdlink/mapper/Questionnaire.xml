@@ -9,6 +9,8 @@
         <result property="companyName" column="companyName"/>
         <result property="product" column="product"/>
         <result property="industry" column="industry"/>
+        <result property="contactName" column="contactName"/>
+        <result property="location" column="location"/>
     </resultMap>
     <resultMap id="MixingElementRM" type="MixingElement">
         <result property="id" column="id"/>
@@ -139,7 +141,9 @@
     </select>
 
     <select id="getById" parameterType="String" resultMap="QuestionnaireRM">
-        select * from questionnaire where questionnaireId = #{questionnaireId};
+        SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId,
+          client.product, client.contactName, client.location, questionnaire.state, questionnaire.author, questionnaire.time
+            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId AND questionnaireId = #{questionnaireId};
     </select>
 
     <select id="getRawWastes" parameterType="String" resultMap="RawWastesRM">
@@ -270,7 +274,7 @@
 
     <select id="list" resultMap="QuestionnaireRM">
         SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId,
-          client.product, questionnaire.state, questionnaire.author, questionnaire.time
+          client.product, client.contactName, client.location, questionnaire.state, questionnaire.author, questionnaire.time
             FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId;
     </select>
 
