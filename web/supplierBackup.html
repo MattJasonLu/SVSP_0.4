@@ -25,12 +25,15 @@
                 // 根据索引为部分td赋值
                 switch (inner_index) {
                     case (1):
+                        // $(this).html(obj.checkState.name);
                         var items = $("input[type='checkbox']:checked");
+                        console.log(obj.checkState.name);
                         if(obj.checkState.name == "审批中"){
                             if(items.length>0){
                                 $(this).parent().parent().parent().parent().prev().children().eq(0).children().eq(0).children().eq(1).removeAttr("onclick");
                             }
                         }
+                        break;
                         // 供应商编号
                     case (2):
                         $(this).html(obj.supplierId);
