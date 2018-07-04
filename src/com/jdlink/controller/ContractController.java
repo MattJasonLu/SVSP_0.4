@@ -188,4 +188,15 @@ return  res.toString();
         JSONObject res= JSONObject.fromBean(contract);
         return res.toString();
     }
+    @RequestMapping("showContract")
+    @ResponseBody
+    public ModelAndView showClient(String contractId) {
+        ModelAndView mav = new ModelAndView();
+        //获得当前合同
+        Contract contract=contractService.getByContractId(contractId);//获得相应的合同对象
+
+        mav.addObject("contract", contract);
+        mav.setViewName("jsp/showContract.jsp");
+        return mav;
+    }
 }
