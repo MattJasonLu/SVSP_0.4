@@ -7,7 +7,10 @@
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
-    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
 <style>
     p{
@@ -131,7 +134,7 @@
     }
     function contractSubmit() {
     //在此提交
-        var items = $("input[type='checkbox']:checked");//判断复选框是否选中
+        var items = $("input[name='blankCheckbox']:checked");//判断复选框是否选中
         if(items.length>0){
             function getContractById(id) {
                 $.ajax({
@@ -167,6 +170,167 @@ else {
     }
     function getContractId1(item) {
         return item.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+    }
+
+    /***
+     * 查看合同
+     */
+    function viewContract(item) {
+        var contractId=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+        $('#btn').text();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getContractId",                   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'contractId': contractId
+            },
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    var begin=gettime(data.beginTime);
+                    var end=gettime(data.endTime);
+                    $("#modal3_contractName").val(data.contractType.name)//合同名称
+                    $("#modal3_contractState").val(data.checkState.name);
+                    $("#modal3_contractVersion").val(data.contractVersion.name);
+                    $("#modal3_companyName").val(data.companyName);
+                    $("#modal3_contactName").val(data.contactName);
+                    $("#modal3_contractId").val(data.contractId);
+                    $("#modal3_beginTime").val(begin);
+                    $("#modal3_endTime").val(end);
+                    $("#modal3_area").val(data.province.name+""+data.city);
+                    $("#modal3_telephone").val(data.telephone);
+                    $("#modal3_order").val(data.order1);
+                    if(data.freight==true){//需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                        $('#modal3_freight').prop("checked",true);
+                    }
+                    if(data.freight==false){//不需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                    }
+                    $("input").prop("readonly",true);
+                } else {
+                    $("#modal3_contactName").val("");
+                    $("#modal3_contractState").val("");
+                    $("#modal3_contractVersion").val("");
+                    $("#modal3_companyName").val("");
+                    $("#modal3_contactName").val("");
+                    $("#modal3_contractId").val("");
+                    $("#modal3_beginTime").val("");
+                    $("#modal3_endTime").val("");
+                    $("#modal3_area").val("");
+                    $("#modal3_telephone").val("");
+                    $("#modal3_order").val("");
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                $("#modal3_contactName").val("");
+                $("#modal3_contractState").val("");
+                $("#modal3_contractVersion").val("");
+                $("#modal3_companyName").val("");
+                $("#modal3_contactName").val("");
+                $("#modal3_contractId").val("");
+                $("#modal3_beginTime").val("");
+                $("#modal3_endTime").val("");
+                $("#modal3_area").val("");
+                $("#modal3_telephone").val("");
+                $("#modal3_order").val("");
+                $("input").prop("readonly",true);
+            }
+        });
+        $('#contractInfoForm').modal('show');
+        $('#btn').text("打印");
+    }
+    /***
+     * 修改合同
+     */
+    function adjustContract(item) {
+        var contractId=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+        $('#btn').text();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getContractId",                   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'contractId': contractId
+            },
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#modal3_contactName").val();
+                    $("#modal3_contractState").val();
+                    $("#modal3_contractVersion").val();
+                    $("#modal3_companyName").val();
+                    $("#modal3_contactName").val();
+                    $("#modal3_contractId").val();
+                    $("#modal3_beginTime").val();
+                    $("#modal3_endTime").val();
+                    $("#modal3_area").val();
+                    $("#modal3_telephone").val();
+                    $("#modal3_order").val();
+                    if($('#modal3_freight').val()==true){//需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                        $('#modal3_freight').prop("checked","");
+                    }
+                    if($('#modal3_freight').val()==false){//不需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                    }
+                    $("input").prop("readonly",true);
+                } else {
+                    $("#modal3_contactName").val("");
+                    $("#modal3_contractState").val("");
+                    $("#modal3_contractVersion").val("");
+                    $("#modal3_companyName").val("");
+                    $("#modal3_contactName").val("");
+                    $("#modal3_contractId").val("");
+                    $("#modal3_beginTime").val("");
+                    $("#modal3_endTime").val("");
+                    $("#modal3_area").val("");
+                    $("#modal3_telephone").val("");
+                    $("#modal3_order").val("");
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                $("#modal3_contactName").val("");
+                $("#modal3_contractState").val("");
+                $("#modal3_contractVersion").val("");
+                $("#modal3_companyName").val("");
+                $("#modal3_contactName").val("");
+                $("#modal3_contractId").val("");
+                $("#modal3_beginTime").val("");
+                $("#modal3_endTime").val("");
+                $("#modal3_area").val("");
+                $("#modal3_telephone").val("");
+                $("#modal3_order").val("");
+                // $("input").prop("readonly",true);
+                $('input').removeAttr("readonly");
+            }
+        });
+        $('#contractInfoForm').modal('show');
+        
+        $('#btn').text("修改");
+        $('#btn').click(function () {
+            updateContractByContractId(contractId);
+        });
+
+    }
+    function updateContractByContractId(contractId) {
+        $.ajax({
+            type:"POST",
+            url:"",
+            async: false,
+            data:{
+
+            },
+
+
+        });
     }
 </script>
 <body onload="loadContractList()">
@@ -372,15 +536,15 @@ else {
                             <tr id="cloneTr1">
                                 <td class="text-center">
                                     <label>
-                                        <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                        <input class="checkbox" type="checkbox" id="blankCheckbox"  name="blankCheckbox"  value="option1" aria-label="...">
                                     </label>
                                 </td>
                                 <td>
                                     <div class="dropdown">
                                         <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">查看</a></li>
-                                            <li><a href="#">修改信息</a></li>
+                                            <li><a href="#" onclick="viewContract(this)">查看</a></li>
+                                            <li><a href="#" onclick="adjustContract(this)">修改信息</a></li>
                                             <li><a href="#">删除</a></li>
                                         </ul>
                                     </div>
@@ -425,147 +589,38 @@ else {
         </div>
     </div>
     <!--查看页面-->
-    <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h2 class="sub-header">客户信息</h2>
-                    <form method="post" id="contractInfoForm" enctype="multipart/form-data">
-                        <h4 class="text-info">基本信息</h4>
+                    <h2 class="sub-header">合同信息</h2>
+                    <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
                         <div class="row">
                             <div class="form-horizontal col-md-6">
                                 <div class="form-group">
-                                    <label for="modal3_companyName" class="col-sm-4 control-label">企业名称 </label>
+                                    <label for="modal3_contractName" class="col-sm-4 control-label">合同名称 </label>
+                                    <div class="col-xs-5">
+                                            <input type="text" class="form-control focus" id="modal3_contractName" name="contractName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_contractState" class="col-sm-4 control-label">合同状态 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_contractState" name="contractState">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_contractVersion" class="col-sm-4 control-label">合同版本 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_contractVersion" name="contractVersion">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_companyName" class="col-sm-4 control-label">客户名称 </label>
                                     <div class="col-xs-5">
                                         <input type="text" class="form-control focus" id="modal3_companyName" name="companyName">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="modal3_organizationCode" class="col-sm-4 control-label">组织机构代码 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_organizationCode" name="organizationCode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_representative" class="col-sm-4 control-label">法人代表 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_representative" name="representative">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_industry" class="col-sm-4 control-label">所属行业 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_industry" name="industry">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_enterpriseType" class="col-sm-4 control-label">企业类型 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_enterpriseType" name="enterpriseType">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationType" class="col-sm-4 control-label">经营单位类别 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_operationType" name="operationType">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationRecord" class="col-sm-4 control-label">危废经营记录情况 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_operationRecord" name="operationRecord">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_street" class="col-sm-4 control-label">所属街道 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_street" name="street">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_clientId" class="col-sm-4 control-label">客户编码</label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_clientId" name="clientId" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_licenseCode" class="col-sm-4 control-label">营业执照注册号 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_licenseCode" name="licenseCode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_postCode" class="col-sm-4 control-label">工商注册地邮编 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_postCode" name="postCode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_product" class="col-sm-4 control-label">主要产品 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_product" name="product">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationMode" class="col-sm-4 control-label">经营方式 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_operationMode" name="operationMode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_contingencyPlan" class="col-sm-4 control-label">事故防范应急预案 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contingencyPlan" name="contingencyPlan">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_applicationStatus" class="col-sm-4 control-label">申报状态 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_applicationStatus" name="applicationStatus">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_location" class="col-sm-4 control-label">工商注册地址 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_location" name="location">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="text-info">环评信息</h4>
-                        <div class="row">
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_materialAttachment" class="col-sm-4 control-label">原辅材料 </label>
-                                    <div class="col-xs-5">
-                                        <button class="btn btn-default" id="modal3_materialAttachment">下载查看</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_processAttachment" class="col-sm-4 control-label">工艺流程图 </label>
-                                    <div class="col-xs-5">
-                                        <button class="btn btn-default" id="modal3_processAttachment">下载查看</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-horizontal col-md-12">
-                                <div class="form-group">
-                                    <label for="modal3_processDesp" class="col-sm-2 control-label">工艺描述 </label>
-                                    <div class="col-xs-8">
-                                        <textarea class="form-control focus" id="modal3_processDesp" name="processDesp" rows="4"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="text-info">联系方式</h4>
-                        <div class="row">
-                            <div class="form-horizontal col-md-6">
                                 <div class="form-group">
                                     <label for="modal3_contactName" class="col-sm-4 control-label">联系人 </label>
                                     <div class="col-xs-5">
@@ -573,29 +628,56 @@ else {
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="modal3_mobile" class="col-sm-4 control-label">手机号码 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_mobile" name="mobile">
-                                    </div>
+                                    <label for="modal3_freight" class="col-sm-4 control-label">是否包含运费 </label>
+                                       <div class="col-xs-8">
+                                       </div>
+                                    <input type="checkbox" class="col-xs-1" id="modal3_freight" name="freight" >
                                 </div>
                             </div>
                             <div class="form-horizontal col-md-6">
                                 <div class="form-group">
-                                    <label for="modal3_phone" class="col-sm-4 control-label">固定电话 </label>
+                                    <label for="modal3_contractId" class="col-sm-4 control-label">合同编号</label>
                                     <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_phone" name="phone">
+                                        <input type="text" class="form-control focus" id="modal3_contractId" name="contractId" placeholder="">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="modal3_email" class="col-sm-4 control-label">邮箱 </label>
-                                    <div class="col-xs-5">
-                                        <input type="email" class="form-control focus" id="modal3_email" name="email">
+                                    <label for="modal3_beginTime" class="col-sm-4 control-label">签订日期 </label>
+                                     <div class="col-xs-5 input-group date">
+                                        <input type="text" class="input-sm form-control form_datetime1 " id="modal3_beginTime" name="beginTime">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_endTime" class="col-sm-4 control-label">截止日期</label>
+                                    <div class="col-xs-5 input-group date">
+                                        <input type="text" class="input-sm form-control form_datetime2" id="modal3_endTime" name="endTime">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_area" class="col-sm-4 control-label">所属区域</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_area" name="area">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_telephone" class="col-sm-4 control-label">联系方式</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_telephone" name="telephone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_order" class="col-sm-4 control-label">预约处置费 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_order" name="order">
+                                    </div>
+                                    <h4>元</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="row text-center">
-                            <a class="btn btn-primary" onclick="">打印</a>
+                            <a class="btn btn-primary" onclick="" id="btn">打印</a>
                             <a class="btn btn-danger" data-dismiss="modal">关闭</a>
                         </div>
                     </form>
@@ -604,4 +686,28 @@ else {
         </div>
     </div>
 </body>
+<script>
+    $('.form_datetime1').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_datetime2').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
 </html>
