@@ -127,7 +127,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archives.html">一企一档</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -181,7 +181,6 @@
                     </div>
                     <!--查询框-->
                     <div class="form-inline col-md-6 pull-right">
-                        <input type="text" class="form-control" id="clientId" name="clientId" placeholder="客户编号">
                         <input type="text" class="form-control" id="salesmanId" name="salesmanId" placeholder="业务员编号">
                         <a class="btn btn-default" onclick="searchSalesman();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                     </div>
@@ -215,7 +214,6 @@
                                 <div class="dropdown">
                                     <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="salesInfo.html">新增</a></li>
                                         <li><a href="#" onclick="adjustSalesman(this);">修改信息</a></li>
                                         <li><a href="#" onclick="bindClient(this);">分配客户</a></li>
                                         <li><a href="#" onclick="deleteSalesman(this);">注销</a></li>
