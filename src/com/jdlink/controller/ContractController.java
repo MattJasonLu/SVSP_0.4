@@ -181,4 +181,11 @@ return  res.toString();
         ModelAndView mav = new ModelAndView();
         return mav;
     }
+    @RequestMapping("getContractId")
+    @ResponseBody
+    public String getContractId(String contractId) {
+       Contract contract=contractService.getByContractId(contractId);
+        JSONObject res= JSONObject.fromBean(contract);
+        return res.toString();
+    }
 }
