@@ -47,6 +47,30 @@
 
         }
     });
+
+    /**
+     * 增加新行
+     */
+    function addNewLine() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+
+        // 获取编号
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:not(0)").find("input").val("");
+        clonedTr.children().get(0).innerHTML = num;
+        clonedTr.children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).attr('name');
+            var newName = name.replace(/[0-9]\d*/, id);
+            $(this).attr('name', newName);
+        });
+        clonedTr.insertAfter(tr);
+    }
 </script>
 <body>
     <!--导航条-->
@@ -277,7 +301,7 @@
                                 <th>危废代码</th>
                                 <th>合约量</th>
                                 <th>单价(元/吨)(含税)</th>
-                                <th>税率</th>
+                                <th>税率(%)</th>
                                 <th>单价(元/吨)(去税)</th>
                                 <th>PH</th>
                                 <th>灰分(%)</th>
@@ -305,17 +329,15 @@
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint"></td>
                             </tr>
-                            <tr>
-                                <td><a class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <tr id="plusBtn">
+                                <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                 <td colspan="14"></td>
                             </tr>
                         </table>
                 </div>
                 <br>
                 <div class="row text-center">
-                    <a class="btn btn-primary" href="newQuotation.html">新建</a>
-                    <a class="btn btn-primary" onclick="save();">保存</a>
-                    <a class="btn btn-primary" onclick="cancel();">作废</a>
+                    <a class="btn btn-primary" onclick="addQuotation();">保存</a>
                     <a class="btn btn-primary" onclick="addQuotation();">提交</a>
                     <a class="btn btn-danger" href="quotation.html">返回</a>
                 </div>
