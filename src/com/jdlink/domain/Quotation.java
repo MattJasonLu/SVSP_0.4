@@ -1,6 +1,8 @@
 package com.jdlink.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by matt on 2018/7/3.
@@ -42,6 +44,10 @@ public class Quotation {
      * 总量=各行合约量之和
      */
     private int totalAmount;
+    /**
+     * 危废列表
+     */
+    private List<Wastes> wastesList = new ArrayList<>();
 
     public String getQuotationId() {
         return quotationId;
@@ -131,6 +137,14 @@ public class Quotation {
         this.totalAmount = totalAmount;
     }
 
+    public List<Wastes> getWastesList() {
+        return wastesList;
+    }
+
+    public void setWastesList(List<Wastes> wastesList) {
+        this.wastesList = wastesList;
+    }
+
     @Override
     public String toString() {
         return "Quotation{" +
@@ -143,6 +157,7 @@ public class Quotation {
                 ", totalPriceTax=" + totalPriceTax +
                 ", totalPrice=" + totalPrice +
                 ", totalAmount=" + totalAmount +
+                ", wastesList=" + wastesList +
                 '}';
     }
 }
