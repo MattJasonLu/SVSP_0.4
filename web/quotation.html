@@ -242,8 +242,8 @@
                                 <div class="dropdown">
                                     <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">查看</a></li>
-                                        <li><a href="#">修改信息</a></li>
+                                        <li><a href="#" onclick="viewQuotation(this);">查看</a></li>
+                                        <li><a href="#" onclick="adjustQuotation(this);">修改信息</a></li>
                                         <li><a href="#">升级</a></li>
                                         <li><a href="#" onclick="function dateChange() {
                                             $('#modalId').modal('show');
@@ -293,13 +293,13 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">客户报价单-有效期变更</h4>
+                    <h4 class="modal-title" id="myModalLabel">客户报价单-有效期时间变更</h4>
                 </div>
                 <div class="modal-body">
                     <br>
                     <form id="model-assign" method="post">
                         <div class="form-group">
-                            <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 结束有效期</label>
+                            <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 有效期结束时间</label>
                             <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1" id="time">
                                 <input class="form-control" type="text" value="" id="model-validity" name="model-validity" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
@@ -330,5 +330,31 @@
         startView: 2,
         showMeridian: 1
     });
+
+    /**
+     * 查看报价单
+     * @param e
+     */
+    function viewQuotation(e) {
+        var id = getQuotationId(e);
+        window.location.href = "newQuotation.html?quotationId=" + id + "&type=view";
+    }
+    /**
+     * 修改报价单
+     * @param e
+     */
+    function adjustQuotation(e) {
+        var id = getQuotationId(e);
+        window.location.href = "newQuotation.html?quotationId=" + id + "&type=adjust";
+    }
+
+    /**
+     * 获取报价单的编号
+     * @param item
+     * @returns {string}
+     */
+    function getQuotationId(e) {
+        return e.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
 </script>
 </html>

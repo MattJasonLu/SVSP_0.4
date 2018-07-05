@@ -60,6 +60,14 @@ public class QuotationController {
     public String updateQuotation(@RequestBody Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
+            List<Wastes> oldWastesList = quotationService.getById(quotation.getQuotationId()).getWastesList();
+            List<Wastes> newWastesList = quotation.getWastesList();
+            for (int i = 0; i < oldWastesList.size(); i++) {
+                newWastesList.get(i).setId(oldWastesList.get(i).getId());
+            }
+            for (int i = oldWastesList.size(); i < newWastesList.size(); i++) {
+                newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());
+            }
             quotationService.update(quotation);
             res.put("status", "success");
             res.put("message", "报价单修改成功");
@@ -127,6 +135,31 @@ public class QuotationController {
         } catch (Exception e) {
             res.put("status", "fail");
             res.put("message", "获取报价单编号失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 通过报价单编号获取报价单
+     * @param quotationId 报价单编号
+     * @return 报价单对象
+     */
+    @RequestMapping("getQuotation")
+    @ResponseBody
+    public String getQuotation(String quotationId) {
+        JSONObject res = new JSONObject();
+        try {
+            Quotation quotation = quotationService.getById(quotationId);
+            if (quotation == null) throw new Exception("没有该报价单!");
+            JSONObject data = JSONObject.fromBean(quotation);
+            res.put("status", "success");
+            res.put("data", data.toString());
+            res.put("message", "获取报价单信息成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取报价单信息失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();

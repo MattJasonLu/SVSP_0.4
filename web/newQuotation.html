@@ -24,29 +24,6 @@
             size: 4
         });
     });
-    // 设置下拉列表
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getQuestionnaireSelectedList",                  // url
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                var formType = $("select[name='wastesList[0].formType']");
-                formType.children().remove();
-                $.each(data.formTypeStrList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    formType.append(option);
-                });
-                formType.get(0).selectedIndex = -1;
-            }
-        },
-        error: function (result) {
-
-        }
-    });
 
     /**
      * 增加新行
@@ -71,8 +48,24 @@
         });
         clonedTr.insertAfter(tr);
     }
+    //获取时间
+    function getTimeStr(obj) {
+        var year=(parseInt(obj.year)+1900).toString();
+        var mouth=parseInt((obj.month)+1).toString();
+        if(mouth.length!=2){
+            mouth=0+mouth;
+        }
+        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+        var  day=parseInt((obj.date)).toString();
+        //ataLeftCompleting(2, "0", day.toString()).toString();
+        if(day.length!=2){
+            day=0+day;
+        }
+        var time1=year+"-"+mouth+"-"+day;
+        return time1;
+    }
 </script>
-<body>
+<body onload="setSelectList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -337,8 +330,8 @@
                 </div>
                 <br>
                 <div class="row text-center">
-                    <a class="btn btn-primary" onclick="addQuotation();">保存</a>
-                    <a class="btn btn-primary" onclick="addQuotation();">提交</a>
+                    <a id="btnSave" class="btn btn-primary" onclick="operateQuotation(this);">保存</a>
+                    <a id="btnCfm" class="btn btn-primary" onclick="operateQuotation(this);">提交</a>
                     <a class="btn btn-danger" href="quotation.html">返回</a>
                 </div>
             </form>
@@ -360,6 +353,112 @@
     }
 </style>
 <script type="text/javascript">
+    // 获取传入参数
+    var url=location.search;
+    var Request = {};
+    if(url.indexOf("?")!=-1) {
+        var str = url.substr(1)　//去掉?号
+        strs = str.split("&");
+        for(var i=0;i<strs.length;i++) {
+            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+        }
+    }
+
+    function setSelectList() {
+        // 设置下拉列表
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getQuestionnaireSelectedList",                  // url
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    var formType = $("select[name='wastesList[0].formType']");
+                    formType.children().remove();
+                    $.each(data.formTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        formType.append(option);
+                    });
+                    formType.get(0).selectedIndex = -1;
+                }
+            },
+            error: function (result) {
+
+            }
+        });
+        // 延时执行
+        setTimeout("loadQuotationInfo()", 50);
+    }
+
+    /**
+     * 读取报价单信息
+     */
+    function loadQuotationInfo() {
+        var type = Request['type'];
+        var quotationId = Request['quotationId'];
+        if (type == 'adjust' || type == 'view') {
+            $.ajax({
+                type: "POST",                           // 方法类型
+                url: "getQuotation",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {
+                    quotationId: quotationId
+                },
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result.data);
+                        var data = eval(result);
+                        $('#quotationId').val(data.data.quotationId);
+                        $('#companyName').selectpicker('val', data.data.client.clientId);
+                        $('#contactName').val(data.data.client.contactName);
+                        $('#phone').val(data.data.client.phone);
+                        $('#location').val(data.data.client.location);
+                        $('#startDate').val(getTimeStr(data.data.startDate));
+                        $('#endDate').val(getTimeStr(data.data.endDate));
+                        $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
+                        $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
+                        $('#totalPriceTax').val(data.data.client.totalPriceTax);
+                        $('#totalPrice').val(data.data.client.totalPrice);
+                        $('#totalAmount').val(data.data.client.totalAmount);
+                        for (var i = 0; i < data.data.wastesList.length; i++) {
+                            if (i > 0) addNewLine();
+                            var $i = i;
+                            $("input[name='wastesList[" + $i + "].name']").val(data.data.wastesList[i].name);
+                            console.log($("select[name='wastesList[" + $i + "].formType']"));
+                            if (data.data.wastesList[i].formType != null)
+                            $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = data.data.wastesList[i].formType.index - 1;
+                            $("input[name='wastesList[" + $i + "].wastesId']").val(data.data.wastesList[i].wastesId);
+                            $("input[name='wastesList[" + $i + "].contractAmount']").val(data.data.wastesList[i].contractAmount);
+                            $("input[name='wastesList[" + $i + "].unitPriceTax']").val(data.data.wastesList[i].unitPriceTax);
+                            $("input[name='wastesList[" + $i + "].unitPrice']").val(data.data.wastesList[i].unitPrice);
+                            $("input[name='wastesList[" + $i + "].taxRate']").val(data.data.wastesList[i].taxRate);
+                            $("input[name='wastesList[" + $i + "].ph']").val(data.data.wastesList[i].ph);
+                            $("input[name='wastesList[" + $i + "].ashPercentage']").val(data.data.wastesList[i].ashPercentage);
+                            $("input[name='wastesList[" + $i + "].wetPercentage']").val(data.data.wastesList[i].wetPercentage);
+                            $("input[name='wastesList[" + $i + "].calorific']").val(data.data.wastesList[i].calorific);
+                            $("input[name='wastesList[" + $i + "].halogenPercentage']").val(data.data.wastesList[i].halogenPercentage);
+                            $("input[name='wastesList[" + $i + "].sulfurPercentage']").val(data.data.wastesList[i].sulfurPercentage);
+                            $("input[name='wastesList[" + $i + "].flashPoint']").val(data.data.wastesList[i].flashPoint);
+                        }
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常!");
+                }
+            });
+        }
+        if (type == 'adjust') {
+            $('#btnCfm').text("修改");
+            $('#btnSave').remove();
+        } else if (type == 'view') {
+            $('#btnCfm').text("打印");
+            $('#btnSave').remove();
+        }
+    }
+
     $(document).ready(function(){
         // 添加客户信息
         $.ajax({
@@ -427,9 +526,11 @@
         forceParse: 0
     });
     /**
-     * 添加报价单
+     * 操作报价单
      */
-    function addQuotation() {
+    function operateQuotation(e) {
+        // 获取按钮的名字
+        var btnName = e.innerHTML;
         var data = {
             'quotationId': $("#quotationId").val(),
             'client': {
@@ -465,31 +566,61 @@
             wastes.flashPoint = $("input[name='wastesList[" + $i + "].flashPoint']").val();
             data['wastesList'].push(wastes);
         }
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "addQuotation",                 // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    var data = eval(result);
-                    if (data.status == "success") {
-                        alert(data.message);
-                        $(location).attr('href', 'quotation.html');
-                    } else {
-                        alert(data.message);
+        if (btnName == "提交" || btnName == "保存") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "addQuotation",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'quotation.html');
+                        } else {
+                            alert(data.message);
+                        }
                     }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
                 }
-            },
-            error:function (result) {
-                var that = this;
-                console.log(that.data);
-                alert("服务器异常!");
-            }
-        });
+            });
+        } else if (btnName == "修改") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "updateQuotation",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'quotation.html');
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        } else if (btnName == "打印") {
+            alert('文件打印中');
+        }
     }
     function setClientInfo() {
         var id = $("#companyName").find("option:selected").val();
