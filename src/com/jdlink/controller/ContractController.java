@@ -68,6 +68,7 @@ public class ContractController {
         //System.out.println(provinceId instanceof String);
         //JSONObject res = new JSONObject();
        //根据provinceId找到相应的城市
+        System.out.println(provinceId);
       List<City> city= cityService.getCity(provinceId);
         JSONArray json=JSONArray.fromObject(city);
         return json.toString();
@@ -112,11 +113,14 @@ public class ContractController {
         System.out.println("当前合同编号:"+contract.getContractId());
         contract.setCheckState(CheckState.ToSubmit);
         JSONObject res = JSONObject.fromBean(contract);
+        System.out.println(res.toString());
+
        //给予合同的状态
         try{
             contractService.add(contract);
             res.put("status", "success");
             res.put("message", "添加成功");
+
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -198,5 +202,38 @@ return  res.toString();
         mav.addObject("contract", contract);
         mav.setViewName("jsp/showContract.jsp");
         return mav;
+    }
+    @RequestMapping("saveAdjustContract")
+    @ResponseBody
+    public String saveAdjustContract(@RequestBody Contract  contract) {
+       //contract.setCheckState(CheckState.ToSubmit);//设置状态
+       JSONObject res= JSONObject.fromBean(contract);
+        //给予合同的状态
+        try{
+            contractService.update(contract);
+            res.put("status", "success");
+            res.put("message", "添加成功");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "创建合同失败，请完善信息!");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("isF")
+    @ResponseBody
+    public  String is(String isFreight,String id){
+        System.out.println(isFreight+id);
+        JSONObject res=new JSONObject();
+        if(isFreight.equals("true")){
+            contractService.updateFreight1(id);
+        }
+
+        if(isFreight.equals("false")){
+            contractService.updateFreight2(id);
+        }
+        return res.toString();
     }
 }

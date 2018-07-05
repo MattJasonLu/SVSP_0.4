@@ -70,4 +70,13 @@ public class ContractServiceImpl implements ContractService {
     public void toSubmit(String id) {
         contractMapper.toSubmit(id);
     }
+
+    @Override
+    public void updateFreight1(String id) {
+        contractMapper.updateFreight1(id);
+    }
+
+    @Override public void updateFreight2(String id) {
+contractMapper.updateFreight2(id);
+    }
 }
