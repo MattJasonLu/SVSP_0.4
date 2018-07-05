@@ -20,5 +20,6 @@ public interface ContractMapper {
     List<Contract> list();
     List getContractIdList();
     void toSubmit(String id);
-
+    void updateFreight1(String id);
+    void updateFreight2(String id);
 }
