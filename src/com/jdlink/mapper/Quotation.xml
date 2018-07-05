@@ -17,8 +17,8 @@
                     ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Quotation" >
-        INSERT INTO t_quotation (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight)
-        VALUES (#{quotationId}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight});
+        INSERT INTO t_quotation (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount)
+        VALUES (#{quotationId}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPrice}, #{totalPriceTax}, #{totalAmount});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{quotationId}, #{wastes.id});
@@ -31,7 +31,7 @@
 
     <update id="update" parameterType="Quotation">
         UPDATE t_quotation SET clientId=#{client.clientId}, contactName=#{client.contactName}, phone=#{client.phone}, location=#{client.location}, startDate=#{startDate}, endDate=#{endDate},
-        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight} WHERE quotationId=#{quotationId};
+        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE quotationId=#{quotationId};
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 UPDATE t_wastes SET name=#{wastes.name}, formType=#{wastes.formType}, wastesId=#{wastes.wastesId}, contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax},

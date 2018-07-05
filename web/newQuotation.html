@@ -312,8 +312,8 @@
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax"></td>
-                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].ph"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage"></td>
@@ -420,9 +420,9 @@
                         $('#endDate').val(getTimeStr(data.data.endDate));
                         $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
                         $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
-                        $('#totalPriceTax').val(data.data.client.totalPriceTax);
-                        $('#totalPrice').val(data.data.client.totalPrice);
-                        $('#totalAmount').val(data.data.client.totalAmount);
+                        $('#totalPriceTax').val(data.data.totalPriceTax);
+                        $('#totalPrice').val(data.data.totalPrice);
+                        $('#totalAmount').val(data.data.totalAmount);
                         for (var i = 0; i < data.data.wastesList.length; i++) {
                             if (i > 0) addNewLine();
                             var $i = i;
@@ -542,7 +542,10 @@
             'startDate': $("#startDate").val(),
             'endDate': $("#endDate").val(),
             'isContainTax': $("input[name='isContainTax']:checked").val(),
-            'isContainFreight': $("input[name='isContainFreight']:checked").val()
+            'isContainFreight': $("input[name='isContainFreight']:checked").val(),
+            'totalPriceTax': $("#totalPriceTax").val(),
+            'totalPrice': $("#totalPrice").val(),
+            'totalAmount': $("#totalAmount").val()
         };
         data['wastesList'] = [];
         // 危废列表的数量
@@ -650,6 +653,29 @@
      */
     $('#companyName').on('changed.bs.select', function (e) {
         setClientInfo();
+    });
+
+    $("input[name$='contractAmount'],[name$='unitPriceTax'],[name$='unitPrice'],[name$='taxRate']").on('input',function(e){
+        var totalPrice = 0;
+        var totalPriceTax = 0;
+        var totalAmount = 0;
+        // 危废列表的数量
+        var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
+        for (var i = 0; i < wastesListCount; i++) {
+            var $i = i;
+            var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
+            var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+            var unitPrice = parseFloat($("input[name='wastesList[" + $i + "].unitPrice']").val());
+            var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+            if (contractAmount != null && unitPrice != null && unitPriceTax != null && taxRate != null) {
+                totalPrice += contractAmount * unitPrice;
+                totalPriceTax += contractAmount * unitPriceTax;
+                totalAmount += contractAmount;
+            }
+        }
+        $('#totalPrice').val(totalPrice);
+        $('#totalPriceTax').val(totalPriceTax);
+        $('#totalAmount').val(totalAmount);
     });
 </script>
 </html>
