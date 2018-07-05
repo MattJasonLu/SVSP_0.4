@@ -7,15 +7,15 @@ import java.util.List;
 /**
  * Created by matt on 2018/7/3.
  */
-public class Quotation {
+public class Cost {
     /**
-     * 报价单编号
+     * 成本单编号
      */
     private String quotationId;
     /**
-     * 客户(包含客户名称、联系人、电话、地址)
+     * 供应商(包含供应商名称、联系人、电话、地址)
      */
-    private Client client;
+    private Supplier supplier;
     /**
      * 开始日期
      */
@@ -57,12 +57,12 @@ public class Quotation {
         this.quotationId = quotationId;
     }
 
-    public Client getClient() {
-        return client;
+    public Supplier getSupplier() {
+        return supplier;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public Date getStartDate() {
@@ -131,9 +131,9 @@ public class Quotation {
 
     @Override
     public String toString() {
-        return "Quotation{" +
+        return "Cost{" +
                 "quotationId='" + quotationId + '\'' +
-                ", client=" + client +
+                ", supplier=" + supplier +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", isContainTax=" + isContainTax +
