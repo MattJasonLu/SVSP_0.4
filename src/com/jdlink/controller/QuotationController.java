@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Quotation;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.QuotationService;
@@ -23,6 +24,74 @@ public class QuotationController {
 
     @Autowired
     QuotationService quotationService;
+
+    /**
+     * 保存报价单
+     * @param quotation 报价单
+     * @return 成功与否
+     */
+    @RequestMapping("saveQuotation")
+    @ResponseBody
+    public String saveQuotation(@RequestBody Quotation quotation) {
+        quotation.setCheckState(CheckState.ToSubmit);
+        return addQuotation(quotation);
+    }
+
+    /**
+     * 提交报价单
+     * @param quotation 报价单
+     * @return 成功与否
+     */
+    @RequestMapping("submitQuotation")
+    @ResponseBody
+    public String submitQuotation(@RequestBody Quotation quotation) {
+        quotation.setCheckState(CheckState.Examining);
+        return addQuotation(quotation);
+    }
+
+    /**
+     * 作废报价单
+     * @param quotationId 报价单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setStateDisabled")
+    @ResponseBody
+    public String setStateDisabled(String quotationId) {
+        JSONObject res = new JSONObject();
+        try {
+            quotationService.setStateDisabled(quotationId);
+            res.put("status", "success");
+            res.put("message", "报价单作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "报价单作废失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 修改结束日期
+     * @param quotation 报价单
+     * @return 成功与否
+     */
+    @RequestMapping("changeEndDate")
+    @ResponseBody
+    public String changeEndDate(Quotation quotation) {
+        JSONObject res = new JSONObject();
+        try {
+            quotationService.changeEndDate(quotation);
+            res.put("status", "success");
+            res.put("message", "结束日期修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "结束日期修改失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
 
     /**
      * 增加报价单

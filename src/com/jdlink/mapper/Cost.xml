@@ -12,13 +12,14 @@
     </resultMap>
     <resultMap type="Cost" id="CostRM" autoMapping="true">
         <result property="costId" column="costId"/>
+        <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <association property="supplier" javaType="Supplier" resultMap="SupplierRM"/>
         <collection property="wastesList" select="getWastes" column="costId"
                     ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Cost" >
-        INSERT INTO t_cost (costId, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount)
-        VALUES (#{costId}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount});
+        INSERT INTO t_cost (costId, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount, checkState)
+        VALUES (#{costId}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_costandwastes (costId, wastesId) VALUES (#{costId}, #{wastes.id});
@@ -61,4 +62,12 @@
     <select id="getById" resultMap="CostRM" parameterType="String">
         SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId AND costId=#{costId}
     </select>
+
+    <update id="setStateDisabled" parameterType="String">
+        UPDATE t_cost SET checkState='Invalid' WHERE costId=#{costId};
+    </update>
+
+    <update id="changeEndDate" parameterType="Cost">
+    UPDATE t_cost SET endDate=#{endDate} WHERE costId=#{costId};
+    </update>
 </mapper>

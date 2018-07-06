@@ -40,4 +40,14 @@ public class CostServiceImpl implements CostService {
     public Cost getById(String costId) {
         return costMapper.getById(costId);
     }
+
+    @Override
+    public void setStateDisabled(String costId) {
+        costMapper.setStateDisabled(costId);
+    }
+
+    @Override
+    public void changeEndDate(Cost cost) {
+        costMapper.changeEndDate(cost);
+    }
 }

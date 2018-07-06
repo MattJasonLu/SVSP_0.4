@@ -17,4 +17,8 @@ public interface QuotationService {
     int count();
 
     Quotation getById(String quotationId);
+
+    void setStateDisabled(String quotationId);
+
+    void changeEndDate(Quotation quotation);
 }

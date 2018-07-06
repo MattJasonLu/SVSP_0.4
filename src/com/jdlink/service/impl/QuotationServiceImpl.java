@@ -41,4 +41,14 @@ public class QuotationServiceImpl implements QuotationService {
     public Quotation getById(String quotationId) {
         return quotationMapper.getById(quotationId);
     }
+
+    @Override
+    public void setStateDisabled(String quotationId) {
+        quotationMapper.setStateDisabled(quotationId);
+    }
+
+    @Override
+    public void changeEndDate(Quotation quotation) {
+        quotationMapper.changeEndDate(quotation);
+    }
 }
