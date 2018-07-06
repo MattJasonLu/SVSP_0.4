@@ -97,22 +97,6 @@ public class Quotation {
         isContainFreight = containFreight;
     }
 
-    public boolean isContainTax() {
-        return isContainTax;
-    }
-
-    public void setContainTax(boolean containTax) {
-        isContainTax = containTax;
-    }
-
-    public boolean isContainFreight() {
-        return isContainFreight;
-    }
-
-    public void setContainFreight(boolean containFreight) {
-        isContainFreight = containFreight;
-    }
-
     public float getTotalPriceTax() {
         return totalPriceTax;
     }

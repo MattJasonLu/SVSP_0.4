@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.CostMapper">
+    <resultMap id="SupplierRM" type="Supplier" autoMapping="true">
+        <result property="supplierId" column="supplierId"/>
+        <result property="companyName" column="companyName"/>
+        <result property="contactName" column="contactName"/>
+        <result property="location" column="location"/>
+    </resultMap>
+    <resultMap type="Cost" id="CostRM" autoMapping="true">
+        <result property="costId" column="costId"/>
+        <association property="supplier" javaType="Supplier" resultMap="SupplierRM"/>
+        <collection property="wastesList" select="getWastes" column="costId"
+                    ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+    </resultMap>
+    <insert id="add" parameterType="Cost" >
+        INSERT INTO t_cost (costId, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount)
+        VALUES (#{costId}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount});
+        <if test="wastesList.size() > 0">
+            <foreach collection="wastesList" item="wastes" index="index">
+                INSERT INTO r_costandwastes (costId, wastesId) VALUES (#{costId}, #{wastes.id});
+                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint)
+                VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
+                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint});
+            </foreach>
+        </if>
+    </insert>
+
+    <update id="update" parameterType="Cost">
+        UPDATE t_cost SET supplierId=#{supplier.supplierId}, contactName=#{supplier.contactName}, phone=#{supplier.phone}, location=#{supplier.location}, startDate=#{startDate}, endDate=#{endDate},
+        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, supplierType=#{supplier.supplierType}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE costId=#{costId};
+        <if test="wastesList.size() > 0">
+            <foreach collection="wastesList" item="wastes" index="index">
+                UPDATE t_wastes SET name=#{wastes.name}, formType=#{wastes.formType}, wastesId=#{wastes.wastesId}, contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax},
+                unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate}, ph=#{wastes.ph}, ashPercentage=#{wastes.ashPercentage}, wetPercentage=#{wastes.wetPercentage}, calorific=#{wastes.calorific},
+                halogenPercentage=#{wastes.halogenPercentage}, sulfurPercentage=#{wastes.sulfurPercentage}, flashPoint=#{wastes.flashPoint} WHERE id=#{wastes.id};
+            </foreach>
+        </if>
+    </update>
+
+    <select id="list" resultMap="CostRM">
+        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="getWastes" resultType="Wastes">
+        SELECT * FROM t_wastes WHERE id in (
+          SELECT r_costandwastes.wastesId FROM r_costandwastes
+          WHERE costId=#{costId});
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_cost;
+    </select>
+
+    <select id="getById" resultMap="CostRM" parameterType="String">
+        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId AND costId=#{costId}
+    </select>
+</mapper>

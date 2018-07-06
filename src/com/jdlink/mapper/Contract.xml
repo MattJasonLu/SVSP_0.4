@@ -43,7 +43,7 @@
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate} WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion}  WHERE contractId=#{contractId};
     </update>
 
     <update id="setCheckStateToExamine" parameterType="Contract">
@@ -53,7 +53,12 @@
     <update id="setCheckStateKeeping" parameterType="Contract">
         UPDATE t_contract SET checkState='Keeping' WHERE contractId=#{contractId};
     </update>
-
+<update id="updateFreight1" parameterType="String">
+    update t_contract  set  isFreight='1' where contractId=#{id}
+</update>
+    <update id="updateFreight2" parameterType="String">
+    update t_contract  set  isFreight='0' where contractId=#{id}
+</update>
     <update id="setCheckStateInvalid" parameterType="Contract">
         UPDATE t_contract SET checkState='Invalid' WHERE contractId=#{contractId};
     </update>

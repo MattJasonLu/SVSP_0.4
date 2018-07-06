@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>成本单新增</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+</head>
+<script>
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            style: 'btn-info',
+            size: 4
+        });
+    });
+
+    /**
+     * 增加新行
+     */
+    function addNewLine() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+
+        // 获取编号
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:not(0)").find("input").val("");
+        clonedTr.children().get(0).innerHTML = num;
+        clonedTr.children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).attr('name');
+            var newName = name.replace(/[0-9]\d*/, id);
+            $(this).attr('name', newName);
+        });
+        clonedTr.insertAfter(tr);
+    }
+    //获取时间
+    function getTimeStr(obj) {
+        var year=(parseInt(obj.year)+1900).toString();
+        var mouth=parseInt((obj.month)+1).toString();
+        if(mouth.length!=2){
+            mouth=0+mouth;
+        }
+        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+        var  day=parseInt((obj.date)).toString();
+        //ataLeftCompleting(2, "0", day.toString()).toString();
+        if(day.length!=2){
+            day=0+day;
+        }
+        var time1=year+"-"+mouth+"-"+day;
+        return time1;
+    }
+</script>
+<body onload="setSelectList();">
+    <!--导航条-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">产废服务平台</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">客户备案</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">业务员分配管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="salesManage.html">业务员管理</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                                </ul>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sampleManage.html">客户样品登记</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="supplierBackup.html">供应商备案</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="contractManage.html">合同列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="contractTemplate.html">合同模板</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quotation.html">报价管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="cost.html">成本管理</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="archives.html">一企一档</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">个人信息</a></li>
+                            <li><a href="#">待办事项</a></li>
+                            <li><a href="index.html">注销</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li><a href="wastesPlatform.html">概览</a></li>
+                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">接收管理</a></li>
+                    <li><a href="#">贮存管理</a></li>
+                    <li><a href="#">预处理管理</a></li>
+                    <li><a href="#">处置管理</a></li>
+                    <li><a href="#">次生管理</a></li>
+                    <li><a href="#">基础数据</a></li>
+                    <li><a href="#">系统设置</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="row">
+                <ol class="breadcrumb">
+                    <li><a href="businessModel.html">商务管理</a></li>
+                    <li><a href="#">价格管理</a></li>
+                    <li><a href="cost.html">成本管理</a></li>
+                    <li class="active">新增成本单</li>
+                </ol>
+            </div>
+            <h2 class="sub-header">供应商成本单</h2>
+            <form method="post" id="page1Info" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="supplierType" class="col-sm-4 control-label">供应商类型</label>
+                            <div class="col-xs-5">
+                                <select class="form-control" name="supplierType" id="supplierType">
+                                    <option value="0">--请选择--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group" align="right">
+                            <label class="col-sm-4 control-label">成本单号</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" name="costId" id="costId" value="********" style="border: none" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="companyName" class="col-sm-4 control-label">供应商名称</label>
+                            <div class="col-xs-5">
+                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">供应商联系人</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="contactName" name="contactName" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="phone" class="col-sm-4 control-label">联系方式</label>
+                            <div class="col-xs-5">
+                                <input class="form-control" id="phone" name="phone"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="location" class="col-sm-4 control-label">所属区域</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="location" name="location" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="startDate" class="col-sm-4 control-label">成本生效日期</label>
+                            <div class="input-group date form_datetime col-xs-5" data-date="" data-date-format="" data-link-field="dtp_input1" id="time1">
+                                <input class="input-sm form-control form_datetime1" type="text" value="" id="startDate" name="startDate" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="endDate" class="col-sm-4 control-label">成本失效日期</label>
+                            <div class="input-group date form_datetime col-xs-5" data-date="" data-date-format="" data-link-field="dtp_input2" id="time2">
+                                <input class="input-sm form-control form_datetime1" type="text" value="" id="endDate" name="endDate" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">是否含税</label>
+                            <div class="col-xs-5">
+                                <input type="radio" name="isContainTax" value="true">是
+                                <input type="radio" name="isContainTax" value="false">否
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">是否含运费</label>
+                            <div class="col-xs-5">
+                                <input type="radio" name="isContainFreight" value="true">是
+                                <input type="radio" name="isContainFreight" value="false">否
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="totalPriceTax" class="col-sm-4 control-label">总价(含税)</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="totalPriceTax" name="totalPriceTax" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="totalPrice" class="col-sm-4 control-label">总价(去税)</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="totalPrice" name="totalPrice" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="totalAmount" class="col-sm-4 control-label">总量</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="totalAmount" name="totalAmount" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>危废品名</th>
+                                <th>状态</th>
+                                <th>危废代码</th>
+                                <th>合约量</th>
+                                <th>单价(元/吨)(含税)</th>
+                                <th>税率(%)</th>
+                                <th>单价(元/吨)(去税)</th>
+                                <th>PH</th>
+                                <th>灰分(%)</th>
+                                <th>水分(%)</th>
+                                <th>热值(koal)</th>
+                                <th>卤素(%)</th>
+                                <th>硫(%)</th>
+                                <th>闪点(&#176;C)</th>
+                            </tr>
+                            </thead>
+                            <tr>
+                                <td>1</td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].name"></td>
+                                <td><select class="form-control focus" name="wastesList[0].formType"></select></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].ph"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].calorific"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].halogenPercentage"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint"></td>
+                            </tr>
+                            <tr id="plusBtn">
+                                <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                <td colspan="14"></td>
+                            </tr>
+                        </table>
+                </div>
+                <br>
+                <div class="row text-center">
+                    <a id="btnSave" class="btn btn-primary" onclick="operateCost(this);">保存</a>
+                    <a id="btnCfm" class="btn btn-primary" onclick="operateCost(this);">提交</a>
+                    <a class="btn btn-danger" href="cost.html">返回</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<style>
+    table,table tr th, table tr td {
+        border:1px solid;
+        margin: 0 auto;
+        height: auto;
+        text-align: center;
+    }
+    .focus {
+        outline: none;
+        border: 0;
+        width: 100px;
+        background-color: transparent;
+    }
+</style>
+<script type="text/javascript">
+    // 获取传入参数
+    var url=location.search;
+    var Request = {};
+    if(url.indexOf("?")!=-1) {
+        var str = url.substr(1)　//去掉?号
+        strs = str.split("&");
+        for(var i=0;i<strs.length;i++) {
+            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+        }
+    }
+
+    function setSelectList() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getSelectedList",                  // url
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    var supplierType = $("#supplierType");
+                    supplierType.children().remove();
+                    $.each(data.supplierTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        supplierType.append(option);
+                    });
+                    supplierType.get(0).selectedIndex = -1;
+                }
+            }
+        });
+        // 设置下拉列表
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getQuestionnaireSelectedList",                  // url
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    var formType = $("select[name='wastesList[0].formType']");
+                    formType.children().remove();
+                    $.each(data.formTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        formType.append(option);
+                    });
+                    formType.get(0).selectedIndex = -1;
+                }
+            },
+            error: function (result) {
+
+            }
+        });
+        // 延时执行
+        setTimeout("loadCostInfo()", 50);
+    }
+
+    /**
+     * 读取报价单信息
+     */
+    function loadCostInfo() {
+        var type = Request['type'];
+        var costId = Request['costId'];
+        if (type == 'adjust' || type == 'view') {
+            $.ajax({
+                type: "POST",                           // 方法类型
+                url: "getCost",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {
+                    costId: costId
+                },
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result.data);
+                        var data = eval(result);
+                        $('#costId').val(data.data.costId);
+                        if (data.data.supplier.supplierType != null)
+                            $("#supplierType").get(0).selectedIndex = data.data.supplier.supplierType.index;
+                        $('#companyName').selectpicker('val', data.data.supplier.supplierId);
+                        $('#contactName').val(data.data.supplier.contactName);
+                        $('#phone').val(data.data.supplier.phone);
+                        $('#location').val(data.data.supplier.location);
+                        $('#startDate').val(getTimeStr(data.data.startDate));
+                        $('#endDate').val(getTimeStr(data.data.endDate));
+                        $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
+                        $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
+                        $('#totalPriceTax').val(data.data.totalPriceTax);
+                        $('#totalPrice').val(data.data.totalPrice);
+                        $('#totalAmount').val(data.data.totalAmount);
+                        for (var i = 0; i < data.data.wastesList.length; i++) {
+                            if (i > 0) addNewLine();
+                            var $i = i;
+                            $("input[name='wastesList[" + $i + "].name']").val(data.data.wastesList[i].name);
+                            if (data.data.wastesList[i].formType != null)
+                            $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = data.data.wastesList[i].formType.index - 1;
+                            $("input[name='wastesList[" + $i + "].wastesId']").val(data.data.wastesList[i].wastesId);
+                            $("input[name='wastesList[" + $i + "].contractAmount']").val(data.data.wastesList[i].contractAmount);
+                            $("input[name='wastesList[" + $i + "].unitPriceTax']").val(data.data.wastesList[i].unitPriceTax);
+                            $("input[name='wastesList[" + $i + "].unitPrice']").val(data.data.wastesList[i].unitPrice);
+                            $("input[name='wastesList[" + $i + "].taxRate']").val(data.data.wastesList[i].taxRate);
+                            $("input[name='wastesList[" + $i + "].ph']").val(data.data.wastesList[i].ph);
+                            $("input[name='wastesList[" + $i + "].ashPercentage']").val(data.data.wastesList[i].ashPercentage);
+                            $("input[name='wastesList[" + $i + "].wetPercentage']").val(data.data.wastesList[i].wetPercentage);
+                            $("input[name='wastesList[" + $i + "].calorific']").val(data.data.wastesList[i].calorific);
+                            $("input[name='wastesList[" + $i + "].halogenPercentage']").val(data.data.wastesList[i].halogenPercentage);
+                            $("input[name='wastesList[" + $i + "].sulfurPercentage']").val(data.data.wastesList[i].sulfurPercentage);
+                            $("input[name='wastesList[" + $i + "].flashPoint']").val(data.data.wastesList[i].flashPoint);
+                        }
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常!");
+                }
+            });
+        }
+        if (type == 'adjust') {
+            $('#btnCfm').text("修改");
+            $('#btnSave').remove();
+        } else if (type == 'view') {
+            $('#btnCfm').text("打印");
+            $('#btnSave').remove();
+        }
+    }
+
+    $(document).ready(function(){
+        // 添加供应商信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listSupplier",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+//                    console.log("success: " + result);
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var clientList = $("#companyName");
+                    // 清空遗留元素
+                    clientList.children().first().siblings().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.supplierId);
+                        option.text(item.companyName);
+                        clientList.append(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+//                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCurrentCostId",                       // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+//                    console.log(result);
+                    if (result.status == "success") {
+                        $("#costId").val(result.costId);
+                    } else { }
+                }
+            },
+            error:function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
+    });
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    /**
+     * 操作报价单
+     */
+    function operateCost(e) {
+        // 获取按钮的名字
+        var btnName = e.innerHTML;
+        var data = {
+            'costId': $("#costId").val(),
+            'supplier': {
+                'supplierId': $("#companyName").find("option:selected").val(),
+                'contactName': $("#contactName").val(),
+                'phone': $("#phone").val(),
+                'location': $("#location").val(),
+                'supplierType': $("#supplierType").val() - 1
+            },
+            'startDate': $("#startDate").val(),
+            'endDate': $("#endDate").val(),
+            'isContainTax': $("input[name='isContainTax']:checked").val(),
+            'isContainFreight': $("input[name='isContainFreight']:checked").val(),
+            'totalPriceTax': $("#totalPriceTax").val(),
+            'totalPrice': $("#totalPrice").val(),
+            'totalAmount': $("#totalAmount").val()
+        };
+        data['wastesList'] = [];
+        // 危废列表的数量
+        var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
+        for (var i = 0; i < wastesListCount; i++) {
+            var $i = i;
+            var wastes = {};
+            wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
+            wastes.formType = $("select[name='wastesList[" + $i + "].formType']").val();
+            wastes.wastesId = $("input[name='wastesList[" + $i + "].wastesId']").val();
+            wastes.contractAmount = $("input[name='wastesList[" + $i + "].contractAmount']").val();
+            wastes.unitPriceTax = $("input[name='wastesList[" + $i + "].unitPriceTax']").val();
+            wastes.unitPrice = $("input[name='wastesList[" + $i + "].unitPrice']").val();
+            wastes.taxRate = $("input[name='wastesList[" + $i + "].taxRate']").val();
+            wastes.ph = $("input[name='wastesList[" + $i + "].ph']").val();
+            wastes.ashPercentage = $("input[name='wastesList[" + $i + "].ashPercentage']").val();
+            wastes.wetPercentage = $("input[name='wastesList[" + $i + "].wetPercentage']").val();
+            wastes.calorific = $("input[name='wastesList[" + $i + "].calorific']").val();
+            wastes.halogenPercentage = $("input[name='wastesList[" + $i + "].halogenPercentage']").val();
+            wastes.sulfurPercentage = $("input[name='wastesList[" + $i + "].sulfurPercentage']").val();
+            wastes.flashPoint = $("input[name='wastesList[" + $i + "].flashPoint']").val();
+            data['wastesList'].push(wastes);
+        }
+        if (btnName == "提交" || btnName == "保存") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "addCost",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'cost.html');
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        } else if (btnName == "修改") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "updateCost",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'cost.html');
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        } else if (btnName == "打印") {
+            alert('文件打印中');
+        }
+    }
+    function setSupplierInfo() {
+        var id = $("#companyName").find("option:selected").val();
+        $.ajax({
+            type: "POST",                           // 方法类型
+            url: "getBySupplierId",                       // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                supplierId: id
+            },
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#contactName").val(data.data.contactName);
+                    $("#phone").val(data.data.phone);
+                    $("#location").val(data.data.location);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常!");
+            }
+        });
+    }
+    /**
+     * 下拉框选中事件
+     */
+    $('#companyName').on('changed.bs.select', function (e) {
+        setSupplierInfo();
+    });
+
+    $("input[name$='contractAmount'],[name$='unitPriceTax'],[name$='unitPrice'],[name$='taxRate']").on('input',function(e){
+        var totalPrice = 0;
+        var totalPriceTax = 0;
+        var totalAmount = 0;
+        // 危废列表的数量
+        var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
+        for (var i = 0; i < wastesListCount; i++) {
+            var $i = i;
+            var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
+            var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+            var unitPrice = parseFloat($("input[name='wastesList[" + $i + "].unitPrice']").val());
+            var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+            if (contractAmount != null && unitPrice != null && unitPriceTax != null && taxRate != null) {
+                totalPrice += contractAmount * unitPrice;
+                totalPriceTax += contractAmount * unitPriceTax;
+                totalAmount += contractAmount;
+            }
+        }
+        $('#totalPrice').val(totalPrice);
+        $('#totalPriceTax').val(totalPriceTax);
+        $('#totalAmount').val(totalAmount);
+    });
+</script>
+</html>

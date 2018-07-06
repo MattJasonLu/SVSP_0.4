@@ -49,7 +49,7 @@ function loadContractSelectList() {
                 clientName.children().remove();
                 $.each(data.companyNameList, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
+                    option.val(item.companyName);
                     option.text(item.companyName);
                     clientName.append(option);
                 });
@@ -100,13 +100,12 @@ $.ajax({
 });
 
 }
-
 /**
  * 保存
  */
 function contractSave() {
     var s=($('#contractInfoForm').serializeJSON());
-    //console.log(s);
+    console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "saveContract",                       // url
@@ -161,7 +160,7 @@ function contractSave() {
 }
 function contractSubmit(){
     var s=($('#contractInfoForm').serializeJSON());
-    //console.log(s);
+    console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "submitContract",                       // url
@@ -344,7 +343,7 @@ function contractSubmit(){
                     <div class="form-group ">
                         <label class="col-sm-4 control-label sr-only" > 1111111</label>
                         <label class="checkbox-inline col-xs-5" for="isFreight">
-                            是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="freight" value="true">
+                            是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="isFreight" value="true">
                         </label>
                     </div>
                 </div>
