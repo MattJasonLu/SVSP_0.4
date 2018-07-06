@@ -50,6 +50,10 @@ public class ContractController {
         res.put("contractNameStrList", array1);
         JSONArray array2 = JSONArray.fromArray(Province.values());
         res.put("provinceStrList", array2);
+        JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
+        res.put("ticketRateStrList1", array3);
+        JSONArray array4 = JSONArray.fromArray(TicketRate2.values());
+        res.put("ticketRateStrList2", array4);
         //查询客户list形式返回
               List client= clientService.list();
               JSONArray json=JSONArray.fromObject(client);
@@ -201,6 +205,26 @@ return  res.toString();
 
         mav.addObject("contract", contract);
         mav.setViewName("jsp/showContract.jsp");
+        return mav;
+    }
+    @RequestMapping("Secondary")
+    @ResponseBody
+    public ModelAndView Secondary(String contractId) {
+        ModelAndView mav = new ModelAndView();
+        //获得当前合同
+        Contract contract=contractService.getByContractId(contractId);//获得相应的合同对象
+        mav.addObject("contract", contract);
+        mav.setViewName("jsp/secondary.jsp");
+        return mav;
+    }
+    @RequestMapping("logistics")
+    @ResponseBody
+    public ModelAndView logistics(String contractId) {
+        ModelAndView mav = new ModelAndView();
+        //获得当前合同
+        Contract contract=contractService.getByContractId(contractId);//获得相应的合同对象
+        mav.addObject("contract", contract);
+        mav.setViewName("jsp/logistics.jsp");
         return mav;
     }
     @RequestMapping("saveAdjustContract")

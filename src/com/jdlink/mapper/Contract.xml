@@ -14,10 +14,10 @@
     <insert id="add" parameterType="Contract"  >
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city )
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification )
         values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification})
     </insert>
 
     <delete id="delete" parameterType="Contract" >
@@ -43,7 +43,7 @@
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion}  WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification}  WHERE contractId=#{contractId};
     </update>
 
     <update id="setCheckStateToExamine" parameterType="Contract">
@@ -70,5 +70,11 @@
     </select>
     <select id="getContractIdList" resultType="String">
         select contractId from t_contract;
+    </select>
+    <select id="listRate1">
+        select rate1 from ticketrate1;
+    </select>
+    <select id="listRate2" >
+        select rate2 from ticketrate2;
     </select>
 </mapper>
