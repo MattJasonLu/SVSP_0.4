@@ -18,4 +18,8 @@ public interface CostService {
     int count();
 
     Cost getById(String costId);
+
+    void setStateDisabled(String costId);
+
+    void changeEndDate(Cost cost);
 }

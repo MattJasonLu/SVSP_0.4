@@ -569,10 +569,36 @@
             wastes.flashPoint = $("input[name='wastesList[" + $i + "].flashPoint']").val();
             data['wastesList'].push(wastes);
         }
-        if (btnName == "提交" || btnName == "保存") {
+        if (btnName == "保存") {
             $.ajax({
                 type: "POST",                            // 方法类型
-                url: "addQuotation",                 // url
+                url: "saveQuotation",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'quotation.html');
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        } else if (btnName == "提交") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "submitQuotation",                 // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
