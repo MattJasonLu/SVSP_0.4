@@ -18,7 +18,7 @@
     </resultMap>
     <insert id="add" parameterType="Cost" >
         INSERT INTO t_cost (costId, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount)
-        VALUES (#{costId}, #{supplier.supplierId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount});
+        VALUES (#{costId}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_costandwastes (costId, wastesId) VALUES (#{costId}, #{wastes.id});
@@ -30,8 +30,8 @@
     </insert>
 
     <update id="update" parameterType="Cost">
-        UPDATE t_cost SET supplierId=#{supplier.supplierId}, contactName=#{client.contactName}, phone=#{client.phone}, location=#{client.location}, startDate=#{startDate}, endDate=#{endDate},
-        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, supplierType=#{supplierType}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE costId=#{costId};
+        UPDATE t_cost SET supplierId=#{supplier.supplierId}, contactName=#{supplier.contactName}, phone=#{supplier.phone}, location=#{supplier.location}, startDate=#{startDate}, endDate=#{endDate},
+        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, supplierType=#{supplier.supplierType}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE costId=#{costId};
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 UPDATE t_wastes SET name=#{wastes.name}, formType=#{wastes.formType}, wastesId=#{wastes.wastesId}, contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax},

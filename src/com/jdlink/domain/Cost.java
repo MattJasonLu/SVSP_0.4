@@ -11,7 +11,7 @@ public class Cost {
     /**
      * 成本单编号
      */
-    private String quotationId;
+    private String costId;
     /**
      * 供应商(包含供应商名称、联系人、电话、地址)
      */
@@ -49,12 +49,12 @@ public class Cost {
      */
     private List<Wastes> wastesList = new ArrayList<>();
 
-    public String getQuotationId() {
-        return quotationId;
+    public String getCostId() {
+        return costId;
     }
 
-    public void setQuotationId(String quotationId) {
-        this.quotationId = quotationId;
+    public void setCostId(String costId) {
+        this.costId = costId;
     }
 
     public Supplier getSupplier() {
@@ -132,7 +132,7 @@ public class Cost {
     @Override
     public String toString() {
         return "Cost{" +
-                "quotationId='" + quotationId + '\'' +
+                "costId='" + costId + '\'' +
                 ", supplier=" + supplier +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
