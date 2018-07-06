@@ -79,4 +79,14 @@ public class ContractServiceImpl implements ContractService {
     @Override public void updateFreight2(String id) {
 contractMapper.updateFreight2(id);
     }
+
+    @Override
+    public List listRate1() {
+        return contractMapper.listRate1();
+    }
+
+    @Override
+    public List listRate2() {
+        return contractMapper.listRate2();
+    }
 }
