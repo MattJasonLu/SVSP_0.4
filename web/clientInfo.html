@@ -102,14 +102,9 @@
             }
         });
     });
-
-    function printClient() {
-        //console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
-    }
     function clientSave() {
-//        printClient();
         if (validator.form()) {
-            console.log($('#clientInfoForm').serializeJSON());
+//            console.log($('#clientInfoForm').serializeJSON());
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "saveClient",                       // url
@@ -134,7 +129,7 @@
             });
         }
     }
-    function clientSubmit() {f
+    function clientSubmit() {
 //        printClient();
         if (validator.form()) {
             $.ajax({
