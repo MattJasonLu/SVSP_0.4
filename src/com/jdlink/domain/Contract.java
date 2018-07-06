@@ -86,6 +86,98 @@ private  String order1;
      * 客户列表(数据库存在)
      */
     private  String clientId;
+    /**
+     * 开户行名称
+     */
+    private  String bankName;
+    /**
+     * 开户行账号
+     */
+    private  String bankAccount;
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+/**
+* 开票税率1
+*/
+private  TicketRate1 ticketRate1;
+
+    public TicketRate1 getTicketRate1() {
+        return ticketRate1;
+    }
+
+    public void setTicketRate1(TicketRate1 ticketRate1) {
+        this.ticketRate1 = ticketRate1;
+    }
+
+    public TicketRate2 getTicketRate2() {
+        return ticketRate2;
+    }
+
+    public void setTicketRate2(TicketRate2 ticketRate2) {
+        this.ticketRate2 = ticketRate2;
+    }
+
+    /**
+     * 开票税率2
+     */
+    private  TicketRate2 ticketRate2;
+
+
+    /**
+     *
+     * Logistics qualification物流公司资质
+     */
+    private  String logisticsQualification;
+
+    /**
+     * Qualification资质有效期
+     * @return
+     */
+    private Date beginQualification;
+    private Date endQualification;
+
+    public Date getBeginQualification() {
+        return beginQualification;
+    }
+
+    public void setBeginQualification(Date beginQualification) {
+        this.beginQualification = beginQualification;
+    }
+
+    public Date getEndQualification() {
+        return endQualification;
+    }
+
+    public void setEndQualification(Date endQualification) {
+        this.endQualification = endQualification;
+    }
+
+    public String getLogisticsQualification() {
+        return logisticsQualification;
+    }
+
+    public void setLogisticsQualification(String logisticsQualification) {
+        this.logisticsQualification = logisticsQualification;
+    }
+
+
+
+
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
 
     public String getClientId() {
         return clientId;
