@@ -47,8 +47,13 @@
                     case (6):
                         $(this).html(obj.supplier.location);
                         break;
-                        // 到期日期
+                        // 状态
                     case (7):
+                        if (obj.checkState != null)
+                        $(this).html(obj.checkState.name);
+                        break;
+                        // 到期日期
+                    case (8):
                         $(this).html(getTimeStr(obj.endDate));
                         break;
                 }
@@ -228,6 +233,7 @@
                         <th>联系人</th>
                         <th>联系方式</th>
                         <th>所属区域</th>
+                        <th>状态</th>
                         <th>到期日期</th>
                     </tr>
                     </thead>
@@ -245,12 +251,9 @@
                                     <li><a href="#" onclick="viewCost(this);">查看</a></li>
                                     <li><a href="#" onclick="adjustCost(this);">修改信息</a></li>
                                     <li><a href="#">升级</a></li>
-                                    <li><a href="#" onclick="function dateChange() {
-                                            $('#modalId').modal('show');
-                                        }
-                                        dateChange()">有效期变更</a></li>
+                                    <li><a href="#" onclick="showCostEndDate(this);">有效期变更</a></li>
                                     <li><a href="#">送审</a></li>
-                                    <li><a href="#">作废</a></li>
+                                    <li><a href="#" onclick="disabledCost(this);">作废</a></li>
                                 </ul>
                             </div>
                         </td>
@@ -258,6 +261,7 @@
                         <td>一辉国际综合物流服务有限公司</td>
                         <td>国内运输201829</td>
                         <td>董事长部门</td>
+                        <td>Siri</td>
                         <td>Siri</td>
                         <td>2018-06-30</td>
                     </tr>
@@ -309,7 +313,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="update();">更新</button>
+                    <button type="button" class="btn btn-primary" onclick="changeCostEndDate();">更新</button>
                 </div>
             </div>
         </div>
@@ -320,15 +324,18 @@
      * 日期格式
      */
     $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
         language:  'zh-CN',
-        format: 'yyyy-mm-dd hh:ii',
         weekStart: 1,
         todayBtn:  1,
-        autoclose: 1,
+        autoclose: true,
         todayHighlight: 1,
         startView: 2,
-        showMeridian: 1
+        minView: 2,
+        forceParse: 0
     });
+
+    var costId;
 
     /**
      * 查看成本单
@@ -345,6 +352,105 @@
     function adjustCost(e) {
         var id = getCostId(e);
         window.location.href = "newCost.html?costId=" + id + "&type=adjust";
+    }
+
+    /**
+     * 作废报价单
+     */
+    function disabledCost(e) {
+        var r = confirm("是否作废该成本单？");
+        if (r == true) {
+            var id = getCostId(e);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "setCostStateDisabled",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    costId: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            window.location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        }
+    }
+    /**
+     * 有效期窗口显示
+     */
+    function showCostEndDate(e) {
+        var id = getCostId(e);
+        costId = id;
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCost",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                costId: id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $("#model-validity").val(getTimeStr(data.data.endDate));
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+        $('#modalId').modal('show');
+    }
+    /**
+     * 有效期变更
+     */
+    function changeCostEndDate() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "changeCostEndDate",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                costId: costId,
+                endDate: $("#model-validity").val()
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
     }
 
     /**

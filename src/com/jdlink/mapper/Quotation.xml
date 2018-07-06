@@ -12,13 +12,14 @@
     </resultMap>
     <resultMap type="Quotation" id="QuotationRM" autoMapping="true">
         <result property="quotationId" column="quotationId"/>
+        <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <association property="client" javaType="Client" resultMap="ClientRM"/>
         <collection property="wastesList" select="getWastes" column="quotationId"
                     ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Quotation" >
-        INSERT INTO t_quotation (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount)
-        VALUES (#{quotationId}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPrice}, #{totalPriceTax}, #{totalAmount});
+        INSERT INTO t_quotation (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount, checkState)
+        VALUES (#{quotationId}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{quotationId}, #{wastes.id});
@@ -61,4 +62,12 @@
     <select id="getById" resultMap="QuotationRM" parameterType="String">
         SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND quotationId=#{quotationId}
     </select>
+
+    <update id="setStateDisabled" parameterType="String">
+        UPDATE t_quotation SET checkState='Invalid' WHERE quotationId=#{quotationId};
+    </update>
+
+    <update id="changeEndDate" parameterType="Quotation">
+        UPDATE t_quotation SET endDate=#{endDate} WHERE quotationId=#{quotationId};
+    </update>
 </mapper>

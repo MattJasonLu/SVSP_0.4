@@ -45,6 +45,10 @@ public class Quotation {
      */
     private int totalAmount;
     /**
+     * 状态
+     */
+    private CheckState checkState;
+    /**
      * 危废列表
      */
     private List<Wastes> wastesList = new ArrayList<>();
@@ -129,6 +133,14 @@ public class Quotation {
         this.wastesList = wastesList;
     }
 
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
     @Override
     public String toString() {
         return "Quotation{" +
@@ -141,6 +153,7 @@ public class Quotation {
                 ", totalPriceTax=" + totalPriceTax +
                 ", totalPrice=" + totalPrice +
                 ", totalAmount=" + totalAmount +
+                ", checkState=" + checkState +
                 ", wastesList=" + wastesList +
                 '}';
     }

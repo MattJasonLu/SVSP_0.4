@@ -45,6 +45,10 @@ public class Cost {
      */
     private int totalAmount;
     /**
+     * 状态
+     */
+    private CheckState checkState;
+    /**
      * 危废列表
      */
     private List<Wastes> wastesList = new ArrayList<>();
@@ -129,6 +133,14 @@ public class Cost {
         this.wastesList = wastesList;
     }
 
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
     @Override
     public String toString() {
         return "Cost{" +
@@ -141,6 +153,7 @@ public class Cost {
                 ", totalPriceTax=" + totalPriceTax +
                 ", totalPrice=" + totalPrice +
                 ", totalAmount=" + totalAmount +
+                ", checkState=" + checkState +
                 ", wastesList=" + wastesList +
                 '}';
     }
