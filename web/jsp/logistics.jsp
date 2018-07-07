@@ -535,7 +535,7 @@
                     <div class="form-group" >
                         <label for="contractId" class="col-sm-3 control-label">合同编号</label>
                         <div class="col-xs-5" >
-                            <input type="text" class="form-control" id="contractId" name="contractId" value="${contract.contractId}" readonly >
+                                <input type="text" class="form-control" id="contractId" name="contractId" value="${contract.contractId}" readonly >
                         </div>
                     </div>
                 </div>

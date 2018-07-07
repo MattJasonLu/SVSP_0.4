@@ -227,6 +227,18 @@ return  res.toString();
         mav.setViewName("jsp/logistics.jsp");
         return mav;
     }
+    @RequestMapping("showModel")
+    @ResponseBody
+    public ModelAndView showModel(String modelName) {
+        System.out.println(modelName);
+        ModelAndView mav = new ModelAndView();
+        //获得当前合同
+        Contract model=contractService.getModel(modelName);//获得相应的合同对象
+        mav.addObject("model", model);
+        mav.setViewName("jsp/model.jsp");
+        return mav;
+    }
+
     @RequestMapping("saveAdjustContract")
     @ResponseBody
     public String saveAdjustContract(@RequestBody Contract  contract) {
@@ -243,6 +255,13 @@ return  res.toString();
             res.put("status", "fail");
             res.put("message", "创建合同失败，请完善信息!");
         }
+        return res.toString();
+    }
+    @RequestMapping("getContractBymodelName")
+    @ResponseBody
+    public String getContractBymodelName(String modelName){
+        Contract modelContract=contractService.getModel(modelName);
+        JSONObject res=JSONObject.fromBean(modelContract);
         return res.toString();
     }
 

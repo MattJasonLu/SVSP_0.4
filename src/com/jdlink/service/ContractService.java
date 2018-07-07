@@ -24,4 +24,5 @@ public interface ContractService {
     void updateFreight2(String id);
     List listRate1();
     List listRate2();
+    Contract getModel(String modelName);
 }
