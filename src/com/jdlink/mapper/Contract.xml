@@ -9,15 +9,20 @@
         <result property="contractType" column="contractType" javaType="com.jdlink.domain.ContractType"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <result property="contractId" column="contractId" javaType="String"/>
+        <result property="modelName" column="modelName" javaType="String"/>
+        <result property="year" column="year" javaType="String"/>
+        <result property="period" column="period" javaType="String"/>
+        <result property="contractContent" column="contractContent" javaType="String"/>
+
     </resultMap>
 
     <insert id="add" parameterType="Contract"  >
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification )
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent)
         values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent})
     </insert>
 
     <delete id="delete" parameterType="Contract" >
@@ -38,12 +43,15 @@
     <select id="getByContractId" parameterType="String" resultMap="ContractRM">
         SELECT * FROM t_contract WHERE contractId = #{contractId};
     </select>
+    <select id="getModel" parameterType="String" resultMap="ContractRM">
+        select * from t_contract where modelName=#{modelName};
+    </select>
 
     <update id="update" parameterType="Contract">
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification}  WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent} WHERE contractId=#{contractId};
     </update>
 
     <update id="setCheckStateToExamine" parameterType="Contract">

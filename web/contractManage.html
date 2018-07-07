@@ -53,67 +53,67 @@
         tr.siblings().remove();
         $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-           var _index = index;
             var obj = eval(item);
-           // console.log(obj);
+            console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
+            if(obj.contractId!=""&&obj.contractType!=null&&obj.companyName!=""&&obj.province!=null&&obj.city!=""&&obj.contactName!=""&&obj.telephone!=""&&obj.beginTime!=null){
+                var clonedTr = tr.clone();
+                clonedTr.show();
+                clonedTr.children("td").each(function (inner_index) {
+                    // 根据索引为部分td赋值
+                    // console.log(obj);
+                    switch (inner_index) {
+                        // 合同编号
+                        case (2):
+                            $(this).html(obj.contractId);
+                            break;
+                        // 合同名称
+                        case (3):
+                            if (obj.contractType != null)
+                                obj.contractName = obj.contractType.name;
+                            $(this).html(obj.contractName);
+                            break;
+                        // 状态
+                        case (4):
+                            if (obj.checkState != null)
+                                $(this).html(obj.checkState.name);
+                            break;
+                        // 公司名称
+                        case (5):
+                            $(this).html(obj.companyName);
+                            break;
+                        // 所属区域
+                        case (6):
+                            $(this).html(obj.province.name + obj.city);
+                            break;
+                        // 合约量
+                        case (7):
+                            $(this).html(obj.agreedQuantity.toFixed(2));
+                            break;
+                        // 联系人
+                        case (8):
+                            $(this).html(obj.contactName);
+                            break;
+                        // 联系方式
+                        case (9):
+                            $(this).html(obj.telephone);
+                            break;
+                        // 签订日期
+                        case (10):
+                            //console.log(obj.beginTime);
+                            var time = gettime(obj.beginTime);
+                            //console.log(obj.beginTime);
+                            // var year=(parseInt(obj.beginTime.year)+1900).toString();
+                            //var mouth=parseInt((obj.beginTime.month)+3).toString();
+                            //var  day=parseInt((obj.beginTime.date)).toString();
+                            $(this).html(time);
+                            break;
+                    }
+                });
+                // 把克隆好的tr追加到原来的tr前面
+                clonedTr.removeAttr("id");
+                clonedTr.insertBefore(tr);}
 
-                // 根据索引为部分td赋值
-                // console.log(obj);
-                switch (inner_index) {
-                    // 合同编号
-                    case (2):
-                        $(this).html(obj.contractId);
-                        break;
-                    // 合同名称
-                    case (3):
-                        if (obj.contractType != null)
-                            obj.contractName =obj.contractType.name;
-                        $(this).html(obj.contractName);
-                        break;
-                    // 状态
-                    case (4):
-                        if (obj.checkState != null)
-                            $(this).html(obj.checkState.name);
-                        break;
-                    // 公司名称
-                    case (5):
-                        $(this).html(obj.companyName);
-                        break;
-                    // 所属区域
-                    case (6):
-                        $(this).html(obj.province.name+obj.city);
-                        break;
-                    // 合约量
-                    case (7):
-                        $(this).html(obj.agreedQuantity.toFixed(2));
-                        break;
-                    // 联系人
-                    case (8):
-                        $(this).html(obj.contactName);
-                        break;
-                    // 联系方式
-                    case (9):
-                        $(this).html(obj.telephone);
-                        break;
-                    // 签订日期
-                    case (10):
-                        //console.log(obj.beginTime);
-                        var time= gettime(obj.beginTime);
-                        //console.log(obj.beginTime);
-                        // var year=(parseInt(obj.beginTime.year)+1900).toString();
-                        //var mouth=parseInt((obj.beginTime.month)+3).toString();
-                        //var  day=parseInt((obj.beginTime.date)).toString();
-                        $(this).html(time);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
         });
         // 隐藏无数据的tr
         tr.hide();
