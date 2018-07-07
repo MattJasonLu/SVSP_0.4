@@ -12,7 +12,7 @@ import java.util.List;
  * Created by matt on 2018/5/18.
  */
 @Service
-public class ContractServiceImpl implements ContractService {
+public class ContractServiceImpl implements ContractService  {
     @Autowired
     ContractMapper contractMapper;
 
@@ -88,5 +88,10 @@ contractMapper.updateFreight2(id);
     @Override
     public List listRate2() {
         return contractMapper.listRate2();
+    }
+
+    @Override
+    public Contract getModel(String modelName) {
+        return contractMapper.getModel(modelName);
     }
 }
