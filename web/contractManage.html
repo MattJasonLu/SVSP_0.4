@@ -17,6 +17,13 @@
         margin-left:10px;
         margin-top:10px;
     }
+    .client_style {
+        margin: 5% 0 5% 5%;
+    }
+    .focus {
+        outline: none;
+        border: 0px;
+    }
 </style>
 <script type="text/javascript">
     function loadContractList() {
@@ -170,6 +177,7 @@ else {
     function getContractId1(item) {
         return item.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
     }
+
     /***
      * 查看合同
      */
@@ -186,9 +194,6 @@ else {
                 'contractId': contractId
             },
             success: function (result) {
-
-
-
                 console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
@@ -205,6 +210,45 @@ else {
                     $("#modal3_area").val(data.province.name+""+data.city);
                     $("#modal3_telephone").val(data.telephone);
                     $("#modal3_order").val(data.order1);
+                    //开票税率1
+                    if(data.ticketRate1==null){
+                        $('#modal3_ticketRate1').val(" ");
+                    }
+                    else {
+                        $('#modal3_ticketRate1').val(data.ticketRate1.name);
+                    }
+                    //开票税率2
+                    if(data.ticketRate2==null){
+                        $('#modal3_ticketRate2').val(" ");
+                    }
+
+                    else {
+                        $('#modal3_ticketRate2').val(data.ticketRate2.name);
+                    }
+
+
+                    //资质开始日期
+                    if(data.beginQualification==null){
+                        $('#modal3_beginQualification').val(" ");
+                    }
+                    else {
+                        var begin1=gettime(data.beginQualification);
+                        $('#modal3_beginQualification').val(begin1);
+                    }
+                    //资质结束日期
+                    if(data.endQualification==null){
+                        $('#modal3_endQualification').val(" ");
+                    }
+                    else {
+                        var end1=gettime(data.endQualification);
+                        $('#modal3_endQualification').val(end1);
+                    }
+                    //物流公司资质
+                    $('#modal3_logisticsQualification').val(data.logisticsQualification);
+                    //开户行名称
+                    $('#modal3_bankName').val(data.bankName);
+                    //开户行账号
+                    $('#modal3_bankAccout').val(data.bankAccount);
                     if(data.freight==true){//需要运费
                         $('#modal3_freight').removeAttr("checked");
                         $('#modal3_freight').prop("checked",true);
@@ -241,7 +285,21 @@ else {
     function adjustContract(item) {
        //1获取合同id
         var contractId=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
-        window.location.href = "showContract?contractId="+contractId;
+        //2判断合同的名字然后跳转到相应的jsp页面做修改
+        var contractName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        if(contractName=='危废合同'){
+            window.location.href = "showContract?contractId="+contractId;
+        }
+        if(contractName=='次生合同'){
+            window.location.href = "Secondary?contractId="+contractId;
+        }
+        if(contractName=='物流合同'){
+            window.location.href = "logistics?contractId="+contractId;
+        }
+        if(contractName=='采购合同'){
+            window.location.href = "showContract?contractId="+contractId;
+        }
+
     }
 </script>
 <body onload="loadContractList()">
@@ -317,6 +375,7 @@ else {
             </div><!--/.nav-collapse -->
         </div>
     </nav>
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
@@ -333,6 +392,7 @@ else {
                 </ul>
             </div>
         </div>
+
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <!--面包屑导航-->
             <div>
@@ -388,6 +448,7 @@ else {
                         <p></p>
                     </div>
                 </div>
+
                 <div style="height:500px;background-color: transparent">
                     <div class="table-responsive" style="height:500px;background-color: transparent">
                         <table class="table table-striped table-hover">
@@ -436,8 +497,8 @@ else {
                                         </ul>
                                     </div>
                                 </td>
-                                <td></td>
-                                <td></td>
+                                <td></td><!--合同编号-->
+                                <td></td><!--合同名称-->
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -472,6 +533,7 @@ else {
                     </ul>
                 </nav>
             </div>
+
         </div>
     </div>
     <!--查看页面-->
@@ -479,7 +541,7 @@ else {
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h2 class="sub-header">合同信息</h2>
+                    <h2 class="sub-header text-center">合同信息</h2>
                     <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
                         <div class="row">
                             <div class="form-horizontal col-md-6">
@@ -505,6 +567,24 @@ else {
                                     <label for="modal3_companyName" class="col-sm-4 control-label">客户名称 </label>
                                     <div class="col-xs-5">
                                         <input type="text" class="form-control focus" id="modal3_companyName" name="companyName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_bankName" class="col-sm-4 control-label">开户行名称 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_bankName" name="bankName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_ticketRate1" class="col-sm-4 control-label">开票税率1 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_ticketRate1" name="ticketRate1" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_ticketRate2" class="col-sm-4 control-label">开票税率2 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_ticketRate2" name="ticketRate2">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -542,6 +622,26 @@ else {
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                <label for="modal3_beginQualification" class="col-sm-4 control-label">资质开始日期</label>
+                                <div class="col-xs-5 input-group date">
+                                    <input type="text" class="input-sm form-control form_datetime3" id="modal3_beginQualification" name="beginQualification">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                    <label for="modal3_endQualification" class="col-sm-4 control-label">资质结束日期</label>
+                                    <div class="col-xs-5 input-group date">
+                                        <input type="text" class="input-sm form-control form_datetime4" id="modal3_endQualification" name="endQualification">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_bankAccout" class="col-sm-4 control-label">开户行账号</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_bankAccout" name="bankAccout" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label for="modal3_area" class="col-sm-4 control-label">所属区域</label>
                                     <div class="col-xs-5">
                                         <input type="text" class="form-control focus" id="modal3_area" name="area">
@@ -553,6 +653,13 @@ else {
                                         <input type="text" class="form-control focus" id="modal3_telephone" name="telephone">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="modal3_logisticsQualification" class="col-sm-4 control-label">物流公司资质 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_logisticsQualification" name="logisticsQualification">
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label for="modal3_order" class="col-sm-4 control-label">预约处置费 </label>
                                     <div class="col-xs-5">
@@ -572,6 +679,9 @@ else {
         </div>
     </div>
 <!--修改页面-->
+
+
+
 </body>
 <script>
     function wastes(){
@@ -596,7 +706,6 @@ else {
             k.attr("href","#");                          //采购合同 purchaseContractInfo.html
         }
     }
-
     $('.form_datetime1').datetimepicker({
         format: 'yyyy-mm-dd',
         language:  'zh-CN',
@@ -609,6 +718,28 @@ else {
         forceParse: 0
     });
     $('.form_datetime2').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_datetime3').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_datetime4').datetimepicker({
         format: 'yyyy-mm-dd',
         language:  'zh-CN',
         weekStart: 1,

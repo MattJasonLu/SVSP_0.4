@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Cost;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.CostService;
@@ -25,6 +26,30 @@ public class CostController {
     CostService costService;
 
     /**
+     * 保存成本单
+     * @param cost 成本单
+     * @return 成功与否
+     */
+    @RequestMapping("saveCost")
+    @ResponseBody
+    public String saveCost(@RequestBody Cost cost) {
+        cost.setCheckState(CheckState.ToSubmit);
+        return addCost(cost);
+    }
+
+    /**
+     * 提交成本单
+     * @param cost 成本单
+     * @return 成功与否
+     */
+    @RequestMapping("submitCost")
+    @ResponseBody
+    public String submitCost(@RequestBody Cost cost) {
+        cost.setCheckState(CheckState.Examining);
+        return addCost(cost);
+    }
+
+    /**
      * 增加成本单
      * @param cost 成本单
      * @return 成功与否
@@ -45,6 +70,50 @@ public class CostController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "成本单增加失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 作废报价单
+     * @param costId 报价单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setCostStateDisabled")
+    @ResponseBody
+    public String setStateDisabled(String costId) {
+        JSONObject res = new JSONObject();
+        try {
+            costService.setStateDisabled(costId);
+            res.put("status", "success");
+            res.put("message", "成本单作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "成本单作废失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 修改结束日期
+     * @param cost 成本单
+     * @return 成功与否
+     */
+    @RequestMapping("changeCostEndDate")
+    @ResponseBody
+    public String changeEndDate(Cost cost) {
+        JSONObject res = new JSONObject();
+        try {
+            costService.changeEndDate(cost);
+            res.put("status", "success");
+            res.put("message", "结束日期修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "结束日期修改失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();

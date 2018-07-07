@@ -47,8 +47,13 @@
                     case (6):
                         $(this).html(obj.client.location);
                         break;
-                        // 到期日期
+                        // 报价单状态
                     case (7):
+                        if (obj.checkState != null)
+                        $(this).html(obj.checkState.name);
+                        break;
+                        // 到期日期
+                    case (8):
                         $(this).html(getTimeStr(obj.endDate));
                         break;
                 }
@@ -228,6 +233,7 @@
                         <th>联系人</th>
                         <th>联系方式</th>
                         <th>所属区域</th>
+                        <th>状态</th>
                         <th>到期日期</th>
                     </tr>
                     </thead>
@@ -245,12 +251,9 @@
                                         <li><a href="#" onclick="viewQuotation(this);">查看</a></li>
                                         <li><a href="#" onclick="adjustQuotation(this);">修改信息</a></li>
                                         <li><a href="#">升级</a></li>
-                                        <li><a href="#" onclick="function dateChange() {
-                                            $('#modalId').modal('show');
-                                        }
-                                        dateChange()">有效期变更</a></li>
+                                        <li><a href="#" onclick="showEndDate(this);">有效期变更</a></li>
                                         <li><a href="#">送审</a></li>
-                                        <li><a href="#">作废</a></li>
+                                        <li><a href="#" onclick="disabledQuotation(this);">作废</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -258,6 +261,7 @@
                             <td>陆出希捷国际科技(无锡）有限公司201603</td>
                             <td>希捷国际科技(无锡）有限公司</td>
                             <td>董事长部门</td>
+                            <td>Siri</td>
                             <td>Siri</td>
                             <td>2018-06-30</td>
                         </tr>
@@ -310,7 +314,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="update();">更新</button>
+                    <button type="button" class="btn btn-primary" onclick="changeEndDate();">更新</button>
                 </div>
             </div>
         </div>
@@ -321,15 +325,18 @@
      * 日期格式
      */
     $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
         language:  'zh-CN',
-        format: 'yyyy-mm-dd hh:ii',
         weekStart: 1,
         todayBtn:  1,
-        autoclose: 1,
+        autoclose: true,
         todayHighlight: 1,
         startView: 2,
-        showMeridian: 1
+        minView: 2,
+        forceParse: 0
     });
+
+    var quotationId;
 
     /**
      * 查看报价单
@@ -346,6 +353,105 @@
     function adjustQuotation(e) {
         var id = getQuotationId(e);
         window.location.href = "newQuotation.html?quotationId=" + id + "&type=adjust";
+    }
+
+    /**
+     * 作废报价单
+     */
+    function disabledQuotation(e) {
+        var r = confirm("是否作废该报价单？");
+        if (r == true) {
+            var id = getQuotationId(e);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "setStateDisabled",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    quotationId: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            window.location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        }
+    }
+    /**
+     * 有效期窗口显示
+     */
+    function showEndDate(e) {
+        var id = getQuotationId(e);
+        quotationId = id;
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getQuotation",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                quotationId: id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $("#model-validity").val(getTimeStr(data.data.endDate));
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+        $('#modalId').modal('show');
+    }
+    /**
+     * 有效期变更
+     */
+    function changeEndDate() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "changeEndDate",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                quotationId: quotationId,
+                endDate: $("#model-validity").val()
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
     }
 
     /**
