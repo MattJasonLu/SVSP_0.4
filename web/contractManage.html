@@ -406,8 +406,8 @@ else {
             <div class="row">
                 <div>
                     <!--操作按钮-->
-                    <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="wastesContractInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <div class="pull-left col-md-6 boo">
+                        <a class="btn btn-primary" id="add" onclick="wastes()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary" onclick="contractSubmit()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
@@ -424,11 +424,11 @@ else {
             <br>
             <div class="navbar navbar-default">
                 <ul id="myTab" class="nav nav-tabs">
-                    <li class="active"><a href="#A" data-toggle="tab">危废合同</a></li>
-                    <li><a href="#B" data-toggle="tab">应急处置合同</a></li>
-                    <li><a href="#C" data-toggle="tab">物流合同</a></li>
-                    <li><a href="#D" data-toggle="tab">次生合同</a></li>
-                    <li><a href="#E" data-toggle="tab">采购合同</a></li>
+                    <li class="active" id="1"><a href="#A" data-toggle="tab">危废合同</a></li>
+                    <li id="2"><a href="#B" data-toggle="tab">应急处置合同</a></li>
+                    <li id="3"><a href="#C" data-toggle="tab">物流合同</a></li>
+                    <li id="4"><a href="#D" data-toggle="tab">次生合同</a></li>
+                    <li id="5"><a href="#E" data-toggle="tab">采购合同</a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane fade in active" id="A">
@@ -684,6 +684,28 @@ else {
 
 </body>
 <script>
+    function wastes(){
+        // var item = $("#1").attr("class");
+        var id = $("ul#myTab li.active").attr("id");
+        console.log(id);
+        var k = $("#add");
+        console.log(k.attr("id"));
+        // if(item == "active"){
+        if(id === "1")
+            k.attr("href","wastesContractInfo.html");    //危废合同
+        else if(id === "2") {
+            k.attr("href", "emergencyContractInfo.html"); //应急处置意向书
+        }
+        else if(id === "3") {
+            k.attr("href","logisticsContractInfo.html"); //物流合同
+        }
+        else if(id === "4") {
+            k.attr("href","secondaryContractInfo.html"); //次生合同
+        }
+        else if(id === "5") {
+            k.attr("href","#");                          //采购合同 purchaseContractInfo.html
+        }
+    }
     $('.form_datetime1').datetimepicker({
         format: 'yyyy-mm-dd',
         language:  'zh-CN',
