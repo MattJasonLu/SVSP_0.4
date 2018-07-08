@@ -174,8 +174,8 @@ public class ClientController {
         String fileName = "file";
         try {
             filePath = new String(filePath.getBytes("iso8859-1"), "utf-8");
-            String[] str = filePath.split("[/ .]");
-            fileName = java.net.URLEncoder.encode(str[str.length-2], "UTF-8");
+            String[] str = filePath.split("[/]");
+            fileName = java.net.URLEncoder.encode(str[str.length-1], "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
