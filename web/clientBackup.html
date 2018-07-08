@@ -904,6 +904,20 @@
                     $("#modal3_mobile").val(data.mobile);
                     $("#modal3_phone").val(data.phone);
                     $("#modal3_email").val(data.email);
+                    $("#modal3_materialAttachment").click(function () {
+                        if (data.materialAttachmentUrl != null && data.materialAttachmentUrl != "") {
+                            window.open('downloadFile?filePath=' + data.materialAttachmentUrl);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
+                    $("#modal3_processAttachment").click(function () {
+                        if (data.processAttachmentUrl != null && data.processAttachmentUrl != "") {
+                            window.open('downloadFile?filePath=' + data.processAttachmentUrl);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
                 } else {
                     $("#modal3_companyName").val("");
                     $("#modal3_organizationCode").val("");
@@ -1273,5 +1287,14 @@
     function getIdByCheckBox(item) {
         return item.parent().parent().next().next().text();
     }
+
+    // 定义到jQuery全局变量下-文件下载
+    jQuery.download = function (url, method, filedir) {
+        jQuery('<form action="' + url + '" method="' + (method || 'post') + '">' +  // action请求路径及推送方法
+                '<input type="text" name="filePath" value="' + filedir + '"/>' + // 文件路径
+                '</form>').appendTo('body').submit().remove();
+        //var newTab = window.open('about:blank')
+        //newTab.location.href = url;
+    };
 </script>
 </html>

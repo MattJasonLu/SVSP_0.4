@@ -54,6 +54,8 @@ public interface ClientService {
 
     void setCheckStateBacked(String clientId);
 
+    void setFilePath(Client client);
+
     int count();
 
 }

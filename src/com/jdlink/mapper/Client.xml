@@ -115,6 +115,10 @@
         UPDATE client SET salesmanId=#{salesman.salesmanId} WHERE clientId=#{clientId};
     </update>
 
+    <update id="setFilePath" parameterType="Client">
+        UPDATE client SET materialAttachmentUrl=#{materialAttachmentUrl}, processAttachmentUrl=#{processAttachmentUrl} WHERE clientId=#{clientId};
+    </update>
+
     <select id="list" resultMap="ClientRM">
         select client.*, salesman.salesmanId, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId
         <if test="start != null and count != null">
