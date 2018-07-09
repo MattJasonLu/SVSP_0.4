@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>客户备案</title>
+    <title>企业档案</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -19,11 +19,22 @@
     }
 </style>
 <script type="text/javascript">
-    function setClientList(result) {
+    // 获取问卷编号
+    var url=location.search;
+    var Request = {};
+    if(url.indexOf("?")!=-1) {
+        var str = url.substr(1)　//去掉?号
+        strs = str.split("&");
+        for(var i=0;i<strs.length;i++) {
+            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+        }
+    }
+
+    function setFileList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
         tr.siblings().remove();
-        $.each(result, function (index, item) {
+        $.each(result.data, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
@@ -33,68 +44,22 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
+                    // ID
+                    case (0):
+                        $(this).html("0001");
+                        break;
+                    // 文档名称
                     case (1):
-                        if(obj.checkState.name == "审批中"||obj.checkState.name == "已完成") {
-                            $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
-                        }
-                        if(obj.clientState.name == "已禁用"){
-                            $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(2).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(3).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(5).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(5).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(6).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(6).children().eq(0).removeAttr("onclick");
-                        }
-                        if(obj.clientState.name == "已启用"){
-                            $(this).children().eq(0).children().eq(1).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(4).children().eq(0).removeAttr("onclick");
-                        }
-                        if(obj.clientState.name == "已禁用"){
-                            $(this).children().eq(0).children().eq(1).children().eq(5).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(5).children().eq(0).removeAttr("onclick");
-                        }
+                        $(this).html("上海保税商品交易市场中国铁路贸易中心客户管理文件1");
                         break;
-                        // 客户编号
+                    // 由谁添加
                     case (2):
-                        $(this).html(obj.clientId);
                         break;
-                        // 客户名称
+                    // 添加时间
                     case (3):
-                        $(this).html(obj.companyName);
                         break;
-                        // 申报状态
+                    // 编辑时间
                     case (4):
-                        if (obj.applicationStatus != null)
-                        $(this).html(obj.applicationStatus.name);
-                        break;
-                        // 审核状态
-                    case (5):
-                        if (obj.checkState != null) {
-                            $(this).html(obj.checkState.name);
-                            // $("#commit").attr(addClass("disabled"));
-                        }
-                        break;
-                        // 账号状态
-                    case (6):
-                        if (obj.clientState != null)
-                        $(this).html(obj.clientState.name);
-                        break;
-                        // 联系人
-                    case (7):
-                        $(this).html(obj.contactName);
-                        break;
-                        // 联系方式
-                    case (8):
-                        $(this).html(obj.phone);
-                        break;
-                    case (9):
-                        if (obj.clientType != null)
-                        $(this).html(obj.clientType.name);
                         break;
                 }
             });
@@ -105,53 +70,26 @@
         // 隐藏无数据的tr
         tr.hide();
     }
-    function loadClientList() {
+    function loadFileList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
+            url: "listDocumentByClientId",                  // url
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
+            data: { clientId: Request['clientId'] },
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
+                    setFileList(result);
                 }
             },
             error:function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-    /**
-     * 查找客户
-     */
-    function searchClient() {
-        var keyword = $("#searchContent").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchClient",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'keyword': keyword
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
 </script>
-<body onload="loadClientList()">
+<body onload="loadFileList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -208,7 +146,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown active"><a href="archives.html">一企一档</a></li>
+                    <li class="dropdown active"><a href="archivesManage.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -246,7 +184,9 @@
                 <div>
                     <ol class="breadcrumb">
                         <li><a href="businessModel.html">商务管理</a></li>
-                        <li class="active">一企一档</li>
+                        <li><a href="archivesManage.html">一企一档</a></li>
+                        <li><a href="archivesManage.html">企业列表</a></li>
+                        <li class="active">企业档案</li>
                     </ol>
                 </div>
                 <h2 class="sub-header">企业档案</h2>
@@ -255,7 +195,7 @@
                     <div class="input-group col-xs-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchClient();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         </span>
                     </div>
                 </div>
@@ -295,20 +235,7 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
-                                <td class="text-center">
-                                    <div class="dropdown">
-                                        <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-pencil"></span><span class="glyphicon glyphicon-remove"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" onclick="viewClient(this);">查看</a></li>
-                                            <li><a href="#" onclick="commitClient(this);">提交</a></li>
-                                            <li><a href="#" onclick="adjustClient(this);">修改</a></li>
-                                            <li><a href="#" onclick="examineClient(this);">审批</a></li>
-                                            <li><a href="#" onclick="enableClient(this);">启用</a></li>
-                                            <li><a href="#" onclick="disableClient(this);">禁用</a></li>
-                                            <li><a href="#" onclick="setSales(this);">分配业务员</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
+                                <td class="text-center"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -338,409 +265,9 @@
             </nav>
         </div>
     </div>
-
-
-
-
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">分配业务员</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="model-assign" method="post">
-                        <div class="form-group">
-                            <label for="model-clientId" class="control-label">客户编号</label>
-                            <input type="text" class="form-control" id="model-clientId" name="model-clientId" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model-companyName" name="model-companyName" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-salesmanList" class="control-label">分配业务员</label>
-                            <select class="form-control" name="model-salesmanList" id="model-salesmanList">
-                                <option value="0">--请选择--</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="assignSales();">保存</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="client_style">
-                    <h2 class="sub-header">客户信息</h2>
-                    <form method="post" id="clientInfoForm1" enctype="multipart/form-data">
-                        <h4 class="text-info">基本信息</h4>
-                        <div class="row">
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_companyName" class="col-sm-4 control-label">企业名称 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_companyName" name="companyName">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_organizationCode" class="col-sm-4 control-label">组织机构代码 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_organizationCode" name="organizationCode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_representative" class="col-sm-4 control-label">法人代表 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_representative" name="representative">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_industry" class="col-sm-4 control-label">所属行业 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_industry" name="industry">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_enterpriseType" class="col-sm-4 control-label">企业类型 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_enterpriseType" name="enterpriseType">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationType" class="col-sm-4 control-label">经营单位类别 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_operationType" name="operationType">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationRecord" class="col-sm-4 control-label">危废经营记录情况 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_operationRecord" name="operationRecord">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_street" class="col-sm-4 control-label">所属街道 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_street" name="street">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_clientId" class="col-sm-4 control-label">客户编码</label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_clientId" name="clientId" placeholder="">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_licenseCode" class="col-sm-4 control-label">营业执照注册号 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_licenseCode" name="licenseCode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_postCode" class="col-sm-4 control-label">工商注册地邮编 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_postCode" name="postCode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_product" class="col-sm-4 control-label">主要产品 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_product" name="product">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationMode" class="col-sm-4 control-label">经营方式 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_operationMode" name="operationMode">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_contingencyPlan" class="col-sm-4 control-label">事故防范应急预案 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_contingencyPlan" name="contingencyPlan">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_applicationStatus" class="col-sm-4 control-label">申报状态 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_applicationStatus" name="applicationStatus">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_location" class="col-sm-4 control-label">工商注册地址 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_location" name="location">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="text-info">环评信息</h4>
-                        <div class="row">
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_materialAttachment" class="col-sm-4 control-label">原辅材料 </label>
-                                    <div class="col-xs-5">
-                                        <button class="btn btn-default" id="modal4_materialAttachment">下载查看</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_processAttachment" class="col-sm-4 control-label">工艺流程图 </label>
-                                    <div class="col-xs-5">
-                                        <button class="btn btn-default" id="modal4_processAttachment">下载查看</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-horizontal col-md-12">
-                                <div class="form-group">
-                                    <label for="modal3_processDesp" class="col-sm-2 control-label">工艺描述 </label>
-                                    <div class="col-xs-8">
-                                        <textarea class="form-control focus" id="modal4_processDesp" name="processDesp" rows="4"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="text-info">联系方式</h4>
-                        <div class="row">
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_contactName" class="col-sm-4 control-label">联系人 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_contactName" name="contactName">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_mobile" class="col-sm-4 control-label">手机号码 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_mobile" name="mobile">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_phone" class="col-sm-4 control-label">固定电话 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal4_phone" name="phone">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_email" class="col-sm-4 control-label">邮箱 </label>
-                                    <div class="col-xs-5">
-                                        <input type="email" class="form-control focus" id="modal4_email" name="email">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" onclick="passClient();">审批通过</button>
-                            <button type="button" class="btn btn-danger" onclick="backClient();">驳回</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--查看页面-->
-    <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="client_style">
-                <h2 class="sub-header">客户信息</h2>
-                <form method="post" id="clientInfoForm" enctype="multipart/form-data">
-                    <h4 class="text-info">基本信息</h4>
-                    <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="modal3_companyName" class="col-sm-4 control-label">企业名称 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_companyName" name="companyName">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_organizationCode" class="col-sm-4 control-label">组织机构代码 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_organizationCode" name="organizationCode">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_representative" class="col-sm-4 control-label">法人代表 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_representative" name="representative">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_industry" class="col-sm-4 control-label">所属行业 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_industry" name="industry">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_enterpriseType" class="col-sm-4 control-label">企业类型 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_enterpriseType" name="enterpriseType">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_operationType" class="col-sm-4 control-label">经营单位类别 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_operationType" name="operationType">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_operationRecord" class="col-sm-4 control-label">危废经营记录情况 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_operationRecord" name="operationRecord">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_street" class="col-sm-4 control-label">所属街道 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_street" name="street">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="modal3_clientId" class="col-sm-4 control-label">客户编码</label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_clientId" name="clientId" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_licenseCode" class="col-sm-4 control-label">营业执照注册号 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_licenseCode" name="licenseCode">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_postCode" class="col-sm-4 control-label">工商注册地邮编 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_postCode" name="postCode">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_product" class="col-sm-4 control-label">主要产品 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_product" name="product">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_operationMode" class="col-sm-4 control-label">经营方式 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_operationMode" name="operationMode">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_contingencyPlan" class="col-sm-4 control-label">事故防范应急预案 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_contingencyPlan" name="contingencyPlan">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_applicationStatus" class="col-sm-4 control-label">申报状态 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_applicationStatus" name="applicationStatus">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_location" class="col-sm-4 control-label">工商注册地址 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_location" name="location">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h4 class="text-info">环评信息</h4>
-                    <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="modal3_materialAttachment" class="col-sm-4 control-label">原辅材料 </label>
-                                <div class="col-xs-5">
-                                    <button class="btn btn-default" id="modal3_materialAttachment">下载查看</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="modal3_processAttachment" class="col-sm-4 control-label">工艺流程图 </label>
-                                <div class="col-xs-5">
-                                    <button class="btn btn-default" id="modal3_processAttachment">下载查看</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-horizontal col-md-12">
-                            <div class="form-group">
-                                <label for="modal3_processDesp" class="col-sm-2 control-label">工艺描述 </label>
-                                <div class="col-xs-8">
-                                    <textarea class="form-control focus" id="modal3_processDesp" name="processDesp" rows="4"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h4 class="text-info">联系方式</h4>
-                    <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="modal3_contactName" class="col-sm-4 control-label">联系人 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_contactName" name="contactName">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_mobile" class="col-sm-4 control-label">手机号码 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_mobile" name="mobile">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="modal3_phone" class="col-sm-4 control-label">固定电话 </label>
-                                <div class="col-xs-5">
-                                    <input type="text" class="form-control focus" id="modal3_phone" name="phone">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal3_email" class="col-sm-4 control-label">邮箱 </label>
-                                <div class="col-xs-5">
-                                    <input type="email" class="form-control focus" id="modal3_email" name="email">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row text-center">
-                        <a class="btn btn-primary" onclick="">打印</a>
-                        <a class="btn btn-danger" data-dismiss="modal">关闭</a>
-                    </div>
-                </form>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 
 <script type="text/javascript">
-
-    var clientId;
 
     /**
      * 导航问题
@@ -771,497 +298,5 @@
         return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
     }
 
-    /**
-     * 审核用户
-     * @param item 客户
-     */
-    function examineClient(item) {
-        var id = getClientId(item);
-        // 添加客户信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getClient",                   // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {
-                'id': id
-            },
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    var data = eval(result);
-                    $("#modal4_companyName").val(data.companyName);
-                    $("#modal4_organizationCode").val(data.organizationCode);
-                    $("#modal4_representative").val(data.representative);
-                    $("#modal4_industry").val(data.industry);
-                    if (data.enterpriseType != null)
-                        $("#modal4_enterpriseType").val(data.enterpriseType.name);
-                    if (data.operationType != null)
-                        $("#modal4_operationType").val(data.operationType.name);
-                    if (data.operationRecord != null)
-                        $("#modal4_operationRecord").val(data.operationRecord.name);
-                    $("#modal4_street").val(data.street);
-                    $("#modal4_clientId").val(data.clientId);
-                    $("#modal4_licenseCode").val(data.licenseCode);
-                    $("#modal4_postCode").val(data.postCode);
-                    $("#modal4_product").val(data.product);
-                    if (data.operationMode != null)
-                        $("#modal4_operationMode").val(data.operationMode.name);
-                    if (data.contingencyPlan != null)
-                        $("#modal4_contingencyPlan").val(data.contingencyPlan.name);
-                    if (data.applicationStatus != null)
-                        $("#modal4_applicationStatus").val(data.applicationStatus.name);
-                    $("#modal4_location").val(data.location);
-                    $("#modal4_processDesp").val(data.processDesp);
-                    $("#modal4_contactName").val(data.contactName);
-                    $("#modal4_mobile").val(data.mobile);
-                    $("#modal4_phone").val(data.phone);
-                    $("#modal4_email").val(data.email);
-                } else {
-                    $("#modal4_companyName").val("");
-                    $("#modal4_organizationCode").val("");
-                    $("#modal4_representative").val("");
-                    $("#modal4_industry").val("");
-                    $("#modal4_enterpriseType").val("");
-                    $("#modal4_operationType").val("");
-                    $("#modal4_operationRecord").val("");
-                    $("#modal4_street").val("");
-                    $("#modal4_clientId").val("");
-                    $("#modal4_licenseCode").val("");
-                    $("#modal4_postCode").val("");
-                    $("#modal4_product").val("");
-                    $("#modal4_operationMode").val("");
-                    $("#modal4_contingencyPlan").val("");
-                    $("#modal4_applicationStatus").val("");
-                    $("#modal4_location").val("");
-                    $("#modal4_processDesp").val("");
-                    $("#modal4_contactName").val("");
-                    $("#modal4_mobile").val("");
-                    $("#modal4_phone").val("");
-                    $("#modal4_email").val("");
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-        $('#examineModal').modal('show');
-    }
-
-    /**
-     * 查看用户
-     * @param item 客户
-     */
-    function viewClient(item) {
-        var id = getClientId(item);
-        // 添加客户信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getClient",                   // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {
-                'id': id
-            },
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    var data = eval(result);
-                    $("#modal3_companyName").val(data.companyName);
-                    $("#modal3_organizationCode").val(data.organizationCode);
-                    $("#modal3_representative").val(data.representative);
-                    $("#modal3_industry").val(data.industry);
-                    if (data.enterpriseType != null)
-                        $("#modal3_enterpriseType").val(data.enterpriseType.name);
-                    if (data.operationType != null)
-                        $("#modal3_operationType").val(data.operationType.name);
-                    if (data.operationRecord != null)
-                        $("#modal3_operationRecord").val(data.operationRecord.name);
-                    $("#modal3_street").val(data.street);
-                    $("#modal3_clientId").val(data.clientId);
-                    $("#modal3_licenseCode").val(data.licenseCode);
-                    $("#modal3_postCode").val(data.postCode);
-                    $("#modal3_product").val(data.product);
-                    if (data.operationMode != null)
-                        $("#modal3_operationMode").val(data.operationMode.name);
-                    if (data.contingencyPlan != null)
-                        $("#modal3_contingencyPlan").val(data.contingencyPlan.name);
-                    if (data.applicationStatus != null)
-                        $("#modal3_applicationStatus").val(data.applicationStatus.name);
-                    $("#modal3_location").val(data.location);
-                    $("#modal3_processDesp").val(data.processDesp);
-                    $("#modal3_contactName").val(data.contactName);
-                    $("#modal3_mobile").val(data.mobile);
-                    $("#modal3_phone").val(data.phone);
-                    $("#modal3_email").val(data.email);
-                } else {
-                    $("#modal3_companyName").val("");
-                    $("#modal3_organizationCode").val("");
-                    $("#modal3_representative").val("");
-                    $("#modal3_industry").val("");
-                    $("#modal3_enterpriseType").val("");
-                    $("#modal3_operationType").val("");
-                    $("#modal3_operationRecord").val("");
-                    $("#modal3_street").val("");
-                    $("#modal3_clientId").val("");
-                    $("#modal3_licenseCode").val("");
-                    $("#modal3_postCode").val("");
-                    $("#modal3_product").val("");
-                    $("#modal3_operationMode").val("");
-                    $("#modal3_contingencyPlan").val("");
-                    $("#modal3_applicationStatus").val("");
-                    $("#modal3_location").val("");
-                    $("#modal3_processDesp").val("");
-                    $("#modal3_contactName").val("");
-                    $("#modal3_mobile").val("");
-                    $("#modal3_phone").val("");
-                    $("#modal3_email").val("");
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-        $('#viewModal').modal('show');
-    }
-
-    /**
-     * 审批通过客户
-     */
-    function passClient() {
-        var id = $("#modal4_clientId").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "passClient",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("审批成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("审批失败");
-                    }
-                }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-
-    /**
-     * 驳回客户
-     */
-    function backClient() {
-        var id = $("#modal4_clientId").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "backClient",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("驳回成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("驳回失败");
-                    }
-                }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-
-
-    /**
-     * 提交用户
-     * @param item 客户
-     */
-    function commitClient(item) {
-        var id = getClientId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "submitClientById",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("提交成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("提交失败");
-                    }
-                }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-
-    /**
-     * 修改用户
-     * @param item
-     */
-    function adjustClient(item) {
-        // 拿到点击条目的客户编号
-        var id = getClientId(item);
-        window.location.href = "showClient?id=" + id;
-    }
-    /**
-     * 禁用用户
-     * @param item 用户
-     */
-    function disableClient(item) {
-        var id = getClientId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "disableClient",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("禁用成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("禁用失败");
-                    }
-                }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-    /**
-     * 启用用户
-     * @param item 用户
-     */
-    function enableClient(item) {
-        var id = getClientId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "enableClient",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("启用成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("启用失败");
-                    }
-                }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-    /**
-     * 分配业务员
-     * @param item 用户
-     */
-    function setSales(item) {
-        var id = getClientId(item);
-        clientId = id;
-        // 添加客户信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getClient",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {
-                'id': id
-            },
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    $("#model-clientId").val(result.clientId);
-                    $("#model-companyName").val(result.companyName);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-        // 添加业务员信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listSalesman",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var salesmanList = $("#model-salesmanList");
-                    // 清空遗留元素
-                    salesmanList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.salesmanId);
-                        option.text(item.name);
-                        salesmanList.append(option);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-        $('#myModal').modal('show');
-
-    }
-
-    /**
-     * 分配业务员提交
-     */
-    function assignSales() {
-        var salesmanId = $("#model-salesmanList").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "assignSalesman",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: JSON.stringify({
-                'salesman': {
-                    'salesmanId': salesmanId
-                },
-                'clientId': clientId
-            }),
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log("success: " + result);
-                    alert("保存成功!");
-                    window.location.reload();
-                } else {
-                    console.log("fail: " + result);
-                    alert("保存失败!");
-                }
-            },
-            error: function (result) {
-                var that = this;
-                console.log(this.data);
-                console.log("error: " + result);
-                alert("服务器异常!");
-            }
-        });
-    }
-
-    /**
-     * 删除用户
-     * @param item
-     */
-    function deleteClient(item) {
-        var r = confirm("是否删除该客户？");
-        if (r == true) {
-            var id = getClientId(item);
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "deleteClient",               // url
-                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {
-                    'clientId': id
-                },
-                dataType: "json",
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log("success: " + result);
-                        alert("删除成功");
-                        window.location.reload();
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error:function (result) {
-                    console.log("error: " + result);
-                }
-            });
-        } else { }
-    }
-
-    /**
-     * 提交客户的信息
-     */
-    function submitClients() {
-        var items = $("input[type='checkbox']:checked");//判断复选框是否选中
-        if (items.length > 0) {
-            function submitClientById(id) {//该方法是一个ajax请求
-                $.ajax({
-                    type: "POST",                       // 方法类型
-                    url: "submitClientById",            // url
-                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                    data: {
-                        'clientId': id//数据是json格式的
-                    },
-                    dataType: "json",//返回值是json字符串
-                    success: function (result) {
-                        if (result != undefined) {
-                            console.log(result);
-                        } else {
-                            console.log("fail: " + result);
-                        }
-                    },
-                    error: function (result) {
-                        console.log("error: " + result);
-                    }
-                });
-            }
-            items.each(function () {//遍历
-                var id = getIdByCheckBox($(this));//获取到了客户编号
-                submitClientById(id);//调用该方法使用ajax
-            });
-            alert("提交成功!");
-            window.location.reload();
-        } else {
-            alert("未选择任何客户!");
-        }
-    }
-
-    function getIdByCheckBox(item) {
-        return item.parent().parent().next().next().text();
-    }
 </script>
 </html>
