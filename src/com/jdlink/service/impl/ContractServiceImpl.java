@@ -17,6 +17,11 @@ public class ContractServiceImpl implements ContractService  {
     ContractMapper contractMapper;
 
     @Override
+    public void updateEm(Contract contract) {
+        contractMapper.updateEm(contract);
+    }
+
+    @Override
     public void add(Contract contract) {
         contractMapper.add(contract);
     }
@@ -62,6 +67,11 @@ public class ContractServiceImpl implements ContractService  {
     }
 
     @Override
+    public List<Contract> list1(String name) {
+        return contractMapper.list1(name);
+    }
+
+    @Override
     public List getContractIdList() {
         return contractMapper.getContractIdList();
     }
@@ -93,5 +103,10 @@ contractMapper.updateFreight2(id);
     @Override
     public Contract getModel(String modelName) {
         return contractMapper.getModel(modelName);
+    }
+
+    @Override
+    public void addEm(Contract contract) {
+        contractMapper.addEm(contract);
     }
 }

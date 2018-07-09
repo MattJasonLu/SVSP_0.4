@@ -543,10 +543,6 @@
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractAdjustSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractAdjustSave()">提交</a>
-                <a class="btn btn-danger" href="wastesContractInfo.html">危废合同申请表</a>
-                <a class="btn btn-danger" href="secondaryContractInfo.html">次生合同申请表</a>
-                <a class="btn btn-danger" href="#">应急处置意向书</a>
-                <a class="btn btn-danger" href="#">采购合同申请表</a>
                 <a class="btn btn-danger" href="contractManage.html">返回</a>
             </div>
         </form>

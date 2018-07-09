@@ -39,7 +39,6 @@
             { name: 'colors', groups: [ 'colors' ] },
             { name: 'about', groups: [ 'about' ] }
         ];
-
         config.removeButtons = 'Underline,Subscript,Superscript';
     };
 
@@ -246,7 +245,7 @@
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     合同正文：<br>
-                    <textarea id="TextArea1" cols="20" rows="2"  name="contractContent" class="ckeditor" wrap="hard"></textarea>
+                    <textarea id="TextArea1" cols="20" rows="2"  name="contractContent" class="ckeditor" ></textarea>
                 </div>
             </div>
             <div class="row text-center">
@@ -328,8 +327,9 @@
             url: "getContractList",                  // url
             dataType: "json",
             success: function (result) {
-               console.log('${model}')
-                $('#TextArea1').val('${model.contractContent}');
+               // var text1=${model.contractContent};
+                //console.log(text1.toString());
+                $('#TextArea1').prop("value",'${model.contractContent}');
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
@@ -346,7 +346,6 @@
                     console.log(s);
                     var year=$('#year');
                   year.find("option[value="+s+"]").attr("selected",true);
-
                   var period=$('#period');
                   var s1='${model.period}'+"";
                     console.log(s1);
@@ -409,11 +408,11 @@
             data = mySelection.getNative();
             //console.log(data);
         }
-        var CText=CKEDITOR.instances.TextArea1.document.getBody().getText(); //取得纯文本
+        var CText=CKEDITOR.instances.TextArea1._getData(); //取得纯文本
         console.log(CText);
         //CText=CText.replace(new RegExp("\n", "gm"), "<br>");
-        var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
-        $('#TextArea1').prop("value",des);
+        //var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
+        $('#TextArea1').prop("value",CText);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveContract",                       // url
@@ -439,23 +438,11 @@
         });
     }
     function contractAdjustSave() {
-        var companyName=$("#companyName option:selected").text();//获取客户名称
-        var province=$("#province option:selected").text();//获得省名称
-        var city=$('#city option:selected').text();//获得市
-        var contractName=$('#contactName option:selected').text();
-        var beginTime=$("#beginTime").val();
-        var endTime=$("#endTime").val();// 截止日期
-        var contactName=$('#contactName').text();//联系人
-        var isFreight=$('#isFreight').prop("checked");//是否需要运费
-        var order1=$('#order1').val();
-        var telephone=$('#telephone').val();
-        var contractVersion=$('input:radio:checked').val();
         contractId='${contract.contractId}';
-        //$('#contractId').prop("value",contractId);
-        // console.log("合同编号为"+contractId);
-        var CText=CKEDITOR.instances.TextArea1.document.getBody().getText(); //取得纯文本
-        var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
-        $('#TextArea1').prop("value",des);
+        var text='${contract.contractContent}';
+        var CText=CKEDITOR.instances.TextArea1.getData(); //取得纯文本
+        //var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
+        $('#TextArea1').prop("value",$(CText).text());
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveAdjustContract",                       // url
@@ -480,7 +467,6 @@
             }
         });
     }
-
     CKEDITOR.replace('TextArea1');
 </script>
 </html>

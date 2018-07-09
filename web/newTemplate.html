@@ -32,8 +32,9 @@
             { name: 'colors', groups: [ 'colors' ] },
             { name: 'about', groups: [ 'about' ] }
         ];
-
         config.removeButtons = 'Underline,Subscript,Superscript';
+        config.pasteFromWordRemoveFontStyles = false;
+        config.pasteFromWordRemoveStyles = false;
     };
 
     $(window).on('load', function () {
@@ -390,9 +391,11 @@
             //console.log(data);
         }
         var CText=CKEDITOR.instances.TextArea1.document.getBody().getText(); //取得纯文本
-        var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
+       // var CText= CKEDITOR.instances.TextArea1.getData();
+        console.log(CText);
+       // var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
         //CText=CText.replace(new RegExp("\n", "gm"), "<br>");
-        $('#TextArea1').prop("value",des);
+        $('#TextArea1').prop("value",CText);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveContract",                       // url

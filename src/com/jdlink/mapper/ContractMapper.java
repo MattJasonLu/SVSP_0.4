@@ -10,14 +10,17 @@ import java.util.List;
 public interface ContractMapper {
 
     void add(Contract contract);
+    void addEm(Contract contract);
     void delete(Contract contract);
     List<Contract> getByKeyword(String keyword);
     Contract getByContractId(String contractId);
     void update(Contract contract);
+    void updateEm(Contract contract);
     void setCheckStateToExamine(Contract contract);
     void setCheckStateKeeping(Contract contract);
     void setCheckStateInvalid(Contract contract);
     List<Contract> list();
+    List<Contract> list1(String name);
     List getContractIdList();
     void toSubmit(String id);
     void updateFreight1(String id);
