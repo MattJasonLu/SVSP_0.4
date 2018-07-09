@@ -102,14 +102,8 @@
             }
         });
     });
-
-    function printClient() {
-        //console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
-    }
     function clientSave() {
-//        printClient();
         if (validator.form()) {
-            console.log($('#clientInfoForm').serializeJSON());
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "saveClient",                       // url
@@ -117,6 +111,7 @@
                 data: JSON.stringify($('#clientInfoForm').serializeJSON()),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
+                processData: false,
                 success: function (result) {
                     if (result != undefined) {
                         console.log("success: " + result);
@@ -132,11 +127,13 @@
                     alert("服务器异常!");
                 }
             });
+            saveClientFiles();
         }
     }
-    function clientSubmit() {f
-//        printClient();
+
+    function clientSubmit() {
         if (validator.form()) {
+            // 上传用户数据
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "submitClient",                     // url
@@ -159,6 +156,9 @@
                     alert("服务器异常!");
                 }
             });
+
+            // 上传用户文件
+            saveClientFiles();
         }
     }
     function loadSelectList() {
@@ -236,7 +236,42 @@
             }
         });
     }
+    /**
+     * 保存客户的文件
+     */
+    function saveClientFiles() {
+// 客户编码
+        var clientId = document.getElementById("clientId").value;
+        // 材料附件
+        var materialAttachment = document.getElementById("materialAttachment").files[0];
+        // 流程附件
+        var processAttachment = document.getElementById("processAttachment").files[0];
+        var formFile = new FormData();
+        formFile.append("clientId", clientId);
+        formFile.append("materialAttachment", materialAttachment);
+        formFile.append("processAttachment", processAttachment);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "saveFiles",                     // url
+            cache: false,
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: formFile,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("上传成功");
+                } else {
 
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
+    }
     /**
      * 获取数据库中的客户编号
      */

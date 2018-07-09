@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.DocumentMapper">
+    <select id="listByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId};
+    </select>
+
+    <select id="listContractByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='Contract';
+    </select>
+
+    <select id="listManagePlanByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='ManagePlan';
+    </select>
+
+    <select id="listEIAByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='EIA';
+    </select>
+
+    <select id="listBusinessLicenseByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='BusinessLicense';
+    </select>
+
+    <select id="listInstructionByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='Instruction';
+    </select>
+
+    <select id="listInvoiceInfoByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='InvoiceInfo';
+    </select>
+
+    <select id="listMSDSByClientId" resultType="Document" parameterType="String">
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='MSDS';
+    </select>
+
+    <select id="getFileById" parameterType="String" resultType="Document">
+        SELECT * FROM t_document WHERE fileId=#{fileId};
+    </select>
+
+    <select id="add" parameterType="Document">
+        INSERT INTO t_document (clientId, fileName, filePath, documentType) VALUES (#{clientId}, #{fileName}, #{filePath}, #{documentType});
+    </select>
+</mapper>

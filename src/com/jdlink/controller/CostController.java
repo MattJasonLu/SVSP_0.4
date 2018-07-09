@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Cost;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.CostService;
@@ -23,6 +24,30 @@ public class CostController {
 
     @Autowired
     CostService costService;
+
+    /**
+     * 保存成本单
+     * @param cost 成本单
+     * @return 成功与否
+     */
+    @RequestMapping("saveCost")
+    @ResponseBody
+    public String saveCost(@RequestBody Cost cost) {
+        cost.setCheckState(CheckState.ToSubmit);
+        return addCost(cost);
+    }
+
+    /**
+     * 提交成本单
+     * @param cost 成本单
+     * @return 成功与否
+     */
+    @RequestMapping("submitCost")
+    @ResponseBody
+    public String submitCost(@RequestBody Cost cost) {
+        cost.setCheckState(CheckState.Examining);
+        return addCost(cost);
+    }
 
     /**
      * 增加成本单
