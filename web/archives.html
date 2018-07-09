@@ -6,6 +6,7 @@
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/data-format.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
@@ -46,20 +47,28 @@
                 switch (inner_index) {
                     // ID
                     case (0):
-                        $(this).html("0001");
+                        $(this).html(obj.fileId);
+                        break;
+                    // 文档类型
+                    case (1):
+                        if (obj.documentType != null)
+                        $(this).html(obj.documentType.name);
                         break;
                     // 文档名称
-                    case (1):
-                        $(this).html("上海保税商品交易市场中国铁路贸易中心客户管理文件1");
+                    case (2):
+                        $(this).html(obj.filePath);
                         break;
                     // 由谁添加
-                    case (2):
+                    case (3):
+                        $(this).html("Admin");
                         break;
                     // 添加时间
-                    case (3):
+                    case (4):
+                        $(this).html(getNowDate());
                         break;
                     // 编辑时间
-                    case (4):
+                    case (5):
+                        $(this).html(getNowDate());
                         break;
                 }
             });
@@ -220,8 +229,9 @@
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">文档标题</th>
+                                <th class="text-center">文件编号</th>
+                                <th class="text-center">文件类型</th>
+                                <th class="text-center">文件标题</th>
                                 <th class="text-center">由谁添加</th>
                                 <th class="text-center">添加时间</th>
                                 <th class="text-center">编辑时间</th>
@@ -230,6 +240,7 @@
                             </thead>
                             <tbody>
                             <tr id="cloneTr">
+                                <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
