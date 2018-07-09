@@ -200,6 +200,10 @@
                 </div>
                 <h2 class="sub-header">企业档案</h2>
                 <div>
+                    <!--操作按钮-->
+                    <div class="pull-left">
+                        <a class="btn btn-primary" onclick="window.location.href = 'documentInfo.html?clientId=' + Request['clientId'];"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
@@ -209,7 +213,7 @@
                     </div>
                 </div>
             </div>
-
+            <br>
             <div class="row">
                 <aside class="col-md-2">
                     <div class="widget">

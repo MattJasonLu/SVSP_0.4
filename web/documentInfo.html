@@ -163,7 +163,7 @@
                 </div>
                 <div class="row text-center">
                     <a class="btn btn-primary" onclick="">保存</a>
-                    <a class="btn btn-danger" href="archivesManage.html">返回</a>
+                    <a class="btn btn-danger" onclick="window.location.href='archives.html?clientId='+Request['clientId'];">返回</a>
                 </div>
             </form>
         </div>
@@ -171,6 +171,15 @@
 </body>
 
 <script type="text/javascript">
+    var url=location.search;
+    var Request = {};
+    if(url.indexOf("?")!=-1) {
+        var str = url.substr(1)　//去掉?号
+        strs = str.split("&");
+        for(var i=0;i<strs.length;i++) {
+            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+        }
+    }
 
     var clientId;
 
