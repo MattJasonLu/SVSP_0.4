@@ -36,33 +36,9 @@ public class ClientController {
     @ResponseBody
     public String addClient(@RequestBody Client client) {
         JSONObject res = new JSONObject();
-        try {
-            // TODO: 同名文件上传会出现问题，修改为随机名称
-            if (client.getMaterialAttachment() != null && !client.getMaterialAttachment().getOriginalFilename().equals("")) {
-                String materialAttachmentName = client.getMaterialAttachment().getOriginalFilename();
-                client.setMaterialAttachmentUrl(materialAttachmentName);
-                File materialAttachment = new File("file/" + materialAttachmentName);
-                materialAttachment.getParentFile().mkdirs();
-                // 若文件存在则删除
-                if (materialAttachment.exists()) materialAttachment.delete();
-                client.getMaterialAttachment().transferTo(materialAttachment);
-            }
-
-            if (client.getProcessAttachment() != null && !client.getProcessAttachment().getOriginalFilename().equals("")) {
-                String processAttachmentName = client.getProcessAttachment().getOriginalFilename();
-                client.setProcessAttachmentUrl(processAttachmentName);
-                File processAttachment = new File("file/" + processAttachmentName);
-                processAttachment.getParentFile().mkdirs();
-                if (processAttachment.exists()) processAttachment.delete();
-                client.getProcessAttachment().transferTo(processAttachment);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "创建客户失败，请完善信息!");
-        }
         // 启用账户
         client.setClientState(ClientState.Enabled);
+        client.setClientType(ClientType.EnquiryClient);
         try {
             clientService.add(client);
             res.put("status", "success");
@@ -232,7 +208,7 @@ public class ClientController {
     public String listClient(Page page) {
         try {
             // 取出所有客户
-            List<Client> clientList = clientService.list(page);
+            List<Client> clientList = clientService.list();
             // 计算最后页
             page.caculateLast(clientService.total());
             JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
