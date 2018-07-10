@@ -110,7 +110,8 @@
                     $('#modal3_year').val(obj.year);
                     $('#modal3_period').val(obj.period);
                     var text=obj.contractContent;
-                    $('#modal3_contractContent').html(text);
+                   // $('#modal3_contractContent').val($(text).text());
+                    $('#modal3_contractContent').prop("value",text);
                 }
             },
             error:function (result) {
@@ -354,7 +355,7 @@
                         <div class="row">
                             <div class="form-horizontal col-md-12">
                                 <label for="modal3_contractContent" class="control-label col-sm-6">合同正文 </label>
-                                <textarea class="form-control"  id="modal3_contractContent" rows="20" name="contractContent"></textarea>
+                                <textarea class="form-control"  id="modal3_contractContent" rows="20" name="contractContent" htmlEscape="true"></textarea>
                         </div>
                         <div class="row text-center">
                             <a class="btn btn-primary" onclick="" id="btn">打印</a>

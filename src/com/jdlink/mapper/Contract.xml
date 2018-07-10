@@ -24,6 +24,10 @@
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
         #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent})
     </insert>
+    <insert id="addEm" parameterType="Contract">
+insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,wasteName,tonNumber,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime)
+values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{wasteName},#{tonNumber},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime})
+    </insert>
 
     <delete id="delete" parameterType="Contract" >
         delete from t_contract where contractId;
@@ -51,9 +55,12 @@
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent} WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address} WHERE contractId=#{contractId};
     </update>
-
+<update id="updateEm" parameterType="Contract">
+UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
+telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address} WHERE contractId=#{contractId};
+</update>
     <update id="setCheckStateToExamine" parameterType="Contract">
         UPDATE t_contract SET checkState='ToExamine' WHERE contractId=#{contractId};
     </update>
@@ -74,7 +81,10 @@
         UPDATE t_contract SET checkState='Examining' WHERE contractId=#{id};
     </update>
     <select id="list" resultMap="ContractRM">
-        select * from t_contract;
+        select * from t_contract ;
+    </select>
+    <select id="list1" resultMap="ContractRM">
+        select * from t_contract where contractType=#{name};
     </select>
     <select id="getContractIdList" resultType="String">
         select contractId from t_contract;

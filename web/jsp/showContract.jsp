@@ -435,7 +435,7 @@
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractAdjustSave()">保存修改</a>
                 <a class="btn btn-primary" onclick="contractAdjustSave()">提交修改</a>
-                <a class="btn btn-danger">返回</a>
+                <a class="btn btn-danger " href="contractManage.html">返回</a>
             </div>
         </form>
     </div>

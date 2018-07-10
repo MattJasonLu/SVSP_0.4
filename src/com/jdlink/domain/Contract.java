@@ -173,7 +173,7 @@ private  TicketRate1 ticketRate1;
 
     /**
      *
-     * @乙方委托代理人
+     * 乙方委托代理人
      */
     private String clientAgent;
     /**
@@ -190,6 +190,31 @@ private  TicketRate1 ticketRate1;
      */
     private String period;
     private String contractContent;
+
+    /**
+     * 单位地址
+     */
+    private String address;
+    /**
+     * 委托事项
+     */
+    private String thing;
+
+    public String getThing() {
+        return thing;
+    }
+
+    public void setThing(String thing) {
+        this.thing = thing;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getContractContent() {
         return contractContent;

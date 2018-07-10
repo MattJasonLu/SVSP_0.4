@@ -26,34 +26,6 @@
             success: function (result) {
                 if (result != undefined) {
                     var data = eval(result);
-                    // 各下拉框数据填充
-                    var contractName = $("#contractName");
-                    contractName.children().remove();
-                    $.each(data.contractNameStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        contractName.append(option);
-                    });
-                    contractName.get(0).selectedIndex = -1;
-                    var province = $("#province");
-                    province.children().remove();
-                    $.each(data.provinceStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        province.append(option);
-                    });
-                    province.get(0).selectedIndex = -1;
-                    var clientName=$('#companyName');
-                    clientName.children().remove();
-                    $.each(data.companyNameList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.companyName);
-                        clientName.append(option);
-                    });
-                    clientName.get(0).selectedIndex = -1;
                 } else {
                     console.log(result);
                 }
@@ -62,45 +34,7 @@
                 console.log(result);
             }
         });
-
     }
-    function changeSelect(index) {
-        var index1=index+1;//获得province_id
-        //console.log(index1);
-        //调用ajax
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getCityList",                  // url
-            dataType: "json",
-            data:{
-                'provinceId': index1
-            },
-            success: function (result) {
-                if (result != undefined) {
-                    var data = eval(result);
-                    //console.log(data);
-                    //var contractName = $("#contractName");
-                    //下拉框填充
-                    var city=$("#city");
-                    city.children().remove();
-                    $.each(data, function (index, item) {
-                        var option1 = $('<option />');
-                        option1.val(item.cityname);
-                        option1.text(item.cityname);
-                        city.append(option1);
-                    });
-                    city.get(0).selectedIndex = -1;
-                } else {
-                    console.log(result);
-                }
-            },
-            error:function (result) {
-                console.log(result);
-            }
-        });
-
-    }
-
     /**
      * 保存
      */
@@ -109,14 +43,15 @@
         //console.log(s);
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "saveContract",                       // url
+            url: "saveEmContract",                       // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#contractInfoForm').serializeJSON()),
+            data: JSON.stringify($('#contractInfoForm').serializeJSON())
+            ,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                    // console.log(eval(result));
+                    console.log(eval(result));
                     console.log("success: " + result);
                     alert("保存成功!");
                     $(location).attr('href', 'contractManage.html');//跳转
@@ -131,34 +66,9 @@
             }
         });
     }
-    /**/
-    function contractSave() {
-        var s=($('#contractInfoForm').serializeJSON());
-        //console.log(s);
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "saveContract",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#contractInfoForm').serializeJSON()),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    // console.log(eval(result));
-                    console.log("success: " + result);
-                    alert("保存成功!");
-                    $(location).attr('href', 'contractManage.html');//跳转
-                } else {
-                    console.log("fail: " + result);
-                    alert("保存失败!");
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                alert("服务器异常!");
-            }
-        });
-    }
+    /**
+     * 提交
+     */
     function contractSubmit(){
         var s=($('#contractInfoForm').serializeJSON());
         //console.log(s);
@@ -286,20 +196,14 @@
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
             <div class="row">
                 <div class="form-horizontal col-md-4" >
-                    <div class="form-group">
-                        <label class="col-sm-6 control-label" for="contractType">合同名称</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="contractType" id="contractType" >
-                        </div>
-                    </div>
                 </div>
                 <div class="form-horizontal col-md-4" >
                 </div>
                 <div class="form-horizontal col-md-4" >
                     <div class="form-group">
-                        <label class="col-sm-6 control-label" for="submitDep"> 送审部门</label>
+                        <label class="col-sm-6 control-label" for="area"> 所属区域</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>
+                            <input type="text" class="form-control"  name="area" id="area" >
                         </div>
                     </div>
                 </div>
@@ -307,9 +211,9 @@
             <div class="row">
                 <div class="form-horizontal col-md-8 pull-left">
                     <div class="form-group pull-left" >
-                        <label  class="col-sm-4 control-label" for="company1">甲方：</label>
+                        <label  class="col-sm-4 control-label" for="companyName">甲方：</label>
                         <div class="col-xs-8">
-                            <input class="form-control" id="company1" name="company1">
+                            <input class="form-control" id="companyName" name="companyName">
                         </div>
                     </div>
                 </div>
@@ -338,7 +242,7 @@
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     <div class="form-group">
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双方经友好协商，本着平等互利的原则，就<input type="text" style="width: 60px" class="focus">需应急处置的危险废弃物进行安全处置事宜
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双方经友好协商，本着平等互利的原则，就<input type="text" style="width: 60px" class="focus" name="thing">需应急处置的危险废弃物进行安全处置事宜
                             达成一致意见，具体内容如下：</p>
                     </div>
                 </div>
@@ -346,7 +250,7 @@
             <div class="row">
                 <div class="form-horizontal col-md-8">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="company1">危险废物的名称及数量：</label>
+                        <label  class="col-sm-4 control-label" for="wasteName">危险废物的名称及数量：</label>
                     </div>
                 </div>
                 <div class="form-horizontal col-md-4"></div>
@@ -354,17 +258,17 @@
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="name1">名称：</label>
+                        <label  class="col-sm-4 control-label" for="wasteName">名称：</label>
                         <div class="col-xs-4">
-                            <p><input class="form-control focus" id="name1" name="name1" style="width: 100px" maxlength="18">[HW（）]</p>
+                            <p><input class="form-control focus" id="wasteName" name="wasteName" style="width: 100px" maxlength="18">[HW（）]</p>
                         </div>
                     </div>
                 </div>
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="number1">数量：</label>
+                        <label  class="col-sm-4 control-label" for="tonNumber">数量：</label>
                         <div class="col-xs-4">
-                            <p><input class="form-control focus" id="number1" name="number1" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
+                            <p><input class="form-control focus" id="tonNumber" name="tonNumber" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
                         </div>
                     </div>
                 </div>
@@ -374,7 +278,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="name2">名称：</label>
                         <div class="col-xs-4">
-                            <p><input class="form-control focus" id="name2" name="name2" style="width: 100px" maxlength="18">[HW（）]</p>
+                            <p><input class="form-control focus" id="name2" name="wasteName" style="width: 100px" maxlength="18">[HW（）]</p>
                         </div>
                     </div>
                 </div>
@@ -382,7 +286,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="number2">数量：</label>
                         <div class="col-xs-4">
-                            <p><input class="form-control focus" id="number2" name="number2" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
+                            <p><input class="form-control focus" id="number2" name="tonNumber" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
                         </div>
                     </div>
                 </div>
@@ -421,17 +325,17 @@
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="legalRepresentative">法定代表人：</label>
+                        <label  class="col-sm-4 control-label" for="companyLegal">法定代表人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="legalRepresentative" name="legalRepresentative">
+                            <input class="form-control" id="companyLegal" name="companyLegal">
                         </div>
                     </div>
                 </div>
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="enterpriseLeader">企业负责人：</label>
+                        <label  class="col-sm-4 control-label" for="clientLegal">企业负责人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="enterpriseLeader" name="enterpriseLeader">
+                            <input class="form-control" id="clientLegal" name="clientLegal">
                         </div>
                     </div>
                 </div>
@@ -439,17 +343,17 @@
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="Agent1">委托代理人：</label>
+                        <label  class="col-sm-4 control-label" for="companyAgent">委托代理人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="Agent1" name="Agent1">
+                            <input class="form-control" id="companyAgent" name="companyAgent">
                         </div>
                     </div>
                 </div>
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="Agent2">委托代理人：</label>
+                        <label  class="col-sm-4 control-label" for="clientAgent">委托代理人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="Agent2" name="Agent2">
+                            <input class="form-control" id="clientAgent" name="clientAgent">
                         </div>
                     </div>
                 </div>
@@ -493,9 +397,9 @@
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="openAccount">开户：</label>
+                        <label  class="col-sm-4 control-label" for="bankName">开户：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="openAccount" name="openAccount">
+                            <input class="form-control" id="bankName" name="bankName">
                         </div>
                     </div>
                 </div>
@@ -511,9 +415,9 @@
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="account">账号：</label>
+                        <label  class="col-sm-4 control-label" for="bankAccount">账号：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="account" name="account">
+                            <input class="form-control" id="bankAccount" name="bankAccount">
                         </div>
                     </div>
                 </div>
