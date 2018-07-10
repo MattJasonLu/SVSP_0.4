@@ -22,6 +22,10 @@
 </head>
 <script type="text/javascript">
     function loadContractSelectList() {
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4
+        });
         /**
          * 装载下拉框列表
          */
@@ -74,6 +78,7 @@
                     });
                     province.get(0).selectedIndex = ${contract.province.index-1};
                     var provinceId=${contract.province.index-1}+1;
+                    $('.selectpicker').selectpicker('refresh');
                     //城市下拉
                     $.ajax({
                         type: "POST",                            // 方法类型
@@ -102,6 +107,7 @@
                                     city.append(option1);
                                 });
                                 city.get(0).selectedIndex = cityIndex;
+                                $('.selectpicker').selectpicker('refresh');
                             } else {
                                 console.log(result);
                             }
@@ -125,6 +131,7 @@
                         clientName.append(option);
                     });
                     clientName.get(0).selectedIndex =index1;
+                    $('.selectpicker').selectpicker('refresh');
                     //开票税率1下拉框
                     var taxRate1=$('#taxRate1');
                     taxRate1.children().remove();
@@ -187,6 +194,7 @@
                         city.append(option1);
                     });
                     city.get(0).selectedIndex = -1;
+                    $('.selectpicker').selectpicker('refresh');
                 } else {
                     console.log(result);
                 }
@@ -424,7 +432,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyName">公司名称</label>
                         <div class="col-xs-4">
-                            <select class="form-control" id="companyName" name="companyName">
+                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName">
                             </select>
                         </div>
                     </div>
@@ -433,11 +441,11 @@
                             <form name="form1" method="post" action="">
                                 <div class="form-inline">
                                     <div class="form-group col-xs-3">
-                                        <select class="form-control" id="province"  name="province" onchange="changeSelect(this.selectedIndex)">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">
                                         </select>
                                     </div>
-                                    <div class="form-group col-xs-1">
-                                        <select class="form-control" id="city" name="city">
+                                    <div class="form-group col-xs-3">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="city" name="city">
                                         </select>
                                     </div>
                                 </div>

@@ -8,6 +8,7 @@
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script src="js/ckeditor/ckeditor.js"></script>
 </head>
 <style>
     pre{
@@ -37,7 +38,6 @@
                 console.log("error: " + result);
             }
         });
-
     }
     function setContractList(result){
      //console.log(eval(result));//可以取到
@@ -82,59 +82,37 @@
                 clonedTr.insertBefore(tr);
             }
         });
-
         // 隐藏无数据的tr
         tr.hide();
-
-    }
-    function check(item) {
-        //模板名称
-        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
-        console.log(modelName);
-        $.ajax({
-            type:"POST",
-            url:"getContractBymodelName",
-            async: false,
-            dataType: "json",
-            data: {
-                'modelName': modelName
-            },
-            success:function (result) {
-                if(result!=undefined){
-                    var obj=eval(result);
-                    console.log(obj);
-                    $('input').prop("readonly",true);
-                    $('textarea').prop("readonly",true);
-                    $('#modal3_modelName').val(obj.modelName);
-                    $('#modal3_contractType').val(obj.contractType.name);
-                    $('#modal3_year').val(obj.year);
-                    $('#modal3_period').val(obj.period);
-                    var text=obj.contractContent;
-                   // $('#modal3_contractContent').val($(text).text());
-                    $('#modal3_contractContent').prop("value",text);
-                }
-            },
-            error:function (result) {
-
-            }
-
-
-        });
-
-
-
-        $('#btn').text();
-
-        $('#btn').text('打印');
-        $('#contractInfoForm').modal('show');
-
-
     }
     function adjust(item) {
         var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
-         console.log(modelName);
+         //console.log(modelName);
          window.location.href ="showModel?modelName="+modelName;
+         //console.log(modelName+"123")
+          //window.location.href="jsp/model.jsp?modelName="+modelName;
     }
+   CKEDITOR.editorConfig = function( config ) {
+       config.toolbarGroups = [
+            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+            { name: 'links', groups: [ 'links' ] },
+            { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+            { name: 'insert', groups: [ 'insert' ] },
+            { name: 'forms', groups: [ 'forms' ] },
+            { name: 'tools', groups: [ 'tools' ] },
+            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+            { name: 'others', groups: [ 'others' ] },
+            '/',
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+            { name: 'styles', groups: [ 'styles' ] },
+            { name: 'colors', groups: [ 'colors' ] },
+            { name: 'about', groups: [ 'about' ] }
+        ];
+        config.removeButtons = 'Underline,Subscript,Superscript';
+        config.pasteFromWordRemoveFontStyles = false;
+        config.pasteFromWordRemoveStyles = false;
+   };
 </script>
 <body onload="loadContract()">
     <!--导航条-->
@@ -345,17 +323,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="modal3_period" class="col-sm-4 control-label">适用期限</label>
-                                    <div class="col-xs-5 input-group date">
+                                    <div class="col-xs-5">
                                         <input type="text" class="form-control focus" id="modal3_period" name="period">
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-horizontal col-md-12">
                                 <label for="modal3_contractContent" class="control-label col-sm-6">合同正文 </label>
-                                <textarea class="form-control"  id="modal3_contractContent" rows="20" name="contractContent" htmlEscape="true"></textarea>
+                                <textarea class="form-control"  id="modal3_contractContent" rows="20" name="contractContent" readonly ></textarea>
                         </div>
                         <div class="row text-center">
                             <a class="btn btn-primary" onclick="" id="btn">打印</a>
@@ -368,4 +345,44 @@
         </div>
     </div>
 </body>
+<script>
+    CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});3
+    function check(item) {
+        //模板名称
+        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        // console.log(modelName);
+        $.ajax({
+            type:"POST",
+            url:"getContractBymodelName",
+            async: false,
+            dataType: "json",
+            data: {
+                'modelName': modelName
+            },
+            success:function (result) {
+                if(result!=undefined){
+                    var obj=eval(result);
+                    //console.log(obj);
+                    $('input').prop("readonly",true);
+                    $('textarea').prop("readonly",true);
+                    $('#modal3_modelName').val(obj.modelName);
+                    $('#modal3_contractType').val(obj.contractType.name);
+                    $('#modal3_year').val(obj.year);
+                    $('#modal3_period').val(obj.period);
+                    var text=obj.contractContent;
+                    console.log(text);
+                    // $('#modal3_contractContent').val($(text).text());//有换行的格式
+                    $('#modal3_contractContent').val(text);
+                }
+            },
+            error:function (result) {
+
+            }
+        });
+        $('#btn').text();
+        $('#btn').text('打印');
+        $('#contractInfoForm').modal('show');
+    }
+
+</script>
 </html>

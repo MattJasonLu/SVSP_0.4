@@ -24,6 +24,10 @@
 </style>
 <script type="text/javascript">
 function loadContractSelectList() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
 //取得下拉菜单的选项
     $.ajax({
         type: "POST",                            // 方法类型
@@ -51,6 +55,45 @@ function loadContractSelectList() {
                     province.append(option);
                 });
                 province.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
+                //获取相应的市级
+                $.ajax({
+                    type: "POST",                            // 方法类型
+                    url: "getCityList",                  // url
+                    dataType: "json",
+                    data:{
+                        'provinceId': 1
+                    },
+                    success: function (result) {
+                        if (result != undefined) {
+                            var data = eval(result);
+                            //console.log(data);
+                            //var contractName = $("#contractName");
+                            //下拉框填充
+                            var city=$("#city");
+                            city.children().remove();
+                            cityIndex="";
+                            $.each(data, function (index, item) {
+                                //  console.log(item);
+                                var option1 = $('<option />');
+                                option1.val(item.cityname);
+                                option1.text(item.cityname);
+                                if(item.cityname=='${contract.city}'){
+                                    cityIndex=index;
+                                }
+                                city.append(option1);
+                            });
+                            $('.selectpicker').selectpicker('refresh');
+
+
+                        } else {
+                            console.log(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
                 var clientName=$('#companyName');
                 clientName.children().remove();
                 $.each(data.companyNameList, function (index, item) {
@@ -59,7 +102,7 @@ function loadContractSelectList() {
                     option.text(item.companyName);
                     clientName.append(option);
                 });
-                clientName.get(0).selectedIndex = -1;
+                $('.selectpicker').selectpicker('refresh');
                 //开票税率下拉框
                 //开票税率1下拉框
                 var taxRate1=$('#taxRate1');
@@ -120,6 +163,7 @@ $.ajax({
                city.append(option1);
             });
             city.get(0).selectedIndex = -1;
+            $('.selectpicker').selectpicker('refresh');
         } else {
             console.log(result);
         }
@@ -338,7 +382,7 @@ function contractSubmit(){
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyName">公司名称</label>
                         <div class="col-xs-4">
-                            <select class="form-control" id="companyName" name="companyName">
+                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName">
                             </select>
                         </div>
                     </div>
@@ -347,11 +391,11 @@ function contractSubmit(){
                         <form name="form1" method="post" action="">
                             <div class="form-inline">
                                 <div class="form-group col-xs-3">
-                                    <select class="form-control" id="province"  name="province" onchange="changeSelect(this.selectedIndex)">
+                                    <select class="selectpicker input-xlarge form-control" id="province"  name="province"  data-live-search="true" data-live-search-placeholder="搜索..." onchange="changeSelect(this.selectedIndex)">
                                     </select>
                                 </div>
-                                <div class="form-group col-xs-1">
-                                    <select class="form-control" id="city" name="city">
+                                <div class="form-group col-xs-3">
+                                    <select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">
                                     </select>
                                 </div>
                             </div>
@@ -444,7 +488,7 @@ function contractSubmit(){
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-danger" href="javascript:history.go(-1);location.reload()">返回</a>
             </div>
         </form>
 </div>
