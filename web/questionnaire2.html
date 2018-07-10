@@ -62,6 +62,18 @@
 //        }
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.insertAfter(tr);
+        // 设置时间格式
+        $('.form_datetime').datetimepicker({
+            format: 'yyyy-mm-dd',
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
     }
 </script>
 <style>
@@ -92,7 +104,7 @@
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">客户备案</a></li>
+                            <li><a href="clientBackup.html">客户备案</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-submenu">
                                 <a href="#">业务员分配管理</a>
@@ -208,7 +220,7 @@
                                         <td><input type="text" class="focus" name="draginMaterial" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn">
-                                        <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                        <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -348,19 +360,23 @@
                                         <td>1</td>
                                         <td>
                                             <div class="btn-group">
-                                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code">
-                                                    <option value="0001">0001-危废01</option>
-                                                </select>
+                                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code" id="code"></select>
                                             </div>
                                         </td>
                                         <td><input type="text" class="focus" name="description" style="width:100%; height:100%;"></td>
-                                        <td><input type="text" class="focus" name="quantity" style="width:100%; height:100%;"></td>
-                                        <td><input type="text" class="focus" name="lastProcessTime" style="width:100%; height:100%;"></td>
-                                        <td><input type="text" class="focus" name="yearQuantity" style="width:100%; height:100%;"></td>
+                                        <td><input type="number" class="focus" name="quantity" style="width:100%; height:100%;"></td>
+                                        <td>
+                                            <div class="input-group date form_datetime">
+                                                <input class="form-control focus" type="text" value="" name="lastProcessTime" readonly>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                            </div>
+                                        </td>
+                                        <td><input type="number" class="focus" name="yearQuantity" style="width:100%; height:100%;"></td>
                                         <td><input type="text" class="focus" name="packageSituation" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn1">
-                                        <td><a class="btn btn-default" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                        <td><a class="btn btn-default btn-xs" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -383,6 +399,19 @@
     </div>
 </body>
 <script type="text/javascript">
+
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
     // 获取问卷编号
     var url=location.search;
     var Request = {};
@@ -395,6 +424,37 @@
     }
 //    console.log(Request['type']);
     function loadPage2Info() {
+        // 添加危废信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getWastesInfoList",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result.data);
+                    // 各下拉框数据填充
+                    var wastesInfoList = $("#code");
+                    // 清空遗留元素
+                    wastesInfoList.children().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.code);
+                        option.text(item.code+"-"+item.category);
+                        wastesInfoList.append(option);
+                    });
+                    wastesInfoList.removeAttr('id');
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
         $.ajax({
             type: "POST",
             url: "getCurrentQuestionnaire",

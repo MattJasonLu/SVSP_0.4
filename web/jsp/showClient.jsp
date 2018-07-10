@@ -30,6 +30,7 @@
                 if (result != undefined) {
                     console.log("success: " + result);
                     alert("保存成功!");
+                    $(location).attr('href', 'clientBackup.html');//跳转
                 } else {
                     console.log("fail: " + result);
                     alert("保存失败!");
@@ -57,6 +58,7 @@
                 if (result != undefined) {
                     console.log("success: " + result);
                     alert("提交成功!");
+                    $(location).attr('href', 'clientBackup.html');//跳转
                 } else {
                     console.log("fail: " + result);
                     alert("提交失败!");
@@ -380,7 +382,7 @@
                         <div class="form-group">
                             <label for="materialAttachment" class="col-sm-4 control-label">原辅材料</label>
                             <div class="col-xs-5">
-                                <input type="file" class="form-control" id="materialAttachment" name="materialAttachment" placeholder="" value="${client.materialAttachment}">
+                                <input type="file" class="form-control" id="materialAttachment" name="materialAttachment" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -394,7 +396,7 @@
                         <div class="form-group">
                             <label for="processAttachment" class="col-sm-4 control-label">工艺流程图</label>
                             <div class="col-xs-5">
-                                <input type="file" class="form-control" id="processAttachment" name="processAttachment" placeholder="" value="${client.processAttachment}">
+                                <input type="file" class="form-control" id="processAttachment" name="processAttachment" placeholder="">
                             </div>
                         </div>
                     </div>
