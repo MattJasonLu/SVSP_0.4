@@ -108,6 +108,9 @@
                 var oldName = $(this).attr("name");
                 var newName = oldName.replace(/[0-9]\d*/, id);
                 $(this).attr('name', newName);
+                if ($(this).attr('type') == "text") $(this).val("");
+                else if ($(this).attr('type') == "radio" || $(this).attr('type') == "checkbox") $(this).removeAttr('checked');
+                else if ($(this)[0].tagName == "SELECT") $(this).get(0).selectedIndex = -1;
             });
         }
 
