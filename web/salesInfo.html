@@ -16,19 +16,29 @@
     }
 </style>
 <script type="text/javascript">
-    function addSalesman() {
+    function clientSubmit() {
+        var addType = $("input[name='addType']:checked").val();
+        var date = {
+            'salesmanId':$("#salesmanId").val(),
+            'name':$("#name").val(),
+            'sex':$("#sex").val(),
+            'age':$("#age").val()
+        };
         $.ajax({
             type: "POST",                            // 方法类型
             url: "addSalesman",                     // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#salesmanInfoForm').serializeJSON()),
+            data: JSON.stringify(date),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
                     console.log("success: " + result);
                     alert("增加成功!");
-                    window.location.href = "salesManage.html";
+                    if(addType == "continue"){
+                        window.location.href = "salesInfo.html";
+                    }
+                    else window.location.href = "salesManage.html";
                 } else {
                     console.log("fail: " + result);
                     alert("增加失败!");
@@ -39,6 +49,17 @@
                 alert("服务器异常!");
             }
         });
+    }
+    /**
+     * 重置客户信息
+     */
+    function clientReset() {
+        var r = confirm("是否重置客户信息?");
+        if (r == true) {
+            $("#name").val("");
+            $("#sex").get(0).selectedIndex = -1;
+            $("#age").val("");
+        }
     }
     /**
      * 获取数据库中的业务员编号
@@ -193,9 +214,23 @@
                                 <input type="text" class="form-control" id="age" name="age" placeholder="">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">保存之后 </label>
+                            <div class="col-xs-5 radio">
+                                <label>
+                                    <input type="radio" name="addType" id="addType1" value="continue" checked>
+                                    继续添加
+                                </label>
+                                <label>
+                                    <input type="radio" name="addType" id="addType2" value="break">
+                                    返回列表
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="text-center middle">
-                        <a class="btn btn-primary" href="#" onclick="addSalesman();">新增</a>
+                        <a class="btn btn-primary" href="#" onclick="clientSubmit();">提交</a>
+                        <a class="btn btn-warning" onclick="clientReset()">重置</a>
                         <a class="btn btn-danger" href="salesManage.html">返回</a>
                     </div>
                 </div>
