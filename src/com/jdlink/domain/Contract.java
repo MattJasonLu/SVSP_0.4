@@ -145,6 +145,156 @@ private  TicketRate1 ticketRate1;
      */
     private Date beginQualification;
     private Date endQualification;
+    /**
+     * 危险废物名称
+     *
+     */
+    private  String wasteName;
+
+    /**
+     * 危险废物数量 吨每年
+     *
+     */
+    private  String tonNumber;
+    /**
+     *甲方法定代表人
+     */
+    private String companyLegal;
+    /**
+     *甲方委托代理人
+     */
+    private String companyAgent;
+
+    /**
+     *
+     * 乙方法定代表人
+     */
+      private String clientLegal;
+
+    /**
+     *
+     * 乙方委托代理人
+     */
+    private String clientAgent;
+    /**
+     * 模板
+     */
+
+    private String modelName;
+    /**
+     * 年份
+     */
+    private String year;
+    /**
+     * 适用期限
+     */
+    private String period;
+    private String contractContent;
+
+    /**
+     * 单位地址
+     */
+    private String address;
+    /**
+     * 委托事项
+     */
+    private String thing;
+
+    public String getThing() {
+        return thing;
+    }
+
+    public void setThing(String thing) {
+        this.thing = thing;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContractContent() {
+        return contractContent;
+    }
+
+    public void setContractContent(String contractContent) {
+        this.contractContent = contractContent;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getClientAgent() {
+        return clientAgent;
+    }
+
+    public void setClientAgent(String clientAgent) {
+        this.clientAgent = clientAgent;
+    }
+
+    public String getClientLegal() {
+        return clientLegal;
+    }
+
+    public void setClientLegal(String clientLegal) {
+        this.clientLegal = clientLegal;
+    }
+
+    public String getCompanyAgent() {
+        return companyAgent;
+    }
+
+    public void setCompanyAgent(String companyAgent) {
+        this.companyAgent = companyAgent;
+    }
+
+    public String getCompanyLegal() {
+        return companyLegal;
+    }
+
+    public void setCompanyLegal(String companyLega) {
+        this.companyLegal = companyLega;
+    }
+
+    public String getWasteName() {
+        return wasteName;
+    }
+
+    public String getTonNumber() {
+        return tonNumber;
+    }
+
+    public void setTonNumber(String tonNumber) {
+        this.tonNumber = tonNumber;
+    }
+
+    public void setWasteName(String wasteName) {
+        this.wasteName = wasteName;
+    }
 
     public Date getBeginQualification() {
         return beginQualification;

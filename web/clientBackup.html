@@ -33,7 +33,45 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
+                        // 客户编号
                     case (1):
+                        $(this).html(obj.clientId);
+                        break;
+                        // 客户名称
+                    case (2):
+                        $(this).html(obj.companyName);
+                        break;
+                        // 申报状态
+                    case (3):
+                        if (obj.applicationStatus != null)
+                        $(this).html(obj.applicationStatus.name);
+                        break;
+                        // 审核状态
+                    case (4):
+                        if (obj.checkState != null) {
+                            $(this).html(obj.checkState.name);
+                            // $("#commit").attr(addClass("disabled"));
+                        }
+                        break;
+                        // 账号状态
+                    case (5):
+                        if (obj.clientState != null)
+                        $(this).html(obj.clientState.name);
+                        break;
+                        // 联系人
+                    case (6):
+                        $(this).html(obj.contactName);
+                        break;
+                        // 联系方式
+                    case (7):
+                        $(this).html(obj.phone);
+                        break;
+                    case (8):
+                        if (obj.clientType != null)
+                        $(this).html(obj.clientType.name);
+                        break;
+                    // 操作
+                    case (9):
                         if(obj.checkState.name == "审批中"||obj.checkState.name == "已完成") {
                             $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
                             $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
@@ -58,43 +96,6 @@
                             $(this).children().eq(0).children().eq(1).children().eq(5).attr("class","disabled");
                             $(this).children().eq(0).children().eq(1).children().eq(5).children().eq(0).removeAttr("onclick");
                         }
-                        break;
-                        // 客户编号
-                    case (2):
-                        $(this).html(obj.clientId);
-                        break;
-                        // 客户名称
-                    case (3):
-                        $(this).html(obj.companyName);
-                        break;
-                        // 申报状态
-                    case (4):
-                        if (obj.applicationStatus != null)
-                        $(this).html(obj.applicationStatus.name);
-                        break;
-                        // 审核状态
-                    case (5):
-                        if (obj.checkState != null) {
-                            $(this).html(obj.checkState.name);
-                            // $("#commit").attr(addClass("disabled"));
-                        }
-                        break;
-                        // 账号状态
-                    case (6):
-                        if (obj.clientState != null)
-                        $(this).html(obj.clientState.name);
-                        break;
-                        // 联系人
-                    case (7):
-                        $(this).html(obj.contactName);
-                        break;
-                        // 联系方式
-                    case (8):
-                        $(this).html(obj.phone);
-                        break;
-                    case (9):
-                        if (obj.clientType != null)
-                        $(this).html(obj.clientType.name);
                         break;
                 }
             });
@@ -208,7 +209,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="archives.html">一企一档</a></li>
+                    <li><a href="archivesManage.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -271,11 +272,10 @@
             </div>
 
             <div class="table">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover table-condensed">
                     <thead>
                     <tr>
                         <th></th>
-                        <th>操作</th>
                         <th>客户编号</th>
                         <th>客户名称</th>
                         <th>申报状态</th>
@@ -284,6 +284,7 @@
                         <th>联系人</th>
                         <th>联系电话</th>
                         <th>客户类型</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -293,28 +294,23 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="...">
                             </label>
                         </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="viewClient(this);">查看</a></li>
-                                    <li><a href="#" onclick="commitClient(this);">提交</a></li>
-                                    <li><a href="#" onclick="adjustClient(this);">修改</a></li>
-                                    <li><a href="#" onclick="examineClient(this);">审批</a></li>
-                                    <li><a href="#" onclick="enableClient(this);">启用</a></li>
-                                    <li><a href="#" onclick="disableClient(this);">禁用</a></li>
-                                    <li><a href="#" onclick="setSales(this);">分配业务员</a></li>
-                                </ul>
-                            </div>
+                            <a href="#" onclick="viewClient(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" onclick="commitClient(this);" title="提交"><span class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>
+                            <a href="#" onclick="adjustClient(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" onclick="examineClient(this);" title="审批"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <a href="#" onclick="enableClient(this);" title="启用"><span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="disableClient(this);" title="禁用"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setSales(this);" title="分配业务员"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -778,7 +774,7 @@
      * @returns {string}
      */
     function getClientId(item) {
-        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+        return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
 
     /**
@@ -904,6 +900,20 @@
                     $("#modal3_mobile").val(data.mobile);
                     $("#modal3_phone").val(data.phone);
                     $("#modal3_email").val(data.email);
+                    $("#modal3_materialAttachment").click(function () {
+                        if (data.materialAttachmentUrl != null && data.materialAttachmentUrl != "") {
+                            window.open('downloadFile?filePath=' + data.materialAttachmentUrl);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
+                    $("#modal3_processAttachment").click(function () {
+                        if (data.processAttachmentUrl != null && data.processAttachmentUrl != "") {
+                            window.open('downloadFile?filePath=' + data.processAttachmentUrl);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
                 } else {
                     $("#modal3_companyName").val("");
                     $("#modal3_organizationCode").val("");
@@ -1273,5 +1283,14 @@
     function getIdByCheckBox(item) {
         return item.parent().parent().next().next().text();
     }
+
+    // 定义到jQuery全局变量下-文件下载
+    jQuery.download = function (url, method, filedir) {
+        jQuery('<form action="' + url + '" method="' + (method || 'post') + '">' +  // action请求路径及推送方法
+                '<input type="text" name="filePath" value="' + filedir + '"/>' + // 文件路径
+                '</form>').appendTo('body').submit().remove();
+        //var newTab = window.open('about:blank')
+        //newTab.location.href = url;
+    };
 </script>
 </html>

@@ -2,16 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>商务管理</title>
+    <title>文档信息</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/data-format.js"></script>
+    <script src="js/ckeditor/ckeditor.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
+<style>
+    .client_style {
+        margin: 5% 0 5% 5%;
+    }
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+</style>
+<script type="text/javascript">
+</script>
 <body>
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top float">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -24,7 +37,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">首页</a></li>
+                    <li><a href="wastesPlatform.html">首页</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -61,12 +74,12 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="quotation.html">价格管理</a></li>
+                            <li><a href="quotation.html">报价管理</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="archivesManage.html">一企一档</a></li>
+                    <li class="dropdown active"><a href="archivesManage.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -100,67 +113,105 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">流程节点</h1>
+            <div class="row">
+                <div>
+                    <ol class="breadcrumb">
+                        <li><a href="businessModel.html">商务管理</a></li>
+                        <li><a href="#">一企一档</a></li>
+                        <li><a href="archivesManage.html">企业列表</a></li>
+                        <li class="active">文档信息</li>
+                    </ol>
+                </div>
+                <h2 class="sub-header">文档信息</h2>
+            </div>
 
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="businessModel.html"><img src="image/customers.png" width="100" height="100" class="img-circle" alt="Generic placeholder thumbnail"></a>
-                    <h4>客户管理</h4>
-                    <!--<span class="text-muted">系统节点1</span>-->
+            <form method="post" id="documentInfoForm" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="documentType" class="col-sm-4 control-label">所属分类 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <select class="form-control" name="documentType" id="documentType"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fileName" class="col-sm-4 control-label">文档标题 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="fileName" name="fileName" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/LR.png" width="80" height="80">
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <label for="TextArea1" class="col-sm-4" style="margin-left: 7%;">文档正文 </label>
+                        <div class="col-xs-10 pull-right">
+                            <textarea id="TextArea1" cols="20" rows="2"  name="contractContent" class="ckeditor" wrap="hard"></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/user84.png" width="100" height="100" class="img-circle" alt="Generic placeholder thumbnail"></a>
-                    <h4>供应商管理</h4>
-                    <!--<span class="text-muted">系统节点2</span>-->
+                <br>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="attachment" class="col-sm-4 control-label">附件(50M) </label>
+                            <div class="col-xs-5">
+                                <input type="file" class="form-control" id="attachment" name="attachment" placeholder="">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RT.png" width="80" height="80">
+                <div class="row text-center">
+                    <a class="btn btn-primary" onclick="">保存</a>
+                    <a class="btn btn-danger" onclick="window.location.href='archives.html?clientId='+Request['clientId'];">返回</a>
                 </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RB.png" width="80" height="80">
-                </div>
-            </div>
-            <div class="row placeholders">
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/contract.png" width="100" height="100" class="img-circle" alt="Generic placeholder thumbnail"></a>
-                    <h4>合同管理</h4>
-                    <!--<span class="text-muted">系统节点3</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder"></div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/price.png" width="100" height="100" class="img-circle" alt="Generic placeholder thumbnail"></a>
-                    <h4>价格管理</h4>
-                    <!--<span class="text-muted">系统节点4</span>-->
-                </div>
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-2 placeholder"></div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <img src="image/LT1.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <img src="image/LB1.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder"></div>
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-12 placeholder">
-                    <a href="#"> <img src="image/file.png" width="100" height="100" class="img-circle" alt="Generic placeholder thumbnail"></a>
-                    <h4>一企一档</h4>
-                    <!--<span class="text-muted">系统节点5</span>-->
-                </div>
-            </div>
+            </form>
         </div>
     </div>
-
 </body>
+
+<script type="text/javascript">
+    var url=location.search;
+    var Request = {};
+    if(url.indexOf("?")!=-1) {
+        var str = url.substr(1)　//去掉?号
+        strs = str.split("&");
+        for(var i=0;i<strs.length;i++) {
+            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+        }
+    }
+
+    var clientId;
+
+    /**
+     * 导航问题
+     * */
+    $(function(){
+        autoNav();
+    });
+
+    //解决底部自动导航的问题
+    function autoNav(){
+        //获取内容的高度
+        var bodyHeight = $("body").height();
+        //获取底部导航的高度
+        var navHeight = $(".navbar").height();
+        //获取显示屏的高度
+        var iHeight = document.documentElement.clientHeight||document.body.clientHeight;
+        //如果内容的高度大于（窗口的高度 - 导航的高度）,z则需要添加一个div，设置其高度
+        if(bodyHeight > (iHeight - navHeight)){
+            $("body").append('<div style="height: '+navHeight+'px"></div>');
+        }
+    }
+    /**
+     * 获取用户的编号
+     * @param item
+     * @returns {string}
+     */
+    function getClientId(e) {
+        return e.firstElementChild.innerHTML;
+    }
+
+    CKEDITOR.replace('TextArea1');
+</script>
 </html>

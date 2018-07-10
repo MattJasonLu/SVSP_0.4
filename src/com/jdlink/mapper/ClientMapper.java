@@ -47,6 +47,8 @@ public interface ClientMapper {
 
     void setCheckStateBacked(String clientId);
 
+    void setFilePath(Client client);
+
     int count();
 
 }

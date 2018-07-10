@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>企业档案</title>
+    <title>企业列表</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -20,22 +20,11 @@
     }
 </style>
 <script type="text/javascript">
-    // 获取问卷编号
-    var url=location.search;
-    var Request = {};
-    if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
-        strs = str.split("&");
-        for(var i=0;i<strs.length;i++) {
-            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
-        }
-    }
-
-    function setFileList(result) {
+    function setClientList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
         tr.siblings().remove();
-        $.each(result.data, function (index, item) {
+        $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
@@ -45,30 +34,29 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                    // ID
+                    // 企业编号
                     case (0):
-                        $(this).html(obj.fileId);
+                        $(this).html(obj.clientId);
                         break;
-                    // 文档类型
+                    // 企业名称
                     case (1):
-                        if (obj.documentType != null)
-                        $(this).html(obj.documentType.name);
-                        break;
-                    // 文档名称
-                    case (2):
-                        $(this).html(obj.filePath);
+                        $(this).html(obj.companyName);
                         break;
                     // 由谁添加
-                    case (3):
-                        $(this).html("Admin");
+                    case (2):
+                        $(this).html(obj.contactName);
                         break;
                     // 添加时间
-                    case (4):
+                    case (3):
                         $(this).html(getNowDate());
                         break;
                     // 编辑时间
-                    case (5):
+                    case (4):
                         $(this).html(getNowDate());
+                        break;
+                    // 操作
+                    case (5):
+
                         break;
                 }
             });
@@ -79,26 +67,27 @@
         // 隐藏无数据的tr
         tr.hide();
     }
-    function loadFileList() {
+    function loadClientList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listDocumentByClientId",                  // url
+            url: "listClient",                  // url
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: { clientId: Request['clientId'] },
             success: function (result) {
-                console.log(result);
                 if (result != undefined) {
-                    setFileList(result);
+                    console.log(result);
+                    setClientList(result);
+                } else {
+                    console.log("fail: " + result);
                 }
             },
             error:function (result) {
-                console.log(result);
+                console.log("error: " + result);
             }
         });
     }
 </script>
-<body onload="loadFileList()">
+<body onload="loadClientList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -193,17 +182,12 @@
                 <div>
                     <ol class="breadcrumb">
                         <li><a href="businessModel.html">商务管理</a></li>
-                        <li><a href="archivesManage.html">一企一档</a></li>
-                        <li><a href="archivesManage.html">企业列表</a></li>
-                        <li class="active">企业档案</li>
+                        <li><a href="#">一企一档</a></li>
+                        <li class="active">企业列表</li>
                     </ol>
                 </div>
-                <h2 class="sub-header">企业档案</h2>
+                <h2 class="sub-header">企业列表</h2>
                 <div>
-                    <!--操作按钮-->
-                    <div class="pull-left">
-                        <a class="btn btn-primary" onclick="window.location.href = 'documentInfo.html?clientId=' + Request['clientId'];"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
@@ -213,50 +197,30 @@
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="row">
-                <aside class="col-md-2">
-                    <div class="widget">
-                        <span class="glyphicon glyphicon-folder-open"></span>
-                        <span class="title" style="font-size: 18px">项目主库</span>
-                        <p><a href="#">合同</a></p>
-                        <p><a href="#">管理计划</a></p>
-                        <p><a href="#">环评</a></p>
-                        <p><a href="#">营业执照</a></p>
-                        <p><a href="#">说明(合同余款延期说明)</a></p>
-                        <p><a href="#">开票资料</a></p>
-                        <p><a href="#">MSDS(物质成分表)</a></p>
-                    </div>
-                </aside>
-                <main class="col-md-10 main-content">
-                    <div class="table">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th class="text-center">文件编号</th>
-                                <th class="text-center">文件类型</th>
-                                <th class="text-center">文件标题</th>
-                                <th class="text-center">由谁添加</th>
-                                <th class="text-center">添加时间</th>
-                                <th class="text-center">编辑时间</th>
-                                <th class="text-center">操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr id="cloneTr">
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </main>
 
+            <div class="table">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="text-center">企业编号</th>
+                        <th class="text-center">企业名称</th>
+                        <th class="text-center">由谁添加</th>
+                        <th class="text-center">添加时间</th>
+                        <th class="text-center">编辑时间</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="cloneTr" onclick="showClientFiles(this);">
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <!--分页1-->
             <nav aria-label="Page navigation" style="text-align: center">
@@ -284,6 +248,8 @@
 
 <script type="text/javascript">
 
+    var clientId;
+
     /**
      * 导航问题
      * */
@@ -309,8 +275,17 @@
      * @param item
      * @returns {string}
      */
-    function getClientId(item) {
-        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    function getClientId(e) {
+        return e.firstElementChild.innerHTML;
+    }
+
+    /**
+     * 显示客户的文件列表
+     * @param e
+     */
+    function showClientFiles(e) {
+        var clientId = getClientId(e);
+        window.location.href = "archives.html?clientId=" + clientId;
     }
 
 </script>

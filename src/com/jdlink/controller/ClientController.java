@@ -2,7 +2,6 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.ClientService;
-import com.sun.deploy.util.StringUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,33 +36,9 @@ public class ClientController {
     @ResponseBody
     public String addClient(@RequestBody Client client) {
         JSONObject res = new JSONObject();
-        try {
-            // TODO: 同名文件上传会出现问题，修改为随机名称
-            if (client.getMaterialAttachment() != null && !client.getMaterialAttachment().getOriginalFilename().equals("")) {
-                String materialAttachmentName = client.getMaterialAttachment().getOriginalFilename();
-                client.setMaterialAttachmentUrl(materialAttachmentName);
-                File materialAttachment = new File("file/" + materialAttachmentName);
-                materialAttachment.getParentFile().mkdirs();
-                // 若文件存在则删除
-                if (materialAttachment.exists()) materialAttachment.delete();
-                client.getMaterialAttachment().transferTo(materialAttachment);
-            }
-
-            if (client.getProcessAttachment() != null && !client.getProcessAttachment().getOriginalFilename().equals("")) {
-                String processAttachmentName = client.getProcessAttachment().getOriginalFilename();
-                client.setProcessAttachmentUrl(processAttachmentName);
-                File processAttachment = new File("file/" + processAttachmentName);
-                processAttachment.getParentFile().mkdirs();
-                if (processAttachment.exists()) processAttachment.delete();
-                client.getProcessAttachment().transferTo(processAttachment);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "创建客户失败，请完善信息!");
-        }
         // 启用账户
         client.setClientState(ClientState.Enabled);
+        client.setClientType(ClientType.EnquiryClient);
         try {
             clientService.add(client);
             res.put("status", "success");
@@ -132,6 +107,81 @@ public class ClientController {
         }
     }
 
+    @RequestMapping("saveFiles")
+    @ResponseBody
+    public String saveFiles(String clientId, MultipartFile materialAttachment, MultipartFile processAttachment) {
+        JSONObject res = new JSONObject();
+        try {
+            // 若文件夹不存在则创建文件夹
+            String materialPath = "Files/EIA/Material";
+            String processPath = "Files/EIA/Process";
+            File materialDir = new File(materialPath);
+            File processDir = new File(processPath);
+            if (!materialDir.exists()) {
+                materialDir.mkdirs();
+            }
+            if (!processDir.exists()) {
+                processDir.mkdirs();
+            }
+            // 获取文件名字
+            String materialName = clientId + "-" +  materialAttachment.getOriginalFilename();
+            String processName = clientId + "-" + processAttachment.getOriginalFilename();
+            String materialFilePath = materialPath + "/" + materialName;
+            String processFilePath = processPath + "/" + processName;
+            File materialFile = new File(materialFilePath);
+            File processFile = new File(processFilePath);
+            materialAttachment.transferTo(materialFile);
+            processAttachment.transferTo(processFile);
+            // 更新客户保存文件的路径
+            Client client = new Client();
+            client.setClientId(clientId);
+            client.setMaterialAttachmentUrl(materialFilePath);
+            client.setProcessAttachmentUrl(processFilePath);
+            clientService.setFilePath(client);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("downloadFile")
+    @ResponseBody
+    public void downloadFile(String filePath, HttpServletResponse response) {
+        String fileName = "file";
+        try {
+            filePath = new String(filePath.getBytes("iso8859-1"), "utf-8");
+            String[] str = filePath.split("[/]");
+            fileName = java.net.URLEncoder.encode(str[str.length-1], "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("multipart/form-data");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        InputStream in = null;
+        try {
+            in = new FileInputStream(filePath);
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            do {
+                bytesRead = in.read(buffer, 0, buffer.length);
+                response.getOutputStream().write(buffer, 0, bytesRead);
+            } while (bytesRead == buffer.length);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                response.getOutputStream().flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @RequestMapping("submitClientById")//提交客户备案
     @ResponseBody
     public String submitClientById(String clientId) {
@@ -158,7 +208,7 @@ public class ClientController {
     public String listClient(Page page) {
         try {
             // 取出所有客户
-            List<Client> clientList = clientService.list(page);
+            List<Client> clientList = clientService.list();
             // 计算最后页
             page.caculateLast(clientService.total());
             JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
