@@ -9,19 +9,26 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
+<style>
+    pre{
+        white-space:pre-wrap;
+        white-space:-moz-pre-wrap;
+        white-space:-o-pre-wrap;
+        word-wrap:break-word;
+    }
+</style>
 <script type="text/javascript">
-    function loadClientList() {
+    function loadContract() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
-            cache: false,
+            url: "listContract",                  // url
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
                 if (result != undefined) {
-                    jQuery.each(result, function(i,item){
-                        console.log(item.clientId + ", " + item.companyName);
-                    });
+                    //alert(result);
+                    //console.log(result);
+                    setContractList(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -30,9 +37,106 @@
                 console.log("error: " + result);
             }
         });
+
+    }
+    function setContractList(result){
+     //console.log(eval(result));//可以取到
+        // 获取id为cloneTr的tr元素
+      //判断字段是否存在
+        var tr = $("#cloneTr1");//克隆一行
+        tr.siblings().remove();
+        $.each(result, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var obj = eval(item);
+            //console.log(obj);
+            if(obj.modelName!=""&&obj.year!=""&&obj.contractContent!="") {
+                var clonedTr = tr.clone();
+                clonedTr.show();
+                // 循环遍历cloneTr的每一个td元素，并赋值
+                clonedTr.children("td").each(function (inner_index) {
+                    // 根据索引为部分td赋值
+                    // console.log(obj);
+                    switch (inner_index) {
+                        // 合同类型
+                        case (2):
+                            if (obj.contractType != null)
+                                obj.contractName = obj.contractType.name;
+                            $(this).html(obj.contractName);
+                            break;
+                        // 模板名称
+                        case (3):
+                            $(this).html(obj.modelName);
+                            break;
+                        // 合同版本号
+                        case (4):
+                            $(this).html(" ");
+                            break;
+                        // 年份
+                        case (5):
+                            $(this).html(obj.year);
+                            break;
+                    }
+                });
+                // 把克隆好的tr追加到原来的tr前面
+                clonedTr.removeAttr("id");
+                clonedTr.insertBefore(tr);
+            }
+        });
+
+        // 隐藏无数据的tr
+        tr.hide();
+
+    }
+    function check(item) {
+        //模板名称
+        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        console.log(modelName);
+        $.ajax({
+            type:"POST",
+            url:"getContractBymodelName",
+            async: false,
+            dataType: "json",
+            data: {
+                'modelName': modelName
+            },
+            success:function (result) {
+                if(result!=undefined){
+                    var obj=eval(result);
+                    console.log(obj);
+                    $('input').prop("readonly",true);
+                    $('textarea').prop("readonly",true);
+                    $('#modal3_modelName').val(obj.modelName);
+                    $('#modal3_contractType').val(obj.contractType.name);
+                    $('#modal3_year').val(obj.year);
+                    $('#modal3_period').val(obj.period);
+                    var text=obj.contractContent;
+                   // $('#modal3_contractContent').val($(text).text());
+                    $('#modal3_contractContent').prop("value",text);
+                }
+            },
+            error:function (result) {
+
+            }
+
+
+        });
+
+
+
+        $('#btn').text();
+
+        $('#btn').text('打印');
+        $('#contractInfoForm').modal('show');
+
+
+    }
+    function adjust(item) {
+        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+         console.log(modelName);
+         window.location.href ="showModel?modelName="+modelName;
     }
 </script>
-<body onload="">
+<body onload="loadContract()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -89,7 +193,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archivesManage.html">一企一档</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -105,7 +209,6 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
@@ -165,7 +268,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr1">
                         <td class="text-center">
                             <label>
                                 <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -175,267 +278,14 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">查看</a></li>
-                                    <li><a href="#">修改信息</a></li>
+                                    <li><a href="#" onclick="check(this)">查看</a></li>
+                                    <li><a href="#" onclick="adjust(this)">修改信息</a></li>
                                     <li><a href="#">删除</a></li>
                                 </ul>
                             </div>
                         </td>
                         <td>危废合同</td>
-                        <td>危废</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>次生合同</td>
-                        <td>次生</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>应急处置合同</td>
-                        <td>应急处置</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>采购合同</td>
-                        <td>采购</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>次生合同</td>
-                        <td>次生</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>危废合同</td>
-                        <td>危废</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>次生合同</td>
-                        <td>次生</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>采购合同</td>
-                        <td>采购</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>应急处置合同</td>
-                        <td>应急处置</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>危废合同</td>
-                        <td>危废</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>次生合同</td>
-                        <td>次生</td>
-                        <td>V1.0</td>
-                        <td>2018</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>危废合同</td>
-                        <td>危废</td>
+                        <td>危废</td><!--模板名称-->
                         <td>V1.0</td>
                         <td>2018</td>
                     </tr>
@@ -464,6 +314,58 @@
             </nav>
         </div>
     </div>
+    <!--查看合同模板-->
+    <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document" style="height:150%">
+            <div class="modal-content">
+                <div class="client_style">
+                    <h2 class="sub-header text-center">合同信息</h2>
+                    <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="modal3_modelName" class="col-sm-4 control-label">模板名称 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_modelName" name="modelName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_contractType" class="col-sm-4 control-label">合同类型 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_contractType" name="contractType">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="modal3_year" class="col-sm-4 control-label">年份</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_year" name="year">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_period" class="col-sm-4 control-label">适用期限</label>
+                                    <div class="col-xs-5 input-group date">
+                                        <input type="text" class="form-control focus" id="modal3_period" name="period">
+                                    </div>
+                                </div>
 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-12">
+                                <label for="modal3_contractContent" class="control-label col-sm-6">合同正文 </label>
+                                <textarea class="form-control"  id="modal3_contractContent" rows="20" name="contractContent" htmlEscape="true"></textarea>
+                        </div>
+                        <div class="row text-center">
+                            <a class="btn btn-primary" onclick="" id="btn">打印</a>
+                            <a class="btn btn-danger" data-dismiss="modal">关闭</a>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -110,6 +110,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public void setFilePath(Client client) {
+        clientMapper.setFilePath(client);
+    }
+
+    @Override
     public int count() {
         return clientMapper.count();
     }

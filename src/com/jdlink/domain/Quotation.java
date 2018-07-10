@@ -1,6 +1,8 @@
 package com.jdlink.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by matt on 2018/7/3.
@@ -30,6 +32,26 @@ public class Quotation {
      * 是否含运费
      */
     private boolean isContainFreight;
+    /**
+     * 含税总价=各行合约量*单价(含税)
+     */
+    private float totalPriceTax;
+    /**
+     * 去税总价=各行合约量*单价(去税)
+     */
+    private float totalPrice;
+    /**
+     * 总量=各行合约量之和
+     */
+    private int totalAmount;
+    /**
+     * 状态
+     */
+    private CheckState checkState;
+    /**
+     * 危废列表
+     */
+    private List<Wastes> wastesList = new ArrayList<>();
 
     public String getQuotationId() {
         return quotationId;
@@ -79,6 +101,46 @@ public class Quotation {
         isContainFreight = containFreight;
     }
 
+    public float getTotalPriceTax() {
+        return totalPriceTax;
+    }
+
+    public void setTotalPriceTax(float totalPriceTax) {
+        this.totalPriceTax = totalPriceTax;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public List<Wastes> getWastesList() {
+        return wastesList;
+    }
+
+    public void setWastesList(List<Wastes> wastesList) {
+        this.wastesList = wastesList;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
     @Override
     public String toString() {
         return "Quotation{" +
@@ -88,6 +150,11 @@ public class Quotation {
                 ", endDate=" + endDate +
                 ", isContainTax=" + isContainTax +
                 ", isContainFreight=" + isContainFreight +
+                ", totalPriceTax=" + totalPriceTax +
+                ", totalPrice=" + totalPrice +
+                ", totalAmount=" + totalAmount +
+                ", checkState=" + checkState +
+                ", wastesList=" + wastesList +
                 '}';
     }
 }

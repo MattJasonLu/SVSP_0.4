@@ -16,16 +16,9 @@
 </head>
 <script>
     /**
-     * 打印客户信息
-     */
-    function printClient() {
-        console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
-    }
-    /**
      * 客户信息保存
      */
     function clientSave() {
-        printClient();
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveClient",                       // url
@@ -47,12 +40,12 @@
                 alert("服务器异常!");
             }
         });
+        saveClientFiles();
     }
     /**
      * 客户信息提交
      */
     function clientSubmit() {
-        printClient();
         $.ajax({
             type: "POST",                            // 方法类型
             url: "submitClient",                     // url
@@ -70,6 +63,43 @@
                 }
             },
             error:function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
+        saveClientFiles();
+    }
+    /**
+     * 保存客户的文件
+     */
+    function saveClientFiles() {
+// 客户编码
+        var clientId = document.getElementById("clientId").value;
+        // 材料附件
+        var materialAttachment = document.getElementById("materialAttachment").files[0];
+        // 流程附件
+        var processAttachment = document.getElementById("processAttachment").files[0];
+        var formFile = new FormData();
+        formFile.append("clientId", clientId);
+        formFile.append("materialAttachment", materialAttachment);
+        formFile.append("processAttachment", processAttachment);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "saveFiles",                     // url
+            cache: false,
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: formFile,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("上传成功");
+                } else {
+
+                }
+            },
+            error: function (result) {
                 console.log("error: " + result);
                 alert("服务器异常!");
             }

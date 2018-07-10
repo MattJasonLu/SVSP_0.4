@@ -13,4 +13,12 @@ public interface QuotationService {
     void update(Quotation quotation);
 
     List<Quotation> list();
+
+    int count();
+
+    Quotation getById(String quotationId);
+
+    void setStateDisabled(String quotationId);
+
+    void changeEndDate(Quotation quotation);
 }

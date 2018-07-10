@@ -211,4 +211,27 @@ public class SupplierController {
         res.put("supplierId", id);
         return res.toString();
     }
+
+    /**
+     * 通过供应商编号获取供应商
+     * @param supplierId 供应商编号
+     * @return 供应商信息
+     */
+    @RequestMapping("getBySupplierId")
+    @ResponseBody
+    public String getBySupplierId(String supplierId) {
+        JSONObject res = new JSONObject();
+        try {
+            Supplier supplier = supplierService.getBySupplierId(supplierId);
+            if (supplier == null) throw new Exception("没有该供应商");
+            JSONObject data = JSONObject.fromBean(supplier);
+            res.put("status", "success");
+            res.put("data", data.toString());
+            res.put("message", "获取供应商信息成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取供应商信息失败");
+        }
+        return res.toString();
+    }
 }

@@ -3,36 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>成本管理</title>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <script type="text/javascript">
-    function loadClientList() {
+    function setCostList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result.data, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                        // 报价单编号
+                    case (2):
+                        $(this).html(obj.costId);
+                        break;
+                        // 客户名称
+                    case (3):
+                        $(this).html(obj.supplier.companyName);
+                        break;
+                        // 联系人
+                    case (4):
+                        $(this).html(obj.supplier.contactName);
+                        break;
+                        // 联系方式
+                    case (5):
+                        $(this).html(obj.supplier.phone);
+                        break;
+                        // 所属区域
+                    case (6):
+                        $(this).html(obj.supplier.location);
+                        break;
+                        // 状态
+                    case (7):
+                        if (obj.checkState != null)
+                        $(this).html(obj.checkState.name);
+                        break;
+                        // 到期日期
+                    case (8):
+                        $(this).html(getTimeStr(obj.endDate));
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    function loadCostList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
+            url: "listCost",           // url
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    jQuery.each(result, function(i,item){
-                        console.log(item.clientId + ", " + item.companyName);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
+                    setCostList(result);
+                } else { }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
+    //获取时间
+    function getTimeStr(obj) {
+        var year=(parseInt(obj.year)+1900).toString();
+        var mouth=parseInt((obj.month)+1).toString();
+        if(mouth.length!=2){
+            mouth=0+mouth;
+        }
+        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+        var  day=parseInt((obj.date)).toString();
+        //ataLeftCompleting(2, "0", day.toString()).toString();
+        if(day.length!=2){
+            day=0+day;
+        }
+        var time1=year+"-"+mouth+"-"+day;
+        return time1;
+    }
 </script>
-<body onload="">
+<body onload="loadCostList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -89,7 +157,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archivesManage.html">一企一档</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -137,7 +205,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary" href="newCost.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 打印</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
@@ -161,15 +229,16 @@
                         <th></th>
                         <th>操作</th>
                         <th>成本编号</th>
-                        <th>成本名称</th>
-                        <th>客户名称</th>
-                        <th>报价部门</th>
-                        <th>申请人</th>
+                        <th>供应商名称</th>
+                        <th>联系人</th>
+                        <th>联系方式</th>
+                        <th>所属区域</th>
+                        <th>状态</th>
                         <th>到期日期</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr">
                         <td class="text-center">
                             <label>
                                 <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -179,294 +248,20 @@
                             <div class="dropdown">
                                 <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">查看</a></li>
-                                    <li><a href="#">修改信息</a></li>
+                                    <li><a href="#" onclick="viewCost(this);">查看</a></li>
+                                    <li><a href="#" onclick="adjustCost(this);">修改信息</a></li>
                                     <li><a href="#">升级</a></li>
-                                    <li><a href="#">有效期变更</a></li>
+                                    <li><a href="#" onclick="showCostEndDate(this);">有效期变更</a></li>
                                     <li><a href="#">送审</a></li>
-                                    <li><a href="#">作废</a></li>
+                                    <li><a href="#" onclick="disabledCost(this);">作废</a></li>
                                 </ul>
                             </div>
                         </td>
                         <td>C00001</td>
-                        <td>国内运输201829</td>
                         <td>一辉国际综合物流服务有限公司</td>
+                        <td>国内运输201829</td>
                         <td>董事长部门</td>
                         <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>C00001</td>
-                        <td>国内运输201829</td>
-                        <td>一辉国际综合物流服务有限公司</td>
-                        <td>董事长部门</td>
                         <td>Siri</td>
                         <td>2018-06-30</td>
                     </tr>
@@ -495,6 +290,176 @@
             </nav>
         </div>
     </div>
-
+    <!--modal-->
+    <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">客户报价单-有效期时间变更</h4>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <form id="model-assign" method="post">
+                        <div class="form-group">
+                            <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 有效期结束时间</label>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1" id="time">
+                                <input class="form-control" type="text" value="" id="model-validity" name="model-validity" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="changeCostEndDate();">更新</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+<script>
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+    var costId;
+
+    /**
+     * 查看成本单
+     * @param e
+     */
+    function viewCost(e) {
+        var id = getCostId(e);
+        window.location.href = "newCost.html?costId=" + id + "&type=view";
+    }
+    /**
+     * 修改成本单
+     * @param e
+     */
+    function adjustCost(e) {
+        var id = getCostId(e);
+        window.location.href = "newCost.html?costId=" + id + "&type=adjust";
+    }
+
+    /**
+     * 作废报价单
+     */
+    function disabledCost(e) {
+        var r = confirm("是否作废该成本单？");
+        if (r == true) {
+            var id = getCostId(e);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "setCostStateDisabled",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    costId: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            window.location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        }
+    }
+    /**
+     * 有效期窗口显示
+     */
+    function showCostEndDate(e) {
+        var id = getCostId(e);
+        costId = id;
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCost",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                costId: id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $("#model-validity").val(getTimeStr(data.data.endDate));
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+        $('#modalId').modal('show');
+    }
+    /**
+     * 有效期变更
+     */
+    function changeCostEndDate() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "changeCostEndDate",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                costId: costId,
+                endDate: $("#model-validity").val()
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+    }
+
+    /**
+     * 获取成本单的编号
+     * @param item
+     * @returns {string}
+     */
+    function getCostId(e) {
+        return e.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
+</script>
 </html>

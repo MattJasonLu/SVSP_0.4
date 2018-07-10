@@ -15,6 +15,7 @@
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/contract.css">
 </head>
 <script type="text/javascript">
 function loadContractSelectList() {
@@ -100,13 +101,12 @@ $.ajax({
 });
 
 }
-
 /**
  * 保存
  */
 function contractSave() {
     var s=($('#contractInfoForm').serializeJSON());
-    //console.log(s);
+    console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "saveContract",                       // url
@@ -116,7 +116,7 @@ function contractSave() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined) {
-                console.log(eval(result));
+               // console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
                 $(location).attr('href', 'contractManage.html');//跳转
@@ -144,7 +144,7 @@ function contractSave() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined) {
-                console.log(eval(result));
+               // console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
                 $(location).attr('href', 'contractManage.html');//跳转
@@ -161,7 +161,7 @@ function contractSave() {
 }
 function contractSubmit(){
     var s=($('#contractInfoForm').serializeJSON());
-    //console.log(s);
+    console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "submitContract",                       // url
@@ -171,7 +171,7 @@ function contractSubmit(){
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined) {
-                console.log(eval(result));
+                //(eval(result));
                 console.log("success: " + result);
                 alert("提交成功!");
                 $(location).attr('href', 'contractManage.html');//跳转
@@ -202,7 +202,7 @@ function contractSubmit(){
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="wastesPlatform.html">首页</a></li>
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="clientBackup.html">客户备案</a></li>
@@ -220,7 +220,7 @@ function contractSubmit(){
                         <li><a href="supplierBackup.html">供应商备案</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="contractManage.html">合同列表</a></li>
@@ -236,7 +236,7 @@ function contractSubmit(){
                         <li><a href="cost.html">成本管理</a></li>
                     </ul>
                 </li>
-                <li><a href="#">一企一档</a></li>
+                <li><a href="archivesManage.html">一企一档</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -330,7 +330,7 @@ function contractSubmit(){
                     </div>
                     <div class="form-group" >
                         <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-5">
+                        <div class="col-xs-4">
                             <select class="form-control" id="contractName" name="contractType">
                             </select>
                         </div>
@@ -385,11 +385,11 @@ function contractSubmit(){
                     </div>
                 </div>
             </div>
-               <div class="row text-center">
-                     <a class="btn btn-success" onclick="contractSave()">保存</a>
-                        <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                       <a class="btn btn-danger">返回</a>
-                    </div>
+            <div class="row text-center">
+                <a class="btn btn-success" onclick="contractSave()">保存</a>
+                <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
+                <a class="btn btn-danger" href="contractManage.html">返回</a>
+            </div>
         </form>
 
 

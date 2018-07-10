@@ -2,37 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>价格管理</title>
+    <title>报价管理</title>
+    <link href="css/bootstrap/bootstrap-datetimepicker.css" rel="stylesheet" media="screen">
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
 <script type="text/javascript">
-    function loadClientList() {
+    function setQuotationList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result.data, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                        // 报价单编号
+                    case (2):
+                        $(this).html(obj.quotationId);
+                        break;
+                        // 客户名称
+                    case (3):
+                        $(this).html(obj.client.companyName);
+                        break;
+                        // 联系人
+                    case (4):
+                        $(this).html(obj.client.contactName);
+                        break;
+                        // 联系方式
+                    case (5):
+                        $(this).html(obj.client.phone);
+                        break;
+                        // 所属区域
+                    case (6):
+                        $(this).html(obj.client.location);
+                        break;
+                        // 报价单状态
+                    case (7):
+                        if (obj.checkState != null)
+                        $(this).html(obj.checkState.name);
+                        break;
+                        // 到期日期
+                    case (8):
+                        $(this).html(getTimeStr(obj.endDate));
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    function loadQuotationList() {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "listClient",                  // url
+            url: "listQuotation",           // url
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
+                console.log(result);
                 if (result != undefined) {
-                    jQuery.each(result, function(i,item){
-                        console.log(item.clientId + ", " + item.companyName);
-                    });
-                } else {
-                    console.log("fail: " + result);
-                }
+                    setQuotationList(result);
+                } else { }
             },
             error:function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
+    //获取时间
+    function getTimeStr(obj) {
+        var year=(parseInt(obj.year)+1900).toString();
+        var mouth=parseInt((obj.month)+1).toString();
+        if(mouth.length!=2){
+            mouth=0+mouth;
+        }
+        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+        var  day=parseInt((obj.date)).toString();
+        //ataLeftCompleting(2, "0", day.toString()).toString();
+        if(day.length!=2){
+            day=0+day;
+        }
+        var time1=year+"-"+mouth+"-"+day;
+        return time1;
+    }
 </script>
-<body onload="">
+<body onload="loadQuotationList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -89,7 +157,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archivesManage.html">一企一档</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -161,318 +229,42 @@
                         <th></th>
                         <th>操作</th>
                         <th>报价单编号</th>
-                        <th>报价单名称</th>
                         <th>客户名称</th>
-                        <th>报价部门</th>
-                        <th>申请人</th>
+                        <th>联系人</th>
+                        <th>联系方式</th>
+                        <th>所属区域</th>
+                        <th>状态</th>
                         <th>到期日期</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">查看</a></li>
-                                    <li><a href="#">修改信息</a></li>
-                                    <li><a href="#">升级</a></li>
-                                    <li><a href="#" onclick="function dateChange() {
-                                        $('#modalId').modal('show');
-                                    }
-                                    dateChange()">有效期变更</a></li>
-                                    <li><a href="#">送审</a></li>
-                                    <li><a href="#">作废</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">新增</a></li>
-                                    <li><a href="#">修改</a></li>
-                                    <li><a href="#">停用</a></li>
-                                    <li><a href="#">启用</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td>Q00242</td>
-                        <td>陆出希捷国际科技(无锡）有限公司201603</td>
-                        <td>希捷国际科技(无锡）有限公司</td>
-                        <td>董事长部门</td>
-                        <td>Siri</td>
-                        <td>2018-06-30</td>
-                    </tr>
+                        <tr id="cloneTr">
+                            <td class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                </label>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" onclick="viewQuotation(this);">查看</a></li>
+                                        <li><a href="#" onclick="adjustQuotation(this);">修改信息</a></li>
+                                        <li><a href="#">升级</a></li>
+                                        <li><a href="#" onclick="showEndDate(this);">有效期变更</a></li>
+                                        <li><a href="#">送审</a></li>
+                                        <li><a href="#" onclick="disabledQuotation(this);">作废</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>Q00242</td>
+                            <td>陆出希捷国际科技(无锡）有限公司201603</td>
+                            <td>希捷国际科技(无锡）有限公司</td>
+                            <td>董事长部门</td>
+                            <td>Siri</td>
+                            <td>Siri</td>
+                            <td>2018-06-30</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -499,21 +291,22 @@
         </div>
     </div>
 
-    //modal
+    <!--modal-->
     <div class="modal fade" id="modalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">客户报价单-有效期变更</h4>
+                    <h4 class="modal-title" id="myModalLabel">客户报价单-有效期时间变更</h4>
                 </div>
                 <div class="modal-body">
                     <br>
                     <form id="model-assign" method="post">
                         <div class="form-group">
-                            <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 结束有效期</label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input2" id="time2">
-                                <input type="text" class="form-control" id="model-validity" name="model-validity" readonly>
+                            <label for="model-validity" class="col-sm-4 control-label" onclick="validity()"><input type="checkbox"> 有效期结束时间</label>
+                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1" id="time">
+                                <input class="form-control" type="text" value="" id="model-validity" name="model-validity" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                             </div>
                         </div>
@@ -521,10 +314,153 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="update();">更新</button>
+                    <button type="button" class="btn btn-primary" onclick="changeEndDate();">更新</button>
                 </div>
             </div>
         </div>
     </div>
 </body>
+<script>
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+    var quotationId;
+
+    /**
+     * 查看报价单
+     * @param e
+     */
+    function viewQuotation(e) {
+        var id = getQuotationId(e);
+        window.location.href = "newQuotation.html?quotationId=" + id + "&type=view";
+    }
+    /**
+     * 修改报价单
+     * @param e
+     */
+    function adjustQuotation(e) {
+        var id = getQuotationId(e);
+        window.location.href = "newQuotation.html?quotationId=" + id + "&type=adjust";
+    }
+
+    /**
+     * 作废报价单
+     */
+    function disabledQuotation(e) {
+        var r = confirm("是否作废该报价单？");
+        if (r == true) {
+            var id = getQuotationId(e);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "setStateDisabled",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    quotationId: id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            window.location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        }
+    }
+    /**
+     * 有效期窗口显示
+     */
+    function showEndDate(e) {
+        var id = getQuotationId(e);
+        quotationId = id;
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getQuotation",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                quotationId: id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $("#model-validity").val(getTimeStr(data.data.endDate));
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+        $('#modalId').modal('show');
+    }
+    /**
+     * 有效期变更
+     */
+    function changeEndDate() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "changeEndDate",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                quotationId: quotationId,
+                endDate: $("#model-validity").val()
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+    }
+
+    /**
+     * 获取报价单的编号
+     * @param item
+     * @returns {string}
+     */
+    function getQuotationId(e) {
+        return e.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    }
+</script>
 </html>

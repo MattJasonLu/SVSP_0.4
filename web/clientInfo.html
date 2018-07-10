@@ -102,56 +102,134 @@
             }
         });
     });
-
-    function printClient() {
-        //console.log(JSON.stringify($('#clientInfoForm').serializeJSON()));
+    /**
+     * 重置客户信息
+     */
+    function clientReset() {
+        var r = confirm("是否重置客户信息?");
+        if (r == true) {
+            $("#companyName").val("");
+            $("#organizationCode").val("");
+            $("#representative").val("");
+            $("#industry").val("");
+            $("#enterpriseType").get(0).selectedIndex = -1;
+            $("#operationType").get(0).selectedIndex = -1;
+            $("#operationRecord").get(0).selectedIndex = -1;
+            $("#street").val("");
+            $("#licenseCode").val("");
+            $("#postCode").val("");
+            $("#product").val("");
+            $("#operationMode").get(0).selectedIndex = -1;
+            $("#contingencyPlan").get(0).selectedIndex = -1;
+            $("#applicationStatus").get(0).selectedIndex = -1;
+            $("#location").val("");
+            $("#materialAttachment").val("");
+            $("#processAttachment").val("");
+            $("#processDesp").val("");
+            $("#contactName").val("");
+            $("#mobile").val("");
+            $("#phone").val("");
+            $("#email").val("");
+        }
     }
     function clientSave() {
-//        printClient();
+        var addType = $("input[name='addType']:checked").val();
         if (validator.form()) {
-            console.log($('#clientInfoForm').serializeJSON());
+            var data = {
+                companyName: $("#companyName").val(),
+                organizationCode: $("#organizationCode").val(),
+                representative: $("#representative").val(),
+                industry: $("#industry").val(),
+                enterpriseType: $("#enterpriseType").val(),
+                operationType: $("#operationType").val(),
+                operationRecord: $("#operationRecord").val(),
+                street: $("#street").val(),
+                clientId: $("#clientId").val(),
+                licenseCode: $("#licenseCode").val(),
+                postCode: $("#postCode").val(),
+                product: $("#product").val(),
+                operationMode: $("#operationMode").val(),
+                contingencyPlan: $("#contingencyPlan").val(),
+                applicationStatus: $("#applicationStatus").val(),
+                location: $("#location").val(),
+                processDesp: $("#processDesp").val(),
+                contactName: $("#contactName").val(),
+                mobile: $("#mobile").val(),
+                phone: $("#phone").val(),
+                email: $("#email").val()
+            };
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "saveClient",                       // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+                data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
+                processData: false,
                 success: function (result) {
                     if (result != undefined) {
-                        console.log("success: " + result);
-                        alert("保存成功!");
-                        $(location).attr('href', 'clientBackup.html');//跳转
-                    } else {
-                        console.log("fail: " + result);
-                        alert("保存失败!");
+                        if (result.status == "success") {
+                            alert(result.message);
+                            if (addType == "continue") window.location.reload();
+                            else $(location).attr('href', 'clientBackup.html');//跳转
+                        } else {
+                            console.log(result);
+                            alert(result.message);
+                        }
                     }
                 },
                 error: function (result) {
-                    console.log("error: " + result);
+                    console.log(result);
                     alert("服务器异常!");
                 }
             });
+            saveClientFiles();
         }
     }
-    function clientSubmit() {f
-//        printClient();
+    function clientSubmit() {
+        var addType = $("input[name='addType']:checked").val();
         if (validator.form()) {
+            var data = {
+                companyName: $("#companyName").val(),
+                organizationCode: $("#organizationCode").val(),
+                representative: $("#representative").val(),
+                industry: $("#industry").val(),
+                enterpriseType: $("#enterpriseType").val(),
+                operationType: $("#operationType").val(),
+                operationRecord: $("#operationRecord").val(),
+                street: $("#street").val(),
+                clientId: $("#clientId").val(),
+                licenseCode: $("#licenseCode").val(),
+                postCode: $("#postCode").val(),
+                product: $("#product").val(),
+                operationMode: $("#operationMode").val(),
+                contingencyPlan: $("#contingencyPlan").val(),
+                applicationStatus: $("#applicationStatus").val(),
+                location: $("#location").val(),
+                processDesp: $("#processDesp").val(),
+                contactName: $("#contactName").val(),
+                mobile: $("#mobile").val(),
+                phone: $("#phone").val(),
+                email: $("#email").val()
+            };
+            // 上传用户数据
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "submitClient",                     // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+                data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     if (result != undefined) {
-                        console.log("success: " + result);
-                        alert("提交成功!");
-                        $(location).attr('href', 'clientBackup.html');
-                    } else {
-                        console.log("fail: " + result);
-                        alert("提交失败!");
+                        if (result.status == "success") {
+                            alert(result.message);
+                            if (addType == "continue") window.location.reload();
+                            else $(location).attr('href', 'clientBackup.html');//跳转
+                        } else {
+                            console.log(result);
+                            alert(result.message);
+                        }
                     }
                 },
                 error: function (result) {
@@ -159,6 +237,9 @@
                     alert("服务器异常!");
                 }
             });
+
+            // 上传用户文件
+            saveClientFiles();
         }
     }
     function loadSelectList() {
@@ -236,7 +317,42 @@
             }
         });
     }
+    /**
+     * 保存客户的文件
+     */
+    function saveClientFiles() {
+// 客户编码
+        var clientId = document.getElementById("clientId").value;
+        // 材料附件
+        var materialAttachment = document.getElementById("materialAttachment").files[0];
+        // 流程附件
+        var processAttachment = document.getElementById("processAttachment").files[0];
+        var formFile = new FormData();
+        formFile.append("clientId", clientId);
+        formFile.append("materialAttachment", materialAttachment);
+        formFile.append("processAttachment", processAttachment);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "saveFiles",                     // url
+            cache: false,
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: formFile,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("上传成功");
+                } else {
 
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
+    }
     /**
      * 获取数据库中的客户编号
      */
@@ -321,7 +437,7 @@
                             <li><a href="cost.html">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archivesManage.html">一企一档</a></li>
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -364,7 +480,15 @@
             </div>
             <h2 class="sub-header">客户新增</h2>
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
-                <h4 class="text-info">基本信息</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info">基本信息</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png">
+                    </div>
+                    <div class="form-horizontal col-md-7"></div>
+                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
@@ -465,10 +589,6 @@
                                 <input type="text" class="form-control" id="location" name="location" placeholder="" required>
                             </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
                 <h4 class="text-info">环评信息</h4>
@@ -515,6 +635,19 @@
                                 <input type="text" class="form-control" id="mobile" name="mobile" placeholder="" >
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">保存之后 </label>
+                            <div class="col-xs-5 radio">
+                                <label>
+                                    <input type="radio" name="addType" id="addType1" value="continue" checked>
+                                    继续添加
+                                </label>
+                                <label>
+                                    <input type="radio" name="addType" id="addType2" value="break">
+                                    返回列表
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
@@ -534,6 +667,7 @@
                 <div class="row text-center">
                     <a class="btn btn-success" onclick="clientSave()">保存</a>
                     <a class="btn btn-primary" onclick="clientSubmit()">提交</a>
+                    <a class="btn btn-warning" onclick="clientReset()">重置</a>
                     <a class="btn btn-danger" href="clientBackup.html">返回</a>
                 </div>
             </form>
