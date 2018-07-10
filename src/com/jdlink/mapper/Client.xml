@@ -35,7 +35,9 @@
           #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
           #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
           #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, #{clientState}, #{industry},
-          #{product}, #{checkState})
+          #{product}, #{checkState});
+          INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
+          INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
     </insert>
 
     <delete id="delete" parameterType="Client" >
@@ -84,7 +86,7 @@
          street=#{street}, materialAttachmentUrl=#{materialAttachmentUrl}, applicationStatus=#{applicationStatus},
          processAttachmentUrl=#{processAttachmentUrl}, processDesp=#{processDesp}, contactName=#{contactName},
          phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}
-         WHERE clientId=#{clientId}
+         WHERE clientId=#{clientId};
     </update>
 
     <update id="enableState" parameterType="String">
@@ -117,6 +119,8 @@
 
     <update id="setFilePath" parameterType="Client">
         UPDATE client SET materialAttachmentUrl=#{materialAttachmentUrl}, processAttachmentUrl=#{processAttachmentUrl} WHERE clientId=#{clientId};
+        INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
+          INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
     </update>
 
     <select id="list" resultMap="ClientRM">
