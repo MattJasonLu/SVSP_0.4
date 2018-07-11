@@ -27,26 +27,77 @@
 </style>
 <script type="text/javascript">
     function loadContractList() {
-         var name="Wastes";
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listContractByName",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data:{"name":name},
-            success: function (result) {
-                if (result != undefined) {
-                    //alert(result);
-                    //console.log(result);
-                    setContractList(result);
-                } else {
-                    console.log("fail: " + result);
+        var name=localStorage['name'];
+        console.log(name);
+        if(name==undefined||name=="Wastes")
+        {
+            name="Wastes";
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName",                  // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data:{"name":name},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error:function (result) {
+                    console.log("error: " + result);
                 }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-            }
-        });
+            });
+            localStorage.clear();
+        }
+        if(name=="Emergency"){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName",                  // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data:{"name":name},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList1(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error:function (result) {
+                    console.log("error: " + result);
+                }
+
+            });
+        }
+        else{
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName",                  // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data:{"name":name},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error:function (result) {
+                    console.log("error: " + result);
+                }
+
+            });
+            localStorage.clear();
+        }
     }
     function setContractList(result) {
        // console.log(eval(result));//可以取到
@@ -227,6 +278,24 @@
     //在此提交
         var items = $("input[name='blankCheckbox']:checked");//判断复选框是否选中
         if(items.length>0){
+            var name1= items[0].parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+            if(name1=="物流合同"){
+                var name2="Logistics";
+            }
+            if(name1=="危废合同"){
+                var name2="Wastes";
+            }
+            if(name1=="次生合同"){
+                var name2="Derive";
+            }
+            if(name1=="采购合同"){
+                var name2="Purchase";
+            }
+            if(name1=="应急处置合同"){
+                var name2="Emergency";
+            }
+
+
             function getContractById(id) {
                 $.ajax({
                     type: "POST",                       // 方法类型
@@ -238,7 +307,6 @@
                     },
                     success: function (result) {
                         if (result != undefined) {
-
                         } else {
                             console.log("fail: " + result);
                         }
@@ -251,9 +319,13 @@
             items.each(function () {//遍历
                 var id = getContractId1(this);//获得合同编号
                 getContractById(id);
+
             });
-           alert("提交成功!");
-            window.location.reload();
+            alert("提交成功!");
+           // window.location.reload();
+            $(location).attr('href', 'contractManage.html');
+            localStorage.name=name2;
+            location.href="contractManage.html";
         }
 else {
             alert("请勾选要提交的合同！")
@@ -398,6 +470,27 @@ else {
             window.location.href = "emergency1?contractId="+contractId;
         }
 
+    }
+    function auto(name) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listContractByName",                  // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"name":name},
+            success: function (result) {
+                if (result != undefined) {
+                    //alert(result);
+                    //console.log(result);
+                    setContractList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error:function (result) {
+                console.log("error: " + result);
+            }
+        });
     }
 </script>
 <body onload="loadContractList()">
@@ -850,7 +943,6 @@ else {
     // });
 function ContractListByName(item) {
         if(item.innerHTML=='危废合同'){
-            console.log(name);
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "listContractByName",                  // url
@@ -872,7 +964,6 @@ function ContractListByName(item) {
             });
         }
         if(item.innerHTML=="应急处置合同"){
-            console.log(name);
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "listContractByName",                  // url
@@ -893,7 +984,7 @@ function ContractListByName(item) {
                 }
             });
         }if(item.innerHTML=="物流合同"){
-        //(name);
+
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listContractByName",                  // url
@@ -935,7 +1026,6 @@ function ContractListByName(item) {
             }
         });
         }if(item.innerHTML=="采购合同"){
-        console.log(name);
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listContractByName",                  // url

@@ -113,6 +113,7 @@
         config.removeButtons = 'Underline,Subscript,Superscript';
         config.pasteFromWordRemoveFontStyles = false;
         config.pasteFromWordRemoveStyles = false;
+       config.removePlugins='elementspath';
    };
 </script>
 <body onload="loadContract()">
@@ -333,7 +334,7 @@
                         <div class="row">
                             <div class="form-horizontal col-md-12">
                                 <label for="modal3_contractContent" class="control-label col-sm-6">合同正文 </label>
-                                <textarea class="form-control"  id="modal3_contractContent" rows="20" name="contractContent" readonly ></textarea>
+                                <textarea class="form-control"  id="modal3_contractContent" rows="40" name="contractContent" readonly ></textarea>
                         </div>
                         <div class="row text-center">
                             <a class="btn btn-primary" onclick="" id="btn">打印</a>
@@ -347,7 +348,7 @@
     </div>
 </body>
 <script>
-    CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});3
+    CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
     function check(item) {
         //模板名称
         var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
@@ -371,10 +372,9 @@
                     $('#modal3_year').val(obj.year);
                     $('#modal3_period').val(obj.period);
                     var text=obj.contractContent;
-                    console.log(text);
+                    //console.log(text);
                      //$('#modal3_contractContent').val($(text).text());//有换行的格式
                    CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
-
                 }
             },
             error:function (result) {

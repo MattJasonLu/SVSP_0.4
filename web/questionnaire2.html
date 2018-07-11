@@ -157,7 +157,6 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
@@ -399,7 +398,6 @@
     </div>
 </body>
 <script type="text/javascript">
-
     $('.form_datetime').datetimepicker({
         format: 'yyyy-mm-dd',
         language:  'zh-CN',
@@ -411,7 +409,6 @@
         minView: 2,
         forceParse: 0
     });
-
     // 获取问卷编号
     var url=location.search;
     var Request = {};
@@ -570,7 +567,7 @@
         return json;
     };
     // 序列化DeriveWastes到json格式
-    $.fn.serializeWasteProcess=function(){
+    $.fn.serializeWasteProcess=function() {
         var json = [];
         var map=this.serializeArray();
         console.log(map);
