@@ -42,6 +42,19 @@ public class SupplierController {
         }
     }
 
+    /**
+     * 根据编号查找供应商
+     */
+    @RequestMapping("listSupplierById")
+    @ResponseBody
+    public String listSupplierById(String id){
+     Supplier supplier=supplierService.getBySupplierId(id);
+     JSONObject res=JSONObject.fromBean(supplier);
+     return res.toString();
+    }
+
+
+
     @RequestMapping("showSupplier")
     public ModelAndView showSupplier(String supplierId) {
         ModelAndView mav = new ModelAndView();

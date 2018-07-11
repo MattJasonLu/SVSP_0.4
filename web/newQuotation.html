@@ -285,7 +285,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover table-condensed">
                             <thead>
                             <tr>
                                 <th>序号</th>
@@ -328,10 +328,28 @@
                             </tr>
                         </table>
                 </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">保存之后 </label>
+                            <div class="col-xs-5 radio">
+                                <label>
+                                    <input type="radio" name="addType" id="addType1" value="continue" checked>
+                                    继续添加
+                                </label>
+                                <label>
+                                    <input type="radio" name="addType" id="addType2" value="break">
+                                    返回列表
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <br>
                 <div class="row text-center">
                     <a id="btnSave" class="btn btn-primary" onclick="operateQuotation(this);">保存</a>
                     <a id="btnCfm" class="btn btn-primary" onclick="operateQuotation(this);">提交</a>
+                    <a class="btn btn-warning" onclick="clientReset()">重置</a>
                     <a class="btn btn-danger" href="quotation.html">返回</a>
                 </div>
             </form>
@@ -353,6 +371,37 @@
     }
 </style>
 <script type="text/javascript">
+
+    /**
+     * 重置客户信息
+     */
+    function clientReset() {
+        var r = confirm("是否重置客户信息?");
+        if (r == true) {
+            $("#companyName").val("");
+            $("#organizationCode").val("");
+            $("#representative").val("");
+            $("#industry").val("");
+            $("#enterpriseType").get(0).selectedIndex = -1;
+            $("#operationType").get(0).selectedIndex = -1;
+            $("#operationRecord").get(0).selectedIndex = -1;
+            $("#street").val("");
+            $("#licenseCode").val("");
+            $("#postCode").val("");
+            $("#product").val("");
+            $("#operationMode").get(0).selectedIndex = -1;
+            $("#contingencyPlan").get(0).selectedIndex = -1;
+            $("#applicationStatus").get(0).selectedIndex = -1;
+            $("#location").val("");
+            $("#materialAttachment").val("");
+            $("#processAttachment").val("");
+            $("#processDesp").val("");
+            $("#contactName").val("");
+            $("#mobile").val("");
+            $("#phone").val("");
+            $("#email").val("");
+        }
+    }
     // 获取传入参数
     var url=location.search;
     var Request = {};

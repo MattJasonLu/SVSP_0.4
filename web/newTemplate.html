@@ -390,8 +390,9 @@
             data = mySelection.getNative();
             //console.log(data);
         }
-        var CText=CKEDITOR.instances.TextArea1.document.getBody().getText(); //取得纯文本
-       // var CText= CKEDITOR.instances.TextArea1.getData();
+        //var CText=CKEDITOR.instances.TextArea1.document.getBody().getText(); //取得纯文本
+        var CText= CKEDITOR.instances.TextArea1.getData();//取得文本全部内容
+        encodeURI(CText);
         console.log(CText);
        // var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
         //CText=CText.replace(new RegExp("\n", "gm"), "<br>");

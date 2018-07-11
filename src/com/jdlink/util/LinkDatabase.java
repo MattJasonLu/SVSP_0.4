@@ -1,9 +1,6 @@
 package com.jdlink.util;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 public class LinkDatabase {
     /*String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     String url = "jdbc:mysql://172.16.1.92:3306/jdlink;DatabaseName=jdlink";*/

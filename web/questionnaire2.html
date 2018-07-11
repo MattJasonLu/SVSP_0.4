@@ -220,7 +220,7 @@
                                         <td><input type="text" class="focus" name="draginMaterial" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn">
-                                        <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                        <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -360,9 +360,7 @@
                                         <td>1</td>
                                         <td>
                                             <div class="btn-group">
-                                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code" id="code">
-                                                    <option value="0001">0001-危废01</option>
-                                                </select>
+                                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code" id="code"></select>
                                             </div>
                                         </td>
                                         <td><input type="text" class="focus" name="description" style="width:100%; height:100%;"></td>
@@ -402,39 +400,16 @@
 </body>
 <script type="text/javascript">
 
-    // 页面准备完成后载入危废信息
-    $(document).ready(function(){
-        // 添加危废信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getWastesInfoList",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                   console.log(result);
-                    var data = eval(result.data);
-                    // 各下拉框数据填充
-                    var wastesInfoList = $("#code");
-                    // 清空遗留元素
-                    wastesInfoList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.code);
-                        option.text(item.code+"-"+item.category);
-                        wastesInfoList.append(option);
-                    });
-                    $('.selectpicker').selectpicker('refresh');
-                } else {
-                    console.log(result);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
     });
 
     // 获取问卷编号
@@ -449,6 +424,37 @@
     }
 //    console.log(Request['type']);
     function loadPage2Info() {
+        // 添加危废信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getWastesInfoList",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result.data);
+                    // 各下拉框数据填充
+                    var wastesInfoList = $("#code");
+                    // 清空遗留元素
+                    wastesInfoList.children().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.code);
+                        option.text(item.code+"-"+item.category);
+                        wastesInfoList.append(option);
+                    });
+                    wastesInfoList.removeAttr('id');
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
         $.ajax({
             type: "POST",
             url: "getCurrentQuestionnaire",
