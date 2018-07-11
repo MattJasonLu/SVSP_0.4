@@ -97,6 +97,136 @@
             }
         });
     }
+    function showFileList(e) {
+        switch (e) {
+            case 'Contract':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listContractByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'ManagePlan':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listManagePlanByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'EIA':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listEIAByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'BusinessLicense':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listBusinessLicenseByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'Instruction':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listInstructionByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'InvoiceInfo':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listInvoiceInfoByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'MSDS':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listMSDSByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+        }
+    }
 </script>
 <body onload="loadFileList()">
     <!--导航条-->
@@ -219,13 +349,13 @@
                     <div class="widget">
                         <span class="glyphicon glyphicon-folder-open"></span>
                         <span class="title" style="font-size: 18px">项目主库</span>
-                        <p><a href="#">合同</a></p>
-                        <p><a href="#">管理计划</a></p>
-                        <p><a href="#">环评</a></p>
-                        <p><a href="#">营业执照</a></p>
-                        <p><a href="#">说明(合同余款延期说明)</a></p>
-                        <p><a href="#">开票资料</a></p>
-                        <p><a href="#">MSDS(物质成分表)</a></p>
+                        <p><a href="#" onclick="showFileList('Contract');">合同</a></p>
+                        <p><a href="#" onclick="showFileList('ManagePlan');">管理计划</a></p>
+                        <p><a href="#" onclick="showFileList('EIA');">环评</a></p>
+                        <p><a href="#" onclick="showFileList('BusinessLicense');">营业执照</a></p>
+                        <p><a href="#" onclick="showFileList('Instruction');">说明(合同余款延期说明)</a></p>
+                        <p><a href="#" onclick="showFileList('InvoiceInfo');">开票资料</a></p>
+                        <p><a href="#" onclick="showFileList('MSDS');">MSDS(物质成分表)</a></p>
                     </div>
                 </aside>
                 <main class="col-md-10 main-content">
