@@ -319,6 +319,8 @@ return  res.toString();
     public String getContractBymodelName(String modelName){
         Contract modelContract=contractService.getModel(modelName);
         JSONObject res=JSONObject.fromBean(modelContract);
+        JSONArray array1 = JSONArray.fromArray(ContractType.values());
+        res.put("contractNameStrList", array1);
         return res.toString();
     }
 
