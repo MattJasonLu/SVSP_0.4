@@ -42,37 +42,6 @@
         config.removeButtons = 'Underline,Subscript,Superscript';
     };
 
-    $(window).on('load', function () {
-        // 中文重写select 查询为空提示信息
-        $('.selectpicker').selectpicker({
-            language: 'zh_CN',
-            style: 'btn-info',
-            size: 4
-        });
-    });
-
-    function setClientData() {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getCurrentQuestionnaireId",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-//                    console.log(result);
-                    if (result.status == "success") {
-                        $("#questionnaireId").val(result.questionnaireId);
-                    } else {
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
-        $("#time").val(getNowDate());
-    }
 </script>
 <body onload="getContractList();">
 <!--导航条-->
@@ -245,7 +214,7 @@
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     合同正文：<br>
-                    <textarea id="TextArea1" cols="20" rows="2"  name="contractContent" class="ckeditor" ></textarea>
+                    <textarea id="TextArea1" cols="20" rows="2"  name="contractContent"  class="CKEDITOR"></textarea>
                 </div>
             </div>
             <div class="row text-center">
@@ -258,78 +227,19 @@
 </body>
 <script type="text/javascript">
     // 页面准备完成后载入客户信息
-    $(document).ready(function () {
-        // 添加客户信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getAllClients",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-//                    console.log("success: " + result);
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var clientList = $("#companyName");
-                    // 清空遗留元素
-                    clientList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.clientId);
-                        option.text(item.companyName);
-                        clientList.append(option);
-                    });
-                    $('.selectpicker').selectpicker('refresh');
-                } else {
-//                    console.log(result);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    });
-
-    function loadPage1Info() {
-        $('.selectpicker').selectpicker('val', '');
-        $.ajax({
-            type: "POST",
-            url: "getCurrentQuestionnaire",
-            async: false,
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        var data = eval(result);
-                        $("#questionnaireId").val(data.data.questionnaireId);
-                        $("#companyName").val(data.data.client.companyName);
-                        $("#location").val(data.data.client.location);
-                        $("#contactName").val(data.data.client.contactName);
-                        $("#phone").val(data.data.client.phone);
-                        $("#industry").val(data.data.client.industry);
-                        $("#product").val(data.data.client.product);
-                        $("#author").val(data.data.author);
-                        $("#time").val(getFormatDate(data.data.time));
-                    }
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log("错误信息:" + XMLHttpRequest.responseText);
-            }
-        });
-    }
     function getContractList() {
+        var modelName=Request["modelName"];
+        console.log(modelName);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getContractList",                  // url
             dataType: "json",
             success: function (result) {
-               // var text1=${model.contractContent};
-                //console.log(text1.toString());
-                $('#TextArea1').prop("value",'${model.contractContent}');
+                //var text=${model.contractContent}+"";
+               // URLDecoder.decode(text, "utf-8")
+                var text="<p>12312312";
+                console.log(text);
+                $('#TextArea1').val(text);
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
@@ -343,12 +253,12 @@
                     });
                     contractType.get(0).selectedIndex = ${model.contractType.index}-1;
                     var s='${model.year}'+"";
-                    console.log(s);
+                   // console.log(s);
                     var year=$('#year');
                   year.find("option[value="+s+"]").attr("selected",true);
                   var period=$('#period');
                   var s1='${model.period}'+"";
-                    console.log(s1);
+                   // console.log(s1);
                   period.find("option[value="+s1+"]").attr("selected",true);
                 }
                 else {
@@ -360,89 +270,12 @@
             }
         });
     }
-
-   function savePage1Info() {
-        if ($("#companyName").find("option:selected").text() == '') alert("未选择任何企业");
-        else {
-            $.ajax({
-                type: "POST",                            // 方法类型
-                url: "savePage1Info",               // url
-                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                data: JSON.stringify({
-                    'questionnaireId': $("#questionnaireId").val(),
-                    'time': $("#time").val(),
-                    'author': $("#author").val(),
-                    'client': {
-                        'companyName': $("#companyName").find("option:selected").text(),
-                        'contactName': $("#contactName").val(),
-                        'industry': $("#industry").val(),
-                        'product': $("#product").val(),
-                        'phone': $("#phone").val(),
-                        'location': $("#location").val()
-                    }
-                }),
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                        if (result.status == "success") {
-                            $(location).attr('href', 'questionnaire2.html');
-                        } else {
-                        }
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    alert("服务器异常!");
-                }
-            });
-       }
-    }
-    function submit(){
-        var mySelection = CKEDITOR.instances.TextArea1.getSelection();//获取选中内容
-        if (CKEDITOR.env.ie) {
-            mySelection.unlock(true);
-            data = mySelection.getNative().createRange().text;
-        } else {
-            data = mySelection.getNative();
-            //console.log(data);
-        }
-        var CText=CKEDITOR.instances.TextArea1._getData(); //取得纯文本
-        console.log(CText);
-        //CText=CText.replace(new RegExp("\n", "gm"), "<br>");
-        //var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
-        $('#TextArea1').prop("value",CText);
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "saveContract",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#page1Info').serializeJSON()),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    // console.log(eval(result));
-                    console.log("success: " + result);
-                    alert("新建成功!");
-                    $(location).attr('href', 'contractTemplate.html');//跳转
-                } else {
-                    console.log("fail: " + result);
-                    alert("新建失败!");
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                alert("服务器异常!");
-            }
-        });
-    }
     function contractAdjustSave() {
         contractId='${contract.contractId}';
         var text='${contract.contractContent}';
         var CText=CKEDITOR.instances.TextArea1.getData(); //取得纯文本
         //var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
-        $('#TextArea1').prop("value",$(CText).text());
+        $('#TextArea1').prop("value",CText);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveAdjustContract",                       // url
@@ -452,7 +285,7 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                    console.log(eval(result));
+                   // console.log(eval(result));
                     console.log("success: " + result);
                     alert("保存修改成功!");
                     $(location).attr('href', 'contractTemplate.html');//跳转

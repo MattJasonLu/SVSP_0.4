@@ -9,6 +9,15 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
+<style>
+    .client_style {
+        margin: 5% 0 5% 5%;
+    }
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+</style>
 <script type="text/javascript">
     function setSupplierList(result) {
         // 获取id为cloneTr的tr元素
@@ -188,7 +197,6 @@
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
@@ -299,14 +307,226 @@
             </nav>
         </div>
     </div>
+    <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="client_style">
+                    <h2 class="sub-header">供应商信息</h2>
+                    <form method="post" id="clientInfoForm" enctype="multipart/form-data">
+                        <h4 class="text-info">基本信息</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="modal3_companyName" class="col-sm-4 control-label">企业名称 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_companyName" name="companyName" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_organizationCode" class="col-sm-4 control-label">组织机构代码 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_organizationCode" name="organizationCode" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_representative" class="col-sm-4 control-label">法人代表 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_representative" name="representative" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_industry" class="col-sm-4 control-label">所属行业 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_industry" name="industry"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_enterpriseType" class="col-sm-4 control-label">企业类型 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_enterpriseType" name="enterpriseType"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_operationType" class="col-sm-4 control-label">经营单位类别 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_operationType" name="operationType"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_operationRecord" class="col-sm-4 control-label">危废经营记录情况 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_operationRecord" name="operationRecord"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">  <label for="modal3_supplierType" class="col-sm-4 control-label">供应商类型</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_supplierType" name="supplierType" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_street" class="col-sm-4 control-label">所属街道 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_street" name="street"readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="modal3_supplierId" class="col-sm-4 control-label">供应商编码</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_supplierId" name="supplierId" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_licenseCode" class="col-sm-4 control-label">营业执照注册号 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_licenseCode" name="licenseCode"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_postCode" class="col-sm-4 control-label">工商注册地邮编 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_postCode" name="postCode"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_product" class="col-sm-4 control-label">主要产品 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_product" name="product"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_operationMode" class="col-sm-4 control-label">经营方式 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_operationMode" name="operationMode"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_contingencyPlan" class="col-sm-4 control-label">事故防范应急预案 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_contingencyPlan" name="contingencyPlan"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_applicationStatus" class="col-sm-4 control-label">申报状态 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_applicationStatus" name="applicationStatus"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_location" class="col-sm-4 control-label">工商注册地址 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_location" name="location"readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="text-info">联系方式</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="modal3_contactName" class="col-sm-4 control-label">联系人 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_contactName" name="contactName"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_mobile" class="col-sm-4 control-label">手机号码 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_mobile" name="mobile"readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="modal3_phone" class="col-sm-4 control-label">联系电话 </label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control focus" id="modal3_phone" name="phone"readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal3_email" class="col-sm-4 control-label">邮箱 </label>
+                                    <div class="col-xs-5">
+                                        <input type="email" class="form-control focus" id="modal3_email" name="email"readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center">
+                            <a class="btn btn-primary" onclick="">打印</a>
+                            <a class="btn btn-danger" data-dismiss="modal">关闭</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
     function getId(item) {
         return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
     }
     function viewSupplier(item) {
-        var id = getId(item);
-        alert("功能开发中");
+        var id = getId(item);//找到编号
+        $.ajax({
+            type:"POST",
+            url:"listSupplierById",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{"id":id},
+            success:function (result) {
+                //给文本框赋值
+                var data=eval(result);
+                console.log(data);
+                //企业名称
+               $('#modal3_companyName').val(data.companyName);
+               //组织机构代码
+                $('#modal3_organizationCode').val(data.organizationCode);
+                //法人代表
+                $('#modal3_representative').val(data.representative);
+                //所属行业
+                $('#modal3_industry').val(data.industry);
+                //企业类型
+                $('#modal3_enterpriseType').val(data.enterpriseType.name);
+                //经营单位类别
+                $('#modal3_operationType').val(data.operationType.name);
+               //建立危废经营记录情况
+                $('#modal3_operationRecord').val(data.operationRecord.name);
+                //供应商类型
+                $('#modal3_supplierType').val(data.supplierType.name);
+                //所属街道
+                $('#modal3_street').val(data.street);
+                //供应商编码
+                $('#modal3_supplierId').val(data.supplierId);
+                //营业执照注册号
+                $('#modal3_licenseCode').val(data.licenseCode);
+               //工商注册地邮编
+                $('#modal3_postCode').val(data.postCode);
+               //主要产品
+                $('#modal3_product').val(data.product);
+                //经营方式
+                $('#modal3_operationMode').val(data.operationMode.name);
+                //事故防范和应急预案
+                $('#modal3_contingencyPlan').val(data.contingencyPlan.name);
+                //申报状态
+                $('#modal3_applicationStatus').val(data.applicationStatus.name);
+                //工商注册地址
+                $('#modal3_location').val(data.location);
+                //联系人
+                $('#modal3_contactName').val(data.contactName);
+                //手机号
+                $('#modal3_mobile').val(data.mobile);
+                //联系电话
+                $('#modal3_phone').val(data.phone);
+                //邮箱
+                $('#modal3_email').val(data.email);
+            },
+            error:function (result) {
+                
+            }
+        });
+        $('#viewModal').modal('show');
+
     }
     function adjustSupplier(item) {
         var id = getId(item);
