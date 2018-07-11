@@ -200,6 +200,20 @@ private  TicketRate1 ticketRate1;
      */
     private String thing;
 
+    /**
+     * 添加状况
+
+     */
+    private  String addType;
+
+    public String getAddType() {
+        return addType;
+    }
+
+    public void setAddType(String addType) {
+        this.addType = addType;
+    }
+
     public String getThing() {
         return thing;
     }

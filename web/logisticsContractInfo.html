@@ -179,6 +179,7 @@ $.ajax({
  */
 function contractSave() {
     var s=($('#contractInfoForm').serializeJSON());
+    var addType = $("input[name='addType']:checked").val();
     //console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -192,7 +193,9 @@ function contractSave() {
                 console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
-                $(location).attr('href', 'contractManage.html');//跳转
+                if (addType == "continue")  $(location).attr('href', 'logisticsContractInfo.html');
+            else $(location).attr('href', 'contractManage.html');//跳转
+                //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -207,6 +210,7 @@ function contractSave() {
 /**/
 function contractSave() {
     var s=($('#contractInfoForm').serializeJSON());
+    var addType = $("input[name='addType']:checked").val();
     //console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -220,7 +224,9 @@ function contractSave() {
                 console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
-                $(location).attr('href', 'contractManage.html');//跳转
+                if (addType == "continue")  $(location).attr('href', 'logisticsContractInfo.html');
+            else $(location).attr('href', 'contractManage.html');//跳转
+                //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -234,6 +240,7 @@ function contractSave() {
 }
 function contractSubmit(){
     var s=($('#contractInfoForm').serializeJSON());
+    var addType = $("input[name='addType']:checked").val();
     //console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -247,7 +254,9 @@ function contractSubmit(){
                 console.log(eval(result));
                 console.log("success: " + result);
                 alert("提交成功!");
-                $(location).attr('href', 'contractManage.html');//跳转
+                if (addType == "continue")  $(location).attr('href', 'logisticsContractInfo.html');
+            else $(location).attr('href', 'contractManage.html');//跳转
+                //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
