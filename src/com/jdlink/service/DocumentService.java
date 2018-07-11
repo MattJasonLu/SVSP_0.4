@@ -29,4 +29,8 @@ public interface DocumentService {
 
     void add(Document document);
 
+    int count();
+
+    void updateFilePath(Document document);
+
 }

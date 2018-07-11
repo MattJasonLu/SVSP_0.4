@@ -29,4 +29,8 @@ public interface DocumentMapper {
 
     void add(Document document);
 
+    int count();
+
+    void updateFilePath(Document document);
+
 }

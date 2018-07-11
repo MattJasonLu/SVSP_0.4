@@ -43,4 +43,12 @@
     <select id="add" parameterType="Document">
         INSERT INTO t_document (clientId, fileName, filePath, documentType) VALUES (#{clientId}, #{fileName}, #{filePath}, #{documentType});
     </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_document;
+    </select>
+
+    <update id="updateFilePath" parameterType="Document">
+        UPDATE t_document SET filePath=#{filePath} WHERE fileId=#{fileId};
+    </update>
 </mapper>
