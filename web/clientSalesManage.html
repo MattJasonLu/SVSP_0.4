@@ -25,33 +25,33 @@
                 // 根据索引为部分td赋值
                 switch (inner_index) {
                         // 客户编号
-                    case (2):
+                    case (1):
                         $(this).html(obj.clientId);
                         break;
                         // 客户名称
-                    case (3):
+                    case (2):
                         $(this).html(obj.companyName);
                         break;
                         // 分配状态
-                    case (4):
+                    case (3):
                         $(this).html(obj.salesman != null ? "已分配" : "未分配");
                         break;
                         // 业务员编号
-                    case (5):
+                    case (4):
                         if (obj.salesman != null)
                         $(this).html(obj.salesman.salesmanId);
                         break;
                         // 业务员姓名
-                    case (6):
+                    case (5):
                         if (obj.salesman != null)
                         $(this).html(obj.salesman.name);
                         break;
                         // 联系人
-                    case (7):
+                    case (6):
                         $(this).html(obj.contactName);
                         break;
                         // 联系方式
-                    case (8):
+                    case (7):
                         $(this).html(obj.phone);
                         break;
 
@@ -191,6 +191,31 @@ else {
             alert("请勾选业务员");
         }
     }
+    $(document).ready(function () {
+        //给全选设置点击事件
+        $("[name='allSel']").click(function () {
+            if($(this).is(':checked')){
+                $("[name='select']").attr('checked',true);
+            }else{
+                $("[name='select']").attr('checked',false);
+            }
+        })
+        //给下面的复选框设置click事件
+        $("[name='select']").click(function () {
+            var allSel = false;
+            $("[name='select']").each(function () {
+                if(!$(this).is(':checked')){
+                    allSel = true;
+                }
+            })
+            //如果有checkbox没有被选中
+            if(allSel){
+                $("[name='allSel']").attr('checked',true);
+            }else{
+                $("[name='allSel']").attr('checked',false);
+            }
+        })
+    })
 </script>
 <body onload="loadClientList()">
     <!--导航条-->
@@ -267,17 +292,18 @@ else {
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="wastesPlatform.html">概览</a></li>
-                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">接收管理</a></li>
-                    <li><a href="#">贮存管理</a></li>
-                    <li><a href="#">预处理管理</a></li>
-                    <li><a href="#">处置管理</a></li>
-                    <li><a href="#">次生管理</a></li>
-                    <li><a href="#">基础数据</a></li>
-                    <li><a href="#">系统设置</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                    <li class="active"><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
                 </ul>
             </div>
         </div>
@@ -312,11 +338,14 @@ else {
             </div>
 
             <div class="table">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover table-condensed">
                     <thead>
                     <tr>
-                        <th></th>
-                        <th>操作</th>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel">
+                            </label>
+                        </th>
                         <th>客户编号</th>
                         <th>客户名称</th>
                         <th>
@@ -333,30 +362,26 @@ else {
                         <th>业务员姓名</th>
                         <th>联系人</th>
                         <th>联系电话</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr id="cloneTr">
                         <td class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="...">
+                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
                             </label>
                         </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="" href="#" onclick="setSales(this);">分配业务员</a></li>
-                                </ul>
-                            </div>
+                            <a href="#" onclick="setSales(this);" title="分配业务员"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -465,10 +490,10 @@ else {
      * @returns {string}
      */
     function getClientId(item) {
-        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+        return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
     function getClientId1(item) {
-        return item.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
     /**
      * 分配业务员
