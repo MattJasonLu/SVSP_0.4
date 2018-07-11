@@ -88,7 +88,8 @@
     function adjust(item) {
         var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
          //console.log(modelName);
-         window.location.href ="showModel?modelName="+modelName;
+         //window.location.href ="showModel?modelName="+modelName;
+         window.location.href ="model.html?modelName="+modelName;
          //console.log(modelName+"123")
           //window.location.href="jsp/model.jsp?modelName="+modelName;
     }
@@ -371,8 +372,9 @@
                     $('#modal3_period').val(obj.period);
                     var text=obj.contractContent;
                     console.log(text);
-                    // $('#modal3_contractContent').val($(text).text());//有换行的格式
-                    $('#modal3_contractContent').val(text);
+                     //$('#modal3_contractContent').val($(text).text());//有换行的格式
+                   CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
+
                 }
             },
             error:function (result) {
