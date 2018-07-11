@@ -97,6 +97,136 @@
             }
         });
     }
+    function showFileList(e) {
+        switch (e) {
+            case 'Contract':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listContractByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'ManagePlan':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listManagePlanByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'EIA':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listEIAByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'BusinessLicense':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listBusinessLicenseByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'Instruction':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listInstructionByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'InvoiceInfo':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listInvoiceInfoByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+            case 'MSDS':
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "listMSDSByClientId",                  // url
+                    async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    dataType: "json",
+                    data: { clientId: Request['clientId'] },
+                    success: function (result) {
+                        console.log(result);
+                        if (result != undefined) {
+                            setFileList(result);
+                        }
+                    },
+                    error:function (result) {
+                        console.log(result);
+                    }
+                });
+                break;
+        }
+    }
 </script>
 <body onload="loadFileList()">
     <!--导航条-->
@@ -173,17 +303,18 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="wastesPlatform.html">概览</a></li>
-                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">接收管理</a></li>
-                    <li><a href="#">贮存管理</a></li>
-                    <li><a href="#">预处理管理</a></li>
-                    <li><a href="#">处置管理</a></li>
-                    <li><a href="#">次生管理</a></li>
-                    <li><a href="#">基础数据</a></li>
-                    <li><a href="#">系统设置</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                    <li class="active"><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
                 </ul>
             </div>
         </div>
@@ -219,13 +350,13 @@
                     <div class="widget">
                         <span class="glyphicon glyphicon-folder-open"></span>
                         <span class="title" style="font-size: 18px">项目主库</span>
-                        <p><a href="#">合同</a></p>
-                        <p><a href="#">管理计划</a></p>
-                        <p><a href="#">环评</a></p>
-                        <p><a href="#">营业执照</a></p>
-                        <p><a href="#">说明(合同余款延期说明)</a></p>
-                        <p><a href="#">开票资料</a></p>
-                        <p><a href="#">MSDS(物质成分表)</a></p>
+                        <p><a href="#" onclick="showFileList('Contract');">合同</a></p>
+                        <p><a href="#" onclick="showFileList('ManagePlan');">管理计划</a></p>
+                        <p><a href="#" onclick="showFileList('EIA');">环评</a></p>
+                        <p><a href="#" onclick="showFileList('BusinessLicense');">营业执照</a></p>
+                        <p><a href="#" onclick="showFileList('Instruction');">说明(合同余款延期说明)</a></p>
+                        <p><a href="#" onclick="showFileList('InvoiceInfo');">开票资料</a></p>
+                        <p><a href="#" onclick="showFileList('MSDS');">MSDS(物质成分表)</a></p>
                     </div>
                 </aside>
                 <main class="col-md-10 main-content">
@@ -243,7 +374,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr id="cloneTr">
+                            <tr id="cloneTr" onclick="downloadFile(this);">
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
@@ -309,8 +440,24 @@
      * @param item
      * @returns {string}
      */
-    function getClientId(item) {
-        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    function getFileName(e) {
+        return e.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+    }
+
+    /**
+     * 下载文件
+     * @param e
+     */
+    function downloadFile(e) {
+        var r = confirm("是否下载该文件?");
+        if (r == true) {
+            var fileName = getFileName(e);
+            if (fileName != null && fileName != "") {
+                window.open('downloadFile?filePath=' + fileName);
+            } else {
+                alert("未上传文件");
+            }
+        }
     }
 
 </script>

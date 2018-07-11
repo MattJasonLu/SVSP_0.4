@@ -21,8 +21,33 @@
     }
 </style>
 <script type="text/javascript">
+    function getSelectedList() {
+        // 设置下拉列表
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getDocumentTypeList",                  // url
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var documentType = $("#documentType");
+                    documentType.children().remove();
+                    $.each(data.documentTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        documentType.append(option);
+                    });
+                }
+            },
+            error: function (result) {
+
+            }
+        });
+    }
 </script>
-<body>
+<body onload="getSelectedList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -97,17 +122,18 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="wastesPlatform.html">概览</a></li>
-                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">接收管理</a></li>
-                    <li><a href="#">贮存管理</a></li>
-                    <li><a href="#">预处理管理</a></li>
-                    <li><a href="#">处置管理</a></li>
-                    <li><a href="#">次生管理</a></li>
-                    <li><a href="#">基础数据</a></li>
-                    <li><a href="#">系统设置</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                    <li class="active"><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
                 </ul>
             </div>
         </div>
@@ -179,7 +205,7 @@
                     </div>
                 </div>
                 <div class="row text-center">
-                    <a class="btn btn-primary" onclick="">保存</a>
+                    <a class="btn btn-primary" onclick="saveDocument();">保存</a>
                     <a class="btn btn-danger" onclick="window.location.href='archives.html?clientId='+Request['clientId'];">返回</a>
                 </div>
             </form>
@@ -227,6 +253,70 @@
      */
     function getClientId(e) {
         return e.firstElementChild.innerHTML;
+    }
+
+    function saveDocument() {
+        var addType = $("input[name='addType']:checked").val();
+        var fileId;
+        var data = {
+            documentType: $("#documentType").val(),
+            fileName: $("#fileName").val(),
+            clientId: Request['clientId']
+        };
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "saveDocument",                       // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            processData: false,
+            success: function (result) {
+                if (result != undefined) {
+                    if (result.status == "success") {
+                        fileId = result.fileId;
+                        alert(result.message);
+
+                    } else {
+                        console.log(result);
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
+
+        // 附件
+        var attachment = document.getElementById("attachment").files[0];
+        var formFile = new FormData();
+        formFile.append("fileId", fileId);
+        formFile.append("attachment", attachment);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "saveDocumentFile",                     // url
+            cache: false,
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: formFile,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("上传成功");
+                    if (addType == "continue") window.location.reload();
+                    else $(location).attr('href', 'archives.html?clientId=' + Request['clientId']);//跳转
+                } else {
+
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
     }
 
     CKEDITOR.replace('TextArea1');

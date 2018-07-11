@@ -33,41 +33,43 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                    case (1):
-                        // $(this).html(obj.checkState.name);
-                        var items = $("input[type='checkbox']:checked");
-                        console.log(obj.checkState.name);
-                        if(obj.checkState.name == "审批中"){
-                            if(items.length>0){
-                                $(this).parent().parent().parent().parent().prev().children().eq(0).children().eq(0).children().eq(1).removeAttr("onclick");
-                            }
-                        }
-                        break;
+
                         // 供应商编号
-                    case (2):
+                    case (1):
                         $(this).html(obj.supplierId);
                         break;
                         // 公司名称
-                    case (3):
+                    case (2):
                         $(this).html(obj.companyName);
                         break;
                         // 供应商类型
-                    case (4):
+                    case (3):
                         if (obj.supplierType != null)
                         $(this).html(obj.supplierType.name);
                         break;
                         // 供应商状态
-                    case (5):
+                    case (4):
                         if (obj.checkState != null)
                         $(this).html(obj.checkState.name);
                         break;
                         // 联系人
-                    case (6):
+                    case (5):
                         $(this).html(obj.contactName);
                         break;
                         // 联系方式
-                    case (7):
+                    case (6):
                         $(this).html(obj.phone);
+                        break;
+                    case (7):
+                        // $(this).html(obj.checkState.name);
+                        var items = $("input[type='checkbox']:checked");
+                        // console.log(obj.checkState.name);
+                        if(obj.checkState.name == "审批中"){
+                            if(items.length>0){
+                                console.log($(this).children().eq(1));
+                                $(this).children().eq(1).removeAttr("onclick");
+                            }
+                        }
                         break;
                 }
             });
@@ -124,6 +126,32 @@
             }
         });
     }
+    //全选复选框
+    $(document).ready(function () {
+        //给全选设置点击事件
+        $("[name='allSel']").click(function () {
+            if($(this).is(':checked')){
+                $("[name='select']").attr('checked',true);
+            }else{
+                $("[name='select']").attr('checked',false);
+            }
+        })
+        //给下面的复选框设置click事件
+        $("[name='select']").click(function () {
+            var allSel = false;
+            $("[name='select']").each(function () {
+                if(!$(this).is(':checked')){
+                    allSel = true;
+                }
+            })
+            //如果有checkbox没有被选中
+            if(allSel){
+                $("[name='allSel']").attr('checked',true);
+            }else{
+                $("[name='allSel']").attr('checked',false);
+            }
+        })
+    })
 </script>
 <body onload="loadSupplierList();">
     <!--导航条-->
@@ -199,17 +227,18 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="wastesPlatform.html">概览</a></li>
-                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">接收管理</a></li>
-                    <li><a href="#">贮存管理</a></li>
-                    <li><a href="#">预处理管理</a></li>
-                    <li><a href="#">处置管理</a></li>
-                    <li><a href="#">次生管理</a></li>
-                    <li><a href="#">基础数据</a></li>
-                    <li><a href="#">系统设置</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                    <li class="active"><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
                 </ul>
             </div>
         </div>
@@ -248,39 +277,38 @@
                 <table class="table table-striped table-hover table-condensed">
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>操作</th>
+                            <th class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel">
+                                </label>
+                            </th>
                             <th>供应商编号</th>
                             <th>供应商名称</th>
                             <th>供应商类型</th>
                             <th>供应商状态</th>
                             <th>联系人</th>
                             <th>联系方式</th>
+                            <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr id="cloneTr">
                             <td class="text-center">
                                 <label>
-                                    <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                    <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                                 </label>
                             </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
-                                <div class="dropdown">
-                                    <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" onclick="viewSupplier(this);">查看</a></li>
-                                        <li><a href="#" onclick="adjustSupplier(this);">修改信息</a></li>
-                                        <li><a href="#" onclick="deleteSupplier(this);">删除</a></li>
-                                    </ul>
-                                </div>
+                                <a href="#" onclick="viewSupplier(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                <a href="#" onclick="adjustSupplier(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                <a href="#" onclick="deleteSupplier(this);" title="禁用"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -464,7 +492,7 @@
 </body>
 <script type="text/javascript">
     function getId(item) {
-        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+        return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
     function viewSupplier(item) {
         var id = getId(item);//找到编号
