@@ -243,7 +243,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr id="cloneTr">
+                            <tr id="cloneTr" onclick="downloadFile(this);">
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
@@ -309,8 +309,24 @@
      * @param item
      * @returns {string}
      */
-    function getClientId(item) {
-        return item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
+    function getFileName(e) {
+        return e.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+    }
+
+    /**
+     * 下载文件
+     * @param e
+     */
+    function downloadFile(e) {
+        var r = confirm("是否下载该文件?");
+        if (r == true) {
+            var fileName = getFileName(e);
+            if (fileName != null && fileName != "") {
+                window.open('downloadFile?filePath=' + fileName);
+            } else {
+                alert("未上传文件");
+            }
+        }
     }
 
 </script>
