@@ -63,41 +63,6 @@
         tr5.removeAttr("id");
         tr6.removeAttr("id");
     }
-    function Confirm() {
-            $.confirm({
-                title: '提示！',
-                content: "感谢贵公司的支持，北控安耐得环保科技发展常州有限公司将上以述资料作为运输" +
-                "、储存和处理依据，为了保证我司员工之安全，请您再次确认上述数氢的准确性！" +
-                "<br>"+"如确认无误，请打印盖章后，在列表界面中上传其扫描件，同时随附如下文件：" +
-                "1.请提供《环境影响评价报告表/书》中的“工艺流程与产废环节”相关章节内容(必须提供)"+"<br>"
-                +"2.请提供危险废物成分检测报告(非必须，有则提供)",
-                buttons: {
-                    ok: {
-                        text: "打印",//打印按钮
-                        btnClass: 'btn-primary',
-                        keys: ['enter'],
-                        action: function(){
-                            bdhtml=window.document.body.innerHTML;
-                            sprnstr="<!--startprint-->"; //开始打印标识字符串有17个字符
-                            eprnstr="<!--endprint-->"; //结束打印标识字符串
-                            prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); //从开始打印标识之后的内容
-                            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); //截取开始标识和结束标识之间的内容
-                            window.document.body.innerHTML=prnhtml; //把需要打印的指定内容赋给body.innerHTML
-                            window.print(); //调用浏览器的打印功能打印指定区域
-                            window.document.body.innerHTML=bdhtml; // 最后还原页面
-                        }
-                    },
-                    cancel: {
-                        text: "关闭",//关闭按钮(实为提交数据)
-                        btnClass: 'btn-primary',
-                        keys: ['esc'],
-                        action:function () {
-                            alert("你点击了关闭按钮！")
-                        }
-                    }
-                }
-            },{});
-    }
 </script>
 <body onload="loadPage4Info();">
     <!--导航条-->
@@ -204,8 +169,8 @@
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 15px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                        <div class="form-group">
+                            <label class="col-sm-8 control-label text-danger text-oneLine">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-2"></div>
@@ -223,11 +188,11 @@
                         <div class="form-group">
                             <table class="table table-bordered">
                                 <tr>
-                                    <td width="50px">序号</td>
-                                    <td style="width: 270px">危废名称</td>
-                                    <td>特性</td>
-                                    <td>危废处理个人防护</td>
-                                    <td colspan="2">应急对应措施</td>
+                                    <th style="width: 50px;">序号</th>
+                                    <th style="width: 270px">危废名称</th>
+                                    <th>特性</th>
+                                    <th>危废处理个人防护</th>
+                                    <th colspan="2">应急对应措施</th>
                                 </tr>
                                 <tr id="cloneTr1">
                                     <td rowspan="6">1</td>
@@ -282,11 +247,33 @@
                 </div>
                 <div class="row text-center">
                     <a class="btn btn-primary" onclick="savePage4Info(this);">上一页</a>
+                    <button type="button" class="btn btn-primary" id="btnSave" onclick="savePage4Info(this);">保存</button>
                     <button type="button" class="btn btn-primary" id="btnCfm" onclick="savePage4Info(this);">提交</button>
                     <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
                 </div>
             </form>
             <!--endprint-->
+        </div>
+    </div>
+    <!-- 预约模态框 -->
+    <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">感谢贵公司的支持，北控安耐得环保科技发展常州有限公司将上以述资料作为运输、储存和处理依据，为了保证我司员工之安全，请您再次确认上述数据的准确性！<br>
+                        如确认无误，请打印盖章后，在列表界面中上传其扫描件，同时随附如下文件：<br>
+                        1.请提供《环境影响评价报告表/书》中的“工艺流程与产废环节”相关章节内容(必须提供); <br>
+                        2.请提供危险废物成分检测报告(非必须，有则提供)</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="">打印</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$(location).attr('href', 'questionnaireManage.html');">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -296,7 +283,7 @@
     var url=location.search;
     var Request = {};
     if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
+        var str = url.substr(1);　//去掉?号
         strs = str.split("&");
         for(var i=0;i<strs.length;i++) {
             Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
@@ -313,8 +300,10 @@
     function loadPage4Info() {
         if (Request["type"] != null && Request["type"] != '') {
             $("#btnCfm").text("打印");
+            $("#btnSave").remove();
         } else if (Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
             $("#btnCfm").text("修改");
+            $("#btnSave").remove();
         }
         $.ajax({
             type: "POST",
@@ -405,7 +394,24 @@
                 if (result != undefined) {
                     console.log(result);
                     if (result.status == "success") {
-                        if (btnName == "提交") {
+                        if (btnName == "保存") {
+                            $.ajax({
+                                type: "POST",
+                                url: "saveQuestionnaire",
+                                async: false,
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.status == "success") {
+                                        alert(result.message);
+                                        $('#checkModal').modal('show');
+                                    }
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                    alert("服务器异常");
+                                    console.log("错误信息:" + XMLHttpRequest.responseText);
+                                }
+                            });
+                        } else if (btnName == "提交") {
                             $.ajax({
                                 type: "POST",
                                 url: "addQuestionnaire",
@@ -414,7 +420,7 @@
                                 success: function (result) {
                                     if (result.status == "success") {
                                         alert(result.message);
-                                        $(location).attr('href', 'questionnaireManage.html');
+                                        $('#checkModal').modal('show');
                                     }
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -472,6 +478,11 @@
     }
     table{
         margin: auto;
+    }
+    .text-oneLine{
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
     }
 </style>
 </html>

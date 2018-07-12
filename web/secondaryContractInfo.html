@@ -100,7 +100,7 @@ function loadContractSelectList() {
                 var taxRate1=$('#taxRate1');
                 taxRate1.children().remove();
                 $.each(data.ticketRateStrList1, function (index, item) {
-                    console.log(item);
+                   // console.log(item);
                     var option = $('<option />');
                     option.val(index);
                     option.text(item.name);
@@ -111,7 +111,7 @@ function loadContractSelectList() {
                 var taxRate2=$('#taxRate2');
                 taxRate2.children().remove();
                 $.each(data.ticketRateStrList2, function (index, item) {
-                    console.log(item);
+                    //console.log(item);
                     var option = $('<option />');
                     option.val(index);
                     option.text(item.name);
@@ -183,7 +183,7 @@ function contractSave() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined) {
-                console.log(eval(result));
+               // console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
                 if (addType == "continue")  $(location).attr('href', 'secondaryContractInfo.html');
@@ -214,7 +214,7 @@ function contractSave() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined) {
-                console.log(eval(result));
+                //console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
                 if (addType == "continue")  $(location).attr('href', 'secondaryContractInfo.html');
@@ -498,7 +498,7 @@ function contractSubmit(){
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
 
@@ -533,6 +533,11 @@ function contractSubmit(){
         startView: 2,
         minView: 2,
         forceParse: 0
+    });
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Derive";
+        location.href="contractManage.html";
     });
 </script>
 </html>
