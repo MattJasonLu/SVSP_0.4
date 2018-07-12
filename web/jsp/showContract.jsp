@@ -32,6 +32,8 @@
      * 装载下拉框列表
      */
     function loadContractSelectList() {
+        var contractType=$('#contractType');
+        contractType.hide();
         $('.selectpicker').selectpicker({
             language: 'zh_CN',
             size: 4
@@ -65,15 +67,6 @@
                // console.log(contractVersion);
                if (result != undefined) {
                     // 各下拉框数据填充
-                    var contractName = $("#contractName");
-                    contractName.children().remove();
-                    $.each(data.contractNameStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        contractName.append(option);
-                    });
-                    contractName.get(0).selectedIndex = ${contract.contractType.index}-1;
                     var province = $("#province");
                     province.children().remove();
                     $.each(data.provinceStrList, function (index, item) {
@@ -379,10 +372,9 @@
                         </form>
                     </div>
                     <div class="form-group" >
-                        <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-4">
-                            <select class="form-control" id="contractName" name="contractType">
-                            </select>
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" >
+                            <input type="text" class="form-control" id="contractName" name="contractName" value="${contract.contractName}">
                         </div>
                     </div>
                     <div class="form-group" >
@@ -396,6 +388,13 @@
                         <label class="checkbox-inline col-xs-5" for="isFreight">
                             是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="freight" onclick="is()" >
                         </label>
+                    </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
+                            </input>
+                        </div>
                     </div>
                 </div>
                 <div class="form-horizontal col-md-5">
@@ -503,7 +502,9 @@
                   // console.log(eval(result));
                     console.log("success: " + result);
                     alert("保存修改成功!");
-                    $(location).attr('href', 'contractManage.html');//跳转
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Wastes";
+                    location.href="contractManage.html";
                 } else {
                     console.log("fail: " + result);
                     alert("保存失败!");

@@ -24,6 +24,8 @@
 </style>
 <script type="text/javascript">
 function loadContractSelectList() {
+    var contractType=$('#contractType');
+    contractType.hide();
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
@@ -194,8 +196,10 @@ function contractSave() {
                 console.log("success: " + result);
                 alert("保存成功!");
                 if (addType == "continue")  $(location).attr('href', 'logisticsContractInfo.html');
-            else $(location).attr('href', 'contractManage.html');//跳转
-                //$(location).attr('href', 'contractManage.html');//跳转
+            else { localStorage.clear();
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Logistics";
+                    location.href="contractManage.html";}
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -225,8 +229,10 @@ function contractSave() {
                 console.log("success: " + result);
                 alert("保存成功!");
                 if (addType == "continue")  $(location).attr('href', 'logisticsContractInfo.html');
-            else $(location).attr('href', 'contractManage.html');//跳转
-                //$(location).attr('href', 'contractManage.html');//跳转
+            else { localStorage.clear();
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Logistics";
+                    location.href="contractManage.html";}
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -254,9 +260,12 @@ function contractSubmit(){
                 console.log(eval(result));
                 console.log("success: " + result);
                 alert("提交成功!");
-                if (addType == "continue")  $(location).attr('href', 'logisticsContractInfo.html');
-            else $(location).attr('href', 'contractManage.html');//跳转
-                //$(location).attr('href', 'contractManage.html');//跳转
+                if (addType == "continue") $(location).attr('href', 'logisticsContractInfo.html');
+                else
+                { localStorage.clear();
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Logistics";
+                    location.href="contractManage.html";}
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -414,10 +423,9 @@ function contractSubmit(){
                         </form>
                     </div>
                     <div class="form-group" >
-                        <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="contractName" name="contractType">
-                            </select>
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" >
+                            <input type="text" class="form-control" id="contractName" name="contractName">
                         </div>
                     </div>
                     <div class="form-group" >
@@ -450,6 +458,13 @@ function contractSubmit(){
                                 <input type="radio" name="addType" id="addType2" value="break">
                                 返回列表
                             </label>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Logistics" >
+                            </input>
                         </div>
                     </div>
                 </div>

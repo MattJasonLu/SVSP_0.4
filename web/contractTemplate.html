@@ -17,6 +17,13 @@
         white-space:-o-pre-wrap;
         word-wrap:break-word;
     }
+    .client_style {
+        margin: 5% 0 5% 5%;
+    }
+    .focus {
+        outline: none;
+        border: 0px;
+    }
 </style>
 <script type="text/javascript">
     function loadContract() {
@@ -50,6 +57,7 @@
             var obj = eval(item);
             //console.log(obj);
             if(obj.modelName!=""&&obj.year!=""&&obj.contractContent!="") {
+                console.log(obj);
                 var clonedTr = tr.clone();
                 clonedTr.show();
                 // 循环遍历cloneTr的每一个td元素，并赋值
@@ -60,19 +68,27 @@
                         // 合同类型
                         case (2):
                             if (obj.contractType != null)
-                                obj.contractName = obj.contractType.name;
-                            $(this).html(obj.contractName);
+                            $(this).html(  obj.contractType.name);
                             break;
                         // 模板名称
                         case (3):
                             $(this).html(obj.modelName);
                             break;
-                        // 合同版本号
+                        // 合同状态
                         case (4):
-                            $(this).html(" ");
+                             if(obj.checkState.name=="已作废"){
+                                 $(this).html("已作废");
+                             }
+                            if(obj.checkState.name!="已作废"){
+                                $(this).html("使用中");
+                            }
+                            break;
+                       //版本号
+                        case (5):
+                            $(this).html("");
                             break;
                         // 年份
-                        case (5):
+                        case (6):
                             $(this).html(obj.year);
                             break;
                     }
@@ -246,6 +262,7 @@
                         <th>操作</th>
                         <th>合同类型</th>
                         <th>模板名称</th>
+                        <th>模板状态</th>
                         <th>合同版本号</th>
                         <th>年份</th>
                     </tr>
@@ -263,12 +280,14 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#" onclick="check(this)">查看</a></li>
                                     <li><a href="#" onclick="adjust(this)">修改信息</a></li>
-                                    <li><a href="#">删除</a></li>
+                                    <li><a href="#" onclick="cancel(this)">作废</a></li>
+                                    <li><a href="#">升级</a></li>
                                 </ul>
                             </div>
                         </td>
                         <td>危废合同</td>
                         <td>危废</td><!--模板名称-->
+                        <td>使用中</td>
                         <td>V1.0</td>
                         <td>2018</td>
                     </tr>
@@ -387,6 +406,40 @@
         $('#btn').text();
         $('#btn').text('打印');
         $('#contractInfoForm').modal('show');
+    }
+    function cancel(item) {
+        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        //console.log(modelName);
+        var r = confirm("是否作废该模板？");
+        if(r==true){
+            $.ajax({
+                type:"POST",
+                url:"cancelModel",
+                async: false,
+                dataType: "json",
+                data: {
+                    'modelName': modelName
+                },
+                success:function (result) {
+                    var obj=eval(result);
+                    if(obj.state=="success"){
+                        alert("作废成功！");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("作废失败！")
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
+                }
+            });
+        }
+      else {
+
+        }
+
+
     }
 
 </script>
