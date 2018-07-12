@@ -87,7 +87,7 @@
 </style>
 <body onload="loadPage2Info()">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top " role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -98,7 +98,7 @@
                 </button>
                 <a class="navbar-brand" href="#">产废服务平台</a>
             </div>
-            <div id="navbar" class="collapse navbar-collapse">
+            <div id="navbar" class="collapse navbar-collapse" style="width: 100%">
                 <ul class="nav navbar-nav">
                     <li><a href="wastesPlatform.html">首页</a></li>
                     <li class="dropdown active">
@@ -187,14 +187,13 @@
             <h2 class="sub-header">调查表新增</h2>
             <!--<form method="post" id="page2Info" enctype="multipart/form-data">-->
                 <div class="row">
-                    <div class="form-horizontal col-md-5">
-                        <div class="form-group">
-                            <label class="col-sm-8 control-label pull-left" style="color: #e5454d;font-size: 12px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                    <div class="form-horizontal col-md-8">
+                        <div class="form-group pull-left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 350px;">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3"></div>
                     <div class="form-horizontal col-md-4">
-                        <div class="form-group" align="right">
+                        <div class="form-group pull-right">
                             <label class="col-sm-4 control-label">调查单号</label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" name="questionnaireId" id="questionnaireId" placeholder="****" style="border: none">
@@ -232,14 +231,14 @@
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-2">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">特别关注的物质</label>
+                        <div class="form-group pull-left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 135px;">特别关注的物质</label>
                         </div>
 
                     </div>
                     <div class="form-horizontal col-md-10">
-                        <div class="form-group" align="right">
-                            <label class="col-sm-4 control-label">请确认原料、辅料、废料或工艺是否含有下列物质</label>
+                        <div class="form-group">
+                            <label class="col-sm-8 control-label">请确认原料、辅料、废料或工艺是否含有下列物质</label>
                         </div>
                     </div>
                 </div>
@@ -336,8 +335,8 @@
                 </form>
                 <div class="row">
                     <div class="form-horizontal col-md-3">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">产废生产工艺流程描述</label>
+                        <div class="form-group pull-left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 170px;">产废生产工艺流程描述</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-9"></div>
