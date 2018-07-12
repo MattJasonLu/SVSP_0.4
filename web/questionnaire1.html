@@ -13,6 +13,13 @@
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
+<style>
+    .text-oneLine{
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
+    }
+</style>
 <script>
     $(window).on('load', function () {
         // 中文重写select 查询为空提示信息
@@ -104,8 +111,10 @@
                     <li><a href="archivesManage.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
@@ -147,9 +156,14 @@
             <h2 class="sub-header">调查表新增</h2>
             <form method="post" id="page1Info" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-4 control-label" style="color: #e5454d;font-size: 20px">基本信息</label>
+                    <div class="form-horizontal col-md-1">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-oneLine" style="color: #e5454d;font-size: 20px">基本信息</label>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-5">
+                        <div class="">
+                            <img src="image/line-red.png">
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">

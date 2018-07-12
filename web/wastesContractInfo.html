@@ -24,6 +24,8 @@ function loadContractSelectList() {
         size: 4
     });
 //取得下拉菜单的选项
+    var contractType=$('#contractType');
+    contractType.hide();
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
@@ -167,7 +169,11 @@ function contractSave() {
                     if (addType == "continue") {
                         $(location).attr('href', 'wastesContractInfo.html');
                     }
-                    else $(location).attr('href', 'contractManage.html');//跳转
+                    else { localStorage.clear();
+                        $(location).attr('href', 'contractManage.html');
+                        localStorage.name="Wastes";
+                        location.href="contractManage.html";}
+
                 //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
@@ -198,7 +204,11 @@ function contractSave() {
                 console.log("success: " + result);
                 alert("保存成功!");
                 if (addType == "continue")  $(location).attr('href', 'wastesContractInfo.html');
-                else $(location).attr('href', 'contractManage.html');//跳转
+                else { localStorage.clear();
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Wastes";
+                    location.href="contractManage.html";}//$(location).attr('href', 'contractManage.html');//跳转
+
                 //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
@@ -228,7 +238,12 @@ function contractSubmit(){
                 console.log("success: " + result);
                 alert("提交成功!");
                 if (addType == "continue") $(location).attr('href', 'wastesContractInfo.html');
-                else $(location).attr('href', 'contractManage.html');//跳转
+                else{localStorage.clear();
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Wastes";
+                    location.href="contractManage.html";}
+
+                    //$(location).attr('href', 'contractManage.html');//跳转
                 //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
@@ -295,8 +310,10 @@ function contractSubmit(){
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                    <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">个人信息</a></li>
                         <li><a href="#">待办事项</a></li>
@@ -385,10 +402,9 @@ function contractSubmit(){
                         </form>
                     </div>
                     <div class="form-group" >
-                        <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-4">
-                            <select class="form-control" id="contractName" name="contractType">
-                            </select>
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" >
+                            <input type="text" class="form-control" id="contractName" name="contractName">
                         </div>
                     </div>
                     <div class="form-group" >
@@ -452,12 +468,19 @@ function contractSubmit(){
                             <input type="text" class="form-control" id="telephone" name="telephone" >
                         </div>
                     </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
+                            </input>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
             </div>
         </form>
 
@@ -492,6 +515,12 @@ function contractSubmit(){
         startView: 2,
         minView: 2,
         forceParse: 0
+    });
+    $('#back').click(function () {
+        localStorage.clear();
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Wastes";
+        location.href="contractManage.html";
     });
 </script>
 </html>

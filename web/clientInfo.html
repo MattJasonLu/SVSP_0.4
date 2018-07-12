@@ -379,6 +379,11 @@
         margin-right: auto;
         margin-left: auto;
     }
+    .text-oneLine {
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
+    }
 </style>
 <body onload="loadSelectList()">
     <!--导航条-->
@@ -441,8 +446,10 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
@@ -483,7 +490,7 @@
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-1">
-                        <h4 class="text-info">基本信息</h4>
+                        <h4 class="text-info text-oneLine">基本信息</h4>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <img src="image/line.png">
@@ -592,7 +599,14 @@
                         </div>
                     </div>
                 </div>
-                <h4 class="text-info">环评信息</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info text-oneLine">环评信息</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
@@ -621,7 +635,14 @@
                         </div>
                     </div>
                 </div>
-                <h4 class="text-info">联系方式</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info text-oneLine">联系方式</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">

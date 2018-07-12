@@ -22,6 +22,8 @@
 </head>
 <script type="text/javascript">
     function loadContractSelectList() {
+        var contractType=$('#contractType');
+        contractType.hide();
         $('.selectpicker').selectpicker({
             language: 'zh_CN',
             size: 4
@@ -426,7 +428,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
@@ -436,7 +437,7 @@
                             </select>
                         </div>
                     </div>
-                        <div class="form-group" >
+                    <div class="form-group" >
                             <label class="col-sm-4 control-label" for="province">所属区域 </label>
                             <form name="form1" method="post" action="">
                                 <div class="form-inline">
@@ -452,10 +453,9 @@
                             </form>
                         </div>
                     <div class="form-group" >
-                        <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="contractName" name="contractType">
-                            </select>
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" >
+                            <input type="text" class="form-control" id="contractName" name="contractName" value="${contract.contractName}">
                         </div>
                     </div>
                     <div class="form-group" >
@@ -477,8 +477,14 @@
                             是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="freight" onclick="is()">
                         </label>
                     </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Derive" >
+                            </input>
+                        </div>
+                    </div>
                 </div>
-
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>

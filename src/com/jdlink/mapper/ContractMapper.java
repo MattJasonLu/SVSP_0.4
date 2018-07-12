@@ -28,4 +28,7 @@ public interface ContractMapper {
     List listRate1();
     List listRate2();
     Contract getModel(String modelName);
+    void cancel(String contractId);
+    void cancel1(String modelName);
+    void approval(String contractId);
 }

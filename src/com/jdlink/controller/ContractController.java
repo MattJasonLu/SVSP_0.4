@@ -189,7 +189,7 @@ public String  submitContract(@RequestBody Contract contract) {
     String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
     contract.setContractId(newId);
     System.out.println("当前合同编号:"+contract.getContractId());
-    contract.setCheckState(CheckState.Examining);
+    contract.setCheckState(CheckState.ToExamine);
     JSONObject res = JSONObject.fromBean(contract);
     //给予合同的状态
     try{
@@ -355,5 +355,56 @@ return  res.toString();
         }
         return res.toString();
 
+    }
+    /**
+     *
+     * 合同作废
+     */
+    @RequestMapping("cancelContract")
+    @ResponseBody
+    public String cancelContract(String contractId){
+       JSONObject res=new JSONObject();
+       try {
+           contractService.cancel(contractId);
+           res.put("state","success");
+       }
+       catch (Exception e){
+           res.put("state","fail");
+       }
+     return res.toString();
+    }
+    /**
+     *
+     * 合同模板作废
+     */
+    @RequestMapping("cancelModel")
+    @ResponseBody
+    public String cancelModel(String modelName){
+        JSONObject res=new JSONObject();
+        try {
+            contractService.cancel1(modelName);
+            res.put("state","success");
+        }
+        catch (Exception e){
+            res.put("state","fail");
+        }
+        return res.toString();
+    }
+    /**
+     *
+     * 合同审批
+     */
+    @RequestMapping("approvalContract")
+    @ResponseBody
+    public String approvalContract(String contractId){
+        JSONObject res=new JSONObject();
+        try {
+            contractService.approval(contractId);
+            res.put("state","success");
+        }
+        catch (Exception e){
+            res.put("state","fail");
+        }
+        return res.toString();
     }
 }

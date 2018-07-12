@@ -28,6 +28,8 @@
 </style>
 <script type="text/javascript">
     function loadContractSelectList() {
+        var contractType=$('#contractType');
+        contractType.hide();
         $('.selectpicker').selectpicker({
             language: 'zh_CN',
             size: 4
@@ -459,10 +461,9 @@
                         </form>
                     </div>
                     <div class="form-group" >
-                        <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="contractName" name="contractType">
-                            </select>
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" >
+                            <input type="text" class="form-control" id="contractName" name="contractName" value="${contract.contractName}">
                         </div>
                     </div>
                     <div class="form-group" >
@@ -482,6 +483,13 @@
                         <div class="col-xs-5">
                             <select class="form-control" id="taxRate1" name="ticketRate1">
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Logistics" >
+                            </input>
                         </div>
                     </div>
                 </div>
