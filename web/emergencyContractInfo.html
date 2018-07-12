@@ -40,6 +40,8 @@
      */
     function contractSave() {
         var s=($('#contractInfoForm').serializeJSON());
+        var addType = $("input[name='addType']:checked").val();
+        console.log(addType);
         //console.log(s);
         $.ajax({
             type: "POST",                            // 方法类型
@@ -51,10 +53,17 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                    console.log(eval(result));
-                    console.log("success: " + result);
+                    //console.log(eval(result));
+                    //console.log("success: " + result);
                     alert("保存成功!");
-                    $(location).attr('href', 'contractManage.html');//跳转
+                    if(addType=="continue"){
+                        $(location).attr('href','emergencyContractInfo.html');
+                    }
+                    if(addType=="break"){
+                       // $(location).attr('href', 'contractManage.html');
+                        localStorage.name="Emergency";
+                        location.href="contractManage.html";
+                    }
                 } else {
                     console.log("fail: " + result);
                     alert("保存失败!");
@@ -71,6 +80,7 @@
      */
     function contractSubmit(){
         var s=($('#contractInfoForm').serializeJSON());
+        var addType = $("input[name='addType']:checked").val();
         //console.log(s);
         $.ajax({
             type: "POST",                            // 方法类型
@@ -84,7 +94,15 @@
                     //(eval(result));
                     console.log("success: " + result);
                     alert("提交成功!");
-                    $(location).attr('href', 'contractManage.html');//跳转
+                    if(addType=="continue"){
+                        $(location).attr('href', 'emergencyContractInfo.html');//跳转
+                    }
+                    else {
+                        localStorage.clear();
+                        $(location).attr('href', 'contractManage.html');
+                        localStorage.name="Emergency";
+                        location.href="contractManage.html";
+                    }
                 } else {
                     console.log("fail: " + result);
                     alert("保存失败!");

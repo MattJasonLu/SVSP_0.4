@@ -109,4 +109,19 @@ contractMapper.updateFreight2(id);
     public void addEm(Contract contract) {
         contractMapper.addEm(contract);
     }
+
+    @Override
+    public void cancel(String contractId) {
+        contractMapper.cancel(contractId);
+    }
+
+    @Override
+    public void cancel1(String modelName) {
+        contractMapper.cancel1(modelName);
+    }
+
+    @Override
+    public void approval(String contractId) {
+        contractMapper.approval(contractId);
+    }
 }

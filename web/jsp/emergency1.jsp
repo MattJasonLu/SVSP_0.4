@@ -403,7 +403,7 @@
             <br>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractAdjustSave1()">保存修改</a>
-                <a class="btn btn-primary" onclick="contractAdjustSave()">提交修改</a>
+                <a class="btn btn-primary" onclick="contractAdjustSave1()">提交修改</a>
                 <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
             </div>
         </form>
