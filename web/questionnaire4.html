@@ -63,41 +63,6 @@
         tr5.removeAttr("id");
         tr6.removeAttr("id");
     }
-    function Confirm() {
-            $.confirm({
-                title: '提示！',
-                content: "感谢贵公司的支持，北控安耐得环保科技发展常州有限公司将上以述资料作为运输" +
-                "、储存和处理依据，为了保证我司员工之安全，请您再次确认上述数氢的准确性！" +
-                "<br>"+"如确认无误，请打印盖章后，在列表界面中上传其扫描件，同时随附如下文件：" +
-                "1.请提供《环境影响评价报告表/书》中的“工艺流程与产废环节”相关章节内容(必须提供)"+"<br>"
-                +"2.请提供危险废物成分检测报告(非必须，有则提供)",
-                buttons: {
-                    ok: {
-                        text: "打印",//打印按钮
-                        btnClass: 'btn-primary',
-                        keys: ['enter'],
-                        action: function(){
-                            bdhtml=window.document.body.innerHTML;
-                            sprnstr="<!--startprint-->"; //开始打印标识字符串有17个字符
-                            eprnstr="<!--endprint-->"; //结束打印标识字符串
-                            prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17); //从开始打印标识之后的内容
-                            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr)); //截取开始标识和结束标识之间的内容
-                            window.document.body.innerHTML=prnhtml; //把需要打印的指定内容赋给body.innerHTML
-                            window.print(); //调用浏览器的打印功能打印指定区域
-                            window.document.body.innerHTML=bdhtml; // 最后还原页面
-                        }
-                    },
-                    cancel: {
-                        text: "关闭",//关闭按钮(实为提交数据)
-                        btnClass: 'btn-primary',
-                        keys: ['esc'],
-                        action:function () {
-                            alert("你点击了关闭按钮！")
-                        }
-                    }
-                }
-            },{});
-    }
 </script>
 <body onload="loadPage4Info();">
     <!--导航条-->
@@ -159,8 +124,10 @@
                     <li><a href="archivesManage.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
@@ -204,8 +171,8 @@
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-6">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 15px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                        <div class="form-group">
+                            <label class="col-sm-8 control-label text-danger text-oneLine">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-2"></div>
@@ -513,6 +480,11 @@
     }
     table{
         margin: auto;
+    }
+    .text-oneLine{
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
     }
 </style>
 </html>

@@ -196,6 +196,11 @@
     table th, table td {
         vertical-align: middle!important;
     }
+    .text-oneLine {
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
+    }
 </style>
 <body onload="loadSelectList();">
     <!--导航条-->
@@ -257,8 +262,10 @@
                     <li><a href="archivesManage.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
@@ -301,8 +308,8 @@
             <form method="post" id="page3Info" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-5">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label text-danger">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                        <div class="form-group">
+                            <label class="col-sm-8 control-label text-danger text-oneLine">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3"></div>
