@@ -375,52 +375,229 @@
         </div>
     </div>
     <!-- 危废数据评估表模态框 -->
-    <div class="modal fade" id="appointModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade bs-example-modal-lg" id="appointModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
+                <div class="client_style">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel1">预约取/送样</h4>
+                    <img src="#">
+                    <h2 class="modal-title text-center" id="myModalLabel1">北控安耐得环保科技发展常州有限公司</h2>
+                    <br>
+                    <h4 class="modal-title1 text-center" id="myModalLabel2">危险废弃物数据评估表</h4>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-6"></div>
+                        <!--查询框-->
+                        <div class="input-group col-md-4 pull-right">
+                            <input type="text" class="form-control" placeholder="查询号" id="searchContent1">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-body">
+                    <h4>危废生产单位基本信息</h4>
                     <form id="model-appoint1" method="post">
-                        <div class="form-group">
-                            <label for="model-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model-companyName1" name="companyName" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-contactName" class="control-label">联系人</label>
-                            <input type="text" class="form-control" id="model-contactName1" name="contactName">
-                        </div>
-                        <div class="form-group">
-                            <label for="model-contactPhone" class="control-label">联系电话</label>
-                            <input type="text" class="form-control" id="model-contactPhone1" name="contactPhone">
-                        </div>
-                        <div class="form-group">
-                            <label for="dtp_input1" class="control-label">取样时间</label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
-                                <input class="form-control" type="text" value="" id="model-appointTime1" name="appointTime" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="model-companyName" class="control-label col-sm-4 ">企业名称</label>
+                                    <input type="text" id="model-companyName1" name="companyName" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="control-label col-sm-4 ">联系人</label>
+                                    <input type="text" id="model-contactName1" name="contactName">
+                                </div>
                             </div>
-                            <input type="hidden" id="dtp_input2" value="" />
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">地址</label>
+                                    <input type="text" id="model-address" name="contactPhone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">联系电话</label>
+                                    <input type="text" id="model-contactPhone1" name="contactPhone">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="model-comment" class="control-label">备注</label>
-                            <div>
-                                <textarea class="form-control" id="model-comment1" name="model-comment" rows="3"></textarea>
+                        <div class="row">
+                            <div class="form-horizontal col-md-12">
+                                <div class="form-group">
+                                    <form method="post" id="Opinion">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <td class="cen">市场部审核意见</td>
+                                                <td>
+                                                    <div style="margin-left:100px;">
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label"><b>材料是否齐全：</b></label>
+                                                            <input type="radio" id="model-Material11" name="model-Material1">是
+                                                            <input type="radio" id="model-Material12" name="model-Material1">否
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">如不齐全告知原因：</label>
+                                                            <input type="text" id="model-Material21" name="model-Material2">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label"><b>现场危废管理情况</b></label>
+                                                            <input type="text" id="model-Material31" name="model-Material2">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">1.包装方式是否满足需求</label>
+                                                            <input type="radio" id="model-Material41" name="model-Material1" value="true">是
+                                                            <input type="radio" id="model-Material42" name="model-Material1" value="false">否
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">如不满足客户是否愿意配合公司改善包装方式</label>
+                                                            <input type="radio" id="model-Material51" name="model-Material1" value="true">是
+                                                            <input type="radio" id="model-Material52" name="model-Material1" value="false">否
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">2.是否设有专人管理危废</label>
+                                                            <input type="radio" id="model-Material61" name="model-Material1" value="true">是
+                                                            <input type="radio" id="model-Material62" name="model-Material1" value="false">否
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">接受意愿</label>
+                                                            <input type="radio" id="model-Material71" name="model-Material1" value="">高
+                                                            <input type="radio" id="model-Material72" name="model-Material1" value="">中
+                                                            <input type="radio" id="model-Material73" name="model-Material1" value="">低
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cen">安全环保部审核意见</td>
+                                                <td>
+                                                    <div style="margin-left:100px;">
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label"><b>风险评估</b></label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">1.火灾风险</label>
+                                                            <table style="border-style:solid;border: 1px;">
+                                                                <tr>
+                                                                    <td>火灾风险</td>
+                                                                    <td>高</td>
+                                                                    <td>中</td>
+                                                                    <td>低</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>危废名称</td>
+                                                                    <td><input type="text" class="focus" id="high1" name="high"></td>
+                                                                    <td><input type="text" class="focus" id="middle1" name="middle"></td>
+                                                                    <td><input type="text" class="focus" id="low1" name="low"></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">2.毒性风险</label>
+                                                            <table style="border-style:solid;border: 1px;">
+                                                                <tr>
+                                                                    <td>毒性风险</td>
+                                                                    <td>高</td>
+                                                                    <td>中</td>
+                                                                    <td>低</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>危废名称</td>
+                                                                    <td><input type="text" class="focus" id="high2" name="high"></td>
+                                                                    <td><input type="text" class="focus" id="middle2" name="middle"></td>
+                                                                    <td><input type="text" class="focus" id="low2" name="low"></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">3.其他可能风险：</label>
+                                                            <br>
+                                                            <br>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">接受建议：</label>
+                                                            <input type="radio" id="model-Material81" name="model-Material1">可接受<br>
+                                                            <input type="radio" id="model-Material82" name="model-Material1">不可接受(说明原因)：<input type="text"><br>
+                                                            <input type="radio" id="model-Material83" name="model-Material1">有条件接受(说明条件)：<input type="text"><br>
+                                                        </div>
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="form-horizontal col-md-8"></div>
+                                                            <div class="form-horizontal col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-4 control-label"><b>签名：</b></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cen">生产技术部审核意见</td>
+                                                <td>
+                                                    <div style="margin-left:100px;">
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label"><b>库存评估</b></label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label"><b>1.目前是否可以存放：</b></label>
+                                                            <input type="radio" id="model-Material91" name="model-Material1">是
+                                                            <input type="radio" id="model-Material92" name="model-Material1">否
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">如否请告知原因：</label>
+                                                            <input type="text" id="model-Material101" name="model-Material1">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label"><b>2.目前工艺是否可以处理：</b></label>
+                                                            <input type="radio" id="model-Material111" name="model-Material1">是
+                                                            <input type="radio" id="model-Material112" name="model-Material1">否
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">如否请告知原因：</label>
+                                                            <input type="text" id="model-Material121" name="model-Material1">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="model-contactPhone" class="control-label">接受建议：</label>
+                                                            <input type="radio" id="model-Material131" name="model-Material1">可接受<br>
+                                                            <input type="radio" id="model-Material132" name="model-Material1">不可接受(说明原因)：<input type="text"><br>
+                                                            <input type="radio" id="model-Material133" name="model-Material1">有条件接受(说明条件)：<input type="text"><br>
+                                                        </div>
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="form-horizontal col-md-8"></div>
+                                                            <div class="form-horizontal col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-4 control-label"><b>签名：</b></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="addAppoint(this);">预约</button>
+                    <button type="button" class="btn btn-primary" onclick="kkk()">#</button>
+                </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
+<style>
+    .cen{
+        text-align: center;
+        vertical-align: middle!important;
+    }
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+</style>
 <script type="text/javascript">
     function clearQuestionnaire() {
         $.ajax({
@@ -447,9 +624,15 @@
     function getCompanyName(item) {
         return item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
     }
+    // function viewQuestionnaire(item) {
+    //     var id = getQuestionnaireId(item);
+    //     $(location).attr('href', 'questionnaire1.html?questionnaireId='+id+'&type=view');
+    // }
     function viewQuestionnaire(item) {
         var id = getQuestionnaireId(item);
-        $(location).attr('href', 'questionnaire1.html?questionnaireId='+id+'&type=view');
+        $("#model-companyName1").val(id);
+        // 显示框体
+        $('#appointModal1').modal('show');
     }
     function adjustQuestionnaire(item) {
         var id = getQuestionnaireId(item);
