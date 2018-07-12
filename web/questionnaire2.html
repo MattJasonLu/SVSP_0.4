@@ -25,7 +25,7 @@
             size: 4
         });
     });
-
+    var id1, id2;
     /**
      * 增加新行
      */
@@ -39,11 +39,16 @@
         // 获取编号
         var id = $("#plusBtn").prev().children().get(0).innerHTML;
         var num = parseInt(id);
-//        var btnNum = event.button;
-//        if(btnNum==0){
+        if (!isNaN(num)) {
             num++;
-//        }
+            id1 = num;
+        } else {
+            id1++;
+            num = id1;
+        }
         clonedTr.children().get(0).innerHTML = num;
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
         clonedTr.insertAfter(tr);
     }
     function addNewLine1() {
@@ -56,11 +61,16 @@
         // 获取编号
         var id = $("#plusBtn1").prev().children().get(0).innerHTML;
         var num = parseInt(id);
-//        var btnNum = event.button;
-//        if(btnNum==0){
+        if (!isNaN(num)) {
             num++;
-//        }
+            id2 = num;
+        } else {
+            id2++;
+            num = id2;
+        }
         clonedTr.children().get(0).innerHTML = num;
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id2--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
         clonedTr.insertAfter(tr);
         // 设置时间格式
         $('.form_datetime').datetimepicker({
@@ -72,8 +82,14 @@
             todayHighlight: 1,
             startView: 2,
             minView: 2,
-            forceParse: 0
+            forceParse: 0,
+            endDate:new Date()
         });
+    }
+
+    function delLine(e) {
+        var tr = e.parentElement.parentElement;
+        tr.parentNode.removeChild(tr);
     }
 </script>
 <style>
@@ -87,7 +103,7 @@
 </style>
 <body onload="loadPage2Info()">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top " role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -98,7 +114,7 @@
                 </button>
                 <a class="navbar-brand" href="#">产废服务平台</a>
             </div>
-            <div id="navbar" class="collapse navbar-collapse">
+            <div id="navbar" class="collapse navbar-collapse" style="width: 100%">
                 <ul class="nav navbar-nav">
                     <li><a href="wastesPlatform.html">首页</a></li>
                     <li class="dropdown active">
@@ -187,14 +203,13 @@
             <h2 class="sub-header">调查表新增</h2>
             <!--<form method="post" id="page2Info" enctype="multipart/form-data">-->
                 <div class="row">
-                    <div class="form-horizontal col-md-5">
-                        <div class="form-group">
-                            <label class="col-sm-8 control-label pull-left" style="color: #e5454d;font-size: 12px">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                    <div class="form-horizontal col-md-8">
+                        <div class="form-group pull-left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 350px;">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3"></div>
                     <div class="form-horizontal col-md-4">
-                        <div class="form-group" align="right">
+                        <div class="form-group pull-right">
                             <label class="col-sm-4 control-label">调查单号</label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" name="questionnaireId" id="questionnaireId" placeholder="****" style="border: none">
@@ -208,10 +223,10 @@
                             <form method="post" id="rawWastesListForm">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td>序号</td>
-                                        <td>含化学物质只主要原材料</td>
-                                        <td>含化学物质辅料</td>
-                                        <td>可能带入的化学物质</td>
+                                        <th>序号</th>
+                                        <th>含化学物质只主要原材料</th>
+                                        <th>含化学物质辅料</th>
+                                        <th>可能带入的化学物质</th>
                                     </tr>
                                     <tr id="cloneTr1">
                                         <td>1</td>
@@ -232,14 +247,14 @@
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-2">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">特别关注的物质</label>
+                        <div class="form-group pull-left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 135px;">特别关注的物质</label>
                         </div>
 
                     </div>
                     <div class="form-horizontal col-md-10">
-                        <div class="form-group" align="right">
-                            <label class="col-sm-4 control-label">请确认原料、辅料、废料或工艺是否含有下列物质</label>
+                        <div class="form-group">
+                            <label class="col-sm-8 control-label">请确认原料、辅料、废料或工艺是否含有下列物质</label>
                         </div>
                     </div>
                 </div>
@@ -336,8 +351,8 @@
                 </form>
                 <div class="row">
                     <div class="form-horizontal col-md-3">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px">产废生产工艺流程描述</label>
+                        <div class="form-group pull-left">
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 170px;">产废生产工艺流程描述</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-9"></div>
@@ -348,7 +363,7 @@
                             <form method="post" id="wasteProcessList">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td>序号</td>
+                                        <td style="width: 70px;">序号</td>
                                         <td>危废编码</td>
                                         <td>产生流程描述</td>
                                         <td>现有量(吨)</td>
@@ -408,7 +423,8 @@
         todayHighlight: 1,
         startView: 2,
         minView: 2,
-        forceParse: 0
+        forceParse: 0,
+        endDate:new Date()
     });
     // 获取问卷编号
     var url=location.search;

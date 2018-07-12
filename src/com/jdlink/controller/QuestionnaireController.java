@@ -372,6 +372,30 @@ public class QuestionnaireController {
     }
 
     /**
+     * 保存调查表
+     * @return 成功与否
+     */
+    @RequestMapping(value = {"saveQuestionnaire", "client/saveQuestionnaire"})
+    @ResponseBody
+    public String saveQuestionnaire() {
+        JSONObject res = new JSONObject();
+        try {
+            // 更改状态为待签收
+            QuestionnaireController.questionnaire.setApplyState(ApplyState.ToSubmit);
+            questionnaireService.add(QuestionnaireController.questionnaire);
+            QuestionnaireController.questionnaire = new Questionnaire();
+            res.put("status", "success");
+            res.put("message", "保存调查表成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "保存调查表失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 更新调查表
      * @return 成功与否
      */

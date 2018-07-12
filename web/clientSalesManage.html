@@ -191,31 +191,11 @@ else {
             alert("请勾选业务员");
         }
     }
-    $(document).ready(function () {
-        //给全选设置点击事件
-        $("[name='allSel']").click(function () {
-            if($(this).is(':checked')){
-                $("[name='select']").attr('checked',true);
-            }else{
-                $("[name='select']").attr('checked',false);
-            }
-        })
-        //给下面的复选框设置click事件
-        $("[name='select']").click(function () {
-            var allSel = false;
-            $("[name='select']").each(function () {
-                if(!$(this).is(':checked')){
-                    allSel = true;
-                }
-            })
-            //如果有checkbox没有被选中
-            if(allSel){
-                $("[name='allSel']").attr('checked',true);
-            }else{
-                $("[name='allSel']").attr('checked',false);
-            }
-        })
-    })
+    function allSelect() {
+        var isChecked = $('#allSel').prop('checked');
+        if (isChecked) $("input[name='select']").prop('checked',true);
+        else $("input[name='select']").prop('checked',false);
+    }
 </script>
 <body onload="loadClientList()">
     <!--导航条-->
@@ -369,7 +349,7 @@ else {
                     <tr id="cloneTr">
                         <td class="text-center">
                             <label>
-                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="...">
+                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="..." onclick="allSelect()">
                             </label>
                         </td>
                         <td></td>
