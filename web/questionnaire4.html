@@ -290,6 +290,27 @@
             <!--endprint-->
         </div>
     </div>
+    <!-- 预约模态框 -->
+    <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">感谢贵公司的支持，北控安耐得环保科技发展常州有限公司将上以述资料作为运输、储存和处理依据，为了保证我司员工之安全，请您再次确认上述数据的准确性！<br>
+                        如确认无误，请打印盖章后，在列表界面中上传其扫描件，同时随附如下文件：<br>
+                        1.请提供《环境影响评价报告表/书》中的“工艺流程与产废环节”相关章节内容(必须提供); <br>
+                        2.请提供危险废物成分检测报告(非必须，有则提供)</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="">打印</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$(location).attr('href', 'questionnaireManage.html');">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     var deriveWastesCount = 1;
@@ -417,7 +438,7 @@
                                 success: function (result) {
                                     if (result.status == "success") {
                                         alert(result.message);
-                                        $(location).attr('href', 'questionnaireManage.html');
+                                        $('#checkModal').modal('show');
                                     }
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -434,7 +455,7 @@
                                 success: function (result) {
                                     if (result.status == "success") {
                                         alert(result.message);
-                                        $(location).attr('href', 'questionnaireManage.html');
+                                        $('#checkModal').modal('show');
                                     }
                                 },
                                 error: function(XMLHttpRequest, textStatus, errorThrown) {
