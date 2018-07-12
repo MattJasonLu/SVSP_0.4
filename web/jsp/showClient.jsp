@@ -382,7 +382,7 @@
                         <div class="form-group">
                             <label for="materialAttachment" class="col-sm-4 control-label">原辅材料</label>
                             <div class="col-xs-5">
-                                <input type="file" class="form-control" id="materialAttachment" name="materialAttachment" placeholder="">
+                                <input type="text" class="form-control" id="materialAttachment" name="materialAttachment" placeholder="" value="${client.materialAttachmentUrl}" onclick="changeFileStyle(this);">
                             </div>
                         </div>
                         <div class="form-group">
@@ -396,7 +396,7 @@
                         <div class="form-group">
                             <label for="processAttachment" class="col-sm-4 control-label">工艺流程图</label>
                             <div class="col-xs-5">
-                                <input type="file" class="form-control" id="processAttachment" name="processAttachment" placeholder="">
+                                <input type="text" class="form-control" id="processAttachment" name="processAttachment" placeholder="" value="${client.processAttachmentUrl}" onclick="changeFileStyle(this);">
                             </div>
                         </div>
                     </div>
@@ -443,5 +443,20 @@
     </div>
 </body>
 <script type="text/javascript">
+    var name1 = $("#materialAttachment").val();
+    var arr1 = name1.split("/");
+    name1 = arr1[arr1.length-1];
+    $("#materialAttachment").val(name1);
+    var name2 = $("#processAttachment").val();
+    var arr2 = name2.split("/");
+    name2 = arr2[arr2.length-1];
+    $("#processAttachment").val(name2);
+    /**
+     * 更改input样式为file
+     * @param e
+     */
+    function changeFileStyle(e) {
+        if (e.type == "text") e.type = "file";
+    }
 </script>
 </html>

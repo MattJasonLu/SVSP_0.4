@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +37,16 @@
         ];
         config.removeButtons = 'Underline,Subscript,Superscript';
     };
-
+    // 获取传入参数
+    var url=location.search;
+    var Request = {};
+    if(url.indexOf("?")!=-1) {
+        var str = url.substr(1)　//去掉?号
+        strs = str.split("&");
+        for(var i=0;i<strs.length;i++) {
+            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+        }
+    }
 </script>
 <body onload="getContractList();">
 <!--导航条-->
@@ -154,7 +159,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">模板名称：</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" name="modelName" value="${model.modelName}">
+                            <input type="text" class="form-control" name="modelName" id="modelName">
                         </div>
                     </div>
                 </div>
@@ -163,7 +168,7 @@
                     <div class="form-group" >
                         <label for="contractId" class="col-sm-3 control-label">编号</label>
                         <div class="col-xs-5" >
-                            <input type="text" class="form-control" id="contractId" name="contractId"  value="${model.contractId}" readonly >
+                            <input type="text" class="form-control" id="contractId" name="contractId"   readonly >
                         </div>
                     </div>
                 </div>
@@ -232,34 +237,43 @@
         console.log(modelName);
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "getContractList",                  // url
+            url: "getContractBymodelName",                  // url
             dataType: "json",
+            data:{"modelName":modelName},
             success: function (result) {
-                var text='${model.contractContent}';
-               // var text="<p>12312312";
-                console.log(text);
-                CKEDITOR.instances.TextArea1.setData(text);//获取值
+                var data=eval(result);
+                console.log(data);
+                //赋值模板名称
+                $('#modelName').prop("value",data.modelName);
+                //赋值模板编号
+                $('#contractId').prop("value",data.contractId);
+                //赋值合同内容
+                CKEDITOR.instances.TextArea1.setData(data.contractContent);//获取值
                 //$('#TextArea1').val(text);
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
                     var contractType = $("#contractType");
+                    index1=""
                     contractType.children().remove();
                     $.each(data.contractNameStrList, function (index, item) {
                         var option = $('<option />');
                         option.val(index);
                         option.text(item.name);
+                        if(data.contractType.name==item.name){
+                            index1=index;
+                        }
                         contractType.append(option);
                     });
-                    contractType.get(0).selectedIndex = ${model.contractType.index}-1;
-                    var s='${model.year}'+"";
-                   // console.log(s);
-                    var year=$('#year');
-                  year.find("option[value="+s+"]").attr("selected",true);
-                  var period=$('#period');
-                  var s1='${model.period}'+"";
-                   // console.log(s1);
-                  period.find("option[value="+s1+"]").attr("selected",true);
+                    contractType.get(0).selectedIndex=index1;
+                   // var s='${model.year}'+"";
+                    // console.log(s);
+                   var year=$('#year');
+                   year.find("option[value="+data.year+"]").attr("selected",true);
+                    var period=$('#period');
+                   // var s1='${model.period}'+"";
+                    // console.log(s1);
+                   period.find("option[value="+data.period+"]").attr("selected",true);
                 }
                 else {
                     console.log(result);
@@ -285,7 +299,7 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                   // console.log(eval(result));
+                    // console.log(eval(result));
                     console.log("success: " + result);
                     alert("保存修改成功!");
                     $(location).attr('href', 'contractTemplate.html');//跳转
