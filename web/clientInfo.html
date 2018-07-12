@@ -379,6 +379,11 @@
         margin-right: auto;
         margin-left: auto;
     }
+    .text-oneLine {
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
+    }
 </style>
 <body onload="loadSelectList()">
     <!--导航条-->
@@ -483,7 +488,7 @@
             <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-1">
-                        <h4 class="text-info">基本信息</h4>
+                        <h4 class="text-info text-oneLine">基本信息</h4>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <img src="image/line.png">
@@ -592,7 +597,14 @@
                         </div>
                     </div>
                 </div>
-                <h4 class="text-info">环评信息</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info text-oneLine">环评信息</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
@@ -621,7 +633,14 @@
                         </div>
                     </div>
                 </div>
-                <h4 class="text-info">联系方式</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info text-oneLine">联系方式</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">

@@ -13,6 +13,13 @@
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
+<style>
+    .text-oneLine{
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
+    }
+</style>
 <script>
     $(window).on('load', function () {
         // 中文重写select 查询为空提示信息
@@ -147,9 +154,14 @@
             <h2 class="sub-header">调查表新增</h2>
             <form method="post" id="page1Info" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-4 control-label" style="color: #e5454d;font-size: 20px">基本信息</label>
+                    <div class="form-horizontal col-md-1">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label text-oneLine" style="color: #e5454d;font-size: 20px">基本信息</label>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-5">
+                        <div class="">
+                            <img src="image/line-red.png">
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
