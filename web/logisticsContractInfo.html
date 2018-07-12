@@ -108,7 +108,7 @@ function loadContractSelectList() {
                 var taxRate1=$('#taxRate1');
                 taxRate1.children().remove();
                 $.each(data.ticketRateStrList1, function (index, item) {
-                    console.log(item);
+                   // console.log(item);
                     var option = $('<option />');
                     option.val(index);
                     option.text(item.name);
@@ -119,7 +119,7 @@ function loadContractSelectList() {
                 var taxRate2=$('#taxRate2');
                 taxRate2.children().remove();
                 $.each(data.ticketRateStrList2, function (index, item) {
-                    console.log(item);
+                   // console.log(item);
                     var option = $('<option />');
                     option.val(index);
                     option.text(item.name);
@@ -511,7 +511,7 @@ function contractSubmit(){
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-danger" href="javascript:history.go(-1);location.reload()">返回</a>
+                <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
 </div>
@@ -561,6 +561,11 @@ function contractSubmit(){
         startView: 2,
         minView: 2,
         forceParse: 0
+    });
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Logistics";
+        location.href="contractManage.html";
     });
 </script>
 </html>

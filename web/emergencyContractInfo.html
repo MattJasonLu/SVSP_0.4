@@ -472,7 +472,7 @@
                 <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
                 <a class="btn btn-warning" onclick="clientReset()">重置</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
     </div>
@@ -524,6 +524,11 @@
         startView: 2,
         minView: 2,
         forceParse: 0
+    });
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Emergency";
+        location.href="contractManage.html";
     });
 </script>
 </html>
