@@ -282,6 +282,7 @@
                 </div>
                 <div class="row text-center">
                     <a class="btn btn-primary" onclick="savePage4Info(this);">上一页</a>
+                    <button type="button" class="btn btn-primary" id="btnSave" onclick="savePage4Info(this);">保存</button>
                     <button type="button" class="btn btn-primary" id="btnCfm" onclick="savePage4Info(this);">提交</button>
                     <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
                 </div>
@@ -296,7 +297,7 @@
     var url=location.search;
     var Request = {};
     if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
+        var str = url.substr(1);　//去掉?号
         strs = str.split("&");
         for(var i=0;i<strs.length;i++) {
             Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
@@ -313,8 +314,10 @@
     function loadPage4Info() {
         if (Request["type"] != null && Request["type"] != '') {
             $("#btnCfm").text("打印");
+            $("#btnSave").remove();
         } else if (Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
             $("#btnCfm").text("修改");
+            $("#btnSave").remove();
         }
         $.ajax({
             type: "POST",
@@ -405,7 +408,24 @@
                 if (result != undefined) {
                     console.log(result);
                     if (result.status == "success") {
-                        if (btnName == "提交") {
+                        if (btnName == "保存") {
+                            $.ajax({
+                                type: "POST",
+                                url: "saveQuestionnaire",
+                                async: false,
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.status == "success") {
+                                        alert(result.message);
+                                        $(location).attr('href', 'questionnaireManage.html');
+                                    }
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                    alert("服务器异常");
+                                    console.log("错误信息:" + XMLHttpRequest.responseText);
+                                }
+                            });
+                        } else if (btnName == "提交") {
                             $.ajax({
                                 type: "POST",
                                 url: "addQuestionnaire",
