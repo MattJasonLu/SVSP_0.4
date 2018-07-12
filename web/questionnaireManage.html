@@ -5,15 +5,36 @@
     <title>调查表管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <script src="js/jquery/jquery.validate.min.js"></script>
+    <script src="js/jquery/additional-methods.js"></script>
+    <script src="js/jquery/messages_zh.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/validation.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
+    var validator;
+    // 校验表单信息
+    $().ready(function () {
+        validator = $("#model-appoint").validate({
+            // 在失去焦点时验证
+            onfocusout: function (element) {
+                $(element).valid();
+            },
+
+            errorPlacement: function (error, element) {
+                error.appendTo(element.parent());
+            },
+            submitHandler: function (form) { //通过之后回调
+                alert('通过');
+            }
+        });
+    });
     function setQuestionnaireList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
@@ -322,17 +343,17 @@
                             <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="model-contactName" class="control-label">联系人</label>
-                            <input type="text" class="form-control" id="model-contactName" name="contactName">
+                            <label for="model-contactName" class="control-label">联系人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <input type="text" class="form-control" id="model-contactName" name="contactName" required>
                         </div>
                         <div class="form-group">
-                            <label for="model-contactPhone" class="control-label">联系电话</label>
-                            <input type="text" class="form-control" id="model-contactPhone" name="contactPhone">
+                            <label for="model-contactPhone" class="control-label">联系电话 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <input type="text" class="form-control" id="model-contactPhone" name="contactPhone" required>
                         </div>
                         <div class="form-group">
-                            <label for="dtp_input1" class="control-label">取样时间</label>
+                            <label for="dtp_input1" class="control-label">取样时间 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
-                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
+                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly required>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                             </div>
@@ -587,30 +608,32 @@
      * 增加预约单
      */
     function addAppoint() {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "addSampleAppoint",                       // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#model-appoint').serializeJSON()),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    alert("保存成功!");
-                    window.location.reload();
-                } else {
-                    alert("保存失败!");
+        if (validator.form()) {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "addSampleAppoint",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify($('#model-appoint').serializeJSON()),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        alert("保存成功!");
+                        window.location.reload();
+                    } else {
+                        alert("保存失败!");
+                    }
+                },
+                error: function (data, type, err) {
+                    var that = this;
+                    console.log(that.data);
+                    console.log("ajax错误类型：" + type);
+                    console.log(err);
+                    alert("服务器异常!");
                 }
-            },
-            error:function(data,type, err){
-                var that = this;
-                console.log(that.data);
-                console.log("ajax错误类型："+type);
-                console.log(err);
-                alert("服务器异常!");
-            }
-        });
+            });
+        }
     }
 </script>
 </html>
