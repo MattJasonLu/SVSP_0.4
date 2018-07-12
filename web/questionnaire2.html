@@ -25,7 +25,7 @@
             size: 4
         });
     });
-
+    var id1, id2;
     /**
      * 增加新行
      */
@@ -39,11 +39,16 @@
         // 获取编号
         var id = $("#plusBtn").prev().children().get(0).innerHTML;
         var num = parseInt(id);
-//        var btnNum = event.button;
-//        if(btnNum==0){
+        if (!isNaN(num)) {
             num++;
-//        }
+            id1 = num;
+        } else {
+            id1++;
+            num = id1;
+        }
         clonedTr.children().get(0).innerHTML = num;
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
         clonedTr.insertAfter(tr);
     }
     function addNewLine1() {
@@ -56,11 +61,16 @@
         // 获取编号
         var id = $("#plusBtn1").prev().children().get(0).innerHTML;
         var num = parseInt(id);
-//        var btnNum = event.button;
-//        if(btnNum==0){
+        if (!isNaN(num)) {
             num++;
-//        }
+            id2 = num;
+        } else {
+            id2++;
+            num = id2;
+        }
         clonedTr.children().get(0).innerHTML = num;
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id2--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
         clonedTr.insertAfter(tr);
         // 设置时间格式
         $('.form_datetime').datetimepicker({
@@ -75,6 +85,11 @@
             forceParse: 0,
             endDate:new Date()
         });
+    }
+
+    function delLine(e) {
+        var tr = e.parentElement.parentElement;
+        tr.parentNode.removeChild(tr);
     }
 </script>
 <style>
@@ -349,7 +364,7 @@
                             <form method="post" id="wasteProcessList">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td>序号</td>
+                                        <td style="width: 70px;">序号</td>
                                         <td>危废编码</td>
                                         <td>产生流程描述</td>
                                         <td>现有量(吨)</td>
