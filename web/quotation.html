@@ -85,6 +85,7 @@
     }
     //获取时间
     function getTimeStr(obj) {
+        if (obj == null) return "";
         var year=(parseInt(obj.year)+1900).toString();
         var mouth=parseInt((obj.month)+1).toString();
         if(mouth.length!=2){
