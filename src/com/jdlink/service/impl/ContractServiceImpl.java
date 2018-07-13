@@ -124,4 +124,14 @@ contractMapper.updateFreight2(id);
     public void approval(String contractId) {
         contractMapper.approval(contractId);
     }
+
+    @Override
+    public List<String> modelName(String key) {
+        return contractMapper.modelName(key);
+    }
+
+    @Override
+    public void back(String contractId) {
+        contractMapper.back(contractId);
+    }
 }
