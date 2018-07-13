@@ -220,6 +220,48 @@ public class ClientController {
         }
     }
 
+    /**
+     * 取出所有客户对象
+     * @return 客户列表集合对象
+     */
+    @RequestMapping("listAllocatedClient")
+    @ResponseBody
+    public String listAllocatedClient(Page page) {
+        try {
+            // 取出所有客户
+            List<Client> clientList = clientService.listAllocated();
+            // 计算最后页
+            page.caculateLast(clientService.total());
+            JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+            // 返回结果
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 取出所有客户对象
+     * @return 客户列表集合对象
+     */
+    @RequestMapping("listUnallocatedClient")
+    @ResponseBody
+    public String listUnallocatedClient(Page page) {
+        try {
+            // 取出所有客户
+            List<Client> clientList = clientService.listUnallocated();
+            // 计算最后页
+            page.caculateLast(clientService.total());
+            JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+            // 返回结果
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @RequestMapping("getAllClients")
     @ResponseBody
     public String getAllClients() {

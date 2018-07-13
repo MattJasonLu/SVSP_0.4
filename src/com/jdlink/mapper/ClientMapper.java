@@ -31,6 +31,10 @@ public interface ClientMapper {
 
     List<Client> list();
 
+    List<Client> listAllocated();
+
+    List<Client> listUnallocated();
+
     List<Client> list(Page page);
 
     int total();
