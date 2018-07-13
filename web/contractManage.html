@@ -717,7 +717,8 @@ else {
                                 <td>
                                     <a href="#" onclick="viewContract(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                     <a href="#" onclick="adjustContract(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                    <a href="#" onclick="disableClient(this);" title="删除"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                                    <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                                    <a href="#" onclick="approval(this);" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 </td>
                             </tr>
 
@@ -1071,8 +1072,8 @@ function ContractListByName(item) {
 }
 function cancel(item) {
     //查看合同编号
-    var contractId=(item).parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
-    var name1=(item).parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+    var contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    var name1=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
     var r = confirm("是否作废该合同？");
     if(r==true){
         $.ajax({
@@ -1119,8 +1120,8 @@ function cancel(item) {
     }
     }
     function approval(item) {
-        var contractId=(item).parentElement.parentElement.parentElement.parentElement.nextElementSibling.innerHTML;
-        var name1=(item).parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        var name1=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
       var r = confirm("是否对该合同审批？");
       if(r==true){
           $.ajax({
