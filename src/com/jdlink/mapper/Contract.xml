@@ -48,7 +48,7 @@ values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},
         SELECT * FROM t_contract WHERE contractId = #{contractId};
     </select>
     <select id="getModel" parameterType="String" resultMap="ContractRM">
-        select * from t_contract where modelName=#{modelName};
+        select * from t_contract where contractId=#{contractId};
     </select>
 
     <update id="update" parameterType="Contract">

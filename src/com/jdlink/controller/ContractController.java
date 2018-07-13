@@ -316,8 +316,8 @@ return  res.toString();
     }
     @RequestMapping("getContractBymodelName")
     @ResponseBody
-    public String getContractBymodelName(String modelName){
-        Contract modelContract=contractService.getModel(modelName);
+    public String getContractBymodelName(String contractId){
+        Contract modelContract=contractService.getModel(contractId);
         JSONObject res=JSONObject.fromBean(modelContract);
         JSONArray array1 = JSONArray.fromArray(ContractType.values());
         res.put("contractNameStrList", array1);
