@@ -30,4 +30,6 @@ public interface ContractService {
     void cancel(String contractId);
     void cancel1(String modelName);
     void approval(String contractId);
+    List<String> modelName(String key);
+    void back(String contractId);
 }

@@ -49,7 +49,7 @@
         });
     }
     function setContractList(result){
-     //console.log(eval(result));//可以取到
+     console.log(eval(result));//可以取到
         // 获取id为cloneTr的tr元素
       //判断字段是否存在
         var tr = $("#cloneTr1");//克隆一行
@@ -58,7 +58,7 @@
             // 克隆tr，每次遍历都可以产生新的tr
             var obj = eval(item);
             //console.log(obj);
-            if(obj.modelName!=""&&obj.year!=""&&obj.contractContent!="") {
+            if(obj.modelName!=""&&obj.year!="") {
                 console.log(obj);
                 var clonedTr = tr.clone();
                 clonedTr.show();
@@ -422,6 +422,7 @@
     }
     function cancel(item) {
         var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.previousElementSibling.innerHTML;
         //console.log(modelName);
         var r = confirm("是否作废该模板？");
         if(r==true){
@@ -431,7 +432,7 @@
                 async: false,
                 dataType: "json",
                 data: {
-                    'modelName': modelName
+                    'contractId': contractId
                 },
                 success:function (result) {
                     var obj=eval(result);

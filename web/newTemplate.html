@@ -36,7 +36,6 @@
         config.pasteFromWordRemoveFontStyles = false;
         config.pasteFromWordRemoveStyles = false;
     };
-
     $(window).on('load', function () {
         // 中文重写select 查询为空提示信息
         $('.selectpicker').selectpicker({
@@ -45,31 +44,8 @@
             size: 4
         });
     });
-
-    function setClientData() {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getCurrentQuestionnaireId",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-//                    console.log(result);
-                    if (result.status == "success") {
-                        $("#questionnaireId").val(result.questionnaireId);
-                    } else {
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
-        $("#time").val(getNowDate());
-    }
 </script>
-<body onload="setClientData();loadPage1Info();getContractList();">
+<body onload="getContractList();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -148,7 +124,6 @@
         </div><!--/.nav-collapse -->
     </div>
 </nav>
-
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar">
@@ -166,7 +141,6 @@
             </ul>
         </div>
     </div>
-
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <div class="row">
             <ol class="breadcrumb">
@@ -254,69 +228,6 @@
 </body>
 <script type="text/javascript">
     // 页面准备完成后载入客户信息
-    $(document).ready(function () {
-        // 添加客户信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getAllClients",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-//                    console.log("success: " + result);
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var clientList = $("#companyName");
-                    // 清空遗留元素
-                    clientList.children().first().siblings().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.clientId);
-                        option.text(item.companyName);
-                        clientList.append(option);
-                    });
-                    $('.selectpicker').selectpicker('refresh');
-                } else {
-//                    console.log(result);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    });
-
-    function loadPage1Info() {
-        $('.selectpicker').selectpicker('val', '');
-        $.ajax({
-            type: "POST",
-            url: "getCurrentQuestionnaire",
-            async: false,
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        var data = eval(result);
-                        $("#questionnaireId").val(data.data.questionnaireId);
-                        $("#companyName").val(data.data.client.companyName);
-                        $("#location").val(data.data.client.location);
-                        $("#contactName").val(data.data.client.contactName);
-                        $("#phone").val(data.data.client.phone);
-                        $("#industry").val(data.data.client.industry);
-                        $("#product").val(data.data.client.product);
-                        $("#author").val(data.data.author);
-                        $("#time").val(getFormatDate(data.data.time));
-                    }
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log("错误信息:" + XMLHttpRequest.responseText);
-            }
-        });
-    }
     function getContractList() {
         $.ajax({
             type: "POST",                            // 方法类型
@@ -343,45 +254,6 @@
                 console.log(result);
             }
         });
-    }
-
-    function savePage1Info() {
-        if ($("#companyName").find("option:selected").text() == '') alert("未选择任何企业");
-        else {
-            $.ajax({
-                type: "POST",                            // 方法类型
-                url: "savePage1Info",               // url
-                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                data: JSON.stringify({
-                    'questionnaireId': $("#questionnaireId").val(),
-                    'time': $("#time").val(),
-                    'author': $("#author").val(),
-                    'client': {
-                        'companyName': $("#companyName").find("option:selected").text(),
-                        'contactName': $("#contactName").val(),
-                        'industry': $("#industry").val(),
-                        'product': $("#product").val(),
-                        'phone': $("#phone").val(),
-                        'location': $("#location").val()
-                    }
-                }),
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                        if (result.status == "success") {
-                            $(location).attr('href', 'questionnaire2.html');
-                        } else {
-                        }
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    alert("服务器异常!");
-                }
-            });
-        }
     }
     function submit(){
         var mySelection = CKEDITOR.instances.TextArea1.getSelection();//获取选中内容
@@ -423,7 +295,6 @@
             }
         });
     }
-
     CKEDITOR.replace('TextArea1');
 </script>
 </html>
