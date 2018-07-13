@@ -74,25 +74,24 @@
                         case (2):
                             $(this).html(obj.modelName);
                             break;
-
-                        // 合同版本号
-                        case (3):
-                            $(this).html(" ");
-                            break;
-                        // 年份
-                        case (4):
-                            $(this).html(obj.year);
-                            break;
                         // 合同状态
-                        case (5):
-                             if(obj.checkState.name=="已作废"){
-                                 $(this).html("已作废");
-                             }
+                        case (3):
+                            if(obj.checkState.name=="已作废"){
+                                $(this).html("已作废");
+                            }
                             if(obj.checkState.name!="已作废"){
                                 $(this).html("使用中");
                             }
                             break;
-                     
+                        // 合同版本号
+                        case (4):
+                            $(this).html(" ");
+                            break;
+                        // 年份
+                        case (5):
+                            $(this).html(obj.year);
+                            break;
+
                     }
                 });
                 // 把克隆好的tr追加到原来的tr前面
@@ -104,7 +103,7 @@
         tr.hide();
     }
     function adjust(item) {
-        var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
          //console.log(modelName);
          //window.location.href ="showModel?modelName="+modelName;
          window.location.href ="model.html?modelName="+modelName;
@@ -288,18 +287,13 @@
                         <td></td><!--模板名称-->
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td>
-
                             <a href="#" onclick="check(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="adjust(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" onclick="disableClient(this);" title="删除"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="kkk(this);" title="升级"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                         </td>
-                        </td>
-                        <td>危废合同</td>
-                        <td>危废</td><!--模板名称-->
-                        <td>使用中</td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -418,7 +412,7 @@
         $('#contractInfoForm').modal('show');
     }
     function cancel(item) {
-        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
         //console.log(modelName);
         var r = confirm("是否作废该模板？");
         if(r==true){
