@@ -383,30 +383,12 @@
      * 重置客户信息
      */
     function clientReset() {
-        var r = confirm("是否重置客户信息?");
+        var r = confirm("是否重置报价单信息?");
         if (r == true) {
-            $("#companyName").val("");
-            $("#organizationCode").val("");
-            $("#representative").val("");
-            $("#industry").val("");
-            $("#enterpriseType").get(0).selectedIndex = -1;
-            $("#operationType").get(0).selectedIndex = -1;
-            $("#operationRecord").get(0).selectedIndex = -1;
-            $("#street").val("");
-            $("#licenseCode").val("");
-            $("#postCode").val("");
-            $("#product").val("");
-            $("#operationMode").get(0).selectedIndex = -1;
-            $("#contingencyPlan").get(0).selectedIndex = -1;
-            $("#applicationStatus").get(0).selectedIndex = -1;
-            $("#location").val("");
-            $("#materialAttachment").val("");
-            $("#processAttachment").val("");
-            $("#processDesp").val("");
-            $("#contactName").val("");
-            $("#mobile").val("");
-            $("#phone").val("");
-            $("#email").val("");
+            $("#companyName").selectpicker('val', '');
+            $("input:radio[name!='addType']").attr("checked", false);
+            $("p").text("");
+            $(":input[name!='quotationId']").val('');
         }
     }
     // 获取传入参数
@@ -483,7 +465,7 @@
                             if (i > 0) addNewLine();
                             var $i = i;
                             $("input[name='wastesList[" + $i + "].name']").val(data.data.wastesList[i].name);
-                            console.log($("select[name='wastesList[" + $i + "].formType']"));
+//                            console.log($("select[name='wastesList[" + $i + "].formType']"));
                             if (data.data.wastesList[i].formType != null)
                             $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = data.data.wastesList[i].formType.index - 1;
                             $("input[name='wastesList[" + $i + "].wastesId']").val(data.data.wastesList[i].wastesId);
