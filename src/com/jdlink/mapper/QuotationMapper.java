@@ -13,13 +13,17 @@ public interface QuotationMapper {
 
     void update(Quotation quotation);
 
+    void levelUp(Quotation quotation);
+
     List<Quotation> list();
 
     int count();
 
-    Quotation getById(String quotationId);
+    Quotation getById(String id);
 
-    void setStateDisabled(String quotationId);
+    Quotation getByQuotationId(String quotationId);
+
+    void setStateDisabled(String id);
 
     void changeEndDate(Quotation quotation);
 }
