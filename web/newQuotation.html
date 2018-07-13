@@ -184,6 +184,24 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">报价单名称</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">版本号</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="version" name="version" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
                             <label for="companyName" class="col-sm-4 control-label">客户名称</label>
                             <div class="col-xs-5">
                                 <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName"></select>
@@ -435,21 +453,23 @@
      */
     function loadQuotationInfo() {
         var type = Request['type'];
-        var quotationId = Request['quotationId'];
-        if (type == 'adjust' || type == 'view') {
+        var quotationId = Request['id'];
+        if (type == 'adjust' || type == 'view' || type == 'levelUp') {
             $.ajax({
                 type: "POST",                           // 方法类型
                 url: "getQuotation",                       // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
                 data: {
-                    quotationId: quotationId
+                    id: quotationId
                 },
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result.data);
                         var data = eval(result);
                         $('#quotationId').val(data.data.quotationId);
+                        $('#name').val(data.data.name);
+                        $('#version').val(data.data.version);
                         $('#companyName').selectpicker('val', data.data.client.clientId);
                         $('#contactName').val(data.data.client.contactName);
                         $('#phone').val(data.data.client.phone);
@@ -493,6 +513,15 @@
             $('#btnSave').remove();
         } else if (type == 'view') {
             $('#btnCfm').text("打印");
+            $('#btnSave').remove();
+        } else if (type == 'levelUp') {
+            $('#btnCfm').text("升级");
+            $('#startDate').next().next().remove();
+            $('#startDate').next().remove();
+            $("#startDate").attr("disabled","disabled");
+            $('#endDate').next().next().remove();
+            $('#endDate').next().remove();
+            $("#endDate").attr("disabled","disabled");
             $('#btnSave').remove();
         }
     }
@@ -570,7 +599,10 @@
         // 获取按钮的名字
         var btnName = e.innerHTML;
         var data = {
+            'id': Request['id'],
             'quotationId': $("#quotationId").val(),
+            'name': $("#name").val(),
+            'version': $("#version").val(),
             'client': {
                 'clientId': $("#companyName").find("option:selected").val(),
                 'contactName': $("#contactName").val(),
@@ -663,6 +695,32 @@
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "updateQuotation",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'quotation.html');
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
+        } else if (btnName == "升级") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "levelUpQuotation",                 // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",

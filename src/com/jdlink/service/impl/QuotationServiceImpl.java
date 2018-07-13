@@ -28,6 +28,11 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
+    public void levelUp(Quotation quotation) {
+        quotationMapper.levelUp(quotation);
+    }
+
+    @Override
     public List<Quotation> list() {
         return quotationMapper.list();
     }
@@ -38,13 +43,18 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
-    public Quotation getById(String quotationId) {
-        return quotationMapper.getById(quotationId);
+    public Quotation getById(String id) {
+        return quotationMapper.getById(id);
     }
 
     @Override
-    public void setStateDisabled(String quotationId) {
-        quotationMapper.setStateDisabled(quotationId);
+    public Quotation getByQuotationId(String quotationId) {
+        return quotationMapper.getByQuotationId(quotationId);
+    }
+
+    @Override
+    public void setStateDisabled(String id) {
+        quotationMapper.setStateDisabled(id);
     }
 
     @Override
