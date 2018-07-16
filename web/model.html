@@ -15,7 +15,54 @@
     <script src="js/ckeditor/ckeditor.js"></script>
 </head>
 <style>
-
+    .navbar{
+        margin-bottom: 0px;
+        border-radius: 5px;
+        background: rgb(0,51,102);
+    }
+    .sidebar{
+        margin-bottom: 0px;
+        border-radius: 5px;
+        background: rgb(17,79,142);
+    }
+    .navbar .nav > li > a{
+        color: #000000;
+    }
+    .navbar .nav >li >a:visited{
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+    .navbar .nav > li > a:hover {
+        color: rgb(33,132,29);
+        background-color: #000000;
+    }
+    .navbar .nav >li >a:active{
+        color: rgb(33,132,29);
+        background-color:rgb(229,229,229);
+    }
+    .navber .nav > li > a:after{
+        color: rgb(33,132,29);
+        background-color: #0088cc;
+    }
+    .sidebar .nav > li > a{
+        color: #000000;
+    }
+    .sidebar .nav > li > a:visited{
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+    .sidebar .nav > li > a:hover {
+        color: rgb(33,132,29);
+        background-color: #000000;
+    }
+    .sidebar .nav > li > a:active{
+        color: rgb(33,132,29);
+        background-color:rgb(229,229,229);
+    }
+    .sidebar .nav > li > a:after{
+        color: rgb(33,132,29);
+        background-color: #0088cc;
+    }
 </style>
 <script>
     CKEDITOR.editorConfig = function( config ) {
@@ -50,7 +97,7 @@
 </script>
 <body onload="getContractList();">
 <!--导航条-->
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:rgb(0,51,102);">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
