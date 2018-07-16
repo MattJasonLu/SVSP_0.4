@@ -77,6 +77,12 @@
                     $('#isFreight').prop("checked",true);
                     $('#isFreight').prop("value",true);
                 }
+                if('${contract.contractName}'!=null){
+                    $('#contractName').prop("value", '${contract.contractName}');
+                }
+                else {
+                    $('#contractName').prop("value", " ");
+                }
                 var contractVersion='${contract.contractVersion}';
                 $(":radio[name='contractVersion'][value='" +contractVersion+"']").prop("checked", "checked");
                 if (result != undefined) {

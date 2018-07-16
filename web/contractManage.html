@@ -371,6 +371,7 @@ else {
        }
        else {
            $('#btn').text();
+           $('#back').text('');
            $.ajax({
                type: "POST",                       // 方法类型
                url: "getContractId",                   // url
@@ -385,10 +386,16 @@ else {
                        var data = eval(result);
                        var begin=gettime(data.beginTime);
                        var end=gettime(data.endTime);
-                       $("#modal3_contractName").val(data.contractName+data.contractType.name);//合同名称
+
                        $("#modal3_contractState").val(data.checkState.name);
                        $("#modal3_contractVersion").val(data.contractVersion.name);
                        $("#modal3_companyName").val(data.companyName);
+                       if(data.contractVersion.name=="公司合同"){
+                           $("#modal3_contractName").val(data.modelName);//合同名称
+                       }
+                       if(data.contractVersion.name=="客户合同"){
+                           $("#modal3_contractName").val(data.contractName+data.contractType.name);//合同名称
+                       }
                        $("#modal3_contactName").val(data.contactName);
                        $("#modal3_contractId").val(data.contractId);
                        $("#modal3_beginTime").val(begin);
@@ -459,11 +466,11 @@ else {
                },
                error: function (result) {
                    console.log(result);
-
                }
            });
            $('#contractInfoForm').modal('show');
            $('#btn').text("打印");
+           $('#back').hide();
        }
 
     }
