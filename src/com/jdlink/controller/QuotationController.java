@@ -185,10 +185,13 @@ public class QuotationController {
      */
     @RequestMapping("listQuotation")
     @ResponseBody
-    public String listQuotation(String clientId) {
+    public String listQuotation(String clientId, String state) {
         JSONObject res = new JSONObject();
         try {
-            List<Quotation> quotationList = quotationService.list();
+            List<Quotation> quotationList = null;
+            if (state != null && state.equals("NotInvalid")) quotationList = quotationService.listNotInvalid();
+            else if (state != null && state.equals("All")) quotationList = quotationService.list();
+            else if (state != null) quotationList = quotationService.list(state);
             JSONArray data = JSONArray.fromArray(quotationList.toArray(new Quotation[quotationList.size()]));
             res.put("data", data.toString());
             res.put("status", "success");
