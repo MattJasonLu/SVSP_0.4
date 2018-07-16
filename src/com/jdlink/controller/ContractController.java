@@ -5,6 +5,7 @@ import com.jdlink.domain.*;
 import com.jdlink.service.CityService;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.ContractService;
+import com.jdlink.util.UpdateVersion;
 import com.sun.script.javascript.JSAdapter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.jdlink.util.UpdateVersion;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -167,6 +168,11 @@ public String saveEmContract(@RequestBody Contract contract){
         }
         System.out.println("当前合同编号:"+contract.getContractId());
         contract.setCheckState(CheckState.ToSubmit);
+        //System.out.println(contract.getModelName()+"BBB");
+        if(contract.getModelName()!=null){
+            contract.setModelVersion("V1.0");
+            System.out.println(contract.getModelVersion()+"CCC");
+        }
         JSONObject res = JSONObject.fromBean(contract);
         System.out.println(res.toString());
 
@@ -317,6 +323,17 @@ return  res.toString();
        JSONObject res= JSONObject.fromBean(contract);
         //System.out.println("123"+contract.getContractId());
         //给予合同的状态
+        //取出合同版本
+       String modelVersion= contract.getModelVersion();
+      if(modelVersion!=null){
+          String remove="V";
+          String modelVersion1= modelVersion.replace(remove,"");
+          if(modelVersion1!=null){
+              String  modelVersion2=UpdateVersion.updateVersionID(modelVersion1);
+              contract.setModelVersion(modelVersion2);
+              System.out.print(modelVersion1+"AAA");
+          }
+      }
         try{
             contractService.update(contract);
             res.put("status", "success");
@@ -338,7 +355,6 @@ return  res.toString();
         res.put("contractNameStrList", array1);
         return res.toString();
     }
-
     @RequestMapping("isF")
     @ResponseBody
     public  String is(String isFreight,String id){

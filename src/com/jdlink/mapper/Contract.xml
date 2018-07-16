@@ -14,16 +14,16 @@
         <result property="period" column="period" javaType="String"/>
        <result property="modelName" column="modelName" javaType="String"/>
         <result property="contractContent" column="contractContent" javaType="String"/>
-
+        <result property="modelVersion" column="modelVersion" javaType="String"/>
     </resultMap>
 
     <insert id="add" parameterType="Contract"  >
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion)
         values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion})
     </insert>
     <insert id="addEm" parameterType="Contract">
 insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,wasteName,tonNumber,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime)
@@ -56,7 +56,7 @@ values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName} WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion} WHERE contractId=#{contractId};
     </update>
 <update id="updateEm" parameterType="Contract">
 UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
