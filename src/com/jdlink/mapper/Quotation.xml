@@ -56,8 +56,15 @@
         </if>
     </insert>
 
-    <select id="list" resultMap="QuotationRM">
+    <select id="list" resultMap="QuotationRM" parameterType="String">
         SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId
+        <if test="_parameter != null">
+            AND t_quotation.checkState=#{state}
+        </if>
+    </select>
+
+    <select id="listNotInvalid" resultMap="QuotationRM">
+        SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND t_quotation.checkState!='Invalid'
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
