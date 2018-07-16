@@ -16,6 +16,10 @@ public interface QuotationService {
 
     List<Quotation> list();
 
+    List<Quotation> list(String state);
+
+    List<Quotation> listNotInvalid();
+
     int count();
 
     Quotation getById(String id);

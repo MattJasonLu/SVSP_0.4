@@ -38,6 +38,16 @@ public class QuotationServiceImpl implements QuotationService {
     }
 
     @Override
+    public List<Quotation> list(String state) {
+        return quotationMapper.list(state);
+    }
+
+    @Override
+    public List<Quotation> listNotInvalid() {
+        return quotationMapper.listNotInvalid();
+    }
+
+    @Override
     public int count() {
         return quotationMapper.count();
     }
