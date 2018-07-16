@@ -49,32 +49,32 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                        // 调查表编号
+                    // 调查表编号
                     case (1):
                         $(this).html(obj.questionnaireId);
                         break;
-                        // 企业名称
+                    // 企业名称
                     case (2):
                         $(this).html(obj.client.companyName);
                         break;
-                        // 所属行业
+                    // 所属行业
                     case (3):
                         $(this).html(obj.client.industry);
                         break;
-                        // 主要产品
+                    // 主要产品
                     case (4):
                         $(this).html(obj.client.product);
                         break;
-                        // 审批状态
+                    // 审批状态
                     case (5):
                         if (obj.applyState != null)
                             $(this).html(obj.applyState.name);
                         break;
-                        // 填报人
+                    // 填报人
                     case (6):
                         $(this).html(obj.author);
                         break;
-                        // 填报日期
+                    // 填报日期
                     case (7):
                         $(this).html(obj.time);
                         break;
@@ -136,250 +136,303 @@
         else $("input[name='select']").prop('checked',false);
     }
 </script>
+<style>
+    .selection{
+        color:rgb(33,132,29);
+    }
+    .navbar{
+        margin-bottom: 0px;
+        border-radius: 5px;
+        background: rgb(0,51,102);
+    }
+    .sidebar{
+        margin-bottom: 0px;
+        border-radius: 5px;
+        background: rgb(17,79,142);
+    }
+    .navbar .nav > li > a{
+        color: #000000;
+    }
+    .navbar .nav >li >a:visited{
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+    .navbar .nav > li > a:hover {
+        color: rgb(33,132,29);
+        background-color: #000000;
+    }
+    .navbar .nav >li >a:active{
+        color: rgb(33,132,29);
+        background-color:rgb(229,229,229);
+    }
+    .navber .nav > li > a:after{
+        color: rgb(33,132,29);
+        background-color: #0088cc;
+    }
+    .sidebar .nav > li > a{
+        color: #000000;
+    }
+    .sidebar .nav > li > a:visited{
+        color: rgb(229,229,229);
+        background-color: #0088cc;
+    }
+    .sidebar .nav > li > a:hover {
+        color: rgb(33,132,29);
+        background-color: #000000;
+    }
+    .sidebar .nav > li > a:active{
+        color: rgb(33,132,29);
+        background-color:rgb(229,229,229);
+    }
+    .sidebar .nav > li > a:after{
+        color: rgb(33,132,29);
+        background-color: #0088cc;
+    }
+</style>
 <body onload="loadQuestionnaireList();">
-    <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">产废服务平台</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="wastesPlatform.html">首页</a></li>
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="clientBackup.html">客户备案</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-submenu">
-                                <a href="#">业务员分配管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="salesManage.html">业务员管理</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
-                                </ul>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="sampleManage.html">客户样品登记</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="supplierBackup.html">供应商备案</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="contractManage.html">合同列表</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="contractTemplate.html">合同模板</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="quotation.html">报价管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="cost.html">成本管理</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="archivesManage.html">一企一档</a></li>
-
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-                    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
-                    <li class="dropdown">
-                        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">个人信息</a></li>
-                            <li><a href="#">待办事项</a></li>
-                            <li><a href="index.html">注销</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div><!--/.nav-collapse -->
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color:rgb(0,51,102);">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">产废服务平台</a>
         </div>
-    </nav>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="wastesPlatform.html">首页</a></li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="clientBackup.html">客户备案</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">业务员分配管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="salesManage.html">业务员管理</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                            </ul>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="sampleManage.html">客户样品登记</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="supplierBackup.html">供应商备案</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="contractManage.html">合同列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="contractTemplate.html">合同模板</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="quotation.html">报价管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="cost.html">成本管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="archivesManage.html">一企一档</a></li>
 
-    <div class="container-fluid">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+                <li class="dropdown">
+                    <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">个人信息</a></li>
+                        <li><a href="#">待办事项</a></li>
+                        <li><a href="index.html">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <ul class="nav nav-sidebar selection" style="color: rgb(299,299,299)">
+                <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                <li><a href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <!--面包屑导航-->
+        <div>
+            <ol class="breadcrumb">
+                <li><a href="businessModel.html">商务管理</a></li>
+                <li><a href="#">客户管理</a></li>
+                <li class="active">危废数据调查表管理</li>
+            </ol>
+        </div>
+        <h2 class="sub-header">调查表列表</h2>
         <div class="row">
-            <div class="sidebar">
-                <ul class="nav nav-sidebar">
-                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
-                    <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <!--面包屑导航-->
             <div>
-                <ol class="breadcrumb">
-                    <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">客户管理</a></li>
-                    <li class="active">危废数据调查表管理</li>
-                </ol>
-            </div>
-            <h2 class="sub-header">调查表列表</h2>
-            <div class="row">
-                <div>
-                    <!--操作按钮-->
-                    <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="questionnaire1.html" onclick="clearQuestionnaire();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
-                        <a class="btn btn-primary" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                    </div>
-                    <!--查询框-->
-                    <div class="input-group col-xs-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
-                        <span class="input-group-btn">
+                <!--操作按钮-->
+                <div class="pull-left col-md-6">
+                    <a class="btn btn-primary" href="questionnaire1.html" onclick="clearQuestionnaire();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
+                    <a class="btn btn-primary" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
+                    <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                </div>
+                <!--查询框-->
+                <div class="input-group col-xs-4 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                    <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchQuestionnaire();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="table">
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" onclick="allSelect()">
+                        </label>
+                    </th>
+                    <th>调查表编号</th>
+                    <th>企业名称</th>
+                    <th>所属行业</th>
+                    <th>主要产品</th>
+                    <th>状态</th>
+                    <th>填报人</th>
+                    <th>填报日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="cloneTr">
+                    <td class="text-center">
+                        <label>
+                            <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                        </label>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="dropdown">
+                        <a href="#" onclick="viewQuestion(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" onclick="viewQuestionnaire(this);" title="审批"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span></a>
+                        <a href="#" onclick="adjustQuestionnaire(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <a href="#" onclick="signInQuestionnaire(this);" title="签收"><span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
+                        <a href="#" onclick="backQuestionnaire(this);" title="退回"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                        <a href="#" onclick="appointModal(this);" title="预约送样"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--分页-->
+        <nav aria-label="Page navigation" style="text-align: center">
+            <ul class="pagination">
+                <li class="disabled">
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- 预约模态框 -->
+<div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
+            </div>
+            <div class="modal-body">
+                <form id="model-appoint" method="post">
+                    <div class="form-group">
+                        <label for="model-companyName" class="control-label">公司名称</label>
+                        <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
                     </div>
-                </div>
-
+                    <div class="form-group">
+                        <label for="model-contactName" class="control-label">联系人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                        <input type="text" class="form-control" id="model-contactName" name="contactName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="model-contactPhone" class="control-label">联系电话 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                        <input type="text" class="form-control" id="model-contactPhone" name="contactPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dtp_input1" class="control-label">取样时间 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                        <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
+                            <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly required>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                        </div>
+                        <input type="hidden" id="dtp_input1" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="model-comment" class="control-label">备注</label>
+                        <div>
+                            <textarea class="form-control" id="model-comment" name="model-comment" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <div class="table">
-                <table class="table table-striped table-hover table-condensed">
-                    <thead>
-                    <tr>
-                        <th class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" onclick="allSelect()">
-                            </label>
-                        </th>
-                        <th>调查表编号</th>
-                        <th>企业名称</th>
-                        <th>所属行业</th>
-                        <th>主要产品</th>
-                        <th>状态</th>
-                        <th>填报人</th>
-                        <th>填报日期</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr id="cloneTr">
-                        <td class="text-center">
-                            <label>
-                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
-                            </label>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="dropdown">
-                            <a href="#" onclick="viewQuestion(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="viewQuestionnaire(this);" title="审批"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span></a>
-                            <a href="#" onclick="adjustQuestionnaire(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" onclick="signInQuestionnaire(this);" title="签收"><span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
-                            <a href="#" onclick="backQuestionnaire(this);" title="退回"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                            <a href="#" onclick="appointModal(this);" title="预约送样"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <!--分页-->
-            <nav aria-label="Page navigation" style="text-align: center">
-                <ul class="pagination">
-                    <li class="disabled">
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-    <!-- 预约模态框 -->
-    <div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
-                </div>
-                <div class="modal-body">
-                    <form id="model-appoint" method="post">
-                        <div class="form-group">
-                            <label for="model-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-contactName" class="control-label">联系人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <input type="text" class="form-control" id="model-contactName" name="contactName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-contactPhone" class="control-label">联系电话 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <input type="text" class="form-control" id="model-contactPhone" name="contactPhone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dtp_input1" class="control-label">取样时间 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
-                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                            </div>
-                            <input type="hidden" id="dtp_input1" value="" />
-                        </div>
-                        <div class="form-group">
-                            <label for="model-comment" class="control-label">备注</label>
-                            <div>
-                                <textarea class="form-control" id="model-comment" name="model-comment" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="addAppoint(this);">预约</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="addAppoint(this);">预约</button>
             </div>
         </div>
     </div>
-    <!-- 危废数据评估表模态框 -->
-    <div class="modal fade bs-example-modal-lg" id="appointModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="client_style">
+</div>
+<!-- 危废数据评估表模态框 -->
+<div class="modal fade bs-example-modal-lg" id="appointModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="client_style">
                 <div class="modal-header">
                     <img src="image/logo1.png">
                     <div style="display:inline-block;">
@@ -589,506 +642,506 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" onclick="kkk()">审批</button>
                 </div>
-                </div>
             </div>
         </div>
     </div>
-    <!-- 查看危废数据模态框 -->
-    <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="client_style">
-                    <div class="modal-header">
-                        <img src="image/logo1.png">
-                        <div style="display:inline-block;">
-                            <h2 class="modal-title text-center" id="myModalLabel3">北控安耐得环保科技发展常州有限公司</h2>
-                            <br>
-                            <h4 class="modal-title1 text-center" id="myModalLabel4">危险废弃物数据调查表</h4>
+</div>
+<!-- 查看危废数据模态框 -->
+<div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="client_style">
+                <div class="modal-header">
+                    <img src="image/logo1.png">
+                    <div style="display:inline-block;">
+                        <h2 class="modal-title text-center" id="myModalLabel3">北控安耐得环保科技发展常州有限公司</h2>
+                        <br>
+                        <h4 class="modal-title1 text-center" id="myModalLabel4">危险废弃物数据调查表</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-8"></div>
+                        <!--查询框-->
+                        <div class="input-group">
+                            <label class="col-sm-4 control-label">查询号</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="searchContent2">
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-8"></div>
-                            <!--查询框-->
-                            <div class="input-group">
-                                <label class="col-sm-4 control-label">查询号</label>
-                                <div class="col-xs-8">
-                                    <input type="text" class="form-control" id="searchContent2">
+                </div>
+                <div class="modal-body">
+                    <h4><b>1.危废生产单位基本信息</b></h4>
+                    <form id="model-appoint2" method="post">
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="model-companyName" class="control-label col-sm-4 ">企业名称</label>
+                                    <input type="text" class="css" id="model-companyName2" name="companyName" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="control-label col-sm-4 ">联系人</label>
+                                    <input type="text" class="css" id="model-contactName2" name="contactName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="control-label col-sm-4 ">所属行业</label>
+                                    <input type="text" class="css" id="model-industry2" name="industry">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="control-label col-sm-4 ">填报人</label>
+                                    <input type="text" class="css" id="model-person2" name="person">
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">地址</label>
+                                    <input type="text" class="css" id="model-address2" name="address">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">联系电话</label>
+                                    <input type="text" class="css" id="model-contactPhone2" name="contactPhone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">主要产品</label>
+                                    <input type="text" class="css" id="model-product2" name="product">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">填表日期</label>
+                                    <input type="text" class="css" id="model-date2" name="date">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-body">
-                        <h4><b>1.危废生产单位基本信息</b></h4>
-                        <form id="model-appoint2" method="post">
-                            <div class="row">
-                                <div class="form-horizontal col-md-6">
-                                    <div class="form-group">
-                                        <label for="model-companyName" class="control-label col-sm-4 ">企业名称</label>
-                                        <input type="text" class="css" id="model-companyName2" name="companyName" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="model-contactName" class="control-label col-sm-4 ">联系人</label>
-                                        <input type="text" class="css" id="model-contactName2" name="contactName">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="model-contactName" class="control-label col-sm-4 ">所属行业</label>
-                                        <input type="text" class="css" id="model-industry2" name="industry">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="model-contactName" class="control-label col-sm-4 ">填报人</label>
-                                        <input type="text" class="css" id="model-person2" name="person">
-                                    </div>
-                                </div>
-                                <div class="form-horizontal col-md-6">
-                                    <div class="form-group">
-                                        <label for="model-contactPhone" class="control-label col-sm-4 ">地址</label>
-                                        <input type="text" class="css" id="model-address2" name="address">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="model-contactPhone" class="control-label col-sm-4 ">联系电话</label>
-                                        <input type="text" class="css" id="model-contactPhone2" name="contactPhone">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="model-contactPhone" class="control-label col-sm-4 ">主要产品</label>
-                                        <input type="text" class="css" id="model-product2" name="product">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="model-contactPhone" class="control-label col-sm-4 ">填表日期</label>
-                                        <input type="text" class="css" id="model-date2" name="date">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <h4><b>2.危废产生中使用的主要原料、辅料和有可能带入的化学物质</b></h4>
-                        <form id="model-appoint3" method="post">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">序号</th>
-                                        <th class="text-center">含化学物质主要原材料</th>
-                                        <th class="text-center">含化学物质辅料</th>
-                                        <th class="text-center">可能带入的化学物质</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
-                                        <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
-                                        <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4">
-                                            <b>特别关注的物质：</b>
-                                            请确认原料、辅料、废料或工艺是否含有下列物质？
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" rowspan="4">
-                                            <form method="post" id="wasteInclusionTypeListForm">
-                                                <div class="row">
-                                                    <div class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="1"> 过氯化物
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="5"> 过氧化物
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="9"> 有机氰
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="13"> 爆炸物
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="2"> 有机氮
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="6"> 放射性物质
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="10"> 酸酐
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="14"> 生化废料
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="3"> 乙醚
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="7"> 催泪物质
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="11"> 硒化物
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="15"> 苯酚
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="4"> 苯
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="8"> 多氯联苯-聚氯三联苯
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="12"> 氧化剂
-                                                        </label>
-                                                    </div>
-                                                    <div  class="form-horizontal col-md-3">
-                                                        <label>
-                                                            <input type="checkbox" name="wasteInclusionTypeList" value="16"> 还原剂
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                        <h4><b>3.危废生产工艺流程描述</b></h4>
-                        <form id="model-appoint4" method="post">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">序号</th>
-                                    <th class="text-center">危废名称</th>
-                                    <th class="text-center">生产流程描述</th>
-                                    <th class="text-center">现有量(吨)</th>
-                                    <th class="text-center">上次处理时间</th>
-                                    <th class="text-center">年预计量(吨)</th>
-                                    <th class="text-center">包装现状</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 50px" maxlength="5"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4">
-                                        <input type="checkbox">罐装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
-                                        <input type="checkbox">桶装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
-                                        <input type="checkbox">袋装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
-                                        <input type="checkbox">其他<br>(请说明：<input class="focus" type="text" style="width: 100px" maxlength="14">)
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                        <h4><b>4.危废理化性质</b></h4>
-                        <form id="model-appoint5" method="post">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th class="text-center">序号</th>
-                                    <th class="text-center">危废名称</th>
-                                    <th class="text-center">危废代码</th>
-                                    <th class="text-center" colspan="2">物理形态</th>
-                                    <th class="text-center" colspan="6">均质与混合多项物</th>
-                                    <th class="text-center" colspan="3">敏感酸性组份</th>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" rowspan="11">1</td>
-                                    <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
-                                    <td class="text-center" rowspan="11">
-                                        <div class="btn-group">
-                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="deriveWastesList[0].code">
-                                                <option value="0001">0001-危废01</option>
-                                            </select>
+                    </form>
+                    <h4><b>2.危废产生中使用的主要原料、辅料和有可能带入的化学物质</b></h4>
+                    <form id="model-appoint3" method="post">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">含化学物质主要原材料</th>
+                                <th class="text-center">含化学物质辅料</th>
+                                <th class="text-center">可能带入的化学物质</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
+                                <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
+                                <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <b>特别关注的物质：</b>
+                                    请确认原料、辅料、废料或工艺是否含有下列物质？
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" rowspan="4">
+                                    <form method="post" id="wasteInclusionTypeListForm">
+                                        <div class="row">
+                                            <div class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="1"> 过氯化物
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="5"> 过氧化物
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="9"> 有机氰
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="13"> 爆炸物
+                                                </label>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td class="text-center" rowspan="2">物质形态</td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <select class="form-control" id="formType" name="deriveWastesList[0].formType"></select>
+                                        <div class="row">
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="2"> 有机氮
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="6"> 放射性物质
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="10"> 酸酐
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="14"> 生化废料
+                                                </label>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td class="text-center" colspan="6">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="false">均质&nbsp;
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="true">混合多项物
-                                    </td>
-                                    <td class="text-center">组份</td>
-                                    <td class="text-center">有机</td>
-                                    <td class="text-center">无机</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].formTypeDetail"></td>
-                                    <td class="text-center" rowspan="2" colspan="3">混合多项物混合成分</td>
-                                    <td class="text-center" colspan="3">预估含量(%)</td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[0].chemicalType" value="Chlorine">氯
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="true">
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="false">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" rowspan="2">物质气味</td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <select class="form-control" id="smellType" name="deriveWastesList[0].smellType"></select>
+                                        <div class="row">
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="3"> 乙醚
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="7"> 催泪物质
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="11"> 硒化物
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="15"> 苯酚
+                                                </label>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td class="text-center">最低</td>
-                                    <td class="text-center">平均</td>
-                                    <td class="text-center">最高</td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[1].chemicalType" value="Fluorine">氟
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="true">
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="false">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].smellTypeDetail"></td>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].maximum"></td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[2].chemicalType" value="Bromine">溴
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="true">
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="false">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" rowspan="2">可溶性</td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <select class="form-control" id="solubility" name="deriveWastesList[0].solubility"></select>
+                                        <div class="row">
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="4"> 苯
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="8"> 多氯联苯-聚氯三联苯
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="12"> 氧化剂
+                                                </label>
+                                            </div>
+                                            <div  class="form-horizontal col-md-3">
+                                                <label>
+                                                    <input type="checkbox" name="wasteInclusionTypeList" value="16"> 还原剂
+                                                </label>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].maximum"></td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[3].chemicalType" value="Iodine">碘
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="true">
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="false">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].solubilityDetail"></td>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].maximum"></td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[4].chemicalType" value="Sulphur">硫
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="true">
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="false">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" rowspan="2">储存温度</td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="false">常温
-                                    </td>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].maximum"></td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[5].chemicalType" value="Phosphorus">磷
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="true">
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="false">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].lowTemp">℃
-                                    </td>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].maximum"></td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[6].chemicalType" value="Nitrogen">氮
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="true">
-                                    </td>
-                                    <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="false">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" rowspan="3">其他</td>
-                                    <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].solubleTemp">℃</td>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].maximum"></td>
-                                    <td class="text-center" colspan="3" rowspan="3">
-                                        <p class="text-danger">备注:主要成分避免使用废溶剂、废油等笼统描述，尽可能详尽估算出含量</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].maximum"></td>
-                                </tr>
-                            </table>
-                        </form>
-                        <h4><b>5.危废安全告知</b></h4>
-                        <form id="model-appoint6" method="post">
-                            <div class="row">
-                                <div class="form-horizontal col-md-12">
-                                    <div class="form-group">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th style="width: 50px;" class="text-center">序号</th>
-                                                <th style="width: 270px" class="text-center">危废名称</th>
-                                                <th class="text-center">特性</th>
-                                                <th class="text-center">危废处理个人防护</th>
-                                                <th colspan="2" class="text-center">应急对应措施</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr id="cloneTr1">
-                                                <td rowspan="6" class="text-center">1</td>
-                                                <td rowspan="6" style="width: 270px" onclick="focusInput(this);" class="text-center"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
-                                                <td rowspan="6" style="width: 120px" align="left">
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[0]" value="Virulence">毒性<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[1]" value="Flammable">易燃<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[2]" value="Sour">酸性<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[3]" value="Alkaline">碱性<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[4]" value="Explosion">易爆性<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[5]" value="Oxidability">氧化性<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[6]" value="Reducibility">还原性<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[7]" value="WaterFlammable">遇水易燃<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[8]" value="WaterVirulence">遇水易释放有毒气体<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[9]" value="AirFlammable">接触空气可发生自燃<br>
-                                                </td>
-                                                <td rowspan="6" style="width: 200px" align="left">
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteProtectList[0]" value="ProtectiveGlasses">防护眼镜<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteProtectList[1]" value="ProtectiveGarment">防护服<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteProtectList[2]" value="ProtectiveMask">防护面罩<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteProtectList[3]" value="HalfMask">半面罩<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteProtectList[4]" value="CoverMask">全面罩<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteProtectList[5]" value="PositiveRespirator">正压呼吸器<br>
-                                                    <input type="checkbox" name="deriveWastesList[0].wasteProtectList[6]" value="ProtectiveGloves">防护手套<br>
-                                                </td>
-                                                <td style="width: 130px">若不慎入眼</td><br>
-                                                <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
-                                            </tr>
-                                            <tr id="cloneTr2">
-                                                <td style="width: 130px">若接触到皮肤</td>
-                                                <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
-                                            </tr>
-                                            <tr id="cloneTr3">
-                                                <td style="width: 130px">若吞食</td>
-                                                <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
-                                            </tr>
-                                            <tr id="cloneTr4">
-                                                <td style="width: 130px">若吸入</td>
-                                                <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
-                                            </tr>
-                                            <tr id="cloneTr5">
-                                                <td style="width: 130px">灭火方法</td>
-                                                <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
-                                            </tr>
-                                            <tr id="cloneTr6">
-                                                <td style="width: 130px">泄露处理方法</td>
-                                                <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <h4><b>3.危废生产工艺流程描述</b></h4>
+                    <form id="model-appoint4" method="post">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">生产流程描述</th>
+                                <th class="text-center">现有量(吨)</th>
+                                <th class="text-center">上次处理时间</th>
+                                <th class="text-center">年预计量(吨)</th>
+                                <th class="text-center">包装现状</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 50px" maxlength="5"></td>
+                                <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
+                                <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
+                                <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
+                                <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
+                                <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
+                                <td rowspan="4">
+                                    <input type="checkbox">罐装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
+                                    <input type="checkbox">桶装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
+                                    <input type="checkbox">袋装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
+                                    <input type="checkbox">其他<br>(请说明：<input class="focus" type="text" style="width: 100px" maxlength="14">)
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <h4><b>4.危废理化性质</b></h4>
+                    <form id="model-appoint5" method="post">
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center" colspan="2">物理形态</th>
+                                <th class="text-center" colspan="6">均质与混合多项物</th>
+                                <th class="text-center" colspan="3">敏感酸性组份</th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="11">1</td>
+                                <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
+                                <td class="text-center" rowspan="11">
+                                    <div class="btn-group">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="deriveWastesList[0].code">
+                                            <option value="0001">0001-危废01</option>
+                                        </select>
                                     </div>
+                                </td>
+                                <td class="text-center" rowspan="2">物质形态</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <select class="form-control" id="formType" name="deriveWastesList[0].formType"></select>
+                                    </div>
+                                </td>
+                                <td class="text-center" colspan="6">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="false">均质&nbsp;
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="true">混合多项物
+                                </td>
+                                <td class="text-center">组份</td>
+                                <td class="text-center">有机</td>
+                                <td class="text-center">无机</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].formTypeDetail"></td>
+                                <td class="text-center" rowspan="2" colspan="3">混合多项物混合成分</td>
+                                <td class="text-center" colspan="3">预估含量(%)</td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[0].chemicalType" value="Chlorine">氯
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="2">物质气味</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <select class="form-control" id="smellType" name="deriveWastesList[0].smellType"></select>
+                                    </div>
+                                </td>
+                                <td class="text-center">最低</td>
+                                <td class="text-center">平均</td>
+                                <td class="text-center">最高</td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[1].chemicalType" value="Fluorine">氟
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].smellTypeDetail"></td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[2].chemicalType" value="Bromine">溴
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="2">可溶性</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <select class="form-control" id="solubility" name="deriveWastesList[0].solubility"></select>
+                                    </div>
+                                </td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[3].chemicalType" value="Iodine">碘
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].solubilityDetail"></td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[4].chemicalType" value="Sulphur">硫
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="2">储存温度</td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="false">常温
+                                </td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[5].chemicalType" value="Phosphorus">磷
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].lowTemp">℃
+                                </td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[6].chemicalType" value="Nitrogen">氮
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="3">其他</td>
+                                <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].solubleTemp">℃</td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].maximum"></td>
+                                <td class="text-center" colspan="3" rowspan="3">
+                                    <p class="text-danger">备注:主要成分避免使用废溶剂、废油等笼统描述，尽可能详尽估算出含量</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].average"></td>
+                                <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].maximum"></td>
+                            </tr>
+                        </table>
+                    </form>
+                    <h4><b>5.危废安全告知</b></h4>
+                    <form id="model-appoint6" method="post">
+                        <div class="row">
+                            <div class="form-horizontal col-md-12">
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 50px;" class="text-center">序号</th>
+                                            <th style="width: 270px" class="text-center">危废名称</th>
+                                            <th class="text-center">特性</th>
+                                            <th class="text-center">危废处理个人防护</th>
+                                            <th colspan="2" class="text-center">应急对应措施</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr id="cloneTr1">
+                                            <td rowspan="6" class="text-center">1</td>
+                                            <td rowspan="6" style="width: 270px" onclick="focusInput(this);" class="text-center"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
+                                            <td rowspan="6" style="width: 120px" align="left">
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[0]" value="Virulence">毒性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[1]" value="Flammable">易燃<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[2]" value="Sour">酸性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[3]" value="Alkaline">碱性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[4]" value="Explosion">易爆性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[5]" value="Oxidability">氧化性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[6]" value="Reducibility">还原性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[7]" value="WaterFlammable">遇水易燃<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[8]" value="WaterVirulence">遇水易释放有毒气体<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[9]" value="AirFlammable">接触空气可发生自燃<br>
+                                            </td>
+                                            <td rowspan="6" style="width: 200px" align="left">
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[0]" value="ProtectiveGlasses">防护眼镜<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[1]" value="ProtectiveGarment">防护服<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[2]" value="ProtectiveMask">防护面罩<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[3]" value="HalfMask">半面罩<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[4]" value="CoverMask">全面罩<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[5]" value="PositiveRespirator">正压呼吸器<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[6]" value="ProtectiveGloves">防护手套<br>
+                                            </td>
+                                            <td style="width: 130px">若不慎入眼</td><br>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
+                                        </tr>
+                                        <tr id="cloneTr2">
+                                            <td style="width: 130px">若接触到皮肤</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
+                                        </tr>
+                                        <tr id="cloneTr3">
+                                            <td style="width: 130px">若吞食</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
+                                        </tr>
+                                        <tr id="cloneTr4">
+                                            <td style="width: 130px">若吸入</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
+                                        </tr>
+                                        <tr id="cloneTr5">
+                                            <td style="width: 130px">灭火方法</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
+                                        </tr>
+                                        <tr id="cloneTr6">
+                                            <td style="width: 130px">泄露处理方法</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </form>
-                        <h4><b>6.请提供《环境影响评价报告表/书》中的"工艺流程与产废环节"相关章节内容</b></h4>
-                        <form id="model-appoint7" method="post">
-                            <br>
-                            <br>
-                        </form>
-                        <h4><b>7.请提供危险废物成分检测报告(非必须)</b></h4>
-                        <form id="model-appoint8" method="post">
-                            <br>
-                            <br>
-                            <p>&nbsp;&nbsp;&nbsp;&nbsp;感谢贵公司的支持，北控安耐得环保科技发展常州有限公司将以上述资料作为运输、储存和处理依据，为了保证我公司员工之
+                        </div>
+                    </form>
+                    <h4><b>6.请提供《环境影响评价报告表/书》中的"工艺流程与产废环节"相关章节内容</b></h4>
+                    <form id="model-appoint7" method="post">
+                        <br>
+                        <br>
+                    </form>
+                    <h4><b>7.请提供危险废物成分检测报告(非必须)</b></h4>
+                    <form id="model-appoint8" method="post">
+                        <br>
+                        <br>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;感谢贵公司的支持，北控安耐得环保科技发展常州有限公司将以上述资料作为运输、储存和处理依据，为了保证我公司员工之
                             安全，请您再次确认上述数据的准确性。</p>
-                            <br>
-                            <p style="margin-left: 500px">本人确认以上资料准确无误：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(签名)</p>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="kkk()">审批</button>
-                    </div>
+                        <br>
+                        <p style="margin-left: 500px">本人确认以上资料准确无误：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(签名)</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="kkk()">审批</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
 <style>
     .text-oneLine {
