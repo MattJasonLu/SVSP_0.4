@@ -45,6 +45,31 @@ public class QuestionnaireController {
     private static Questionnaire questionnaire = new Questionnaire();
 
     /**
+     * 通过问卷编号获取调查表对象
+     * @param questionnaireId 调查表编号
+     * @return 调查表对象
+     */
+    @RequestMapping("getQuestionnaireById")
+    @ResponseBody
+    public String getQuestionnaireById(String questionnaireId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 更改状态为待签收
+            Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
+            JSONObject data = JSONObject.fromBean(questionnaire);
+            res.put("status", "success");
+            res.put("message", "获取调查表信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取调查表信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 列出所有问卷
      * @return 问卷列表
      */
