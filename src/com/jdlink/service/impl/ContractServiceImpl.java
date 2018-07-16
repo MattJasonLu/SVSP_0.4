@@ -101,8 +101,8 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public Contract getModel(String modelName) {
-        return contractMapper.getModel(modelName);
+    public Contract getModel(String contractId) {
+        return contractMapper.getModel(contractId);
     }
 
     @Override
@@ -123,5 +123,15 @@ contractMapper.updateFreight2(id);
     @Override
     public void approval(String contractId) {
         contractMapper.approval(contractId);
+    }
+
+    @Override
+    public List<String> modelName(String key) {
+        return contractMapper.modelName(key);
+    }
+
+    @Override
+    public void back(String contractId) {
+        contractMapper.back(contractId);
     }
 }

@@ -234,13 +234,13 @@
 <script type="text/javascript">
     // 页面准备完成后载入客户信息
     function getContractList() {
-        var modelName=Request["modelName"];
-        console.log(modelName);
+        var contractId=localStorage["contractId"];
+        //console.log(contractId);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getContractBymodelName",                  // url
             dataType: "json",
-            data:{"modelName":modelName},
+            data:{"contractId":contractId},
             success: function (result) {
                 var data=eval(result);
                 console.log(data);
@@ -284,6 +284,7 @@
                 console.log(result);
             }
         });
+        localStorage.clear();
     }
     function contractAdjustSave() {
         contractId='${contract.contractId}';

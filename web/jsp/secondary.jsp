@@ -28,6 +28,16 @@
             language: 'zh_CN',
             size: 4
         });
+        var b='${contract.contractVersion}';
+        console.log(b);
+        if(b=="companyContract"){
+            //执行方法
+            $('#contractVersion').click();
+        }
+        if(b=="customerContract"){
+            //执行方法
+            $('#contractVersion2').click();
+        }
         /**
          * 装载下拉框列表
          */
@@ -35,6 +45,7 @@
             type: "POST",                            // 方法类型
             url: "getContractList",                  // url
             dataType: "json",
+            data:{'key':"次生"},
             success: function (result) {
                 var data=eval(result);
                 var begin='${contract.beginTime}';//String类型
@@ -55,11 +66,30 @@
                     $('#isFreight').prop("value",true);
                 }
                 var contractVersion='${contract.contractVersion}';
+                if('${contract.contractName}'!=null){
+                    $('#contractName').prop("value", '${contract.contractName}');
+                }
+                else {
+                    $('#contractName').prop("value", " ");
+                }
                 $(":radio[name='contractVersion'][value='" +contractVersion+"']").prop("checked", "checked");
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
                    //合同名称
+                    var contractType1=$('#contractType1');
+                    contractType1.children().remove();
+                    index2="";
+                    $.each(data.modelNameList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.modelName);
+                        option.text(item.modelName);
+                        if(item.modelName=='${contract.modelName}'){
+                            index2=index;
+                        }
+                        contractType1.append(option);
+                    });
+                    contractType1.get(0).selectedIndex =index2;
                     var contractName = $("#contractName");
                     contractName.children().remove();
                     $.each(data.contractNameStrList, function (index, item) {
@@ -454,8 +484,12 @@
                         </div>
                     <div class="form-group" >
                         <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-4" >
-                            <input type="text" class="form-control" id="contractName" name="contractName" value="${contract.contractName}">
+                        <div class="col-xs-4" id="contractName1" >
+                            <input type="text" class="form-control" id="contractName" name="contractName">
+                        </div>
+                        <div class="col-xs-5" id="contractType2">
+                            <select class="form-control"  type="text" id="contractType1" name="modelName"  >
+                            </select>
                         </div>
                     </div>
                     <div class="form-group" >
@@ -490,10 +524,10 @@
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
                         <div class="col-xs-8" >
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract"  > 公司合同
+                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" > 公司合同
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract"> 客户合同
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"> 客户合同
                             </label>
                         </div>
                     </div>
@@ -643,5 +677,13 @@
         localStorage.name="Derive";
         location.href="contractManage.html";
     });
+    function Appear() {
+        $("#contractName1").hide();
+        $('#contractType2').show();
+    }
+    function Appear1() {
+        $('#contractType2').hide();
+        $("#contractName1").show();
+    }
 </script>
 </html>

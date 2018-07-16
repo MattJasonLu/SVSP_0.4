@@ -95,6 +95,19 @@ private  String order1;
      */
     private  String bankAccount;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    /**
+     * 关键字
+     */
+
+    private  String key;
     public String getBankAccount() {
         return bankAccount;
     }

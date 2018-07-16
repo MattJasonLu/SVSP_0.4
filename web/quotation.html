@@ -31,30 +31,40 @@
                     case (1):
                         $(this).html(obj.quotationId);
                         break;
-                        // 客户名称
                     case (2):
-                        $(this).html(obj.client.companyName);
+                        $(this).html(obj.name);
                         break;
                         // 联系人
                     case (3):
+                        $(this).html(obj.version);
+                        break;
+                        // 客户名称
+                    case (4):
+                        $(this).html(obj.client.companyName);
+                        break;
+                        // 联系人
+                    case (5):
                         $(this).html(obj.client.contactName);
                         break;
                         // 联系方式
-                    case (4):
+                    case (6):
                         $(this).html(obj.client.phone);
                         break;
                         // 所属区域
-                    case (5):
+                    case (7):
                         $(this).html(obj.client.location);
                         break;
                         // 报价单状态
-                    case (6):
+                    case (8):
                         if (obj.checkState != null)
                         $(this).html(obj.checkState.name);
                         break;
                         // 到期日期
-                    case (7):
+                    case (9):
                         $(this).html(getTimeStr(obj.endDate));
+                        break;
+                    case (11):
+                        $(this).html(obj.id);
                         break;
                 }
             });
@@ -85,6 +95,7 @@
     }
     //获取时间
     function getTimeStr(obj) {
+        if (obj == null) return "";
         var year=(parseInt(obj.year)+1900).toString();
         var mouth=parseInt((obj.month)+1).toString();
         if(mouth.length!=2){
@@ -240,6 +251,8 @@
                             </label>
                         </th>
                         <th>报价单编号</th>
+                        <th>报价单名称</th>
+                        <th>版本号</th>
                         <th>客户名称</th>
                         <th>联系人</th>
                         <th>联系方式</th>
@@ -247,6 +260,7 @@
                         <th>状态</th>
                         <th>到期日期</th>
                         <th>操作</th>
+                        <th class="hidden">ID</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -263,6 +277,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 <a href="#" onclick="viewQuotation(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                 <a href="#" onclick="adjustQuotation(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
@@ -271,6 +287,7 @@
                                 <a href="#" onclick="examination(this);" title="送审"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 <a href="#" onclick="disabledQuotation(this);" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                             </td>
+                            <td class="hidden"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -351,7 +368,7 @@
      */
     function viewQuotation(e) {
         var id = getQuotationId(e);
-        window.location.href = "newQuotation.html?quotationId=" + id + "&type=view";
+        window.location.href = "newQuotation.html?id=" + id + "&type=view";
     }
     /**
      * 修改报价单
@@ -359,7 +376,12 @@
      */
     function adjustQuotation(e) {
         var id = getQuotationId(e);
-        window.location.href = "newQuotation.html?quotationId=" + id + "&type=adjust";
+        window.location.href = "newQuotation.html?id=" + id + "&type=adjust";
+    }
+
+    function levelUp(e) {
+        var id = getQuotationId(e);
+        window.location.href = "newQuotation.html?id=" + id + "&type=levelUp";
     }
 
     /**
@@ -374,7 +396,7 @@
                 url: "setStateDisabled",                 // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: {
-                    quotationId: id
+                    id: id
                 },
                 dataType: "json",
                 success: function (result) {
@@ -408,7 +430,7 @@
             url: "getQuotation",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                quotationId: id
+                id: id
             },
             dataType: "json",
             success: function (result) {
@@ -437,7 +459,7 @@
             url: "changeEndDate",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                quotationId: quotationId,
+                id: quotationId,
                 endDate: $("#model-validity").val()
             },
             dataType: "json",
@@ -467,7 +489,7 @@
      * @returns {string}
      */
     function getQuotationId(e) {
-        return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        return e.parentElement.nextElementSibling.innerHTML;
     }
 </script>
 </html>

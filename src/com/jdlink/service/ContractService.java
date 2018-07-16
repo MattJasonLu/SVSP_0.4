@@ -25,9 +25,11 @@ public interface ContractService {
     void updateFreight2(String id);
     List listRate1();
     List listRate2();
-    Contract getModel(String modelName);
+    Contract getModel(String contractId);
     void addEm(Contract contract);
     void cancel(String contractId);
     void cancel1(String modelName);
     void approval(String contractId);
+    List<String> modelName(String key);
+    void back(String contractId);
 }

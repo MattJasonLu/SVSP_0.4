@@ -27,6 +27,8 @@
 </style>
 <script type="text/javascript">
     function loadContract() {
+        $('#contractId').hide();
+        $('#cId').hide();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listContract",                  // url
@@ -47,7 +49,7 @@
         });
     }
     function setContractList(result){
-     //console.log(eval(result));//可以取到
+     console.log(eval(result));//可以取到
         // 获取id为cloneTr的tr元素
       //判断字段是否存在
         var tr = $("#cloneTr1");//克隆一行
@@ -56,7 +58,7 @@
             // 克隆tr，每次遍历都可以产生新的tr
             var obj = eval(item);
             //console.log(obj);
-            if(obj.modelName!=""&&obj.year!=""&&obj.contractContent!="") {
+            if(obj.modelName!=""&&obj.year!="") {
                 console.log(obj);
                 var clonedTr = tr.clone();
                 clonedTr.show();
@@ -91,7 +93,9 @@
                         case (5):
                             $(this).html(obj.year);
                             break;
-
+                        case (6):
+                            $(this).html(obj.contractId);
+                            break;
                     }
                 });
                 // 把克隆好的tr追加到原来的tr前面
@@ -103,10 +107,12 @@
         tr.hide();
     }
     function adjust(item) {
-        var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
-         //console.log(modelName);
-         //window.location.href ="showModel?modelName="+modelName;
-         window.location.href ="model.html?modelName="+modelName;
+       // var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.previousElementSibling.innerHTML;
+      localStorage.contractId=contractId;
+      location.href="model.html";
+       // window.location.href ="showModel?contractId="+contractId;
+       //  window.location.href =searchUrl;
          //console.log(modelName+"123")
           //window.location.href="jsp/model.jsp?modelName="+modelName;
     }
@@ -273,6 +279,7 @@
                         <th>模板状态</th>
                         <th>合同版本号</th>
                         <th>年份</th>
+                        <th id="contractId">"1213"</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -288,6 +295,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td id="cId"></td>
                         <td>
                             <a href="#" onclick="check(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="adjust(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
@@ -377,7 +385,8 @@
     CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
     function check(item) {
         //模板名称
-        var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.previousElementSibling.innerHTML;
+
         // console.log(modelName);
         $.ajax({
             type:"POST",
@@ -385,7 +394,7 @@
             async: false,
             dataType: "json",
             data: {
-                'modelName': modelName
+                'contractId': contractId
             },
             success:function (result) {
                 if(result!=undefined){
@@ -413,6 +422,7 @@
     }
     function cancel(item) {
         var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.previousElementSibling.innerHTML;
         //console.log(modelName);
         var r = confirm("是否作废该模板？");
         if(r==true){
@@ -422,7 +432,7 @@
                 async: false,
                 dataType: "json",
                 data: {
-                    'modelName': modelName
+                    'contractId': contractId
                 },
                 success:function (result) {
                     var obj=eval(result);

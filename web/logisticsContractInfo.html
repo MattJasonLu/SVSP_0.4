@@ -26,6 +26,8 @@
 function loadContractSelectList() {
     var contractType=$('#contractType');
     contractType.hide();
+    var contractName1=$('#contractName1');
+    contractName1.hide();
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
@@ -35,19 +37,21 @@ function loadContractSelectList() {
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
         dataType: "json",
+        data:{"key":"物流"},
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
+                console.log(data);
                 // 各下拉框数据填充
-                var contractName = $("#contractName");
-                contractName.children().remove();
-                $.each(data.contractNameStrList, function (index, item) {
+                var contractType1 = $("#contractType1");
+                contractType1.children().remove();
+                $.each(data.modelNameList, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    contractName.append(option);
+                    option.val(item.modelName);
+                    option.text(item.modelName);
+                    contractType1.append(option);
                 });
-                contractName.get(0).selectedIndex = -1;
+                contractType1.get(0).selectedIndex = -1;
                 var province = $("#province");
                 province.children().remove();
                 $.each(data.provinceStrList, function (index, item) {
@@ -424,8 +428,12 @@ function contractSubmit(){
                     </div>
                     <div class="form-group" >
                         <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-4" >
+                        <div class="col-xs-4" id="contractName1" >
                             <input type="text" class="form-control" id="contractName" name="contractName">
+                        </div>
+                        <div class="col-xs-5" id="contractType2">
+                            <select class="form-control"  type="text" id="contractType1" name="modelName"  >
+                            </select>
                         </div>
                     </div>
                     <div class="form-group" >
@@ -473,10 +481,10 @@ function contractSubmit(){
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
                         <div class="col-xs-8" >
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract"  > 公司合同
+                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" > 公司合同
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract"> 客户合同
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()">  客户合同
                             </label>
                         </div>
                     </div>
@@ -584,5 +592,14 @@ function contractSubmit(){
         localStorage.name="Logistics";
         location.href="contractManage.html";
     });
+    function Appear() {
+        $("#contractName1").hide();
+        $('#contractType2').show();
+    }
+    function Appear1() {
+        $('#contractType2').hide();
+        $("#contractName1").show();
+
+    }
 </script>
 </html>

@@ -84,6 +84,60 @@
         });
     }
     /**
+     * 加载已分配客户
+     */
+    function loadAllocatedClientList() {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listAllocatedClient",                  // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setClientList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error:function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+    /**
+     * 加载未分配客户
+     */
+    function loadUnallocatedClientList() {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listUnallocatedClient",                  // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setClientList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error:function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+    function setState() {
+        var state = $("#state").val();
+        if (state == "1") {
+            loadAllocatedClientList();
+        } else if (state == "2") {
+            loadUnallocatedClientList();
+        } else {
+            loadClientList();
+        }
+    }
+    /**
      * 查找客户
      */
     function searchClient() {
@@ -333,7 +387,7 @@ else {
                         <th>
                             <div class="form-inline">
                                 <label class="control-label">业务员分配状态</label>
-                                <select class="form-control" id="state" style="height: 80%; font-size: x-small;">
+                                <select class="form-control" id="state" style="height: 80%; font-size: x-small;" onchange="setState();">
                                     <option value="0">所有</option>
                                     <option value="1">已分配</option>
                                     <option value="2">未分配</option>

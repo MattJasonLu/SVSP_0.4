@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -80,7 +81,7 @@ public String saveEmContract(@RequestBody Contract contract){
 
     @RequestMapping("getContractList")
     @ResponseBody
-    public String getContractNameList() {
+    public String getContractNameList(String key) {
         JSONObject res = new JSONObject();
         JSONArray array1 = JSONArray.fromArray(ContractType.values());
         res.put("contractNameStrList", array1);
@@ -94,6 +95,15 @@ public String saveEmContract(@RequestBody Contract contract){
               List client= clientService.list();
               JSONArray json=JSONArray.fromObject(client);
               res.put("companyNameList",json);
+              //查询模板名称
+        List modelName=contractService.modelName(key);
+        List list1=  removeDuplicate(modelName);
+       // HashSet h= new  HashSet(modelName);
+       // modelName.clear();
+       // modelName.addAll(h);
+       // System.out.println(modelName);
+        JSONArray json1=JSONArray.fromObject(list1);
+        res.put("modelNameList",json1);
         return res.toString();
     }
 
@@ -137,19 +147,24 @@ public String saveEmContract(@RequestBody Contract contract){
     public String  saveContract(@RequestBody Contract contract) {
         //1.获取合同ID
         List<String> list= contractService.getContractIdList();//合同id集合
-        List<Integer> list1 = new ArrayList<>();
-        for (String s:list
-             ) {
-           int i=Integer.parseInt(s);
-           list1.add(i);
+        if(list.size()<=0){
+           contract.setContractId("1");
         }
-        Collections.sort(list1);
-        for (Integer s1:list1
-                ) {
-            //System.out.println(s1);
+        if(list.size()>0) {
+            List<Integer> list1 = new ArrayList<>();
+            for (String s:list
+                    ) {
+                int i=Integer.parseInt(s);
+                list1.add(i);
+            }
+            Collections.sort(list1);
+            for (Integer s1:list1
+                    ) {
+                //System.out.println(s1);
+            }
+            String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
+            contract.setContractId(newId);
         }
-        String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
-        contract.setContractId(newId);
         System.out.println("当前合同编号:"+contract.getContractId());
         contract.setCheckState(CheckState.ToSubmit);
         JSONObject res = JSONObject.fromBean(contract);
@@ -316,8 +331,8 @@ return  res.toString();
     }
     @RequestMapping("getContractBymodelName")
     @ResponseBody
-    public String getContractBymodelName(String modelName){
-        Contract modelContract=contractService.getModel(modelName);
+    public String getContractBymodelName(String contractId){
+        Contract modelContract=contractService.getModel(contractId);
         JSONObject res=JSONObject.fromBean(modelContract);
         JSONArray array1 = JSONArray.fromArray(ContractType.values());
         res.put("contractNameStrList", array1);
@@ -379,15 +394,33 @@ return  res.toString();
      */
     @RequestMapping("cancelModel")
     @ResponseBody
-    public String cancelModel(String modelName){
+    public String cancelModel(String contractId){
         JSONObject res=new JSONObject();
         try {
-            contractService.cancel1(modelName);
+            contractService.cancel1(contractId);
             res.put("state","success");
         }
         catch (Exception e){
             res.put("state","fail");
         }
+        return res.toString();
+    }
+
+    /**
+     *
+     *驳回功能
+     */
+    @RequestMapping("backContract")
+    @ResponseBody
+    public  String backContract(String contractId){
+        JSONObject res=new JSONObject();
+     try{
+         contractService.back(contractId);
+         res.put("state","success");
+     }
+     catch (Exception e){
+         res.put("state","fail");
+     }
         return res.toString();
     }
     /**
@@ -406,5 +439,18 @@ return  res.toString();
             res.put("state","fail");
         }
         return res.toString();
+        }
+
+
+    public static List removeDuplicate(List list){
+        List listTemp = new ArrayList();
+        for(int i=0;i<list.size();i++){
+            if(!listTemp.contains(list.get(i))){
+                listTemp.add(list.get(i));
+            }
+        }
+        return listTemp;
     }
 }
+
+

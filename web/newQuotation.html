@@ -184,6 +184,24 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">报价单名称</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">版本号</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="version" name="version" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
                             <label for="companyName" class="col-sm-4 control-label">客户名称</label>
                             <div class="col-xs-5">
                                 <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName"></select>
@@ -244,8 +262,12 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">是否含税</label>
                             <div class="col-xs-5">
-                                <input type="radio" name="isContainTax" value="true">是
-                                <input type="radio" name="isContainTax" value="false">否
+                                <label>
+                                    <input type="radio" name="isContainTax" value="true" onchange="changeTax(this);">
+                                </label>是
+                                <label>
+                                    <input type="radio" name="isContainTax" value="false" onchange="changeTax(this);">
+                                </label>否
                             </div>
                         </div>
                     </div>
@@ -264,7 +286,7 @@
                         <div class="form-group">
                             <label for="totalPriceTax" class="col-sm-4 control-label">总价(含税)</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="totalPriceTax" name="totalPriceTax" placeholder="">
+                                <p class="text-muted" id="totalPriceTax"></p>
                             </div>
                         </div>
                     </div>
@@ -272,7 +294,7 @@
                         <div class="form-group">
                             <label for="totalPrice" class="col-sm-4 control-label">总价(去税)</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="totalPrice" name="totalPrice" placeholder="">
+                                <p class="text-muted" id="totalPrice"></p>
                             </div>
                         </div>
                     </div>
@@ -282,7 +304,7 @@
                         <div class="form-group">
                             <label for="totalAmount" class="col-sm-4 control-label">总量</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="totalAmount" name="totalAmount" placeholder="">
+                                <p class="text-muted" id="totalAmount"></p>
                             </div>
                         </div>
                     </div>
@@ -296,9 +318,9 @@
                                 <th>状态</th>
                                 <th>危废代码</th>
                                 <th>合约量</th>
-                                <th>单价(元/吨)(含税)</th>
+                                <th id="unitPriceTaxTh" style="width: 100%;">单价(元/吨)(含税)</th>
                                 <th>税率(%)</th>
-                                <th>单价(元/吨)(去税)</th>
+                                <th id="unitPriceTh">单价(元/吨)(去税)</th>
                                 <th>PH</th>
                                 <th>灰分(%)</th>
                                 <th>水分(%)</th>
@@ -314,9 +336,9 @@
                                 <td><select class="form-control focus" name="wastesList[0].formType"></select></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount"></td>
-                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax"></td>
-                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate"></td>
-                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax" oninput="calculateTax(this);"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate" oninput="calculateTax(this);"></td>
+                                <td><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice" oninput="calculateTax(this);"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].ph"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage"></td>
                                 <td><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage"></td>
@@ -379,30 +401,12 @@
      * 重置客户信息
      */
     function clientReset() {
-        var r = confirm("是否重置客户信息?");
+        var r = confirm("是否重置报价单信息?");
         if (r == true) {
-            $("#companyName").val("");
-            $("#organizationCode").val("");
-            $("#representative").val("");
-            $("#industry").val("");
-            $("#enterpriseType").get(0).selectedIndex = -1;
-            $("#operationType").get(0).selectedIndex = -1;
-            $("#operationRecord").get(0).selectedIndex = -1;
-            $("#street").val("");
-            $("#licenseCode").val("");
-            $("#postCode").val("");
-            $("#product").val("");
-            $("#operationMode").get(0).selectedIndex = -1;
-            $("#contingencyPlan").get(0).selectedIndex = -1;
-            $("#applicationStatus").get(0).selectedIndex = -1;
-            $("#location").val("");
-            $("#materialAttachment").val("");
-            $("#processAttachment").val("");
-            $("#processDesp").val("");
-            $("#contactName").val("");
-            $("#mobile").val("");
-            $("#phone").val("");
-            $("#email").val("");
+            $("#companyName").selectpicker('val', '');
+            $("input:radio[name!='addType']").attr("checked", false);
+            $("p").text("");
+            $(":input[name!='quotationId']").val('');
         }
     }
     // 获取传入参数
@@ -449,21 +453,23 @@
      */
     function loadQuotationInfo() {
         var type = Request['type'];
-        var quotationId = Request['quotationId'];
-        if (type == 'adjust' || type == 'view') {
+        var quotationId = Request['id'];
+        if (type == 'adjust' || type == 'view' || type == 'levelUp') {
             $.ajax({
                 type: "POST",                           // 方法类型
                 url: "getQuotation",                       // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
                 data: {
-                    quotationId: quotationId
+                    id: quotationId
                 },
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result.data);
                         var data = eval(result);
                         $('#quotationId').val(data.data.quotationId);
+                        $('#name').val(data.data.name);
+                        $('#version').val(data.data.version);
                         $('#companyName').selectpicker('val', data.data.client.clientId);
                         $('#contactName').val(data.data.client.contactName);
                         $('#phone').val(data.data.client.phone);
@@ -472,14 +478,14 @@
                         $('#endDate').val(getTimeStr(data.data.endDate));
                         $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
                         $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
-                        $('#totalPriceTax').val(data.data.totalPriceTax);
-                        $('#totalPrice').val(data.data.totalPrice);
-                        $('#totalAmount').val(data.data.totalAmount);
+                        $('#totalPriceTax').text(data.data.totalPriceTax);
+                        $('#totalPrice').text(data.data.totalPrice);
+                        $('#totalAmount').text(data.data.totalAmount);
                         for (var i = 0; i < data.data.wastesList.length; i++) {
                             if (i > 0) addNewLine();
                             var $i = i;
                             $("input[name='wastesList[" + $i + "].name']").val(data.data.wastesList[i].name);
-                            console.log($("select[name='wastesList[" + $i + "].formType']"));
+//                            console.log($("select[name='wastesList[" + $i + "].formType']"));
                             if (data.data.wastesList[i].formType != null)
                             $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = data.data.wastesList[i].formType.index - 1;
                             $("input[name='wastesList[" + $i + "].wastesId']").val(data.data.wastesList[i].wastesId);
@@ -507,6 +513,15 @@
             $('#btnSave').remove();
         } else if (type == 'view') {
             $('#btnCfm').text("打印");
+            $('#btnSave').remove();
+        } else if (type == 'levelUp') {
+            $('#btnCfm').text("升级");
+            $('#startDate').next().next().remove();
+            $('#startDate').next().remove();
+            $("#startDate").attr("disabled","disabled");
+            $('#endDate').next().next().remove();
+            $('#endDate').next().remove();
+            $("#endDate").attr("disabled","disabled");
             $('#btnSave').remove();
         }
     }
@@ -584,7 +599,10 @@
         // 获取按钮的名字
         var btnName = e.innerHTML;
         var data = {
+            'id': Request['id'],
             'quotationId': $("#quotationId").val(),
+            'name': $("#name").val(),
+            'version': $("#version").val(),
             'client': {
                 'clientId': $("#companyName").find("option:selected").val(),
                 'contactName': $("#contactName").val(),
@@ -595,9 +613,9 @@
             'endDate': $("#endDate").val(),
             'isContainTax': $("input[name='isContainTax']:checked").val(),
             'isContainFreight': $("input[name='isContainFreight']:checked").val(),
-            'totalPriceTax': $("#totalPriceTax").val(),
-            'totalPrice': $("#totalPrice").val(),
-            'totalAmount': $("#totalAmount").val()
+            'totalPriceTax': $("#totalPriceTax").text(),
+            'totalPrice': $("#totalPrice").text(),
+            'totalAmount': $("#totalAmount").text()
         };
         data['wastesList'] = [];
         // 危废列表的数量
@@ -699,6 +717,32 @@
                     alert("服务器异常!");
                 }
             });
+        } else if (btnName == "升级") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "levelUpQuotation",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'quotation.html');
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
         } else if (btnName == "打印") {
             alert('文件打印中');
         }
@@ -732,8 +776,46 @@
     $('#companyName').on('changed.bs.select', function (e) {
         setClientInfo();
     });
+    /**
+     * 确认结束
+     */
+    function confirmEnding(str, target) {
+        // 请把你的代码写在这里
+        var start = str.length-target.length;
+        var arr = str.substr(start,target.length);
+        if(arr == target){
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 计算税价
+     */
+    function calculateTax(e) {
+        // 计算税价
+        // 如果改变了去税价
+        if (confirmEnding(e.name, 'unitPrice')) {
+            // 计算当前行的含税价
+            var unitPriceTaxName = e.name.split(".")[0] + ".unitPriceTax";
+            var taxRateName = e.name.split(".")[0] + ".taxRate";
 
-    $("input[name$='contractAmount'],[name$='unitPriceTax'],[name$='unitPrice'],[name$='taxRate']").on('input',function(e){
+            var originVal = parseFloat($("input[name='" + e.name + "']").val());
+//            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
+            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
+            var resolveVal = originVal * (1 + rate / 100);
+            if (!isNaN(resolveVal)) $("input[name='" + unitPriceTaxName + "']").val(resolveVal);
+        } else if (confirmEnding(e.name, 'unitPriceTax')) {
+            // 计算当前行的含税价
+            var unitPriceName = e.name.split(".")[0] + ".unitPrice";
+            var taxRateName = e.name.split(".")[0] + ".taxRate";
+
+            var originVal = parseFloat($("input[name='" + e.name + "']").val());
+//            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
+            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
+            var resolveVal = originVal * (1 - rate / 100);
+            if (!isNaN(resolveVal)) $("input[name='" + unitPriceName + "']").val(resolveVal);
+        }
+        // 计算总价
         var totalPrice = 0;
         var totalPriceTax = 0;
         var totalAmount = 0;
@@ -751,9 +833,53 @@
                 totalAmount += contractAmount;
             }
         }
-        $('#totalPrice').val(totalPrice);
-        $('#totalPriceTax').val(totalPriceTax);
-        $('#totalAmount').val(totalAmount);
-    });
+        if (!isNaN(totalPrice)) $('#totalPrice').text(totalPrice);
+        if (!isNaN(totalPriceTax)) $('#totalPriceTax').text(totalPriceTax);
+        if (!isNaN(totalAmount)) $('#totalAmount').text(totalAmount);
+    }
+
+    /**
+     * 改变税价
+     * @param e
+     */
+    function changeTax(e) {
+        // 获取选中状态
+        var status = e.value;
+        var unitPriceTaxTh = $("#unitPriceTaxTh");
+        var unitPriceTh = $("#unitPriceTh");
+        var unitPriceTaxList = $("input[name^='wastesList'][name$='unitPriceTax']");
+        var unitPriceList = $("input[name^='wastesList'][name$='unitPrice']");
+        var unitPriceCount = unitPriceTaxList.length;
+        // 如果选择含税，含税价在前
+        if (status == "true") {
+            if (unitPriceTh.prev().prev().attr('id') != 'unitPriceTaxTh') {
+                exchange(unitPriceTaxTh, unitPriceTh);
+                for (var i = 0; i < unitPriceCount; i++) {
+                    var item1 = $(unitPriceTaxList[i].parentElement);
+                    var item2 = $(unitPriceList[i].parentElement);
+                    exchange(item1, item2);
+                }
+            }
+        } else {
+            if (unitPriceTaxTh.prev().prev().attr('id') != 'unitPriceTh') {
+                exchange(unitPriceTh, unitPriceTaxTh);
+                for (var i = 0; i < unitPriceCount; i++) {
+                    var item1 = $(unitPriceList[i].parentElement);
+                    var item2 = $(unitPriceTaxList[i].parentElement);
+                    exchange(item1, item2);
+                }
+            }
+        }
+    }
+    /**
+     * 交换两个元素的位置
+     * @param a
+     * @param b
+     */
+    function exchange(a, b) {
+        var n = a.next(), p = b.prev();
+        b.insertBefore(n);
+        a.insertAfter(p);
+    }
 </script>
 </html>

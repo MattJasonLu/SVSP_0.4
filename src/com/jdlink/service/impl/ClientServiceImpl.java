@@ -65,6 +65,16 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public List<Client> listAllocated() {
+        return clientMapper.listAllocated();
+    }
+
+    @Override
+    public List<Client> listUnallocated() {
+        return clientMapper.listUnallocated();
+    }
+
+    @Override
     public List<Client> list(Page page) {
         return clientMapper.list(page);
     }

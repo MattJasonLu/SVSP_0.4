@@ -12,6 +12,7 @@
         <result property="modelName" column="modelName" javaType="String"/>
         <result property="year" column="year" javaType="String"/>
         <result property="period" column="period" javaType="String"/>
+       <result property="modelName" column="modelName" javaType="String"/>
         <result property="contractContent" column="contractContent" javaType="String"/>
 
     </resultMap>
@@ -48,7 +49,7 @@ values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},
         SELECT * FROM t_contract WHERE contractId = #{contractId};
     </select>
     <select id="getModel" parameterType="String" resultMap="ContractRM">
-        select * from t_contract where modelName=#{modelName};
+        select * from t_contract where contractId=#{contractId};
     </select>
 
     <update id="update" parameterType="Contract">
@@ -98,10 +99,16 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="cancel" parameterType="String">
         update t_contract set checkState="Invalid" where contractId=#{contractId}
     </update>
-    <update id="cancel1" parameterType="String">
-        update t_contract set checkState="Invalid" where modelName=#{modelName}
-    </update>
+    <delete id="cancel1" parameterType="String">
+        delete from  t_contract  where contractId=#{contractId}
+    </delete>
     <update id="approval" parameterType="String">
         update t_contract set checkState="Keeping" where contractId=#{contractId}
+    </update>
+    <select id="modelName" resultMap="ContractRM" >
+        select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') ;
+    </select>
+    <update id="back" parameterType="String">
+        update t_contract set checkState="Backed" where contractId=#{contractId}
     </update>
 </mapper>
