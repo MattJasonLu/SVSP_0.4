@@ -214,9 +214,19 @@ private  TicketRate1 ticketRate1;
     private String thing;
 
     /**
-     * 添加状况
+     * 模板版本
 
      */
+    private String modelVersion;
+
+    public String getModelVersion() {
+        return modelVersion;
+    }
+
+    public void setModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
+    }
+
     private  String addType;
 
     public String getAddType() {
