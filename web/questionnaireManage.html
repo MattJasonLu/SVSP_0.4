@@ -135,6 +135,64 @@
         if (isChecked) $("input[name='select']").prop('checked',true);
         else $("input[name='select']").prop('checked',false);
     }
+    //获取时间
+    function getTimeStr(obj) {
+        if (obj == null) return "";
+        var year=(parseInt(obj.year)+1900).toString();
+        var mouth=parseInt((obj.month)+1).toString();
+        if(mouth.length!=2){
+            mouth=0+mouth;
+        }
+        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+        var  day=parseInt((obj.date)).toString();
+        //ataLeftCompleting(2, "0", day.toString()).toString();
+        if(day.length!=2){
+            day=0+day;
+        }
+        var time1=year+"-"+mouth+"-"+day;
+        return time1;
+    }
+    /**
+     * 增加原材料新行
+     */
+    function addRawWasteNewLine() {
+        var tr = $("#raw1").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 获取编号
+        var id = tr.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr.children().get(0).innerHTML = num;
+        var temp = num-2+"";
+        var temp2 = num-1+"";
+        clonedTr.find("input[name='rawWastes[" + temp + "].mainMaterial']").attr('name', "rawWastes[" + temp2 + "].mainMaterial");
+        clonedTr.find("input[name='rawWastes[" + temp + "].auxMaterial']").attr('name', "rawWastes[" + temp2 + "].auxMaterial");
+        clonedTr.find("input[name='rawWastes[" + temp + "].draginMaterial']").attr('name', "rawWastes[" + temp2 + "].draginMaterial");
+        clonedTr.insertAfter(tr);
+    }
+    /**
+     * 增加处理过程新行
+     */
+    function addWasteProcessNewLine() {
+        var tr = $("#body1").children().last();
+        console.log(tr);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 获取编号
+        var id = tr.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr.children().get(0).innerHTML = num;
+        var temp = num-2+"";
+        var temp2 = num-1+"";
+        clonedTr.find("input[name='wasteProcess[" + temp + "].code']").attr('name', "wasteProcess[" + temp2 + "].code");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].description']").attr('name', "wasteProcess[" + temp2 + "].description");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].quantity']").attr('name', "wasteProcess[" + temp2 + "].quantity");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].lastProcessTime']").attr('name', "wasteProcess[" + temp2 + "].lastProcessTime");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].yearQuantity']").attr('name', "wasteProcess[" + temp2 + "].yearQuantity");
+        clonedTr.insertAfter(tr);
+    }
 </script>
 <body onload="loadQuestionnaireList();">
     <!--导航条-->
@@ -609,11 +667,10 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-md-8"></div>
-                            <!--查询框-->
                             <div class="input-group">
-                                <label class="col-sm-4 control-label">查询号</label>
+                                <label class="col-sm-4 control-label">调查表编号</label>
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" id="searchContent2">
+                                    <input type="text" class="css" id="model-questionnaireId2" name="questionnaireId" readonly>
                                 </div>
                             </div>
                         </div>
@@ -637,17 +694,17 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="model-contactName" class="control-label col-sm-4 ">填报人</label>
-                                        <input type="text" class="css" id="model-person2" name="person">
+                                        <input type="text" class="css" id="model-author2" name="author">
                                     </div>
                                 </div>
                                 <div class="form-horizontal col-md-6">
                                     <div class="form-group">
                                         <label for="model-contactPhone" class="control-label col-sm-4 ">地址</label>
-                                        <input type="text" class="css" id="model-address2" name="address">
+                                        <input type="text" class="css" id="model-location2" name="location">
                                     </div>
                                     <div class="form-group">
                                         <label for="model-contactPhone" class="control-label col-sm-4 ">联系电话</label>
-                                        <input type="text" class="css" id="model-contactPhone2" name="contactPhone">
+                                        <input type="text" class="css" id="model-phone2" name="phone">
                                     </div>
                                     <div class="form-group">
                                         <label for="model-contactPhone" class="control-label col-sm-4 ">主要产品</label>
@@ -655,7 +712,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="model-contactPhone" class="control-label col-sm-4 ">填表日期</label>
-                                        <input type="text" class="css" id="model-date2" name="date">
+                                        <input type="text" class="css" id="model-time2" name="time">
                                     </div>
                                 </div>
                             </div>
@@ -674,19 +731,18 @@
                                 <tbody>
                                     <tr>
                                         <td class="text-center">1</td>
-                                        <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
-                                        <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
-                                        <td class="text-center"><input class="focus" type="text" maxlength="20"></td>
+                                        <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].mainMaterial"></td>
+                                        <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].auxMaterial"></td>
+                                        <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].draginMaterial"></td>
                                     </tr>
-                                    <tr>
+                                    <tr id="raw1">
                                         <td colspan="4">
                                             <b>特别关注的物质：</b>
-                                            请确认原料、辅料、废料或工艺是否含有下列物质？
+                                            请确认原料、辅料、废料或工艺是否含有下列物质
                                         </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" rowspan="4">
-                                            <form method="post" id="wasteInclusionTypeListForm">
                                                 <div class="row">
                                                     <div class="form-horizontal col-md-3">
                                                         <label>
@@ -775,7 +831,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                            </form>
+
                                         </td>
                                     </tr>
                                 </tbody>
@@ -795,15 +851,15 @@
                                     <th class="text-center">包装现状</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="body1">
                                 <tr>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 50px" maxlength="5"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4" onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20"></td>
-                                    <td rowspan="4">
+                                    <td onclick="focusInput(this);">1</td>
+                                    <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].code"></td>
+                                    <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].description"></td>
+                                    <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].quantity"></td>
+                                    <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].lastProcessTime"></td>
+                                    <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].yearQuantity"></td>
+                                    <td>
                                         <input type="checkbox">罐装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
                                         <input type="checkbox">桶装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
                                         <input type="checkbox">袋装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
@@ -1155,9 +1211,57 @@
     // }
     function viewQuestion(item){
         var id = getQuestionnaireId(item);
-        $("#model-companyName2").val(id);
-        // 显示框体
-        $('#appointModal2').modal('show');
+
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getQuestionnaireById",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#model-questionnaireId2").val(id);
+                    $("#model-companyName2").val(data.data.client.companyName);
+                    $("#model-industry2").val(data.data.client.industry);
+                    $("#model-author2").val(data.data.author);
+                    $("#model-location2").val(data.data.client.location);
+                    $("#model-phone2").val(data.data.client.phone);
+                    $("#model-product2").val(data.data.client.product);
+                    $("#model-time2").val(getTimeStr(data.data.time));
+                    for (var i = 0; i < data.data.rawWastesList.length; i++) {
+                        if (i > 0) addRawWasteNewLine();
+                        var $i = i;
+                        $("input[name='rawWastes[" + $i + "].mainMaterial']").val(data.data.rawWastesList[i].mainMaterial);
+                        $("input[name='rawWastes[" + $i + "].auxMaterial']").val(data.data.rawWastesList[i].auxMaterial);
+                        $("input[name='rawWastes[" + $i + "].draginMaterial']").val(data.data.rawWastesList[i].draginMaterial);
+                    }
+                    for (var i = 0; i < data.data.wasteInclusionTypeList.length; i++) {
+                        var $i = data.data.wasteInclusionTypeList[i].index;
+                        $("input[name='wasteInclusionTypeList'][value='" + $i + "']").attr("checked", true);
+                    }
+                    for (var i = 0; i < data.data.wasteProcessList.length; i++) {
+                        if (i > 0) addWasteProcessNewLine();
+                        var $i = i;
+                        $("input[name='wasteProcess[" + $i + "].code']").val(data.data.wasteProcessList[i].code);
+                        $("input[name='wasteProcess[" + $i + "].description']").val(data.data.wasteProcessList[i].description);
+                        $("input[name='wasteProcess[" + $i + "].quantity']").val(data.data.wasteProcessList[i].quantity);
+                        $("input[name='wasteProcess[" + $i + "].lastProcessTime']").val(getTimeStr(data.data.wasteProcessList[i].lastProcessTime));
+                        $("input[name='wasteProcess[" + $i + "].yearQuantity']").val(data.data.wasteProcessList[i].yearQuantity);
+                    }
+                    // 显示框体
+                    $('#appointModal2').modal('show');
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+
+
     }
     function viewQuestionnaire(item) {
         var id = getQuestionnaireId(item);
