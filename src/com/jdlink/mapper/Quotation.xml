@@ -11,18 +11,19 @@
         <result property="location" column="location"/>
     </resultMap>
     <resultMap type="Quotation" id="QuotationRM" autoMapping="true">
+        <result property="id" column="id"/>
         <result property="quotationId" column="quotationId"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <association property="client" javaType="Client" resultMap="ClientRM"/>
-        <collection property="wastesList" select="getWastes" column="quotationId"
+        <collection property="wastesList" select="getWastes" column="id"
                     ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Quotation" >
-        INSERT INTO t_quotation (quotationId, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount, checkState)
-        VALUES (#{quotationId}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState});
+        INSERT INTO t_quotation (quotationId, name, version, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount, checkState)
+        VALUES (#{quotationId}, #{name}, #{version}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
-                INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{quotationId}, #{wastes.id});
+                INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{id}, #{wastes.id});
                 INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint)
                 VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
                 #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint});
@@ -31,8 +32,8 @@
     </insert>
 
     <update id="update" parameterType="Quotation">
-        UPDATE t_quotation SET clientId=#{client.clientId}, contactName=#{client.contactName}, phone=#{client.phone}, location=#{client.location}, startDate=#{startDate}, endDate=#{endDate},
-        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE quotationId=#{quotationId};
+        UPDATE t_quotation SET name=#{name}, version=#{version}, clientId=#{client.clientId}, contactName=#{client.contactName}, phone=#{client.phone}, location=#{client.location}, startDate=#{startDate}, endDate=#{endDate},
+        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE id=#{id};
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 UPDATE t_wastes SET name=#{wastes.name}, formType=#{wastes.formType}, wastesId=#{wastes.wastesId}, contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax},
@@ -41,6 +42,19 @@
             </foreach>
         </if>
     </update>
+
+    <insert id="levelUp" parameterType="Quotation">
+        INSERT INTO t_quotation (quotationId, name, version, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPriceTax, totalPrice, totalAmount, checkState)
+        VALUES (#{quotationId}, #{name}, #{version}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState});
+        <if test="wastesList.size() > 0">
+            <foreach collection="wastesList" item="wastes" index="index">
+                INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{id}, #{wastes.id});
+                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint)
+                VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
+                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint});
+            </foreach>
+        </if>
+    </insert>
 
     <select id="list" resultMap="QuotationRM">
         SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId
@@ -52,7 +66,7 @@
     <select id="getWastes" resultType="Wastes">
         SELECT * FROM t_wastes WHERE id in (
           SELECT r_quotationandwastes.wastesId FROM r_quotationandwastes
-          WHERE quotationId=#{quotationId});
+          WHERE quotationId=#{id});
     </select>
 
     <select id="count" resultType="int">
@@ -60,14 +74,18 @@
     </select>
 
     <select id="getById" resultMap="QuotationRM" parameterType="String">
+        SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND id=#{id}
+    </select>
+
+    <select id="getByQuotationId" resultMap="QuotationRM" parameterType="String">
         SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND quotationId=#{quotationId}
     </select>
 
     <update id="setStateDisabled" parameterType="String">
-        UPDATE t_quotation SET checkState='Invalid' WHERE quotationId=#{quotationId};
+        UPDATE t_quotation SET checkState='Invalid' WHERE id=#{id};
     </update>
 
     <update id="changeEndDate" parameterType="Quotation">
-        UPDATE t_quotation SET endDate=#{endDate} WHERE quotationId=#{quotationId};
+        UPDATE t_quotation SET endDate=#{endDate} WHERE id=#{id};
     </update>
 </mapper>

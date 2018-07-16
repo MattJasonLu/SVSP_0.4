@@ -403,8 +403,8 @@
             <br>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractAdjustSave1()">保存修改</a>
-                <a class="btn btn-primary" onclick="contractAdjustSave()">提交修改</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-primary" onclick="contractAdjustSave1()">提交修改</a>
+                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
             </div>
         </form>
     </div>
@@ -447,7 +447,10 @@
                     // console.log(eval(result));
                     console.log("success: " + result);
                     alert("保存修改成功!");
-                    $(location).attr('href', 'contractManage.html');//跳转
+                    //$(location).attr('href', 'contractManage.html');//跳转
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Emergency";
+                    location.href="contractManage.html";
                 } else {
                     console.log("fail: " + result);
                     alert("保存失败!");
@@ -459,5 +462,10 @@
             }
         });
     }
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Emergency";
+        location.href="contractManage.html";
+    });
 </script>
 </html>

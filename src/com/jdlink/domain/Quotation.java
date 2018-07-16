@@ -9,9 +9,21 @@ import java.util.List;
  */
 public class Quotation {
     /**
+     * ID
+     */
+    private String id;
+    /**
      * 报价单编号
      */
     private String quotationId;
+    /**
+     * 报价单名称
+     */
+    private String name;
+    /**
+     * 版本号
+     */
+    private String version;
     /**
      * 客户(包含客户名称、联系人、电话、地址)
      */
@@ -141,10 +153,37 @@ public class Quotation {
         this.checkState = checkState;
     }
 
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Quotation{" +
-                "quotationId='" + quotationId + '\'' +
+                "id='" + id + '\'' +
+                ", quotationId='" + quotationId + '\'' +
+                ", name='" + name + '\'' +
+                ", version='" + version + '\'' +
                 ", client=" + client +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +

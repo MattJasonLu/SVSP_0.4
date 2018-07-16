@@ -66,4 +66,14 @@ public class DocumentServiceImpl implements DocumentService {
     public void add(Document document) {
         documentMapper.add(document);
     }
+
+    @Override
+    public int count() {
+        return documentMapper.count();
+    }
+
+    @Override
+    public void updateFilePath(Document document) {
+        documentMapper.updateFilePath(document);
+    }
 }

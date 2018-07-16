@@ -20,6 +20,13 @@
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
+<style>
+
+    .focus {
+        outline: none;
+        border: 0px;
+    }
+</style>
 <script type="text/javascript">
     function loadContractSelectList() {
 //取得下拉菜单的选项
@@ -456,7 +463,7 @@
             <br>
             <div class="row text-center">
                 <a class="btn btn-success" >打印</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
             </div>
         </form>
     </div>
@@ -484,6 +491,11 @@
         startView: 2,
         minView: 2,
         forceParse: 0
+    });
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Emergency";
+        location.href="contractManage.html";
     });
 </script>
 </html>

@@ -16,6 +16,7 @@
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
 </head>
 <script>
+    var id1;
     function loadSelectList() {
         // 设置下拉列表
         $.ajax({
@@ -72,17 +73,17 @@
      */
     function addNewLine() {
         // 获取id为cloneTr的tr元素
-        var tr1 = $("#cloneTr1");
-        var tr2 = $("#cloneTr2");
-        var tr3 = $("#cloneTr3");
-        var tr4 = $("#cloneTr4");
-        var tr5 = $("#cloneTr5");
-        var tr6 = $("#cloneTr6");
-        var tr7 = $("#cloneTr7");
-        var tr8 = $("#cloneTr8");
-        var tr9 = $("#cloneTr9");
-        var tr10 = $("#cloneTr10");
-        var tr11 = $("#cloneTr11");
+        var tr11 = $("#plusBtn").prev();
+        var tr10 = tr11.prev();
+        var tr9 = tr10.prev();
+        var tr8 = tr9.prev();
+        var tr7 = tr8.prev();
+        var tr6 = tr7.prev();
+        var tr5 = tr6.prev();
+        var tr4 = tr5.prev();
+        var tr3 = tr4.prev();
+        var tr2 = tr3.prev();
+        var tr1 = tr2.prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr1 = tr1.clone();
         var clonedTr2 = tr2.clone();
@@ -98,11 +99,17 @@
         // 获取编号
         var id = tr1.children().get(0).innerHTML;
         var num = parseInt(id);
-        var btnNum = event.button;
-        if(btnNum==0){
+        if (!isNaN(num)) {
             num++;
+            id1 = num;
+        } else {
+            id1++;
+            num = id1;
         }
         clonedTr1.children().get(0).innerHTML = num;
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr1.children("td:eq(0)").prepend(delBtn);
+
         function changeName(element) {
             element.find("input[name*='deriveWastesList'],select[name*='deriveWastesList']").each(function () {
                 var oldName = $(this).attr("name");
@@ -149,6 +156,30 @@
         tr10.removeAttr("id");
         tr11.removeAttr("id");
     }
+    function delLine(e) {
+        var tr1 = e.parentElement.parentElement;
+        var tr2 = tr1.nextElementSibling;
+        var tr3 = tr2.nextElementSibling;
+        var tr4 = tr3.nextElementSibling;
+        var tr5 = tr4.nextElementSibling;
+        var tr6 = tr5.nextElementSibling;
+        var tr7 = tr6.nextElementSibling;
+        var tr8 = tr7.nextElementSibling;
+        var tr9 = tr8.nextElementSibling;
+        var tr10 = tr9.nextElementSibling;
+        var tr11 = tr10.nextElementSibling;
+        tr1.parentNode.removeChild(tr1);
+        tr2.parentNode.removeChild(tr2);
+        tr3.parentNode.removeChild(tr3);
+        tr4.parentNode.removeChild(tr4);
+        tr5.parentNode.removeChild(tr5);
+        tr6.parentNode.removeChild(tr6);
+        tr7.parentNode.removeChild(tr7);
+        tr8.parentNode.removeChild(tr8);
+        tr9.parentNode.removeChild(tr9);
+        tr10.parentNode.removeChild(tr10);
+        tr11.parentNode.removeChild(tr11);
+    }
 </script>
 <style>
     .focus {
@@ -164,6 +195,11 @@
     }
     table th, table td {
         vertical-align: middle!important;
+    }
+    .text-oneLine {
+        display:block;            /*内联对象需加*/
+        word-break:keep-all;      /* 不换行 */
+        white-space:nowrap;       /* 不换行 */
     }
 </style>
 <body onload="loadSelectList();">
@@ -226,8 +262,10 @@
                     <li><a href="archivesManage.html">一企一档</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
@@ -241,17 +279,18 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="wastesPlatform.html">概览</a></li>
-                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">接收管理</a></li>
-                    <li><a href="#">贮存管理</a></li>
-                    <li><a href="#">预处理管理</a></li>
-                    <li><a href="#">处置管理</a></li>
-                    <li><a href="#">次生管理</a></li>
-                    <li><a href="#">基础数据</a></li>
-                    <li><a href="#">系统设置</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
                 </ul>
             </div>
         </div>
@@ -269,8 +308,8 @@
             <form method="post" id="page3Info" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-horizontal col-md-5">
-                        <div class="form-group" align="left">
-                            <label class="col-sm-8 control-label text-danger">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                        <div class="form-group">
+                            <label class="col-sm-8 control-label text-danger text-oneLine">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3"></div>
@@ -288,14 +327,14 @@
                         <div class="form-group">
                             <table class="table table-bordered">
                                 <tr>
-                                    <td class="text-center">序号</td>
-                                    <td class="text-center">危废名称</td>
-                                    <td class="text-center">危废代码</td>
-                                    <td class="text-center" colspan="2">物理形态</td>
-                                    <td class="text-center" colspan="6">均质与混合多项物</td>
-                                    <td class="text-center" colspan="3">敏感酸性组份</td>
+                                    <th class="text-center" style="width: 70px;">序号</th>
+                                    <th class="text-center">危废名称</th>
+                                    <th class="text-center">危废代码</th>
+                                    <th class="text-center" colspan="2">物理形态</th>
+                                    <th class="text-center" colspan="6">均质与混合多项物</th>
+                                    <th class="text-center" colspan="3">敏感酸性组份</th>
                                 </tr>
-                                <tr id="cloneTr1">
+                                <tr>
                                     <td class="text-center" rowspan="11">1</td>
                                     <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
                                     <td class="text-center" rowspan="11">
@@ -319,7 +358,7 @@
                                     <td class="text-center">有机</td>
                                     <td class="text-center">无机</td>
                                 </tr>
-                                <tr id="cloneTr2">
+                                <tr>
                                     <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].formTypeDetail"></td>
                                     <td class="text-center" rowspan="2" colspan="3">混合多项物混合成分</td>
                                     <td class="text-center" colspan="3">预估含量(%)</td>
@@ -333,7 +372,7 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr id="cloneTr3">
+                                <tr>
                                     <td class="text-center" rowspan="2">物质气味</td>
                                     <td class="text-center">
                                         <div class="btn-group">
@@ -353,7 +392,7 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr id="cloneTr4">
+                                <tr>
                                     <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].smellTypeDetail"></td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].name"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].minimum"></td>
@@ -369,7 +408,7 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr id="cloneTr5">
+                                <tr>
                                     <td class="text-center" rowspan="2">可溶性</td>
                                     <td class="text-center">
                                         <div class="btn-group">
@@ -390,7 +429,7 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr id="cloneTr6">
+                                <tr>
                                     <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].solubilityDetail"></td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].name"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].minimum"></td>
@@ -406,7 +445,7 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr id="cloneTr7">
+                                <tr>
                                     <td class="text-center" rowspan="2">储存温度</td>
                                     <td class="text-center">
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="false">常温
@@ -425,9 +464,9 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr id="cloneTr8">
+                                <tr>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" class="focus" style="width:50px" name="deriveWastesList[0].lowTemp">℃
+                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].lowTemp">℃
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].name"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
@@ -443,9 +482,9 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="false">
                                     </td>
                                 </tr>
-                                <tr id="cloneTr9">
+                                <tr>
                                     <td class="text-center" rowspan="3">其他</td>
-                                    <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:<input maxlength="8" type="text" class="focus" style="width:50px" name="deriveWastesList[0].solubleTemp">℃</td>
+                                    <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].solubleTemp">℃</td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].name"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].minimum"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].average"></td>
@@ -454,13 +493,13 @@
                                         <p class="text-danger">备注:主要成分避免使用废溶剂、废油等笼统描述，尽可能详尽估算出含量</p>
                                     </td>
                                 </tr>
-                                <tr id="cloneTr10">
+                                <tr>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].name"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].minimum"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].average"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
                                 </tr>
-                                <tr id="cloneTr11">
+                                <tr>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
                                     <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].average"></td>

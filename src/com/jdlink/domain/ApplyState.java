@@ -14,6 +14,7 @@ public enum ApplyState implements CodeBaseEnum {
     SampleTaked("已取样", 5),
     Canceld("预约取消", 6),
     Invalid("已作废",7),
+    ToSubmit("待提交", 8)
     ;
 
     @Override

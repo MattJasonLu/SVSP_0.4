@@ -130,6 +130,14 @@
         </if>
     </select>
 
+    <select id="listAllocated" resultMap="ClientRM">
+        SELECT client.*, salesman.salesmanId, salesman.name, salesman.age, salesman.sex from client, salesman WHERE client.salesmanId = salesman.salesmanId AND client.salesmanId IS NOT NULL;
+    </select>
+
+    <select id="listUnallocated" resultMap="ClientRM">
+        SELECT client.* from client WHERE client.salesmanId IS NULL;
+    </select>
+
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM client;
     </select>

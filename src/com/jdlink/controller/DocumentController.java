@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Document;
+import com.jdlink.domain.DocumentType;
 import com.jdlink.service.DocumentService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -9,12 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -236,20 +235,65 @@ public class DocumentController {
         }
     }
 
-    @RequestMapping("saveFile")
+    @RequestMapping("saveDocument")
     @ResponseBody
-    public String saveFile(@RequestBody Document document) {
+    public String saveDocument(@RequestBody Document document) {
         JSONObject res = new JSONObject();
         documentService.add(document);
+        String fileId = documentService.count() + "";
         try {
             res.put("status", "success");
             res.put("message", "保存文件成功");
+            res.put("fileId", fileId);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "保存文件失败");
             res.put("exception", e.getMessage());
         }
+        return res.toString();
+    }
+
+    /**
+     * 保存新建文档中的附件
+     * @param fileId
+     * @param attachment
+     * @return
+     */
+    @RequestMapping("saveDocumentFile")
+    @ResponseBody
+    public String saveDocumentFile(String fileId, MultipartFile attachment) {
+        JSONObject res = new JSONObject();
+        try {
+            Document document = documentService.getFileById(fileId);
+
+            String documentType = String.valueOf(document.getDocumentType());
+            // 若文件夹不存在则创建文件夹
+            String dirPathStr = "Files/" + documentType;
+            File dirPath = new File(dirPathStr);
+            if (!dirPath.exists()) {
+                dirPath.mkdirs();
+            }
+//            // 获取文件名字
+            String fileName = document.getClientId() + "-" +  attachment.getOriginalFilename();
+            String filePath = dirPathStr + "/" + fileName;
+            File file = new File(filePath);
+            attachment.transferTo(file);
+            document.setFilePath(filePath);
+            documentService.updateFilePath(document);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("getDocumentTypeList")
+    @ResponseBody
+    public String getDocumentTypeList() {
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        JSONArray array1 = JSONArray.fromArray(DocumentType.values());
+        res.put("documentTypeStrList", array1);
         return res.toString();
     }
 }

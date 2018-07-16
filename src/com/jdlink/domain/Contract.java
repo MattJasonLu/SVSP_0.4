@@ -95,6 +95,19 @@ private  String order1;
      */
     private  String bankAccount;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    /**
+     * 关键字
+     */
+
+    private  String key;
     public String getBankAccount() {
         return bankAccount;
     }
@@ -199,6 +212,20 @@ private  TicketRate1 ticketRate1;
      * 委托事项
      */
     private String thing;
+
+    /**
+     * 添加状况
+
+     */
+    private  String addType;
+
+    public String getAddType() {
+        return addType;
+    }
+
+    public void setAddType(String addType) {
+        this.addType = addType;
+    }
 
     public String getThing() {
         return thing;

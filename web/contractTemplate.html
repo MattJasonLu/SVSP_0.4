@@ -17,9 +17,18 @@
         white-space:-o-pre-wrap;
         word-wrap:break-word;
     }
+    .client_style {
+        margin: 5% 0 5% 5%;
+    }
+    .focus {
+        outline: none;
+        border: 0px;
+    }
 </style>
 <script type="text/javascript">
     function loadContract() {
+        $('#contractId').hide();
+        $('#cId').hide();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listContract",                  // url
@@ -40,7 +49,7 @@
         });
     }
     function setContractList(result){
-     //console.log(eval(result));//可以取到
+     console.log(eval(result));//可以取到
         // 获取id为cloneTr的tr元素
       //判断字段是否存在
         var tr = $("#cloneTr1");//克隆一行
@@ -49,7 +58,8 @@
             // 克隆tr，每次遍历都可以产生新的tr
             var obj = eval(item);
             //console.log(obj);
-            if(obj.modelName!=""&&obj.year!=""&&obj.contractContent!="") {
+            if(obj.modelName!=""&&obj.year!="") {
+                console.log(obj);
                 var clonedTr = tr.clone();
                 clonedTr.show();
                 // 循环遍历cloneTr的每一个td元素，并赋值
@@ -58,14 +68,22 @@
                     // console.log(obj);
                     switch (inner_index) {
                         // 合同类型
-                        case (2):
+                        case (1):
                             if (obj.contractType != null)
-                                obj.contractName = obj.contractType.name;
-                            $(this).html(obj.contractName);
+                            $(this).html(  obj.contractType.name);
                             break;
                         // 模板名称
-                        case (3):
+                        case (2):
                             $(this).html(obj.modelName);
+                            break;
+                        // 合同状态
+                        case (3):
+                            if(obj.checkState.name=="已作废"){
+                                $(this).html("已作废");
+                            }
+                            if(obj.checkState.name!="已作废"){
+                                $(this).html("使用中");
+                            }
                             break;
                         // 合同版本号
                         case (4):
@@ -74,6 +92,9 @@
                         // 年份
                         case (5):
                             $(this).html(obj.year);
+                            break;
+                        case (6):
+                            $(this).html(obj.contractId);
                             break;
                     }
                 });
@@ -86,9 +107,12 @@
         tr.hide();
     }
     function adjust(item) {
-        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
-         //console.log(modelName);
-         window.location.href ="showModel?modelName="+modelName;
+       // var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.previousElementSibling.innerHTML;
+      localStorage.contractId=contractId;
+      location.href="model.html";
+       // window.location.href ="showModel?contractId="+contractId;
+       //  window.location.href =searchUrl;
          //console.log(modelName+"123")
           //window.location.href="jsp/model.jsp?modelName="+modelName;
     }
@@ -112,7 +136,13 @@
         config.removeButtons = 'Underline,Subscript,Superscript';
         config.pasteFromWordRemoveFontStyles = false;
         config.pasteFromWordRemoveStyles = false;
+       config.removePlugins='elementspath';
    };
+    function allSelect() {
+        var isChecked = $('#allSel').prop('checked');
+        if (isChecked) $("input[name='select']").prop('checked',true);
+        else $("input[name='select']").prop('checked',false);
+    }
 </script>
 <body onload="loadContract()">
     <!--导航条-->
@@ -175,8 +205,10 @@
 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">个人信息</a></li>
                             <li><a href="#">待办事项</a></li>
@@ -189,17 +221,18 @@
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="wastesPlatform.html">概览</a></li>
-                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">接收管理</a></li>
-                    <li><a href="#">贮存管理</a></li>
-                    <li><a href="#">预处理管理</a></li>
-                    <li><a href="#">处置管理</a></li>
-                    <li><a href="#">次生管理</a></li>
-                    <li><a href="#">基础数据</a></li>
-                    <li><a href="#">系统设置</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
                 </ul>
             </div>
         </div>
@@ -230,42 +263,45 @@
                         </span>
                     </div>
                 </div>
-
             </div>
 
             <div class="table">
                 <table class="table table-striped table-hover table-condensed">
                     <thead>
                     <tr>
-                        <th></th>
-                        <th>操作</th>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                            </label>
+                        </th>
                         <th>合同类型</th>
                         <th>模板名称</th>
+                        <th>模板状态</th>
                         <th>合同版本号</th>
                         <th>年份</th>
+                        <th id="contractId">"1213"</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr id="cloneTr1">
                         <td class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
+                        <td></td>
+                        <td></td><!--模板名称-->
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td id="cId"></td>
                         <td>
-                            <div class="dropdown">
-                                <a href="#" class="btn btn-primary dropdown-toggle btn-xs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#" onclick="check(this)">查看</a></li>
-                                    <li><a href="#" onclick="adjust(this)">修改信息</a></li>
-                                    <li><a href="#">删除</a></li>
-                                </ul>
-                            </div>
+                            <a href="#" onclick="check(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" onclick="adjust(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="kkk(this);" title="升级"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                         </td>
-                        <td>危废合同</td>
-                        <td>危废</td><!--模板名称-->
-                        <td>V1.0</td>
-                        <td>2018</td>
                     </tr>
                     </tbody>
                 </table>
@@ -332,7 +368,7 @@
                         <div class="row">
                             <div class="form-horizontal col-md-12">
                                 <label for="modal3_contractContent" class="control-label col-sm-6">合同正文 </label>
-                                <textarea class="form-control"  id="modal3_contractContent" rows="20" name="contractContent" readonly ></textarea>
+                                <textarea class="form-control"  id="modal3_contractContent" rows="40" name="contractContent" readonly ></textarea>
                         </div>
                         <div class="row text-center">
                             <a class="btn btn-primary" onclick="" id="btn">打印</a>
@@ -346,10 +382,11 @@
     </div>
 </body>
 <script>
-    CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});3
+    CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
     function check(item) {
         //模板名称
-        var modelName=item.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.previousElementSibling.innerHTML;
+
         // console.log(modelName);
         $.ajax({
             type:"POST",
@@ -357,7 +394,7 @@
             async: false,
             dataType: "json",
             data: {
-                'modelName': modelName
+                'contractId': contractId
             },
             success:function (result) {
                 if(result!=undefined){
@@ -370,9 +407,9 @@
                     $('#modal3_year').val(obj.year);
                     $('#modal3_period').val(obj.period);
                     var text=obj.contractContent;
-                    console.log(text);
-                    // $('#modal3_contractContent').val($(text).text());//有换行的格式
-                    $('#modal3_contractContent').val(text);
+                    //console.log(text);
+                     //$('#modal3_contractContent').val($(text).text());//有换行的格式
+                   CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
                 }
             },
             error:function (result) {
@@ -382,6 +419,41 @@
         $('#btn').text();
         $('#btn').text('打印');
         $('#contractInfoForm').modal('show');
+    }
+    function cancel(item) {
+        var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractId=item.parentElement.previousElementSibling.innerHTML;
+        //console.log(modelName);
+        var r = confirm("是否作废该模板？");
+        if(r==true){
+            $.ajax({
+                type:"POST",
+                url:"cancelModel",
+                async: false,
+                dataType: "json",
+                data: {
+                    'contractId': contractId
+                },
+                success:function (result) {
+                    var obj=eval(result);
+                    if(obj.state=="success"){
+                        alert("作废成功！");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("作废失败！")
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
+                }
+            });
+        }
+      else {
+
+        }
+
+
     }
 
 </script>

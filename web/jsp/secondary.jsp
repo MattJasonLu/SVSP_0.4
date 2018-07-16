@@ -22,10 +22,22 @@
 </head>
 <script type="text/javascript">
     function loadContractSelectList() {
+        var contractType=$('#contractType');
+        contractType.hide();
         $('.selectpicker').selectpicker({
             language: 'zh_CN',
             size: 4
         });
+        var b='${contract.contractVersion}';
+        console.log(b);
+        if(b=="companyContract"){
+            //执行方法
+            $('#contractVersion').click();
+        }
+        if(b=="customerContract"){
+            //执行方法
+            $('#contractVersion2').click();
+        }
         /**
          * 装载下拉框列表
          */
@@ -33,6 +45,7 @@
             type: "POST",                            // 方法类型
             url: "getContractList",                  // url
             dataType: "json",
+            data:{'key':"次生"},
             success: function (result) {
                 var data=eval(result);
                 var begin='${contract.beginTime}';//String类型
@@ -53,11 +66,30 @@
                     $('#isFreight').prop("value",true);
                 }
                 var contractVersion='${contract.contractVersion}';
+                if('${contract.contractName}'!=null){
+                    $('#contractName').prop("value", '${contract.contractName}');
+                }
+                else {
+                    $('#contractName').prop("value", " ");
+                }
                 $(":radio[name='contractVersion'][value='" +contractVersion+"']").prop("checked", "checked");
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
                    //合同名称
+                    var contractType1=$('#contractType1');
+                    contractType1.children().remove();
+                    index2="";
+                    $.each(data.modelNameList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.modelName);
+                        option.text(item.modelName);
+                        if(item.modelName=='${contract.modelName}'){
+                            index2=index;
+                        }
+                        contractType1.append(option);
+                    });
+                    contractType1.get(0).selectedIndex =index2;
                     var contractName = $("#contractName");
                     contractName.children().remove();
                     $.each(data.contractNameStrList, function (index, item) {
@@ -426,7 +458,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
@@ -436,7 +467,7 @@
                             </select>
                         </div>
                     </div>
-                        <div class="form-group" >
+                    <div class="form-group" >
                             <label class="col-sm-4 control-label" for="province">所属区域 </label>
                             <form name="form1" method="post" action="">
                                 <div class="form-inline">
@@ -452,9 +483,12 @@
                             </form>
                         </div>
                     <div class="form-group" >
-                        <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="contractName" name="contractType">
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" id="contractName1" >
+                            <input type="text" class="form-control" id="contractName" name="contractName">
+                        </div>
+                        <div class="col-xs-5" id="contractType2">
+                            <select class="form-control"  type="text" id="contractType1" name="modelName"  >
                             </select>
                         </div>
                     </div>
@@ -477,17 +511,23 @@
                             是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="freight" onclick="is()">
                         </label>
                     </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Derive" >
+                            </input>
+                        </div>
+                    </div>
                 </div>
-
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
                         <div class="col-xs-8" >
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract"  > 公司合同
+                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" > 公司合同
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract"> 客户合同
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"> 客户合同
                             </label>
                         </div>
                     </div>
@@ -535,15 +575,9 @@
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractAdjustSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractAdjustSave()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
-
-
-
-
-
-
     </div>
 </div>
 
@@ -600,7 +634,10 @@
                     // console.log(eval(result));
                     console.log("success: " + result);
                     alert("保存修改成功!");
-                    $(location).attr('href', 'contractManage.html');//跳转
+                    //$(location).attr('href', 'contractManage.html');//跳转
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Derive";
+                    location.href="contractManage.html";
                 } else {
                     console.log("fail: " + result);
                     alert("保存失败!");
@@ -634,6 +671,19 @@
 
             }
         });
+    }
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Derive";
+        location.href="contractManage.html";
+    });
+    function Appear() {
+        $("#contractName1").hide();
+        $('#contractType2').show();
+    }
+    function Appear1() {
+        $('#contractType2').hide();
+        $("#contractName1").show();
     }
 </script>
 </html>

@@ -51,15 +51,15 @@ public class QuotationController {
 
     /**
      * 作废报价单
-     * @param quotationId 报价单编号
+     * @param id 报价单编号
      * @return 成功与否
      */
     @RequestMapping("setStateDisabled")
     @ResponseBody
-    public String setStateDisabled(String quotationId) {
+    public String setStateDisabled(String id) {
         JSONObject res = new JSONObject();
         try {
-            quotationService.setStateDisabled(quotationId);
+            quotationService.setStateDisabled(id);
             res.put("status", "success");
             res.put("message", "报价单作废成功");
         } catch (Exception e) {
@@ -129,7 +129,7 @@ public class QuotationController {
     public String updateQuotation(@RequestBody Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
-            List<Wastes> oldWastesList = quotationService.getById(quotation.getQuotationId()).getWastesList();
+            List<Wastes> oldWastesList = quotationService.getById(quotation.getId()).getWastesList();
             List<Wastes> newWastesList = quotation.getWastesList();
             for (int i = 0; i < oldWastesList.size(); i++) {
                 newWastesList.get(i).setId(oldWastesList.get(i).getId());
@@ -144,6 +144,35 @@ public class QuotationController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "报价单修改失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新报价单
+     * @param quotation 报价单
+     * @return 成功与否
+     */
+    @RequestMapping("levelUpQuotation")
+    @ResponseBody
+    public String levelUpQuotation(@RequestBody Quotation quotation) {
+        JSONObject res = new JSONObject();
+        try {
+            for (Wastes wastes : quotation.getWastesList()) {
+                wastes.setId(RandomUtil.getRandomEightNumber());
+            }
+            // 作废旧报价单
+            quotationService.setStateDisabled(quotation.getId());
+            quotation.setId((quotationService.count() + 1) + "");
+            // 升级新报价单
+            quotationService.levelUp(quotation);
+            res.put("status", "success");
+            res.put("message", "报价单升级成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "报价单升级失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();
@@ -197,7 +226,7 @@ public class QuotationController {
             do {
                 index += 1;
                 id = nf.format(index);
-            } while (quotationService.getById(id) != null);
+            } while (quotationService.getByQuotationId(id) != null);
             res.put("status", "success");
             res.put("message", "获取报价单编号成功");
             res.put("quotationId", id);
@@ -211,15 +240,15 @@ public class QuotationController {
 
     /**
      * 通过报价单编号获取报价单
-     * @param quotationId 报价单编号
+     * @param id 报价单编号
      * @return 报价单对象
      */
     @RequestMapping("getQuotation")
     @ResponseBody
-    public String getQuotation(String quotationId) {
+    public String getQuotation(String id) {
         JSONObject res = new JSONObject();
         try {
-            Quotation quotation = quotationService.getById(quotationId);
+            Quotation quotation = quotationService.getById(id);
             if (quotation == null) throw new Exception("没有该报价单!");
             JSONObject data = JSONObject.fromBean(quotation);
             res.put("status", "success");

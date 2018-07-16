@@ -24,23 +24,30 @@ function loadContractSelectList() {
         size: 4
     });
 //取得下拉菜单的选项
+    var contractType=$('#contractType');
+    contractType.hide();
+    var contractName1=$('#contractName1');
+    contractName1.hide();
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getContractList",                  // url
         dataType: "json",
+        data:{"key":"危废"},
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
                 // 各下拉框数据填充
-                var contractName = $("#contractName");
-                contractName.children().remove();
-                $.each(data.contractNameStrList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    contractName.append(option);
+                var contractType1 = $("#contractType1");
+                contractType1.children().remove();
+                $.each(data.modelNameList, function (index, item) {
+                    if(item!=null&&item.modelName!=""){
+                        //console.log(item);
+                        var option = $('<option />');
+                        option.val(item.modelName);
+                        option.text(item.modelName);
+                        contractType1.append(option);}
                 });
-                contractName.get(0).selectedIndex = -1;
+                contractType1.get(0).selectedIndex = -1;
                 var province = $("#province");
                 province.children().remove();
                 $.each(data.provinceStrList, function (index, item) {
@@ -106,7 +113,6 @@ function loadContractSelectList() {
             console.log(result);
         }
     });
-
 }
 function changeSelect(index) {
 var index1=index+1;//获得province_id
@@ -149,6 +155,7 @@ $.ajax({
  * 保存
  */
 function contractSave() {
+    var addType = $("input[name='addType']:checked").val();
     var s=($('#contractInfoForm').serializeJSON());
     console.log(s);
     $.ajax({
@@ -163,7 +170,15 @@ function contractSave() {
                // console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
-                $(location).attr('href', 'contractManage.html');//跳转
+                    if (addType == "continue") {
+                        $(location).attr('href', 'wastesContractInfo.html');
+                    }
+                    else { localStorage.clear();
+                        $(location).attr('href', 'contractManage.html');
+                        localStorage.name="Wastes";
+                        location.href="contractManage.html";}
+
+                //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -178,6 +193,7 @@ function contractSave() {
 /**/
 function contractSave() {
     var s=($('#contractInfoForm').serializeJSON());
+    var addType = $("input[name='addType']:checked").val();
     //console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -191,7 +207,13 @@ function contractSave() {
                // console.log(eval(result));
                 console.log("success: " + result);
                 alert("保存成功!");
-                $(location).attr('href', 'contractManage.html');//跳转
+                if (addType == "continue")  $(location).attr('href', 'wastesContractInfo.html');
+                else { localStorage.clear();
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Wastes";
+                    location.href="contractManage.html";}//$(location).attr('href', 'contractManage.html');//跳转
+
+                //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -205,6 +227,7 @@ function contractSave() {
 }
 function contractSubmit(){
     var s=($('#contractInfoForm').serializeJSON());
+    var addType = $("input[name='addType']:checked").val();
     console.log(s);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -218,7 +241,14 @@ function contractSubmit(){
                 //(eval(result));
                 console.log("success: " + result);
                 alert("提交成功!");
-                $(location).attr('href', 'contractManage.html');//跳转
+                if (addType == "continue") $(location).attr('href', 'wastesContractInfo.html');
+                else{localStorage.clear();
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name="Wastes";
+                    location.href="contractManage.html";}
+
+                    //$(location).attr('href', 'contractManage.html');//跳转
+                //$(location).attr('href', 'contractManage.html');//跳转
             } else {
                 console.log("fail: " + result);
                 alert("保存失败!");
@@ -284,8 +314,10 @@ function contractSubmit(){
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+                <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                    <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">个人信息</a></li>
                         <li><a href="#">待办事项</a></li>
@@ -298,17 +330,18 @@ function contractSubmit(){
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="sidebar">
             <ul class="nav nav-sidebar">
-                <li><a href="wastesPlatform.html">概览</a></li>
-                <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">接收管理</a></li>
-                <li><a href="#">贮存管理</a></li>
-                <li><a href="#">预处理管理</a></li>
-                <li><a href="#">处置管理</a></li>
-                <li><a href="#">次生管理</a></li>
-                <li><a href="#">基础数据</a></li>
-                <li><a href="#">系统设置</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
             </ul>
         </div>
     </div>
@@ -373,9 +406,12 @@ function contractSubmit(){
                         </form>
                     </div>
                     <div class="form-group" >
-                        <label for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-4">
-                            <select class="form-control" id="contractName" name="contractType">
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" id="contractName1" >
+                            <input type="text" class="form-control" id="contractName" name="contractName">
+                        </div>
+                        <div class="col-xs-5" id="contractType2">
+                            <select class="form-control"  type="text" id="contractType1" name="modelName"  >
                             </select>
                         </div>
                     </div>
@@ -410,10 +446,10 @@ function contractSubmit(){
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
                         <div class="col-xs-8" >
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract"  > 公司合同
+                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" > 公司合同
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract"> 客户合同
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"> 客户合同
                             </label>
                         </div>
                     </div>
@@ -440,12 +476,19 @@ function contractSubmit(){
                             <input type="text" class="form-control" id="telephone" name="telephone" >
                         </div>
                     </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
+                            </input>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html">返回</a>
+                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
             </div>
         </form>
 
@@ -481,5 +524,20 @@ function contractSubmit(){
         minView: 2,
         forceParse: 0
     });
+    $('#back').click(function () {
+        localStorage.clear();
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Wastes";
+        location.href="contractManage.html";
+    });
+    function Appear() {
+        $("#contractName1").hide();
+        $('#contractType2').show();
+    }
+    function Appear1() {
+        $('#contractType2').hide();
+        $("#contractName1").show();
+
+    }
 </script>
 </html>
