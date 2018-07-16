@@ -184,8 +184,8 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary" href="salesInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ></span> 导入</a>
+                        <a class="btn btn-primary" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="form-inline col-md-6 pull-right">
@@ -288,7 +288,9 @@
             </div>
         </div>
     </div>
+    <input type="file" name="excelPath" id="idExcel" style="display:none">
 </body>
+
 <style>
     .navbar{
         margin-bottom: 0px;
@@ -501,5 +503,67 @@
             }
         });
     }
+
+    function exportExcel() {
+        console.log("点击了导出按钮");
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "exportExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                name: 'salesman'
+            },
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert("导出成功，文件保存于D盘根目录！")
+                    } else {
+                        alert("导出失败，请重试！")
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function importExcel() {
+        document.getElementById("idExcel").click();
+        document.getElementById("idExcel").addEventListener("change",function () {
+            console.log("change");
+            var eFile = document.getElementById("idExcel").files[0];
+            var formFile = new FormData();
+            formFile.append("excelFile", eFile);
+            formFile.append("tableName", 'salesman');
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "importExcel",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: formFile,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        if (result.status == "success") {
+                            alert(result.message);
+                            window.location.reload();
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+    }
+
 </script>
 </html>
