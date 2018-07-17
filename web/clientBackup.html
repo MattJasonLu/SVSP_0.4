@@ -120,29 +120,40 @@
                         break;
                     // 操作
                     case (9):
-                        if(obj.checkState.name == "审批中"||obj.checkState.name == "已完成") {
-                            $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
-                        }
-                        if(obj.clientState.name == "已禁用"){
-                            $(this).children().eq(0).children().eq(1).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(1).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(2).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(3).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(5).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(5).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(0).children().eq(1).children().eq(6).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(6).children().eq(0).removeAttr("onclick");
-                        }
                         if(obj.clientState.name == "已启用"){
-                            $(this).children().eq(0).children().eq(1).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(4).children().eq(0).removeAttr("onclick");
-                        }
-                        if(obj.clientState.name == "已禁用"){
-                            $(this).children().eq(0).children().eq(1).children().eq(5).attr("class","disabled");
-                            $(this).children().eq(0).children().eq(1).children().eq(5).children().eq(0).removeAttr("onclick");
+                            if(obj.checkState.name == "已完成"){
+                                $(this).children().eq(1).attr("class","disabled");
+                                $(this).children().eq(1).removeAttr("onclick");
+                                $(this).children().eq(2).attr("class","disabled");
+                                $(this).children().eq(2).removeAttr("onclick");
+                                $(this).children().eq(3).attr("class","disabled");
+                                $(this).children().eq(3).removeAttr("onclick");
+                                $(this).children().eq(4).attr("class","disabled");
+                                $(this).children().eq(4).removeAttr("onclick");
+                                $(this).children().eq(6).attr("class","disabled");
+                                $(this).children().eq(6).removeAttr("onclick");
+                            }else if(obj.checkState.name == "审批中"){
+                                $(this).children().eq(1).attr("class","disabled");
+                                $(this).children().eq(1).removeAttr("onclick");
+                                $(this).children().eq(2).attr("class","disabled");
+                                $(this).children().eq(2).removeAttr("onclick");
+                                $(this).children().eq(4).attr("class","disabled");
+                                $(this).children().eq(4).removeAttr("onclick");
+                            }else{
+                                $(this).children().eq(1).attr("class","disabled");
+                                $(this).children().eq(1).removeAttr("onclick");
+                                $(this).children().eq(4).attr("class","disabled");
+                                $(this).children().eq(4).removeAttr("onclick");
+                                $(this).children().eq(6).attr("class","disabled");
+                                $(this).children().eq(6).removeAttr("onclick");
+                            }
+                        }else{
+                            $(this).children().eq(0).attr("class","disabled");
+                            $(this).children().eq(0).removeAttr("onclick");
+                            $(this).children().eq(4).attr("class","disabled");
+                            $(this).children().eq(4).removeAttr("onclick");
+                            $(this).children().eq(6).attr("class","disabled");
+                            $(this).children().eq(6).removeAttr("onclick");
                         }
                         break;
                 }
@@ -1105,30 +1116,35 @@
      */
     function commitClient(item) {
         var id = getClientId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "submitClientById",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("提交成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("提交失败");
+        var r = confirm("确认提交？");
+        if(r == true){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "submitClientById",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序(异步true，实为两个线程同步执行，不需要返回值直接执行后面的语句)
+                data: {
+                    'clientId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        if (result.status == "success") {
+                            alert("提交成功");
+                            window.location.reload();
+                        } else if (result.status == "fail") {
+                            alert("提交失败");
+                        }
                     }
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert("服务器异常");
                 }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
+            });
+        }else{
+            alert("提交操作取消。")
+        }
     }
 
 
@@ -1148,30 +1164,35 @@
      */
     function disableClient(item) {
         var id = getClientId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "disableClient",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("禁用成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("禁用失败");
+        var r = confirm("确认禁用？");
+        if(r == true){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "disableClient",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'clientId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        if (result.status == "success") {
+                            alert("禁用成功");
+                            window.location.reload();
+                        } else if (result.status == "fail") {
+                            alert("禁用失败");
+                        }
                     }
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert("服务器异常");
                 }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
+            });
+        }else{
+            alert("禁用操作取消。")
+        }
     }
     /**
      * 启用用户
@@ -1179,30 +1200,35 @@
      */
     function enableClient(item) {
         var id = getClientId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "enableClient",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'clientId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert("启用成功");
-                        window.location.reload();
-                    } else if (result.status == "fail") {
-                        alert("启用失败");
+        var r = confirm("确认启用？");
+        if(r == true){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "enableClient",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'clientId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        if (result.status == "success") {
+                            alert("启用成功");
+                            window.location.reload();
+                        } else if (result.status == "fail") {
+                            alert("启用失败");
+                        }
                     }
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert("服务器异常");
                 }
-            },
-            error:function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
+            });
+        }else{
+            alert("启用操作取消。")
+        }
     }
     /**
      * 分配业务员

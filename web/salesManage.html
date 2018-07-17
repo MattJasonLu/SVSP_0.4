@@ -182,15 +182,17 @@
             <div class="row">
                 <div>
                     <!--操作按钮-->
-                    <div class="pull-left col-md-6">
+                    <div class="pull-left">
                         <a class="btn btn-primary" href="salesInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ></span> 导入</a>
                         <a class="btn btn-primary" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 导出</a>
                     </div>
                     <!--查询框-->
-                    <div class="form-inline col-md-6 pull-right">
+                    <div class="input-group col-xs-3 pull-right">
                         <input type="text" class="form-control" id="salesmanId" name="salesmanId" placeholder="业务员编号">
-                        <a class="btn btn-default" onclick="searchSalesman();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchSalesman();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        </span>
                     </div>
                 </div>
 
@@ -202,7 +204,7 @@
                     <tr>
                         <th class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" onclick="allSelect()">
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
                         <th>业务员编号</th>
