@@ -39,12 +39,6 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                    case (8):
-                        if(obj.state.name == "已作废"){
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                        }
-                        break;
                         // 样品预约号
                     case (1):
                         $(this).html(obj.appointId);
@@ -76,7 +70,27 @@
                     case (7):
                         $(this).html(obj.telephone);
                         break;
-
+                    case (8):
+                        if(obj.name == "已作废"){
+                            $(this).children().eq(1).attr("class","disabled");
+                            $(this).children().eq(1).removeAttr("onclick");
+                            $(this).children().eq(2).attr("class","disabled");
+                            $(this).children().eq(2).removeAttr("onclick");
+                            $(this).children().eq(3).attr("class","disabled");
+                            $(this).children().eq(3).removeAttr("onclick");
+                        }else if(obj.name == "已预约"){
+                            $(this).children().eq(1).attr("class","disabled");
+                            $(this).children().eq(1).removeAttr("onclick");
+                        }else{
+                            $(this).children().eq(1).attr("class","disabled");
+                            $(this).children().eq(1).removeAttr("onclick");
+                            $(this).children().eq(2).attr("class","disabled");
+                            $(this).children().eq(2).removeAttr("onclick");
+                            $(this).children().eq(3).attr("class","disabled");
+                            $(this).children().eq(3).removeAttr("onclick");
+                        }
+                        $(this)
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -239,7 +253,7 @@
                     <tr>
                         <th class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel">
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                             </label>
                         </th>
                         <th>样品预约号</th>
@@ -975,31 +989,7 @@
             }
         });
     }
-    $(document).ready(function () {
-        //给全选设置点击事件
-        $("[name='allSel']").click(function () {
-            if($(this).is(':checked')){
-                $("[name='select']").attr('checked',true);
-            }else{
-                $("[name='select']").attr('checked',false);
-            }
-        })
-        //给下面的复选框设置click事件
-        $("[name='select']").click(function () {
-            var allSel = false;
-            $("[name='select']").each(function () {
-                if(!$(this).is(':checked')){
-                    allSel = true;
-                }
-            })
-            //如果有checkbox没有被选中
-            if(allSel){
-                $("[name='allSel']").attr('checked',true);
-            }else{
-                $("[name='allSel']").attr('checked',false);
-            }
-        })
-    })
+
     /**
      * 删除预约单----->改作废
      */
@@ -1030,6 +1020,11 @@
                 }
             });
         }
+    }
+    function allSelect() {
+        var isChecked = $('#allSel').prop('checked');
+        if (isChecked) $("input[name='select']").prop('checked',true);
+        else $("input[name='select']").prop('checked',false);
     }
     /**
      * 通过勾选框获取到预约单编号
