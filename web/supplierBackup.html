@@ -119,6 +119,22 @@
                             }
                         }
                         break;
+                    case (8):
+                        if(obj.checkState.name == "待提交"){
+                            $(this).children().eq(3).attr("class","disabled");
+                            $(this).children().eq(3).removeAttr("onclick");
+                        }else if(obj.checkState.name == "审批中"){
+                            $(this).children().eq(1).attr("class","disabled");
+                            $(this).children().eq(1).removeAttr("onclick");
+                            $(this).children().eq(2).attr("class","disabled");
+                            $(this).children().eq(2).removeAttr("onclick");
+                            $(this).children().eq(4).attr("class","disabled");
+                            $(this).children().eq(4).removeAttr("onclick");
+                        }else{
+                            $(this).children().eq(4).attr("class","disabled");
+                            $(this).children().eq(4).removeAttr("onclick");
+                        }
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -179,6 +195,198 @@
         var isChecked = $('#allSel').prop('checked');
         if (isChecked) $("input[name='select']").prop('checked',true);
         else $("input[name='select']").prop('checked',false);
+    }
+    /**
+     * 获取供应商的编号
+     * @param item
+     * @returns {string}
+     */
+    function getSupplierId(item) {
+        return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    }
+    /**
+     * 审核供应商
+     * @param item 供应商
+     */
+    function examineSupplier(item) {
+        var id = getSupplierId(item);
+        // 添加供应商信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSupplier",                   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'id': id
+            },
+            success: function (result) {        //待修改！！！！！！！！！！！！！！！！！！！！
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#modal4_companyName").val(data.companyName);
+                    $("#modal4_organizationCode").val(data.organizationCode);
+                    $("#modal4_representative").val(data.representative);
+                    $("#modal4_industry").val(data.industry);
+                    if (data.enterpriseType != null)
+                        $("#modal4_enterpriseType").val(data.enterpriseType.name);
+                    if (data.operationType != null)
+                        $("#modal4_operationType").val(data.operationType.name);
+                    if (data.operationRecord != null)
+                        $("#modal4_operationRecord").val(data.operationRecord.name);
+                    $("#modal4_street").val(data.street);
+                    $("#modal4_clientId").val(data.clientId);
+                    $("#modal4_licenseCode").val(data.licenseCode);
+                    $("#modal4_postCode").val(data.postCode);
+                    $("#modal4_product").val(data.product);
+                    if (data.operationMode != null)
+                        $("#modal4_operationMode").val(data.operationMode.name);
+                    if (data.contingencyPlan != null)
+                        $("#modal4_contingencyPlan").val(data.contingencyPlan.name);
+                    if (data.applicationStatus != null)
+                        $("#modal4_applicationStatus").val(data.applicationStatus.name);
+                    $("#modal4_location").val(data.location);
+                    $("#modal4_processDesp").val(data.processDesp);
+                    $("#modal4_contactName").val(data.contactName);
+                    $("#modal4_mobile").val(data.mobile);
+                    $("#modal4_phone").val(data.phone);
+                    $("#modal4_email").val(data.email);
+                } else {
+                    $("#modal4_companyName").val("");
+                    $("#modal4_organizationCode").val("");
+                    $("#modal4_representative").val("");
+                    $("#modal4_industry").val("");
+                    $("#modal4_enterpriseType").val("");
+                    $("#modal4_operationType").val("");
+                    $("#modal4_operationRecord").val("");
+                    $("#modal4_street").val("");
+                    $("#modal4_clientId").val("");
+                    $("#modal4_licenseCode").val("");
+                    $("#modal4_postCode").val("");
+                    $("#modal4_product").val("");
+                    $("#modal4_operationMode").val("");
+                    $("#modal4_contingencyPlan").val("");
+                    $("#modal4_applicationStatus").val("");
+                    $("#modal4_location").val("");
+                    $("#modal4_processDesp").val("");
+                    $("#modal4_contactName").val("");
+                    $("#modal4_mobile").val("");
+                    $("#modal4_phone").val("");
+                    $("#modal4_email").val("");
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        $('#examineModal').modal('show');
+    }
+    /**
+     * 提交供应商
+     * @param item 供应商
+     */
+    function commitSupplier(item) {
+        var id = getSupplierId(item);
+        var r = confirm("确认提交？");
+        if(r == true){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "submitSupplierById",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序(异步true，实为两个线程同步执行，不需要返回值直接执行后面的语句)
+                data: {
+                    'SupplierId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        if (result.status == "success") {
+                            alert("提交成功");
+                            window.location.reload();
+                        } else if (result.status == "fail") {
+                            alert("提交失败");
+                        }
+                    }
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert("服务器异常");
+                }
+            });
+        }else{
+            alert("提交操作取消。")
+        }
+    }
+    /**
+     * 禁用供应商
+     * @param item 供应商
+     */
+    function disableSupplier(item) {
+        var id = getSupplierId(item);
+        var r = confirm("确认禁用？");
+        if(r == true){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "disableSupplier",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'SupplierId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        if (result.status == "success") {
+                            alert("禁用成功");
+                            window.location.reload();
+                        } else if (result.status == "fail") {
+                            alert("禁用失败");
+                        }
+                    }
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert("服务器异常");
+                }
+            });
+        }else{
+            alert("禁用操作取消。")
+        }
+    }
+    /**
+     * 启用供应商
+     * @param item 供应商
+     */
+    function enableSupplier(item) {
+        var id = getSupplierId(item);
+        var r = confirm("确认启用？");
+        if(r == true){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "enableSupplier",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'SupplierId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        if (result.status == "success") {
+                            alert("启用成功");
+                            window.location.reload();
+                        } else if (result.status == "fail") {
+                            alert("启用失败");
+                        }
+                    }
+                },
+                error:function (result) {
+                    console.log(result);
+                    alert("服务器异常");
+                }
+            });
+        }else{
+            alert("启用操作取消。")
+        }
     }
 </script>
 <body onload="loadSupplierList();">
@@ -309,7 +517,7 @@
                         <tr>
                             <th class="text-center">
                                 <label>
-                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" onclick="allSelect()">
+                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                                 </label>
                             </th>
                             <th>供应商编号</th>
@@ -338,6 +546,10 @@
                                 <a href="#" onclick="viewSupplier(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                 <a href="#" onclick="adjustSupplier(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                                 <a href="#" onclick="deleteSupplier(this);" title="删除"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                                <a href="#" onclick="examineSupplier(this);" title="审批"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                                <a href="#" onclick="commitSupplier(this);" title="提交"><span class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>
+                                <a href="#" onclick="disableSupplier(this);" title="禁用"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                                <a href="#" onclick="enableSupplier(this);" title="启用"><span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
                             </td>
                         </tr>
                     </tbody>

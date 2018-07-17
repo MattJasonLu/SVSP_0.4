@@ -53,19 +53,39 @@
                 var data=eval(result);
                 var begin='${contract.beginTime}';//String类型
                 var end='${contract.endTime}';
-                var beginTime=getTime(begin);
-                var endTime=getTime(end);
-                $('#beginTime').prop("value",beginTime);//添加起始日期
-                $('#endTime').prop("value",endTime);//添加截止人日期
+                if(begin!=''){
+                    var beginTime=getTime(begin);
+                    $('#beginTime').prop("value",beginTime);
+                }
+                else {
+                    $('#beginTime').prop("value","");
+                }
+                if(end!=''){
+                    var endTime=getTime(end);
+                    $('#endTime').prop("value",endTime);
+                }
+                else {
+                    $('#endTime').prop("value","");
+                }
                 //资质有效期
                 //开始时间
                 var begin1='${contract.beginQualification}';
-                var beginTime1=getTime(begin1);
-                $('#beginQualification').prop("value",beginTime1);//添加资质起始日期
+                if(begin1!=''){
+                    var beginTime1=getTime(begin1);
+                    $('#beginQualification').prop("value",beginTime1);//添加资质起始日期
+                }
+              else {
+                    $('#beginQualification').prop("value","");//添加资质起始日期
+                }
                 //结束时间
                 var end1='${contract.endQualification}';
-                var endTime1=getTime(end1);
-                $('#endQualification').prop("value",endTime1);//添加资质起始日期
+                if(end1!=''){
+                    var endTime1=getTime(end1);
+                    $('#endQualification').prop("value",endTime1);//添加资质起始日期
+                }
+              else {
+                    $('#endQualification').prop("value","");//添加资质起始日期
+                }
                 var freight='${contract.freight}';
                 if(freight=='false'){
                     $('#isFreight').removeAttr("checked");
@@ -85,6 +105,13 @@
                 }
                 var contractVersion='${contract.contractVersion}';
                 $(":radio[name='contractVersion'][value='" +contractVersion+"']").prop("checked", "checked");
+                var s='${contract.contactName}';
+                if(s!=""){
+                    $('#contactName').prop("value",s);
+                }
+                else {
+                    $('#contactName').prop("value","");
+                }
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
