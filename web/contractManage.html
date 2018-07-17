@@ -174,8 +174,8 @@
             var obj = eval(item);
             //console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
-            if(obj.contractId!=""&&obj.contractType.name!=""&&obj.companyName!=""&&obj.province!=null&&obj.city!=""&&obj.contactName!=""&&obj.telephone!=""&&obj.beginTime!=null){
-                console.log(obj);
+            console.log(obj);
+            if(obj.contractContent==""&&obj.period==""&&obj.year=="") {
                 // 循环遍历cloneTr的每一个td元素，并赋值
                 var clonedTr = tr.clone();
                 clonedTr.show();
@@ -189,14 +189,17 @@
                             break;
                         // 合同名称
                         case (2):
-                            if(obj.contractVersion.name=="客户合同"){
-                                if (obj.contractType != null)
-                                    $(this).html(obj.contractName+obj.contractType.name);
+                            if(obj.contractVersion!=null) {
+                                if (obj.contractVersion.name == "公司合同") {
+                                    $(this).html(obj.modelName);
+                                }
+                                if(obj.contractVersion.name == "客户合同"){
+                                    $(this).html(obj.contractName + obj.contractType.name);
+                                }
                             }
-                            if(obj.contractVersion.name=="公司合同"){
-                                $(this).html(obj.modelName);
+                            else {
+                                $(this).html("");
                             }
-
                             break;
                         // 状态
                         case (3):
@@ -209,7 +212,12 @@
                             break;
                         // 所属区域
                         case (5):
-                            $(this).html(obj.province.name + obj.city);
+                            if (obj.province != null) {
+                                $(this).html(obj.province.name + obj.city);
+                            }
+                            else {
+                                $(this).html("");
+                            }
                             break;
                         // 合约量
                         case (6):
@@ -225,20 +233,20 @@
                             break;
                         // 签订日期
                         case (9):
-                            //console.log(obj.beginTime);
-                            var time = gettime(obj.beginTime);
-                            //console.log(obj.beginTime);
-                            // var year=(parseInt(obj.beginTime.year)+1900).toString();
-                            //var mouth=parseInt((obj.beginTime.month)+3).toString();
-                            //var  day=parseInt((obj.beginTime.date)).toString();
-                            $(this).html(time);
+                            if (obj.beginTime != null) {
+                                var time = gettime(obj.beginTime);
+                                $(this).html(time);
+                            }
+                            else {
+                                $(this).html("");
+                            }
                             break;
                     }
                 });
                 // 把克隆好的tr追加到原来的tr前面
                 clonedTr.removeAttr("id");
-                clonedTr.insertBefore(tr);}
-
+                clonedTr.insertBefore(tr);
+            }
         });
         // 隐藏无数据的tr
         tr.hide();
@@ -319,7 +327,6 @@
                 // 把克隆好的tr追加到原来的tr前面
                 clonedTr.removeAttr("id");
                 clonedTr.insertBefore(tr);
-
         });
         // 隐藏无数据的tr
         tr.hide();
@@ -432,9 +439,18 @@ else {
                   // console.log(result);
                    if (result != undefined) {
                        var data = eval(result);
-                       var begin=gettime(data.beginTime);
-                       var end=gettime(data.endTime);
-
+                       if(data.beginTime!=null){
+                           var begin=gettime(data.beginTime);
+                       }
+                       else {
+                           var begin="";
+                       }
+                       if(data.endTime!=null){
+                           var end=gettime(data.endTime);
+                       }
+                       else {
+                           var end="";
+                       }
                        $("#modal3_contractState").val(data.checkState.name);
                        $("#modal3_contractVersion").val(data.contractVersion.name);
                        $("#modal3_companyName").val(data.companyName);
@@ -462,12 +478,9 @@ else {
                        if(data.ticketRate2==null){
                            $('#modal3_ticketRate2').val(" ");
                        }
-
                        else {
                            $('#modal3_ticketRate2').val(data.ticketRate2.name);
                        }
-
-
                        //资质开始日期
                        if(data.beginQualification==null){
                            $('#modal3_beginQualification').val(" ");
@@ -834,7 +847,7 @@ else {
                                 <div class="form-group">
                                     <label for="modal3_contractVersion" class="col-sm-4 control-label">合同版本 </label>
                                     <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contractVersion" name="contractVersion">
+                                        <input type="text" class="form-control focus" id="modal3_contractVersion" name="contractVersion" >
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -933,7 +946,6 @@ else {
                                         <input type="text" class="form-control focus" id="modal3_logisticsQualification" name="logisticsQualification">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label for="modal3_order" class="col-sm-4 control-label">预约处置费 </label>
                                     <div class="col-xs-5">
@@ -1196,8 +1208,18 @@ function cancel(item) {
                 // console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
-                    var begin=gettime(data.beginTime);
-                    var end=gettime(data.endTime);
+                    if(data.beginTime!=null){
+                        var begin=gettime(data.beginTime);
+                    }
+                    else {
+                        var begin="";
+                    }
+                    if(data.endTime!=null){
+                        var end=gettime(data.endTime);
+                    }
+                    else {
+                        var end="";
+                    }
                     $("#modal3_contractName").val(data.contractName+data.contractType.name);//合同名称
                     $("#modal3_contractState").val(data.checkState.name);
                     $("#modal3_contractVersion").val(data.contractVersion.name);
