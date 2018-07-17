@@ -50,8 +50,22 @@
                 var data=eval(result);
                 var begin='${contract.beginTime}';//String类型
                 var end='${contract.endTime}';
-                var beginTime=getTime(begin);
-                var endTime=getTime(end);
+                var begin='${contract.beginTime}';//String类型
+                if(begin!=''){
+                    var beginTime=getTime(begin);
+                    $('#beginTime').prop("value",beginTime);
+                }
+                else {
+                    $('#beginTime').prop("value","");
+                }
+                var end='${contract.endTime}';
+                if(end!=''){
+                    var endTime=getTime(end);
+                    $('#endTime').prop("value",endTime);
+                }
+                else {
+                    $('#endTime').prop("value","");
+                }
                 $('#beginTime').prop("value",beginTime);//添加起始日期
                 $('#endTime').prop("value",endTime);//添加截止人日期
                 var freight='${contract.freight}';
@@ -73,6 +87,13 @@
                     $('#contractName').prop("value", " ");
                 }
                 $(":radio[name='contractVersion'][value='" +contractVersion+"']").prop("checked", "checked");
+                var s='${contract.contactName}';
+                if(s!=""){
+                    $('#contactName').prop("value",s);
+                }
+                else {
+                    $('#contactName').prop("value","");
+                }
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
