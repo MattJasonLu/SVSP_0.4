@@ -57,11 +57,21 @@
             success: function (result) {
                 var data=eval(result);
                 var begin='${contract.beginTime}';//String类型
+                if(begin!=''){
+                    var beginTime=getTime(begin);
+                    $('#beginTime').prop("value",beginTime);
+                }
+            else {
+                    $('#beginTime').prop("value"," ");
+                }
                 var end='${contract.endTime}';
-                var beginTime=getTime(begin);
-                var endTime=getTime(end);
-                $('#beginTime').prop("value",beginTime);
-                $('#endTime').prop("value",endTime);
+                if(end!=''){
+                    var endTime=getTime(end);
+                    $('#endTime').prop("value",endTime);
+                }
+               else {
+                    $('#endTime').prop("value"," ");
+                }
                 var freight='${contract.freight}';
                 if(freight=='false'){
                  $('#isFreight').removeAttr("checked");
@@ -81,6 +91,14 @@
                 else {
                     $('#contractName').prop("value", " ");
                 }
+                var s='${contract.contactName}';
+                if(s!=""){
+                    $('#contactName').prop("value","${contract.contactName}");
+                }
+                else {
+                    $('#contactName').prop("value","");
+                }
+
                if (result != undefined) {
                     // 各下拉框数据填充
                     var province = $("#province");
@@ -414,7 +432,7 @@
                     <div class="form-group" >
                         <label  for="contactName" class="col-sm-4 control-label">联系人</label>
                         <div class="col-xs-4" >
-                            <input type="text" class="form-control" id="contactName" name="contactName"  value="${contract.contactName}">
+                            <input type="text" class="form-control" id="contactName" name="contactName"  >
                         </div>
                     </div>
                     <div class="form-group ">

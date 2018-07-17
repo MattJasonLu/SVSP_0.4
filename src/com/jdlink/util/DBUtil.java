@@ -1,39 +1,31 @@
 package com.jdlink.util;
 
-import java.lang.String;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import net.sf.json.JSONObject;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
-import net.sf.json.JSONObject;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.junit.Test;
-import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.dbutils.QueryRunner;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
-
-import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-
-import jxl.read.biff.BiffException;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
-
-
 public class DBUtil {
     public final static String url = "jdbc:mysql://172.16.1.92:3306/jdlink"; // 数据库URL
     public final static String user = "root"; // 数据库用户名
     public final static String password = "123456"; // 数据库密码
     public static Connection con;
-
     public DBUtil() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
