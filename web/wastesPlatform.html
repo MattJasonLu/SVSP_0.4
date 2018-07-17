@@ -8,7 +8,89 @@
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
+<script type="text/javascript">
+    // function clickk() {
+    //     $a = $(window).height();
+    //     $(".sidebar").height($a);
+    //     var side = $(".sidebar").attr("name");
+    //     if(side == "111"){
+    //         $("#btn").click(function () {
+    //             $(".sidebar").animate({left:'-150px'});
+    //         });
+    //         $(".sidebar").attr("name","22");
+    //     }else{
+    //         $("#btn").click(function () {
+    //             $(".sidebar").animate({left:'-50px'});
+    //         });
+    //         $(".sidebar").attr("name","111");
+    //     }
+    // }
+                            /*// 切换侧边栏
+                            $(function(){
+                                // 切换侧边栏
+                                $(".nav-sidebar li").click(toggleSidebar);
+                            });
+                            //切换侧边栏显示隐藏
+                            function toggleSidebar(){
+                                $("body").toggleClass("big-page");
+                                return false;
+                            }*/
+</script>
 <style>
+    /*.sidebar{background: #333645;width: 200px; left: 0; top: 0; height: 100%; transition: all 0.2s ease 0s;}*/
+    /*.main{left: 200px; right: 0; height: 100%; transition: all 0.2s ease 0s;}*/
+    /*.big-page .sidebar{left: -158px;}*/
+    /*.big-page .main{left: 0;}*/
+    /*.navbar{*/
+        /*margin-bottom: 0px;*/
+        /*border-radius: 5px;*/
+        /*background: rgb(0,51,102);*/
+    /*}*/
+    /*.sidebar{*/
+        /*margin-bottom: 0px;*/
+        /*border-radius: 5px;*/
+        /*background: rgb(17,79,142);*/
+    /*}*/
+    /*.navbar .nav > li > a{*/
+        /*color: #000000;*/
+    /*}*/
+    /*.navbar .nav >li >a:visited{*/
+        /*color: rgb(229,229,229);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.navbar .nav > li > a:hover {*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #000000;*/
+    /*}*/
+    /*.navbar .nav >li >a:active{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color:rgb(229,229,229);*/
+    /*}*/
+    /*.navber .nav > li > a:after{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.sidebar .nav > li > a{*/
+        /*color: #000000;*/
+    /*}*/
+    /*.sidebar .nav > li > a:visited{*/
+        /*color: rgb(229,229,229);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.sidebar .nav > li > a:hover {*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #000000;*/
+    /*}*/
+    /*.sidebar .nav > li > a:active{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color:rgb(229,229,229);*/
+    /*}*/
+    /*.sidebar .nav > li > a:after{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+
+    /*style="background-color:rgb(0,51,102);"*/
 </style>
 <body>
     <!--导航条-->
@@ -45,18 +127,18 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="sidebar">
+            <div class="sidebar" name="111">
                 <ul class="nav nav-sidebar">
-                    <li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
-                    <li class="active"><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
+                    <li class="text-right"><a href="#"  onclick="clickk();"><span class="glyphicon glyphicon-backward" aria-hidden="true" id="btn"></span></a></li>
+                    <li class="active text-right"><a href="wastesPlatform.html">概览&nbsp;&nbsp;<span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="businessModel.html">商务管理&nbsp;&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="#">接收管理&nbsp;&nbsp;<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="#">贮存管理&nbsp;&nbsp;<span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="#">预处理管理&nbsp;&nbsp;<span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="#">处置管理&nbsp;&nbsp;<span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="#">次生管理&nbsp;&nbsp;<span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="#">基础数据&nbsp;&nbsp;<span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
+                    <li class="text-right"><a href="#">系统设置&nbsp;&nbsp;<span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sr-only">(current)</span></a></li>
                 </ul>
             </div>
         </div>

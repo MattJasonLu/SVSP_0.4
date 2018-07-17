@@ -19,11 +19,34 @@
      * 客户信息保存
      */
     function clientSave() {
+        var data = {
+            companyName: $("#companyName").val(),
+            organizationCode: $("#organizationCode").val(),
+            representative: $("#representative").val(),
+            industry: $("#industry").val(),
+            enterpriseType: $("#enterpriseType").val(),
+            operationType: $("#operationType").val(),
+            operationRecord: $("#operationRecord").val(),
+            street: $("#street").val(),
+            clientId: $("#clientId").val(),
+            licenseCode: $("#licenseCode").val(),
+            postCode: $("#postCode").val(),
+            product: $("#product").val(),
+            operationMode: $("#operationMode").val(),
+            contingencyPlan: $("#contingencyPlan").val(),
+            applicationStatus: $("#applicationStatus").val(),
+            location: $("#location").val(),
+            processDesp: $("#processDesp").val(),
+            contactName: $("#contactName").val(),
+            mobile: $("#mobile").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val()
+        };
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveClient",                       // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -47,11 +70,34 @@
      * 客户信息提交
      */
     function clientSubmit() {
+        var data = {
+            companyName: $("#companyName").val(),
+            organizationCode: $("#organizationCode").val(),
+            representative: $("#representative").val(),
+            industry: $("#industry").val(),
+            enterpriseType: $("#enterpriseType").val(),
+            operationType: $("#operationType").val(),
+            operationRecord: $("#operationRecord").val(),
+            street: $("#street").val(),
+            clientId: $("#clientId").val(),
+            licenseCode: $("#licenseCode").val(),
+            postCode: $("#postCode").val(),
+            product: $("#product").val(),
+            operationMode: $("#operationMode").val(),
+            contingencyPlan: $("#contingencyPlan").val(),
+            applicationStatus: $("#applicationStatus").val(),
+            location: $("#location").val(),
+            processDesp: $("#processDesp").val(),
+            contactName: $("#contactName").val(),
+            mobile: $("#mobile").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val()
+        };
         $.ajax({
             type: "POST",                            // 方法类型
             url: "submitClient",                     // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -75,16 +121,20 @@
      * 保存客户的文件
      */
     function saveClientFiles() {
-// 客户编码
-        var clientId = document.getElementById("clientId").value;
-        // 材料附件
-        var materialAttachment = document.getElementById("materialAttachment").files[0];
-        // 流程附件
-        var processAttachment = document.getElementById("processAttachment").files[0];
         var formFile = new FormData();
+        // 客户编码
+        var clientId = document.getElementById("clientId").value;
         formFile.append("clientId", clientId);
-        formFile.append("materialAttachment", materialAttachment);
-        formFile.append("processAttachment", processAttachment);
+        // 材料附件
+        if (document.getElementById("materialAttachment").files != null) {
+            var materialAttachment = document.getElementById("materialAttachment").files[0];
+            formFile.append("materialAttachment", materialAttachment);
+        }
+        // 流程附件
+        if (document.getElementById("processAttachment").files != null) {
+            var processAttachment = document.getElementById("processAttachment").files[0];
+            formFile.append("processAttachment", processAttachment);
+        }
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveFiles",                     // url

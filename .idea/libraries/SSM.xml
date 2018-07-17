@@ -27,8 +27,10 @@
       <root url="jar://$PROJECT_DIR$/lib/SSM/spring-tx-3.2.16.RELEASE.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/SSM/spring-web-3.2.16.RELEASE.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/SSM/spring-webmvc-3.2.16.RELEASE.jar!/" />
+      <root url="file://$PROJECT_DIR$/lib/SSM" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/SSM" recursive="false" />
   </library>
 </component>

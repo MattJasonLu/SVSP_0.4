@@ -165,6 +165,7 @@ public class QuotationController {
             // 作废旧报价单
             quotationService.setStateDisabled(quotation.getId());
             quotation.setId((quotationService.count() + 1) + "");
+            quotation.setCheckState(CheckState.ToExamine);
             // 升级新报价单
             quotationService.levelUp(quotation);
             res.put("status", "success");

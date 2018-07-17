@@ -655,7 +655,7 @@
     <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="client_style">
+                <div style="margin: 5%;">
                     <div class="modal-header">
                         <img src="image/logo1.png">
                         <div style="display:inline-block;">
@@ -883,19 +883,9 @@
                                 <tr>
                                     <td class="text-center" rowspan="11">1</td>
                                     <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
-                                    <td class="text-center" rowspan="11">
-                                        <div class="btn-group">
-                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="deriveWastesList[0].code">
-                                                <option value="0001">0001-危废01</option>
-                                            </select>
-                                        </div>
-                                    </td>
+                                    <td class="text-center" rowspan="11"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].code"></td>
                                     <td class="text-center" rowspan="2">物质形态</td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <select class="form-control" id="formType" name="deriveWastesList[0].formType"></select>
-                                        </div>
-                                    </td>
+                                    <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].formType"></td>
                                     <td class="text-center" colspan="6">
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="false">均质&nbsp;
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="true">混合多项物
@@ -920,11 +910,7 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center" rowspan="2">物质气味</td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <select class="form-control" id="smellType" name="deriveWastesList[0].smellType"></select>
-                                        </div>
-                                    </td>
+                                    <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].smellType"></td>
                                     <td class="text-center">最低</td>
                                     <td class="text-center">平均</td>
                                     <td class="text-center">最高</td>
@@ -941,9 +927,9 @@
                                 <tr>
                                     <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].smellTypeDetail"></td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[0].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[0].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[0].maximum"></td>
                                     <td class="text-center">
                                         <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[2].chemicalType" value="Bromine">溴
                                     </td>
@@ -956,15 +942,11 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center" rowspan="2">可溶性</td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <select class="form-control" id="solubility" name="deriveWastesList[0].solubility"></select>
-                                        </div>
-                                    </td>
+                                    <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].solubility"></td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[1].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[1].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[1].maximum"></td>
                                     <td class="text-center">
                                         <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[3].chemicalType" value="Iodine">碘
                                     </td>
@@ -978,9 +960,9 @@
                                 <tr>
                                     <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].solubilityDetail"></td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[2].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[2].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[2].maximum"></td>
                                     <td class="text-center">
                                         <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[4].chemicalType" value="Sulphur">硫
                                     </td>
@@ -997,9 +979,9 @@
                                         <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="false">常温
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[3].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[3].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[3].maximum"></td>
                                     <td class="text-center">
                                         <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[5].chemicalType" value="Phosphorus">磷
                                     </td>
@@ -1012,12 +994,12 @@
                                 </tr>
                                 <tr>
                                     <td class="text-center">
-                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].lowTemp">℃
+                                        <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<br><input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].lowTemp">℃
                                     </td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[4].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[4].maximum"></td>
                                     <td class="text-center">
                                         <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[6].chemicalType" value="Nitrogen">氮
                                     </td>
@@ -1032,24 +1014,24 @@
                                     <td class="text-center" rowspan="3">其他</td>
                                     <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].solubleTemp">℃</td>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[5].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[5].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[5].maximum"></td>
                                     <td class="text-center" colspan="3" rowspan="3">
                                         <p class="text-danger">备注:主要成分避免使用废溶剂、废油等笼统描述，尽可能详尽估算出含量</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
                                 </tr>
                                 <tr>
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].average"></td>
-                                    <td class="text-center"><input maxlength="8" type="number" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].maximum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].average"></td>
+                                    <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].maximum"></td>
                                 </tr>
                             </table>
                         </form>
@@ -1170,6 +1152,54 @@
         outline: none;
         border: 0px;
     }
+    /*.navbar{*/
+        /*margin-bottom: 0px;*/
+        /*border-radius: 5px;*/
+        /*background: rgb(0,51,102);*/
+    /*}*/
+    /*.sidebar{*/
+        /*margin-bottom: 0px;*/
+        /*border-radius: 5px;*/
+        /*background: rgb(17,79,142);*/
+    /*}*/
+    /*.navbar .nav > li > a{*/
+        /*color: #000000;*/
+    /*}*/
+    /*.navbar .nav >li >a:visited{*/
+        /*color: rgb(229,229,229);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.navbar .nav > li > a:hover {*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #000000;*/
+    /*}*/
+    /*.navbar .nav >li >a:active{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color:rgb(229,229,229);*/
+    /*}*/
+    /*.navber .nav > li > a:after{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.sidebar .nav > li > a{*/
+        /*color: #000000;*/
+    /*}*/
+    /*.sidebar .nav > li > a:visited{*/
+        /*color: rgb(229,229,229);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.sidebar .nav > li > a:hover {*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #000000;*/
+    /*}*/
+    /*.sidebar .nav > li > a:active{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color:rgb(229,229,229);*/
+    /*}*/
+    /*.sidebar .nav > li > a:after{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #0088cc;*/
+    /*}*/
 </style>
 <script type="text/javascript">
     /**
@@ -1251,6 +1281,21 @@
                         $("input[name='wasteProcess[" + $i + "].quantity']").val(data.data.wasteProcessList[i].quantity);
                         $("input[name='wasteProcess[" + $i + "].lastProcessTime']").val(getTimeStr(data.data.wasteProcessList[i].lastProcessTime));
                         $("input[name='wasteProcess[" + $i + "].yearQuantity']").val(data.data.wasteProcessList[i].yearQuantity);
+                    }
+                    for (var i = 0; i < data.data.deriveWastesList.length; i++) {
+                        var $i = i;
+                        $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
+                        $("input[name='deriveWastesList[" + $i + "].code']").val(data.data.deriveWastesList[i].code);
+                        $("input[name='deriveWastesList[" + $i + "].formType']").val(data.data.deriveWastesList[i].formType != null ? data.data.deriveWastesList[i].formType.name : "");
+                        $("input[name='deriveWastesList[" + $i + "].name'][value='" + data.data.deriveWastesList[i].isMixture + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].formTypeDetail']").val(data.data.deriveWastesList[i].formTypeDetail);
+                        $("input[name='deriveWastesList[" + $i + "].smellType']").val(data.data.deriveWastesList[i].smellType != null ? data.data.deriveWastesList[i].smellType.name : "");
+                        $("input[name='deriveWastesList[" + $i + "].smellTypeDetail']").val(data.data.deriveWastesList[i].smellTypeDetail);
+                        $("input[name='deriveWastesList[" + $i + "].solubility']").val(data.data.deriveWastesList[i].solubility != null ? data.data.deriveWastesList[i].solubility.name : "");
+                        $("input[name='deriveWastesList[" + $i + "].solubilityDetail']").val(data.data.deriveWastesList[i].solubilityDetail);
+                        $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='" + data.data.deriveWastesList[i].isLowTemp + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].lowTemp']").val(data.data.deriveWastesList[i].lowTemp);
+                        $("input[name='deriveWastesList[" + $i + "].solubleTemp']").val(data.data.deriveWastesList[i].solubleTemp);
                     }
                     // 显示框体
                     $('#appointModal2').modal('show');

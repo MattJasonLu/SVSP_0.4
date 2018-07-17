@@ -32,7 +32,7 @@
                 if (result != undefined) {
                     console.log("success: " + result);
                     alert("修改成功");
-                    $(location).attr('href',"../salesManage.html");
+                    $(location).attr('href',"salesManage.html");
                 } else {
                     console.log("fail: " + result);
                     alert("修改失败");
