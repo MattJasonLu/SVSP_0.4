@@ -19,11 +19,34 @@
      * 客户信息保存
      */
     function clientSave() {
+        var data = {
+            companyName: $("#companyName").val(),
+            organizationCode: $("#organizationCode").val(),
+            representative: $("#representative").val(),
+            industry: $("#industry").val(),
+            enterpriseType: $("#enterpriseType").val(),
+            operationType: $("#operationType").val(),
+            operationRecord: $("#operationRecord").val(),
+            street: $("#street").val(),
+            clientId: $("#clientId").val(),
+            licenseCode: $("#licenseCode").val(),
+            postCode: $("#postCode").val(),
+            product: $("#product").val(),
+            operationMode: $("#operationMode").val(),
+            contingencyPlan: $("#contingencyPlan").val(),
+            applicationStatus: $("#applicationStatus").val(),
+            location: $("#location").val(),
+            processDesp: $("#processDesp").val(),
+            contactName: $("#contactName").val(),
+            mobile: $("#mobile").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val()
+        };
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveClient",                       // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -47,11 +70,34 @@
      * 客户信息提交
      */
     function clientSubmit() {
+        var data = {
+            companyName: $("#companyName").val(),
+            organizationCode: $("#organizationCode").val(),
+            representative: $("#representative").val(),
+            industry: $("#industry").val(),
+            enterpriseType: $("#enterpriseType").val(),
+            operationType: $("#operationType").val(),
+            operationRecord: $("#operationRecord").val(),
+            street: $("#street").val(),
+            clientId: $("#clientId").val(),
+            licenseCode: $("#licenseCode").val(),
+            postCode: $("#postCode").val(),
+            product: $("#product").val(),
+            operationMode: $("#operationMode").val(),
+            contingencyPlan: $("#contingencyPlan").val(),
+            applicationStatus: $("#applicationStatus").val(),
+            location: $("#location").val(),
+            processDesp: $("#processDesp").val(),
+            contactName: $("#contactName").val(),
+            mobile: $("#mobile").val(),
+            phone: $("#phone").val(),
+            email: $("#email").val()
+        };
         $.ajax({
             type: "POST",                            // 方法类型
             url: "submitClient",                     // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#clientInfoForm').serializeJSON()),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -75,16 +121,20 @@
      * 保存客户的文件
      */
     function saveClientFiles() {
-// 客户编码
-        var clientId = document.getElementById("clientId").value;
-        // 材料附件
-        var materialAttachment = document.getElementById("materialAttachment").files[0];
-        // 流程附件
-        var processAttachment = document.getElementById("processAttachment").files[0];
         var formFile = new FormData();
+        // 客户编码
+        var clientId = document.getElementById("clientId").value;
         formFile.append("clientId", clientId);
-        formFile.append("materialAttachment", materialAttachment);
-        formFile.append("processAttachment", processAttachment);
+        // 材料附件
+        if (document.getElementById("materialAttachment").files != null) {
+            var materialAttachment = document.getElementById("materialAttachment").files[0];
+            formFile.append("materialAttachment", materialAttachment);
+        }
+        // 流程附件
+        if (document.getElementById("processAttachment").files != null) {
+            var processAttachment = document.getElementById("processAttachment").files[0];
+            formFile.append("processAttachment", processAttachment);
+        }
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveFiles",                     // url
@@ -198,38 +248,38 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="../wastesPlatform.html">首页</a></li>
+                    <li><a href="wastesPlatform.html">首页</a></li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../clientBackup.html">客户备案</a></li>
+                            <li><a href="clientBackup.html">客户备案</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-submenu">
                                 <a href="#">业务员分配管理</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="../salesManage.html">业务员管理</a></li>
+                                    <li><a href="salesManage.html">业务员管理</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="../clientSalesManage.html">客户分配管理</a></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../questionnaireManage.html">危废数据调查表管理</a></li>
+                            <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../sampleManage.html">客户样品登记</a></li>
+                            <li><a href="sampleManage.html">客户样品登记</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../supplierBackup.html">供应商备案</a></li>
+                            <li><a href="supplierBackup.html">供应商备案</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../contractManage.html">合同列表</a></li>
+                            <li><a href="contractManage.html">合同列表</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../contractTemplate.html">合同模板</a></li>
+                            <li><a href="contractTemplate.html">合同模板</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -249,15 +299,18 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
+            <div class="sidebar col-md-2">
                 <ul class="nav nav-sidebar">
-                    <li><a href="../wastesPlatform.html">概览</a></li>
-                    <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">接收管理</a></li>
-                    <li><a href="#">贮存管理</a></li>
-                    <li><a href="#">预处理管理</a></li>
-                    <li><a href="#">处置管理</a></li>
-                    <li><a href="#">次生管理</a></li>
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                    <li><a href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
                 </ul>
             </div>
         </div>
@@ -265,9 +318,9 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="../businessModel.html">商务管理</a></li>
+                    <li><a href="businessModel.html">商务管理</a></li>
                     <li><a href="#">客户管理</a></li>
-                    <li><a href="../clientBackup.html">客户备案</a></li>
+                    <li><a href="clientBackup.html">客户备案</a></li>
                     <li class="active">客户新增</li>
                 </ol>
             </div>
