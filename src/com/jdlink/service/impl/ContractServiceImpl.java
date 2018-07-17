@@ -3,6 +3,7 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Contract;
 import com.jdlink.mapper.ContractMapper;
 import com.jdlink.service.ContractService;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -134,4 +135,12 @@ contractMapper.updateFreight2(id);
     public void back(String contractId) {
         contractMapper.back(contractId);
     }
+
+    @Override
+    @Update("update t_contract set opinion=#{1} where contractId=#{0}")
+    public void opinion(String contractId, String opinion) {
+        contractMapper.opinion(contractId,opinion);
+    }
+
+
 }
