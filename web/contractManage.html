@@ -241,6 +241,28 @@
                                 $(this).html("");
                             }
                             break;
+                        case (10):
+                            if(obj.checkState.name == "待审批"){
+
+                            }else if(obj.checkState.name == "审批中"){
+                                $(this).children().eq(1).attr("class","disabled");
+                                $(this).children().eq(1).removeAttr("onclick");
+                            }else if(obj.checkState.name == "履约中"){
+                                $(this).children().eq(1).attr("class","disabled");
+                                $(this).children().eq(1).removeAttr("onclick");
+                                $(this).children().eq(2).attr("class","disabled");
+                                $(this).children().eq(2).removeAttr("onclick");
+                                $(this).children().eq(3).attr("class","disabled");
+                                $(this).children().eq(3).removeAttr("onclick");
+                            }else{
+                                $(this).children().eq(1).attr("class","disabled");
+                                $(this).children().eq(1).removeAttr("onclick");
+                                $(this).children().eq(2).attr("class","disabled");
+                                $(this).children().eq(2).removeAttr("onclick");
+                                $(this).children().eq(3).attr("class","disabled");
+                                $(this).children().eq(3).removeAttr("onclick");
+                            }
+                            break;
                     }
                 });
                 // 把克隆好的tr追加到原来的tr前面
