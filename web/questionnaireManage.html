@@ -169,6 +169,7 @@
         clonedTr.find("input[name='rawWastes[" + temp + "].mainMaterial']").attr('name', "rawWastes[" + temp2 + "].mainMaterial");
         clonedTr.find("input[name='rawWastes[" + temp + "].auxMaterial']").attr('name', "rawWastes[" + temp2 + "].auxMaterial");
         clonedTr.find("input[name='rawWastes[" + temp + "].draginMaterial']").attr('name', "rawWastes[" + temp2 + "].draginMaterial");
+        clonedTr.addClass("newLine");
         clonedTr.insertAfter(tr);
     }
     /**
@@ -191,6 +192,7 @@
         clonedTr.find("input[name='wasteProcess[" + temp + "].quantity']").attr('name', "wasteProcess[" + temp2 + "].quantity");
         clonedTr.find("input[name='wasteProcess[" + temp + "].lastProcessTime']").attr('name', "wasteProcess[" + temp2 + "].lastProcessTime");
         clonedTr.find("input[name='wasteProcess[" + temp + "].yearQuantity']").attr('name', "wasteProcess[" + temp2 + "].yearQuantity");
+        clonedTr.addClass("newLine");
         clonedTr.insertAfter(tr);
     }
 </script>
@@ -1121,7 +1123,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="kkk()">审批</button>
+                        <button type="button" class="btn btn-primary" onclick="alert('文件打印中');">打印</button>
                     </div>
                 </div>
             </div>
@@ -1239,9 +1241,15 @@
     //     var id = getQuestionnaireId(item);
     //     $(location).attr('href', 'questionnaire1.html?questionnaireId='+id+'&type=view');
     // }
+    function resetViewInfo() {
+        $("#appointModal2").find("input").val("");
+        $("#appointModal2").find("input:radio").attr("checked", false);
+        $("#appointModal2").find("input:checkbox").attr("checked", false);
+        $(".newLine").remove();
+    }
     function viewQuestion(item){
         var id = getQuestionnaireId(item);
-
+        resetViewInfo();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getQuestionnaireById",               // url
@@ -1262,6 +1270,7 @@
                     $("#model-phone2").val(data.data.client.phone);
                     $("#model-product2").val(data.data.client.product);
                     $("#model-time2").val(getTimeStr(data.data.time));
+
                     for (var i = 0; i < data.data.rawWastesList.length; i++) {
                         if (i > 0) addRawWasteNewLine();
                         var $i = i;
@@ -1283,11 +1292,12 @@
                         $("input[name='wasteProcess[" + $i + "].yearQuantity']").val(data.data.wasteProcessList[i].yearQuantity);
                     }
                     for (var i = 0; i < data.data.deriveWastesList.length; i++) {
+                        console.log(data.data.deriveWastesList[i]);
                         var $i = i;
                         $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
                         $("input[name='deriveWastesList[" + $i + "].code']").val(data.data.deriveWastesList[i].code);
                         $("input[name='deriveWastesList[" + $i + "].formType']").val(data.data.deriveWastesList[i].formType != null ? data.data.deriveWastesList[i].formType.name : "");
-                        $("input[name='deriveWastesList[" + $i + "].name'][value='" + data.data.deriveWastesList[i].isMixture + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].isMixture'][value='" + data.data.deriveWastesList[i].isMixture + "']").attr("checked", true);
                         $("input[name='deriveWastesList[" + $i + "].formTypeDetail']").val(data.data.deriveWastesList[i].formTypeDetail);
                         $("input[name='deriveWastesList[" + $i + "].smellType']").val(data.data.deriveWastesList[i].smellType != null ? data.data.deriveWastesList[i].smellType.name : "");
                         $("input[name='deriveWastesList[" + $i + "].smellTypeDetail']").val(data.data.deriveWastesList[i].smellTypeDetail);
@@ -1296,6 +1306,32 @@
                         $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='" + data.data.deriveWastesList[i].isLowTemp + "']").attr("checked", true);
                         $("input[name='deriveWastesList[" + $i + "].lowTemp']").val(data.data.deriveWastesList[i].lowTemp);
                         $("input[name='deriveWastesList[" + $i + "].solubleTemp']").val(data.data.deriveWastesList[i].solubleTemp);
+                        for (var j = 0; j < data.data.deriveWastesList[i].mixingElementList.length; j++) {
+                            var $j = j;
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].name']").val(data.data.deriveWastesList[i].mixingElementList[j].name);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].minimum']").val(data.data.deriveWastesList[i].mixingElementList[j].minimum);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].average']").val(data.data.deriveWastesList[i].mixingElementList[j].average);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].maximum']").val(data.data.deriveWastesList[i].mixingElementList[j].maximum);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].sensitiveElementList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].sensitiveElementList[j].chemicalType.index-1;
+                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].chemicalType']").attr("checked", true);
+                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].isOrganic'][value='" + data.data.deriveWastesList[i].sensitiveElementList[j].isOrganic + "']").attr("checked", true);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].wasteCharacterList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].wasteCharacterList[j].index-1;
+                            $("input[name='deriveWastesList[" + $i + "].wasteCharacterList[" + $j + "]']").attr("checked", true);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].wasteProtectList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].wasteProtectList[j].index-1;
+                            $("input[name='deriveWastesList[" + $i + "].wasteProtectList[" + $j + "]']").attr("checked", true);
+                        }
+                        $("input[name='deriveWastesList[" + $i + "].eyeMeasures']").val(data.data.deriveWastesList[i].eyeMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].skinMeasures']").val(data.data.deriveWastesList[i].skinMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].swallowMeasures']").val(data.data.deriveWastesList[i].swallowMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].suctionMeasures']").val(data.data.deriveWastesList[i].suctionMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].putOutFireMeasures']").val(data.data.deriveWastesList[i].putOutFireMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].leakMeasures']").val(data.data.deriveWastesList[i].leakMeasures);
                     }
                     // 显示框体
                     $('#appointModal2').modal('show');
