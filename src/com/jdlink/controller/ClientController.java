@@ -112,31 +112,35 @@ public class ClientController {
     public String saveFiles(String clientId, MultipartFile materialAttachment, MultipartFile processAttachment) {
         JSONObject res = new JSONObject();
         try {
-            // 若文件夹不存在则创建文件夹
-            String materialPath = "Files/EIA/Material";
-            String processPath = "Files/EIA/Process";
-            File materialDir = new File(materialPath);
-            File processDir = new File(processPath);
-            if (!materialDir.exists()) {
-                materialDir.mkdirs();
-            }
-            if (!processDir.exists()) {
-                processDir.mkdirs();
-            }
-            // 获取文件名字
-            String materialName = clientId + "-" +  materialAttachment.getOriginalFilename();
-            String processName = clientId + "-" + processAttachment.getOriginalFilename();
-            String materialFilePath = materialPath + "/" + materialName;
-            String processFilePath = processPath + "/" + processName;
-            File materialFile = new File(materialFilePath);
-            File processFile = new File(processFilePath);
-            materialAttachment.transferTo(materialFile);
-            processAttachment.transferTo(processFile);
-            // 更新客户保存文件的路径
             Client client = new Client();
             client.setClientId(clientId);
-            client.setMaterialAttachmentUrl(materialFilePath);
-            client.setProcessAttachmentUrl(processFilePath);
+            // 若文件夹不存在则创建文件夹
+            if (materialAttachment != null) {
+                String materialPath = "Files/EIA/Material";
+                File materialDir = new File(materialPath);
+                if (!materialDir.exists()) {
+                    materialDir.mkdirs();
+                }
+                String materialName = clientId + "-" +  materialAttachment.getOriginalFilename();
+                String materialFilePath = materialPath + "/" + materialName;
+                File materialFile = new File(materialFilePath);
+                materialAttachment.transferTo(materialFile);
+                client.setMaterialAttachmentUrl(materialFilePath);
+            }
+            if (processAttachment != null) {
+                String processPath = "Files/EIA/Process";
+                File processDir = new File(processPath);
+                if (!processDir.exists()) {
+                    processDir.mkdirs();
+                }
+                // 获取文件名字
+                String processName = clientId + "-" + processAttachment.getOriginalFilename();
+                String processFilePath = processPath + "/" + processName;
+                File processFile = new File(processFilePath);
+                processAttachment.transferTo(processFile);
+                // 更新客户保存文件的路径
+                client.setProcessAttachmentUrl(processFilePath);
+            }
             clientService.setFilePath(client);
         } catch (Exception e) {
             e.printStackTrace();

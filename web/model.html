@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>新建模板</title>
+    <title>模板升级</title>
     <script src="/js/jquery/2.0.0/jquery.min.js"></script>
     <script src="/js/jquery/2.0.0/jquery.serializejson.js"></script>
     <link href="/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
@@ -15,7 +15,54 @@
     <script src="js/ckeditor/ckeditor.js"></script>
 </head>
 <style>
-
+    /*.navbar{*/
+        /*margin-bottom: 0px;*/
+        /*border-radius: 5px;*/
+        /*background: rgb(0,51,102);*/
+    /*}*/
+    /*.sidebar{*/
+        /*margin-bottom: 0px;*/
+        /*border-radius: 5px;*/
+        /*background: rgb(17,79,142);*/
+    /*}*/
+    /*.navbar .nav > li > a{*/
+        /*color: #000000;*/
+    /*}*/
+    /*.navbar .nav >li >a:visited{*/
+        /*color: rgb(229,229,229);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.navbar .nav > li > a:hover {*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #000000;*/
+    /*}*/
+    /*.navbar .nav >li >a:active{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color:rgb(229,229,229);*/
+    /*}*/
+    /*.navber .nav > li > a:after{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.sidebar .nav > li > a{*/
+        /*color: #000000;*/
+    /*}*/
+    /*.sidebar .nav > li > a:visited{*/
+        /*color: rgb(229,229,229);*/
+        /*background-color: #0088cc;*/
+    /*}*/
+    /*.sidebar .nav > li > a:hover {*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #000000;*/
+    /*}*/
+    /*.sidebar .nav > li > a:active{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color:rgb(229,229,229);*/
+    /*}*/
+    /*.sidebar .nav > li > a:after{*/
+        /*color: rgb(33,132,29);*/
+        /*background-color: #0088cc;*/
+    /*}*/
 </style>
 <script>
     CKEDITOR.editorConfig = function( config ) {
@@ -153,18 +200,25 @@
                 <li class="active">新建模板</li>
             </ol>
         </div>
-        <h2 class="sub-header">新建模板</h2>
+        <h2 class="sub-header">模板升级</h2>
         <form method="post" id="page1Info" enctype="multipart/form-data">
             <div class="row">
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">模板名称：</label>
-                        <div class="col-xs-5">
+                        <div class="col-xs-6">
                             <input type="text" class="form-control" name="modelName" id="modelName">
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-4"></div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group" >
+                        <label for="contractId" class="col-sm-3 control-label">版本</label>
+                        <div class="col-xs-5" >
+                            <input type="text" class="form-control" id="modelVersion" name="modelVersion"   readonly >
+                        </div>
+                    </div>
+                </div>
                 <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label for="contractId" class="col-sm-3 control-label">编号</label>
@@ -178,7 +232,7 @@
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
                         <label for="contractType" class="col-sm-4 control-label">合同类型：</label>
-                        <div class="col-xs-5">
+                        <div class="col-xs-6">
                             <select class="form-control" id="contractType" name="contractType"></select>
                         </div>
                     </div>
@@ -246,6 +300,8 @@
                 console.log(data);
                 //赋值模板名称
                 $('#modelName').prop("value",data.modelName);
+                //赋值模板版本
+                $('#modelVersion').prop("value",data.modelVersion);
                 //赋值模板编号
                 $('#contractId').prop("value",data.contractId);
                 //赋值合同内容
@@ -284,7 +340,6 @@
                 console.log(result);
             }
         });
-        localStorage.clear();
     }
     function contractAdjustSave() {
         contractId='${contract.contractId}';

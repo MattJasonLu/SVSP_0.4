@@ -77,6 +77,12 @@
                     $('#isFreight').prop("checked",true);
                     $('#isFreight').prop("value",true);
                 }
+                if('${contract.contractName}'!=null){
+                    $('#contractName').prop("value", '${contract.contractName}');
+                }
+                else {
+                    $('#contractName').prop("value", " ");
+                }
                 var contractVersion='${contract.contractVersion}';
                 $(":radio[name='contractVersion'][value='" +contractVersion+"']").prop("checked", "checked");
                 if (result != undefined) {
@@ -409,17 +415,18 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="sidebar col-md-2">
             <ul class="nav nav-sidebar">
-                <li><a href="wastesPlatform.html">概览</a></li>
-                <li class="active"><a href="#">商务管理 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">接收管理</a></li>
-                <li><a href="#">贮存管理</a></li>
-                <li><a href="#">预处理管理</a></li>
-                <li><a href="#">处置管理</a></li>
-                <li><a href="#">次生管理</a></li>
-                <li><a href="#">基础数据</a></li>
-                <li><a href="#">系统设置</a></li>
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
             </ul>
         </div>
     </div>
