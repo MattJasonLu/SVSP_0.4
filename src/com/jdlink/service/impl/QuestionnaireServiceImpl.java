@@ -77,4 +77,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public void back(String quesionnaireId) {
         questionnaireMapper.back(quesionnaireId);
     }
+
+    @Override
+    public void examine(String questionnaireId) {
+        questionnaireMapper.examine(questionnaireId);
+    }
 }
