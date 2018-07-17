@@ -15,6 +15,12 @@
        <result property="modelName" column="modelName" javaType="String"/>
         <result property="contractContent" column="contractContent" javaType="String"/>
         <result property="modelVersion" column="modelVersion" javaType="String"/>
+        <result property="city" column="city" javaType="String"></result>
+        <result property="opinion" column="opinion" javaType="String"></result>
+        <result property="companyName " column="companyName " javaType="String"></result>
+            <result property="province" column="province " javaType="com.jdlink.domain.Province"></result>
+     <result property="contactName" column="contactName" javaType="String"></result>
+        <result property="telephone " column="telephone " javaType="String"></result>
     </resultMap>
 
     <insert id="add" parameterType="Contract"  >
@@ -35,14 +41,8 @@ values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},
     </delete>
 
     <select id="getByKeyword" parameterType="String" resultMap="ContractRM">
-        select * from t_contract
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or checkState like "%"#{keyword}"%"
-                or contactName like "%"#{keyword}"%" or telephone like "%"#{keyword}"%"
-                OR area LIKE "%"#{keyword}"%"
-            </if>
-        </where>
+        select * from t_contract where contractId like  binary "%"#{keyword}"%" or checkState like binary "%"#{keyword}"%" or companyName like binary "%"#{keyword}"%"
+        or city like binary "%"#{keyword}"%"  or province like binary  "%"#{keyword}"%" or contactName like binary "%"#{keyword}"%" or telephone like  binary  "%"#{keyword}"%" or beginTime like binary  "%"#{keyword}"%";
     </select>
 
     <select id="getByContractId" parameterType="String" resultMap="ContractRM">
@@ -111,4 +111,5 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="back" parameterType="String">
         update t_contract set checkState="Backed" where contractId=#{contractId}
     </update>
+
 </mapper>
