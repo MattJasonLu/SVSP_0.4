@@ -111,5 +111,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="back" parameterType="String">
         update t_contract set checkState="Backed" where contractId=#{contractId}
     </update>
-
+<update id="opinion" parameterType="Contract">
+    update t_contract set opinion=#{1},checkState="Keeping" where contractId=#{0};
+</update>
 </mapper>
