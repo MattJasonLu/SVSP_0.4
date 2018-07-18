@@ -119,43 +119,43 @@
                         $(this).html(obj.clientType.name);
                         break;
                     // 操作
-                    case (9):
-                        if(obj.clientState.name == "已启用"){
-                            if(obj.checkState.name == "已完成"){
-                                $(this).children().eq(1).attr("class","disabled");
-                                $(this).children().eq(1).removeAttr("onclick");
-                                $(this).children().eq(2).attr("class","disabled");
-                                $(this).children().eq(2).removeAttr("onclick");
-                                $(this).children().eq(3).attr("class","disabled");
-                                $(this).children().eq(3).removeAttr("onclick");
-                                $(this).children().eq(4).attr("class","disabled");
-                                $(this).children().eq(4).removeAttr("onclick");
-                                $(this).children().eq(6).attr("class","disabled");
-                                $(this).children().eq(6).removeAttr("onclick");
-                            }else if(obj.checkState.name == "审批中"){
-                                $(this).children().eq(1).attr("class","disabled");
-                                $(this).children().eq(1).removeAttr("onclick");
-                                $(this).children().eq(2).attr("class","disabled");
-                                $(this).children().eq(2).removeAttr("onclick");
-                                $(this).children().eq(4).attr("class","disabled");
-                                $(this).children().eq(4).removeAttr("onclick");
-                            }else{
-                                $(this).children().eq(1).attr("class","disabled");
-                                $(this).children().eq(1).removeAttr("onclick");
-                                $(this).children().eq(4).attr("class","disabled");
-                                $(this).children().eq(4).removeAttr("onclick");
-                                $(this).children().eq(6).attr("class","disabled");
-                                $(this).children().eq(6).removeAttr("onclick");
-                            }
-                        }else{
-                            $(this).children().eq(0).attr("class","disabled");
-                            $(this).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(4).removeAttr("onclick");
-                            $(this).children().eq(6).attr("class","disabled");
-                            $(this).children().eq(6).removeAttr("onclick");
-                        }
-                        break;
+//                    case (9):
+//                        if(obj.clientState.name == "已启用"){
+//                            if(obj.checkState.name == "已完成"){
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(2).attr("class","disabled");
+//                                $(this).children().eq(2).removeAttr("onclick");
+//                                $(this).children().eq(3).attr("class","disabled");
+//                                $(this).children().eq(3).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                                $(this).children().eq(6).attr("class","disabled");
+//                                $(this).children().eq(6).removeAttr("onclick");
+//                            }else if(obj.checkState.name == "审批中"){
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(2).attr("class","disabled");
+//                                $(this).children().eq(2).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                            }else{
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                                $(this).children().eq(6).attr("class","disabled");
+//                                $(this).children().eq(6).removeAttr("onclick");
+//                            }
+//                        }else{
+//                            $(this).children().eq(0).attr("class","disabled");
+//                            $(this).children().eq(0).removeAttr("onclick");
+//                            $(this).children().eq(4).attr("class","disabled");
+//                            $(this).children().eq(4).removeAttr("onclick");
+//                            $(this).children().eq(6).attr("class","disabled");
+//                            $(this).children().eq(6).removeAttr("onclick");
+//                        }
+//                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面

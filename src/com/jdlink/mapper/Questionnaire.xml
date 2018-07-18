@@ -260,6 +260,10 @@
         </if>
     </update>
 
+    <update id="examine" parameterType="String">
+        UPDATE questionnaire SET state='Examining' WHERE questionnaireId=#{quesionnaireId}
+    </update>
+
     <update id="signIn" parameterType="String">
         UPDATE questionnaire SET state='SignedIn' WHERE questionnaireId=#{quesionnaireId}
     </update>

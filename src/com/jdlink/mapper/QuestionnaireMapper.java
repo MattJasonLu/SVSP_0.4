@@ -22,4 +22,5 @@ public interface QuestionnaireMapper {
     void signIn(String questionnaireId);
     void updateAttachmentUrl(Questionnaire questionnaire);
     void back(String questionnaireId);
+    void examine(String questionnaireId);
 }

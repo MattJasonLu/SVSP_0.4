@@ -539,6 +539,28 @@ public class QuestionnaireController {
         return res.toString();
     }
 
+    /**
+     * 审批调查表
+     * @param questionnaireId
+     * @return
+     */
+    @RequestMapping("examineQuestionnaire")
+    @ResponseBody
+    public String examineQuestionnaire(String questionnaireId) {
+        JSONObject res = new JSONObject();
+        try {
+            questionnaireService.examine(questionnaireId);
+            res.put("status", "success");
+            res.put("message", "审批成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败!");
+            res.put("stackTrace", e.getStackTrace());
+        }
+        return res.toString();
+    }
+
 
 
     /********************************************下面暂时不用****************************************/

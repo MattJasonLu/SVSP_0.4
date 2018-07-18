@@ -76,42 +76,42 @@
                         break;
                         // 填报日期
                     case (7):
-                        $(this).html(obj.time);
+                        $(this).html(getTimeStr(obj.time));
                         break;
-                    case (8):
-                        if(obj.applyState.name == "已退回"){
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(4).removeAttr("onclick");
-                            $(this).children().eq(5).attr("class","disabled");
-                            $(this).children().eq(5).removeAttr("onclick");
-                        }else if(obj.applyState.name == "已签收"){
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                            $(this).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(4).removeAttr("onclick");
-                            $(this).children().eq(5).attr("class","disabled");
-                            $(this).children().eq(5).removeAttr("onclick");
-                        }else{
-                            $(this).children().eq(0).attr("class","disabled");
-                            $(this).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                            $(this).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(4).removeAttr("onclick");
-                        }
-                        break;
+//                    case (8):
+//                        if(obj.applyState.name == "已退回"){
+//                            $(this).children().eq(1).attr("class","disabled");
+//                            $(this).children().eq(1).removeAttr("onclick");
+//                            $(this).children().eq(2).attr("class","disabled");
+//                            $(this).children().eq(2).removeAttr("onclick");
+//                            $(this).children().eq(4).attr("class","disabled");
+//                            $(this).children().eq(4).removeAttr("onclick");
+//                            $(this).children().eq(5).attr("class","disabled");
+//                            $(this).children().eq(5).removeAttr("onclick");
+//                        }else if(obj.applyState.name == "已签收"){
+//                            $(this).children().eq(1).attr("class","disabled");
+//                            $(this).children().eq(1).removeAttr("onclick");
+//                            $(this).children().eq(2).attr("class","disabled");
+//                            $(this).children().eq(2).removeAttr("onclick");
+//                            $(this).children().eq(3).attr("class","disabled");
+//                            $(this).children().eq(3).removeAttr("onclick");
+//                            $(this).children().eq(4).attr("class","disabled");
+//                            $(this).children().eq(4).removeAttr("onclick");
+//                            $(this).children().eq(5).attr("class","disabled");
+//                            $(this).children().eq(5).removeAttr("onclick");
+//                        }else{
+//                            $(this).children().eq(0).attr("class","disabled");
+//                            $(this).children().eq(0).removeAttr("onclick");
+//                            $(this).children().eq(1).attr("class","disabled");
+//                            $(this).children().eq(1).removeAttr("onclick");
+//                            $(this).children().eq(2).attr("class","disabled");
+//                            $(this).children().eq(2).removeAttr("onclick");
+//                            $(this).children().eq(3).attr("class","disabled");
+//                            $(this).children().eq(3).removeAttr("onclick");
+//                            $(this).children().eq(4).attr("class","disabled");
+//                            $(this).children().eq(4).removeAttr("onclick");
+//                        }
+//                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -202,6 +202,27 @@
         clonedTr.find("input[name='rawWastes[" + temp + "].mainMaterial']").attr('name', "rawWastes[" + temp2 + "].mainMaterial");
         clonedTr.find("input[name='rawWastes[" + temp + "].auxMaterial']").attr('name', "rawWastes[" + temp2 + "].auxMaterial");
         clonedTr.find("input[name='rawWastes[" + temp + "].draginMaterial']").attr('name', "rawWastes[" + temp2 + "].draginMaterial");
+        clonedTr.addClass("newLine");
+        clonedTr.insertAfter(tr);
+    }
+    /**
+     * 增加原材料新行
+     */
+    function addRawWasteNewLine2() {
+        var tr = $("#raw2").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 获取编号
+        var id = tr.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr.children().get(0).innerHTML = num;
+        var temp = num-2+"";
+        var temp2 = num-1+"";
+        clonedTr.find("input[name='rawWastes[" + temp + "].mainMaterial']").attr('name', "rawWastes[" + temp2 + "].mainMaterial");
+        clonedTr.find("input[name='rawWastes[" + temp + "].auxMaterial']").attr('name', "rawWastes[" + temp2 + "].auxMaterial");
+        clonedTr.find("input[name='rawWastes[" + temp + "].draginMaterial']").attr('name', "rawWastes[" + temp2 + "].draginMaterial");
+        clonedTr.addClass("newLine");
         clonedTr.insertAfter(tr);
     }
     /**
@@ -224,6 +245,30 @@
         clonedTr.find("input[name='wasteProcess[" + temp + "].quantity']").attr('name', "wasteProcess[" + temp2 + "].quantity");
         clonedTr.find("input[name='wasteProcess[" + temp + "].lastProcessTime']").attr('name', "wasteProcess[" + temp2 + "].lastProcessTime");
         clonedTr.find("input[name='wasteProcess[" + temp + "].yearQuantity']").attr('name', "wasteProcess[" + temp2 + "].yearQuantity");
+        clonedTr.addClass("newLine");
+        clonedTr.insertAfter(tr);
+    }
+    /**
+     * 增加处理过程新行
+     */
+    function addWasteProcessNewLine2() {
+        var tr = $("#body2").children().last();
+        console.log(tr);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 获取编号
+        var id = tr.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr.children().get(0).innerHTML = num;
+        var temp = num-2+"";
+        var temp2 = num-1+"";
+        clonedTr.find("input[name='wasteProcess[" + temp + "].code']").attr('name', "wasteProcess[" + temp2 + "].code");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].description']").attr('name', "wasteProcess[" + temp2 + "].description");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].quantity']").attr('name', "wasteProcess[" + temp2 + "].quantity");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].lastProcessTime']").attr('name', "wasteProcess[" + temp2 + "].lastProcessTime");
+        clonedTr.find("input[name='wasteProcess[" + temp + "].yearQuantity']").attr('name', "wasteProcess[" + temp2 + "].yearQuantity");
+        clonedTr.addClass("newLine");
         clonedTr.insertAfter(tr);
     }
 </script>
@@ -484,38 +529,444 @@
                         <div class="col-md-8"></div>
                         <!--查询框-->
                         <div class="input-group">
-                            <label class="col-sm-4 control-label">查询号</label>
+                            <label class="col-sm-4 control-label">调查表编号</label>
                             <div class="col-xs-8">
-                                <input type="text" class="form-control" id="searchContent1">
+                                <input type="text" class="form-control" id="model-questionnaireId3">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-body">
-                    <h4>危废生产单位基本信息</h4>
-                    <form id="model-appoint1" method="post">
+                    <h4><b>1.危废生产单位基本信息</b></h4>
+                    <form id="model-appoint9" method="post">
                         <div class="row">
                             <div class="form-horizontal col-md-6">
                                 <div class="form-group">
                                     <label for="model-companyName" class="control-label col-sm-4 ">企业名称</label>
-                                    <input type="text" id="model-companyName1" name="companyName" readonly>
+                                    <input type="text" class="css" id="model-companyName3" name="companyName" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="model-contactName" class="control-label col-sm-4 ">联系人</label>
-                                    <input type="text" id="model-contactName1" name="contactName">
+                                    <input type="text" class="css" id="model-contactName3" name="contactName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="control-label col-sm-4 ">所属行业</label>
+                                    <input type="text" class="css" id="model-industry3" name="industry">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="control-label col-sm-4 ">填报人</label>
+                                    <input type="text" class="css" id="model-author3" name="author">
                                 </div>
                             </div>
                             <div class="form-horizontal col-md-6">
                                 <div class="form-group">
                                     <label for="model-contactPhone" class="control-label col-sm-4 ">地址</label>
-                                    <input type="text" id="model-address" name="address">
+                                    <input type="text" class="css" id="model-location3" name="location">
                                 </div>
                                 <div class="form-group">
                                     <label for="model-contactPhone" class="control-label col-sm-4 ">联系电话</label>
-                                    <input type="text" id="model-contactPhone1" name="contactPhone">
+                                    <input type="text" class="css" id="model-phone3" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">主要产品</label>
+                                    <input type="text" class="css" id="model-product3" name="product">
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="control-label col-sm-4 ">填表日期</label>
+                                    <input type="text" class="css" id="model-time3" name="time">
                                 </div>
                             </div>
                         </div>
+                    </form>
+                    <h4><b>2.危废产生中使用的主要原料、辅料和有可能带入的化学物质</b></h4>
+                    <form id="model-appoint10" method="post">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">含化学物质主要原材料</th>
+                                <th class="text-center">含化学物质辅料</th>
+                                <th class="text-center">可能带入的化学物质</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].mainMaterial"></td>
+                                <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].auxMaterial"></td>
+                                <td class="text-center"><input class="focus" type="text" maxlength="20" name="rawWastes[0].draginMaterial"></td>
+                            </tr>
+                            <tr id="raw2">
+                                <td colspan="4">
+                                    <b>特别关注的物质：</b>
+                                    请确认原料、辅料、废料或工艺是否含有下列物质
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" rowspan="4">
+                                    <div class="row">
+                                        <div class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="1"> 过氯化物
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="5"> 过氧化物
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="9"> 有机氰
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="13"> 爆炸物
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="2"> 有机氮
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="6"> 放射性物质
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="10"> 酸酐
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="14"> 生化废料
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="3"> 乙醚
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="7"> 催泪物质
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="11"> 硒化物
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="15"> 苯酚
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="4"> 苯
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="8"> 多氯联苯-聚氯三联苯
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="12"> 氧化剂
+                                            </label>
+                                        </div>
+                                        <div  class="form-horizontal col-md-3">
+                                            <label>
+                                                <input type="checkbox" name="wasteInclusionTypeList" value="16"> 还原剂
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <h4><b>3.危废生产工艺流程描述</b></h4>
+                    <form id="model-appoint11" method="post">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">生产流程描述</th>
+                                <th class="text-center">现有量(吨)</th>
+                                <th class="text-center">上次处理时间</th>
+                                <th class="text-center">年预计量(吨)</th>
+                                <th class="text-center">包装现状</th>
+                            </tr>
+                            </thead>
+                            <tbody id="body2">
+                            <tr>
+                                <td onclick="focusInput(this);">1</td>
+                                <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].code"></td>
+                                <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].description"></td>
+                                <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].quantity"></td>
+                                <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].lastProcessTime"></td>
+                                <td onclick="focusInput(this);"><input class="focus" type="text" style="width: 100px" maxlength="20" name="wasteProcess[0].yearQuantity"></td>
+                                <td>
+                                    <input type="checkbox">罐装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
+                                    <input type="checkbox">桶装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
+                                    <input type="checkbox">袋装<br>(材质：<input class="focus" type="text" style="width: 50px" maxlength="5">容积：<input class="focus" type="text" style="width: 50px" maxlength="5">)<br>
+                                    <input type="checkbox">其他<br>(请说明：<input class="focus" type="text" style="width: 100px" maxlength="14">)
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <h4><b>4.危废理化性质</b></h4>
+                    <form id="model-appoint12" method="post">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废名称</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center" colspan="2">物理形态</th>
+                                <th class="text-center" colspan="6">均质与混合多项物</th>
+                                <th class="text-center" colspan="3">敏感酸性组份</th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="11">1</td>
+                                <td class="text-center" rowspan="11" onclick="focusInput(this);"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].name"></td>
+                                <td class="text-center" rowspan="11"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].code"></td>
+                                <td class="text-center" rowspan="2">物质形态</td>
+                                <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].formType"></td>
+                                <td class="text-center" colspan="6">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="false">均质&nbsp;
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isMixture" value="true">混合多项物
+                                </td>
+                                <td class="text-center">组份</td>
+                                <td class="text-center">有机</td>
+                                <td class="text-center">无机</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].formTypeDetail"></td>
+                                <td class="text-center" rowspan="2" colspan="3">混合多项物混合成分</td>
+                                <td class="text-center" colspan="3">预估含量(%)</td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[0].chemicalType" value="Chlorine">氯
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[0].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="2">物质气味</td>
+                                <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].smellType"></td>
+                                <td class="text-center">最低</td>
+                                <td class="text-center">平均</td>
+                                <td class="text-center">最高</td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[1].chemicalType" value="Fluorine">氟
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[1].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].smellTypeDetail"></td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[0].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[0].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[0].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[0].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[2].chemicalType" value="Bromine">溴
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[2].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="2">可溶性</td>
+                                <td class="text-center"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].solubility"></td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[1].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[1].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[1].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[1].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[3].chemicalType" value="Iodine">碘
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[3].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input maxlength="8" type="text" placeholder="说明" class="focus" style="width:100px" name="deriveWastesList[0].solubilityDetail"></td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[2].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[2].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[2].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[2].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[4].chemicalType" value="Sulphur">硫
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[4].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="2">储存温度</td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="false">常温
+                                </td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[3].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[3].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[3].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[3].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[5].chemicalType" value="Phosphorus">磷
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[5].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].isLowTemp" value="true">低温<br><input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].lowTemp">℃
+                                </td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[4].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[4].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[4].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[4].maximum"></td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="checkbox" name="deriveWastesList[0].sensitiveElementList[6].chemicalType" value="Nitrogen">氮
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="true">
+                                </td>
+                                <td class="text-center">
+                                    <input maxlength="8" type="radio" name="deriveWastesList[0].sensitiveElementList[6].isOrganic" value="false">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" rowspan="3">其他</td>
+                                <td class="text-center" rowspan="3">如为精馏残渣其可溶温度:<input maxlength="8" type="text" style="width:50px" name="deriveWastesList[0].solubleTemp">℃</td>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[5].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[5].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[5].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[5].maximum"></td>
+                                <td class="text-center" colspan="3" rowspan="3">
+                                    <p class="text-danger">备注:主要成分避免使用废溶剂、废油等笼统描述，尽可能详尽估算出含量</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[6].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].average"></td>
+                                <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].maximum"></td>
+                            </tr>
+                        </table>
+                    </form>
+                    <h4><b>5.危废安全告知</b></h4>
+                    <form id="model-appoint13" method="post">
+                        <div class="row">
+                            <div class="form-horizontal col-md-12">
+                                <div class="form-group">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 50px;" class="text-center">序号</th>
+                                            <th style="width: 270px" class="text-center">危废名称</th>
+                                            <th class="text-center">特性</th>
+                                            <th class="text-center">危废处理个人防护</th>
+                                            <th colspan="2" class="text-center">应急对应措施</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td rowspan="6" class="text-center">1</td>
+                                            <td rowspan="6" style="width: 270px" onclick="focusInput(this);" class="text-center"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
+                                            <td rowspan="6" style="width: 120px" align="left">
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[0]" value="Virulence">毒性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[1]" value="Flammable">易燃<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[2]" value="Sour">酸性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[3]" value="Alkaline">碱性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[4]" value="Explosion">易爆性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[5]" value="Oxidability">氧化性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[6]" value="Reducibility">还原性<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[7]" value="WaterFlammable">遇水易燃<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[8]" value="WaterVirulence">遇水易释放有毒气体<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[9]" value="AirFlammable">接触空气可发生自燃<br>
+                                            </td>
+                                            <td rowspan="6" style="width: 200px" align="left">
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[0]" value="ProtectiveGlasses">防护眼镜<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[1]" value="ProtectiveGarment">防护服<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[2]" value="ProtectiveMask">防护面罩<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[3]" value="HalfMask">半面罩<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[4]" value="CoverMask">全面罩<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[5]" value="PositiveRespirator">正压呼吸器<br>
+                                                <input type="checkbox" name="deriveWastesList[0].wasteProtectList[6]" value="ProtectiveGloves">防护手套<br>
+                                            </td>
+                                            <td style="width: 130px">若不慎入眼</td><br>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 130px">若接触到皮肤</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 130px">若吞食</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 130px">若吸入</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 130px">灭火方法</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 130px">泄露处理方法</td>
+                                            <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <h4><b>审核意见</b></h4>
+                    <form id="model-appoint1" method="post">
                         <div class="row">
                             <div class="form-horizontal col-md-12">
                                 <div class="form-group">
@@ -678,7 +1129,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="kkk()">审批</button>
+                    <button type="button" class="btn btn-primary" id="examineBtn">审批</button>
                 </div>
                 </div>
             </div>
@@ -1154,7 +1605,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="kkk()">审批</button>
+                        <button type="button" class="btn btn-primary" onclick="alert('文件打印中');">打印</button>
                     </div>
                 </div>
             </div>
@@ -1272,9 +1723,18 @@
     //     var id = getQuestionnaireId(item);
     //     $(location).attr('href', 'questionnaire1.html?questionnaireId='+id+'&type=view');
     // }
+    function resetViewInfo() {
+        $("#appointModal1").find("input").val("");
+        $("#appointModal1").find("input:radio").attr("checked", false);
+        $("#appointModal1").find("input:checkbox").attr("checked", false);
+        $("#appointModal2").find("input").val("");
+        $("#appointModal2").find("input:radio").attr("checked", false);
+        $("#appointModal2").find("input:checkbox").attr("checked", false);
+        $(".newLine").remove();
+    }
     function viewQuestion(item){
         var id = getQuestionnaireId(item);
-
+        resetViewInfo();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getQuestionnaireById",               // url
@@ -1295,6 +1755,7 @@
                     $("#model-phone2").val(data.data.client.phone);
                     $("#model-product2").val(data.data.client.product);
                     $("#model-time2").val(getTimeStr(data.data.time));
+
                     for (var i = 0; i < data.data.rawWastesList.length; i++) {
                         if (i > 0) addRawWasteNewLine();
                         var $i = i;
@@ -1316,11 +1777,12 @@
                         $("input[name='wasteProcess[" + $i + "].yearQuantity']").val(data.data.wasteProcessList[i].yearQuantity);
                     }
                     for (var i = 0; i < data.data.deriveWastesList.length; i++) {
+                        console.log(data.data.deriveWastesList[i]);
                         var $i = i;
                         $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
                         $("input[name='deriveWastesList[" + $i + "].code']").val(data.data.deriveWastesList[i].code);
                         $("input[name='deriveWastesList[" + $i + "].formType']").val(data.data.deriveWastesList[i].formType != null ? data.data.deriveWastesList[i].formType.name : "");
-                        $("input[name='deriveWastesList[" + $i + "].name'][value='" + data.data.deriveWastesList[i].isMixture + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].isMixture'][value='" + data.data.deriveWastesList[i].isMixture + "']").attr("checked", true);
                         $("input[name='deriveWastesList[" + $i + "].formTypeDetail']").val(data.data.deriveWastesList[i].formTypeDetail);
                         $("input[name='deriveWastesList[" + $i + "].smellType']").val(data.data.deriveWastesList[i].smellType != null ? data.data.deriveWastesList[i].smellType.name : "");
                         $("input[name='deriveWastesList[" + $i + "].smellTypeDetail']").val(data.data.deriveWastesList[i].smellTypeDetail);
@@ -1329,6 +1791,32 @@
                         $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='" + data.data.deriveWastesList[i].isLowTemp + "']").attr("checked", true);
                         $("input[name='deriveWastesList[" + $i + "].lowTemp']").val(data.data.deriveWastesList[i].lowTemp);
                         $("input[name='deriveWastesList[" + $i + "].solubleTemp']").val(data.data.deriveWastesList[i].solubleTemp);
+                        for (var j = 0; j < data.data.deriveWastesList[i].mixingElementList.length; j++) {
+                            var $j = j;
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].name']").val(data.data.deriveWastesList[i].mixingElementList[j].name);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].minimum']").val(data.data.deriveWastesList[i].mixingElementList[j].minimum);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].average']").val(data.data.deriveWastesList[i].mixingElementList[j].average);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].maximum']").val(data.data.deriveWastesList[i].mixingElementList[j].maximum);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].sensitiveElementList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].sensitiveElementList[j].chemicalType.index-1;
+                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].chemicalType']").attr("checked", true);
+                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].isOrganic'][value='" + data.data.deriveWastesList[i].sensitiveElementList[j].isOrganic + "']").attr("checked", true);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].wasteCharacterList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].wasteCharacterList[j].index-1;
+                            $("input[name='deriveWastesList[" + $i + "].wasteCharacterList[" + $j + "]']").attr("checked", true);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].wasteProtectList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].wasteProtectList[j].index-1;
+                            $("input[name='deriveWastesList[" + $i + "].wasteProtectList[" + $j + "]']").attr("checked", true);
+                        }
+                        $("input[name='deriveWastesList[" + $i + "].eyeMeasures']").val(data.data.deriveWastesList[i].eyeMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].skinMeasures']").val(data.data.deriveWastesList[i].skinMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].swallowMeasures']").val(data.data.deriveWastesList[i].swallowMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].suctionMeasures']").val(data.data.deriveWastesList[i].suctionMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].putOutFireMeasures']").val(data.data.deriveWastesList[i].putOutFireMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].leakMeasures']").val(data.data.deriveWastesList[i].leakMeasures);
                     }
                     // 显示框体
                     $('#appointModal2').modal('show');
@@ -1338,18 +1826,139 @@
                 console.log(result);
             }
         });
-
-
     }
+    /**
+     * 审批
+     */
     function viewQuestionnaire(item) {
         var id = getQuestionnaireId(item);
-        $("#model-companyName1").val(id);
+        resetViewInfo();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getQuestionnaireById",               // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'questionnaireId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#model-questionnaireId3").val(id);
+                    $("#model-companyName3").val(data.data.client.companyName);
+                    $("#model-industry3").val(data.data.client.industry);
+                    $("#model-author3").val(data.data.author);
+                    $("#model-location3").val(data.data.client.location);
+                    $("#model-phone3").val(data.data.client.phone);
+                    $("#model-product3").val(data.data.client.product);
+                    $("#model-time3").val(getTimeStr(data.data.time));
+
+                    for (var i = 0; i < data.data.rawWastesList.length; i++) {
+                        if (i > 0) addRawWasteNewLine2();
+                        var $i = i;
+                        $("input[name='rawWastes[" + $i + "].mainMaterial']").val(data.data.rawWastesList[i].mainMaterial);
+                        $("input[name='rawWastes[" + $i + "].auxMaterial']").val(data.data.rawWastesList[i].auxMaterial);
+                        $("input[name='rawWastes[" + $i + "].draginMaterial']").val(data.data.rawWastesList[i].draginMaterial);
+                    }
+                    for (var i = 0; i < data.data.wasteInclusionTypeList.length; i++) {
+                        var $i = data.data.wasteInclusionTypeList[i].index;
+                        $("input[name='wasteInclusionTypeList'][value='" + $i + "']").attr("checked", true);
+                    }
+                    for (var i = 0; i < data.data.wasteProcessList.length; i++) {
+                        if (i > 0) addWasteProcessNewLine2();
+                        var $i = i;
+                        $("input[name='wasteProcess[" + $i + "].code']").val(data.data.wasteProcessList[i].code);
+                        $("input[name='wasteProcess[" + $i + "].description']").val(data.data.wasteProcessList[i].description);
+                        $("input[name='wasteProcess[" + $i + "].quantity']").val(data.data.wasteProcessList[i].quantity);
+                        $("input[name='wasteProcess[" + $i + "].lastProcessTime']").val(getTimeStr(data.data.wasteProcessList[i].lastProcessTime));
+                        $("input[name='wasteProcess[" + $i + "].yearQuantity']").val(data.data.wasteProcessList[i].yearQuantity);
+                    }
+                    for (var i = 0; i < data.data.deriveWastesList.length; i++) {
+                        console.log(data.data.deriveWastesList[i]);
+                        var $i = i;
+                        $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
+                        $("input[name='deriveWastesList[" + $i + "].code']").val(data.data.deriveWastesList[i].code);
+                        $("input[name='deriveWastesList[" + $i + "].formType']").val(data.data.deriveWastesList[i].formType != null ? data.data.deriveWastesList[i].formType.name : "");
+                        $("input[name='deriveWastesList[" + $i + "].isMixture'][value='" + data.data.deriveWastesList[i].isMixture + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].formTypeDetail']").val(data.data.deriveWastesList[i].formTypeDetail);
+                        $("input[name='deriveWastesList[" + $i + "].smellType']").val(data.data.deriveWastesList[i].smellType != null ? data.data.deriveWastesList[i].smellType.name : "");
+                        $("input[name='deriveWastesList[" + $i + "].smellTypeDetail']").val(data.data.deriveWastesList[i].smellTypeDetail);
+                        $("input[name='deriveWastesList[" + $i + "].solubility']").val(data.data.deriveWastesList[i].solubility != null ? data.data.deriveWastesList[i].solubility.name : "");
+                        $("input[name='deriveWastesList[" + $i + "].solubilityDetail']").val(data.data.deriveWastesList[i].solubilityDetail);
+                        $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='" + data.data.deriveWastesList[i].isLowTemp + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].lowTemp']").val(data.data.deriveWastesList[i].lowTemp);
+                        $("input[name='deriveWastesList[" + $i + "].solubleTemp']").val(data.data.deriveWastesList[i].solubleTemp);
+                        for (var j = 0; j < data.data.deriveWastesList[i].mixingElementList.length; j++) {
+                            var $j = j;
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].name']").val(data.data.deriveWastesList[i].mixingElementList[j].name);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].minimum']").val(data.data.deriveWastesList[i].mixingElementList[j].minimum);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].average']").val(data.data.deriveWastesList[i].mixingElementList[j].average);
+                            $("input[name='deriveWastesList[" + $i + "].mixingElementList[" + $j + "].maximum']").val(data.data.deriveWastesList[i].mixingElementList[j].maximum);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].sensitiveElementList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].sensitiveElementList[j].chemicalType.index-1;
+                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].chemicalType']").attr("checked", true);
+                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].isOrganic'][value='" + data.data.deriveWastesList[i].sensitiveElementList[j].isOrganic + "']").attr("checked", true);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].wasteCharacterList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].wasteCharacterList[j].index-1;
+                            $("input[name='deriveWastesList[" + $i + "].wasteCharacterList[" + $j + "]']").attr("checked", true);
+                        }
+                        for (var j = 0; j < data.data.deriveWastesList[i].wasteProtectList.length; j++) {
+                            var $j = data.data.deriveWastesList[i].wasteProtectList[j].index-1;
+                            $("input[name='deriveWastesList[" + $i + "].wasteProtectList[" + $j + "]']").attr("checked", true);
+                        }
+                        $("input[name='deriveWastesList[" + $i + "].eyeMeasures']").val(data.data.deriveWastesList[i].eyeMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].skinMeasures']").val(data.data.deriveWastesList[i].skinMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].swallowMeasures']").val(data.data.deriveWastesList[i].swallowMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].suctionMeasures']").val(data.data.deriveWastesList[i].suctionMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].putOutFireMeasures']").val(data.data.deriveWastesList[i].putOutFireMeasures);
+                        $("input[name='deriveWastesList[" + $i + "].leakMeasures']").val(data.data.deriveWastesList[i].leakMeasures);
+                    }
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+
         // 显示框体
         $('#appointModal1').modal('show');
+        $('#examineBtn').click(function () {
+            examineQuestionnaire(id);
+        });
     }
     function adjustQuestionnaire(item) {
         var id = getQuestionnaireId(item);
         $(location).attr('href', 'questionnaire1.html?questionnaireId='+id);
+    }
+    /**
+     * 审批问卷
+     */
+    function examineQuestionnaire(id) {
+        var r = confirm("审批通过该调查表吗？");
+        if (r) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "examineQuestionnaire",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        alert(result.message);
+                        window.location.reload();
+                    } else { }
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
     }
     /**
      * 签收问卷
