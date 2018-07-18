@@ -1414,6 +1414,10 @@
 
     }
 
+    /**
+     * 导入excel
+     * 
+     */
     function importExcel() {
         document.getElementById("idExcel").click();
         document.getElementById("idExcel").addEventListener("change",function () {
@@ -1435,7 +1439,7 @@
                         console.log(result);
                         if (result.status == "success") {
                             alert(result.message);
-                            window.location.reload();
+                            window.location.reload();         //刷新
                         } else {
                             alert(result.message);
                         }

@@ -1,29 +1,26 @@
 package com.jdlink.util;
 
 import java.lang.String;
-import java.net.URLEncoder;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import net.sf.json.JSONObject;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.junit.Test;
-import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.dbutils.QueryRunner;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
-import java.io.FileOutputStream;
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletResponse;
 
 import jxl.read.biff.BiffException;
@@ -87,13 +84,10 @@ public class DBUtil {
         }//.......................
 
         // 保存
-        //book.write(new FileOutputStream("D://" + name + ".xls"));
         ByteArrayOutputStream fos = null;
-        byte[] retArr = null;
         try {
             fos = new ByteArrayOutputStream();
             book.write(fos);
-            retArr = fos.toByteArray();
         } finally {
             try {
                 fos.close();
@@ -106,14 +100,13 @@ public class DBUtil {
         try {
             //为了让各种浏览器可以识别,需要将中文转换成Byte形式,然后通过ISO-8859-1进行编码
             // OutputStream os = response.getOutputStream();
-            String file = "filename";
+            String file = name;//初始文件名
             name = new String(file.getBytes("iso8859-1"), "utf-8");
             response.reset();
             //设置content-disposition响应头控制浏览器以下载的形式打开文件
             //报头用于提供一个推荐的文件名，并强制浏览器显示保存对话框
             //attachment表示以附件方式下载。如果要在页面中打开，则改为 inline
             response.setHeader("Content-Disposition", "attachment; filename="+name+".xls");//要保存的文件名
-
             response.setContentType("application/octet-stream; charset=utf-8");
             book.write(os);
             os.flush();
@@ -128,7 +121,7 @@ public class DBUtil {
             }
         }
 
-        // 保存
+        // 保存  以固定名保存到固定路径
         //book.write(new FileOutputStream("D://" + name + ".xls"));
     }
 
@@ -144,8 +137,6 @@ public class DBUtil {
         //定义一维数组，存放Excel表里的每一行的各个列的数据
         Object[] obj ;
         Object[][] parm;
-        //定义List集合，存放每一行的数据
-        ArrayList<Object[]> list = new ArrayList<>();
         InputStream is = null;
         Workbook rwb = null;
         try {
@@ -173,18 +164,12 @@ public class DBUtil {
             obj = new Object[col];
             for(int j =0 ;j <col; j++){
                 c1 = sht.getCell(j,i);
-                //add
-                String contents = c1.getContents();
-                //  System.out.println(contents);
+
                 obj[j] = c1.getContents();
                 parm[i-1][j]=obj[j];
             }
-            //System.out.println("------------");
-            //list.add(obj);
-            //System.out.println(list);
         }
         //将parm中数据批处理插入到数据库中
-
         QueryRunner queryRunner = new QueryRunner(true);
         String sql=generateSql(col,DBTableName);
         try {
