@@ -13,6 +13,8 @@ public interface SupplierMapper {
 
     void delete(String supplierId);
 
+    void enable(String supplierId);
+
     Supplier getBySupplierId(String supplier);
 
     Supplier getByName(String companyName);
