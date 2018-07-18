@@ -13,6 +13,8 @@ public interface SupplierService {
 
     void delete(String supplierId);
 
+    void enable(String supplierId);
+
     Supplier getBySupplierId(String supplierId);
 
     Supplier getByName(String companyName);

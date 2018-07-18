@@ -28,6 +28,11 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    public void enable(String supplierId) {
+        supplierMapper.enable(supplierId);
+    }
+
+    @Override
     public Supplier getBySupplierId(String supplierId) {
         return supplierMapper.getBySupplierId(supplierId);
     }
