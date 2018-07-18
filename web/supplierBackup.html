@@ -879,7 +879,8 @@
      */
     function exportExcel(e) {
         var name='t_supplier';
-        window.open('exportExcel?name=' + name);
+        var sqlWords= "select "+ name +".supplierID,"+name+".companyName,"+name+".supplierType,"+name+".checkState,"+name+".contactName,"+name+".phone from jdlink."+name;
+        window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
 
