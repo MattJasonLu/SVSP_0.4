@@ -2071,6 +2071,7 @@
         if (items.length > 0) {
             items.each(function () {
                 var id = getIdByCheckBox($(this));
+                console.log(id);
                 backQuestionnaireById(id);
             });
             alert("退回成功");
@@ -2085,7 +2086,7 @@
      * @returns {*}
      */
     function getIdByCheckBox(item) {
-        return item.parent().parent().next().next().text();
+        return item.parent().parent().next().text();
     }
     /**
      * 日期格式
