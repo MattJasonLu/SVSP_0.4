@@ -116,12 +116,12 @@
                     // console.log(obj);
                     switch (inner_index) {
                         // 合同类型
-                        case (1):
+                        case (2):
                             if (obj.contractType != null)
                             $(this).html(  obj.contractType.name);
                             break;
                         // 模板名称
-                        case (2):
+                        case (1):
                             $(this).html(obj.modelName);
                             break;
                         // 合同状态
@@ -322,8 +322,8 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <th>合同类型</th>
                         <th>模板名称</th>
+                        <th>合同类型</th>
                         <th>模板状态</th>
                         <th>合同版本号</th>
                         <th>年份</th>

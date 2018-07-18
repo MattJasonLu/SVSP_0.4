@@ -52,7 +52,7 @@
          enterpriseType=#{enterpriseType}, operationMode=#{operationMode}, operationType=#{operationType},
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, contactName=#{contactName}, supplierType=#{supplierType}, phone=#{phone},
-         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}
+         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus}
          WHERE supplierId=#{supplierId}
     </update>
 

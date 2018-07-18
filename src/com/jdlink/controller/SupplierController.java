@@ -176,6 +176,28 @@ public class SupplierController {
     }
 
     /**
+     * 启用供应商
+     * @param supplierId 供应商编号
+     * @return 操作成功与否
+     */
+    @RequestMapping("enableSupplier")
+    @ResponseBody
+    public String enableSupplier(String supplierId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 下面就等于  UPDATE t_supplier SET state='Enabled' WHERE supplierId=#{supplierId};
+            supplierService.enable(supplierId);
+            res.put("status", "success");
+            res.put("message", "启用成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "启用失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 查询供应商信息
      * @param keyword 关键字
      * @return 供应商信息列表

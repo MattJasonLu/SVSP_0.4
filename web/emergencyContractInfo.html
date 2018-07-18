@@ -39,16 +39,26 @@
      * 保存
      */
     function contractSave() {
-        var s=($('#contractInfoForm').serializeJSON());
+         one=($('#contractInfoForm').serializeJSON());
+        console.log(one);
+        two=$('#WastesNameForm').serializeWastes();
+        console.log(two);
+        three=$('#three').serializeJSON();
+        console.log(three);
         var addType = $("input[name='addType']:checked").val();
+        var data={
+           'one':one,
+            'two':two,
+            'three':three
+        };
+        console.log(data);
         console.log(addType);
         //console.log(s);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveEmContract",                       // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#contractInfoForm').serializeJSON())
-            ,
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -316,48 +326,28 @@
                     </div>
                 </div>
             </div>
+        </form>
             <div class="row">
-                <div class="form-horizontal col-md-8">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="wasteName">危险废物的名称及数量：</label>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-4"></div>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="wasteName">名称：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="wasteName" name="wasteName" style="width: 100px" maxlength="18">[HW（）]</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="tonNumber">数量：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="tonNumber" name="tonNumber" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="name2">名称：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="name2" name="wasteName" style="width: 100px" maxlength="18">[HW（）]</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="number2">数量：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="number2" name="tonNumber" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
-                        </div>
-                    </div>
+                <div class="form-horizontal col-md-12">
+                    <form method="post" id="WastesNameForm">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>序号</th>
+                                <th>危险废物的名称</th>
+                                <th>数量(吨每年t/a)</th>
+                            </tr>
+                            <tr id="cloneTr1">
+                                <td>1</td>
+                                <td><input type="text" class="focus" name="wasteName" style="width:100%; height:100%;"></td><!--危险废物名称-->
+                                <td><input type="text" class="focus" name="tonNumber" style="width:100%; height:100%;"></td><!--数量-->
+                            </tr>
+                            <tr id="plusBtn">
+                                <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
             <h5><b>二、其他</b></h5>
@@ -391,6 +381,7 @@
                     </div>
                 </div>
             </div>
+        <form method="post" id="three">
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
@@ -534,6 +525,7 @@
                     </div>
                 </div>
             </div>
+        </form>
             <br>
             <br>
             <div class="row text-center">
@@ -542,61 +534,55 @@
                 <a class="btn btn-warning" onclick="clientReset()">重置</a>
                 <a class="btn btn-danger" id="back">返回</a>
             </div>
-        </form>
+
     </div>
 </div>
 </body>
 <script>
-
     /**
-     * 重置客户信息
+     * 增加新行
      */
-    function clientReset() {
-        var r = confirm("是否重置客户信息?");
-        if (r == true) {
-            $("#companyName").val("");
-            $("#area").val("");
-            $("#thing").val("");
-            $("#wasteName").val("");
-            $("#tonNumber").val("");
-            $("#name2").val("");
-            $("#number2").val("");
-            $("#companyLegal").val("");
-            $("#companyAgent").val("");
-            $("#clientAgent").val("");
-            $("#clientLegal").val("");
-            $("#telephone").val("");
-            $("#address").val("");
-            $("#bankAccount").val("");
-            $("#bankName").val("");
+    function addNewLine() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(1),td:eq(2)").find("input").val("");
+        // 获取编号
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        if (!isNaN(num)) {
+            num++;
+            id1 = num;
+        } else {
+            id1++;
+            num = id1;
         }
+        clonedTr.children().get(0).innerHTML = num;
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+        clonedTr.insertAfter(tr);
     }
-    $('.form_datetime1').datetimepicker({
-        format: 'yyyy-mm-dd',
-        language:  'zh-CN',
-        weekStart: 1,
-        todayBtn:  1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    });
-    $('.form_datetime2').datetimepicker({
-        format: 'yyyy-mm-dd',
-        language:  'zh-CN',
-        weekStart: 1,
-        todayBtn:  1,
-        autoclose: true,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    });
-    $('#back').click(function () {
-        $(location).attr('href', 'contractManage.html');
-        localStorage.name="Emergency";
-        location.href="contractManage.html";
-    });
+    function delLine(e) {
+        var tr = e.parentElement.parentElement;
+        tr.parentNode.removeChild(tr);
+    }
+    // 序列化Wastes到json格式
+    $.fn.serializeWastes=function(){
+        var json = [];
+        var map=this.serializeArray();
+        for (var i = 0; i < map.length; i+=2) {
+            var wasteName = map[i].value;
+            var tonNumber = map[i+1].value;
+            // 创建条目
+            var item = {
+                wasteName : wasteName,
+                tonNumber: tonNumber,
+            };
+            json.push(item);
+        }
+        return json;
+    };
 </script>
 </html>
