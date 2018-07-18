@@ -50,6 +50,7 @@ public class ContractController {
 @RequestMapping("saveEmContract")
 @ResponseBody
 public String saveEmContract(@RequestBody Contract contract){
+    System.out.println(contract+"sdsd");
     //1.获取合同ID
     List<String> list= contractService.getContractIdList();//合同id集合
     List<Integer> list1 = new ArrayList<>();
@@ -66,6 +67,7 @@ public String saveEmContract(@RequestBody Contract contract){
       String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
        contract.setContractId(newId);
         JSONObject res=JSONObject.fromBean(contract);
+    System.out.println(res+"ccc");
         contract.setCheckState(CheckState.ToSubmit);//待提交
         contract.setContractType(ContractType.Emergency);//设为应急合同
         contractService.addEm(contract);
@@ -238,10 +240,7 @@ return  res.toString();
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    public ModelAndView showContract(String contractId) {
-        ModelAndView mav = new ModelAndView();
-        return mav;
-    }
+
     @RequestMapping("getContractId")
     @ResponseBody
     public String getContractId(String contractId) {

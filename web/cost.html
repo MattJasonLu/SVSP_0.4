@@ -557,7 +557,8 @@
      */
     function exportExcel(e) {
         var name='t_cost';
-        window.open('exportExcel?name=' + name);
+        var sqlWords= "select * from jdlink."+ name;
+        window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
 

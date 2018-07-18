@@ -116,12 +116,12 @@
                     // console.log(obj);
                     switch (inner_index) {
                         // 合同类型
-                        case (1):
+                        case (2):
                             if (obj.contractType != null)
                             $(this).html(  obj.contractType.name);
                             break;
                         // 模板名称
-                        case (2):
+                        case (1):
                             $(this).html(obj.modelName);
                             break;
                         // 合同状态
@@ -322,8 +322,8 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <th>合同类型</th>
                         <th>模板名称</th>
+                        <th>合同类型</th>
                         <th>模板状态</th>
                         <th>合同版本号</th>
                         <th>年份</th>
@@ -510,8 +510,9 @@
      * @param e
      */
     function exportExcel(e) {
-        var name='contracttemplate';
-        window.open('exportExcel?name=' + name);
+        var name='t_contract';
+        var sqlWords= "select "+ name +".contractType,"+name+".modelName,"+name+".checkState,"+name+".modelVersion,"+name+".year from jdlink."+name+" where period IS NOT null;";
+        window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
 
@@ -526,7 +527,7 @@
             var eFile = document.getElementById("idExcel").files[0];
             var formFile = new FormData();
             formFile.append("excelFile", eFile);
-            formFile.append("tableName", 'contracttemplate');
+            formFile.append("tableName", 't_contract');
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "importExcel",              // url
