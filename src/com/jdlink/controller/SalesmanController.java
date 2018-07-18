@@ -4,6 +4,7 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Salesman;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SalesmanService;
+import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.NumberFormat;
@@ -195,5 +197,6 @@ public class SalesmanController {
         res.put("salesmanId", id);
         return res.toString();
     }
+
 
 }
