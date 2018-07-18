@@ -1,6 +1,7 @@
 package com.jdlink.domain;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by matt on 2018/5/17.
@@ -162,13 +163,13 @@ private  TicketRate1 ticketRate1;
      * 危险废物名称
      *
      */
-    private  String wasteName;
+    private List<String> wasteName;
 
     /**
      * 危险废物数量 吨每年
      *
      */
-    private  String tonNumber;
+    private  List<String> tonNumber;
     /**
      *甲方法定代表人
      */
@@ -351,20 +352,20 @@ private String keyword;
         this.companyLegal = companyLega;
     }
 
-    public String getWasteName() {
+    public List<String> getWasteName() {
         return wasteName;
     }
 
-    public String getTonNumber() {
+    public void setWasteName(List<String> wasteName) {
+        this.wasteName = wasteName;
+    }
+
+    public List<String> getTonNumber() {
         return tonNumber;
     }
 
-    public void setTonNumber(String tonNumber) {
+    public void setTonNumber(List<String> tonNumber) {
         this.tonNumber = tonNumber;
-    }
-
-    public void setWasteName(String wasteName) {
-        this.wasteName = wasteName;
     }
 
     public Date getBeginQualification() {

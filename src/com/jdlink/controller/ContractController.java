@@ -240,10 +240,7 @@ return  res.toString();
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-    public ModelAndView showContract(String contractId) {
-        ModelAndView mav = new ModelAndView();
-        return mav;
-    }
+
     @RequestMapping("getContractId")
     @ResponseBody
     public String getContractId(String contractId) {
