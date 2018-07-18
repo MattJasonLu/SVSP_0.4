@@ -6,20 +6,18 @@ import com.jdlink.service.CityService;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.ContractService;
 import com.jdlink.util.UpdateVersion;
-import com.sun.script.javascript.JSAdapter;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import com.jdlink.util.UpdateVersion;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -445,10 +443,11 @@ return  res.toString();
      */
     @RequestMapping("approvalContract")
     @ResponseBody
-    public String approvalContract(String contractId){
+    public String approvalContract(@Param("contractId")String contractId , @Param("opinion")String opinion){
         JSONObject res=new JSONObject();
         try {
-            contractService.approval(contractId);
+           contractService.approval(contractId);
+            contractService.opinion(contractId,opinion);
             res.put("state","success");
         }
         catch (Exception e){
@@ -457,7 +456,14 @@ return  res.toString();
         return res.toString();
         }
 
-
+@RequestMapping("searchContract")
+@ResponseBody
+public String searchContract(String keyword){
+    List<Contract> contractList= contractService.getByKeyword(keyword);
+    JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+    // 返回结果
+    return array.toString();
+      }
     public static List removeDuplicate(List list){
         List listTemp = new ArrayList();
         for(int i=0;i<list.size();i++){
