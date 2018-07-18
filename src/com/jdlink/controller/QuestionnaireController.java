@@ -260,6 +260,8 @@ public class QuestionnaireController {
                     oldDeriveWastes.setSolubilityDetail(newDeriveWastes.getSolubilityDetail());
                     oldDeriveWastes.setIsLowTemp(newDeriveWastes.getIsLowTemp());
                     oldDeriveWastes.setIsMixture(newDeriveWastes.getIsMixture());
+                    oldDeriveWastes.setLowTemp(newDeriveWastes.getLowTemp());
+                    oldDeriveWastes.setSolubleTemp(newDeriveWastes.getSolubleTemp());
                     oldDeriveWastes.setMixingElementList(newDeriveWastes.getMixingElementList());
                     oldDeriveWastes.setSensitiveElementList(newDeriveWastes.getSensitiveElementList());
                     // 新的混合物列表数量
@@ -586,18 +588,19 @@ public class QuestionnaireController {
     @RequestMapping("searchQuestionnaire")
     @ResponseBody
     public String searchQuestionnaire(String keyword) {
+        JSONObject res = new JSONObject();
         try {
-            List<QuestionnaireAdmin> questionnaireList = questionnaireService.search(keyword);
-            JSONArray array = JSONArray.fromArray(questionnaireList.toArray(new QuestionnaireAdmin[questionnaireList.size()]));
-            return array.toString();
+            List<Questionnaire> questionnaireList = questionnaireService.search(keyword);
+            JSONArray array = JSONArray.fromArray(questionnaireList.toArray(new Questionnaire[questionnaireList.size()]));
+            res.put("data", array);
+            res.put("message", "查询成功");
+            res.put("status", "success");
         } catch (Exception e) {
             e.printStackTrace();
-            JSONObject res = new JSONObject();
+            res.put("message", "查询失败");
             res.put("status", "fail");
-            res.put("message", "查询失败!");
-            res.put("stackTrace", e.getStackTrace());
-            return res.toString();
         }
+        return res.toString();
     }
 
 //    @RequestMapping("addQuestionnaire")

@@ -23,7 +23,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public List<QuestionnaireAdmin> search(String keyword) {
+    public List<Questionnaire> search(String keyword) {
         return questionnaireMapper.search(keyword);
     }
 
