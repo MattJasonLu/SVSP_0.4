@@ -260,6 +260,8 @@ public class QuestionnaireController {
                     oldDeriveWastes.setSolubilityDetail(newDeriveWastes.getSolubilityDetail());
                     oldDeriveWastes.setIsLowTemp(newDeriveWastes.getIsLowTemp());
                     oldDeriveWastes.setIsMixture(newDeriveWastes.getIsMixture());
+                    oldDeriveWastes.setLowTemp(newDeriveWastes.getLowTemp());
+                    oldDeriveWastes.setSolubleTemp(newDeriveWastes.getSolubleTemp());
                     oldDeriveWastes.setMixingElementList(newDeriveWastes.getMixingElementList());
                     oldDeriveWastes.setSensitiveElementList(newDeriveWastes.getSensitiveElementList());
                     // 新的混合物列表数量
