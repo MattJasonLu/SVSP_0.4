@@ -219,6 +219,28 @@ private  TicketRate1 ticketRate1;
      */
     private String modelVersion;
 
+    /**
+     * 审批意见
+     */
+    private String opinion;
+private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
+    }
+
     public String getModelVersion() {
         return modelVersion;
     }
