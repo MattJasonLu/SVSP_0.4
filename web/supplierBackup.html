@@ -497,8 +497,8 @@
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary" href="supplierInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary" onclick="submitSuppliers();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
@@ -731,6 +731,7 @@
             </div>
         </div>
     </div>
+    <input type="file" name="excelPath" id="idExcel" style="display:none">
 </body>
 <script type="text/javascript">
     function getId(item) {
@@ -870,6 +871,51 @@
 
     function getIdByCheckBox(item) {
         return item.parent().parent().next().next().text();
+    }
+
+    /**
+     * 导出excel
+     * @param e
+     */
+    function exportExcel(e) {
+        var name='t_supplier';
+        window.open('exportExcel?name=' + name);
+
+    }
+
+    function importExcel() {
+        document.getElementById("idExcel").click();
+        document.getElementById("idExcel").addEventListener("change",function () {
+            console.log("change");
+            var eFile = document.getElementById("idExcel").files[0];
+            var formFile = new FormData();
+            formFile.append("excelFile", eFile);
+            formFile.append("tableName", 't_supplier');
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "importExcel",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: formFile,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        if (result.status == "success") {
+                            alert(result.message);
+                            window.location.reload();
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
     }
 </script>
 </html>
