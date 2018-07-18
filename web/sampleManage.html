@@ -14,6 +14,7 @@
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <script src="js/time.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
@@ -70,27 +71,27 @@
                     case (7):
                         $(this).html(obj.telephone);
                         break;
-                    case (8):
-                        if(obj.name == "已作废"){
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                        }else if(obj.name == "已预约"){
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                        }else{
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                        }
-                        $(this)
-                        break;
+//                    case (8):
+//                        if(obj.name == "已作废"){
+//                            $(this).children().eq(1).attr("class","disabled");
+//                            $(this).children().eq(1).removeAttr("onclick");
+//                            $(this).children().eq(2).attr("class","disabled");
+//                            $(this).children().eq(2).removeAttr("onclick");
+//                            $(this).children().eq(3).attr("class","disabled");
+//                            $(this).children().eq(3).removeAttr("onclick");
+//                        }else if(obj.name == "已预约"){
+//                            $(this).children().eq(1).attr("class","disabled");
+//                            $(this).children().eq(1).removeAttr("onclick");
+//                        }else{
+//                            $(this).children().eq(1).attr("class","disabled");
+//                            $(this).children().eq(1).removeAttr("onclick");
+//                            $(this).children().eq(2).attr("class","disabled");
+//                            $(this).children().eq(2).removeAttr("onclick");
+//                            $(this).children().eq(3).attr("class","disabled");
+//                            $(this).children().eq(3).removeAttr("onclick");
+//                        }
+//                        $(this)
+//                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -583,14 +584,13 @@
                         $("#model-companyName").val(data.data.clientId);
                         $("#model-contactName").val(data.data.contactName);
                         $("#model-telephone").val(data.data.telephone);
-                        $("#model-appointTime").val(data.data.appointTime);
+                        $("#model-appointTime").val(getTimeStr(data.data.appointTime));
                         $("#model-comment").val(data.data.comment);
                         // 显示框体
                         $('#appointModal').modal('show');
                         $("input").prop("readonly",true);
                         $("textarea").prop("readonly",true);
                         $("select").attr("disabled","disabled");
-                        $('#time').readOnly();
                         appointBtn.hide();
                     } else {
                         alert(data.message);
@@ -650,7 +650,8 @@
      */
     function adjustSample(menu) {
         var appointId = getAppointIdByMenu(menu);
-       var appoint= $('#appoint');
+//        console.log(appointId);
+        var appoint= $('#appoint');
         var appointBtn = $("#appointBtn");
         appointBtn.text("修改");
         // 点击后更新
@@ -677,7 +678,7 @@
                         $("#model-companyName").val(data.data.clientId);
                         $("#model-contactName").val(data.data.contactName);
                         $("#model-telephone").val(data.data.telephone);
-                        $("#model-appointTime").val(data.data.appointTime);
+                        $("#model-appointTime").val(getTimeStr(data.data.appointTime));
                         $("#model-comment").val(data.data.comment);
                         // 显示框体
                         $('#appointModal').modal('show');
@@ -697,7 +698,7 @@
         appointBtn.click(function(){
             updateAppointByAppointId(appointId);
         });
-       appoint.appendChild(appointBtn);
+//       appoint.appendChild(appointBtn);
     }
     /**
      * 显示收样框
@@ -844,7 +845,7 @@
         $("#model2-createTime").val(getNowDate());
         var formTypeIndex, packageTypeIndex;
         // 添加已填写的登记信息
-        console.log(checkId);
+//        console.log(checkId);
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getSampleCheck",              // url
@@ -858,19 +859,19 @@
                     var data = eval(result);
                     if (data.status == "success") {
                         $("#model2-contactName").val(data.data.contactName);
+                        $("#model2-productName").val(data.data.productName);
                         $("#model2-telephone").val(data.data.telephone);
-                        $("#model2-companyName").val(data.data.companyName);
                         $("#model2-recipient").val(data.data.recipient);
                         $("#model2-quantity").val(data.data.quantity);
                         $("#model2-code").val(data.data.code);
                         $("#model2-color").val(data.data.color);
                         $("#model2-mainComponent").val(data.data.mainComponent);
-                        formTypeIndex = data.data.formType.index-1;
-                        packageTypeIndex = data.data.packageType.index-1;
+                        if (data.data.formType != null) formTypeIndex = data.data.formType.index-1;
+                        if (data.data.packageType != null) packageTypeIndex = data.data.packageType.index-1;
                     } else {
                         $("#model2-contactName").val("");
+                        $("#model2-productName").val("");
                         $("#model2-telephone").val("");
-                        $("#model2-companyName").val("");
                         $("#model2-recipient").val("");
                         $("#model2-quantity").val("");
                         $("#model2-code").val("");
@@ -1056,7 +1057,8 @@
      * @returns {string}
      */
     function getCompanyNameByMenu(menu) {
-        return menu.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+//        console.log(menu.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML);
+        return menu.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
     }
     // 获取当前时间为'yyyy-MM-dd'
     function getNowDate() {

@@ -122,10 +122,7 @@ public class SampleController {
         JSONObject res = new JSONObject();
         try {
             SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
-            String time = new SimpleDateFormat("yyyy-MM-dd HH:SS").format(sampleAppoint.getAppointTime());
             JSONObject data = JSONObject.fromBean(sampleAppoint);
-            data.remove("appointTime");
-            data.put("appointTime", time);
             res.put("status", "success");
             res.put("message", "获取信息成功");
             res.put("data", data);

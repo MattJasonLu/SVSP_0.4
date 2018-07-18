@@ -16,7 +16,7 @@
     <update id="update" parameterType="SampleCheck">
         UPDATE t_samplecheck SET contactName=#{contactName}, telephone=#{telephone}, productName=#{productName},
         code=#{code}, recipient=#{recipient}, color=#{color}, formType=#{formType}, packageType=#{packageType},
-        mainComponent=#{mainComponent} WHERE checkId=#{checkId};
+        quantity=#{quantity}, mainComponent=#{mainComponent} WHERE checkId=#{checkId};
     </update>
 
     <delete id="delete" parameterType="SampleCheck" >

@@ -424,10 +424,10 @@ return  res.toString();
      */
     @RequestMapping("backContract")
     @ResponseBody
-    public  String backContract(String contractId){
+    public  String backContract(String contractId,String backContent){
         JSONObject res=new JSONObject();
      try{
-         contractService.back(contractId);
+         contractService.back(contractId,backContent);
          res.put("state","success");
      }
      catch (Exception e){
