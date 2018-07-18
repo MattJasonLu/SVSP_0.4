@@ -78,7 +78,7 @@
        // localStorage.clear();
         $('#back').hide();
         var name=localStorage['name'];
-        console.log(name);
+        //console.log(name);
         if(name=='undefined'||name=="Wastes"||name==undefined)
         {
             //name="Wastes";
@@ -174,7 +174,7 @@
             var obj = eval(item);
             //console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
-            console.log(obj);
+            //console.log(obj);
             if(obj.contractContent==""&&obj.period==""&&obj.year=="") {
                 // 循环遍历cloneTr的每一个td元素，并赋值
                 var clonedTr = tr.clone();
@@ -378,7 +378,7 @@
         var items = $("input[name='blankCheckbox']:checked");//判断复选框是否选中
         if(items.length>0){
             var name1= items[0].parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
-          console.log(name1);
+         // console.log(name1);
             if(name1.indexOf("物流")!=-1){
                 var name2="Logistics";
             }
@@ -416,7 +416,7 @@
             }
             items.each(function () {//遍历
                 var id = getContractId1(this);//获得合同编号
-                console.log(id);
+                //console.log(id);
                 getContractById(id);
 
             });
@@ -533,6 +533,7 @@ else {
                            $('#modal3_freight').removeAttr("checked");
                        }
                        $("input").prop("readonly",true);
+                       $('#search').prop("readonly",false);
                    } else {
                        $("#modal3_contactName").val("");
                        $("#modal3_contractState").val("");
@@ -551,6 +552,7 @@ else {
                    console.log(result);
                }
            });
+           $('#opinion').hide();
            $('#contractInfoForm').modal('show');
            $('#btn').text("打印");
            $('#back').hide();
@@ -725,9 +727,9 @@ else {
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索...">
+                        <input type="text" class="form-control" placeholder="搜索..." id="search">
                         <span class="input-group-btn">
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         </span>
                     </div>
                 </div>
@@ -977,6 +979,14 @@ else {
                                 </div>
                             </div>
                         </div>
+                        <div class="row" id="opinion">
+                            <div class="form-horizontal col-md-6">
+                                <label for="modal3_opinion" class="col-sm-3 control-label text-left">审批意见</label>
+                            <textarea class="form-control" rows="5" id="modal3_opinion"></textarea>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
                         <div class="row text-center">
                             <a class="btn btn-primary" onclick="" id="btn">打印</a>
                             <a class="btn btn-danger" data-dismiss="modal" id="back"></a>
@@ -996,7 +1006,7 @@ else {
     function wastes(){
         // var item = $("#1").attr("class");
         var id = $("ul#myTab li.active").attr("id");
-        console.log(id);
+        //console.log(id);
         var k = $("#add");
         console.log(k.attr("id"));
         // if(item == "active"){
@@ -1319,21 +1329,27 @@ function cancel(item) {
 
             }
         });
+        $('#opinion').show();
         $('#back').show();
         $('#btn').text();
         $('#back').text();
         $('#btn').text("审批通过");
         $('#back').text('驳回');
+        $()
         $('#contractInfoForm').modal('show');
+
       }
         $('#btn').click(function () {
-
+            var opinion=$('#modal3_opinion').val();
+            console.log(contractId);//可以取出
+            console.log(opinion);//可以取出
             $.ajax({
                 type:"POST",
                 url:"approvalContract",
                 async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
-                data:{"contractId":contractId},
+                contentType :"application/json",
+                data:{"contractId":contractId,"opinion":opinion},
                 success:function (result) {
                     var obj=eval(result);
                     if(obj.state=="success"){
@@ -1406,6 +1422,30 @@ function cancel(item) {
                 }
             });
         });
+        function searchContract() {
+            var keyword = $("#search").val();
+          //  console.log(keyword);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchContract",                  // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'keyword': keyword
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result != undefined) {
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error:function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
 </script>
 
 </html>

@@ -21,4 +21,5 @@ public interface QuestionnaireService {
     void signIn(String questionnaireId);
     void updateAttachmentUrl(Questionnaire questionnaire);
     void back(String quesionnaireId);
+    void examine(String questionnaireId);
 }
