@@ -32,7 +32,7 @@ public interface ContractMapper {
     void cancel1(String modelName);
     void approval(String contractId);
     List<String> modelName(String key);
-    void back(String contractId);
+    void back(String contractId,String backContent);
     void opinion(String contractId,String opinion);
 
 }
