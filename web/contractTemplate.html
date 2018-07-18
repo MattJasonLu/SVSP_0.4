@@ -510,8 +510,9 @@
      * @param e
      */
     function exportExcel(e) {
-        var name='contracttemplate';
-        window.open('exportExcel?name=' + name);
+        var name='t_contract';
+        var sqlWords= "select "+ name +".contractType,"+name+".modelName,"+name+".checkState,"+name+".modelVersion,"+name+".year from jdlink."+name+" where period IS NOT null;";
+        window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
 
@@ -526,7 +527,7 @@
             var eFile = document.getElementById("idExcel").files[0];
             var formFile = new FormData();
             formFile.append("excelFile", eFile);
-            formFile.append("tableName", 'contracttemplate');
+            formFile.append("tableName", 't_contract');
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "importExcel",              // url

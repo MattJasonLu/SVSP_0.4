@@ -16,11 +16,11 @@ public class UtilController {
 
     @RequestMapping("exportExcel")
     @ResponseBody
-    public String exportExcel(String name,HttpServletResponse response) {
+    public String exportExcel(String name,HttpServletResponse response,String sqlWords) {
         JSONObject res = new JSONObject();
         try {
             DBUtil db = new DBUtil();
-            db.exportExcel(name,response);//HttpServletResponse response
+            db.exportExcel(name,response,sqlWords);//HttpServletResponse response
             res.put("status", "success");
             res.put("message", "导出成功");
         } catch (IOException ex) {
@@ -48,6 +48,8 @@ public class UtilController {
         return res.toString();
 
     }
+
+
 }
 
 
