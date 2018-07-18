@@ -982,7 +982,7 @@ else {
                         <br>
                         <div class="row text-center">
                             <a class="btn btn-primary" onclick="" id="btn">打印</a>
-                            <a class="btn btn-danger" data-dismiss="modal" id="back"></a>
+                            <a class="btn btn-danger" id="back"></a>
                             <a class="btn btn-danger" data-dismiss="modal">关闭</a>
                         </div>
                     </form>
@@ -1008,6 +1008,26 @@ else {
                 </div>
         </div>
     </div>
+
+    </div>
+    <!--驳回页面-->
+    <div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="sub-header text-center">驳回意见</h5>
+            </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回</button>
+                </div>
+            </div>
+        </div>
 
     </div>
 </body>
@@ -1315,6 +1335,8 @@ function cancel(item) {
                     if(data.freight==false){//不需要运费
                         $('#modal3_freight').removeAttr("checked");
                     }
+                   $('#advice').val(data.opinion);
+                    $('#backContent').val(data.backContent);
                     $("input").prop("readonly",true);
                 } else {
                     $("#modal3_contactName").val("");
@@ -1336,8 +1358,6 @@ function cancel(item) {
             }
         });
         $('#back').show();
-        $('#btn').text();
-        $('#back').text();
         $('#btn').text("审批");
         $('#back').text('驳回');
         $('#contractInfoForm').modal('show');//出现第一个模态框
@@ -1347,7 +1367,47 @@ function cancel(item) {
         // $('#confirm').click(function () {
         // });
     });
-
+    $('#back').click(function () {
+        //设置状态驳回
+        // $.ajax({
+        //     type:"POST",
+        //     url:"backContract",
+        //     async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data:{"contractId":contractId},
+        //     success:function (result) {
+        //         var obj=eval(result);
+        //         if(obj.state=="success"){
+        //             alert("已驳回！");
+        //             if(name1.indexOf("物流")!=-1){
+        //                 var name2="Logistics";
+        //             }
+        //             if(name1.indexOf("危废")!=-1){
+        //                 var name2="Wastes";
+        //             }
+        //             if(name1.indexOf("次生")!=-1){
+        //                 var name2="Derive";
+        //             }
+        //             if(name1.indexOf("采购")!=-1){
+        //                 var name2="Purchase";
+        //             }
+        //             if(name1.indexOf('应急')!=-1){
+        //                 var name2="Emergency";
+        //             }
+        //             $(location).attr('href', 'contractManage.html');
+        //             localStorage.name=name2;
+        //             location.href="contractManage.html";
+        //         }
+        //         else {
+        //             alert("审批失败")
+        //         }
+        //     },
+        //     error:function (result) {
+        //         alert("服务器异常！")
+        //     }
+        // });
+        $('#contractInfoForm3').modal('show');
+    });
     //把按钮功能分出来做这个是审批
         function confirm1() {
             opinion=$('#advice').val();
@@ -1391,46 +1451,47 @@ function cancel(item) {
                 }
             });
         }
-     $('#back').click(function () {
-        //设置状态驳回
-        $.ajax({
-            type:"POST",
-            url:"backContract",
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data:{"contractId":contractId},
-            success:function (result) {
-                var obj=eval(result);
-                if(obj.state=="success"){
-                    alert("已驳回！");
-                    if(name1.indexOf("物流")!=-1){
-                        var name2="Logistics";
-                    }
-                    if(name1.indexOf("危废")!=-1){
-                        var name2="Wastes";
-                    }
-                    if(name1.indexOf("次生")!=-1){
-                        var name2="Derive";
-                    }
-                    if(name1.indexOf("采购")!=-1){
-                        var name2="Purchase";
-                    }
-                    if(name1.indexOf('应急')!=-1){
-                        var name2="Emergency";
-                    }
-                    $(location).attr('href', 'contractManage.html');
-                    localStorage.name=name2;
-                    location.href="contractManage.html";
+function back1() {
+    backContent=$('#backContent').val();
+    //设置状态驳回
+    $.ajax({
+        type:"POST",
+        url:"backContract",
+        async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'contractId':contractId,'backContent':backContent,},
+        success:function (result) {
+            var obj=eval(result);
+            if(obj.state=="success"){
+                alert("已驳回！");
+                if(name1.indexOf("物流")!=-1){
+                    var name2="Logistics";
                 }
-                else {
-                    alert("审批失败")
+                if(name1.indexOf("危废")!=-1){
+                    var name2="Wastes";
                 }
-            },
-            error:function (result) {
-                alert("服务器异常！")
+                if(name1.indexOf("次生")!=-1){
+                    var name2="Derive";
+                }
+                if(name1.indexOf("采购")!=-1){
+                    var name2="Purchase";
+                }
+                if(name1.indexOf('应急')!=-1){
+                    var name2="Emergency";
+                }
+                $(location).attr('href', 'contractManage.html');
+                localStorage.name=name2;
+                location.href="contractManage.html";
             }
-        });
+            else {
+                alert("审批失败")
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
     });
+}
         function searchContract() {
             var keyword = $("#search").val();
           //  console.log(keyword);

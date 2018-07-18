@@ -223,7 +223,19 @@ private  TicketRate1 ticketRate1;
      * 审批意见
      */
     private String opinion;
+    /**
+     * 驳回意见
+     */
+    private String backContent;
 private String keyword;
+
+    public String getBackContent() {
+        return backContent;
+    }
+
+    public void setBackContent(String backContent) {
+        this.backContent = backContent;
+    }
 
     public String getKeyword() {
         return keyword;

@@ -131,8 +131,8 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public void back(String contractId) {
-        contractMapper.back(contractId);
+    public void back(String contractId,String backContent) {
+        contractMapper.back(contractId,backContent);
     }
 
     @Override
