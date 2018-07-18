@@ -20,8 +20,12 @@
     </select>
 
     <select id="getByKeyword" parameterType="String" resultType="SampleAppoint">
-        SELECT * FROM t_sampleAppoint WHERE appointId LIKE "%"#{keyword}"%" OR companyName LIKE "%"#{keyword}"%"
-        OR contactName LIKE "%"#{keyword}"%" OR telephone LIKE "%"#{keyword}"%" OR productName LIKE "%"#{keyword}"%" OR state=#{keyword}
+    SELECT *
+      FROM (select t_sampleAppoint.appointId, t_sampleappoint.state, t_sampleappoint.companyName, t_samplecheck.productName,
+      t_samplecheck.code, t_samplecheck.contactName, t_samplecheck.telephone from t_sampleAppoint LEFT JOIN t_samplecheck
+        ON t_sampleappoint.appointId=t_samplecheck.appointId) s WHERE s.appointId LIKE "%"#{keyword}"%" OR s.state LIKE "%"#{keyword}"%"
+        OR s.productName LIKE "%"#{keyword}"%" OR s.code LIKE "%"#{keyword}"%" OR s.contactName LIKE "%"#{keyword}"%"
+        OR s.companyName LIKE "%"#{keyword}"%" OR s.telephone LIKE "%"#{keyword}"%";
     </select>
 
     <select id="countById" parameterType="String" resultType="_int">
@@ -29,7 +33,9 @@
     </select>
 
     <select id="list" resultType="SampleAppoint">
-        select * from t_sampleAppoint
+        select t_sampleAppoint.appointId, t_sampleappoint.state, t_sampleappoint.companyName, t_samplecheck.productName,
+        t_samplecheck.code, t_samplecheck.contactName, t_samplecheck.telephone from t_sampleAppoint LEFT JOIN t_samplecheck
+        ON t_sampleappoint.appointId=t_samplecheck.appointId;
     </select>
 
     <update id="updatePdtAndCode" parameterType="SampleCheck">

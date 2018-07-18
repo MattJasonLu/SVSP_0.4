@@ -8,7 +8,6 @@ import com.jdlink.service.ContractService;
 import com.jdlink.util.UpdateVersion;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -239,7 +238,6 @@ return  res.toString();
         ModelAndView mav = new ModelAndView();
         return mav;
     }
-
     public ModelAndView showContract(String contractId) {
         ModelAndView mav = new ModelAndView();
         return mav;
@@ -426,10 +424,10 @@ return  res.toString();
      */
     @RequestMapping("backContract")
     @ResponseBody
-    public  String backContract(String contractId){
+    public  String backContract(String contractId,String backContent){
         JSONObject res=new JSONObject();
      try{
-         contractService.back(contractId);
+         contractService.back(contractId,backContent);
          res.put("state","success");
      }
      catch (Exception e){
@@ -443,11 +441,12 @@ return  res.toString();
      */
     @RequestMapping("approvalContract")
     @ResponseBody
-    public String approvalContract(@Param("contractId")String contractId , @Param("opinion")String opinion){
+    public String approvalContract(String contractId ,String opinion){
+        System.out.println(contractId+opinion+"aaa");
         JSONObject res=new JSONObject();
         try {
-           contractService.approval(contractId);
-            contractService.opinion(contractId,opinion);
+           //contractService.approval(contractId);
+            contractService.opinion(contractId,opinion);//这个方法审批和添加合同信息一起做一起做
             res.put("state","success");
         }
         catch (Exception e){

@@ -1,7 +1,6 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Contract;
-import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -32,7 +31,6 @@ public interface ContractService {
     void cancel1(String modelName);
     void approval(String contractId);
     List<String> modelName(String key);
-    void back(String contractId);
-    @Update("update t_contract set opinion=#{1} where contractId=#{0}")
+    void back(String contractId,String backContent);
     void opinion(String contractId,String opinion);
 }

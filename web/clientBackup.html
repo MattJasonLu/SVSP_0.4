@@ -119,43 +119,43 @@
                         $(this).html(obj.clientType.name);
                         break;
                     // 操作
-                    case (9):
-                        if(obj.clientState.name == "已启用"){
-                            if(obj.checkState.name == "已完成"){
-                                $(this).children().eq(1).attr("class","disabled");
-                                $(this).children().eq(1).removeAttr("onclick");
-                                $(this).children().eq(2).attr("class","disabled");
-                                $(this).children().eq(2).removeAttr("onclick");
-                                $(this).children().eq(3).attr("class","disabled");
-                                $(this).children().eq(3).removeAttr("onclick");
-                                $(this).children().eq(4).attr("class","disabled");
-                                $(this).children().eq(4).removeAttr("onclick");
-                                $(this).children().eq(6).attr("class","disabled");
-                                $(this).children().eq(6).removeAttr("onclick");
-                            }else if(obj.checkState.name == "审批中"){
-                                $(this).children().eq(1).attr("class","disabled");
-                                $(this).children().eq(1).removeAttr("onclick");
-                                $(this).children().eq(2).attr("class","disabled");
-                                $(this).children().eq(2).removeAttr("onclick");
-                                $(this).children().eq(4).attr("class","disabled");
-                                $(this).children().eq(4).removeAttr("onclick");
-                            }else{
-                                $(this).children().eq(1).attr("class","disabled");
-                                $(this).children().eq(1).removeAttr("onclick");
-                                $(this).children().eq(4).attr("class","disabled");
-                                $(this).children().eq(4).removeAttr("onclick");
-                                $(this).children().eq(6).attr("class","disabled");
-                                $(this).children().eq(6).removeAttr("onclick");
-                            }
-                        }else{
-                            $(this).children().eq(0).attr("class","disabled");
-                            $(this).children().eq(0).removeAttr("onclick");
-                            $(this).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(4).removeAttr("onclick");
-                            $(this).children().eq(6).attr("class","disabled");
-                            $(this).children().eq(6).removeAttr("onclick");
-                        }
-                        break;
+//                    case (9):
+//                        if(obj.clientState.name == "已启用"){
+//                            if(obj.checkState.name == "已完成"){
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(2).attr("class","disabled");
+//                                $(this).children().eq(2).removeAttr("onclick");
+//                                $(this).children().eq(3).attr("class","disabled");
+//                                $(this).children().eq(3).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                                $(this).children().eq(6).attr("class","disabled");
+//                                $(this).children().eq(6).removeAttr("onclick");
+//                            }else if(obj.checkState.name == "审批中"){
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(2).attr("class","disabled");
+//                                $(this).children().eq(2).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                            }else{
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                                $(this).children().eq(6).attr("class","disabled");
+//                                $(this).children().eq(6).removeAttr("onclick");
+//                            }
+//                        }else{
+//                            $(this).children().eq(0).attr("class","disabled");
+//                            $(this).children().eq(0).removeAttr("onclick");
+//                            $(this).children().eq(4).attr("class","disabled");
+//                            $(this).children().eq(4).removeAttr("onclick");
+//                            $(this).children().eq(6).attr("class","disabled");
+//                            $(this).children().eq(6).removeAttr("onclick");
+//                        }
+//                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -355,7 +355,7 @@
                         <a class="btn btn-primary" href="clientInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary" onclick="submitClients();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                         <a class="btn btn-primary" onclick="importExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary" onclick="exportExcel(this);"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
@@ -1403,31 +1403,21 @@
         return item.parent().parent().next().next().text();
     }
 
-    function exportExcel() {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "exportExcel",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {
-                name: 'client'
-            },
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    if (result.status == "success") {
-                        alert("导出成功，文件保存于D盘根目录！")
-                    } else {
-                        alert("导出失败，请重试！")
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
+
+    /**
+     * 导出excel
+     * @param e
+     */
+    function exportExcel(e) {
+        var name='client';
+        window.open('exportExcel?name=' + name);
+
     }
 
+    /**
+     * 导入excel
+     * 
+     */
     function importExcel() {
         document.getElementById("idExcel").click();
         document.getElementById("idExcel").addEventListener("change",function () {
@@ -1449,7 +1439,7 @@
                         console.log(result);
                         if (result.status == "success") {
                             alert(result.message);
-                            window.location.reload();
+                            window.location.reload();         //刷新
                         } else {
                             alert(result.message);
                         }

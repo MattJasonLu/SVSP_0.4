@@ -23,7 +23,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public List<QuestionnaireAdmin> search(String keyword) {
+    public List<Questionnaire> search(String keyword) {
         return questionnaireMapper.search(keyword);
     }
 
@@ -76,5 +76,10 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     public void back(String quesionnaireId) {
         questionnaireMapper.back(quesionnaireId);
+    }
+
+    @Override
+    public void examine(String questionnaireId) {
+        questionnaireMapper.examine(questionnaireId);
     }
 }

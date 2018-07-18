@@ -108,8 +108,10 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="modelName" resultMap="ContractRM" >
         select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') ;
     </select>
-    <update id="back" parameterType="String">
-        update t_contract set checkState="Backed" where contractId=#{contractId}
+    <update id="back" parameterType="Contract">
+        update t_contract set checkState="Backed",backContent=#{1} where contractId=#{0}
     </update>
-
+<update id="opinion" parameterType="Contract">
+    update t_contract set opinion=#{1},checkState="Keeping" where contractId=#{0};
+</update>
 </mapper>
