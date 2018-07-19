@@ -33,7 +33,7 @@
     </select>
 
     <select id="list" resultType="SampleAppoint">
-        select t_sampleAppoint.appointId, t_sampleappoint.state, t_sampleappoint.companyName, t_samplecheck.productName,
+        select t_sampleAppoint.appointId, t_sampleappoint.state, t_sampleappoint.companyName, t_sampleappoint.appointTime, t_samplecheck.productName,
         t_samplecheck.code, t_samplecheck.contactName, t_samplecheck.telephone from t_sampleAppoint LEFT JOIN t_samplecheck
         ON t_sampleappoint.appointId=t_samplecheck.appointId;
     </select>

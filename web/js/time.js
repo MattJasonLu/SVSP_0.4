@@ -58,6 +58,7 @@ function getTimeStr(obj) {
  * @returns {string|*}
  */
 function getStdTimeStr(time) {
+    if (time == '') return "";
     var timeArr = time.split(' ');
     time = timeArr[0]+'T'+timeArr[1]+'.000Z';
     return time;
