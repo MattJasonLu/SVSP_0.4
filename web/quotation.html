@@ -424,6 +424,31 @@
             </div>
         </div>
     </div>
+
+    <!--modal 送审-->
+    <div class="modal fade" id="examinationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="TitleMyModalLabel">客户报价单-审核</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modelAssign" method="post">
+                        <div class="form-group">
+                            <font size="+1">审核意见：</font>
+                            <br>
+                            <textarea style="width:550px;height:60px;" id="advice" placeholder="审核意见"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="approval()">通过</button>
+                    <button type="button" class="btn btn-default" onclick="reject()">驳回</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <input type="file" name="excelPath" id="idExcel" style="display:none">
 </body>
 <script>
@@ -574,6 +599,86 @@
         return e.parentElement.nextElementSibling.innerHTML;
     }
 
+    function getAdvice(){
+        return document.getElementById("advice").value;
+    }
+
+    /**
+     * 送审
+     */
+    function examination(e){
+        var id = getQuotationId(e);
+        quotationId = id;
+        $('#examinationModal').modal('show');//手动触发模态框弹出
+
+    }
+    /**
+     * 审批通过
+     *
+     * */
+    function approval() {
+        var advice=getAdvice();
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "approval",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                id: quotationId,
+                advice:advice
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+    }
+    /**
+     * 审批驳回
+     * */
+    function reject() {
+        var advice=getAdvice();
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "reject",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                id: quotationId,
+                advice:advice
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            },
+            error: function (result) {
+                var that = this;
+                console.log(that.data);
+                alert("服务器异常!");
+            }
+        });
+    }
 
     /**
      * 导出excel

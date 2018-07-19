@@ -27,6 +27,7 @@ public class QuotationController {
 
     /**
      * 保存报价单
+     *
      * @param quotation 报价单
      * @return 成功与否
      */
@@ -40,6 +41,7 @@ public class QuotationController {
 
     /**
      * 提交报价单
+     *
      * @param quotation 报价单
      * @return 成功与否
      */
@@ -52,6 +54,7 @@ public class QuotationController {
 
     /**
      * 作废报价单
+     *
      * @param id 报价单编号
      * @return 成功与否
      */
@@ -74,6 +77,7 @@ public class QuotationController {
 
     /**
      * 修改结束日期
+     *
      * @param quotation 报价单
      * @return 成功与否
      */
@@ -96,6 +100,7 @@ public class QuotationController {
 
     /**
      * 增加报价单
+     *
      * @param quotation 报价单
      * @return 成功与否
      */
@@ -122,6 +127,7 @@ public class QuotationController {
 
     /**
      * 更新报价单
+     *
      * @param quotation 报价单
      * @return 成功与否
      */
@@ -152,6 +158,7 @@ public class QuotationController {
 
     /**
      * 更新报价单
+     *
      * @param quotation 报价单
      * @return 成功与否
      */
@@ -182,6 +189,7 @@ public class QuotationController {
 
     /**
      * 列出所有报价单对象
+     *
      * @param clientId 客户编号
      * @return 报价单对象列表
      */
@@ -209,6 +217,7 @@ public class QuotationController {
 
     /**
      * 获取报价单号
+     *
      * @return 报价单号
      */
     @RequestMapping(value = {"getCurrentQuotationId", "client/getCurrentQuotationId"})
@@ -245,6 +254,7 @@ public class QuotationController {
 
     /**
      * 通过报价单编号获取报价单
+     *
      * @param id 报价单编号
      * @return 报价单对象
      */
@@ -263,6 +273,60 @@ public class QuotationController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取报价单信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("examination")
+    @ResponseBody
+    public String examination(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            Quotation quotation = quotationService.getById(id);
+            if (quotation == null) throw new Exception("没有该报价单!");
+            JSONObject data = JSONObject.fromBean(quotation);
+            res.put("status", "success");
+            res.put("data", data.toString());
+            res.put("message", "审批报价单信息成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批报价单信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("approval")
+    @ResponseBody
+    public String approval(Quotation quotation) {
+        JSONObject res = new JSONObject();
+        try {
+            quotationService.approval(quotation.getAdvice(), quotation.getId());
+            res.put("status", "success");
+            res.put("message", "送审通过成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "送审通过失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("reject")
+    @ResponseBody
+    public String reject(String advice,String id) {
+        JSONObject res = new JSONObject();
+        try {
+            quotationService.reject(advice,id);
+            res.put("status", "success");
+            res.put("message", "送审驳回成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "送审驳回失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();
