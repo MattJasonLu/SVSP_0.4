@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Quotation;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +31,8 @@ public interface QuotationMapper {
     void setStateDisabled(String id);
 
     void changeEndDate(Quotation quotation);
+
+    void approval(@Param(value="advice")String advice, @Param(value="id")String id);
+
+    void reject(String advice,String id);
 }

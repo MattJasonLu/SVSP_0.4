@@ -288,7 +288,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="cloneTr1">
+                    <tr id="cloneTr1" name="clone" ondblclick="checkclone(this)">
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -336,20 +336,20 @@
         <div class="modal-dialog modal-lg" role="document" style="height:150%">
             <div class="modal-content">
                 <div class="client_style">
-                    <h2 class="sub-header text-center">合同信息</h2>
+                    <h2 class="sub-header text-center">模板信息</h2>
                     <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
                         <div class="row">
                             <div class="form-horizontal col-md-6">
                                 <div class="form-group">
                                     <label for="modal3_modelName" class="col-sm-4 control-label">模板名称 </label>
                                     <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_modelName" name="modelName">
+                                        <input type="text" class="form-control focus" id="modal3_modelName" name="modelName"style="box-shadow:none">
                                     </div>
                                 </div>
                                 <div class="form-group" >
                                     <label for="contractId" class="col-sm-4 control-label">版本</label>
                                     <div class="col-xs-5" >
-                                        <input type="text" class="form-control" id="modelVersion" name="modelVersion"   readonly >
+                                        <input type="text" class="form-control focus" id="modelVersion" name="modelVersion"  style="box-shadow:none">
                                     </div>
                                 </div>
                             </div>
@@ -357,13 +357,13 @@
                                 <div class="form-group">
                                     <label for="modal3_year" class="col-sm-4 control-label">年份</label>
                                     <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_year" name="year">
+                                        <input type="text" class="form-control focus" id="modal3_year" name="year" style="box-shadow:none">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="modal3_period" class="col-sm-4 control-label">适用期限</label>
                                     <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_period" name="period">
+                                        <input type="text" class="form-control focus" id="modal3_period" name="period" style="box-shadow:none">
                                     </div>
                                 </div>
                             </div>
@@ -404,8 +404,8 @@
                 if(result!=undefined){
                     var obj=eval(result);
                     //console.log(obj);
-                    $('input').prop("readonly",true);
-                    $('textarea').prop("readonly",true);
+                    //$('input').prop("readonly",true);
+                   // $('textarea').prop("readonly",true);
                     $('#modal3_modelName').val(obj.modelName);
                     $('#modal3_contractType').val(obj.contractType.name);
                     $('#modal3_year').val(obj.year);
@@ -460,7 +460,42 @@
 
 
     }
+    function checkclone(item) {
+      var contractId=  item.lastElementChild.previousElementSibling.innerHTML;
+      //console.log(contractId);
+        $.ajax({
+            type:"POST",
+            url:"getContractBymodelName",
+            async: false,
+            dataType: "json",
+            data: {
+                'contractId': contractId
+            },
+            success:function (result) {
+                if(result!=undefined){
+                    var obj=eval(result);
+                    //console.log(obj);
+                    //$('input').prop("readonly",true);
+                    // $('textarea').prop("readonly",true);
+                    $('#modal3_modelName').val(obj.modelName);
+                    $('#modal3_contractType').val(obj.contractType.name);
+                    $('#modal3_year').val(obj.year);
+                    $('#modal3_period').val(obj.period);
+                    $('#modelVersion').val(obj.modelVersion);
+                    var text=obj.contractContent;
+                    //console.log(text);
+                    //$('#modal3_contractContent').val($(text).text());//有换行的格式
+                    CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
+                }
+            },
+            error:function (result) {
 
+            }
+        });
+        $('#btn').text();
+        $('#btn').text('打印');
+        $('#contractInfoForm').modal('show');
+    }
     /**
      * 导出excel
      * @param e

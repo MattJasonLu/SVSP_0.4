@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  * Created by matt on 2018/5/17.
  * 合同类
  */
-public class Contract {
+public class Contract implements Serializable {
     /**
      * 合同编号
      */
@@ -228,7 +230,20 @@ private  TicketRate1 ticketRate1;
      * 驳回意见
      */
     private String backContent;
-private String keyword;
+    private String keyword;
+
+    /**
+     * 废物名称及数量
+     */
+    private  List<Hazardous> hazardousList=new ArrayList<>();
+
+    public List<Hazardous> getHazardousList() {
+        return hazardousList;
+    }
+
+    public void setHazardousList(List<Hazardous> hazardousList) {
+        this.hazardousList = hazardousList;
+    }
 
     public String getBackContent() {
         return backContent;

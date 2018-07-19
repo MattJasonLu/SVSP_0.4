@@ -51,7 +51,9 @@ values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},
     <select id="getModel" parameterType="String" resultMap="ContractRM">
         select * from t_contract where contractId=#{contractId};
     </select>
-
+    <select id="getModel2" parameterType="String" resultMap="ContractRM">
+        select * from t_contract where modelName=#{modelName} and period!="";
+    </select>
     <update id="update" parameterType="Contract">
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},

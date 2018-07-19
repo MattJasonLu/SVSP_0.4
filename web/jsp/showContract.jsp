@@ -26,8 +26,31 @@
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script src="js/ckeditor/ckeditor.js"></script>
 </head>
 <script type="text/javascript">
+    CKEDITOR.editorConfig = function( config ) {
+        config.toolbarGroups = [
+            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+            { name: 'links', groups: [ 'links' ] },
+            { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+            { name: 'insert', groups: [ 'insert' ] },
+            { name: 'forms', groups: [ 'forms' ] },
+            { name: 'tools', groups: [ 'tools' ] },
+            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+            { name: 'others', groups: [ 'others' ] },
+            '/',
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+            { name: 'styles', groups: [ 'styles' ] },
+            { name: 'colors', groups: [ 'colors' ] },
+            { name: 'about', groups: [ 'about' ] }
+        ];
+        config.removeButtons = 'Underline,Subscript,Superscript';
+        config.pasteFromWordRemoveFontStyles = false;
+        config.pasteFromWordRemoveStyles = false;
+        config.removePlugins='elementspath';
+    };
     /**
      * 装载下拉框列表
      */
@@ -449,9 +472,10 @@
                         <div class="col-xs-4" id="contractName1" >
                             <input type="text" class="form-control" id="contractName" name="contractName">
                         </div>
-                        <div class="col-xs-5" id="contractType2">
+                        <div class="col-xs-5 form-inline" id="contractType2">
                             <select class="form-control"  type="text" id="contractType1" name="modelName"  >
                             </select>
+                            <input type="button" class="form-control" value="查看" onclick="check1(this)">
                         </div>
                     </div>
                     <div class="form-group" >
@@ -551,8 +575,60 @@
         </form>
     </div>
 </div>
+<div class="modal fade bs-example-modal-lg" id="modelInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="height:150%">
+        <div class="modal-content">
+            <div class="client_style">
+                <h2 class="sub-header text-center">模板信息</h2>
+                <form method="post" id="modelInfoForm1" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="modal3_modelName" class="col-sm-4 control-label">模板名称 </label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control focus" id="modal3_modelName" name="modelName"style="box-shadow:none">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label for="modelVersion" class="col-sm-4 control-label">版本</label>
+                                <div class="col-xs-5" >
+                                    <input type="text" class="form-control focus" id="modelVersion" name="modelVersion"  style="box-shadow:none">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="modal3_year" class="col-sm-4 control-label">年份</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control focus" id="modal3_year" name="year" style="box-shadow:none">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal3_period" class="col-sm-4 control-label">适用期限</label>
+                                <div class="col-xs-5">
+                                    <input type="text" class="form-control focus" id="modal3_period" name="period" style="box-shadow:none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-12">
+                            <label for="modal3_contractContent" class="control-label col-sm-6">合同正文 </label>
+                            <textarea class="form-control"  id="modal3_contractContent" rows="40" name="contractContent" readonly ></textarea>
+                        </div>
+                        <div class="row text-center">
+                            <a class="btn btn-primary" onclick="" id="btn">打印</a>
+                            <a class="btn btn-danger" data-dismiss="modal">关闭</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
+    CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
     $('.form_datetime1').datetimepicker({
         format: 'yyyy-mm-dd',
         language:  'zh-CN',
@@ -653,6 +729,45 @@
     function Appear1() {
         $('#contractType2').hide();
         $("#contractName1").show();
+    }
+    /**
+     *
+     * 合同正文查看
+     */
+
+    function check1(item) {
+        var modelName=item.previousElementSibling.value;
+        //console.log(modelName);
+        $.ajax({
+            type:"POST",
+            url:"getContractBymodelName1",
+            async: false,
+            dataType: "json",
+            data: {
+                'modelName': modelName
+            },
+            success:function (result) {
+                if(result!=undefined){
+                    var obj=eval(result);
+                    //console.log(obj);
+                    //$('input').prop("readonly",true);
+                    // $('textarea').prop("readonly",true);
+                    $('#modal3_modelName').val(obj.modelName);
+                    $('#modal3_contractType').val(obj.contractType.name);
+                    $('#modal3_year').val(obj.year);
+                    $('#modal3_period').val(obj.period);
+                    $('#modelVersion').val(obj.modelVersion);
+                    var text=obj.contractContent;
+                    //console.log(text);
+                    //$('#modal3_contractContent').val($(text).text());//有换行的格式
+                    CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
+                }
+            },
+            error:function (result) {
+
+            }
+        });
+        $('#modelInfoForm').modal('show');
     }
 </script>
 </html>
