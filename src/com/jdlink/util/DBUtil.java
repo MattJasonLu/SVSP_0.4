@@ -45,7 +45,7 @@ public class DBUtil {
         }
     }
 
-    public void exportExcel(String name,HttpServletResponse response)  throws IOException {// Table_name 数据库中想要导出的指定表名
+    public void exportExcel(String name,HttpServletResponse response,String sqlWords)  throws IOException {// Table_name 数据库中想要导出的指定表名
         // 创建Excel表。
         org.apache.poi.ss.usermodel.Workbook book = new HSSFWorkbook();
         try {
@@ -53,9 +53,10 @@ public class DBUtil {
             org.apache.poi.ss.usermodel.Sheet sheet = book.createSheet(name);
             Statement st = (Statement) con.createStatement();
             // 创建sql语句，对team进行查询所有数据
-            String sql = "select * from jdlink." + name;
+            String sql = sqlWords;
             ResultSet rs = st.executeQuery(sql);
-            // 设置表头信息（写入Excel左上角是从(0,0)开始的）
+
+
             Row row1 = sheet.createRow(0);
             ResultSetMetaData rsmd = rs.getMetaData();
             int colnum = rsmd.getColumnCount();

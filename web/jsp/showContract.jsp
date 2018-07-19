@@ -183,6 +183,31 @@
                        contractType1.append(option);
                    });
                    contractType1.get(0).selectedIndex =index2;
+                   //开票税率1下拉框
+                   var taxRate1=$('#taxRate1');
+                   taxRate1.children().remove();
+                   //var s='${contract.ticketRate1}';//Rate3
+                   $.each(data.ticketRateStrList1, function (index, item) {
+                       //看具体的item 在指定val
+                       //console.log(item);
+                       var option = $('<option />');
+                       option.val(index);
+                       option.text(item.name);
+                       taxRate1.append(option);
+                   });
+                   taxRate1.get(0).selectedIndex = ${contract.ticketRate1.index}-1;
+                   //开票税率2下拉框
+                   var taxRate2=$('#taxRate2');
+                   taxRate2.children().remove();
+                   var s1='${contract.ticketRate2}';
+                   $.each(data.ticketRateStrList2, function (index, item) {
+                       // console.log(s1)
+                       var option = $('<option />');
+                       option.val(index);
+                       option.text(item.name);
+                       taxRate2.append(option);
+                   });
+                   taxRate2.get(0).selectedIndex =${contract.ticketRate2.index}-1;
                 }
                 else {
                     console.log(result);
@@ -435,6 +460,19 @@
                             <input type="text" class="form-control" id="contactName" name="contactName"  >
                         </div>
                     </div>
+                    <div class="form-group" >
+                        <label  for="bankName" class="col-sm-4 control-label">开户行名称</label>
+                        <div class="col-xs-4" >
+                            <input type="text" class="form-control" id="bankName" name="bankName" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="taxRate1" class="col-sm-4 control-label">开票税率1</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" id="taxRate1" name="ticketRate1">
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group ">
                         <label class="col-sm-4 control-label sr-only" > 1111111</label>
                         <label class="checkbox-inline col-xs-5" for="isFreight">
@@ -449,7 +487,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-5">
+                <div class="form-horizontal col-md-6">
                     <div class="form-group" >
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
                         <div class="col-xs-8" >
@@ -472,7 +510,7 @@
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label for="order1" class="col-sm-3 control-label">预约处置费</label>
+                        <label for="order1" class="col-sm-3 control-label">预计处置费</label>
                         <div class="col-xs-5" >
                             <input type="text" class="form-control" id="order1" name="order1" value="${contract.order1}" >
                         </div>
@@ -482,6 +520,19 @@
                         <label for="telephone" class="col-sm-3 control-label">联系电话</label>
                         <div class="col-xs-5" >
                             <input type="text" class="form-control" id="telephone" name="telephone" value="${contract.telephone}" >
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label  for="bankAccount" class="col-sm-3 control-label">开户行账号</label>
+                        <div class="col-xs-5" >
+                            <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>
+                        <div class="col-xs-5">
+                            <select class="form-control" id="taxRate2" name="ticketRate2">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group" >

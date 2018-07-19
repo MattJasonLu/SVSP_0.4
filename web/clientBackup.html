@@ -1363,7 +1363,8 @@
      */
     function exportExcel(e) {
         var name='client';
-        window.open('exportExcel?name=' + name);
+        var sqlWords= "select * from jdlink."+ name;
+        window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
 

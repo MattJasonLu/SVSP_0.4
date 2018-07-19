@@ -248,6 +248,7 @@
     function supplierSave() {
         if(validator.form()){
             var data = {
+                supplierId:$('#supplierId').val(),
                 companyName: $("#companyName").val(),
                 organizationCode: $("#organizationCode").val(),
                 representative: $("#representative").val(),
@@ -300,6 +301,7 @@
         var addType = $("input[name='addType']:checked").val();
         if(validator.form()){
             var data = {
+                supplierId:$('#supplierId').val(),
                 companyName: $("#companyName").val(),
                 organizationCode: $("#organizationCode").val(),
                 representative: $("#representative").val(),
