@@ -29,4 +29,11 @@ public interface QuotationService {
     void setStateDisabled(String id);
 
     void changeEndDate(Quotation quotation);
+
+    void reject(String advice,String id);
+
+    void approval(String advice,String id);
+
+
+
 }

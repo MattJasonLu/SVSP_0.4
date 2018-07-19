@@ -92,7 +92,17 @@
         UPDATE t_quotation SET checkState='Invalid' WHERE id=#{id};
     </update>
 
+    <update id="approval" parameterType="String">
+        UPDATE t_quotation SET checkState='Finished',advice=#{advice} WHERE id=#{id};
+    </update>
+
+    <update id="reject" parameterType="String">
+        UPDATE t_quotation SET checkState='Backed',advice=#{advice} WHERE id=#{id};
+    </update>
+
     <update id="changeEndDate" parameterType="Quotation">
         UPDATE t_quotation SET endDate=#{endDate} WHERE id=#{id};
     </update>
+
+
 </mapper>
