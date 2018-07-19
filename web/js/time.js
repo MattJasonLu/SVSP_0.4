@@ -43,13 +43,17 @@ function getTimeStr(obj) {
     if (minutes.length!=2){
         minutes=0+minutes;
     }
+    var seconds = parseInt(obj.seconds).toString();
+    if (seconds.length!=2){
+        seconds=0+seconds;
+    }
     //  dataLeftCompleting(2, "0", mouth.toString()).toString();
     var  day=parseInt((obj.date)).toString();
     //ataLeftCompleting(2, "0", day.toString()).toString();
     if(day.length!=2){
         day=0+day;
     }
-    var time1 = year + "-" + month + "-" + day + " " + hour + ":" + minutes;
+    var time1 = year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
     return time1;
 }
 /**
