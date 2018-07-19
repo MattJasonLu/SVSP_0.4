@@ -74,7 +74,7 @@ public class SampleController {
      */
     @RequestMapping("addSampleAppoint")
     @ResponseBody
-    public String addSampleAppoint(SampleAppoint sampleAppoint) {
+    public String addSampleAppoint(@RequestBody SampleAppoint sampleAppoint) {
         JSONObject res = new JSONObject();
         try {
             // 生成预约号

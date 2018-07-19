@@ -15,6 +15,7 @@
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/time.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <script type="text/javascript">
@@ -474,32 +475,44 @@
                     <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="model-appoint" method="post">
-                        <div class="form-group">
-                            <label for="model-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-contactName" class="control-label">联系人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <input type="text" class="form-control" id="model-contactName" name="contactName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-contactPhone" class="control-label">联系电话 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <input type="text" class="form-control" id="model-contactPhone" name="contactPhone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="dtp_input1" class="control-label">取样时间 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
-                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    <form class="form-horizontal" id="model-appoint" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model-companyName" class="col-sm-5 control-label">公司名称</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="model-companyName" name="companyName" readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="col-sm-5 control-label">联系人<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="model-contactName" name="contactName" required>
+                                    </div>
+                                </div>
                             </div>
-                            <input type="hidden" id="dtp_input1" value="" />
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model-appointTime" class="col-sm-5 control-label">取样时间<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
+                                            <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactPhone" class="col-sm-5 control-label">联系电话<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="model-contactPhone" name="telephone" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="model-comment" class="control-label">备注</label>
-                            <div>
-                                <textarea class="form-control" id="model-comment" name="model-comment" rows="3"></textarea>
+                            <label for="model-comment" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="model-comment" name="comment" rows="3"></textarea>
                             </div>
                         </div>
                     </form>
@@ -2116,11 +2129,20 @@
      */
     function addAppoint() {
         if (validator.form()) {
+            var time = getStdTimeStr($("#model-appointTime").val());
+            var data = {
+                companyName: $("#model-companyName").val(),
+                contactName: $("#model-contactName").val(),
+                appointTime: time,
+                telephone: $("#model-contactPhone").val(),
+                comment: $("#model-comment").val()
+            };
             $.ajax({
                 type: "POST",                            // 方法类型
                 url: "addSampleAppoint",                       // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify($('#model-appoint').serializeJSON()),
+//                data: JSON.stringify($('#model-appoint').serializeJSON()),
+                data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
