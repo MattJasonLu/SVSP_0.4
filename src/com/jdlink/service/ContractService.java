@@ -26,6 +26,7 @@ public interface ContractService {
     List listRate1();
     List listRate2();
     Contract getModel(String contractId);
+    Contract getModel2(String modelName);
     void addEm(Contract contract);
     void cancel(String contractId);
     void cancel1(String modelName);

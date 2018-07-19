@@ -106,6 +106,12 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
+    public Contract getModel2(String modelName) {
+        return contractMapper.getModel2(modelName);
+    }
+
+
+    @Override
     public void addEm(Contract contract) {
         contractMapper.addEm(contract);
     }
