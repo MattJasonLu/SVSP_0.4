@@ -19,6 +19,8 @@
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
 </head>
 <style>
 
@@ -108,25 +110,21 @@
         });
     }
 </script>
-<style>
-    .focus {
-        outline: none;
-        border: 0px;
-    }
-</style>
 <body onload="loadContractSelectList();">
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">产废服务平台</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
+<div class="main-title">
+    <ul class="nav navbar-nav navbar-left navbar-side" id="navbar1">
+        <li>
+            <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="container navbar-left">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
                 <li><a href="wastesPlatform.html">首页</a></li>
                 <li class="dropdown">
@@ -164,35 +162,42 @@
                     </ul>
                 </li>
                 <li><a href="archivesManage.html">一企一档</a></li>
-
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">个人信息</a></li>
-                        <li><a href="#">待办事项</a></li>
-                        <li><a href="index.html">注销</a></li>
-                    </ul>
-                </li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="index.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
 </nav>
-<div class="container-fluid" style="width: 80%">
+<div class="container-fluid">
     <div class="row">
-        <div class="sidebar col-md-2">
-            <ul class="nav nav-sidebar">
+        <div class="sidebar">
+            <!--<h4>博客管理系统(四月)</h4>-->
+            <!--<div class="cover">-->
+            <!--<h2><img class="img-circle" src="image/icons.png"/></h2>-->
+            <!--<b>Hi~ 小主</b>-->
+            <!--<p>超级管理员</p>-->
+            <!--</div>-->
+            <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-                <li><a href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span>&nbsp;&nbsp;概览 <span class="sr-only">(current)</span></a></li>
-                <li class="active"><a href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;商务管理</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;接收管理</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;&nbsp;贮存管理</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span>&nbsp;&nbsp;预处理管理</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span>&nbsp;&nbsp;处置管理</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>&nbsp;&nbsp;次生管理</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>&nbsp;&nbsp;基础数据</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>&nbsp;&nbsp;系统设置</a></li>
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预处理管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
     </div>
@@ -204,7 +209,7 @@
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
-        <h2 class="sub-header" align="center">危险废物应急处置意向书</h2>
+        <h4 class="sub-header" align="center">危险废物应急处置意向书</h4>
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
             <div class="row">
                 <div class="form-horizontal col-md-4" >

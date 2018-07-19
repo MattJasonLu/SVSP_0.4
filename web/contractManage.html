@@ -559,7 +559,7 @@ else {
 </script>
 <body onload="loadContractList()">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -640,7 +640,7 @@ else {
             <div class="sidebar">
                 <!--<h4>博客管理系统(四月)</h4>-->
                 <!--<div class="cover">-->
-                <!--<h2><img class="img-circle" src="image/icons.png"/></h2>-->
+                <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
                 <!--<b>Hi~ 小主</b>-->
                 <!--<p>超级管理员</p>-->
                 <!--</div>-->
@@ -668,15 +668,15 @@ else {
                     <li class="active">合同列表</li>
                 </ol>
             </div>
-            <h2 class="sub-header">合同列表</h2>
+            <h4 class="sub-header">合同列表</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6 boo">
-                        <a class="btn btn-primary" id="add" onclick="wastes()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary" onclick="contractSubmit()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" id="add" onclick="wastes()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick="contractSubmit()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                        <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
@@ -704,7 +704,6 @@ else {
                         <p></p>
                     </div>
                     <div class="tab-pane fade" id="C">
-                        <p></p>
                         <p></p>
                     </div>
                     <div class="tab-pane fade" id="D">
@@ -805,7 +804,7 @@ else {
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h2 class="sub-header text-center">合同信息</h2>
+                    <h4 class="sub-header text-center">合同信息</h4>
                     <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
                         <div class="row">
                             <div class="form-horizontal col-md-6">
