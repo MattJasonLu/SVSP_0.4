@@ -14,10 +14,10 @@
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
-    <script src="js/time.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
 </head>
 <script type="text/javascript">
     $(window).on('load', function () {
@@ -57,20 +57,23 @@
                     case (3):
                         $(this).html(obj.companyName);
                         break;
-                        // 样品名称
                     case (4):
+                        $(this).html(getTimeStr(obj.appointTime));
+                        break;
+                        // 样品名称
+                    case (5):
                         $(this).html(obj.productName);
                         break;
                         // 危废代码
-                    case (5):
+                    case (6):
                         $(this).html(obj.code);
                         break;
                         // 联系人
-                    case (6):
+                    case (7):
                         $(this).html(obj.contactName);
                         break;
                         // 联系方式
-                    case (7):
+                    case (8):
                         $(this).html(obj.telephone);
                         break;
 //                    case (8):
@@ -271,6 +274,7 @@
                         <th>样品预约号</th>
                         <th>样品状态</th>
                         <th>公司名称</th>
+                        <th>预约时间</th>
                         <th>样品名称</th>
                         <th>危废代码</th>
                         <th>联系人</th>
@@ -285,6 +289,7 @@
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -333,30 +338,43 @@
                     <h4 class="modal-title" id="myModalLabel">预约取/送样</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="model-appoint" method="post">
-                        <div class="form-group">
-                            <label for="model-companyName" class="control-label">公司名称</label>
-                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="model-companyName" name="companyName"></select>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-contactName" class="control-label">联系人</label>
-                            <input type="text" class="form-control" id="model-contactName" name="contactName">
-                        </div>
-                        <div class="form-group">
-                            <label for="model-telephone" class="control-label">联系方式</label>
-                            <input type="text" class="form-control" id="model-telephone" name="telephone">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">取样时间</label>
-                            <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1" id="time">
-                                <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    <form class="form-horizontal" id="model-appoint" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model-companyName" class="col-sm-5 control-label">公司名称</label>
+                                    <div class="col-sm-7">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="model-companyName" name="companyName"></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactName" class="col-sm-5 control-label">联系人<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="model-contactName" name="contactName" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="model-appointTime" class="col-sm-5 control-label">取样时间<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group date form_datetime" data-date="" data-date-format="" data-link-field="dtp_input1">
+                                            <input class="form-control" type="text" value="" id="model-appointTime" name="appointTime" readonly required>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">联系电话<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="model-telephone" name="telephone" required>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="model-comment" class="control-label">备注</label>
-                            <div>
+                            <label for="model-comment" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
                                 <textarea class="form-control" id="model-comment" name="comment" rows="3"></textarea>
                             </div>
                         </div>
@@ -365,6 +383,38 @@
                 <div class="modal-footer" id="appoint">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="appointBtn">预约</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 查看预约信息模态框 -->
+    <div class="modal fade" id="viewAppointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel1">预约单信息</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="text-left"><b>公司名称&nbsp;&nbsp;</b><span id="model1-companyName"></span></p>
+                            <p class="text-left"><b>联&nbsp;&nbsp;系&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="model1-contactName"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-left"><b>取样时间&nbsp;&nbsp;</b><span id="model1-appointTime"></span></p>
+                            <p class="text-left"><b>联系电话&nbsp;&nbsp;</b><span id="model1-telephone"></span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="text-left"><b>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;</b><span id="model1-comment"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="printBtn">打印</button>
                 </div>
             </div>
         </div>
@@ -381,28 +431,20 @@
                     <form id="model-check" method="post">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="model2-checkId" class="control-label">取样号</label>
-                                    <input type="text" class="form-control" id="model2-checkId" name="checkId" readonly>
-                                </div>
+                                <p class="text-left"><b>取&nbsp;&nbsp;样&nbsp;&nbsp;号&nbsp;&nbsp;</b><span id="model2-checkId">****</span></p>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="model2-createTime" class="control-label">制单日期</label>
-                                    <input type="text" class="form-control" id="model2-createTime" name="createTime" readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="model2-companyName" class="control-label">公司名称</label>
-                            <input type="text" class="form-control" id="model2-companyName" name="companyName" readonly>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="model2-contactName" class="control-label">联系人</label>
-                                    <input type="text" class="form-control" id="model2-contactName" name="contactName">
-                                </div>
+                                <p class="text-left"><b>公司名称&nbsp;&nbsp;</b><span id="model2-companyName"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-left"><b>制单日期&nbsp;&nbsp;</b><span id="model2-createTime"></span></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-left"><b>联&nbsp;&nbsp;系&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="model2-contactName"></span></p>
                                 <div class="form-group">
                                     <label for="model2-productName" class="control-label">样品名称</label>
                                     <input type="text" class="form-control" id="model2-productName" name="productName">
@@ -417,14 +459,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="model2-quantity" class="control-label">拟处置量</label>
-                                    <input type="text" class="form-control" id="model2-quantity" name="quantity">
+                                    <input type="number" class="form-control" id="model2-quantity" name="quantity">
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="model2-telephone" class="control-label">联系方式</label>
-                                    <input type="text" class="form-control" id="model2-telephone" name="telephone">
-                                </div>
+                                <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="model2-telephone"></span></p>
                                 <div class="form-group">
                                     <label for="model2-contactName" class="control-label">危废代码</label>
                                     <input type="text" class="form-control" id="model2-code" name="code">
@@ -576,7 +615,6 @@
      */
     function viewSample(menu) {
         var appointId = getAppointIdByMenu(menu);
-        var appointBtn = $("#appointBtn");
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getSampleAppoint",                 // url
@@ -590,19 +628,13 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
-                        appointBtn.hide();
-                        $('.selectpicker').selectpicker('val',data.data.clientId);
-                        $("#model-companyName").val(data.data.clientId);
-                        $("#model-contactName").val(data.data.contactName);
-                        $("#model-telephone").val(data.data.telephone);
-                        $("#model-appointTime").val(getTimeStr(data.data.appointTime));
-                        $("#model-comment").val(data.data.comment);
+                        $("#model1-companyName").text(data.data.companyName);
+                        $("#model1-contactName").text(data.data.contactName);
+                        $("#model1-telephone").text(data.data.telephone);
+                        $("#model1-appointTime").text(getTimeStr(data.data.appointTime));
+                        $("#model1-comment").text(data.data.comment);
                         // 显示框体
-                        $('#appointModal').modal('show');
-                        $("input").prop("readonly",true);
-                        $("textarea").prop("readonly",true);
-                        $("select").attr("disabled","disabled");
-                        appointBtn.hide();
+                        $('#viewAppointModal').modal('show');
                     } else {
                         alert(data.message);
                         console.log(data.exception);
@@ -613,10 +645,6 @@
                 console.dir(result);
                 alert("服务器异常!");
             }
-        });
-        appointBtn.unbind();
-        appointBtn.click(function(){
-            updateAppointByAppointId(appointId);
         });
     }
     /**
@@ -681,10 +709,10 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("input").removeAttr("readonly");
-                        $("textarea").removeAttr("readonly");
-                       // $("select").attr("disabled","disabled");
-                        $("select").removeAttr("disabled");
+//                        $("input").removeAttr("readonly");
+//                        $("textarea").removeAttr("readonly");
+//                       // $("select").attr("disabled","disabled");
+//                        $("select").removeAttr("disabled");
                         $('.selectpicker').selectpicker('val',data.data.clientId);
                         $("#model-companyName").val(data.data.clientId);
                         $("#model-contactName").val(data.data.contactName);
@@ -719,11 +747,32 @@
         if (items.length == 1) {
             var id = getAppointIdByCheckbox(items[0]);
             var checkId = id.concat("R");
-            var companyName = getCompanyNameByCheckbox(items[0]);
+            $("#model2-checkId").text(checkId);
             // 更新数据
-            $("#model2-companyName").val(companyName);
-            $("#model2-checkId").val(checkId);
-            $("#model2-createTime").val(getNowDate());
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getSampleAppoint",              // url
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'appointId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            $("#model2-companyName").text(data.data.companyName);
+                            $("#model2-createTime").text(getTimeStr(data.data.appointTime));
+                            $("#model2-contactName").text(data.data.contactName);
+                            $("#model2-telephone").text(data.data.telephone);
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
             var formTypeIndex, packageTypeIndex;
             // 添加已填写的登记信息
             $.ajax({
@@ -739,8 +788,6 @@
                     if (result != undefined) {
                         var data = eval(result);
                         if (data.status == "success") {
-                            $("#model2-contactName").val(data.data.contactName);
-                            $("#model2-telephone").val(data.data.telephone);
                             $("#model2-productName").val(data.data.productName);
                             $("#model2-recipient").val(data.data.recipient);
                             $("#model2-quantity").val(data.data.quantity);
@@ -750,8 +797,6 @@
                             formTypeIndex = data.data.formType.index-1;
                             packageTypeIndex = data.data.packageType.index-1;
                         } else {
-                            $("#model2-contactName").val("");
-                            $("#model2-telephone").val("");
                             $("#model2-productName").val("");
                             $("#model2-recipient").val("");
                             $("#model2-quantity").val("");
@@ -819,11 +864,24 @@
      * 增加收样登记单
      */
     function addCheck() {
+        var data = {
+            companyName: $("#model2-companyName").text(),
+            checkId: $("#model2-checkId").text(),
+            createTime: getStdTimeStr($("#model2-createTime").text()),
+            contactName: $("#model2-contactName").text(),
+            telephone: $("#model2-telephone").text(),
+            productName: $("#model2-productName").val(),
+            recipient: $("#model2-recipient").val(),
+            quantity: $("#model2-quantity").val(),
+            code: $("#model2-code").val(),
+            color: $("#model2-color").val(),
+            mainComponent: $("#model2-mainComponent").val()
+        };
         $.ajax({
             type: "POST",                            // 方法类型
             url: "addSampleCheck",                 // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify($('#model-check').serializeJSON()),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
@@ -850,10 +908,32 @@
     function checkSample(menu) {
         var id = getAppointIdByMenu(menu);
         var checkId = id.concat("R");
-        var companyName = getCompanyNameByMenu(menu);
-        $("#model2-checkId").val(checkId);
-        $("#model2-companyName").val(companyName);
-        $("#model2-createTime").val(getNowDate());
+        $("#model2-checkId").text(checkId);
+        // 更新数据
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSampleAppoint",              // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'appointId': id
+            },
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        $("#model2-companyName").text(data.data.companyName);
+                        $("#model2-createTime").text(getTimeStr(data.data.appointTime));
+                        $("#model2-contactName").text(data.data.contactName);
+                        $("#model2-telephone").text(data.data.telephone);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
         var formTypeIndex, packageTypeIndex;
         // 添加已填写的登记信息
 //        console.log(checkId);
@@ -869,9 +949,7 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("#model2-contactName").val(data.data.contactName);
                         $("#model2-productName").val(data.data.productName);
-                        $("#model2-telephone").val(data.data.telephone);
                         $("#model2-recipient").val(data.data.recipient);
                         $("#model2-quantity").val(data.data.quantity);
                         $("#model2-code").val(data.data.code);
@@ -880,9 +958,7 @@
                         if (data.data.formType != null) formTypeIndex = data.data.formType.index-1;
                         if (data.data.packageType != null) packageTypeIndex = data.data.packageType.index-1;
                     } else {
-                        $("#model2-contactName").val("");
                         $("#model2-productName").val("");
-                        $("#model2-telephone").val("");
                         $("#model2-recipient").val("");
                         $("#model2-quantity").val("");
                         $("#model2-code").val("");
@@ -1045,15 +1121,7 @@
      * @returns {string} 预约单编号
      */
     function getAppointIdByCheckbox(checkbox) {
-        return checkbox.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-    }
-    /**
-     * 根据勾选框获取到公司名称
-     * @param checkbox 勾选框
-     * @returns {string} 公司名称
-     */
-    function getCompanyNameByCheckbox(checkbox) {
-        return checkbox.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        return checkbox.parentElement.parentElement.nextElementSibling.innerHTML;
     }
     /**
      * 根据操作菜单获取编号
@@ -1144,6 +1212,7 @@
     }
 
     function getStdTimeStr(time) {
+        if (time == '') return "";
         var timeArr = time.split(' ');
         time = timeArr[0]+'T'+timeArr[1]+'.000Z';
         return time;

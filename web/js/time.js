@@ -43,13 +43,17 @@ function getTimeStr(obj) {
     if (minutes.length!=2){
         minutes=0+minutes;
     }
+    var seconds = parseInt(obj.seconds).toString();
+    if (seconds.length!=2){
+        seconds=0+seconds;
+    }
     //  dataLeftCompleting(2, "0", mouth.toString()).toString();
     var  day=parseInt((obj.date)).toString();
     //ataLeftCompleting(2, "0", day.toString()).toString();
     if(day.length!=2){
         day=0+day;
     }
-    var time1 = year + "-" + month + "-" + day + " " + hour + ":" + minutes;
+    var time1 = year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
     return time1;
 }
 /**
@@ -58,6 +62,7 @@ function getTimeStr(obj) {
  * @returns {string|*}
  */
 function getStdTimeStr(time) {
+    if (time == '') return "";
     var timeArr = time.split(' ');
     time = timeArr[0]+'T'+timeArr[1]+'.000Z';
     return time;

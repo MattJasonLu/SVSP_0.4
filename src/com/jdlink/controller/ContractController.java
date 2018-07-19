@@ -350,6 +350,15 @@ return  res.toString();
         res.put("contractNameStrList", array1);
         return res.toString();
     }
+    @RequestMapping("getContractBymodelName1")
+    @ResponseBody
+    public String getContractBymodelName1(String modelName){
+        Contract modelContract=contractService.getModel2(modelName);
+        JSONObject res=JSONObject.fromBean(modelContract);
+        JSONArray array1 = JSONArray.fromArray(ContractType.values());
+        res.put("contractNameStrList", array1);
+        return res.toString();
+    }
     @RequestMapping("isF")
     @ResponseBody
     public  String is(String isFreight,String id){
