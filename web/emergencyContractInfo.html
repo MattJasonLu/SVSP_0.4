@@ -65,13 +65,13 @@
         };
         data['hazardousList']=[];
         // 危废的数量
-        var wastesListCount = $("input[name^='hazardousList'][name$='name']").length;
-        for (var i = 0; i < wastesListCount; i++) {
+        var hazardousListCount = $("input[name^='hazardousList'][name$='name']").length;
+        for (var i = 0; i < hazardousListCount; i++) {
             var $i = i;
-            var wastes = {};
-            wastes.name = $("input[name='hazardousList[" + $i + "].name']").val();
-            wastes.num=$("input[name='hazardousList[" + $i + "].num']").val();
-            data['hazardousList'].push(wastes);
+            var hazardous = {};
+            hazardous.name = $("input[name='hazardousList[" + $i + "].name']").val();
+            hazardous.num=$("input[name='hazardousList[" + $i + "].num']").val();
+            data['hazardousList'].push(hazardous);
         }
         console.log(data);
         $.ajax({
@@ -533,6 +533,11 @@
         clonedTr.children().get(0).innerHTML = num;
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
         clonedTr.children("td:eq(0)").prepend(delBtn);
+        clonedTr.children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).attr('name');
+            var newName = name.replace(/[0-9]\d*/, id);
+            $(this).attr('name', newName);
+        });
         clonedTr.insertAfter(tr);
     }
     function delLine(e) {
