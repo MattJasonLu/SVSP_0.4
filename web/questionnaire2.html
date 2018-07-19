@@ -214,7 +214,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-8">
                         <div class="form-group pull-left">
-                            <label class="col-sm-8 control-label text-left" style="color: #e5454d;font-size: 12px;width: 350px;">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
+                            <label class="col-sm-8 control-label text-left" style="color: #e5454d;font-size: 16px;width: 350px;">危废产生中使用的主要原、辅料和有可能带入的化学物质</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-4">
@@ -232,16 +232,16 @@
                             <form method="post" id="rawWastesListForm">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th>序号</th>
-                                        <th>含化学物质只主要原材料</th>
-                                        <th>含化学物质辅料</th>
-                                        <th>可能带入的化学物质</th>
+                                        <th class="text-center">序号</th>
+                                        <th class="text-center">含化学物质只主要原材料</th>
+                                        <th class="text-center">含化学物质辅料</th>
+                                        <th class="text-center">可能带入的化学物质</th>
                                     </tr>
                                     <tr id="cloneTr1">
-                                        <td>1</td>
-                                        <td><input type="text" class="focus" name="mainMaterial" style="width:100%; height:100%;"></td>
-                                        <td><input type="text" class="focus" name="auxMaterial" style="width:100%; height:100%;"></td>
-                                        <td><input type="text" class="focus" name="draginMaterial" style="width:100%; height:100%;"></td>
+                                        <td class="text-center">1</td>
+                                        <td class="text-center"><input type="text" class="focus" name="mainMaterial" style="width:100%; height:100%;"></td>
+                                        <td class="text-center"><input type="text" class="focus" name="auxMaterial" style="width:100%; height:100%;"></td>
+                                        <td class="text-center"><input type="text" class="focus" name="draginMaterial" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn">
                                         <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -257,7 +257,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-2">
                         <div class="form-group pull-left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 135px;">特别关注的物质</label>
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 16px;width: 135px;">特别关注的物质</label>
                         </div>
 
                     </div>
@@ -361,7 +361,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group pull-left">
-                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 12px;width: 170px;">产废生产工艺流程描述</label>
+                            <label class="col-sm-8 control-label" style="color: #e5454d;font-size: 16px;width: 170px;">产废生产工艺流程描述</label>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-9"></div>
@@ -372,32 +372,32 @@
                             <form method="post" id="wasteProcessList">
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td style="width: 70px;">序号</td>
-                                        <td>危废编码</td>
-                                        <td>产生流程描述</td>
-                                        <td>现有量(吨)</td>
-                                        <td>上次处理时间</td>
-                                        <td>年预计量(吨)</td>
-                                        <td>包装现状</td>
+                                        <td class="text-center" style="width: 70px;">序号</td>
+                                        <td class="text-center">危废编码</td>
+                                        <td class="text-center">产生流程描述</td>
+                                        <td class="text-center">现有量(吨)</td>
+                                        <td class="text-center">上次处理时间</td>
+                                        <td class="text-center">年预计量(吨)</td>
+                                        <td class="text-center">包装现状</td>
                                     </tr>
                                     <tr id="cloneTr2">
-                                        <td>1</td>
-                                        <td>
+                                        <td class="text-center">1</td>
+                                        <td class="text-center">
                                             <div class="btn-group">
                                                 <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code" id="code"></select>
                                             </div>
                                         </td>
-                                        <td><input type="text" class="focus" name="description" style="width:100%; height:100%;"></td>
-                                        <td><input type="number" class="focus" name="quantity" style="width:100%; height:100%;"></td>
-                                        <td>
+                                        <td class="text-center"><input type="text" class="focus" name="description" style="width:100%; height:100%;"></td>
+                                        <td class="text-center"><input type="number" class="focus" name="quantity" style="width:100%; height:100%;"></td>
+                                        <td class="text-center">
                                             <div class="input-group date form_datetime">
                                                 <input class="form-control focus" type="text" value="" name="lastProcessTime" readonly>
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                                             </div>
                                         </td>
-                                        <td><input type="number" class="focus" name="yearQuantity" style="width:100%; height:100%;"></td>
-                                        <td><input type="text" class="focus" name="packageSituation" style="width:100%; height:100%;"></td>
+                                        <td class="text-center"><input type="number" class="focus" name="yearQuantity" style="width:100%; height:100%;"></td>
+                                        <td class="text-center"><input type="text" class="focus" name="packageSituation" style="width:100%; height:100%;"></td>
                                     </tr>
                                     <tr id="plusBtn1">
                                         <td><a class="btn btn-default btn-xs" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
