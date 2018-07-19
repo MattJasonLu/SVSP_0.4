@@ -41,28 +41,46 @@
      * 保存
      */
     function contractSave() {
-         one=($('#contractInfoForm').serializeJSON());
-        console.log(one);
-        two=$('#WastesNameForm').serializeWastes();
-        console.log(two);
-        three=$('#three').serializeJSON();
-        console.log(three);
+        var contract={};
+        var one=serializeObject($('#contractInfoForm').serializeArray());
+        contract.contract=one;
+        // var hazardous={name:'',num:''};
+        // var hazardous1=constructObjectFromTable(hazardous,$('#cloneTr1'))
+       var two= $('#WastesNameForm').serializeWastes();
+       contract.contract=two;
+        var three=serializeObject($('#three').serializeArray());
+        contract.contract=three;
         var addType = $("input[name='addType']:checked").val();
         var data={
-           'one':one,
-            'two':two,
-            'three':three
+            'area':$('#area').val(),
+            'companyName':$('#companyName').val(),
+            'companyLegal':$('#companyLegal').val(),
+            'clientLegal':$('#clientLegal').val(),
+            'companyAgent':$('#companyAgent').val(),
+            'clientAgent':$('#clientAgent').val(),
+            'telephone':$('#telephone').val(),
+            'address':$('#address').val(),
+            'bankName':$('#bankName').val(),
+            'bankAccount':$('#bankAccount').val(),
         };
+        data['hazardousList']=[];
+        // 危废的数量
+        var wastesListCount = $("input[name^='hazardousList'][name$='name']").length;
+        for (var i = 0; i < wastesListCount; i++) {
+            var $i = i;
+            var wastes = {};
+            wastes.name = $("input[name='hazardousList[" + $i + "].name']").val();
+            wastes.num=$("input[name='hazardousList[" + $i + "].num']").val();
+            data['hazardousList'].push(wastes);
+        }
         console.log(data);
-        console.log(addType);
-        //console.log(s);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveEmContract",                       // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            data:JSON.stringify(data),
+            contentType: "application/json;charset=utf-8",
+            //contentType: "application/octet-stream",
             success: function (result) {
                 if (result != undefined) {
                     //console.log(eval(result));
@@ -129,7 +147,7 @@
 </script>
 
 <body onload="loadContractSelectList();">
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1">
     <div class="main-title">
         <ul class="nav navbar-nav navbar-left navbar-side">
             <li>
@@ -203,7 +221,7 @@
         <div class="sidebar">
             <!--<h4>博客管理系统(四月)</h4>-->
             <!--<div class="cover">-->
-            <!--<h2><img class="img-circle" src="image/icons.png"/></h2>-->
+            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
             <!--<b>Hi~ 小主</b>-->
             <!--<p>超级管理员</p>-->
             <!--</div>-->
@@ -229,7 +247,7 @@
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
-        <h2 class="sub-header" align="center">危险废物应急处置意向书</h2>
+        <h4 class="sub-header" align="center">危险废物应急处置意向书</h4>
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
             <div class="row">
                 <div class="form-horizontal col-md-4" >
@@ -284,10 +302,8 @@
                     </div>
                 </div>
             </div>
-        </form>
             <div class="row">
-                <div class="form-horizontal col-md-12">
-                    <form method="post" id="WastesNameForm">
+                <div class="form-horizontal col-md-8 center-block">
                         <table class="table table-bordered">
                             <tr>
                                 <th>序号</th>
@@ -296,8 +312,8 @@
                             </tr>
                             <tr id="cloneTr1">
                                 <td>1</td>
-                                <td><input type="text" class="focus" name="wasteName" style="width:100%; height:100%;"></td><!--危险废物名称-->
-                                <td><input type="text" class="focus" name="tonNumber" style="width:100%; height:100%;"></td><!--数量-->
+                                <td><input type="text" class="focus" name="hazardousList[0].name" style="width:100%; height:100%;"></td><!--危险废物名称-->
+                                <td><input type="text" class="focus" name="hazardousList[0].num" style="width:100%; height:100%;"></td><!--数量-->
                             </tr>
                             <tr id="plusBtn">
                                 <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -305,7 +321,6 @@
                                 <td></td>
                             </tr>
                         </table>
-                    </form>
                 </div>
             </div>
             <h5><b>二、其他</b></h5>
@@ -339,7 +354,6 @@
                     </div>
                 </div>
             </div>
-        <form method="post" id="three">
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
@@ -483,7 +497,6 @@
                     </div>
                 </div>
             </div>
-        </form>
             <br>
             <br>
             <div class="row text-center">
@@ -492,7 +505,7 @@
                 <a class="btn btn-warning" onclick="clientReset()">重置</a>
                 <a class="btn btn-danger" id="back">返回</a>
             </div>
-
+        </form>
     </div>
 </div>
 </body>
@@ -542,5 +555,34 @@
         }
         return json;
     };
+    function serializeObject(data){
+        //输出以数组形式序列化表单值
+        //var data = $('#form').serializeArray();
+        var obj = {};
+        $.each(data,function(i,v){
+            obj[v.name] = v.value;
+        })
+        return obj;
+    }
+    function constructObjectFromTable(object, $object) {
+        var javaObjArray = [];
+
+        $object.each(function (i) {
+            var javaObj = {};
+
+            for (var p in object) {
+                var $val = $(this).find('input[name="' + p + '"]');
+                if ($val.length === 0) {
+                    javaObj[p] = $(this).find('select[name="' + p + '"]').val();
+                } else {
+                    javaObj[p] = $val.val();
+                }
+            }
+
+            javaObjArray.push(javaObj);
+        });
+
+        return javaObjArray;
+    }
 </script>
 </html>
