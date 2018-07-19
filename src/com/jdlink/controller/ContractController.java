@@ -5,6 +5,7 @@ import com.jdlink.domain.*;
 import com.jdlink.service.CityService;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.ContractService;
+import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -55,25 +56,37 @@ public String saveEmContract(@RequestBody Contract contract){
 //    System.out.println(res.toString()+"PPP");
 //    List<Hazardous> Hazardous=  contract.getHazardous();
 //    System.out.println(Hazardous+"132");
-    //1.获取合同ID
-//    List<String> list= contractService.getContractIdList();//合同id集合
-//    List<Integer> list1 = new ArrayList<>();
-//    for (String s:list
-//            ) {
-//        int i=Integer.parseInt(s);
-//        list1.add(i);
-//    }
-//    Collections.sort(list1);
-//    for (Integer s1:list1
-//            ) {
-//        //System.out.println(s1);
-//    }
-//      String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
-//       contract.setContractId(newId);
-//        contract.setCheckState(CheckState.ToSubmit);//待提交
-//        contract.setContractType(ContractType.Emergency);//设为应急合同
-       // contractService.addEm(contract);
-     return null;
+    JSONObject res = new JSONObject();
+  //  1.获取合同ID
+    List<String> list= contractService.getContractIdList();//合同id集合
+    List<Integer> list1 = new ArrayList<>();
+    for (String s:list
+            ) {
+        int i=Integer.parseInt(s);
+        list1.add(i);
+    }
+    Collections.sort(list1);
+    for (Integer s1:list1
+            ) {
+        //System.out.println(s1);
+    }
+      String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
+       contract.setContractId(newId);//设置个合同的ID
+       contract.setCheckState(CheckState.ToSubmit);//待提交
+       contract.setContractType(ContractType.Emergency);//设为应急合同
+    // 设置每个危废的编码,唯一
+    for (Hazardous hazardous : contract.getHazardousList()) {
+        hazardous.setId(RandomUtil.getRandomEightNumber());
+        System.out.println(JSONObject.fromBean(hazardous).toString());
+    }
+    try{
+        contractService.addEm(contract);
+        res.put("state","success");
+    }
+    catch (Exception e){
+        res.put("state","fail");
+    }
+     return res.toString();
 }
 
     /**
