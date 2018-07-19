@@ -178,7 +178,7 @@
 </script>
 <body onload="loadQuotationList();">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -260,7 +260,7 @@
             <div class="sidebar">
                 <!--<h4>博客管理系统(四月)</h4>-->
                 <!--<div class="cover">-->
-                <!--<h2><img class="img-circle" src="image/icons.png"/></h2>-->
+                <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
                 <!--<b>Hi~ 小主</b>-->
                 <!--<p>超级管理员</p>-->
                 <!--</div>-->
@@ -288,16 +288,16 @@
                     <li class="active">报价管理</li>
                 </ol>
             </div>
-            <h2 class="sub-header">报价单列表</h2>
+            <h4 class="sub-header">报价单列表</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="newQuotation.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增报价单</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 打印</a>
-                        <a class="btn btn-primary" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 自定义设置</a>
+                        <a class="btn btn-primary btn-xs" href="newQuotation.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增报价单</a>
+                        <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 打印</a>
+                        <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 自定义设置</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">

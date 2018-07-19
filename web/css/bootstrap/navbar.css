@@ -23,7 +23,7 @@ li {
     word-break:keep-all;      /* 不换行 */
     white-space:nowrap;       /* 不换行 */
 }
-.navbar{
+#navbar1{
     margin-bottom: 0px;
     border-radius: 5px;
     background: rgb(0,51,102);
@@ -49,7 +49,7 @@ li {
     background: rgb(17,79,142);
 }
 .navbar .nav > li > a{
-    color: #000000;
+    color: rgb(229,229,229);
 }
 .navbar .nav >li >a:visited{
     color: rgb(229,229,229);
@@ -138,6 +138,9 @@ li {
 .sidenav > li > a:hover{
     border-left: 2px solid rgb(229,229,229); background: rgb(17,79,142); text-decoration: none;color: rgb(229,229,229);
 }
+.sidenav {
+    text-align: center;
+}
 .iright{margin-top: 4px; font-family:"宋体"; font-style: normal; color: rgb(229,229,229);}
 .sidebar-dropdown{
     display: none;
@@ -165,7 +168,7 @@ li {
     width: 150px; border-left: none; list-style: none;
 }
 .sidebar-collapse .sidebar-dropdown > li > a{padding-left: 0; }
-.sidebar-collapse .sidebar-dropdown > li > a:hover{background: #191e26; text-decoration: none; color: #fff;}
+.sidebar-collapse .sidebar-dropdown > li > a:hover{background: rgb(229,229,229); text-decoration: none; color: rgb(229,229,229);}
 .sidebar-collapse .cover > h2 img{margin-left: 0; border: none;}
 /* main
  ---------------------------------------- */
