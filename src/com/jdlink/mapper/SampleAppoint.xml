@@ -22,10 +22,10 @@
     <select id="getByKeyword" parameterType="String" resultType="SampleAppoint">
     SELECT *
       FROM (select t_sampleAppoint.appointId, t_sampleappoint.state, t_sampleappoint.companyName, t_samplecheck.productName,
-      t_samplecheck.code, t_samplecheck.contactName, t_samplecheck.telephone from t_sampleAppoint LEFT JOIN t_samplecheck
+      t_samplecheck.code, t_sampleAppoint.contactName, t_sampleAppoint.telephone from t_sampleAppoint LEFT JOIN t_samplecheck
         ON t_sampleappoint.appointId=t_samplecheck.appointId) s WHERE s.appointId LIKE "%"#{keyword}"%" OR s.state LIKE "%"#{keyword}"%"
         OR s.productName LIKE "%"#{keyword}"%" OR s.code LIKE "%"#{keyword}"%" OR s.contactName LIKE "%"#{keyword}"%"
-        OR s.companyName LIKE "%"#{keyword}"%" OR s.telephone LIKE "%"#{keyword}"%";
+        OR s.companyName LIKE "%"#{keyword}"%" OR s.telephone LIKE "%"#{keyword}"%" ORDER BY t_sampleappoint.appointTime DESC;
     </select>
 
     <select id="countById" parameterType="String" resultType="_int">
@@ -34,8 +34,8 @@
 
     <select id="list" resultType="SampleAppoint">
         select t_sampleAppoint.appointId, t_sampleappoint.state, t_sampleappoint.companyName, t_sampleappoint.appointTime, t_samplecheck.productName,
-        t_samplecheck.code, t_samplecheck.contactName, t_samplecheck.telephone from t_sampleAppoint LEFT JOIN t_samplecheck
-        ON t_sampleappoint.appointId=t_samplecheck.appointId;
+        t_samplecheck.code, t_sampleAppoint.contactName, t_sampleAppoint.telephone from t_sampleAppoint LEFT JOIN t_samplecheck
+        ON t_sampleappoint.appointId=t_samplecheck.appointId ORDER BY t_sampleappoint.appointTime DESC;
     </select>
 
     <update id="updatePdtAndCode" parameterType="SampleCheck">
@@ -60,6 +60,6 @@
         UPDATE t_sampleAppoint SET state='Canceld' WHERE appointId=#{appointId}
     </update>
     <update id="updateApplyState" parameterType="_int">
-UPDATE  t_sampleappoint set state='Invalid' where appointId=#{appointId}
+        UPDATE  t_sampleappoint set state='Invalid' where appointId=#{appointId}
    </update>
 </mapper>

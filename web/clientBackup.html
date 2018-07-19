@@ -192,7 +192,7 @@
 </script>
 <body onload="loadClientList()" class="">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar1">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -273,13 +273,13 @@
             <div class="sidebar">
                 <!--<h4>博客管理系统(四月)</h4>-->
                 <!--<div class="cover">-->
-                    <!--<h2><img class="img-circle" src="image/icons.png"/></h2>-->
+                    <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
                     <!--<b>Hi~ 小主</b>-->
                     <!--<p>超级管理员</p>-->
                 <!--</div>-->
                 <ul class="sidenav animated fadeInUp">
                     <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-                    <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                    <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan" style="text-align: center">&nbsp;&nbsp;概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
                     <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
@@ -302,21 +302,22 @@
                         <li class="active">客户备案</li>
                     </ol>
                 </div>
-                <h2 class="sub-header">客户列表</h2>
+                <h4 class="sub-header">客户列表</h4>
                 <div>
                     <!--操作按钮-->
 
                     <div class="pull-left">
-                        <a class="btn btn-primary" href="clientInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary" onclick="submitClients();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary" onclick="importExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary" onclick="exportExcel(this);"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="clientInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick="submitClients();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                        <a class="btn btn-primary btn-xs" onclick="importExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="exportExcel(this);"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-xs-4 pull-right">
+                    <div class="input-group col-xs-2 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchClient();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         </span>
                     </div>
                 </div>
@@ -331,7 +332,7 @@
                             </label>
                         </th>
                         <th>客户编号</th>
-                        <th>客户名称</th>
+                        <th style="width: 300px">客户名称</th>
                         <th>申报状态</th>
                         <th>审核状态</th>
                         <th>账号状态</th>
@@ -437,7 +438,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h2 class="sub-header">客户信息</h2>
+                    <h4 class="sub-header">客户信息</h4>
                     <form method="post" id="clientInfoForm1" enctype="multipart/form-data">
                         <h4 class="text-info">基本信息</h4>
                         <div class="row">
@@ -617,7 +618,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                <h2 class="sub-header">客户信息</h2>
+                <h4 class="sub-header">客户信息</h4>
                 <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                     <h4 class="text-info">基本信息</h4>
                     <div class="row">

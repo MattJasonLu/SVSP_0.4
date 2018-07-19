@@ -64,6 +64,10 @@ public class Quotation {
      * 危废列表
      */
     private List<Wastes> wastesList = new ArrayList<>();
+    /**
+     * 意见
+     */
+    private String advice;
 
     public String getQuotationId() {
         return quotationId;
@@ -177,6 +181,14 @@ public class Quotation {
         this.id = id;
     }
 
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
+
     @Override
     public String toString() {
         return "Quotation{" +
@@ -194,6 +206,7 @@ public class Quotation {
                 ", totalAmount=" + totalAmount +
                 ", checkState=" + checkState +
                 ", wastesList=" + wastesList +
+                ", advice='" + advice + '\'' +
                 '}';
     }
 }

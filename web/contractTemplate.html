@@ -141,7 +141,7 @@
 </script>
 <body onload="loadContract()">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -250,14 +250,14 @@
                     <li class="active">合同模板</li>
                 </ol>
             </div>
-            <h2 class="sub-header">合同模板列表</h2>
+            <h4 class="sub-header">合同模板列表</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary" href="newTemplate.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="newTemplate.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
@@ -284,7 +284,7 @@
                         <th>合同版本号</th>
                         <th>年份</th>
                         <th id="contractId">"1213"</th>
-                        <th>操作</th>
+                        <th class="text-center">操作</th>
                     </tr>
                     </thead>
                     <tbody>

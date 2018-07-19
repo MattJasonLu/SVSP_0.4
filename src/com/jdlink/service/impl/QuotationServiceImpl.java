@@ -71,4 +71,10 @@ public class QuotationServiceImpl implements QuotationService {
     public void changeEndDate(Quotation quotation) {
         quotationMapper.changeEndDate(quotation);
     }
+
+    @Override
+    public void approval(String advice,String id) { quotationMapper.approval(advice,id); }
+
+    @Override
+    public void reject(String advice,String id) { quotationMapper.reject(advice,id); }
 }
