@@ -34,5 +34,5 @@ public interface ContractMapper {
     List<String> modelName(String key);
     void back(String contractId,String backContent);
     void opinion(String contractId,String opinion);
-
+    Contract getModel2(String modelName);
 }
