@@ -5,6 +5,12 @@
     outline: none;
     border: 0px;
 }
+.navbar-brand > img {
+    width: 150px;height: 50px;
+}
+.navbar-collapse {
+    margin-left: 150px;
+}
 .container-fluid {
     margin-right: auto;
     margin-left: auto;
