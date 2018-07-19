@@ -580,7 +580,7 @@
         <div class="modal-content">
             <div class="client_style">
                 <h2 class="sub-header text-center">模板信息</h2>
-                <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
+                <form method="post" id="modelInfoForm1" enctype="multipart/form-data">
                     <div class="row">
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">

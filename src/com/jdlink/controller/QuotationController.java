@@ -33,6 +33,7 @@ public class QuotationController {
     @RequestMapping("saveQuotation")
     @ResponseBody
     public String saveQuotation(@RequestBody Quotation quotation) {
+        System.out.println(quotation+"AAA");
         quotation.setCheckState(CheckState.ToSubmit);
         return addQuotation(quotation);
     }
