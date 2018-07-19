@@ -1,7 +1,12 @@
 /**
  * Created by matt on 2018/7/18.
  */
-//获取时间
+
+/**
+ * 获取日期yyyy-MM-dd
+ * @param obj
+ * @returns {*}
+ */
 function getDateStr(obj) {
     if (obj == null) return "";
     var year=(parseInt(obj.year)+1900).toString();
@@ -18,8 +23,11 @@ function getDateStr(obj) {
     var time1=year+"-"+mouth+"-"+day;
     return time1;
 }
-
-//获取时间
+/**
+ * 获取时间 yyyy-MM-dd HH:mm
+ * @param obj
+ * @returns {*}
+ */
 function getTimeStr(obj) {
     if (obj == null) return "";
     var year=(parseInt(obj.year)+1900).toString();
@@ -43,4 +51,14 @@ function getTimeStr(obj) {
     }
     var time1 = year + "-" + month + "-" + day + " " + hour + ":" + minutes;
     return time1;
+}
+/**
+ * 通过字符串获取标准时间格式 yyyy-MM-dd'T'HH:mm:ss.SSSZ
+ * @param time
+ * @returns {string|*}
+ */
+function getStdTimeStr(time) {
+    var timeArr = time.split(' ');
+    time = timeArr[0]+'T'+timeArr[1]+'.000Z';
+    return time;
 }

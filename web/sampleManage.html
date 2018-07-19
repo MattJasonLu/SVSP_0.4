@@ -535,7 +535,7 @@
      */
     $('.form_datetime').datetimepicker({
         language:  'zh-CN',
-        format: 'yyyy-mm-dd hh:ii',
+        format: 'yyyy-mm-dd hh:ii:ss',
         weekStart: 1,
         todayBtn:  1,
         autoclose: 1,
@@ -958,20 +958,21 @@
      * 添加预约单
      */
     function addAppoint() {
-        console.log($("#model-companyName").text());
+//        console.log($("#model-companyName").text());
         $.ajax({
             type: "POST",                            // 方法类型
             url: "addSampleAppoint",                 // url
             async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
+            data: JSON.stringify({
                 'clientId': $("#model-companyName").find("option:selected").val(),
                 'companyName': $("#model-companyName").find("option:selected").text(),
                 'contactName': $("#model-contactName").val(),
                 'telephone': $("#model-telephone").val(),
-                'appointTime': $("#model-appointTime").val(),
+                'appointTime': getStdTimeStr($("#model-appointTime").val()),
                 'comment': $("#model-comment").val()
-            },
+            }),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 console.log(result);
                 if (result != undefined) {
@@ -1129,6 +1130,12 @@
             });
         });
 
+    }
+
+    function getStdTimeStr(time) {
+        var timeArr = time.split(' ');
+        time = timeArr[0]+'T'+timeArr[1]+'.000Z';
+        return time;
     }
 </script>
 </html>
