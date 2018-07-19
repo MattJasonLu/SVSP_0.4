@@ -1,3 +1,6 @@
+li {
+    list-style-type:none;
+}
 .client_style {
     margin: 5% 0 5% 5%;
 }
@@ -64,6 +67,24 @@
     color: rgb(229,229,229);
     background-color: #0088cc;
 }
+.sidenav > li > a > span {
+    color: rgb(229,229,229);
+}
+.sidenav > li > a > span :visited{
+    color: rgb(229,229,229);
+}
+.sidenav > li > a > span :hover {
+    color: rgb(229,229,229);
+}
+.sidenav > li > a > span :active{
+    color: rgb(229,229,229);
+}
+.sidenav > li > a > span :after{
+    color: rgb(229,229,229);
+}
+.sidespan {
+    color: rgb(229,229,229);
+}
 
 /* sidebar
 ---------------------------------------- */
@@ -84,7 +105,7 @@
 .cover > h2{
     position: relative;
     margin: 0 auto; max-height: 80px; max-width: 80px;
-    background: #3d4147; border: 1px solid #1ab394; border-radius: 50%;
+    background: rgb(229,229,229); border: 1px solid #1ab394; border-radius: 50%;
 }
 .cover > h2 img{
     position: relative; z-index: 100;
@@ -95,29 +116,29 @@
     content:'';
     position: absolute; left: -12px; top: -8px;
     height: 96px; width: 96px;
-    background: #3d4147; border-radius: 50%;
+    background: rgb(229,229,229); border-radius: 50%;
 }
 .cover > b{
     display: block;
     margin-top: 20px;
-    color: #f3f3f4; font-size: 13px;
+    color: rgb(229,229,229); font-size: 13px;
 }
-.cover > p{ margin-top: 4px;color: #acb0b8; font-size: 12px;}
+.cover > p{ margin-top: 4px;color: rgb(229,229,229); font-size: 12px;}
 
 /*sidenav*/
 .sidenav,.sidebar-dropdown{padding: 0; }
-.sidenav a{color: #9d9d9d; }
+.sidenav a{color: rgb(229,229,229); }
 .sidenav > li > a{
     display: block; padding: 10px;
     font-size: 14px; border-left: 2px solid transparent;
     transition: .3s linear;
 }
-.sidenav > li > a > i{margin-right: 10px;}
+.sidenav > li > a > span{margin-right: 10px;}
 .sidenav > li > a.hover,
 .sidenav > li > a:hover{
-    border-left: 2px solid rgb(229,229,229); background: rgb(17,79,142); text-decoration: none;
+    border-left: 2px solid rgb(229,229,229); background: rgb(17,79,142); text-decoration: none;color: rgb(229,229,229);
 }
-.iright{margin-top: 4px; font-family:"宋体"; font-style: normal; }
+.iright{margin-top: 4px; font-family:"宋体"; font-style: normal; color: rgb(229,229,229);}
 .sidebar-dropdown{
     display: none;
     font-size: 14px; background: rgb(17,79,142); border-left: 2px solid rgb(229,229,229); }
