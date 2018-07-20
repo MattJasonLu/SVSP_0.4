@@ -114,7 +114,7 @@
         //console.log(s);
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "submitContract",                       // url
+            url: "submitEmContract",                       // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify($('#contractInfoForm').serializeJSON()),
             dataType: "json",
@@ -589,5 +589,10 @@
 
         return javaObjArray;
     }
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Emergency";
+        location.href="contractManage.html";
+    });
 </script>
 </html>

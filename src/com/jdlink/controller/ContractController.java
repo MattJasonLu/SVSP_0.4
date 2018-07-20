@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,6 +81,14 @@ public String saveEmContract(@RequestBody Contract contract){
         hazardous.setId(RandomUtil.getRandomEightNumber());
         System.out.println(JSONObject.fromBean(hazardous).toString());
     }
+    //设置时间
+    //生成日期对象
+    Date current_date = new Date();
+    //设置日期格式化样式为：yyyy-MM-dd
+    SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //格式化当前日期
+    String nowTime=SimpleDateFormat.format(current_date);
+    contract.setNowTime(nowTime);
     try{
         contractService.addEm(contract);
         res.put("state","success");
@@ -88,7 +98,52 @@ public String saveEmContract(@RequestBody Contract contract){
     }
      return res.toString();
 }
-
+/**
+ * 提交应急合同
+ */
+@RequestMapping("submitEmContract")
+@ResponseBody
+public String submitEmContract(@RequestBody Contract contract) {
+    JSONObject res = new JSONObject();
+    //  1.获取合同ID
+    List<String> list= contractService.getContractIdList();//合同id集合
+    List<Integer> list1 = new ArrayList<>();
+    for (String s:list
+            ) {
+        int i=Integer.parseInt(s);
+        list1.add(i);
+    }
+    Collections.sort(list1);
+    for (Integer s1:list1
+            ) {
+        //System.out.println(s1);
+    }
+    String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
+    contract.setContractId(newId);//设置个合同的ID
+    contract.setCheckState(CheckState.Examining);//待提交
+    contract.setContractType(ContractType.Emergency);//设为应急合同
+    // 设置每个危废的编码,唯一
+    for (Hazardous hazardous : contract.getHazardousList()) {
+        hazardous.setId(RandomUtil.getRandomEightNumber());
+        System.out.println(JSONObject.fromBean(hazardous).toString());
+    }
+    //设置时间
+    //生成日期对象
+    Date current_date = new Date();
+    //设置日期格式化样式为：yyyy-MM-dd
+    SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //格式化当前日期
+    String nowTime=SimpleDateFormat.format(current_date);
+    contract.setNowTime(nowTime);
+    try{
+        contractService.addEm(contract);
+        res.put("state","success");
+    }
+    catch (Exception e){
+        res.put("state","fail");
+    }
+    return res.toString();
+}
     /**
      *获得合同名称的下拉选项
      */
@@ -179,8 +234,18 @@ public String saveEmContract(@RequestBody Contract contract){
             String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
             contract.setContractId(newId);
         }
+
         System.out.println("当前合同编号:"+contract.getContractId());
         contract.setCheckState(CheckState.ToSubmit);
+        //设置时间
+        //生成日期对象
+        Date current_date = new Date();
+        //设置日期格式化样式为：yyyy-MM-dd
+        SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //格式化当前日期
+        String nowTime=SimpleDateFormat.format(current_date);
+        contract.setNowTime(nowTime);
+        System.out.println(nowTime+"fff");
         //System.out.println(contract.getModelName()+"BBB");
         if(contract.getModelName()!=null){
             contract.setModelVersion("V1.0");
@@ -194,7 +259,6 @@ public String saveEmContract(@RequestBody Contract contract){
             contractService.add(contract);
             res.put("status", "success");
             res.put("message", "添加成功");
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -224,6 +288,14 @@ public String  submitContract(@RequestBody Contract contract) {
     contract.setContractId(newId);
     System.out.println("当前合同编号:"+contract.getContractId());
     contract.setCheckState(CheckState.ToExamine);
+    //设置时间
+    //生成日期对象
+    Date current_date = new Date();
+    //设置日期格式化样式为：yyyy-MM-dd
+    SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //格式化当前日期
+    String nowTime=SimpleDateFormat.format(current_date);
+    contract.setNowTime(nowTime);
     JSONObject res = JSONObject.fromBean(contract);
     //给予合同的状态
     try{
@@ -244,9 +316,18 @@ public String  submitContract(@RequestBody Contract contract) {
 public String  submitContract1( String id) {
 //1修改状态
 JSONObject res=new JSONObject();
-contractService.toSubmit(id);
-res.put("state","提交成功");
-return  res.toString();
+    //设置时间
+    //生成日期对象
+    Date current_date = new Date();
+    //设置日期格式化样式为：yyyy-MM-dd
+    SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //格式化当前日期
+    String nowTime=SimpleDateFormat.format(current_date);
+    Contract contract=contractService.getByContractId(id);
+    contract.setNowTime(nowTime);
+    contractService.toSubmit(id,nowTime);
+  res.put("state","提交成功");
+  return  res.toString();
 }
 
     @RequestMapping("deleteContract")
@@ -258,6 +339,8 @@ return  res.toString();
     @RequestMapping("getContractId")
     @ResponseBody
     public String getContractId(String contractId) {
+        Date date=new Date();
+        System.out.println(date+"eee");
        Contract contract=contractService.getByContractId(contractId);
         JSONObject res= JSONObject.fromBean(contract);
         return res.toString();
@@ -272,6 +355,13 @@ return  res.toString();
         mav.addObject("contract", contract);
         mav.setViewName("jsp/showContract.jsp");
         return mav;
+    }
+    @RequestMapping("getEmContractById")
+    @ResponseBody
+    public String  getEmContractById(String contractId){
+       Contract contract= contractService.getByContractId(contractId);
+        JSONObject res=JSONObject.fromBean(contract);
+        return res.toString();
     }
     @RequestMapping("Secondary")
     @ResponseBody
@@ -343,6 +433,14 @@ return  res.toString();
               System.out.print(modelVersion1+"AAA");
           }
       }
+        //设置时间
+        //生成日期对象
+        Date current_date = new Date();
+        //设置日期格式化样式为：yyyy-MM-dd
+        SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //格式化当前日期
+        String nowTime=SimpleDateFormat.format(current_date);
+        contract.setNowTime(nowTime);
         try{
             contractService.update(contract);
             res.put("status", "success");
@@ -413,8 +511,18 @@ return  res.toString();
     @ResponseBody
     public String cancelContract(String contractId){
        JSONObject res=new JSONObject();
-       try {
-           contractService.cancel(contractId);
+        //设置时间
+        //生成日期对象
+        Date current_date = new Date();
+        //设置日期格式化样式为：yyyy-MM-dd
+        SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //格式化当前日期
+        String nowTime=SimpleDateFormat.format(current_date);
+        Contract contract=contractService.getByContractId(contractId);
+        contract.setNowTime(nowTime);
+
+        try {
+           contractService.cancel(contractId,nowTime);
            res.put("state","success");
        }
        catch (Exception e){
@@ -448,8 +556,17 @@ return  res.toString();
     @ResponseBody
     public  String backContract(String contractId,String backContent){
         JSONObject res=new JSONObject();
-     try{
-         contractService.back(contractId,backContent);
+        //设置时间
+        //生成日期对象
+        Date current_date = new Date();
+        //设置日期格式化样式为：yyyy-MM-dd
+        SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //格式化当前日期
+        String nowTime=SimpleDateFormat.format(current_date);
+        Contract contract=contractService.getByContractId(contractId);
+        contract.setNowTime(nowTime);
+        try{
+         contractService.back(contractId,backContent,nowTime);
          res.put("state","success");
      }
      catch (Exception e){
@@ -466,9 +583,18 @@ return  res.toString();
     public String approvalContract(String contractId ,String opinion){
         System.out.println(contractId+opinion+"aaa");
         JSONObject res=new JSONObject();
+        //设置时间
+        //生成日期对象
+        Date current_date = new Date();
+        //设置日期格式化样式为：yyyy-MM-dd
+        SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //格式化当前日期
+        String nowTime=SimpleDateFormat.format(current_date);
+        Contract contract=contractService.getByContractId(contractId);
+        contract.setNowTime(nowTime);
         try {
            //contractService.approval(contractId);
-            contractService.opinion(contractId,opinion);//这个方法审批和添加合同信息一起做一起做
+            contractService.opinion(contractId,opinion,nowTime);//这个方法审批和添加合同信息一起做一起做
             res.put("state","success");
         }
         catch (Exception e){
@@ -479,8 +605,24 @@ return  res.toString();
 
 @RequestMapping("searchContract")
 @ResponseBody
-public String searchContract(String keyword){
-    List<Contract> contractList= contractService.getByKeyword(keyword);
+public String searchContract(String keyword,String nameBykey){
+        //找出合同类型
+    if(ContractType.getContract(nameBykey)!=null) {
+        nameBykey=ContractType.getContract(nameBykey).toString();
+    }
+    System.out.println(nameBykey+"mmm");
+     //首先检查枚举(省会)
+   if(Province.getProvince(keyword)!=null) {
+       keyword=Province.getProvince(keyword).toString();
+   }
+   //枚举的还有状态 合同类型
+    if(CheckState.getCheckState(keyword)!=null) {
+        keyword=CheckState.getCheckState(keyword).toString();
+    }
+    if(ContractType.getContract(keyword)!=null) {
+        keyword=ContractType.getContract(keyword).toString();
+    }
+    List<Contract> contractList= contractService.getByKeyword(keyword,nameBykey);
     JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
     // 返回结果
     return array.toString();

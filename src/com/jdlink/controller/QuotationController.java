@@ -85,6 +85,7 @@ public class QuotationController {
     public String changeEndDate(Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
+            quotation.setCheckState(CheckState.ToExamine);
             quotationService.changeEndDate(quotation);
             res.put("status", "success");
             res.put("message", "结束日期修改成功");
@@ -112,6 +113,9 @@ public class QuotationController {
             for (Wastes wastes : quotation.getWastesList()) {
                 wastes.setId(RandomUtil.getRandomEightNumber());
             }
+            // 获取id 更新
+            String id = quotationService.count()+1+"";
+            quotation.setId(id);
             quotationService.add(quotation);
             res.put("status", "success");
             res.put("message", "报价单增加成功");
@@ -143,6 +147,7 @@ public class QuotationController {
             for (int i = oldWastesList.size(); i < newWastesList.size(); i++) {
                 newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());
             }
+            quotation.setCheckState(CheckState.ToExamine);
             quotationService.update(quotation);
             res.put("status", "success");
             res.put("message", "报价单修改成功");
@@ -314,12 +319,33 @@ public class QuotationController {
         return res.toString();
     }
 
-    @RequestMapping("reject")
+    @RequestMapping("searchQuotation")
     @ResponseBody
-    public String reject(String advice,String id) {
+    public String searchQuotation (String keyword) {
         JSONObject res = new JSONObject();
         try {
-            quotationService.reject(advice,id);
+            List<Quotation> quotationList = quotationService.getByKeyword(keyword);
+            JSONArray data = JSONArray.fromArray(quotationList.toArray(new Quotation[quotationList.size()]));
+            res.put("data", data.toString());
+            res.put("status", "success");
+            res.put("message", "报价单信息获取成功");
+            // 返回结果
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "报价单信息获取失败");
+            res.put("exception", e.getMessage());
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    @RequestMapping("reject")
+    @ResponseBody
+    public String reject(Quotation quotation) {
+        JSONObject res = new JSONObject();
+        try {
+            quotationService.reject(quotation.getAdvice(), quotation.getId());
             res.put("status", "success");
             res.put("message", "送审驳回成功");
         } catch (Exception e) {

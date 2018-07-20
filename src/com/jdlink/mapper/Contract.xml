@@ -15,25 +15,28 @@
        <result property="modelName" column="modelName" javaType="String"/>
         <result property="contractContent" column="contractContent" javaType="String"/>
         <result property="modelVersion" column="modelVersion" javaType="String"/>
+        <result property="nowTime" column="nowTime" javaType="String"></result>
         <result property="city" column="city" javaType="String"></result>
         <result property="opinion" column="opinion" javaType="String"></result>
         <result property="companyName " column="companyName " javaType="String"></result>
             <result property="province" column="province " javaType="com.jdlink.domain.Province"></result>
      <result property="contactName" column="contactName" javaType="String"></result>
         <result property="telephone " column="telephone " javaType="String"></result>
+        <collection property="hazardousList" select="getHazardous" column="contractId"
+                    ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
     </resultMap>
 
     <insert id="add" parameterType="Contract"  >
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime)
         values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},#{nowTime})
     </insert>
     <insert id="addEm" parameterType="Contract">
-     insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime)
-     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime});
+     insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime)
+     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime},#{nowTime});
         <if test="hazardousList.size() > 0 ">
           <foreach collection="hazardousList"  item="hazardous" index="index">
               insert into r_contractandhazardous(contractId,hazardousId) values (#{contractId}, #{hazardous.id});
@@ -46,9 +49,9 @@
         delete from t_contract where contractId;
     </delete>
 
-    <select id="getByKeyword" parameterType="String" resultMap="ContractRM">
-        select * from t_contract where contractId like  binary "%"#{keyword}"%" or checkState like binary "%"#{keyword}"%" or companyName like binary "%"#{keyword}"%"
-        or city like binary "%"#{keyword}"%"  or province like binary  "%"#{keyword}"%" or contactName like binary "%"#{keyword}"%" or telephone like  binary  "%"#{keyword}"%" or beginTime like binary  "%"#{keyword}"%";
+    <select id="getByKeyword"  resultMap="ContractRM">
+        select * from t_contract where (contractId like  binary "%"#{0}"%" or checkState like binary "%"#{0}"%" or companyName like binary "%"#{0}"%"
+        or city like binary "%"#{0}"%"  or province like binary  "%"#{0}"%" or contactName like binary "%"#{0}"%" or telephone like  binary  "%"#{0}"%" or beginTime like binary  "%"#{0}"%" or contractType like binary  "%"#{0}"%" )and contractType like  "%"#{1}"%";
     </select>
 
     <select id="getByContractId" parameterType="String" resultMap="ContractRM">
@@ -64,7 +67,7 @@
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion} WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=#{nowTime} WHERE contractId=#{contractId};
     </update>
 <update id="updateEm" parameterType="Contract">
 UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
@@ -86,14 +89,14 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="setCheckStateInvalid" parameterType="Contract">
         UPDATE t_contract SET checkState='Invalid' WHERE contractId=#{contractId};
     </update>
-    <update id="toSubmit" >
-        UPDATE t_contract SET checkState='ToExamine' WHERE contractId=#{id};
+    <update id="toSubmit"  >
+        UPDATE t_contract SET checkState='Examining', nowTime=#{1} WHERE contractId=#{0} ;
     </update>
     <select id="list" resultMap="ContractRM">
         select * from t_contract order by year desc ;
     </select>
     <select id="list1" resultMap="ContractRM">
-        select * from t_contract where contractType=#{name};
+        select * from t_contract where contractType=#{name} order by nowTime desc;
     </select>
     <select id="getContractIdList" resultType="String">
         select contractId from t_contract;
@@ -104,8 +107,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="listRate2" >
         select rate2 from ticketrate2;
     </select>
-    <update id="cancel" parameterType="String">
-        update t_contract set checkState="Invalid" where contractId=#{contractId}
+    <update id="cancel" >
+        update t_contract set checkState="Invalid",nowTime=#{1} where contractId=#{0}
     </update>
     <delete id="cancel1" parameterType="String">
         delete from  t_contract  where contractId=#{contractId}
@@ -117,9 +120,14 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') ;
     </select>
     <update id="back" parameterType="Contract">
-        update t_contract set checkState="Backed",backContent=#{1} where contractId=#{0}
+        update t_contract set checkState="Backed",backContent=#{1},nowTime=#{2} where contractId=#{0}
     </update>
 <update id="opinion" parameterType="Contract">
-    update t_contract set opinion=#{1},checkState="Keeping" where contractId=#{0};
+    update t_contract set opinion=#{1},checkState="Keeping",nowTime=#{2} where contractId=#{0};
 </update>
+    <select id="getHazardous" resultType="Hazardous">
+        SELECT * FROM t_hazardous WHERE id in (
+          SELECT r_contractandhazardous.hazardousId FROM r_contractandhazardous
+          WHERE contractId=#{contractId});
+    </select>
 </mapper>
