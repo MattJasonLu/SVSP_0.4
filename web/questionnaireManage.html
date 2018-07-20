@@ -274,6 +274,348 @@
         clonedTr.addClass("newLine");
         clonedTr.insertAfter(tr);
     }
+    function addRow3() {
+        var tr11 = $("#row3");
+        var tr10 = tr11.prev();
+        var tr9 = tr10.prev();
+        var tr8 = tr9.prev();
+        var tr7 = tr8.prev();
+        var tr6 = tr7.prev();
+        var tr5 = tr6.prev();
+        var tr4 = tr5.prev();
+        var tr3 = tr4.prev();
+        var tr2 = tr3.prev();
+        var tr1 = tr2.prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr1 = tr1.clone();
+        var clonedTr2 = tr2.clone();
+        var clonedTr3 = tr3.clone();
+        var clonedTr4 = tr4.clone();
+        var clonedTr5 = tr5.clone();
+        var clonedTr6 = tr6.clone();
+        var clonedTr7 = tr7.clone();
+        var clonedTr8 = tr8.clone();
+        var clonedTr9 = tr9.clone();
+        var clonedTr10 = tr10.clone();
+        var clonedTr11 = tr11.clone();
+        // 获取编号
+        var id = tr1.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr1.children().get(0).innerHTML = num;
+        clonedTr1.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr2.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr3.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr4.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr5.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr6.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr7.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr8.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr9.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr10.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr11.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr1.addClass("newLine");
+        clonedTr2.addClass("newLine");
+        clonedTr3.addClass("newLine");
+        clonedTr4.addClass("newLine");
+        clonedTr5.addClass("newLine");
+        clonedTr6.addClass("newLine");
+        clonedTr7.addClass("newLine");
+        clonedTr8.addClass("newLine");
+        clonedTr9.addClass("newLine");
+        clonedTr10.addClass("newLine");
+        clonedTr11.addClass("newLine");
+        clonedTr1.insertAfter(tr11);
+        clonedTr2.insertAfter(clonedTr1);
+        clonedTr3.insertAfter(clonedTr2);
+        clonedTr4.insertAfter(clonedTr3);
+        clonedTr5.insertAfter(clonedTr4);
+        clonedTr6.insertAfter(clonedTr5);
+        clonedTr7.insertAfter(clonedTr6);
+        clonedTr8.insertAfter(clonedTr7);
+        clonedTr9.insertAfter(clonedTr8);
+        clonedTr10.insertAfter(clonedTr9);
+        clonedTr11.insertAfter(clonedTr10);
+        tr11.removeProp("id");
+    }
+    function addRow4() {
+        var tr6 = $("#row4");
+        var tr5 = tr6.prev();
+        var tr4 = tr5.prev();
+        var tr3 = tr4.prev();
+        var tr2 = tr3.prev();
+        var tr1 = tr2.prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr1 = tr1.clone();
+        var clonedTr2 = tr2.clone();
+        var clonedTr3 = tr3.clone();
+        var clonedTr4 = tr4.clone();
+        var clonedTr5 = tr5.clone();
+        var clonedTr6 = tr6.clone();
+        // 获取编号
+        var id = tr1.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr1.children().get(0).innerHTML = num;
+        clonedTr1.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr2.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr3.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr4.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr5.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr6.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr1.addClass("newLine");
+        clonedTr2.addClass("newLine");
+        clonedTr3.addClass("newLine");
+        clonedTr4.addClass("newLine");
+        clonedTr5.addClass("newLine");
+        clonedTr6.addClass("newLine");
+        clonedTr1.insertAfter(tr6);
+        clonedTr2.insertAfter(clonedTr1);
+        clonedTr3.insertAfter(clonedTr2);
+        clonedTr4.insertAfter(clonedTr3);
+        clonedTr5.insertAfter(clonedTr4);
+        clonedTr6.insertAfter(clonedTr5);
+        tr6.removeProp("id");
+    }
+    function addRow5() {
+        var tr11 = $("#row5");
+        var tr10 = tr11.prev();
+        var tr9 = tr10.prev();
+        var tr8 = tr9.prev();
+        var tr7 = tr8.prev();
+        var tr6 = tr7.prev();
+        var tr5 = tr6.prev();
+        var tr4 = tr5.prev();
+        var tr3 = tr4.prev();
+        var tr2 = tr3.prev();
+        var tr1 = tr2.prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr1 = tr1.clone();
+        var clonedTr2 = tr2.clone();
+        var clonedTr3 = tr3.clone();
+        var clonedTr4 = tr4.clone();
+        var clonedTr5 = tr5.clone();
+        var clonedTr6 = tr6.clone();
+        var clonedTr7 = tr7.clone();
+        var clonedTr8 = tr8.clone();
+        var clonedTr9 = tr9.clone();
+        var clonedTr10 = tr10.clone();
+        var clonedTr11 = tr11.clone();
+        // 获取编号
+        var id = tr1.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr1.children().get(0).innerHTML = num;
+        clonedTr1.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr2.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr3.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr4.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr5.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr6.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr7.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr8.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr9.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr10.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr11.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr1.addClass("newLine");
+        clonedTr2.addClass("newLine");
+        clonedTr3.addClass("newLine");
+        clonedTr4.addClass("newLine");
+        clonedTr5.addClass("newLine");
+        clonedTr6.addClass("newLine");
+        clonedTr7.addClass("newLine");
+        clonedTr8.addClass("newLine");
+        clonedTr9.addClass("newLine");
+        clonedTr10.addClass("newLine");
+        clonedTr11.addClass("newLine");
+        clonedTr1.insertAfter(tr11);
+        clonedTr2.insertAfter(clonedTr1);
+        clonedTr3.insertAfter(clonedTr2);
+        clonedTr4.insertAfter(clonedTr3);
+        clonedTr5.insertAfter(clonedTr4);
+        clonedTr6.insertAfter(clonedTr5);
+        clonedTr7.insertAfter(clonedTr6);
+        clonedTr8.insertAfter(clonedTr7);
+        clonedTr9.insertAfter(clonedTr8);
+        clonedTr10.insertAfter(clonedTr9);
+        clonedTr11.insertAfter(clonedTr10);
+        tr11.removeProp("id");
+    }
+    function addRow6() {
+        var tr6 = $("#row6");
+        var tr5 = tr6.prev();
+        var tr4 = tr5.prev();
+        var tr3 = tr4.prev();
+        var tr2 = tr3.prev();
+        var tr1 = tr2.prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr1 = tr1.clone();
+        var clonedTr2 = tr2.clone();
+        var clonedTr3 = tr3.clone();
+        var clonedTr4 = tr4.clone();
+        var clonedTr5 = tr5.clone();
+        var clonedTr6 = tr6.clone();
+        // 获取编号
+        var id = tr1.children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        clonedTr1.children().get(0).innerHTML = num;
+        clonedTr1.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr2.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr3.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr4.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr5.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr6.find("input[name^='deriveWastesList'],select[name^='deriveWastesList']").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/deriveWastesList\[[0-9]\d*/, "deriveWastesList[" + id);
+            $(this).attr('name', newName);
+        });
+        clonedTr1.addClass("newLine");
+        clonedTr2.addClass("newLine");
+        clonedTr3.addClass("newLine");
+        clonedTr4.addClass("newLine");
+        clonedTr5.addClass("newLine");
+        clonedTr6.addClass("newLine");
+        clonedTr1.insertAfter(tr6);
+        clonedTr2.insertAfter(clonedTr1);
+        clonedTr3.insertAfter(clonedTr2);
+        clonedTr4.insertAfter(clonedTr3);
+        clonedTr5.insertAfter(clonedTr4);
+        clonedTr6.insertAfter(clonedTr5);
+        tr6.removeProp("id");
+    }
 </script>
 <body onload="loadQuestionnaireList();">
     <!--导航条-->
@@ -553,7 +895,7 @@
                         <div class="col-md-8"></div>
                         <!--查询框-->
                         <div class="input-group">
-                            <label class="col-sm-4 control-label">调查表编号</label>
+                            <label class="col-sm-4 control-label text-oneLine">调查表编号</label>
                             <div class="col-xs-8">
                                 <input type="text" class="form-control" id="model-questionnaireId3">
                             </div>
@@ -912,7 +1254,7 @@
                                 <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].average"></td>
                                 <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
                             </tr>
-                            <tr>
+                            <tr id="row3">
                                 <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
                                 <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
                                 <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].average"></td>
@@ -979,7 +1321,7 @@
                                             <td style="width: 130px">灭火方法</td>
                                             <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
                                         </tr>
-                                        <tr>
+                                        <tr id="row4">
                                             <td style="width: 130px">泄露处理方法</td>
                                             <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
                                         </tr>
@@ -1176,7 +1518,7 @@
                         <div class="form-group">
                             <div class="col-md-8"></div>
                             <div class="input-group">
-                                <label class="col-sm-4 control-label">调查表编号</label>
+                                <label class="col-sm-4 control-label text-oneLine">调查表编号</label>
                                 <div class="col-xs-8">
                                     <input type="text" class="css" id="model-questionnaireId2" name="questionnaireId" readonly>
                                 </div>
@@ -1535,7 +1877,7 @@
                                     <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].average"></td>
                                     <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[6].maximum"></td>
                                 </tr>
-                                <tr>
+                                <tr id="row5">
                                     <td class="text-center" colspan="3"><input maxlength="8" type="text" class="focus" style="width:100px" name="deriveWastesList[0].mixingElementList[7].name"></td>
                                     <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].minimum"></td>
                                     <td class="text-center"><input type="text" class="focus" style="width:50px" name="deriveWastesList[0].mixingElementList[7].average"></td>
@@ -1559,7 +1901,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr id="cloneTr1">
+                                            <tr>
                                                 <td rowspan="6" class="text-center">1</td>
                                                 <td rowspan="6" style="width: 270px" onclick="focusInput(this);" class="text-center"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
                                                 <td rowspan="6" style="width: 120px" align="left">
@@ -1586,23 +1928,23 @@
                                                 <td style="width: 130px">若不慎入眼</td><br>
                                                 <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
                                             </tr>
-                                            <tr id="cloneTr2">
+                                            <tr>
                                                 <td style="width: 130px">若接触到皮肤</td>
                                                 <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
                                             </tr>
-                                            <tr id="cloneTr3">
+                                            <tr>
                                                 <td style="width: 130px">若吞食</td>
                                                 <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
                                             </tr>
-                                            <tr id="cloneTr4">
+                                            <tr>
                                                 <td style="width: 130px">若吸入</td>
                                                 <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
                                             </tr>
-                                            <tr id="cloneTr5">
+                                            <tr>
                                                 <td style="width: 130px">灭火方法</td>
                                                 <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
                                             </tr>
-                                            <tr id="cloneTr6">
+                                            <tr id="row6">
                                                 <td style="width: 130px">泄露处理方法</td>
                                                 <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
                                             </tr>
@@ -1750,11 +2092,11 @@
     // }
     function resetViewInfo() {
         $("#appointModal1").find("input:text").val("");
-        $("#appointModal1").find("input:radio").attr("checked", false);
-        $("#appointModal1").find("input:checkbox").attr("checked", false);
+        $("#appointModal1").find("input:radio").removeAttr("checked");
+        $("#appointModal1").find("input:checkbox:checked").removeAttr("checked");
         $("#appointModal2").find("input:text").val("");
-        $("#appointModal2").find("input:radio").attr("checked", false);
-        $("#appointModal2").find("input:checkbox").attr("checked", false);
+        $("#appointModal2").find("input:radio").removeAttr("checked");
+        $("#appointModal2").find("input:checkbox:checked").removeAttr("checked");
         $(".newLine").remove();
     }
     function viewQuestion(item){
@@ -1774,6 +2116,7 @@
                     var data = eval(result);
                     $("#model-questionnaireId2").val(id);
                     $("#model-companyName2").val(data.data.client.companyName);
+                    $("#model-contactName2").val(data.data.client.contactName);
                     $("#model-industry2").val(data.data.client.industry);
                     $("#model-author2").val(data.data.author);
                     $("#model-location2").val(data.data.client.location);
@@ -1787,7 +2130,6 @@
                         $("input[name='rawWastes[" + $i + "].auxMaterial']").val(data.data.rawWastesList[i].auxMaterial);
                         $("input[name='rawWastes[" + $i + "].draginMaterial']").val(data.data.rawWastesList[i].draginMaterial);
                     }
-                    console.log(data.data.wasteInclusionTypeList.length);
                     for (var i = 0; i < data.data.wasteInclusionTypeList.length; i++) {
                         var $i = data.data.wasteInclusionTypeList[i].index;
                         $("input[name='wasteInclusionTypeList'][value='" + $i + "']").prop("checked", true);
@@ -1802,7 +2144,10 @@
                         $("input[name='wasteProcess[" + $i + "].yearQuantity']").val(data.data.wasteProcessList[i].yearQuantity);
                     }
                     for (var i = 0; i < data.data.deriveWastesList.length; i++) {
-                        console.log(data.data.deriveWastesList[i]);
+                        if (i > 0) {
+                            addRow5();
+                            addRow6();
+                        }
                         var $i = i;
                         $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
                         $("input[name='deriveWastesList[" + $i + "].code']").val(data.data.deriveWastesList[i].code);
@@ -1843,6 +2188,7 @@
                         $("input[name='deriveWastesList[" + $i + "].putOutFireMeasures']").val(data.data.deriveWastesList[i].putOutFireMeasures);
                         $("input[name='deriveWastesList[" + $i + "].leakMeasures']").val(data.data.deriveWastesList[i].leakMeasures);
                     }
+//                    setTimeout("$('#appointModal2').modal('show');", 3000);
                     // 显示框体
                     $('#appointModal2').modal('show');
                 } else { }
@@ -1872,6 +2218,7 @@
                     var data = eval(result);
                     $("#model-questionnaireId3").val(id);
                     $("#model-companyName3").val(data.data.client.companyName);
+                    $("#model-contactName3").val(data.data.client.contactName);
                     $("#model-industry3").val(data.data.client.industry);
                     $("#model-author3").val(data.data.author);
                     $("#model-location3").val(data.data.client.location);
@@ -1888,7 +2235,7 @@
                     }
                     for (var i = 0; i < data.data.wasteInclusionTypeList.length; i++) {
                         var $i = data.data.wasteInclusionTypeList[i].index;
-                        $("input[name='wasteInclusionTypeList2'][value='" + $i + "']").attr("checked", true);
+                        $("input[name='wasteInclusionTypeList2'][value='" + $i + "']").prop("checked", true);
                     }
                     for (var i = 0; i < data.data.wasteProcessList.length; i++) {
                         if (i > 0) addWasteProcessNewLine2();
@@ -1900,18 +2247,21 @@
                         $("input[name='wasteProcess[" + $i + "].yearQuantity']").val(data.data.wasteProcessList[i].yearQuantity);
                     }
                     for (var i = 0; i < data.data.deriveWastesList.length; i++) {
-                        console.log(data.data.deriveWastesList[i]);
+                        if (i > 0) {
+                            addRow3();
+                            addRow4();
+                        }
                         var $i = i;
                         $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
                         $("input[name='deriveWastesList[" + $i + "].code']").val(data.data.deriveWastesList[i].code);
                         $("input[name='deriveWastesList[" + $i + "].formType']").val(data.data.deriveWastesList[i].formType != null ? data.data.deriveWastesList[i].formType.name : "");
-                        $("input[name='deriveWastesList[" + $i + "].isMixture'][value='" + data.data.deriveWastesList[i].isMixture + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].isMixture'][value='" + data.data.deriveWastesList[i].isMixture + "']").prop("checked", true);
                         $("input[name='deriveWastesList[" + $i + "].formTypeDetail']").val(data.data.deriveWastesList[i].formTypeDetail);
                         $("input[name='deriveWastesList[" + $i + "].smellType']").val(data.data.deriveWastesList[i].smellType != null ? data.data.deriveWastesList[i].smellType.name : "");
                         $("input[name='deriveWastesList[" + $i + "].smellTypeDetail']").val(data.data.deriveWastesList[i].smellTypeDetail);
                         $("input[name='deriveWastesList[" + $i + "].solubility']").val(data.data.deriveWastesList[i].solubility != null ? data.data.deriveWastesList[i].solubility.name : "");
                         $("input[name='deriveWastesList[" + $i + "].solubilityDetail']").val(data.data.deriveWastesList[i].solubilityDetail);
-                        $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='" + data.data.deriveWastesList[i].isLowTemp + "']").attr("checked", true);
+                        $("input[name='deriveWastesList[" + $i + "].isLowTemp'][value='" + data.data.deriveWastesList[i].isLowTemp + "']").prop("checked", true);
                         $("input[name='deriveWastesList[" + $i + "].lowTemp']").val(data.data.deriveWastesList[i].lowTemp);
                         $("input[name='deriveWastesList[" + $i + "].solubleTemp']").val(data.data.deriveWastesList[i].solubleTemp);
                         for (var j = 0; j < data.data.deriveWastesList[i].mixingElementList.length; j++) {
@@ -1923,16 +2273,16 @@
                         }
                         for (var j = 0; j < data.data.deriveWastesList[i].sensitiveElementList.length; j++) {
                             var $j = data.data.deriveWastesList[i].sensitiveElementList[j].chemicalType.index-1;
-                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].chemicalType']").attr("checked", true);
+                            $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].chemicalType']").prop("checked", true);
                             $("input[name='deriveWastesList[" + $i + "].sensitiveElementList[" + $j + "].isOrganic'][value='" + data.data.deriveWastesList[i].sensitiveElementList[j].isOrganic + "']").attr("checked", true);
                         }
                         for (var j = 0; j < data.data.deriveWastesList[i].wasteCharacterList.length; j++) {
                             var $j = data.data.deriveWastesList[i].wasteCharacterList[j].index-1;
-                            $("input[name='deriveWastesList[" + $i + "].wasteCharacterList[" + $j + "]']").attr("checked", true);
+                            $("input[name='deriveWastesList[" + $i + "].wasteCharacterList[" + $j + "]']").prop("checked", true);
                         }
                         for (var j = 0; j < data.data.deriveWastesList[i].wasteProtectList.length; j++) {
                             var $j = data.data.deriveWastesList[i].wasteProtectList[j].index-1;
-                            $("input[name='deriveWastesList[" + $i + "].wasteProtectList[" + $j + "]']").attr("checked", true);
+                            $("input[name='deriveWastesList[" + $i + "].wasteProtectList[" + $j + "]']").prop("checked", true);
                         }
                         $("input[name='deriveWastesList[" + $i + "].eyeMeasures']").val(data.data.deriveWastesList[i].eyeMeasures);
                         $("input[name='deriveWastesList[" + $i + "].skinMeasures']").val(data.data.deriveWastesList[i].skinMeasures);

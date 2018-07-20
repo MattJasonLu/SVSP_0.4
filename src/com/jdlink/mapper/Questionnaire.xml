@@ -4,13 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.QuestionnaireMapper">
-    <resultMap id="ClientRM" type="Client">
+    <resultMap id="ClientRM" type="Client" autoMapping="true">
         <result property="clientId" column="clientId"/>
         <result property="companyName" column="companyName"/>
         <result property="product" column="product"/>
         <result property="industry" column="industry"/>
         <result property="contactName" column="contactName"/>
         <result property="location" column="location"/>
+        <result property="phone" column="phone"/>
     </resultMap>
     <resultMap id="MixingElementRM" type="MixingElement">
         <result property="id" column="id"/>
@@ -137,11 +138,11 @@
             AND (questionnaire.questionnaireId LIKE "%"#{keyword}"%" OR
             client.companyName LIKE "%"#{keyword}"%" OR client.industry LIKE "%"#{keyword}"%" OR
             client.product LIKE "%"#{keyword}"%" OR questionnaire.state LIKE "%"#{keyword}"%" OR
-            questionnaire.author LIKE "%"#{keyword}"%" OR questionnaire.time LIKE binary "%"#{keyword}"%");
+            questionnaire.author LIKE "%"#{keyword}"%" OR questionnaire.time LIKE binary "%"#{keyword}"%") ORDER BY questionnaire.time DESC;
     </select>
 
     <select id="getById" parameterType="String" resultMap="QuestionnaireRM">
-        SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId,
+        SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId, client.phone,
           client.product, client.contactName, client.location, questionnaire.state, questionnaire.author, questionnaire.time
             FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId AND questionnaireId = #{questionnaireId};
     </select>
@@ -277,9 +278,9 @@
     </update>
 
     <select id="list" resultMap="QuestionnaireRM">
-        SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId,
+        SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId, client.phone,
           client.product, client.contactName, client.location, questionnaire.state, questionnaire.author, questionnaire.time
-            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId;
+            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId ORDER BY questionnaire.time DESC;
     </select>
 
     <select id="count" resultType="int">
