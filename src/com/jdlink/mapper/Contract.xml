@@ -50,7 +50,7 @@
 
     <select id="getByKeyword" parameterType="String" resultMap="ContractRM">
         select * from t_contract where contractId like  binary "%"#{keyword}"%" or checkState like binary "%"#{keyword}"%" or companyName like binary "%"#{keyword}"%"
-        or city like binary "%"#{keyword}"%"  or province like binary  "%"#{keyword}"%" or contactName like binary "%"#{keyword}"%" or telephone like  binary  "%"#{keyword}"%" or beginTime like binary  "%"#{keyword}"%";
+        or city like binary "%"#{keyword}"%"  or province like binary  "%"#{keyword}"%" or contactName like binary "%"#{keyword}"%" or telephone like  binary  "%"#{keyword}"%" or beginTime like binary  "%"#{keyword}"%" or contractType like binary  "%"#{keyword}"%";
     </select>
 
     <select id="getByContractId" parameterType="String" resultMap="ContractRM">
