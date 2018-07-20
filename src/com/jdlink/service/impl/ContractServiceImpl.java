@@ -117,8 +117,8 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public void cancel(String contractId) {
-        contractMapper.cancel(contractId);
+    public void cancel(String contractId,String nowTime) {
+        contractMapper.cancel(contractId,nowTime);
     }
 
     @Override

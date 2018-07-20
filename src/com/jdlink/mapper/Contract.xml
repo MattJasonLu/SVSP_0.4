@@ -107,8 +107,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="listRate2" >
         select rate2 from ticketrate2;
     </select>
-    <update id="cancel" parameterType="String">
-        update t_contract set checkState="Invalid" where contractId=#{contractId}
+    <update id="cancel" >
+        update t_contract set checkState="Invalid",nowTime=#{1} where contractId=#{0}
     </update>
     <delete id="cancel1" parameterType="String">
         delete from  t_contract  where contractId=#{contractId}

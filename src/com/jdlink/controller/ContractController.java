@@ -234,6 +234,7 @@ public String submitEmContract(@RequestBody Contract contract) {
             String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
             contract.setContractId(newId);
         }
+
         System.out.println("当前合同编号:"+contract.getContractId());
         contract.setCheckState(CheckState.ToSubmit);
         //设置时间
@@ -258,7 +259,6 @@ public String submitEmContract(@RequestBody Contract contract) {
             contractService.add(contract);
             res.put("status", "success");
             res.put("message", "添加成功");
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -511,8 +511,18 @@ JSONObject res=new JSONObject();
     @ResponseBody
     public String cancelContract(String contractId){
        JSONObject res=new JSONObject();
-       try {
-           contractService.cancel(contractId);
+        //设置时间
+        //生成日期对象
+        Date current_date = new Date();
+        //设置日期格式化样式为：yyyy-MM-dd
+        SimpleDateFormat  SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //格式化当前日期
+        String nowTime=SimpleDateFormat.format(current_date);
+        Contract contract=contractService.getByContractId(contractId);
+        contract.setNowTime(nowTime);
+
+        try {
+           contractService.cancel(contractId,nowTime);
            res.put("state","success");
        }
        catch (Exception e){

@@ -28,7 +28,7 @@ public interface ContractService {
     Contract getModel(String contractId);
     Contract getModel2(String modelName);
     void addEm(Contract contract);
-    void cancel(String contractId);
+    void cancel(String contractId,String nowTime);
     void cancel1(String modelName);
     void approval(String contractId);
     List<String> modelName(String key);
