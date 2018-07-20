@@ -4,6 +4,16 @@ package com.jdlink.domain;
  * 危险废物名称及数量
  */
 public class Hazardous{
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     /**
      * 废物名称
      */

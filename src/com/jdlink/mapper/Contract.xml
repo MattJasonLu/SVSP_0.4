@@ -32,9 +32,15 @@
         #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion})
     </insert>
     <insert id="addEm" parameterType="Contract">
-insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,wasteName,tonNumber,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime)
-values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{wasteName},#{tonNumber},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime})
-    </insert>
+     insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime)
+     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime});
+        <if test="hazardousList.size() > 0 ">
+          <foreach collection="hazardousList"  item="hazardous" index="index">
+              insert into r_contractandhazardous(contractId,hazardousId) values (#{contractId}, #{hazardous.id});
+              insert into t_hazardous(id,name,num) values (#{hazardous.id}, #{hazardous.name}, #{hazardous.num});
+          </foreach>
+        </if>
+</insert>
 
     <delete id="delete" parameterType="Contract" >
         delete from t_contract where contractId;
