@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Quotation;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.QuotationService;
@@ -314,12 +315,33 @@ public class QuotationController {
         return res.toString();
     }
 
-    @RequestMapping("reject")
+    @RequestMapping("searchQuotation")
     @ResponseBody
-    public String reject(String advice,String id) {
+    public String searchQuotation (String keyword) {
         JSONObject res = new JSONObject();
         try {
-            quotationService.reject(advice,id);
+            List<Quotation> quotationList = quotationService.getByKeyword(keyword);
+            JSONArray data = JSONArray.fromArray(quotationList.toArray(new Quotation[quotationList.size()]));
+            res.put("data", data.toString());
+            res.put("status", "success");
+            res.put("message", "报价单信息获取成功");
+            // 返回结果
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "报价单信息获取失败");
+            res.put("exception", e.getMessage());
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    @RequestMapping("reject")
+    @ResponseBody
+    public String reject(Quotation quotation) {
+        JSONObject res = new JSONObject();
+        try {
+            quotationService.reject(quotation.getAdvice(), quotation.getId());
             res.put("status", "success");
             res.put("message", "送审驳回成功");
         } catch (Exception e) {

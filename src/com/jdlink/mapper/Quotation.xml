@@ -5,18 +5,16 @@
 
 <mapper namespace="com.jdlink.mapper.QuotationMapper">
     <resultMap id="ClientRM" type="Client" autoMapping="true">
-        <result property="clientId" column="clientId"/>
-        <result property="companyName" column="companyName"/>
-        <result property="contactName" column="contactName"/>
-        <result property="location" column="location"/>
+        <result property="clientId" column="clientId" />
+        <result property="companyName" column="companyName" />
+        <result property="contactName" column="contactName" />
     </resultMap>
     <resultMap type="Quotation" id="QuotationRM" autoMapping="true">
-        <result property="id" column="id"/>
+        <result property="id" column="id" />
         <result property="quotationId" column="quotationId"/>
-        <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
+        <result property="checkState" column="checkState" />
         <association property="client" javaType="Client" resultMap="ClientRM"/>
-        <collection property="wastesList" select="getWastes" column="id"
-                    ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+        <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Quotation" >
         INSERT INTO t_quotation (quotationId, name, version, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount, checkState)
@@ -86,6 +84,14 @@
 
     <select id="getByQuotationId" resultMap="QuotationRM" parameterType="String">
         SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND quotationId=#{quotationId}
+    </select>
+
+    <select id="getByKeyword" parameterType="String" resultMap="QuotationRM">
+        SELECT t_quotation.*,client.companyName FROM t_quotation join client WHERE t_quotation.quotationId like "%"#{keyword}"%"
+                or version like "%"#{keyword}"%" or t_quotation.name like "%"#{keyword}"%"
+                or t_quotation.contactName like "%"#{keyword}"%" or t_quotation.clientId like "%"#{keyword}"%"
+                or t_quotation.phone like "%"#{keyword}"%" or client.companyName like "%"#{keyword}"%"
+                or t_quotation.endDate like binary "%"#{keyword}"%" or t_quotation.location like "%"#{keyword}"%";
     </select>
 
     <update id="setStateDisabled" parameterType="String">
