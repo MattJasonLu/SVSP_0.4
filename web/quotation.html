@@ -319,14 +319,14 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <th>报价单编号</th>
-                        <th>报价单名称</th>
-                        <th>版本号</th>
-                        <th>客户名称</th>
-                        <th>联系人</th>
-                        <th>联系方式</th>
-                        <th>所属区域</th>
-                        <th><div class="form-inline">
+                        <th class="text-center">报价单编号</th>
+                        <th class="text-center">报价单名称</th>
+                        <th class="text-center">版本号</th>
+                        <th class="text-center">客户名称</th>
+                        <th class="text-center">联系人</th>
+                        <th class="text-center">联系方式</th>
+                        <th class="text-center">所属区域</th>
+                        <th class="text-center"><div class="form-inline">
                             <label class="control-label">状态</label>
                             <select class="form-control" id="state" style="height: 80%; font-size: x-small;" onchange="setState();">
                                 <option value="All">所有</option>
@@ -339,9 +339,9 @@
                                 <option value="Invalid">已作废</option>
                             </select>
                         </div></th>
-                        <th>到期日期</th>
-                        <th>操作</th>
-                        <th class="hidden">ID</th>
+                        <th class="text-center">到期日期</th>
+                        <th class="text-center">操作</th>
+                        <th class="text-center hidden">ID</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -351,16 +351,16 @@
                                     <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                                 </label>
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center">
                                 <a href="#" onclick="viewQuotation(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                 <!--<a href="#" onclick="adjustQuotation(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>-->
                                 <a href="#" onclick="levelUp(this);" title="升级"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
@@ -368,7 +368,7 @@
                                 <a href="#" onclick="examination(this);" title="送审"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 <a href="#" onclick="disabledQuotation(this);" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                             </td>
-                            <td class="hidden"></td>
+                            <td class="hidden text-center"></td>
                         </tr>
                     </tbody>
                 </table>

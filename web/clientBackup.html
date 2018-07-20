@@ -313,7 +313,7 @@
                         <a class="btn btn-primary btn-xs" onclick="exportExcel(this);"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-xs-2 pull-right">
+                    <div class="input-group col-xs-3 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchClient();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
@@ -331,15 +331,15 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <th>客户编号</th>
-                        <th style="width: 300px">客户名称</th>
-                        <th>申报状态</th>
-                        <th>审核状态</th>
-                        <th>账号状态</th>
-                        <th>联系人</th>
-                        <th>联系电话</th>
-                        <th>客户类型</th>
-                        <th>操作</th>
+                        <th class="text-center">客户编号</th>
+                        <th class="text-center" style="width: 300px">客户名称</th>
+                        <th class="text-center">申报状态</th>
+                        <th class="text-center">审核状态</th>
+                        <th class="text-center">账号状态</th>
+                        <th class="text-center">联系人</th>
+                        <th class="text-center">联系电话</th>
+                        <th class="text-center">客户类型</th>
+                        <th class="text-center">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -349,15 +349,15 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="select">
                             </label>
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center">
                             <a href="#" onclick="viewClient(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="commitClient(this);" title="提交"><span class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>
                             <a href="#" onclick="adjustClient(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>

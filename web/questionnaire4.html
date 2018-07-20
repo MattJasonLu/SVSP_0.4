@@ -205,16 +205,16 @@
                         <div class="form-group">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th style="width: 50px;">序号</th>
-                                    <th style="width: 270px">危废名称</th>
-                                    <th>特性</th>
-                                    <th>危废处理个人防护</th>
-                                    <th colspan="2">应急对应措施</th>
+                                    <th class="text-center" style="width: 50px;">序号</th>
+                                    <th class="text-center" style="width: 270px">危废名称</th>
+                                    <th class="text-center">特性</th>
+                                    <th class="text-center">危废处理个人防护</th>
+                                    <th class="text-center" colspan="2">应急对应措施</th>
                                 </tr>
                                 <tr id="cloneTr1">
-                                    <td rowspan="6">1</td>
-                                    <td rowspan="6" style="width: 270px" onclick="focusInput(this);"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
-                                    <td rowspan="6" style="width: 120px" align="left">
+                                    <td class="text-center" rowspan="6">1</td>
+                                    <td class="text-center" rowspan="6" style="width: 270px" onclick="focusInput(this);"><input type="text" style="width:256px" class="focus" name="deriveWastesList[0].name"></td>
+                                    <td class="text-center" rowspan="6" style="width: 120px" align="left">
                                         <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[0]" value="Virulence">毒性<br>
                                         <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[1]" value="Flammable">易燃<br>
                                         <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[2]" value="Sour">酸性<br>
@@ -226,7 +226,7 @@
                                         <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[8]" value="WaterVirulence">遇水易释放有毒气体<br>
                                         <input type="checkbox" name="deriveWastesList[0].wasteCharacterList[9]" value="AirFlammable">接触空气可发生自燃<br>
                                     </td>
-                                    <td rowspan="6" style="width: 200px" align="left">
+                                    <td class="text-center" rowspan="6" style="width: 200px" align="left">
                                         <input type="checkbox" name="deriveWastesList[0].wasteProtectList[0]" value="ProtectiveGlasses">防护眼镜<br>
                                         <input type="checkbox" name="deriveWastesList[0].wasteProtectList[1]" value="ProtectiveGarment">防护服<br>
                                         <input type="checkbox" name="deriveWastesList[0].wasteProtectList[2]" value="ProtectiveMask">防护面罩<br>
@@ -235,28 +235,28 @@
                                         <input type="checkbox" name="deriveWastesList[0].wasteProtectList[5]" value="PositiveRespirator">正压呼吸器<br>
                                         <input type="checkbox" name="deriveWastesList[0].wasteProtectList[6]" value="ProtectiveGloves">防护手套<br>
                                     </td>
-                                    <td style="width: 130px">若不慎入眼</td><br>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
+                                    <td class="text-center" style="width: 130px">若不慎入眼</td><br>
+                                    <td class="text-center" style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].eyeMeasures"></td>
                                 </tr>
                                 <tr id="cloneTr2">
-                                    <td style="width: 130px">若接触到皮肤</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
+                                    <td class="text-center" style="width: 130px">若接触到皮肤</td>
+                                    <td class="text-center" style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].skinMeasures"></td>
                                 </tr>
                                 <tr id="cloneTr3">
-                                    <td style="width: 130px">若吞食</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
+                                    <td class="text-center" style="width: 130px">若吞食</td>
+                                    <td class="text-center" style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].swallowMeasures"></td>
                                 </tr>
                                 <tr id="cloneTr4">
-                                    <td style="width: 130px">若吸入</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
+                                    <td class="text-center" style="width: 130px">若吸入</td>
+                                    <td class="text-center" style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].suctionMeasures"></td>
                                 </tr>
                                 <tr id="cloneTr5">
-                                    <td style="width: 130px">灭火方法</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
+                                    <td class="text-center" style="width: 130px">灭火方法</td>
+                                    <td class="text-center" style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].putOutFireMeasures"></td>
                                 </tr>
                                 <tr id="cloneTr6">
-                                    <td style="width: 130px">泄露处理方法</td>
-                                    <td style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
+                                    <td class="text-center" style="width: 130px">泄露处理方法</td>
+                                    <td class="text-center" style="width: 245px"><input type="text" style="width:240px" class="focus" name="deriveWastesList[0].leakMeasures"></td>
                                 </tr>
                             </table>
                         </div>
