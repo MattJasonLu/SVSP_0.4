@@ -44,7 +44,6 @@
         num++;
         // 克隆后清空新克隆出的行数据
         clonedTr.children("td:not(0)").find("input").val("");
-        clonedTr.children("td:not(0)").find("select:first").get(0).selectedIndex=-1;
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.children("td:not(0)").find("input,select").each(function () {
             var name = $(this).attr('name');
@@ -52,6 +51,8 @@
             $(this).attr('name', newName);
         });
         clonedTr.insertAfter(tr);
+        var $i = id;
+        $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = -1;
     }
     //获取时间
 //    function getTimeStr(obj) {
@@ -182,7 +183,7 @@
                 </ol>
             </div>
             <h4 class="sub-header">客户报价单</h4>
-            <form method="post" id="page1Info" enctype="multipart/form-data">
+            <!--<form method="post" id="page1Info" enctype="multipart/form-data">-->
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                     </div>
@@ -323,7 +324,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="table">
                     <table class="table table-striped table-hover table-condensed">
                             <thead>
                             <tr>
@@ -332,7 +333,7 @@
                                 <th class="text-center">状态</th>
                                 <th class="text-center">危废代码</th>
                                 <th class="text-center">合约量</th>
-                                <th class="text-center" id="unitPriceTaxTh" style="width: 100%;">单价<br>(元/吨)(含税)</th>
+                                <th class="text-center" id="unitPriceTaxTh">单价<br>(元/吨)(含税)</th>
                                 <th class="text-center">税率(%)</th>
                                 <th class="text-center" id="unitPriceTh">税额</th>
                                 <th class="text-center">PH</th>
@@ -346,23 +347,23 @@
                             </thead>
                             <tr>
                                 <td class="text-center">1</td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].name"></td>
-                                <td class="text-center"><select class="form-control focus" name="wastesList[0].formType"></select></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount" oninput="calculateTax();"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax" oninput="calculateTax();"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate" oninput="calculateTax();"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ph"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].calorific"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].halogenPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].name" style="width: 80px;"></td>
+                                <td class="text-center"><select class="form-control focus" name="wastesList[0].formType" style="width: 70px;"></select></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId" style="width: 100px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount" style="width: 50px;" oninput="calculateTax();"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax" style="width: 50px;" oninput="calculateTax();"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate" style="width: 50px;" oninput="calculateTax();"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ph" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].calorific" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].halogenPercentage" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint" style="width: 50px;"></td>
                             </tr>
                             <tr id="plusBtn">
-                                <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                                <td><a class="btn btn-default btn-sm" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                                 <td colspan="14"></td>
                             </tr>
                         </table>
@@ -391,7 +392,7 @@
                     <a class="btn btn-warning" onclick="clientReset()">重置</a>
                     <a class="btn btn-danger" href="quotation.html">返回</a>
                 </div>
-            </form>
+            <!--</form>-->
         </div>
     </div>
 </body>
