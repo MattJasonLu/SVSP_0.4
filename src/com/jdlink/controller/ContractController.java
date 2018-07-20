@@ -273,6 +273,13 @@ return  res.toString();
         mav.setViewName("jsp/showContract.jsp");
         return mav;
     }
+    @RequestMapping("getEmContractById")
+    @ResponseBody
+    public String  getEmContractById(String contractId){
+       Contract contract= contractService.getByContractId(contractId);
+        JSONObject res=JSONObject.fromBean(contract);
+        return res.toString();
+    }
     @RequestMapping("Secondary")
     @ResponseBody
     public ModelAndView Secondary(String contractId) {

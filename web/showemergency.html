@@ -28,13 +28,39 @@
 <script type="text/javascript">
     function loadContractSelectList() {
 //取得下拉菜单的选项
+        var contractId=localStorage['name1'];
+       // console.log(contractId+"A");
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "getContractList",                  // url
+            url: "getEmContractById",                  // url
             dataType: "json",
+            data:{
+                'contractId':contractId,
+            },
             success: function (result) {
                 if (result != undefined) {
                     var data = eval(result);
+                    console.log(data);
+                    $('#area').prop("value",data.area);
+                    $('#companyName').prop("value",data.companyName);
+                    $('#companyAgent').prop("value",data.companyAgent);
+                    $('#companyLegal').prop("value",data.companyLegal);
+                    $('#telephone').prop("value",data.telephone);
+                    $('#address').prop("value",data.address);
+                    $('#bankName').prop("value",data.bankName);
+                    $('#bankAccount').prop("value",data.bankAccount);
+                    $('#clientAgent').prop("value",data.clientAgent);
+                    $('#clientLegal').prop("value",data.clientLegal);
+                    for(var i=0;i<data.hazardousList.length;i++){
+                        if (i > 0) addNewLine();
+                        var $i = i;
+                        $("input[name='hazardousList[" + $i + "].name']").val(data.hazardousList[i].name);
+                        $("input[name='hazardousList[" + $i + "].num']").val(data.hazardousList[i].num);
+                    }
+
+
+
+                    //localStorage.removeItem('name1');
                 } else {
                     console.log(result);
                 }
@@ -105,6 +131,29 @@
             }
         });
     }
+    /**
+     * 增加新行
+     */
+    function addNewLine() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+
+        // 获取编号
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:not(0)").find("input").val("");
+        clonedTr.children().get(0).innerHTML = num;
+        clonedTr.children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).attr('name');
+            var newName = name.replace(/[0-9]\d*/, id);
+            $(this).attr('name', newName);
+        });
+        clonedTr.insertAfter(tr);
+    }
 </script>
 <body onload="loadContractSelectList();">
 <div class="main-title">
@@ -121,58 +170,58 @@
         <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
     </div>
     <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
-            <ul class="nav navbar-nav">
-                <li><a href="wastesPlatform.html">首页</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html">客户备案</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="salesManage.html">业务员分配管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html">客户样品登记</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html">供应商备案</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="contractManage.html">合同列表</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="contractTemplate.html">合同模板</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="quotation.html">报价管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="cost.html">成本管理</a></li>
-                    </ul>
-                </li>
-                <li><a href="archivesManage.html">一企一档</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
-        <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-            <ul class="dropdown-menu">
-                <li><a href="#">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="index.html">注销</a></li>
-            </ul>
-        </li>
-    </ul>
+        <ul class="nav navbar-nav">
+            <li><a href="wastesPlatform.html">首页</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="clientBackup.html">客户备案</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="salesManage.html">业务员分配管理</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="sampleManage.html">客户样品登记</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="supplierBackup.html">供应商备案</a></li>
+                </ul>
+            </li>
+            <li class="dropdown active">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="contractManage.html">合同列表</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="contractTemplate.html">合同模板</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="quotation.html">报价管理</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="cost.html">成本管理</a></li>
+                </ul>
+            </li>
+            <li><a href="archivesManage.html">一企一档</a></li>
+        </ul>
+    </div><!--/.nav-collapse -->
+</div>
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+    <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+    <li class="dropdown">
+        <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="#">个人信息</a></li>
+            <li><a href="#">待办事项</a></li>
+            <li><a href="index.html">注销</a></li>
+        </ul>
+    </li>
+</ul>
 </nav>
 <div class="container-fluid">
     <div class="row">
@@ -216,7 +265,7 @@
                     <div class="form-group">
                         <label class="col-sm-6 control-label" for="area"> 所属区域</label>
                         <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="area" id="area"  value="${emergency.area}" readonly>
+                            <input type="text" class="form-control"  name="area" id="area" >
                         </div>
                     </div>
                 </div>
@@ -226,7 +275,7 @@
                     <div class="form-group pull-left" >
                         <label  class="col-sm-4 control-label" for="companyName">甲方：</label>
                         <div class="col-xs-8">
-                            <input class="form-control" id="companyName" name="companyName" value="${emergency.companyName}"readonly>
+                            <input class="form-control" id="companyName" name="companyName">
                         </div>
                     </div>
                 </div>
@@ -255,53 +304,30 @@
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     <div class="form-group">
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双方经友好协商，本着平等互利的原则，就<input type="text" style="width: 60px" class="focus" name="thing" value="${emergency.thing}" readonly>需应急处置的危险废弃物进行安全处置事宜
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;双方经友好协商，本着平等互利的原则，就<input type="text" style="width: 60px" class="focus" name="thing" id="thing">需应急处置的危险废弃物进行安全处置事宜
                             达成一致意见，具体内容如下：</p>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-8">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="wasteName">危险废物的名称及数量：</label>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-4"></div>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="wasteName" >名称：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="wasteName" name="wasteName" style="width: 100px" maxlength="18" value="${emergency.wasteName}" readonly>[HW（）]</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="tonNumber">数量：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="tonNumber" name="tonNumber" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="name2">名称：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="name2" name="wasteName" style="width: 100px" maxlength="18">[HW（）]</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="number2">数量：</label>
-                        <div class="col-xs-4">
-                            <p><input class="form-control focus" id="number2" name="tonNumber" style="width: 50px" maxlength="10">[吨每年<input type="text" style="width: 40px" class="focus" maxlength="8">t/a]</p>
-                        </div>
-                    </div>
+                <div class="form-horizontal col-md-8 center-block">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>序号</th>
+                            <th>危险废物的名称</th>
+                            <th>数量(吨每年t/a)</th>
+                        </tr>
+                        <tr id="cloneTr1">
+                            <td>1</td>
+                            <td><input type="text" class="focus" name="hazardousList[0].name" style="width:100%; height:100%;"></td><!--危险废物名称-->
+                            <td><input type="text" class="focus" name="hazardousList[0].num" style="width:100%; height:100%;"></td><!--数量-->
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <h5><b>二、其他</b></h5>
@@ -340,7 +366,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyLegal">法定代表人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="companyLegal" name="companyLegal" value="${emergency.companyLegal}" readonly>
+                            <input class="form-control" id="companyLegal" name="companyLegal">
                         </div>
                     </div>
                 </div>
@@ -348,7 +374,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="clientLegal">企业负责人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="clientLegal" name="clientLegal" value="${emergency.clientLegal}" readonly>
+                            <input class="form-control" id="clientLegal" name="clientLegal">
                         </div>
                     </div>
                 </div>
@@ -358,7 +384,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyAgent">委托代理人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="companyAgent" name="companyAgent" value="${emergency.companyAgent}" readonly>
+                            <input class="form-control" id="companyAgent" name="companyAgent">
                         </div>
                     </div>
                 </div>
@@ -366,7 +392,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="clientAgent">委托代理人：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="clientAgent" name="clientAgent" value="${emergency.clientAgent}" readonly>
+                            <input class="form-control" id="clientAgent" name="clientAgent">
                         </div>
                     </div>
                 </div>
@@ -376,7 +402,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="telephone">联系电话：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="telephone" name="telephone" value="${emergency.telephone}"readonly>
+                            <input class="form-control" id="telephone" name="telephone">
                         </div>
                     </div>
                 </div>
@@ -394,7 +420,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="address">单位地址：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="address" name="address" value="${emergency.address}" readonly>
+                            <input class="form-control" id="address" name="address">
                         </div>
                     </div>
                 </div>
@@ -412,7 +438,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="bankName">开户：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="bankName" name="bankName" value="${emergency.bankName}" readonly>
+                            <input class="form-control" id="bankName" name="bankName">
                         </div>
                     </div>
                 </div>
@@ -430,7 +456,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="bankAccount">账号：</label>
                         <div class="col-xs-4">
-                            <input class="form-control" id="bankAccount" name="bankAccount" value="${emergency.bankAccount}" readonly>
+                            <input class="form-control" id="bankAccount" name="bankAccount">
                         </div>
                     </div>
                 </div>
@@ -464,8 +490,8 @@
             <br>
             <br>
             <div class="row text-center">
-                <a class="btn btn-success" >打印</a>
-                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
+                <a class="btn btn-success">打印</a>
+                <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
     </div>
