@@ -445,44 +445,20 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p class="text-left"><b>联&nbsp;&nbsp;系&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="model2-contactName"></span></p>
-                                <div class="form-group">
-                                    <label for="model2-productName" class="control-label">样品名称</label>
-                                    <input type="text" class="form-control" id="model2-productName" name="productName">
-                                </div>
-                                <div class="form-group">
-                                    <label for="model2-recipient" class="control-label">样品接收人</label>
-                                    <input type="text" class="form-control" id="model2-recipient" name="recipient">
-                                </div>
-                                <div class="form-group">
-                                    <label for="model2-formType" class="control-label">状态</label>
-                                    <select class="form-control" id="model2-formType" name="formType"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="model2-quantity" class="control-label">拟处置量</label>
-                                    <input type="number" class="form-control" id="model2-quantity" name="quantity">
-                                </div>
+                                <p class="text-left"><b>样品名称&nbsp;&nbsp;</b><span id="model2-productName"></span></p>
+                                <p class="text-left"><b>接&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="model2-recipient"></span></p>
+                                <p class="text-left"><b>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态&nbsp;&nbsp;</b><span id="model2-formType"></span></p>
+                                <p class="text-left"><b>拟处置量&nbsp;&nbsp;</b><span id="model2-quantity"></span></p>
                             </div>
                             <div class="col-md-6">
                                 <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="model2-telephone"></span></p>
-                                <div class="form-group">
-                                    <label for="model2-contactName" class="control-label">危废代码</label>
-                                    <input type="text" class="form-control" id="model2-code" name="code">
-                                </div>
-                                <div class="form-group">
-                                    <label for="model2-color" class="control-label">颜色</label>
-                                    <input type="text" class="form-control" id="model2-color" name="color">
-                                </div>
-                                <div class="form-group">
-                                    <label for="model2-packageType" class="control-label">包装</label>
-                                    <select class="form-control" id="model2-packageType" name="packageType"></select>
-                                </div>
+                                <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model2-code"></span></p>
+                                <p class="text-left"><b>颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色&nbsp;&nbsp;</b><span id="model2-color"></span></p>
+                                <p class="text-left"><b>包&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;装&nbsp;&nbsp;</b><span id="model2-packageType"></span></p>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="model2-mainComponent" class="control-label">主要成分</label>
-                            <div>
-                                <textarea class="form-control" id="model2-mainComponent" name="mainComponent" rows="3"></textarea>
-                            </div>
+                        <div class="row">
+                            <p class="text-left"><b>主要成分&nbsp;&nbsp;</b><span id="model2-mainComponent"></span></p>
                         </div>
                     </form>
                 </div>
@@ -788,21 +764,21 @@
                     if (result != undefined) {
                         var data = eval(result);
                         if (data.status == "success") {
-                            $("#model2-productName").val(data.data.productName);
-                            $("#model2-recipient").val(data.data.recipient);
-                            $("#model2-quantity").val(data.data.quantity);
-                            $("#model2-code").val(data.data.code);
-                            $("#model2-color").val(data.data.color);
-                            $("#model2-mainComponent").val(data.data.mainComponent);
+                            $("#model2-productName").text(data.data.productName);
+                            $("#model2-recipient").text(data.data.recipient);
+                            $("#model2-quantity").text(data.data.quantity);
+                            $("#model2-code").text(data.data.code);
+                            $("#model2-color").text(data.data.color);
+                            $("#model2-mainComponent").text(data.data.mainComponent);
                             formTypeIndex = data.data.formType.index-1;
                             packageTypeIndex = data.data.packageType.index-1;
                         } else {
-                            $("#model2-productName").val("");
-                            $("#model2-recipient").val("");
-                            $("#model2-quantity").val("");
-                            $("#model2-code").val("");
-                            $("#model2-color").val("");
-                            $("#model2-mainComponent").val("");
+                            $("#model2-productName").text("");
+                            $("#model2-recipient").text("");
+                            $("#model2-quantity").text("");
+                            $("#model2-code").text("");
+                            $("#model2-color").text("");
+                            $("#model2-mainComponent").text("");
                             formTypeIndex = -1;
                             packageTypeIndex = -1;
                         }
@@ -830,7 +806,7 @@
                         formType.children().remove();
                         $.each(data.formTypeStrList, function (index, item) {
                             var option = $('<option />');
-                            option.val(item.index-1);
+                            option.text(item.index-1);
                             option.text(item.name);
                             formType.append(option);
                         });
@@ -840,7 +816,7 @@
                         packageType.children().remove();
                         $.each(data.packageTypeStrList, function (index, item) {
                             var option = $('<option />');
-                            option.val(item.index-1);
+                            option.text(item.index-1);
                             option.text(item.name);
                             packageType.append(option);
                         });
@@ -870,12 +846,12 @@
             createTime: getStdTimeStr($("#model2-createTime").text()),
             contactName: $("#model2-contactName").text(),
             telephone: $("#model2-telephone").text(),
-            productName: $("#model2-productName").val(),
-            recipient: $("#model2-recipient").val(),
-            quantity: $("#model2-quantity").val(),
-            code: $("#model2-code").val(),
-            color: $("#model2-color").val(),
-            mainComponent: $("#model2-mainComponent").val()
+            productName: $("#model2-productName").text(),
+            recipient: $("#model2-recipient").text(),
+            quantity: $("#model2-quantity").text(),
+            code: $("#model2-code").text(),
+            color: $("#model2-color").text(),
+            mainComponent: $("#model2-mainComponent").text()
         };
         $.ajax({
             type: "POST",                            // 方法类型
@@ -949,21 +925,21 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("#model2-productName").val(data.data.productName);
-                        $("#model2-recipient").val(data.data.recipient);
-                        $("#model2-quantity").val(data.data.quantity);
-                        $("#model2-code").val(data.data.code);
-                        $("#model2-color").val(data.data.color);
-                        $("#model2-mainComponent").val(data.data.mainComponent);
+                        $("#model2-productName").text(data.data.productName);
+                        $("#model2-recipient").text(data.data.recipient);
+                        $("#model2-quantity").text(data.data.quantity);
+                        $("#model2-code").text(data.data.code);
+                        $("#model2-color").text(data.data.color);
+                        $("#model2-mainComponent").text(data.data.mainComponent);
                         if (data.data.formType != null) formTypeIndex = data.data.formType.index-1;
                         if (data.data.packageType != null) packageTypeIndex = data.data.packageType.index-1;
                     } else {
-                        $("#model2-productName").val("");
-                        $("#model2-recipient").val("");
-                        $("#model2-quantity").val("");
-                        $("#model2-code").val("");
-                        $("#model2-color").val("");
-                        $("#model2-mainComponent").val("");
+                        $("#model2-productName").text("");
+                        $("#model2-recipient").text("");
+                        $("#model2-quantity").text("");
+                        $("#model2-code").text("");
+                        $("#model2-color").text("");
+                        $("#model2-mainComponent").text("");
                         formTypeIndex = -1;
                         packageTypeIndex = -1;
                     }
@@ -991,7 +967,7 @@
                     formType.children().remove();
                     $.each(data.formTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(item.index-1);
+                        option.text(item.index-1);
                         option.text(item.name);
                         formType.append(option);
                     });
@@ -1001,7 +977,7 @@
                     packageType.children().remove();
                     $.each(data.packageTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.val(item.index-1);
+                        option.text(item.index-1);
                         option.text(item.name);
                         packageType.append(option);
                     });
