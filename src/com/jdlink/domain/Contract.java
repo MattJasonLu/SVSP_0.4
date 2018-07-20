@@ -237,6 +237,20 @@ private  TicketRate1 ticketRate1;
      */
     private  List<Hazardous> hazardousList=new ArrayList<>();
 
+    /**
+     *
+     * 当前时间
+     */
+    private String nowTime;
+
+    public String getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(String nowTime) {
+        this.nowTime = nowTime;
+    }
+
     public List<Hazardous> getHazardousList() {
         return hazardousList;
     }

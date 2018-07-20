@@ -695,9 +695,9 @@ else {
             <br>
             <div class="navbar navbar-default" id="navbar2">
                 <ul id="myTab" class="nav nav-tabs">
-                    <li class="active" id="1"><a href="#A" id="Wa" data-toggle="tab" onclick="ContractListByName(this)">危废合同</a></li>
-                    <li id="2"><a href="#B" data-toggle="tab" id="Em" onclick="ContractListByName(this)">应急处置合同</a></li>
-                    <li id="3"><a href="#C" data-toggle="tab" id="Lo" onclick="ContractListByName(this)">物流合同</a></li>
+                    <li class="active" id="1"><a href="#A" id="Wa" data-toggle="tab"  class="C1" onclick="ContractListByName(this)">危废合同</a></li>
+                    <li id="2"><a href="#B" data-toggle="tab" id="Em"   class="C1" onclick="ContractListByName(this)">应急处置合同</a></li>
+                    <li id="3"><a href="#C" data-toggle="tab" id="Lo"  class="C1" onclick="ContractListByName(this)">物流合同</a></li>
                    <!-- <li id="4"><a href="#D" data-toggle="tab" id="De" onclick="ContractListByName(this)">次生合同</a></li>-->
                    <!-- <li id="4"><a href="#D" data-toggle="tab" id="De" onclick="ContractListByName(this)">次生合同</a></li>-->
                     <!--<li id="5"><a href="#E" data-toggle="tab" id="Pu" onclick="ContractListByName(this)">采购合同</a></li>-->
@@ -1055,6 +1055,7 @@ else {
     //     forceParse: 0
     // });
 function ContractListByName(item) {
+        nameBykey=item.innerHTML;
         if(item.innerHTML=='危废合同'){
             $.ajax({
                 type: "POST",                       // 方法类型
@@ -1406,7 +1407,7 @@ function cancel(item) {
                 }
             });
         }
-function back1() {
+       function back1() {
     backContent=$('#backContent').val();
     //设置状态驳回
     $.ajax({
@@ -1449,13 +1450,16 @@ function back1() {
 }
         function searchContract() {
             var keyword = $("#search").val();
-          //  console.log(keyword);
+            //判断当前合同类型
+           console.log(nameBykey.substring(0,2));
+           console.log(keyword);
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "searchContract",                  // url
                 async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: {
-                    'keyword': keyword
+                    'keyword': keyword,
+                    'nameBykey':nameBykey.substring(0,2),
                 },
                 dataType: "json",
                 success: function (result) {
