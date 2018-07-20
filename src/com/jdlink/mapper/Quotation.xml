@@ -107,7 +107,7 @@
     </update>
 
     <update id="changeEndDate" parameterType="Quotation">
-        UPDATE t_quotation SET endDate=#{endDate} WHERE id=#{id};
+        UPDATE t_quotation SET endDate=#{endDate}, checkState=#{checkState} WHERE id=#{id};
     </update>
 
 

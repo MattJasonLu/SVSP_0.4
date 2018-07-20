@@ -1,7 +1,6 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
 import com.jdlink.domain.Quotation;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.QuotationService;
@@ -86,6 +85,7 @@ public class QuotationController {
     public String changeEndDate(Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
+            quotation.setCheckState(CheckState.ToExamine);
             quotationService.changeEndDate(quotation);
             res.put("status", "success");
             res.put("message", "结束日期修改成功");
@@ -113,6 +113,9 @@ public class QuotationController {
             for (Wastes wastes : quotation.getWastesList()) {
                 wastes.setId(RandomUtil.getRandomEightNumber());
             }
+            // 获取id 更新
+            String id = quotationService.count()+1+"";
+            quotation.setId(id);
             quotationService.add(quotation);
             res.put("status", "success");
             res.put("message", "报价单增加成功");
@@ -144,6 +147,7 @@ public class QuotationController {
             for (int i = oldWastesList.size(); i < newWastesList.size(); i++) {
                 newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());
             }
+            quotation.setCheckState(CheckState.ToExamine);
             quotationService.update(quotation);
             res.put("status", "success");
             res.put("message", "报价单修改成功");

@@ -17,6 +17,7 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
 </head>
 <script>
     $(window).on('load', function () {
@@ -207,7 +208,7 @@
                         <div class="form-group">
                             <label for="contactName" class="col-sm-4 control-label">版本号</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="version" name="version" placeholder="">
+                                <input type="text" class="form-control" id="version" name="version" placeholder="" value="V1.0">
                             </div>
                         </div>
                     </div>
@@ -535,8 +536,8 @@
                         $('#contactName').val(data.data.client.contactName);
                         $('#phone').val(data.data.client.phone);
                         $('#location').val(data.data.client.location);
-                        $('#startDate').val(getTimeStr(data.data.startDate));
-                        $('#endDate').val(getTimeStr(data.data.endDate));
+                        $('#startDate').val(getDateStr(data.data.startDate));
+                        $('#endDate').val(getDateStr(data.data.endDate));
                         $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
                         $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
                         $('#totalPriceTax').text(data.data.totalPriceTax);
@@ -576,6 +577,7 @@
             $('#btnCfm').text("打印");
             $('#btnSave').remove();
         } else if (type == 'levelUp') {
+            $('#version').val(updateVersion($('#version').val()));
             $('#btnCfm').text("升级");
             $('#startDate').next().next().remove();
             $('#startDate').next().remove();
