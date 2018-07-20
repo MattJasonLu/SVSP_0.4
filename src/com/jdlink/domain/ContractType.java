@@ -27,6 +27,14 @@ public enum ContractType {
         return null;
     }
 
+    public static ContractType getContract(String keyword) {
+        for (ContractType p : ContractType.values()) {
+            if(p.getName().contains(keyword)){
+                return p;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }

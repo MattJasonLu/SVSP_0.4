@@ -487,6 +487,19 @@ return  res.toString();
 @RequestMapping("searchContract")
 @ResponseBody
 public String searchContract(String keyword){
+     //首先检查枚举(省会)
+   if(Province.getProvince(keyword)!=null) {
+       keyword=Province.getProvince(keyword).toString();
+   }
+   //枚举的还有状态 合同类型
+    if(CheckState.getCheckState(keyword)!=null) {
+        keyword=CheckState.getCheckState(keyword).toString();
+    }
+    if(ContractType.getContract(keyword)!=null) {
+        keyword=ContractType.getContract(keyword).toString();
+    }
+
+
     List<Contract> contractList= contractService.getByKeyword(keyword);
     JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
     // 返回结果

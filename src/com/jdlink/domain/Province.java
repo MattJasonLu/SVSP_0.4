@@ -31,6 +31,25 @@ public enum Province {
         }
         return null;
     }
+    //根据名字获取枚举
+    public static Province get(String name) {
+        for (Province c : Province.values()) {
+            if (c.getName()== name) {
+                return c;
+            }
+        }
+        return null;
+    }
+    public static Province getProvince(String keyword) {
+        for (Province p : Province.values()) {
+            if(p.getName().contains(keyword)){
+                return p;
+            }
+        }
+        return null;
+    }
+
+
     public String getName() {
         return name;
     }
@@ -44,4 +63,9 @@ public enum Province {
     public void setIndex(int index) {
         this.index = index;
     }
+//    public static  void main(String args[]){
+//        //System.out.println(Province.getName());
+//        System.out.println(Province.get("江苏省"));
+//
+//    }
 }

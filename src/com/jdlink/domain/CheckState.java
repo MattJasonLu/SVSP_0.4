@@ -39,7 +39,14 @@ public enum CheckState implements CodeBaseEnum{
         }
         return null;
     }
-
+    public static CheckState getCheckState(String keyword) {
+        for (CheckState p : CheckState.values()) {
+            if(p.getName().contains(keyword)){
+                return p;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }
