@@ -21,6 +21,8 @@
             <result property="province" column="province " javaType="com.jdlink.domain.Province"></result>
      <result property="contactName" column="contactName" javaType="String"></result>
         <result property="telephone " column="telephone " javaType="String"></result>
+        <collection property="hazardousList" select="getHazardous" column="contractId"
+                    ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
     </resultMap>
 
     <insert id="add" parameterType="Contract"  >
@@ -122,4 +124,9 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
 <update id="opinion" parameterType="Contract">
     update t_contract set opinion=#{1},checkState="Keeping" where contractId=#{0};
 </update>
+    <select id="getHazardous" resultType="Hazardous">
+        SELECT * FROM t_hazardous WHERE id in (
+          SELECT r_contractandhazardous.hazardousId FROM r_contractandhazardous
+          WHERE contractId=#{contractId});
+    </select>
 </mapper>

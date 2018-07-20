@@ -22,10 +22,9 @@
 </style>
 <script type="text/javascript">
     function loadContractList() {
-       // localStorage.clear();
+        //localStorage.clear();
         $('#back').hide();
        var name=localStorage['name'];
-        //console.log(name);
         if(name=='undefined'||name=="Wastes"||name==undefined)
         {
             //name="Wastes";
@@ -391,7 +390,10 @@ else {
        if(contractType.indexOf('应急处置合同')!=-1){
 
             //做跳转
-           window.location.href = "emergency?contractId="+contractId;
+           //window.location.href = "emergency?contractId="+contractId;
+           //转到html便于操作
+           localStorage.name1=contractId;
+           location.href="showemergency.html";
        }
        else {
            $('#btn').text();
@@ -526,7 +528,9 @@ else {
             //window.location.href = "showContract?contractId="+contractId;
         }
         if(contractName.indexOf('应急')!=-1){
-            window.location.href = "emergency1?contractId="+contractId;
+           // window.location.href = "emergency1?contractId="+contractId;
+            //换到html页面，便于操作
+
         }
 
     }
@@ -693,7 +697,8 @@ else {
                     <li class="active" id="1"><a href="#A" id="Wa" data-toggle="tab" onclick="ContractListByName(this)">危废合同</a></li>
                     <li id="2"><a href="#B" data-toggle="tab" id="Em" onclick="ContractListByName(this)">应急处置合同</a></li>
                     <li id="3"><a href="#C" data-toggle="tab" id="Lo" onclick="ContractListByName(this)">物流合同</a></li>
-                    <li id="4"><a href="#D" data-toggle="tab" id="De" onclick="ContractListByName(this)">次生合同</a></li>
+                   <!-- <li id="4"><a href="#D" data-toggle="tab" id="De" onclick="ContractListByName(this)">次生合同</a></li>-->
+                   <!-- <li id="4"><a href="#D" data-toggle="tab" id="De" onclick="ContractListByName(this)">次生合同</a></li>-->
                     <!--<li id="5"><a href="#E" data-toggle="tab" id="Pu" onclick="ContractListByName(this)">采购合同</a></li>-->
                 </ul>
                 <div id="myTabContent" class="tab-content">
@@ -1520,9 +1525,11 @@ function back1() {
       var contractType=item.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
    //取得合同编号
       if(contractType.indexOf('应急处置合同')!=-1){
-
           //做跳转
-          window.location.href = "emergency?contractId="+contractId;
+         // window.location.href = "emergency?contractId="+contractId;
+          //换成html方式
+          localStorage.name1=contractId;
+          location.href="showemergency.html";
       }
       else {
           $('#btn').text();
