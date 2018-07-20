@@ -20,6 +20,8 @@ public interface QuotationService {
 
     List<Quotation> listNotInvalid();
 
+    List<Quotation> getByKeyword(String keyword);
+
     int count();
 
     Quotation getById(String id);
