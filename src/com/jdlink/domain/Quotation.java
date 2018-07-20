@@ -53,6 +53,10 @@ public class Quotation {
      */
     private float totalPrice;
     /**
+     * 税额
+     */
+    private float totalTax;
+    /**
      * 总量=各行合约量之和
      */
     private int totalAmount;
@@ -189,6 +193,14 @@ public class Quotation {
         this.advice = advice;
     }
 
+    public float getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(float totalTax) {
+        this.totalTax = totalTax;
+    }
+
     @Override
     public String toString() {
         return "Quotation{" +
@@ -203,6 +215,7 @@ public class Quotation {
                 ", isContainFreight=" + isContainFreight +
                 ", totalPriceTax=" + totalPriceTax +
                 ", totalPrice=" + totalPrice +
+                ", totalTax=" + totalTax +
                 ", totalAmount=" + totalAmount +
                 ", checkState=" + checkState +
                 ", wastesList=" + wastesList +
