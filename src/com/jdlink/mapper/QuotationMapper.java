@@ -22,6 +22,8 @@ public interface QuotationMapper {
 
     List<Quotation> listNotInvalid();
 
+    List<Quotation> getByKeyword(String keyword);
+
     int count();
 
     Quotation getById(String id);
@@ -34,5 +36,5 @@ public interface QuotationMapper {
 
     void approval(@Param(value="advice")String advice, @Param(value="id")String id);
 
-    void reject(String advice,String id);
+    void reject(@Param(value="advice")String advice, @Param(value="id")String id);
 }

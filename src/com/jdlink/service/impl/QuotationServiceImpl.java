@@ -77,4 +77,9 @@ public class QuotationServiceImpl implements QuotationService {
 
     @Override
     public void reject(String advice,String id) { quotationMapper.reject(advice,id); }
+
+    @Override
+    public List<Quotation> getByKeyword(String keyword) {
+        return quotationMapper.getByKeyword(keyword);
+    }
 }
