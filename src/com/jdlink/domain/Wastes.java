@@ -35,6 +35,10 @@ public class Wastes {
      */
     private float taxRate;
     /**
+     * 税额
+     */
+    private float tax;
+    /**
      * ph值
      */
     private float ph;
@@ -183,16 +187,26 @@ public class Wastes {
         this.flashPoint = flashPoint;
     }
 
+    public float getTax() {
+        return tax;
+    }
+
+    public void setTax(float tax) {
+        this.tax = tax;
+    }
+
     @Override
     public String toString() {
         return "Wastes{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", formType=" + formType +
                 ", wastesId='" + wastesId + '\'' +
                 ", contractAmount=" + contractAmount +
                 ", unitPriceTax=" + unitPriceTax +
                 ", unitPrice=" + unitPrice +
                 ", taxRate=" + taxRate +
+                ", tax=" + tax +
                 ", ph=" + ph +
                 ", ashPercentage=" + ashPercentage +
                 ", wetPercentage=" + wetPercentage +
