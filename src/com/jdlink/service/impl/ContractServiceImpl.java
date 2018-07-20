@@ -32,8 +32,8 @@ public class ContractServiceImpl implements ContractService  {
     }
 
     @Override
-    public List<Contract> getByKeyword(String keyword) {
-        return contractMapper.getByKeyword(keyword);
+    public List<Contract> getByKeyword(String keyword,String nameBykey) {
+        return contractMapper.getByKeyword(keyword,nameBykey);
     }
 
     @Override
@@ -77,8 +77,8 @@ public class ContractServiceImpl implements ContractService  {
     }
 
     @Override
-    public void toSubmit(String id) {
-        contractMapper.toSubmit(id);
+    public void toSubmit(String id,String nowTime) {
+        contractMapper.toSubmit(id,nowTime);
     }
 
     @Override
@@ -117,8 +117,8 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public void cancel(String contractId) {
-        contractMapper.cancel(contractId);
+    public void cancel(String contractId,String nowTime) {
+        contractMapper.cancel(contractId,nowTime);
     }
 
     @Override
@@ -137,13 +137,13 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public void back(String contractId,String backContent) {
-        contractMapper.back(contractId,backContent);
+    public void back(String contractId,String backContent,String nowTime) {
+        contractMapper.back(contractId,backContent,nowTime);
     }
 
     @Override
-    public void opinion(String contractId, String opinion) {
-        contractMapper.opinion(contractId,opinion);
+    public void opinion(String contractId, String opinion,String nowTime) {
+        contractMapper.opinion(contractId,opinion,nowTime);
     }
 
 
