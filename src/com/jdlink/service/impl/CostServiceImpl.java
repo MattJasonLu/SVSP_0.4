@@ -50,4 +50,9 @@ public class CostServiceImpl implements CostService {
     public void changeEndDate(Cost cost) {
         costMapper.changeEndDate(cost);
     }
+
+    @Override
+    public List<Cost> getByKeyword(String keyword) {
+        return costMapper.getByKeyword(keyword);
+    }
 }

@@ -63,6 +63,13 @@
         SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId AND costId=#{costId}
     </select>
 
+    <select id="getByKeyword" parameterType="String" resultMap="CostRM">
+        SELECT t_cost.*,t_supplier.companyName FROM t_cost join t_supplier WHERE t_cost.supplierId=t_supplier.supplierId and (t_supplier.companyName like "%"#{keyword}"%"
+                or costId like "%"#{keyword}"%" or t_cost.contactName like "%"#{keyword}"%"
+                or t_cost.phone like "%"#{keyword}"%" or t_cost.location like "%"#{keyword}"%"
+                or t_cost.checkState like "%"#{keyword}"%" or t_cost.endDate like binary "%"#{keyword}"%" );
+    </select>
+
     <update id="setStateDisabled" parameterType="String">
         UPDATE t_cost SET checkState='Invalid' WHERE costId=#{costId};
     </update>

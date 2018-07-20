@@ -233,4 +233,25 @@ public class CostController {
         }
         return res.toString();
     }
+
+    @RequestMapping("searchCost")
+    @ResponseBody
+    public String searchCost (String keyword) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Cost> costList = costService.getByKeyword(keyword);
+            JSONArray data = JSONArray.fromArray(costList.toArray(new Cost[costList.size()]));
+            res.put("data", data.toString());
+            res.put("status", "success");
+            res.put("message", "报价单信息获取成功");
+            // 返回结果
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "报价单信息获取失败");
+            res.put("exception", e.getMessage());
+        }
+        // 返回结果
+        return res.toString();
+    }
 }

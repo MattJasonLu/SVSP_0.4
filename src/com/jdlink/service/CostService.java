@@ -15,6 +15,8 @@ public interface CostService {
 
     List<Cost> list();
 
+    List<Cost> getByKeyword(String keyword);
+
     int count();
 
     Cost getById(String costId);
