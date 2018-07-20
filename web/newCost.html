@@ -177,6 +177,7 @@
                     <li><a href="cost.html">成本管理</a></li>
                     <li class="active">新增成本单</li>
                 </ol>
+                <p class="text-right"><b>成本单号&nbsp;&nbsp;</b><span id="costId"></span></p>
             </div>
             <h4 class="sub-header">供应商成本单</h4>
             <form method="post" id="page1Info" enctype="multipart/form-data">
@@ -191,14 +192,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group" align="right">
-                            <label class="col-sm-4 control-label">成本单号</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" name="costId" id="costId" value="********" style="border: none" readonly>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-md-6"></div>
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
@@ -517,7 +511,7 @@
                     if (result != undefined) {
                         console.log(result.data);
                         var data = eval(result);
-                        $('#costId').val(data.data.costId);
+                        $('#costId').text(data.data.costId);
                         if (data.data.supplier.supplierType != null)
                             $("#supplierType").get(0).selectedIndex = data.data.supplier.supplierType.index;
                         $('#companyName').selectpicker('val', data.data.supplier.supplierId);
@@ -608,7 +602,7 @@
                 if (result != undefined) {
 //                    console.log(result);
                     if (result.status == "success") {
-                        $("#costId").val(result.costId);
+                        $("#costId").text(result.costId);
                     } else { }
                 }
             },
@@ -639,7 +633,7 @@
         // 获取按钮的名字
         var btnName = e.innerHTML;
         var data = {
-            'costId': $("#costId").val(),
+            'costId': $("#costId").text(),
             'supplier': {
                 'supplierId': $("#companyName").find("option:selected").val(),
                 'contactName': $("#contactName").val(),
