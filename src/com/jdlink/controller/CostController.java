@@ -234,6 +234,36 @@ public class CostController {
         return res.toString();
     }
 
+    /**
+     * 更新成本单
+     *
+     * @return 成功与否
+     */
+    @RequestMapping("levelUpCost")
+    @ResponseBody
+    public String levelUpCost(@RequestBody Cost cost) {
+        JSONObject res = new JSONObject();
+        try {
+            for (Wastes wastes : cost.getWastesList()) {
+                wastes.setId(RandomUtil.getRandomEightNumber());
+            }
+            // 作废旧报价单
+            costService.setStateDisabled(cost.getId());
+            cost.setId((costService.count() + 1) + "");
+            cost.setCheckState(CheckState.ToExamine);
+            // 升级新报价单
+            costService.levelUp(cost);
+            res.put("status", "success");
+            res.put("message", "成本单升级成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "成本单升级失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
     @RequestMapping("searchCost")
     @ResponseBody
     public String searchCost (String keyword) {

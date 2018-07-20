@@ -30,6 +30,19 @@
         </if>
     </insert>
 
+    <insert id="levelUp" parameterType="Cost">
+        INSERT INTO t_cost (costId, supplierId, supplierType, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPriceTax, totalPrice, totalAmount, checkState)
+        VALUES (#{costId}, #{supplier.supplierId}, #{supplier.supplierType}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState});
+        <if test="wastesList.size() > 0">
+            <foreach collection="wastesList" item="wastes" index="index">
+                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint)
+                VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
+                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint});
+            </foreach>
+        </if>
+
+    </insert>
+
     <update id="update" parameterType="Cost">
         UPDATE t_cost SET supplierId=#{supplier.supplierId}, contactName=#{supplier.contactName}, phone=#{supplier.phone}, location=#{supplier.location}, startDate=#{startDate}, endDate=#{endDate},
         isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, supplierType=#{supplier.supplierType}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE costId=#{costId};
