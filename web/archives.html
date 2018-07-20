@@ -351,26 +351,27 @@
             </div>
             <br>
             <div class="row">
-                <aside class="col-md-2">
-                    <div class="widget">
-                        <span class="glyphicon glyphicon-folder-open"></span>
-                        <span class="title" style="font-size: 18px">项目主库</span>
-                        <p><a href="#" onclick="showFileList('Contract');">合同</a></p>
-                        <p><a href="#" onclick="showFileList('ManagePlan');">管理计划</a></p>
-                        <p><a href="#" onclick="showFileList('EIA');">环评</a></p>
-                        <p><a href="#" onclick="showFileList('BusinessLicense');">营业执照</a></p>
-                        <p><a href="#" onclick="showFileList('Instruction');">说明(合同余款延期说明)</a></p>
-                        <p><a href="#" onclick="showFileList('InvoiceInfo');">开票资料</a></p>
-                        <p><a href="#" onclick="showFileList('MSDS');">MSDS(物质成分表)</a></p>
-                    </div>
-                </aside>
-                <main class="col-md-10 main-content">
+                <main class="col-md-12 main-content">
                     <div class="table">
                         <table class="table table-striped table-hover table-condensed">
                             <thead>
                             <tr>
                                 <th class="text-center">文件编号</th>
-                                <th class="text-center">文件类型</th>
+                                <th class="text-center">
+                                    <div class="form-inline">
+                                        <label class="control-label">文件类型</label>
+                                        <select class="form-control" id="state" style="height: 80%; font-size: x-small;" onchange="setState();">
+                                            <option value="0"></option>
+                                            <option value="1">合同</option>
+                                            <option value="2">管理计划</option>
+                                            <option value="3">环评</option>
+                                            <option value="4">营业执照</option>
+                                            <option value="5">说明(合同余款延期说明)</option>
+                                            <option value="6">开票资料</option>
+                                            <option value="7">MSDS(物质成分表)</option>
+                                        </select>
+                                    </div>
+                                </th>
                                 <th class="text-center">文件标题</th>
                                 <th class="text-center">由谁添加</th>
                                 <th class="text-center">添加时间</th>
@@ -379,14 +380,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr id="cloneTr" onclick="downloadFile(this);">
+                            <tr id="cloneTr">
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
-                                <td class="text-center"><a href="#" onclick="search();" title="查询"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
+                                <td class="text-center"><a href="#" onclick="downloadFile(this);"><span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span></a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -419,7 +420,24 @@
 </body>
 
 <script type="text/javascript">
-
+    function setState() {
+        var state = $("#state").val();
+        if (state == "1") {
+            showFileList('Contract');
+        } else if (state == "2") {
+            showFileList('ManagePlan');
+        }else if (state == "3") {
+            showFileList('EIA');
+        }else if (state == "4") {
+            showFileList('BusinessLicense');
+        }else if (state == "5") {
+            showFileList('Instruction');
+        }else if (state == "6") {
+            showFileList('InvoiceInfo');
+        }else if (state == "7"){
+            showFileList('MSDS');
+        }
+    }
     /**
      * 导航问题
      * */
