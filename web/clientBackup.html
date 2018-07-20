@@ -1342,19 +1342,23 @@
                     }
                 });
             }
-            items.each(function () {//遍历
-                var id = getIdByCheckBox($(this));//获取到了客户编号
-                submitClientById(id);//调用该方法使用ajax
-            });
-            alert("提交成功!");
-            window.location.reload();
+            var r = confirm("是否提交客户信息?");
+            if (r) {
+                items.each(function () {//遍历
+                    var id = getIdByCheckBox($(this));//获取到了客户编号
+                    console.log(id);
+                    submitClientById(id);//调用该方法使用ajax
+                });
+                alert("提交成功!");
+                window.location.reload();
+            }
         } else {
             alert("未选择任何客户!");
         }
     }
 
     function getIdByCheckBox(item) {
-        return item.parent().parent().next().next().text();
+        return item.parent().parent().next().text();
     }
 
 
@@ -1407,15 +1411,6 @@
         });
 
     }
-
-    // 定义到jQuery全局变量下-文件下载
-    jQuery.download = function (url, method, filedir) {
-        jQuery('<form action="' + url + '" method="' + (method || 'post') + '">' +  // action请求路径及推送方法
-                '<input type="text" name="filePath" value="' + filedir + '"/>' + // 文件路径
-                '</form>').appendTo('body').submit().remove();
-        //var newTab = window.open('about:blank')
-        //newTab.location.href = url;
-    };
 
 </script>
 </html>

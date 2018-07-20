@@ -16,6 +16,7 @@
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
 </head>
 <script>
     $(window).on('load', function () {
@@ -42,6 +43,7 @@
         num++;
         // 克隆后清空新克隆出的行数据
         clonedTr.children("td:not(0)").find("input").val("");
+        clonedTr.children("td:not(0)").find("select:first").get(0).selectedIndex=-1;
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.children("td:not(0)").find("input,select").each(function () {
             var name = $(this).attr('name');
@@ -51,21 +53,21 @@
         clonedTr.insertAfter(tr);
     }
     //获取时间
-    function getTimeStr(obj) {
-        var year=(parseInt(obj.year)+1900).toString();
-        var mouth=parseInt((obj.month)+1).toString();
-        if(mouth.length!=2){
-            mouth=0+mouth;
-        }
-        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
-        var  day=parseInt((obj.date)).toString();
-        //ataLeftCompleting(2, "0", day.toString()).toString();
-        if(day.length!=2){
-            day=0+day;
-        }
-        var time1=year+"-"+mouth+"-"+day;
-        return time1;
-    }
+//    function getTimeStr(obj) {
+//        var year=(parseInt(obj.year)+1900).toString();
+//        var mouth=parseInt((obj.month)+1).toString();
+//        if(mouth.length!=2){
+//            mouth=0+mouth;
+//        }
+//        //  dataLeftCompleting(2, "0", mouth.toString()).toString();
+//        var  day=parseInt((obj.date)).toString();
+//        //ataLeftCompleting(2, "0", day.toString()).toString();
+//        if(day.length!=2){
+//            day=0+day;
+//        }
+//        var time1=year+"-"+mouth+"-"+day;
+//        return time1;
+//    }
 </script>
 <body onload="setSelectList();">
     <!--导航条-->
@@ -274,10 +276,10 @@
                             <label class="col-sm-4 control-label">是否含税</label>
                             <div class="col-xs-5">
                                 <label>
-                                    <input type="radio" name="isContainTax" value="true" onchange="changeTax(this);">
+                                    <input type="radio" name="isContainTax" value="true" onchange="changeTax(this);calculateTax();" checked>
                                 </label>是
                                 <label>
-                                    <input type="radio" name="isContainTax" value="false" onchange="changeTax(this);">
+                                    <input type="radio" name="isContainTax" value="false" onchange="changeTax(this);calculateTax();">
                                 </label>否
                             </div>
                         </div>
@@ -295,7 +297,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="totalPriceTax" class="col-sm-4 control-label">总价(含税)</label>
+                            <label for="totalPriceTax" class="col-sm-4 control-label" id="totalPriceTaxLabel">总价(含税)</label>
                             <div class="col-xs-5">
                                 <p class="text-muted" id="totalPriceTax"></p>
                             </div>
@@ -303,7 +305,7 @@
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="totalPrice" class="col-sm-4 control-label">总价(去税)</label>
+                            <label for="totalPrice" class="col-sm-4 control-label">税额</label>
                             <div class="col-xs-5">
                                 <p class="text-muted" id="totalPrice"></p>
                             </div>
@@ -329,9 +331,9 @@
                                 <th class="text-center">状态</th>
                                 <th class="text-center">危废代码</th>
                                 <th class="text-center">合约量</th>
-                                <th class="text-center" id="unitPriceTaxTh" style="width: 100%;">单价(元/吨)(含税)</th>
+                                <th class="text-center" id="unitPriceTaxTh" style="width: 100%;">单价<br>(元/吨)(含税)</th>
                                 <th class="text-center">税率(%)</th>
-                                <th class="text-center" id="unitPriceTh">单价(元/吨)(去税)</th>
+                                <th class="text-center" id="unitPriceTh">税额</th>
                                 <th class="text-center">PH</th>
                                 <th class="text-center">灰分(%)</th>
                                 <th class="text-center">水分(%)</th>
@@ -346,10 +348,10 @@
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].name"></td>
                                 <td class="text-center"><select class="form-control focus" name="wastesList[0].formType"></select></td>
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax" oninput="calculateTax(this);"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate" oninput="calculateTax(this);"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice" oninput="calculateTax(this);"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount" oninput="calculateTax();"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax" oninput="calculateTax();"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate" oninput="calculateTax();"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice"></td>
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ph"></td>
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage"></td>
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage"></td>
@@ -850,50 +852,81 @@
     /**
      * 计算税价
      */
-    function calculateTax(e) {
-        // 计算税价
-        // 如果改变了去税价
-        if (confirmEnding(e.name, 'unitPrice')) {
-            // 计算当前行的含税价
-            var unitPriceTaxName = e.name.split(".")[0] + ".unitPriceTax";
-            var taxRateName = e.name.split(".")[0] + ".taxRate";
-
-            var originVal = parseFloat($("input[name='" + e.name + "']").val());
-//            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
-            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
-            var resolveVal = originVal * (1 + rate / 100);
-            if (!isNaN(resolveVal)) $("input[name='" + unitPriceTaxName + "']").val(resolveVal);
-        } else if (confirmEnding(e.name, 'unitPriceTax')) {
-            // 计算当前行的含税价
-            var unitPriceName = e.name.split(".")[0] + ".unitPrice";
-            var taxRateName = e.name.split(".")[0] + ".taxRate";
-
-            var originVal = parseFloat($("input[name='" + e.name + "']").val());
-//            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
-            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
-            var resolveVal = originVal * (1 - rate / 100);
-            if (!isNaN(resolveVal)) $("input[name='" + unitPriceName + "']").val(resolveVal);
-        }
+    function calculateTax() {
+        var state = $("input[name='isContainTax']:checked").val();
         // 计算总价
         var totalPrice = 0;
         var totalPriceTax = 0;
+        var totalTax = 0;
         var totalAmount = 0;
         // 危废列表的数量
         var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
-        for (var i = 0; i < wastesListCount; i++) {
-            var $i = i;
-            var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
-            var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
-            var unitPrice = parseFloat($("input[name='wastesList[" + $i + "].unitPrice']").val());
-            var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
-            if (contractAmount != null && unitPrice != null && unitPriceTax != null && taxRate != null) {
-                totalPrice += contractAmount * unitPrice;
-                totalPriceTax += contractAmount * unitPriceTax;
-                totalAmount += contractAmount;
+        // 计算税价
+        // 如果改变了去税价
+        if (state == "true") {
+            // 计算当前行的含税价
+            for (var i = 0; i < wastesListCount; i++) {
+                var $i = i;
+                var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
+                var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                if (contractAmount != null && unitPriceTax != null && taxRate != null) {
+                    var tax = unitPriceTax * (taxRate / 100) / (taxRate / 100 + 1);
+                    if (!isNaN(tax)) {
+                        tax = tax.toFixed(3);
+                        $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                    }
+                    totalTax += contractAmount * tax;
+                    totalPriceTax += contractAmount * unitPriceTax;
+                    totalAmount += contractAmount;
+                }
             }
+            if (!isNaN(totalPriceTax)) $('#totalPriceTax').text(totalPriceTax);
+//            var unitPriceTaxName = e.name.split(".")[0] + ".unitPriceTax";
+//            var taxRateName = e.name.split(".")[0] + ".taxRate";
+//
+//            var originVal = parseFloat($("input[name='" + e.name + "']").val());
+////            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
+//            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
+//            var resolveVal = originVal * (1 + rate / 100);
+//            if (!isNaN(resolveVal)) $("input[name='" + unitPriceTaxName + "']").val(resolveVal);
+        } else if (state == "false") {
+            for (var i = 0; i < wastesListCount; i++) {
+                var $i = i;
+                var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
+                var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                if (contractAmount != null && unitPriceTax != null && taxRate != null) {
+                    var tax = unitPriceTax * (taxRate / 100) / (1 - taxRate / 100);
+                    if (!isNaN(tax)) {
+                        tax = tax.toFixed(3);
+                        $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                    }
+                    totalTax += contractAmount * tax;
+                    totalPriceTax += contractAmount * unitPriceTax;
+                    totalAmount += contractAmount;
+                }
+            }
+            if (!isNaN(totalPriceTax)) {
+                totalPriceTax.toFixed(3);
+                $('#totalPriceTax').text(totalPriceTax-totalTax);
+            }
+            // 计算当前行的含税价
+//            var unitPriceName = e.name.split(".")[0] + ".unitPrice";
+//            var taxRateName = e.name.split(".")[0] + ".taxRate";
+//
+//            var originVal = parseFloat($("input[name='" + e.name + "']").val());
+////            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
+//            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
+//            var resolveVal = originVal * (1 - rate / 100);
+//            if (!isNaN(resolveVal)) $("input[name='" + unitPriceName + "']").val(resolveVal);
         }
-        if (!isNaN(totalPrice)) $('#totalPrice').text(totalPrice);
-        if (!isNaN(totalPriceTax)) $('#totalPriceTax').text(totalPriceTax);
+
+
+        if (!isNaN(totalTax)) {
+            totalTax = totalTax.toFixed(3);
+            $('#totalPrice').text(totalTax);
+        }
         if (!isNaN(totalAmount)) $('#totalAmount').text(totalAmount);
     }
 
@@ -907,27 +940,62 @@
         var unitPriceTaxTh = $("#unitPriceTaxTh");
         var unitPriceTh = $("#unitPriceTh");
         var unitPriceTaxList = $("input[name^='wastesList'][name$='unitPriceTax']");
+        var taxRateList = $("input[name^='wastesList'][name$='taxRate']");
         var unitPriceList = $("input[name^='wastesList'][name$='unitPrice']");
         var unitPriceCount = unitPriceTaxList.length;
         // 如果选择含税，含税价在前
         if (status == "true") {
-            if (unitPriceTh.prev().prev().attr('id') != 'unitPriceTaxTh') {
-                exchange(unitPriceTaxTh, unitPriceTh);
+            if (unitPriceTaxTh.text().search("去税") != -1) {
+                $("#unitPriceTaxTh").html("单价<br>(元/吨)(含税)");
+                $("#totalPriceTaxLabel").text("总价(含税)");
                 for (var i = 0; i < unitPriceCount; i++) {
-                    var item1 = $(unitPriceTaxList[i].parentElement);
-                    var item2 = $(unitPriceList[i].parentElement);
-                    exchange(item1, item2);
+                    var $i = i;
+                    // 含税价
+                    var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                    var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                    if (unitPriceTax != null && taxRate != null) {
+                        var tax = unitPriceTax * (taxRate / 100) / (taxRate / 100 + 1);
+                        if (!isNaN(tax)) {
+                            tax = tax.toFixed(3);
+                            $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                        }
+                    }
                 }
             }
+//            if (unitPriceTh.prev().prev().attr('id') != 'unitPriceTaxTh') {
+//                exchange(unitPriceTaxTh, unitPriceTh);
+//                for (var i = 0; i < unitPriceCount; i++) {
+//                    var item1 = $(unitPriceTaxList[i].parentElement);
+//                    var item2 = $(unitPriceList[i].parentElement);
+//                    exchange(item1, item2);
+//                }
+//            }
         } else {
-            if (unitPriceTaxTh.prev().prev().attr('id') != 'unitPriceTh') {
-                exchange(unitPriceTh, unitPriceTaxTh);
+            if (unitPriceTaxTh.text().search("含税") != -1) {
+                $("#unitPriceTaxTh").html("单价<br>(元/吨)(去税)");
+                $("#totalPriceTaxLabel").text("总价(去税)");
                 for (var i = 0; i < unitPriceCount; i++) {
-                    var item1 = $(unitPriceList[i].parentElement);
-                    var item2 = $(unitPriceTaxList[i].parentElement);
-                    exchange(item1, item2);
+                    var $i = i;
+                    // 含税价
+                    var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                    var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                    if (unitPriceTax != null && taxRate != null) {
+                        var tax = unitPriceTax * (taxRate / 100) / (1 - taxRate / 100);
+                        if (!isNaN(tax)) {
+                            tax = tax.toFixed(3);
+                            $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                        }
+                    }
                 }
             }
+//            if (unitPriceTaxTh.prev().prev().attr('id') != 'unitPriceTh') {
+//                exchange(unitPriceTh, unitPriceTaxTh);
+//                for (var i = 0; i < unitPriceCount; i++) {
+//                    var item1 = $(unitPriceList[i].parentElement);
+//                    var item2 = $(unitPriceTaxList[i].parentElement);
+//                    exchange(item1, item2);
+//                }
+//            }
         }
     }
     /**
