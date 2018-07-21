@@ -157,8 +157,8 @@
     }
     function allSelect() {
         var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
+        if (isChecked) $("input[name='checkbox1']").prop('checked',true);
+        else $("input[name='checkbox1']").prop('checked',false);
     }
     // $(document).ready(function () {
     //     $("input[name='select']").attr('checked', true);
@@ -346,7 +346,7 @@
                     <tr id="cloneTr">
                         <td class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="select">
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="checkbox1">
                             </label>
                         </td>
                         <td class="text-center"></td>
@@ -1148,7 +1148,7 @@
      * 提交客户的信息
      */
     function submitClients() {
-        var items = $("input[type='checkbox']:checked");//判断复选框是否选中
+        var items = $("input[name='checkbox1']:checked");//判断复选框是否选中
         if (items.length > 0) {
             function submitClientById(id) {//该方法是一个ajax请求
                 $.ajax({
@@ -1175,6 +1175,7 @@
             if (r) {
                 items.each(function () {//遍历
                     var id = getIdByCheckBox($(this));//获取到了客户编号
+                    console.log(id)
                     console.log(id);
                     submitClientById(id);//调用该方法使用ajax
                 });
