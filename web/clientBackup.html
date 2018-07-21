@@ -10,6 +10,7 @@
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
 </head>
 <script type="text/javascript">
     function setClientList(result) {
@@ -560,21 +561,22 @@
                     </div>
                     <h4 class="text-info">联系方式</h4>
                     <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <p class="text-left"><b>工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
-                            <p class="text-left"><b>手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;</b><span id="modal3_mobile"></span></p>
-                        </div>
-                        <div class="form-horizontal col-md-6">
-                            <p class="text-left"><b>古&nbsp;&nbsp;&nbsp;定&nbsp;&nbsp;电&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;</b><span id="modal3_phone"></span></p>
-                            <p class="text-left"><b>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;</b><span id="modal3_email"></span></p>
-                        </div>
+                    <div class="form-horizontal col-md-6">
+                        <p class="text-left"><b>工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
+                        <p class="text-left"><b>手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;</b><span id="modal3_mobile"></span></p>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <p class="text-left"><b>古&nbsp;&nbsp;&nbsp;定&nbsp;&nbsp;电&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;</b><span id="modal3_phone"></span></p>
+                        <p class="text-left"><b>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;</b><span id="modal3_email"></span></p>
+                    </div>
                     </div>
                     <div class="row text-center">
-                        <a class="btn btn-primary" onclick="">打印</a>
-                        <a class="btn btn-danger" data-dismiss="modal">关闭</a>
+                        <a class="btn btn-primary hidden-print"  onclick="" id="print">打印</a>
+                        <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
                     </div>
                 </form>
                 </div>
+
             </div>
         </div>
     </div>
@@ -1241,6 +1243,18 @@
         });
 
     }
+    /**打印*/
+
+        $("#print").click(function() {
+            $("#viewModal").printThis({
+                importCSS: true,
+                importStyle:true,
+                printDelay: 333,
+                copyTagClasses: false,
+
+            });
+//		alert("等待打印");
+        });
 
 </script>
 </html>
