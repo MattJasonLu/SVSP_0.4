@@ -10,6 +10,7 @@
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
 </head>
 <script type="text/javascript">
     function setSupplierList(result) {
@@ -678,8 +679,8 @@
                             </div>
                         </div>
                         <div class="row text-center">
-                            <a class="btn btn-primary" onclick="">打印</a>
-                            <a class="btn btn-danger" data-dismiss="modal">关闭</a>
+                            <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                            <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
                         </div>
                     </form>
                 </div>
@@ -825,7 +826,7 @@
     }
 
     function getIdByCheckBox(item) {
-        return item.parent().parent().next().next().text();
+        return item.parent().parent().next().text();
     }
 
     /**
@@ -873,5 +874,16 @@
         });
 
     }
+    /**打印*/
+    $("#print").click(function() {
+        $("#viewModal").printThis({
+            importCSS: true,
+            importStyle:true,
+            printDelay: 333,
+            copyTagClasses: false,
+
+        });
+//		alert("等待打印");
+    });
 </script>
 </html>
