@@ -13,7 +13,11 @@ public interface CostService {
 
     void update(Cost cost);
 
+    void levelUp(Cost cost);
+
     List<Cost> list();
+
+    List<Cost> getByKeyword(String keyword);
 
     int count();
 

@@ -497,8 +497,8 @@
      */
     function loadCostInfo() {
         var type = Request['type'];
-        var costId = Request['costId'];
-        if (type == 'adjust' || type == 'view') {
+        var costId = Request['id'];
+        if (type == 'adjust' || type == 'view'||type=='levelUp') {
             $.ajax({
                 type: "POST",                           // 方法类型
                 url: "getCost",                       // url
@@ -556,6 +556,15 @@
             $('#btnSave').remove();
         } else if (type == 'view') {
             $('#btnCfm').text("打印");
+            $('#btnSave').remove();
+        }else if (type == 'levelUp') {
+            $('#btnCfm').text("升级");
+            $('#startDate').next().next().remove();
+            $('#startDate').next().remove();
+            $("#startDate").attr("disabled","disabled");
+            $('#endDate').next().next().remove();
+            $('#endDate').next().remove();
+            $("#endDate").attr("disabled","disabled");
             $('#btnSave').remove();
         }
     }
@@ -633,6 +642,7 @@
         // 获取按钮的名字
         var btnName = e.innerHTML;
         var data = {
+            'id': Request['id'],
             'costId': $("#costId").text(),
             'supplier': {
                 'supplierId': $("#companyName").find("option:selected").val(),
@@ -749,6 +759,32 @@
                     alert("服务器异常!");
                 }
             });
+        } else if (btnName == "升级") {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "levelUpCost",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+                            alert(data.message);
+                            $(location).attr('href', 'cost.html');
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    var that = this;
+                    console.log(that.data);
+                    alert("服务器异常!");
+                }
+            });
         } else if (btnName == "打印") {
             alert('文件打印中');
         }
@@ -805,5 +841,6 @@
         $('#totalPriceTax').val(totalPriceTax);
         $('#totalAmount').val(totalAmount);
     });
+
 </script>
 </html>

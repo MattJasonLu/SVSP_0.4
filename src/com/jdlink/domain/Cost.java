@@ -9,6 +9,10 @@ import java.util.List;
  */
 public class Cost {
     /**
+     * ID
+     * */
+     private String id;
+    /**
      * 成本单编号
      */
     private String costId;
@@ -16,6 +20,12 @@ public class Cost {
      * 供应商(包含供应商名称、联系人、电话、地址)
      */
     private Supplier supplier;
+
+    /**
+     *客户
+     * */
+    private Client client;
+
     /**
      * 开始日期
      */
@@ -51,7 +61,12 @@ public class Cost {
     /**
      * 危废列表
      */
+
     private List<Wastes> wastesList = new ArrayList<>();
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getCostId() {
         return costId;
@@ -67,6 +82,31 @@ public class Cost {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public Client getClient() { return client; }
+
+    @Override
+    public String toString() {
+        return "Cost{" +
+                "id='" + id + '\'' +
+                ", costId='" + costId + '\'' +
+                ", supplier=" + supplier +
+                ", client=" + client +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isContainTax=" + isContainTax +
+                ", isContainFreight=" + isContainFreight +
+                ", totalPriceTax=" + totalPriceTax +
+                ", totalPrice=" + totalPrice +
+                ", totalAmount=" + totalAmount +
+                ", checkState=" + checkState +
+                ", wastesList=" + wastesList +
+                '}';
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Date getStartDate() {
@@ -141,20 +181,4 @@ public class Cost {
         this.checkState = checkState;
     }
 
-    @Override
-    public String toString() {
-        return "Cost{" +
-                "costId='" + costId + '\'' +
-                ", supplier=" + supplier +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", isContainTax=" + isContainTax +
-                ", isContainFreight=" + isContainFreight +
-                ", totalPriceTax=" + totalPriceTax +
-                ", totalPrice=" + totalPrice +
-                ", totalAmount=" + totalAmount +
-                ", checkState=" + checkState +
-                ", wastesList=" + wastesList +
-                '}';
-    }
 }
