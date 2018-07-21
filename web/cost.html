@@ -58,36 +58,36 @@
                     case (7):
                         $(this).html(getTimeStr(obj.endDate));
                         break;
-                    case (8):
-                        if(obj.checkState.name == "待审批"){
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                        }else if(obj.checkState.name == "审批中"){
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                            $(this).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(4).removeAttr("onclick");
-                        }else if(obj.checkState.name == "已作废"){
-                            $(this).children().eq(1).attr("class","disabled");
-                            $(this).children().eq(1).removeAttr("onclick");
-                            $(this).children().eq(2).attr("class","disabled");
-                            $(this).children().eq(2).removeAttr("onclick");
-                            $(this).children().eq(3).attr("class","disabled");
-                            $(this).children().eq(3).removeAttr("onclick");
-                            $(this).children().eq(4).attr("class","disabled");
-                            $(this).children().eq(4).removeAttr("onclick");
-                            $(this).children().eq(5).attr("class","disabled");
-                            $(this).children().eq(5).removeAttr("onclick");
-                        }
-                        break;
+                    // case (8):
+                    //     if(obj.checkState.name == "待审批"){
+                    //         $(this).children().eq(1).attr("class","disabled");
+                    //         $(this).children().eq(1).removeAttr("onclick");
+                    //         $(this).children().eq(2).attr("class","disabled");
+                    //         $(this).children().eq(2).removeAttr("onclick");
+                    //         $(this).children().eq(3).attr("class","disabled");
+                    //         $(this).children().eq(3).removeAttr("onclick");
+                    //     }else if(obj.checkState.name == "审批中"){
+                    //         $(this).children().eq(1).attr("class","disabled");
+                    //         $(this).children().eq(1).removeAttr("onclick");
+                    //         $(this).children().eq(2).attr("class","disabled");
+                    //         $(this).children().eq(2).removeAttr("onclick");
+                    //         $(this).children().eq(3).attr("class","disabled");
+                    //         $(this).children().eq(3).removeAttr("onclick");
+                    //         $(this).children().eq(4).attr("class","disabled");
+                    //         $(this).children().eq(4).removeAttr("onclick");
+                    //     }else if(obj.checkState.name == "已作废"){
+                    //         $(this).children().eq(1).attr("class","disabled");
+                    //         $(this).children().eq(1).removeAttr("onclick");
+                    //         $(this).children().eq(2).attr("class","disabled");
+                    //         $(this).children().eq(2).removeAttr("onclick");
+                    //         $(this).children().eq(3).attr("class","disabled");
+                    //         $(this).children().eq(3).removeAttr("onclick");
+                    //         $(this).children().eq(4).attr("class","disabled");
+                    //         $(this).children().eq(4).removeAttr("onclick");
+                    //         $(this).children().eq(5).attr("class","disabled");
+                    //         $(this).children().eq(5).removeAttr("onclick");
+                    //     }
+                    //     break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -115,6 +115,7 @@
             }
         });
     }
+
     //获取时间
     function getTimeStr(obj) {
         var year=(parseInt(obj.year)+1900).toString();
@@ -263,9 +264,9 @@
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索...">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchCost()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         </span>
                     </div>
                 </div>
@@ -512,6 +513,40 @@
         return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
 
+    /**
+     * 升级
+     * */
+    function levelUp(e) {
+        var id = getCostId(e);
+        window.location.href = "newCost.html?id=" + id + "&type=levelUp";
+    }
+
+    /**
+     *查询成本单
+     * */
+    function searchCost() {
+        var keyword = $("#searchContent").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchCost",                  // url
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'keyword': keyword
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    setCostList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error:function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
 
     /**
      * 导出excel
