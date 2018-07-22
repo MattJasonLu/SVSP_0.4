@@ -63,6 +63,8 @@ public class CostController {
             for (Wastes wastes : cost.getWastesList()) {
                 wastes.setId(RandomUtil.getRandomEightNumber());
             }
+            String id = costService.count() + 1 + "";
+            cost.setId(id);
             costService.add(cost);
             res.put("status", "success");
             res.put("message", "成本单增加成功");
@@ -77,15 +79,15 @@ public class CostController {
 
     /**
      * 作废报价单
-     * @param costId 报价单编号
+     * @param id 报价单编号
      * @return 成功与否
      */
     @RequestMapping("setCostStateDisabled")
     @ResponseBody
-    public String setStateDisabled(String costId) {
+    public String setStateDisabled(String id) {
         JSONObject res = new JSONObject();
         try {
-            costService.setStateDisabled(costId);
+            costService.setStateDisabled(id);
             res.put("status", "success");
             res.put("message", "成本单作废成功");
         } catch (Exception e) {
@@ -107,6 +109,7 @@ public class CostController {
     public String changeEndDate(Cost cost) {
         JSONObject res = new JSONObject();
         try {
+            cost.setCheckState(CheckState.ToExamine);
             costService.changeEndDate(cost);
             res.put("status", "success");
             res.put("message", "结束日期修改成功");
@@ -137,6 +140,7 @@ public class CostController {
             for (int i = oldWastesList.size(); i < newWastesList.size(); i++) {
                 newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());
             }
+            cost.setCheckState(CheckState.ToExamine);
             costService.update(cost);
             res.put("status", "success");
             res.put("message", "成本单修改成功");
@@ -211,15 +215,15 @@ public class CostController {
 
     /**
      * 通过成本单编号获取成本单
-     * @param costId 成本单编号
+     * @param id 成本单编号
      * @return 成本单对象
      */
     @RequestMapping("getCost")
     @ResponseBody
-    public String getCost(String costId) {
+    public String getCost(String id) {
         JSONObject res = new JSONObject();
         try {
-            Cost cost = costService.getById(costId);
+            Cost cost = costService.getById(id);
             if (cost == null) throw new Exception("没有该成本单!");
             JSONObject data = JSONObject.fromBean(cost);
             res.put("status", "success");

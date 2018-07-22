@@ -33,32 +33,41 @@
                     case (1):
                         $(this).html(obj.costId);
                         break;
-                        // 客户名称
                     case (2):
-                        $(this).html(obj.supplier.companyName);
+                        $(this).html(obj.name);
                         break;
                         // 联系人
                     case (3):
+                        $(this).html(obj.version);
+                        break;
+                        // 客户名称
+                    case (4):
+                        $(this).html(obj.supplier.companyName);
+                        break;
+                        // 联系人
+                    case (5):
                         $(this).html(obj.supplier.contactName);
                         break;
                         // 联系方式
-                    case (4):
+                    case (6):
                         $(this).html(obj.supplier.phone);
                         break;
                         // 所属区域
-                    case (5):
+                    case (7):
                         $(this).html(obj.supplier.location);
                         break;
                         // 状态
-                    case (6):
-                        if (obj.checkState != null)
+                    case (8):
+                        if(obj.checkState != null)
                         $(this).html(obj.checkState.name);
                         break;
                         // 到期日期
-                    case (7):
+                    case (9):
                         $(this).html(getTimeStr(obj.endDate));
                         break;
-                    // case (8):
+                    case (11):
+                        $(this).html(obj.id);
+                    // case (10):
                     //     if(obj.checkState.name == "待审批"){
                     //         $(this).children().eq(1).attr("class","disabled");
                     //         $(this).children().eq(1).removeAttr("onclick");
@@ -283,13 +292,28 @@
                             </label>
                         </th>
                         <th class="text-center">成本编号</th>
-                        <th class="text-center" style="width: 300px;">供应商名称</th>
+                        <th class="text-center" style="">供应商名称</th>
+                        <th class="text-center">报价单名称</th>
+                        <th class="text-center">版本号</th>
                         <th class="text-center">联系人</th>
                         <th class="text-center">联系方式</th>
                         <th class="text-center">所属区域</th>
-                        <th class="text-center">状态</th>
+                        <th class="text-center"><div class="form-inline">
+                            <label class="control-label">状态</label>
+                            <select class="form-control" id="state" style="height: 80%; font-size: x-small;" onchange="setState();">
+                                <option value="All">所有</option>
+                                <option value="NotInvalid">未作废</option>
+                                <option value="ToSubmit">待提交</option>
+                                <option value="ToExamine">待审批</option>
+                                <option value="Examining">审批中</option>
+                                <option value="Enabled">生效中</option>
+                                <option value="Disabled">已失效</option>
+                                <option value="Invalid">已作废</option>
+                            </select>
+                        </div></th>
                         <th class="text-center">到期日期</th>
                         <th class="text-center">操作</th>
+                        <th class="text-center hidden">ID</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -306,14 +330,17 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
                             <a href="#" onclick="viewCost(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="adjustCost(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <!--<a href="#" onclick="adjustCost(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>-->
                             <a href="#" onclick="levelUp(this);" title="升级"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                             <a href="#" onclick="showCostEndDate(this);" title="有效期变更"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></a>
                             <a href="#" onclick="examination(this);" title="送审"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                             <a href="#" onclick="disabledCost(this);" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                         </td>
+                        <td class="text-center hidden"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -394,7 +421,7 @@
      */
     function viewCost(e) {
         var id = getCostId(e);
-        window.location.href = "newCost.html?costId=" + id + "&type=view";
+        window.location.href = "newCost.html?id=" + id + "&type=view";
     }
     /**
      * 修改成本单
@@ -402,7 +429,7 @@
      */
     function adjustCost(e) {
         var id = getCostId(e);
-        window.location.href = "newCost.html?costId=" + id + "&type=adjust";
+        window.location.href = "newCost.html?id=" + id + "&type=adjust";
     }
 
     /**
@@ -417,7 +444,7 @@
                 url: "setCostStateDisabled",                 // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: {
-                    costId: id
+                    id: id
                 },
                 dataType: "json",
                 success: function (result) {
@@ -451,7 +478,7 @@
             url: "getCost",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                costId: id
+                id: id
             },
             dataType: "json",
             success: function (result) {
@@ -480,7 +507,7 @@
             url: "changeCostEndDate",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                costId: costId,
+                id: costId,
                 endDate: $("#model-validity").val()
             },
             dataType: "json",
@@ -510,7 +537,7 @@
      * @returns {string}
      */
     function getCostId(e) {
-        return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        return e.parentElement.nextElementSibling.innerHTML;
     }
 
     /**

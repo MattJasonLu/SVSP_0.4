@@ -16,6 +16,7 @@
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/util.js"></script>
 </head>
 <script>
     $(window).on('load', function () {
@@ -49,6 +50,8 @@
             $(this).attr('name', newName);
         });
         clonedTr.insertAfter(tr);
+        var $i = id;
+        $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = -1;
     }
     //获取时间
     function getTimeStr(obj) {
@@ -197,6 +200,24 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">报价单名称</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">版本号</label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="version" name="version" placeholder="" value="V1.0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
                             <label for="companyName" class="col-sm-4 control-label">供应商名称</label>
                             <div class="col-xs-5">
                                 <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName"></select>
@@ -257,8 +278,12 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">是否含税</label>
                             <div class="col-xs-5">
-                                <input type="radio" name="isContainTax" value="true">是
-                                <input type="radio" name="isContainTax" value="false">否
+                                <label>
+                                    <input type="radio" name="isContainTax" value="true" onchange="changeTax(this);calculateTax();" checked>
+                                </label>是
+                                <label>
+                                    <input type="radio" name="isContainTax" value="false" onchange="changeTax(this);calculateTax();">
+                                </label>否
                             </div>
                         </div>
                     </div>
@@ -275,17 +300,17 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="totalPriceTax" class="col-sm-4 control-label">总价(含税)</label>
+                            <label for="totalPriceTax" class="col-sm-4 control-label" id="totalPriceTaxLabel">总价(含税)</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="totalPriceTax" name="totalPriceTax" placeholder="">
+                                <p class="text-muted" id="totalPriceTax"></p>
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="totalPrice" class="col-sm-4 control-label">总价(去税)</label>
+                            <label for="totalPrice" class="col-sm-4 control-label">税额</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="totalPrice" name="totalPrice" placeholder="">
+                                <p class="text-muted" id="totalPrice"></p>
                             </div>
                         </div>
                     </div>
@@ -295,54 +320,54 @@
                         <div class="form-group">
                             <label for="totalAmount" class="col-sm-4 control-label">总量</label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="totalAmount" name="totalAmount" placeholder="">
+                                <p class="text-muted" id="totalAmount"></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="table">
                     <table class="table table-striped table-hover table-condensed">
-                            <thead>
-                            <tr>
-                                <th class="text-center">序号</th>
-                                <th class="text-center">危废品名</th>
-                                <th class="text-center">状态</th>
-                                <th class="text-center">危废代码</th>
-                                <th class="text-center">合约量</th>
-                                <th class="text-center">单价(元/吨)(含税)</th>
-                                <th class="text-center">税率(%)</th>
-                                <th class="text-center">单价(元/吨)(去税)</th>
-                                <th class="text-center">PH</th>
-                                <th class="text-center">灰分(%)</th>
-                                <th class="text-center">水分(%)</th>
-                                <th class="text-center">热值(koal)</th>
-                                <th class="text-center">卤素(%)</th>
-                                <th class="text-center">硫(%)</th>
-                                <th class="text-center">闪点(&#176;C)</th>
-                            </tr>
-                            </thead>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].name"></td>
-                                <td class="text-center"><select class="form-control focus" name="wastesList[0].formType"></select></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ph"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].calorific"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].halogenPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint"></td>
-                            </tr>
-                            <tr id="plusBtn">
-                                <td><a class="btn btn-default" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                                <td colspan="14"></td>
-                            </tr>
-                        </table>
+                        <thead>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">危废品名</th>
+                            <th class="text-center">状态</th>
+                            <th class="text-center">危废代码</th>
+                            <th class="text-center">合约量</th>
+                            <th class="text-center" id="unitPriceTaxTh">单价<br>(元/吨)(含税)</th>
+                            <th class="text-center">税率(%)</th>
+                            <th class="text-center" id="unitPriceTh">税额</th>
+                            <th class="text-center">PH</th>
+                            <th class="text-center">灰分(%)</th>
+                            <th class="text-center">水分(%)</th>
+                            <th class="text-center">热值(koal)</th>
+                            <th class="text-center">卤素(%)</th>
+                            <th class="text-center">硫(%)</th>
+                            <th class="text-center">闪点(&#176;C)</th>
+                        </tr>
+                        </thead>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].name" style="width: 80px;"></td>
+                            <td class="text-center"><select class="form-control focus" name="wastesList[0].formType" style="width: 70px;"></select></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wastesId" style="width: 100px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount" style="width: 50px;" oninput="calculateTax();"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax" style="width: 50px;" oninput="calculateTax();"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate" style="width: 50px;" oninput="calculateTax();"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice" style="width: 50px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ph" style="width: 50px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage" style="width: 50px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage" style="width: 50px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].calorific" style="width: 50px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].halogenPercentage" style="width: 50px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage" style="width: 50px;"></td>
+                            <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint" style="width: 50px;"></td>
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-sm" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td colspan="14"></td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
@@ -505,13 +530,15 @@
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
                 data: {
-                    costId: costId
+                    id: costId
                 },
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result.data);
                         var data = eval(result);
                         $('#costId').text(data.data.costId);
+                        $('#name').val(data.data.name);
+                        $('#version').val(data.data.version);
                         if (data.data.supplier.supplierType != null)
                             $("#supplierType").get(0).selectedIndex = data.data.supplier.supplierType.index;
                         $('#companyName').selectpicker('val', data.data.supplier.supplierId);
@@ -522,9 +549,9 @@
                         $('#endDate').val(getTimeStr(data.data.endDate));
                         $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
                         $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
-                        $('#totalPriceTax').val(data.data.totalPriceTax);
-                        $('#totalPrice').val(data.data.totalPrice);
-                        $('#totalAmount').val(data.data.totalAmount);
+                        $('#totalPriceTax').text(data.data.totalPriceTax);
+                        $('#totalPrice').text(data.data.totalPrice);
+                        $('#totalAmount').text(data.data.totalAmount);
                         for (var i = 0; i < data.data.wastesList.length; i++) {
                             if (i > 0) addNewLine();
                             var $i = i;
@@ -558,6 +585,7 @@
             $('#btnCfm').text("打印");
             $('#btnSave').remove();
         }else if (type == 'levelUp') {
+            $('#version').val(updateVersion($('#version').val()));
             $('#btnCfm').text("升级");
             $('#startDate').next().next().remove();
             $('#startDate').next().remove();
@@ -644,6 +672,8 @@
         var data = {
             'id': Request['id'],
             'costId': $("#costId").text(),
+            'name': $("#name").val(),
+            'version': $("#version").val(),
             'supplier': {
                 'supplierId': $("#companyName").find("option:selected").val(),
                 'contactName': $("#contactName").val(),
@@ -655,9 +685,9 @@
             'endDate': $("#endDate").val(),
             'isContainTax': $("input[name='isContainTax']:checked").val(),
             'isContainFreight': $("input[name='isContainFreight']:checked").val(),
-            'totalPriceTax': $("#totalPriceTax").val(),
-            'totalPrice': $("#totalPrice").val(),
-            'totalAmount': $("#totalAmount").val()
+            'totalPriceTax': $("#totalPriceTax").text(),
+            'totalPrice': $("#totalPrice").text(),
+            'totalAmount': $("#totalAmount").text()
         };
         data['wastesList'] = [];
         // 危废列表的数量
@@ -819,28 +849,155 @@
         setSupplierInfo();
     });
 
-    $("input[name$='contractAmount'],[name$='unitPriceTax'],[name$='unitPrice'],[name$='taxRate']").on('input',function(e){
+    /**
+     * 计算税价
+     */
+    function calculateTax() {
+        var state = $("input[name='isContainTax']:checked").val();
+        // 计算总价
         var totalPrice = 0;
         var totalPriceTax = 0;
+        var totalTax = 0;
         var totalAmount = 0;
         // 危废列表的数量
         var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
-        for (var i = 0; i < wastesListCount; i++) {
-            var $i = i;
-            var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
-            var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
-            var unitPrice = parseFloat($("input[name='wastesList[" + $i + "].unitPrice']").val());
-            var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
-            if (contractAmount != null && unitPrice != null && unitPriceTax != null && taxRate != null) {
-                totalPrice += contractAmount * unitPrice;
-                totalPriceTax += contractAmount * unitPriceTax;
-                totalAmount += contractAmount;
+        // 计算税价
+        // 如果改变了去税价
+        if (state == "true") {
+            // 计算当前行的含税价
+            for (var i = 0; i < wastesListCount; i++) {
+                var $i = i;
+                var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
+                var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                if (contractAmount != null && unitPriceTax != null && taxRate != null) {
+                    var tax = unitPriceTax * (taxRate / 100) / (taxRate / 100 + 1);
+                    if (!isNaN(tax)) {
+                        tax = tax.toFixed(3);
+                        $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                    }
+                    totalTax += contractAmount * tax;
+                    totalPriceTax += contractAmount * unitPriceTax;
+                    totalAmount += contractAmount;
+                }
             }
+            if (!isNaN(totalPriceTax)) $('#totalPriceTax').text(totalPriceTax);
+//            var unitPriceTaxName = e.name.split(".")[0] + ".unitPriceTax";
+//            var taxRateName = e.name.split(".")[0] + ".taxRate";
+//
+//            var originVal = parseFloat($("input[name='" + e.name + "']").val());
+////            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
+//            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
+//            var resolveVal = originVal * (1 + rate / 100);
+//            if (!isNaN(resolveVal)) $("input[name='" + unitPriceTaxName + "']").val(resolveVal);
+        } else if (state == "false") {
+            for (var i = 0; i < wastesListCount; i++) {
+                var $i = i;
+                var contractAmount = parseFloat($("input[name='wastesList[" + $i + "].contractAmount']").val());
+                var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                if (contractAmount != null && unitPriceTax != null && taxRate != null) {
+                    var tax = unitPriceTax * (taxRate / 100) / (1 - taxRate / 100);
+                    if (!isNaN(tax)) {
+                        tax = tax.toFixed(3);
+                        $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                    }
+                    totalTax += contractAmount * tax;
+                    totalPriceTax += contractAmount * unitPriceTax;
+                    totalAmount += contractAmount;
+                }
+            }
+            if (!isNaN(totalPriceTax)) {
+                totalPriceTax.toFixed(3);
+                $('#totalPriceTax').text(totalPriceTax-totalTax);
+            }
+            // 计算当前行的含税价
+//            var unitPriceName = e.name.split(".")[0] + ".unitPrice";
+//            var taxRateName = e.name.split(".")[0] + ".taxRate";
+//
+//            var originVal = parseFloat($("input[name='" + e.name + "']").val());
+////            var val2 = $("input[name='" + unitPriceTaxName + "']").val();
+//            var rate = parseFloat($("input[name='" + taxRateName + "']").val());
+//            var resolveVal = originVal * (1 - rate / 100);
+//            if (!isNaN(resolveVal)) $("input[name='" + unitPriceName + "']").val(resolveVal);
         }
-        $('#totalPrice').val(totalPrice);
-        $('#totalPriceTax').val(totalPriceTax);
-        $('#totalAmount').val(totalAmount);
-    });
+
+
+        if (!isNaN(totalTax)) {
+            totalTax = totalTax.toFixed(3);
+            $('#totalPrice').text(totalTax);
+        }
+        if (!isNaN(totalAmount)) $('#totalAmount').text(totalAmount);
+    }
+
+    /**
+     * 改变税价
+     * @param e
+     */
+    function changeTax(e) {
+        // 获取选中状态
+        var status = e.value;
+        var unitPriceTaxTh = $("#unitPriceTaxTh");
+        var unitPriceTh = $("#unitPriceTh");
+        var unitPriceTaxList = $("input[name^='wastesList'][name$='unitPriceTax']");
+        var taxRateList = $("input[name^='wastesList'][name$='taxRate']");
+        var unitPriceList = $("input[name^='wastesList'][name$='unitPrice']");
+        var unitPriceCount = unitPriceTaxList.length;
+        // 如果选择含税，含税价在前
+        if (status == "true") {
+            if (unitPriceTaxTh.text().search("去税") != -1) {
+                $("#unitPriceTaxTh").html("单价<br>(元/吨)(含税)");
+                $("#totalPriceTaxLabel").text("总价(含税)");
+                for (var i = 0; i < unitPriceCount; i++) {
+                    var $i = i;
+                    // 含税价
+                    var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                    var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                    if (unitPriceTax != null && taxRate != null) {
+                        var tax = unitPriceTax * (taxRate / 100) / (taxRate / 100 + 1);
+                        if (!isNaN(tax)) {
+                            tax = tax.toFixed(3);
+                            $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                        }
+                    }
+                }
+            }
+//            if (unitPriceTh.prev().prev().attr('id') != 'unitPriceTaxTh') {
+//                exchange(unitPriceTaxTh, unitPriceTh);
+//                for (var i = 0; i < unitPriceCount; i++) {
+//                    var item1 = $(unitPriceTaxList[i].parentElement);
+//                    var item2 = $(unitPriceList[i].parentElement);
+//                    exchange(item1, item2);
+//                }
+//            }
+        } else {
+            if (unitPriceTaxTh.text().search("含税") != -1) {
+                $("#unitPriceTaxTh").html("单价<br>(元/吨)(去税)");
+                $("#totalPriceTaxLabel").text("总价(去税)");
+                for (var i = 0; i < unitPriceCount; i++) {
+                    var $i = i;
+                    // 含税价
+                    var unitPriceTax = parseFloat($("input[name='wastesList[" + $i + "].unitPriceTax']").val());
+                    var taxRate = parseFloat($("input[name='wastesList[" + $i + "].taxRate']").val());
+                    if (unitPriceTax != null && taxRate != null) {
+                        var tax = unitPriceTax * (taxRate / 100) / (1 - taxRate / 100);
+                        if (!isNaN(tax)) {
+                            tax = tax.toFixed(3);
+                            $("input[name='wastesList[" + $i + "].unitPrice']").val(tax);
+                        }
+                    }
+                }
+            }
+//            if (unitPriceTaxTh.prev().prev().attr('id') != 'unitPriceTh') {
+//                exchange(unitPriceTh, unitPriceTaxTh);
+//                for (var i = 0; i < unitPriceCount; i++) {
+//                    var item1 = $(unitPriceList[i].parentElement);
+//                    var item2 = $(unitPriceTaxList[i].parentElement);
+//                    exchange(item1, item2);
+//                }
+//            }
+        }
+    }
 
 </script>
 </html>
