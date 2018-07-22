@@ -177,7 +177,7 @@
        // console.log("12");
         clientId1="";
         companyName1="";
-        var items = $("input[type='checkbox']:checked");//判断复选框是否选中
+        var items = $("input[name='select']:checked");//判断复选框是否选中
         if(items.length>0){
             function getClientById(id) {
                 $.ajax({
@@ -206,6 +206,7 @@
             }
             items.each(function () {//遍历
                 var id = getClientId1(this);
+                console.log(id);
                 clientId = id;
                 getClientById(id);
             });
@@ -541,7 +542,7 @@ else {
         return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
     function getClientId1(item) {
-        return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        return item.parentElement.parentElement.nextElementSibling.innerHTML;
     }
     /**
      * 分配业务员
