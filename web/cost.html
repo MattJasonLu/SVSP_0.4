@@ -113,6 +113,9 @@
             cache: false,
             async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
+            data: {
+                state: 'NotInvalid'
+            },
             success: function (result) {
                 console.log(result);
                 if (result != undefined) {
@@ -145,6 +148,28 @@
         var isChecked = $('#allSel').prop('checked');
         if (isChecked) $("input[name='select']").prop('checked',true);
         else $("input[name='select']").prop('checked',false);
+    }
+    function setState() {
+        var state = $("#state").val();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listCost",           // url
+            cache: false,
+            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                state: state
+            },
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    setCostList(result);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
     }
 </script>
 
@@ -302,7 +327,7 @@
                             <label class="control-label">状态</label>
                             <select class="form-control" id="state" style="height: 80%; font-size: x-small;" onchange="setState();">
                                 <option value="All">所有</option>
-                                <option value="NotInvalid">未作废</option>
+                                <option value="NotInvalid" selected>未作废</option>
                                 <option value="ToSubmit">待提交</option>
                                 <option value="ToExamine">待审批</option>
                                 <option value="Examining">审批中</option>

@@ -17,6 +17,10 @@ public interface CostService {
 
     List<Cost> list();
 
+    List<Cost> list(String state);
+
+    List<Cost> listNotInvalid();
+
     List<Cost> getByKeyword(String keyword);
 
     int count();

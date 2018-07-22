@@ -57,11 +57,15 @@
         </if>
     </update>
 
-    <select id="list" resultMap="CostRM">
+    <select id="list" resultMap="CostRM" parameterType="String">
         SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId
-        <if test="start != null and count != null">
-            limit #{start}, #{count}
+        <if test="_parameter != null">
+            AND t_cost.checkState=#{state}
         </if>
+    </select>
+
+    <select id="listNotInvalid" resultMap="CostRM">
+        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId AND t_cost.checkState!='Invalid'
     </select>
 
     <select id="getWastes" resultType="Wastes">

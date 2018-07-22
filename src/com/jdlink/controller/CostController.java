@@ -160,10 +160,13 @@ public class CostController {
      */
     @RequestMapping("listCost")
     @ResponseBody
-    public String listCost(String supplierId) {
+    public String listCost(String supplierId, String state) {
         JSONObject res = new JSONObject();
         try {
-            List<Cost> costList = costService.list();
+            List<Cost> costList = null;
+            if (state != null && state.equals("NotInvalid")) costList = costService.listNotInvalid();
+            else if (state != null && state.equals("All")) costList = costService.list();
+            else if (state != null) costList = costService.list(state);
             JSONArray data = JSONArray.fromArray(costList.toArray(new Cost[costList.size()]));
             res.put("data", data.toString());
             res.put("status", "success");
