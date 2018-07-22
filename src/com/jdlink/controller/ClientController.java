@@ -209,12 +209,12 @@ public class ClientController {
      */
     @RequestMapping("listClient")
     @ResponseBody
-    public String listClient(Page page) {
+    public String listClient() {
         try {
             // 取出所有客户
             List<Client> clientList = clientService.list();
             // 计算最后页
-            page.caculateLast(clientService.total());
+//            page.caculateLast(clientService.total());
             JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
             // 返回结果
             return array.toString();
