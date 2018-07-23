@@ -448,25 +448,25 @@
                                 <div class="form-group">
                                     <label for="model-telephone" class="col-sm-5 control-label">样品名称<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-productName" name="telephone" required>
+                                        <input type="text" class="form-control focus" id="model2-productName" name="productName" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="model-telephone" class="col-sm-5 control-label">接收人<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-recipient" name="telephone" required>
+                                        <input type="text" class="form-control focus" id="model2-recipient" name="recipient" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="model-telephone" class="col-sm-5 control-label">状态<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-formType" name="telephone" required>
+                                        <select class="form-control focus" id="model2-formType" name="formType" required></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="model-telephone" class="col-sm-5 control-label">拟处置量<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-quantity" name="telephone" required>
+                                        <input type="text" class="form-control focus" id="model2-quantity" name="quantity" required>
                                     </div>
                                 </div>
                             </div>
@@ -475,7 +475,7 @@
                                 <div class="form-group">
                                     <label for="model-telephone" class="col-sm-5 control-label">危废代码<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-code" name="telephone" required>
+                                        <input type="text" class="form-control focus" id="model2-code" name="code" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -487,7 +487,7 @@
                                 <div class="form-group">
                                     <label for="model-telephone" class="col-sm-5 control-label">包装<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-packageType" name="telephone" required>
+                                        <select class="form-control focus" id="model2-packageType" name="packageType" required></select>
                                     </div>
                                 </div>
                             </div>
@@ -883,7 +883,7 @@
             },
             dataType: "json",
             success: function (result) {
-                console.log(result);
+//                console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
@@ -911,6 +911,7 @@
             dataType: "json",
             success: function (result) {
                 if (result != undefined) {
+                    console.log(result);
                     var data = eval(result);
                     if (data.status == "success") {
                         $("#model2-productName").val(data.data.productName);
@@ -946,7 +947,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                console.log(result);
+//                console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充

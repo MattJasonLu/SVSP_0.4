@@ -60,6 +60,54 @@ public class Questionnaire {
      */
     private String attachmentUrl;
 
+    private Boolean isMaterialComplete;
+
+    private String notCompleteReason;
+
+    private boolean isMeetRequire;
+
+    private boolean isCooperate;
+
+    private boolean isDedicate;
+
+    private String acceptIntend1;
+
+    private String wasteName1;
+
+    private String wasteName2;
+
+    private String wasteName3;
+
+    private String wasteName4;
+
+    private String wasteName5;
+
+    private String wasteName6;
+
+    private String otherRisk;
+
+    private String acceptIntend2;
+
+    private String unacceptReason2;
+
+    private String conditionReason2;
+
+    private boolean isStore;
+
+    private String storeReason;
+
+    private boolean isProcess;
+
+    private String processReason;
+
+    private String acceptIntend3;
+
+    private String unacceptReason3;
+
+    private String conditionReason3;
+
+    private boolean isExamined;
+
     public String getQuestionnaireId() {
         return questionnaireId;
     }
@@ -156,6 +204,198 @@ public class Questionnaire {
         this.attachmentUrl = attachmentUrl;
     }
 
+    public Boolean getIsMaterialComplete() {
+        return isMaterialComplete;
+    }
+
+    public void setIsMaterialComplete(Boolean materialComplete) {
+        isMaterialComplete = materialComplete;
+    }
+
+    public String getNotCompleteReason() {
+        return notCompleteReason;
+    }
+
+    public void setNotCompleteReason(String notCompleteReason) {
+        this.notCompleteReason = notCompleteReason;
+    }
+
+    public boolean getIsMeetRequire() {
+        return isMeetRequire;
+    }
+
+    public void setIsMeetRequire(boolean meetRequire) {
+        isMeetRequire = meetRequire;
+    }
+
+    public boolean getIsCooperate() {
+        return isCooperate;
+    }
+
+    public void setIsCooperate(boolean cooperate) {
+        isCooperate = cooperate;
+    }
+
+    public boolean getIsDedicate() {
+        return isDedicate;
+    }
+
+    public void setIsDedicate(boolean dedicate) {
+        isDedicate = dedicate;
+    }
+
+    public String getAcceptIntend1() {
+        return acceptIntend1;
+    }
+
+    public void setAcceptIntend1(String acceptIntend1) {
+        this.acceptIntend1 = acceptIntend1;
+    }
+
+    public String getWasteName1() {
+        return wasteName1;
+    }
+
+    public void setWasteName1(String wasteName1) {
+        this.wasteName1 = wasteName1;
+    }
+
+    public String getWasteName2() {
+        return wasteName2;
+    }
+
+    public void setWasteName2(String wasteName2) {
+        this.wasteName2 = wasteName2;
+    }
+
+    public String getWasteName3() {
+        return wasteName3;
+    }
+
+    public void setWasteName3(String wasteName3) {
+        this.wasteName3 = wasteName3;
+    }
+
+    public String getWasteName4() {
+        return wasteName4;
+    }
+
+    public void setWasteName4(String wasteName4) {
+        this.wasteName4 = wasteName4;
+    }
+
+    public String getWasteName5() {
+        return wasteName5;
+    }
+
+    public void setWasteName5(String wasteName5) {
+        this.wasteName5 = wasteName5;
+    }
+
+    public String getWasteName6() {
+        return wasteName6;
+    }
+
+    public void setWasteName6(String wasteName6) {
+        this.wasteName6 = wasteName6;
+    }
+
+    public String getOtherRisk() {
+        return otherRisk;
+    }
+
+    public void setOtherRisk(String otherRisk) {
+        this.otherRisk = otherRisk;
+    }
+
+    public String getAcceptIntend2() {
+        return acceptIntend2;
+    }
+
+    public void setAcceptIntend2(String acceptIntend2) {
+        this.acceptIntend2 = acceptIntend2;
+    }
+
+    public String getUnacceptReason2() {
+        return unacceptReason2;
+    }
+
+    public void setUnacceptReason2(String unacceptReason2) {
+        this.unacceptReason2 = unacceptReason2;
+    }
+
+    public String getConditionReason2() {
+        return conditionReason2;
+    }
+
+    public void setConditionReason2(String conditionReason2) {
+        this.conditionReason2 = conditionReason2;
+    }
+
+    public boolean getIsStore() {
+        return isStore;
+    }
+
+    public void setIsStore(boolean store) {
+        isStore = store;
+    }
+
+    public String getStoreReason() {
+        return storeReason;
+    }
+
+    public void setStoreReason(String storeReason) {
+        this.storeReason = storeReason;
+    }
+
+    public boolean getIsProcess() {
+        return isProcess;
+    }
+
+    public void setIsProcess(boolean process) {
+        isProcess = process;
+    }
+
+    public String getProcessReason() {
+        return processReason;
+    }
+
+    public void setProcessReason(String processReason) {
+        this.processReason = processReason;
+    }
+
+    public String getAcceptIntend3() {
+        return acceptIntend3;
+    }
+
+    public void setAcceptIntend3(String acceptIntend3) {
+        this.acceptIntend3 = acceptIntend3;
+    }
+
+    public String getUnacceptReason3() {
+        return unacceptReason3;
+    }
+
+    public void setUnacceptReason3(String unacceptReason3) {
+        this.unacceptReason3 = unacceptReason3;
+    }
+
+    public String getConditionReason3() {
+        return conditionReason3;
+    }
+
+    public void setConditionReason3(String conditionReason3) {
+        this.conditionReason3 = conditionReason3;
+    }
+
+    public boolean getIsExamined() {
+        return isExamined;
+    }
+
+    public void setIsExamined(boolean examined) {
+        isExamined = examined;
+    }
+
     @Override
     public String toString() {
         return "Questionnaire{" +
@@ -171,6 +411,29 @@ public class Questionnaire {
                 ", time=" + time +
                 ", attachment=" + attachment +
                 ", attachmentUrl='" + attachmentUrl + '\'' +
+                ", isMaterialComplete=" + isMaterialComplete +
+                ", notCompleteReason='" + notCompleteReason + '\'' +
+                ", isMeetRequire=" + isMeetRequire +
+                ", isCooperate=" + isCooperate +
+                ", isDedicate=" + isDedicate +
+                ", acceptIntend1='" + acceptIntend1 + '\'' +
+                ", wasteName1='" + wasteName1 + '\'' +
+                ", wasteName2='" + wasteName2 + '\'' +
+                ", wasteName3='" + wasteName3 + '\'' +
+                ", wasteName4='" + wasteName4 + '\'' +
+                ", wasteName5='" + wasteName5 + '\'' +
+                ", wasteName6='" + wasteName6 + '\'' +
+                ", otherRisk='" + otherRisk + '\'' +
+                ", acceptIntend2='" + acceptIntend2 + '\'' +
+                ", unacceptReason2='" + unacceptReason2 + '\'' +
+                ", conditionReason2='" + conditionReason2 + '\'' +
+                ", isStore=" + isStore +
+                ", storeReason='" + storeReason + '\'' +
+                ", isProcess=" + isProcess +
+                ", processReason='" + processReason + '\'' +
+                ", acceptIntend3='" + acceptIntend3 + '\'' +
+                ", unacceptReason3='" + unacceptReason3 + '\'' +
+                ", conditionReason3='" + conditionReason3 + '\'' +
                 '}';
     }
 }

@@ -36,7 +36,7 @@
         <collection property="wasteProtectList" select="getWasteProtect" column="id"
                     ofType="com.jdlink.domain.WasteProtect" javaType="ArrayList"/>
     </resultMap>
-    <resultMap type="Questionnaire" id="QuestionnaireRM">
+    <resultMap type="Questionnaire" id="QuestionnaireRM" autoMapping="true">
         <result property="questionnaireId" column="questionnaireId"/>
         <result property="applyState" column="state" javaType="com.jdlink.domain.ApplyState"/>
         <result property="author" column="author"/>
@@ -143,7 +143,13 @@
 
     <select id="getById" parameterType="String" resultMap="QuestionnaireRM">
         SELECT questionnaire.questionnaireId, client.companyName, client.industry, client.clientId, client.phone,
-          client.product, client.contactName, client.location, questionnaire.state, questionnaire.author, questionnaire.time
+          client.product, client.contactName, client.location, questionnaire.state, questionnaire.author, questionnaire.time,
+          questionnaire.isMaterialComplete, questionnaire.isCooperate, questionnaire.isDedicate, questionnaire.notCompleteReason,
+          questionnaire.isMeetRequire, questionnaire.isCooperate, questionnaire.acceptIntend1, questionnaire.wasteName1, questionnaire.wasteName2,
+          questionnaire.wasteName3, questionnaire.wasteName4, questionnaire.wasteName5, questionnaire.wasteName6, questionnaire.otherRisk,
+          questionnaire.acceptIntend2, questionnaire.unacceptReason2, questionnaire.conditionReason2, questionnaire.isStore, questionnaire.storeReason,
+          questionnaire.isProcess, questionnaire.processReason, questionnaire.acceptIntend3, questionnaire.unacceptReason3, questionnaire.conditionReason3,
+          questionnaire.isExamined
             FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId AND questionnaireId = #{questionnaireId};
     </select>
 
@@ -261,16 +267,30 @@
         </if>
     </update>
 
-    <update id="examine" parameterType="String">
-        UPDATE questionnaire SET state='Examining' WHERE questionnaireId=#{quesionnaireId}
+    <update id="examine" parameterType="Questionnaire">
+        UPDATE questionnaire SET state='Examining', isMaterialComplete=#{isMaterialComplete}, notCompleteReason=#{notCompleteReason},
+        isMeetRequire=#{isMeetRequire}, isCooperate=#{isCooperate}, isDedicate=#{isDedicate}, acceptIntend1=#{acceptIntend1},
+        wasteName1=#{wasteName1}, wasteName2=#{wasteName2}, wasteName3=#{wasteName3}, wasteName4=#{wasteName4}, wasteName5=#{wasteName5},
+        wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
+        conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
+        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},
+        isExamined=TRUE
+        WHERE questionnaireId=#{questionnaireId};
     </update>
 
     <update id="signIn" parameterType="String">
         UPDATE questionnaire SET state='SignedIn' WHERE questionnaireId=#{quesionnaireId}
     </update>
 
-    <update id="back" parameterType="String">
-        UPDATE questionnaire SET state='Backed' WHERE questionnaireId=#{quesionnaireId}
+    <update id="back" parameterType="Questionnaire">
+        UPDATE questionnaire SET state='Backed', isMaterialComplete=#{isMaterialComplete}, notCompleteReason=#{notCompleteReason},
+        isMeetRequire=#{isMeetRequire}, isCooperate=#{isCooperate}, isDedicate=#{isDedicate}, acceptIntend1=#{acceptIntend1},
+        wasteName1=#{wasteName1}, wasteName2=#{wasteName2}, wasteName3=#{wasteName3}, wasteName4=#{wasteName4}, wasteName5=#{wasteName5},
+        wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
+        conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
+        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},
+        isExamined=TRUE
+        WHERE questionnaireId=#{questionnaireId};
     </update>
 
     <update id="updateAttachmentUrl" parameterType="Questionnaire">

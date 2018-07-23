@@ -826,12 +826,13 @@ else {
                                 <p class="text-left"><b>开票税率1&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
                                 <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>
                                 <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
-                                <div class="form-group">
+                                <p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight" disabled="disabled" ></p>
+                                <!--<div class="form-group">
                                     <label for="modal3_freight" class="col-sm-4 control-label">是否包含运费 </label>
                                        <div class="col-xs-8">
                                        </div>
                                     <input type="checkbox" class="col-xs-1" id="modal3_freight" name="freight" disabled="disabled" >
-                                </div>
+                                </div>-->
                             </div>
                             <div class="form-horizontal col-md-6">
                                 <p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>
@@ -843,15 +844,15 @@ else {
                                 <p class="text-left"><b>所属区域&nbsp;&nbsp;</b><span id="modal3_area"></span></p>
                                 <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>
                                 <p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>
-                                <p class="text-left"><b>预约处置费&nbsp;&nbsp;</b><span id="modal3_order"></span></p>
+                                <p class="text-left"><b>预计处置费&nbsp;&nbsp;</b><span id="modal3_order"></span><span>元</span></p>
                             </div>
                         </div>
                         <br> <br>
                         <div class="row text-center">
-                            <a class="btn btn-primary" onclick="" id="btn">审批</a>
-                            <a class="btn btn-primary" onclick="" id="print">打印</a>
-                            <a class="btn btn-danger" id="back"></a>
-                            <a class="btn btn-danger" data-dismiss="modal" id="close">关闭</a>
+                            <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
+                            <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                            <a class="btn btn-danger hidden-print" id="back"></a>
+                            <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
                         </div>
                     </form>
                 </div>
@@ -1571,7 +1572,7 @@ function cancel(item) {
             //removeInline: false,
             printDelay: 333,
             copyTagClasses: false,
-
+            //解决多页打印
             //header: null,
             //formValues: false,
             //removeScripts:true

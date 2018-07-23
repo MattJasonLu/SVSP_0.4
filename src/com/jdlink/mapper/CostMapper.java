@@ -1,7 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Cost;
-import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -16,6 +16,10 @@ public interface CostMapper {
     void levelUp(Cost cost);//@Param(value="cost")
 
     List<Cost> list();
+
+    List<Cost> list(String state);
+
+    List<Cost> listNotInvalid();
 
     List<Cost> getByKeyword(String keyword);
 

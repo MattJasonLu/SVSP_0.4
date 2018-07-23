@@ -72,14 +72,14 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         questionnaireMapper.updateAttachmentUrl(questionnaire);
     }
 
-
     @Override
-    public void back(String quesionnaireId) {
-        questionnaireMapper.back(quesionnaireId);
+    public void back(Questionnaire questionnaire) {
+        questionnaireMapper.back(questionnaire);
     }
 
     @Override
-    public void examine(String questionnaireId) {
-        questionnaireMapper.examine(questionnaireId);
+    public void examine(Questionnaire questionnaire) {
+        questionnaireMapper.examine(questionnaire);
     }
+
 }
