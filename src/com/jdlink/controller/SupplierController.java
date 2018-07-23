@@ -198,6 +198,28 @@ public class SupplierController {
     }
 
     /**
+     * 禁用供应商
+     * @param supplierId 供应商编号
+     * @return 操作成功与否
+     */
+    @RequestMapping("disableSupplier")
+    @ResponseBody
+    public String disableSupplier(String supplierId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 下面就等于  UPDATE t_supplier SET state='Disabled' WHERE supplierId=#{supplierId};
+            supplierService.disable(supplierId);
+            res.put("status", "success");
+            res.put("message", "禁用成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "禁用失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 查询供应商信息
      * @param keyword 关键字
      * @return 供应商信息列表

@@ -15,6 +15,8 @@ public interface SupplierService {
 
     void enable(String supplierId);
 
+    void disable(String supplierId);
+
     Supplier getBySupplierId(String supplierId);
 
     Supplier getByName(String companyName);

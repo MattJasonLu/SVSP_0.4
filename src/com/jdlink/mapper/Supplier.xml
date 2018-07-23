@@ -14,6 +14,7 @@
         <result property="applicationStatus" column="applicationStatus" javaType="com.jdlink.domain.ApplicationStatus"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <result property="supplierType" column="supplierType" javaType="com.jdlink.domain.SupplierType"/>
+        <result property="supplierState" column="supplierState" javaType="com.jdlink.domain.ClientState"/>
     </resultMap>
 
     <insert id="add" parameterType="Supplier" >
@@ -54,6 +55,14 @@
          street=#{street}, contactName=#{contactName}, supplierType=#{supplierType}, phone=#{phone},
          mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus}
          WHERE supplierId=#{supplierId}
+    </update>
+
+    <update id="enable" parameterType="String">
+        UPDATE t_supplier SET supplierState='Enabled' WHERE supplierId=#{supplierId};
+    </update>
+
+    <update id="disable" parameterType="String">
+        UPDATE t_supplier SET supplierState='Disabled' WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateToSubmit" parameterType="String">
