@@ -10,6 +10,7 @@
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
 </head>
 <script type="text/javascript">
     function setClientList(result) {
@@ -157,8 +158,8 @@
     }
     function allSelect() {
         var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
+        if (isChecked) $("input[name='checkbox1']").prop('checked',true);
+        else $("input[name='checkbox1']").prop('checked',false);
     }
     // $(document).ready(function () {
     //     $("input[name='select']").attr('checked', true);
@@ -346,7 +347,7 @@
                     <tr id="cloneTr">
                         <td class="text-center">
                             <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="select">
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="checkbox1">
                             </label>
                         </td>
                         <td class="text-center"></td>
@@ -560,21 +561,22 @@
                     </div>
                     <h4 class="text-info">联系方式</h4>
                     <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <p class="text-left"><b>工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
-                            <p class="text-left"><b>手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;</b><span id="modal3_mobile"></span></p>
-                        </div>
-                        <div class="form-horizontal col-md-6">
-                            <p class="text-left"><b>古&nbsp;&nbsp;&nbsp;定&nbsp;&nbsp;电&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;</b><span id="modal3_phone"></span></p>
-                            <p class="text-left"><b>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;</b><span id="modal3_email"></span></p>
-                        </div>
+                    <div class="form-horizontal col-md-6">
+                        <p class="text-left"><b>工&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
+                        <p class="text-left"><b>手&nbsp;&nbsp;&nbsp;机&nbsp;&nbsp;号&nbsp;&nbsp;&nbsp;码&nbsp;&nbsp;</b><span id="modal3_mobile"></span></p>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <p class="text-left"><b>古&nbsp;&nbsp;&nbsp;定&nbsp;&nbsp;电&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;</b><span id="modal3_phone"></span></p>
+                        <p class="text-left"><b>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;</b><span id="modal3_email"></span></p>
+                    </div>
                     </div>
                     <div class="row text-center">
-                        <a class="btn btn-primary" onclick="">打印</a>
-                        <a class="btn btn-danger" data-dismiss="modal">关闭</a>
+                        <a class="btn btn-primary hidden-print"  onclick="" id="print">打印</a>
+                        <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
                     </div>
                 </form>
                 </div>
+
             </div>
         </div>
     </div>
@@ -1148,7 +1150,7 @@
      * 提交客户的信息
      */
     function submitClients() {
-        var items = $("input[type='checkbox']:checked");//判断复选框是否选中
+        var items = $("input[name='checkbox1']:checked");//判断复选框是否选中
         if (items.length > 0) {
             function submitClientById(id) {//该方法是一个ajax请求
                 $.ajax({
@@ -1175,6 +1177,7 @@
             if (r) {
                 items.each(function () {//遍历
                     var id = getIdByCheckBox($(this));//获取到了客户编号
+                    console.log(id)
                     console.log(id);
                     submitClientById(id);//调用该方法使用ajax
                 });
@@ -1240,6 +1243,17 @@
         });
 
     }
+    /**打印*/
+        $("#print").click(function() {
+            $("#viewModal").printThis({
+                importCSS: true,
+                importStyle:true,
+                printDelay: 333,
+                copyTagClasses: false,
+
+            });
+//		alert("等待打印");
+        });
 
 </script>
 </html>

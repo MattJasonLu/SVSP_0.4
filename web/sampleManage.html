@@ -445,20 +445,58 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p class="text-left"><b>联&nbsp;&nbsp;系&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="model2-contactName"></span></p>
-                                <p class="text-left"><b>样品名称&nbsp;&nbsp;</b><span id="model2-productName"></span></p>
-                                <p class="text-left"><b>接&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="model2-recipient"></span></p>
-                                <p class="text-left"><b>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态&nbsp;&nbsp;</b><span id="model2-formType"></span></p>
-                                <p class="text-left"><b>拟处置量&nbsp;&nbsp;</b><span id="model2-quantity"></span></p>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">样品名称<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control focus" id="model2-productName" name="productName" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">接收人<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control focus" id="model2-recipient" name="recipient" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">状态<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control focus" id="model2-formType" name="formType" required></select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">拟处置量<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control focus" id="model2-quantity" name="quantity" required>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="model2-telephone"></span></p>
-                                <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model2-code"></span></p>
-                                <p class="text-left"><b>颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色&nbsp;&nbsp;</b><span id="model2-color"></span></p>
-                                <p class="text-left"><b>包&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;装&nbsp;&nbsp;</b><span id="model2-packageType"></span></p>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">危废代码<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control focus" id="model2-code" name="code" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">颜色<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control focus" id="model2-color" name="telephone" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-telephone" class="col-sm-5 control-label">包装<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control focus" id="model2-packageType" name="packageType" required></select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
-                            <p class="text-left"><b>主要成分&nbsp;&nbsp;</b><span id="model2-mainComponent"></span></p>
+                            <label for="model-comment" class="col-sm-2 control-label">主要成分</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="model2-mainComponent" name="comment" rows="3" style="max-height: 200px;max-width: 450px"></textarea>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -471,56 +509,6 @@
     </div>
     <input type="file" name="excelPath" id="idExcel" style="display:none">
 </body>
-<style>
-    /*.navbar{*/
-        /*margin-bottom: 0px;*/
-        /*border-radius: 5px;*/
-        /*background: rgb(0,51,102);*/
-    /*}*/
-    /*.sidebar{*/
-        /*margin-bottom: 0px;*/
-        /*border-radius: 5px;*/
-        /*background: rgb(17,79,142);*/
-    /*}*/
-    /*.navbar .nav > li > a{*/
-        /*color: #000000;*/
-    /*}*/
-    /*.navbar .nav >li >a:visited{*/
-        /*color: rgb(229,229,229);*/
-        /*background-color: #0088cc;*/
-    /*}*/
-    /*.navbar .nav > li > a:hover {*/
-        /*color: rgb(33,132,29);*/
-        /*background-color: #000000;*/
-    /*}*/
-    /*.navbar .nav >li >a:active{*/
-        /*color: rgb(33,132,29);*/
-        /*background-color:rgb(229,229,229);*/
-    /*}*/
-    /*.navber .nav > li > a:after{*/
-        /*color: rgb(33,132,29);*/
-        /*background-color: #0088cc;*/
-    /*}*/
-    /*.sidebar .nav > li > a{*/
-        /*color: #000000;*/
-    /*}*/
-    /*.sidebar .nav > li > a:visited{*/
-        /*color: rgb(229,229,229);*/
-        /*background-color: #0088cc;*/
-    /*}*/
-    /*.sidebar .nav > li > a:hover {*/
-        /*color: rgb(33,132,29);*/
-        /*background-color: #000000;*/
-    /*}*/
-    /*.sidebar .nav > li > a:active{*/
-        /*color: rgb(33,132,29);*/
-        /*background-color:rgb(229,229,229);*/
-    /*}*/
-    /*.sidebar .nav > li > a:after{*/
-        /*color: rgb(33,132,29);*/
-        /*background-color: #0088cc;*/
-    /*}*/
-</style>
 <script type="text/javascript">
     // 页面准备完成后载入客户信息
     $(document).ready(function(){
@@ -604,11 +592,11 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("#model1-companyName").text(data.data.companyName);
-                        $("#model1-contactName").text(data.data.contactName);
-                        $("#model1-telephone").text(data.data.telephone);
-                        $("#model1-appointTime").text(getTimeStr(data.data.appointTime));
-                        $("#model1-comment").text(data.data.comment);
+                        $("#model1-companyName").val(data.data.companyName);
+                        $("#model1-contactName").val(data.data.contactName);
+                        $("#model1-telephone").val(data.data.telephone);
+                        $("#model1-appointTime").val(getTimeStr(data.data.appointTime));
+                        $("#model1-comment").val(data.data.comment);
                         // 显示框体
                         $('#viewAppointModal').modal('show');
                     } else {
@@ -690,10 +678,10 @@
 //                       // $("select").attr("disabled","disabled");
 //                        $("select").removeAttr("disabled");
                         $('.selectpicker').selectpicker('val',data.data.clientId);
-                        $("#model-companyName").val(data.data.clientId);
-                        $("#model-contactName").val(data.data.contactName);
-                        $("#model-telephone").val(data.data.telephone);
-                        $("#model-appointTime").val(getTimeStr(data.data.appointTime));
+                        $("#model-companyName").text(data.data.clientId);
+                        $("#model-contactName").text(data.data.contactName);
+                        $("#model-telephone").text(data.data.telephone);
+                        $("#model-appointTime").text(getTimeStr(data.data.appointTime));
                         $("#model-comment").val(data.data.comment);
                         // 显示框体
                         $('#appointModal').modal('show');
@@ -764,21 +752,21 @@
                     if (result != undefined) {
                         var data = eval(result);
                         if (data.status == "success") {
-                            $("#model2-productName").text(data.data.productName);
-                            $("#model2-recipient").text(data.data.recipient);
-                            $("#model2-quantity").text(data.data.quantity);
-                            $("#model2-code").text(data.data.code);
-                            $("#model2-color").text(data.data.color);
-                            $("#model2-mainComponent").text(data.data.mainComponent);
+                            $("#model2-productName").val(data.data.productName);
+                            $("#model2-recipient").val(data.data.recipient);
+                            $("#model2-quantity").val(data.data.quantity);
+                            $("#model2-code").val(data.data.code);
+                            $("#model2-color").val(data.data.color);
+                            $("#model2-mainComponent").val(data.data.mainComponent);
                             formTypeIndex = data.data.formType.index-1;
                             packageTypeIndex = data.data.packageType.index-1;
                         } else {
-                            $("#model2-productName").text("");
-                            $("#model2-recipient").text("");
-                            $("#model2-quantity").text("");
-                            $("#model2-code").text("");
-                            $("#model2-color").text("");
-                            $("#model2-mainComponent").text("");
+                            $("#model2-productName").val("");
+                            $("#model2-recipient").val("");
+                            $("#model2-quantity").val("");
+                            $("#model2-code").val("");
+                            $("#model2-color").val("");
+                            $("#model2-mainComponent").val("");
                             formTypeIndex = -1;
                             packageTypeIndex = -1;
                         }
@@ -806,7 +794,7 @@
                         formType.children().remove();
                         $.each(data.formTypeStrList, function (index, item) {
                             var option = $('<option />');
-                            option.text(item.index-1);
+                            option.val(item.index-1);
                             option.text(item.name);
                             formType.append(option);
                         });
@@ -816,7 +804,7 @@
                         packageType.children().remove();
                         $.each(data.packageTypeStrList, function (index, item) {
                             var option = $('<option />');
-                            option.text(item.index-1);
+                            option.val(item.index-1);
                             option.text(item.name);
                             packageType.append(option);
                         });
@@ -845,13 +833,13 @@
             checkId: $("#model2-checkId").text(),
             createTime: getStdTimeStr($("#model2-createTime").text()),
             contactName: $("#model2-contactName").text(),
-            telephone: $("#model2-telephone").text(),
-            productName: $("#model2-productName").text(),
-            recipient: $("#model2-recipient").text(),
-            quantity: $("#model2-quantity").text(),
-            code: $("#model2-code").text(),
-            color: $("#model2-color").text(),
-            mainComponent: $("#model2-mainComponent").text()
+            telephone: $("#model2-telephone").val(),
+            productName: $("#model2-productName").val(),
+            recipient: $("#model2-recipient").val(),
+            quantity: $("#model2-quantity").val(),
+            code: $("#model2-code").val(),
+            color: $("#model2-color").val(),
+            mainComponent: $("#model2-mainComponent").val()
         };
         $.ajax({
             type: "POST",                            // 方法类型
@@ -895,7 +883,7 @@
             },
             dataType: "json",
             success: function (result) {
-                console.log(result);
+//                console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
@@ -923,23 +911,24 @@
             dataType: "json",
             success: function (result) {
                 if (result != undefined) {
+                    console.log(result);
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("#model2-productName").text(data.data.productName);
-                        $("#model2-recipient").text(data.data.recipient);
-                        $("#model2-quantity").text(data.data.quantity);
-                        $("#model2-code").text(data.data.code);
-                        $("#model2-color").text(data.data.color);
-                        $("#model2-mainComponent").text(data.data.mainComponent);
+                        $("#model2-productName").val(data.data.productName);
+                        $("#model2-recipient").val(data.data.recipient);
+                        $("#model2-quantity").val(data.data.quantity);
+                        $("#model2-code").val(data.data.code);
+                        $("#model2-color").val(data.data.color);
+                        $("#model2-mainComponent").val(data.data.mainComponent);
                         if (data.data.formType != null) formTypeIndex = data.data.formType.index-1;
                         if (data.data.packageType != null) packageTypeIndex = data.data.packageType.index-1;
                     } else {
-                        $("#model2-productName").text("");
-                        $("#model2-recipient").text("");
-                        $("#model2-quantity").text("");
-                        $("#model2-code").text("");
-                        $("#model2-color").text("");
-                        $("#model2-mainComponent").text("");
+                        $("#model2-productName").val("");
+                        $("#model2-recipient").val("");
+                        $("#model2-quantity").val("");
+                        $("#model2-code").val("");
+                        $("#model2-color").val("");
+                        $("#model2-mainComponent").val("");
                         formTypeIndex = -1;
                         packageTypeIndex = -1;
                     }
@@ -958,7 +947,7 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                console.log(result);
+//                console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     // 各下拉框数据填充
@@ -967,7 +956,7 @@
                     formType.children().remove();
                     $.each(data.formTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.text(item.index-1);
+                        option.val(item.index-1);
                         option.text(item.name);
                         formType.append(option);
                     });
@@ -977,7 +966,7 @@
                     packageType.children().remove();
                     $.each(data.packageTypeStrList, function (index, item) {
                         var option = $('<option />');
-                        option.text(item.index-1);
+                        option.val(item.index-1);
                         option.text(item.name);
                         packageType.append(option);
                     });

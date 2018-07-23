@@ -27,11 +27,6 @@ public class CostServiceImpl implements CostService {
     }
 
     @Override
-    public List<Cost> list() {
-        return costMapper.list();
-    }
-
-    @Override
     public int count() {
         return costMapper.count();
     }
@@ -59,5 +54,20 @@ public class CostServiceImpl implements CostService {
     @Override
     public void levelUp(Cost cost) {
         costMapper.levelUp(cost);
+    }
+
+    @Override
+    public List<Cost> list() {
+        return costMapper.list();
+    }
+
+    @Override
+    public List<Cost> list(String state) {
+        return costMapper.list(state);
+    }
+
+    @Override
+    public List<Cost> listNotInvalid() {
+        return costMapper.listNotInvalid();
     }
 }

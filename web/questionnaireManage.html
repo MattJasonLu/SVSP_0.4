@@ -19,6 +19,7 @@
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
 </head>
 <script type="text/javascript">
     var validator;
@@ -1343,38 +1344,45 @@
                                                 <td>
                                                     <div style="margin-left:100px;">
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label"><b>材料是否齐全：</b></label>
-                                                            <input type="radio" id="model-Material11" name="model-Material1">是
-                                                            <input type="radio" id="model-Material12" name="model-Material1">否
+                                                            <label for="isMaterialComplete" class="control-label"><b>材料是否齐全：</b></label>
+                                                            <input type="radio" id="isMaterialComplete" name="isMaterialComplete" value="true">是
+                                                            <input type="radio" name="isMaterialComplete" value="false">否
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">如不齐全告知原因：</label>
-                                                            <input type="text" class="focus" id="model-Material21" name="model-Material2">
+                                                            <label for="notCompleteReason" class="control-label">如不齐全告知原因：</label>
+                                                            <input type="text" class="focus" id="notCompleteReason" name="notCompleteReason">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label"><b>现场危废管理情况</b></label>
-                                                            <input type="text" class="focus" id="model-Material31" name="model-Material2">
+                                                            <label class="control-label"><b>现场危废管理情况</b></label>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">1.包装方式是否满足需求</label>
-                                                            <input type="radio" id="model-Material41" name="model-Material2" value="true">是
-                                                            <input type="radio" id="model-Material42" name="model-Material2" value="false">否
+                                                            <label for="isMeetRequire" class="control-label">1.包装方式是否满足需求</label>
+                                                            <input type="radio" id="isMeetRequire" name="isMeetRequire" value="true">是
+                                                            <input type="radio" name="isMeetRequire" value="false">否
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">如不满足客户是否愿意配合公司改善包装方式</label>
-                                                            <input type="radio" id="model-Material51" name="model-Material3" value="true">是
-                                                            <input type="radio" id="model-Material52" name="model-Material3" value="false">否
+                                                            <label for="isCooperate" class="control-label">如不满足客户是否愿意配合公司改善包装方式</label>
+                                                            <input type="radio" id="isCooperate" name="isCooperate" value="true">是
+                                                            <input type="radio" name="isCooperate" value="false">否
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">2.是否设有专人管理危废</label>
-                                                            <input type="radio" id="model-Material61" name="model-Material4" value="true">是
-                                                            <input type="radio" id="model-Material62" name="model-Material4" value="false">否
+                                                            <label for="isDedicate" class="control-label">2.是否设有专人管理危废</label>
+                                                            <input type="radio" id="isDedicate" name="isDedicate" value="true">是
+                                                            <input type="radio" name="isDedicate" value="false">否
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">接受意愿</label>
-                                                            <input type="radio" id="model-Material71" name="model-Material5" value="">高
-                                                            <input type="radio" id="model-Material72" name="model-Material5" value="">中
-                                                            <input type="radio" id="model-Material73" name="model-Material5" value="">低
+                                                            <label for="acceptIntend1" class="control-label">接受意愿</label>
+                                                            <input type="radio" id="acceptIntend1" name="acceptIntend1" value="high">高
+                                                            <input type="radio" name="acceptIntend1" value="medium">中
+                                                            <input type="radio" name="acceptIntend1" value="low">低
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-horizontal col-md-8"></div>
+                                                            <div class="form-horizontal col-md-4">
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-4 control-label text-oneLine"><b>签名：</b></label>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1397,9 +1405,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="cen">危废名称</td>
-                                                                    <td class="cen"><input type="text" class="focus" id="high1" name="high"></td>
-                                                                    <td class="cen"><input type="text" class="focus" id="middle1" name="middle"></td>
-                                                                    <td class="cen"><input type="text" class="focus" id="low1" name="low"></td>
+                                                                    <td class="cen"><input type="text" class="focus" id="wasteName1" name="wasteName1"></td>
+                                                                    <td class="cen"><input type="text" class="focus" id="wasteName2" name="wasteName2"></td>
+                                                                    <td class="cen"><input type="text" class="focus" id="wasteName3" name="wasteName3"></td>
                                                                 </tr>
                                                             </table>
                                                         </div>
@@ -1414,22 +1422,23 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="cen">危废名称</td>
-                                                                    <td class="cen"><input type="text" class="focus" id="high4" name="high"></td>
-                                                                    <td class="cen"><input type="text" class="focus" id="middle2" name="middle"></td>
-                                                                    <td class="cen"><input type="text" class="focus" id="low2" name="low"></td>
+                                                                    <td class="cen"><input type="text" class="focus" id="wasteName4" name="wasteName4"></td>
+                                                                    <td class="cen"><input type="text" class="focus" id="wasteName5" name="wasteName5"></td>
+                                                                    <td class="cen"><input type="text" class="focus" id="wasteName6" name="wasteName6"></td>
                                                                 </tr>
                                                             </table>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">3.其他可能风险：</label>
+                                                            <label for="otherRisk" class="control-label">3.其他可能风险：</label>
+                                                            <input type="text" class="focus" id="otherRisk" name="otherRisk">
                                                             <br>
                                                             <br>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">接受建议：</label><br>
-                                                            <input type="radio" id="model-Material81" name="model-Material6">可接受<br>
-                                                            <input type="radio" id="model-Material82" name="model-Material6">不可接受(说明原因)：<input type="text" class="focus"><br>
-                                                            <input type="radio" id="model-Material83" name="model-Material6">有条件接受(说明条件)：<input type="text" class="focus"><br>
+                                                            <label for="acceptIntend2" class="control-label">接受建议：</label><br>
+                                                            <input type="radio" id="acceptIntend2" name="acceptIntend2" value="accept">可接受<br>
+                                                            <input type="radio" name="acceptIntend2" value="unaccept">不可接受(说明原因)：<input type="text" class="focus" id="unacceptReason2" name="unacceptReason2"><br>
+                                                            <input type="radio" name="acceptIntend2" value="condition">有条件接受(说明条件)：<input type="text" class="focus" id="conditionReason2" name="conditionReason2"><br>
                                                         </div>
                                                         <br>
                                                         <div class="row">
@@ -1451,28 +1460,28 @@
                                                             <label for="model-contactPhone" class="control-label"><b>库存评估</b></label>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label"><b>1.目前是否可以存放：</b></label>
-                                                            <input type="radio" id="model-Material91" name="model-Material7">是
-                                                            <input type="radio" id="model-Material92" name="model-Material7">否
+                                                            <label for="isStore" class="control-label"><b>1.目前是否可以存放：</b></label>
+                                                            <input type="radio" id="isStore" name="isStore" value="true">是
+                                                            <input type="radio" name="isStore" value="false">否
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">如否请告知原因：</label>
-                                                            <input type="text" class="focus" id="model-Material101" name="model-Material1">
+                                                            <label for="storeReason" class="control-label">如否请告知原因：</label>
+                                                            <input type="text" class="focus" id="storeReason" name="storeReason">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label"><b>2.目前工艺是否可以处理：</b></label>
-                                                            <input type="radio" id="model-Material111" name="model-Material8">是
-                                                            <input type="radio" id="model-Material112" name="model-Material8">否
+                                                            <label for="isProcess" class="control-label"><b>2.目前工艺是否可以处理：</b></label>
+                                                            <input type="radio" id="isProcess" name="isProcess" value="true">是
+                                                            <input type="radio" name="isProcess" value="false">否
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">如否请告知原因：</label>
-                                                            <input type="text" class="focus" id="model-Material121" name="model-Material1">
+                                                            <label for="processReason" class="control-label">如否请告知原因：</label>
+                                                            <input type="text" class="focus" id="processReason" name="processReason">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label for="model-contactPhone" class="control-label">接受建议：</label><br>
-                                                            <input type="radio" id="model-Material131" name="model-Material9">可接受<br>
-                                                            <input type="radio" id="model-Material132" name="model-Material9">不可接受(说明原因)：<input class="focus" type="text"><br>
-                                                            <input type="radio" id="model-Material133" name="model-Material9">有条件接受(说明条件)：<input class="focus" type="text"><br>
+                                                            <label for="acceptIntend3" class="control-label">接受建议：</label><br>
+                                                            <input type="radio" id="acceptIntend3" name="acceptIntend3" value="accept">可接受<br>
+                                                            <input type="radio" name="acceptIntend3" value="unaccept">不可接受(说明原因)：<input class="focus" type="text" id="unacceptReason3" name="unacceptReason3"><br>
+                                                            <input type="radio" name="acceptIntend3" value="condition">有条件接受(说明条件)：<input class="focus" type="text" id="conditionReason3" name="conditionReason3"><br>
                                                         </div>
                                                         <br>
                                                         <div class="row">
@@ -1494,8 +1503,9 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="examineBtn">审批</button>
+                    <button type="button" class="btn btn-danger" id="backBtn">驳回</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
                 </div>
             </div>
@@ -1503,8 +1513,8 @@
     </div>
     <!-- 查看危废数据模态框 -->
     <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+        <div class="modal-dialog modal-lg" role="document" id="print1">
+            <div class="modal-content" >
                 <div style="margin: 5%;">
                     <div class="modal-header">
                         <img src="image/logo1.png">
@@ -1681,7 +1691,6 @@
                                                         </label>
                                                     </div>
                                                 </div>
-
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1970,8 +1979,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" onclick="alert('文件打印中');">打印</button>
+                        <button type="button" class="btn btn-default hidden-print" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary hidden-print" onclick="" id="print">打印</button>
                     </div>
                 </div>
             </div>
@@ -2097,6 +2106,8 @@
         $("#appointModal2").find("input:text").val("");
         $("#appointModal2").find("input:radio").removeAttr("checked");
         $("#appointModal2").find("input:checkbox:checked").removeAttr("checked");
+        $("#Opinion").find("input:text").val("");
+        $("#Opinion").find("input:radio").removeAttr("checked");
         $(".newLine").remove();
     }
     function viewQuestion(item){
@@ -2198,11 +2209,13 @@
             }
         });
     }
+    var queId;
     /**
      * 审批
      */
     function viewQuestionnaire(item) {
         var id = getQuestionnaireId(item);
+        queId = id;
         resetViewInfo();
         $.ajax({
             type: "POST",                       // 方法类型
@@ -2291,6 +2304,31 @@
                         $("input[name='deriveWastesList[" + $i + "].putOutFireMeasures']").val(data.data.deriveWastesList[i].putOutFireMeasures);
                         $("input[name='deriveWastesList[" + $i + "].leakMeasures']").val(data.data.deriveWastesList[i].leakMeasures);
                     }
+                    if (data.data.isExamined) {
+                        $("input[name='isMaterialComplete'][value='" + data.data.isMaterialComplete + "']").prop('checked', true);
+                        $("#notCompleteReason").val(data.data.notCompleteReason);
+                        $("input[name='isMeetRequire'][value='" + data.data.isMeetRequire + "']").prop('checked', true);
+                        $("input[name='isCooperate'][value='" + data.data.isCooperate + "']").prop('checked', true);
+                        $("input[name='isDedicate'][value='" + data.data.isDedicate + "']").prop('checked', true);
+                        $("input[name='acceptIntend1'][value='" + data.data.acceptIntend1 + "']").prop('checked', true);
+                        $("input[name='acceptIntend2'][value='" + data.data.acceptIntend2 + "']").prop('checked', true);
+                        $("input[name='acceptIntend3'][value='" + data.data.acceptIntend3 + "']").prop('checked', true);
+                        $("#wasteName1").val(data.data.wasteName1);
+                        $("#wasteName2").val(data.data.wasteName2);
+                        $("#wasteName3").val(data.data.wasteName3);
+                        $("#wasteName4").val(data.data.wasteName4);
+                        $("#wasteName5").val(data.data.wasteName5);
+                        $("#wasteName6").val(data.data.wasteName6);
+                        $("#otherRisk").val(data.data.otherRisk);
+                        $("#unacceptReason2").val(data.data.unacceptReason2);
+                        $("#conditionReason2").val(data.data.conditionReason2);
+                        $("#unacceptReason3").val(data.data.unacceptReason3);
+                        $("#conditionReason3").val(data.data.conditionReason3);
+                        $("#storeReason").val(data.data.storeReason);
+                        $("#processReason").val(data.data.processReason);
+                        $("input[name='isStore'][value='" + data.data.isStore + "']").prop('checked', true);
+                        $("input[name='isProcess'][value='" + data.data.isProcess + "']").prop('checked', true);
+                    }
                 } else { }
             },
             error:function (result) {
@@ -2300,28 +2338,110 @@
 
         // 显示框体
         $('#appointModal1').modal('show');
-        $('#examineBtn').click(function () {
-            examineQuestionnaire(id);
-        });
+
     }
     function adjustQuestionnaire(item) {
         var id = getQuestionnaireId(item);
         $(location).attr('href', 'questionnaire1.html?questionnaireId='+id);
     }
+    // 审批通过
+    $('#examineBtn').click(function () {
+        examineQuestionnaire(queId);
+    });
+    // 驳回问卷
+    $('#backBtn').click(function () {
+        backQuestionnaireById(queId);
+    });
     /**
      * 审批问卷
      */
     function examineQuestionnaire(id) {
         var r = confirm("审批通过该调查表吗？");
         if (r) {
+            var data = {
+                questionnaireId: id,
+                isMaterialComplete: $("input[name='isMaterialComplete']:checked").val(),
+                notCompleteReason: $("#notCompleteReason").val(),
+                isMeetRequire: $("input[name='isMeetRequire']:checked").val(),
+                isCooperate: $("input[name='isCooperate']:checked").val(),
+                isDedicate: $("input[name='isDedicate']:checked").val(),
+                acceptIntend1: $("input[name='acceptIntend1']:checked").val(),
+                wasteName1: $("#wasteName1").val(),
+                wasteName2: $("#wasteName2").val(),
+                wasteName3: $("#wasteName3").val(),
+                wasteName4: $("#wasteName4").val(),
+                wasteName5: $("#wasteName5").val(),
+                wasteName6: $("#wasteName6").val(),
+                otherRisk: $("#otherRisk").val(),
+                acceptIntend2: $("input[name='acceptIntend2']:checked").val(),
+                unacceptReason2: $("#unacceptReason2").val(),
+                conditionReason2: $("#conditionReason2").val(),
+                isStore: $("input[name='isStore']:checked").val(),
+                storeReason: $("#storeReason").val(),
+                isProcess: $("input[name='isProcess']:checked").val(),
+                processReason: $("#processReason").val(),
+                acceptIntend3: $("input[name='acceptIntend3']:checked").val(),
+                unacceptReason3: $("#unacceptReason3").val(),
+                conditionReason3: $("#conditionReason3").val(),
+            };
+            console.log(data);
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "examineQuestionnaire",               // url
                 async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {
-                    'questionnaireId': id
-                },
+                data: JSON.stringify(data),
                 dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        alert(result.message);
+                        window.location.reload();
+                    } else { }
+                },
+                error:function (result) {
+                    console.log(result);
+                }
+            });
+        }
+    }
+    function backQuestionnaireById(id) {
+        var r = confirm("驳回该调查表吗？");
+        if (r) {
+            var data = {
+                questionnaireId: id,
+                isMaterialComplete: $("input[name='isMaterialComplete']:checked").val(),
+                notCompleteReason: $("#notCompleteReason").val(),
+                isMeetRequire: $("input[name='isMeetRequire']:checked").val(),
+                isCooperate: $("input[name='isCooperate']:checked").val(),
+                isDedicate: $("input[name='isDedicate']:checked").val(),
+                acceptIntend1: $("input[name='acceptIntend1']:checked").val(),
+                wasteName1: $("#wasteName1").val(),
+                wasteName2: $("#wasteName2").val(),
+                wasteName3: $("#wasteName3").val(),
+                wasteName4: $("#wasteName4").val(),
+                wasteName5: $("#wasteName5").val(),
+                wasteName6: $("#wasteName6").val(),
+                otherRisk: $("#otherRisk").val(),
+                acceptIntend2: $("input[name='acceptIntend2']:checked").val(),
+                unacceptReason2: $("#unacceptReason2").val(),
+                conditionReason2: $("#conditionReason2").val(),
+                isStore: $("input[name='isStore']:checked").val(),
+                storeReason: $("#storeReason").val(),
+                isProcess: $("input[name='isProcess']:checked").val(),
+                processReason: $("#processReason").val(),
+                acceptIntend3: $("input[name='acceptIntend3']:checked").val(),
+                unacceptReason3: $("#unacceptReason3").val(),
+                conditionReason3: $("#conditionReason3").val(),
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "backQuestionnaire",               // url
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     console.log(result);
                     if (result != undefined) {
@@ -2570,5 +2690,26 @@
         });
 
     }
+    /*打印*/
+    $("#print").click(function() {
+        /* Act on the event */
+        $("#print1").printThis({
+            debug:true,
+            importCSS: true,
+            importStyle:true,
+            //importJs:true,
+            //printContainer: true,
+            //loadCSS: [ "css/a.css"],
+            //loadJs:["/js/bootstrap/3.3.6/bootstrap.min.js","js/jquery/2.0.0/jquery.min.js","js/bootstrap/navbar.js"],
+            // pageTitle: "二维码",
+            //removeInline: false,
+            printDelay: 333,
+            copyTagClasses: false,
+            //header: null,
+            //formValues: false,
+            //removeScripts:true
+        });
+//		alert("等待打印");
+    });
 </script>
 </html>

@@ -4,7 +4,6 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Salesman;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SalesmanService;
-import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.NumberFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by matt on 2018/4/23.
@@ -119,25 +115,25 @@ public class SalesmanController {
         }
     }
 
-    @RequestMapping("searchSalesman")
-    @ResponseBody
-    public String searchSalesman(Salesman salesman) {
-        try {
-            // 根据两个id编号查询
-            Map param = new HashMap();
-            param.put("clientId", salesman.getClientId());
-            param.put("salesmanId", salesman.getSalesmanId());
-            List<Salesman> salesmanList = salesmanService.get(param);
-            JSONArray array = JSONArray.fromArray(salesmanList.toArray(new Salesman[salesmanList.size()]));
-            // 返回结果
-            return array.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            JSONObject res = new JSONObject();
-            res.put("status", "fail");
-            return res.toString();
-        }
-    }
+//    @RequestMapping("searchSalesman")
+//    @ResponseBody
+//    public String searchSalesman(Salesman salesman) {
+//        try {
+//            // 根据两个id编号查询
+//            Map param = new HashMap();
+//            param.put("clientId", salesman.getClientId());
+//            param.put("salesmanId", salesman.getSalesmanId());
+//            List<Salesman> salesmanList = salesmanService.get(param);
+//            JSONArray array = JSONArray.fromArray(salesmanList.toArray(new Salesman[salesmanList.size()]));
+//            // 返回结果
+//            return array.toString();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JSONObject res = new JSONObject();
+//            res.put("status", "fail");
+//            return res.toString();
+//        }
+//    }
 
     @RequestMapping("bindClient")
     @ResponseBody
@@ -153,22 +149,22 @@ public class SalesmanController {
         return mav;
     }
 
-    @RequestMapping("assignClient")
-    @ResponseBody
-    public String assignClient(Salesman salesman) {
-        JSONObject res = new JSONObject();
-        try {
-            String companyName = clientService.getByClientId(salesman.getClientId()).getCompanyName();
-            salesman.setCompanyName(companyName);
-            salesmanService.assignClient(salesman);
-            res.put("status", "success");
-            res.put("message", "操作成功!");
-        } catch (Exception e) {
-            res.put("status", "fail");
-            res.put("message", "操作失败!");
-        }
-        return res.toString();
-    }
+//    @RequestMapping("assignClient")
+//    @ResponseBody
+//    public String assignClient(Salesman salesman) {
+//        JSONObject res = new JSONObject();
+//        try {
+//            String companyName = clientService.getByClientId(salesman.getClientId()).getCompanyName();
+//            salesman.setCompanyName(companyName);
+//            salesmanService.assignClient(salesman);
+//            res.put("status", "success");
+//            res.put("message", "操作成功!");
+//        } catch (Exception e) {
+//            res.put("status", "fail");
+//            res.put("message", "操作失败!");
+//        }
+//        return res.toString();
+//    }
 
     /**
      * 获取目前的业务员编号

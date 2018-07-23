@@ -13,6 +13,8 @@
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
+    <link href="css/a.css" rel="stylesheet">
 </head>
 <style>
     p{
@@ -423,58 +425,58 @@ else {
                        else {
                            var end="";
                        }
-                       $("#modal3_contractState").val(data.checkState.name);
-                       $("#modal3_contractVersion").val(data.contractVersion.name);
-                       $("#modal3_companyName").val(data.companyName);
+                       $("#modal3_contractState").text(data.checkState.name);
+                       $("#modal3_contractVersion").text(data.contractVersion.name);
+                       $("#modal3_companyName").text(data.companyName);
                        if(data.contractVersion.name=="公司合同"){
-                           $("#modal3_contractName").val(data.modelName);//合同名称
+                           $("#modal3_contractName").text(data.modelName);//合同名称
                        }
                        if(data.contractVersion.name=="客户合同"){
-                           $("#modal3_contractName").val(data.contractName+data.contractType.name);//合同名称
+                           $("#modal3_contractName").text(data.contractName+data.contractType.name);//合同名称
                        }
-                       $("#modal3_contactName").val(data.contactName);
-                       $("#modal3_contractId").val(data.contractId);
-                       $("#modal3_beginTime").val(begin);
-                       $("#modal3_endTime").val(end);
-                       $("#modal3_area").val(data.province.name+""+data.city);
-                       $("#modal3_telephone").val(data.telephone);
-                       $("#modal3_order").val(data.order1);
+                       $("#modal3_contactName").text(data.contactName);
+                       $("#modal3_contractId").text(data.contractId);
+                       $("#modal3_beginTime").text(begin);
+                       $("#modal3_endTime").text(end);
+                       $("#modal3_area").text(data.province.name+""+data.city);
+                       $("#modal3_telephone").text(data.telephone);
+                       $("#modal3_order").text(data.order1);
                        //开票税率1
                        if(data.ticketRate1==null){
-                           $('#modal3_ticketRate1').val(" ");
+                           $('#modal3_ticketRate1').text(" ");
                        }
                        else {
-                           $('#modal3_ticketRate1').val(data.ticketRate1.name);
+                           $('#modal3_ticketRate1').text(data.ticketRate1.name);
                        }
                        //开票税率2
                        if(data.ticketRate2==null){
-                           $('#modal3_ticketRate2').val(" ");
+                           $('#modal3_ticketRate2').text(" ");
                        }
                        else {
-                           $('#modal3_ticketRate2').val(data.ticketRate2.name);
+                           $('#modal3_ticketRate2').text(data.ticketRate2.name);
                        }
                        //资质开始日期
                        if(data.beginQualification==null){
-                           $('#modal3_beginQualification').val(" ");
+                           $('#modal3_beginQualification').text(" ");
                        }
                        else {
                            var begin1=gettime(data.beginQualification);
-                           $('#modal3_beginQualification').val(begin1);
+                           $('#modal3_beginQualification').text(begin1);
                        }
                        //资质结束日期
                        if(data.endQualification==null){
-                           $('#modal3_endQualification').val(" ");
+                           $('#modal3_endQualification').text(" ");
                        }
                        else {
                            var end1=gettime(data.endQualification);
-                           $('#modal3_endQualification').val(end1);
+                           $('#modal3_endQualification').text(end1);
                        }
                        //物流公司资质
-                       $('#modal3_logisticsQualification').val(data.logisticsQualification);
+                       $('#modal3_logisticsQualification').text(data.logisticsQualification);
                        //开户行名称
-                       $('#modal3_bankName').val(data.bankName);
+                       $('#modal3_bankName').text(data.bankName);
                        //开户行账号
-                       $('#modal3_bankAccout').val(data.bankAccount);
+                       $('#modal3_bankAccout').text(data.bankAccount);
                        if(data.freight==true){//需要运费
                            $('#modal3_freight').removeAttr("checked");
                            $('#modal3_freight').prop("checked",true);
@@ -484,17 +486,17 @@ else {
                        }
                        $('#search').prop("readonly",false);
                    } else {
-                       $("#modal3_contactName").val("");
-                       $("#modal3_contractState").val("");
-                       $("#modal3_contractVersion").val("");
-                       $("#modal3_companyName").val("");
-                       $("#modal3_contactName").val("");
-                       $("#modal3_contractId").val("");
-                       $("#modal3_beginTime").val("");
-                       $("#modal3_endTime").val("");
-                       $("#modal3_area").val("");
-                       $("#modal3_telephone").val("");
-                       $("#modal3_order").val("");
+                       $("#modal3_contactName").text("");
+                       $("#modal3_contractState").text("");
+                       $("#modal3_contractVersion").text("");
+                       $("#modal3_companyName").text("");
+                       $("#modal3_contactName").text("");
+                       $("#modal3_contractId").text("");
+                       $("#modal3_beginTime").text("");
+                       $("#modal3_endTime").text("");
+                       $("#modal3_area").text("");
+                       $("#modal3_telephone").text("");
+                       $("#modal3_order").text("");
                    }
                },
                error: function (result) {
@@ -502,8 +504,10 @@ else {
                }
            });
            $('#contractInfoForm').modal('show');
-           $('#btn').text("打印");
-           $('#back').hide();
+           $('#btn').hide();//审批隐藏
+           $('#back').hide();//驳回隐藏
+           $('#print').show();//打印显示
+           $('#print').show();//打印显示
        }
 
     }
@@ -807,145 +811,55 @@ else {
     </div>
     <!--查看页面-->
     <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg" role="document" style="width:700px" >
             <div class="modal-content">
                 <div class="client_style">
                     <h4 class="sub-header text-center">合同信息</h4>
                     <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
-                        <div class="row">
+                        <div class="row" id="print1" >
                             <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_contractName" class="col-sm-4 control-label">合同名称 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contractName" name="contractName" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_contractState" class="col-sm-4 control-label">合同状态 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contractState" name="contractState" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_contractVersion" class="col-sm-4 control-label">合同版本 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contractVersion" name="contractVersion"style="box-shadow:none" >
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_companyName" class="col-sm-4 control-label">客户名称 </label>
-                                    <div class="col-xs-8">
-                                        <input type="text" class="form-control focus" id="modal3_companyName" name="companyName"style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_bankName" class="col-sm-4 control-label">开户行名称 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_bankName" name="bankName" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_ticketRate1" class="col-sm-4 control-label">开票税率1 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_ticketRate1" name="ticketRate1" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_ticketRate2" class="col-sm-4 control-label">开票税率2 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_ticketRate2" name="ticketRate2" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_contactName" class="col-sm-4 control-label">联系人 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contactName" name="contactName"style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
+                                <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
+                                <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
+                                <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
+                                <p class="text-left"><b>客户名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
+                                <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
+                                <p class="text-left"><b>开票税率1&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
+                                <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>
+                                <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
+                                <p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight" disabled="disabled" ></p>
+                                <!--<div class="form-group">
                                     <label for="modal3_freight" class="col-sm-4 control-label">是否包含运费 </label>
                                        <div class="col-xs-8">
                                        </div>
                                     <input type="checkbox" class="col-xs-1" id="modal3_freight" name="freight" disabled="disabled" >
-                                </div>
+                                </div>-->
                             </div>
                             <div class="form-horizontal col-md-6">
-                                <div class="form-group">
-                                    <label for="modal3_contractId" class="col-sm-4 control-label">合同编号</label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contractId" name="contractId" placeholder=""style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_beginTime" class="col-sm-4 control-label">签订日期 </label>
-                                     <div class="col-xs-5 input-group">
-                                        <input type="text" class="focus form-control" id="modal3_beginTime" name="beginTime"style="box-shadow:none">
-                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_endTime" class="col-sm-4 control-label">截止日期</label>
-                                    <div class="col-xs-5 input-group">
-                                        <input type="text" class="focus form-control" id="modal3_endTime" name="endTime"style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                <label for="modal3_beginQualification" class="col-sm-4 control-label">资质开始日期</label>
-                                <div class="col-xs-5 input-group">
-                                    <input type="text" class="focus form-control" id="modal3_beginQualification" name="beginQualification"style="box-shadow:none">
-                                </div>
-                            </div>
-                                <div class="form-group">
-                                    <label for="modal3_endQualification" class="col-sm-4 control-label">资质结束日期</label>
-                                    <div class="col-xs-5 input-group">
-                                        <input type="text" class="focus form-control" id="modal3_endQualification" name="endQualification"style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_bankAccout" class="col-sm-4 control-label">开户行账号</label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_bankAccout" name="bankAccout" placeholder="" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_area" class="col-sm-4 control-label">所属区域</label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_area" name="area" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_telephone" class="col-sm-4 control-label">联系方式</label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_telephone" name="telephone" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_logisticsQualification" class="col-sm-4 control-label">物流公司资质 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_logisticsQualification" name="logisticsQualification" style="box-shadow:none">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_order" class="col-sm-4 control-label">预约处置费 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_order" name="order" style="box-shadow:none">
-                                    </div>
-                                    <h4>元</h4>
-                                </div>
+                                <p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>
+                                <p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>
+                                <p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>
+                                <p class="text-left"><b>资质开始日期&nbsp;&nbsp;</b><span id="modal3_beginQualification"></span></p>
+                                <p class="text-left"><b>资质结束日期&nbsp;&nbsp;</b><span id="modal3_endQualification"></span></p>
+                                <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>
+                                <p class="text-left"><b>所属区域&nbsp;&nbsp;</b><span id="modal3_area"></span></p>
+                                <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>
+                                <p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>
+                                <p class="text-left"><b>预计处置费&nbsp;&nbsp;</b><span id="modal3_order"></span><span>元</span></p>
                             </div>
                         </div>
-                        <br>
-                        <br>
+                        <br> <br>
                         <div class="row text-center">
-                            <a class="btn btn-primary" onclick="" id="btn">打印</a>
-                            <a class="btn btn-danger" id="back"></a>
-                            <a class="btn btn-danger" data-dismiss="modal">关闭</a>
+                            <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
+                            <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                            <a class="btn btn-danger hidden-print" id="back"></a>
+                            <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-<!--审批页面-->
+    <!--审批页面-->
     <div class="modal fade" id="contractInfoForm2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -1236,53 +1150,53 @@ function cancel(item) {
                     else {
                         var end="";
                     }
-                    $("#modal3_contractName").val(data.contractName+data.contractType.name);//合同名称
-                    $("#modal3_contractState").val(data.checkState.name);
-                    $("#modal3_contractVersion").val(data.contractVersion.name);
-                    $("#modal3_companyName").val(data.companyName);
-                    $("#modal3_contactName").val(data.contactName);
-                    $("#modal3_contractId").val(data.contractId);
-                    $("#modal3_beginTime").val(begin);
-                    $("#modal3_endTime").val(end);
-                    $("#modal3_area").val(data.province.name+""+data.city);
-                    $("#modal3_telephone").val(data.telephone);
-                    $("#modal3_order").val(data.order1);
+                    $("#modal3_contractName").text(data.contractName+data.contractType.name);//合同名称
+                    $("#modal3_contractState").text(data.checkState.name);
+                    $("#modal3_contractVersion").text(data.contractVersion.name);
+                    $("#modal3_companyName").text(data.companyName);
+                    $("#modal3_contactName").text(data.contactName);
+                    $("#modal3_contractId").text(data.contractId);
+                    $("#modal3_beginTime").text(begin);
+                    $("#modal3_endTime").text(end);
+                    $("#modal3_area").text(data.province.name+""+data.city);
+                    $("#modal3_telephone").text(data.telephone);
+                    $("#modal3_order").text(data.order1);
                     //开票税率1
                     if(data.ticketRate1==null){
-                        $('#modal3_ticketRate1').val(" ");
+                        $('#modal3_ticketRate1').text(" ");
                     }
                     else {
-                        $('#modal3_ticketRate1').val(data.ticketRate1.name);
+                        $('#modal3_ticketRate1').text(data.ticketRate1.name);
                     }
                     //开票税率2
                     if(data.ticketRate2==null){
-                        $('#modal3_ticketRate2').val(" ");
+                        $('#modal3_ticketRate2').text(" ");
                     }
                     else {
-                        $('#modal3_ticketRate2').val(data.ticketRate2.name);
+                        $('#modal3_ticketRate2').text(data.ticketRate2.name);
                     }
                     //资质开始日期
                     if(data.beginQualification==null){
-                        $('#modal3_beginQualification').val(" ");
+                        $('#modal3_beginQualification').text(" ");
                     }
                     else {
                         var begin1=gettime(data.beginQualification);
-                        $('#modal3_beginQualification').val(begin1);
+                        $('#modal3_beginQualification').text(begin1);
                     }
                     //资质结束日期
                     if(data.endQualification==null){
-                        $('#modal3_endQualification').val(" ");
+                        $('#modal3_endQualification').text(" ");
                     }
                     else {
                         var end1=gettime(data.endQualification);
-                        $('#modal3_endQualification').val(end1);
+                        $('#modal3_endQualification').text(end1);
                     }
                     //物流公司资质
-                    $('#modal3_logisticsQualification').val(data.logisticsQualification);
+                    $('#modal3_logisticsQualification').text(data.logisticsQualification);
                     //开户行名称
-                    $('#modal3_bankName').val(data.bankName);
+                    $('#modal3_bankName').text(data.bankName);
                     //开户行账号
-                    $('#modal3_bankAccout').val(data.bankAccount);
+                    $('#modal3_bankAccout').text(data.bankAccount);
                     if(data.freight==true){//需要运费
                         $('#modal3_freight').removeAttr("checked");
                         $('#modal3_freight').prop("checked",true);
@@ -1290,20 +1204,20 @@ function cancel(item) {
                     if(data.freight==false){//不需要运费
                         $('#modal3_freight').removeAttr("checked");
                     }
-                   $('#advice').val(data.opinion);
-                    $('#backContent').val(data.backContent);
+                   $('#advice').text(data.opinion);
+                    $('#backContent').text(data.backContent);
                 } else {
-                    $("#modal3_contactName").val("");
-                    $("#modal3_contractState").val("");
-                    $("#modal3_contractVersion").val("");
-                    $("#modal3_companyName").val("");
-                    $("#modal3_contactName").val("");
-                    $("#modal3_contractId").val("");
-                    $("#modal3_beginTime").val("");
-                    $("#modal3_endTime").val("");
-                    $("#modal3_area").val("");
-                    $("#modal3_telephone").val("");
-                    $("#modal3_order").val("");
+                    $("#modal3_contactName").text("");
+                    $("#modal3_contractState").text("");
+                    $("#modal3_contractVersion").text("");
+                    $("#modal3_companyName").text("");
+                    $("#modal3_contactName").text("");
+                    $("#modal3_contractId").text("");
+                    $("#modal3_beginTime").text("");
+                    $("#modal3_endTime").text("");
+                    $("#modal3_area").text("");
+                    $("#modal3_telephone").text("");
+                    $("#modal3_order").text("");
                 }
             },
             error: function (result) {
@@ -1311,9 +1225,10 @@ function cancel(item) {
 
             }
         });
-        $('#back').show();
-        $('#btn').text("审批");
-        $('#back').text('驳回');
+        $('#back').show();//驳回显示
+        $('#btn').show()//审批显示
+        $('#back').text('驳回');//设置驳回字样
+        $('#print').hide();//打印隐藏
         $('#contractInfoForm').modal('show');//出现第一个模态框
       }
       $('#btn').click(function () {
@@ -1535,8 +1450,8 @@ function cancel(item) {
           location.href="showemergency.html";
       }
       else {
-          $('#btn').text();
-          $('#back').text('');
+          $('#btn').hide();//审批隐藏
+          $('#print').show();//打印显示
           $.ajax({
               type: "POST",                       // 方法类型
               url: "getContractId",                   // url
@@ -1561,58 +1476,58 @@ function cancel(item) {
                       else {
                           var end="";
                       }
-                      $("#modal3_contractState").val(data.checkState.name);
-                      $("#modal3_contractVersion").val(data.contractVersion.name);
-                      $("#modal3_companyName").val(data.companyName);
+                      $("#modal3_contractState").text(data.checkState.name);
+                      $("#modal3_contractVersion").text(data.contractVersion.name);
+                      $("#modal3_companyName").text(data.companyName);
                       if(data.contractVersion.name=="公司合同"){
-                          $("#modal3_contractName").val(data.modelName);//合同名称
+                          $("#modal3_contractName").text(data.modelName);//合同名称
                       }
                       if(data.contractVersion.name=="客户合同"){
-                          $("#modal3_contractName").val(data.contractName+data.contractType.name);//合同名称
+                          $("#modal3_contractName").text(data.contractName+data.contractType.name);//合同名称
                       }
-                      $("#modal3_contactName").val(data.contactName);
-                      $("#modal3_contractId").val(data.contractId);
-                      $("#modal3_beginTime").val(begin);
-                      $("#modal3_endTime").val(end);
-                      $("#modal3_area").val(data.province.name+""+data.city);
-                      $("#modal3_telephone").val(data.telephone);
-                      $("#modal3_order").val(data.order1);
+                      $("#modal3_contactName").text(data.contactName);
+                      $("#modal3_contractId").text(data.contractId);
+                      $("#modal3_beginTime").text(begin);
+                      $("#modal3_endTime").text(end);
+                      $("#modal3_area").text(data.province.name+""+data.city);
+                      $("#modal3_telephone").text(data.telephone);
+                      $("#modal3_order").text(data.order1);
                       //开票税率1
                       if(data.ticketRate1==null){
-                          $('#modal3_ticketRate1').val(" ");
+                          $('#modal3_ticketRate1').text(" ");
                       }
                       else {
-                          $('#modal3_ticketRate1').val(data.ticketRate1.name);
+                          $('#modal3_ticketRate1').text(data.ticketRate1.name);
                       }
                       //开票税率2
                       if(data.ticketRate2==null){
-                          $('#modal3_ticketRate2').val(" ");
+                          $('#modal3_ticketRate2').text(" ");
                       }
                       else {
-                          $('#modal3_ticketRate2').val(data.ticketRate2.name);
+                          $('#modal3_ticketRate2').text(data.ticketRate2.name);
                       }
                       //资质开始日期
                       if(data.beginQualification==null){
-                          $('#modal3_beginQualification').val(" ");
+                          $('#modal3_beginQualification').text(" ");
                       }
                       else {
                           var begin1=gettime(data.beginQualification);
-                          $('#modal3_beginQualification').val(begin1);
+                          $('#modal3_beginQualification').text(begin1);
                       }
                       //资质结束日期
                       if(data.endQualification==null){
-                          $('#modal3_endQualification').val(" ");
+                          $('#modal3_endQualification').text(" ");
                       }
                       else {
                           var end1=gettime(data.endQualification);
-                          $('#modal3_endQualification').val(end1);
+                          $('#modal3_endQualification').text(end1);
                       }
                       //物流公司资质
-                      $('#modal3_logisticsQualification').val(data.logisticsQualification);
+                      $('#modal3_logisticsQualification').text(data.logisticsQualification);
                       //开户行名称
-                      $('#modal3_bankName').val(data.bankName);
+                      $('#modal3_bankName').text(data.bankName);
                       //开户行账号
-                      $('#modal3_bankAccout').val(data.bankAccount);
+                      $('#modal3_bankAccout').text(data.bankAccount);
                       if(data.freight==true){//需要运费
                           $('#modal3_freight').removeAttr("checked");
                           $('#modal3_freight').prop("checked",true);
@@ -1622,17 +1537,17 @@ function cancel(item) {
                       }
                       $('#search').prop("readonly",false);
                   } else {
-                      $("#modal3_contactName").val("");
-                      $("#modal3_contractState").val("");
-                      $("#modal3_contractVersion").val("");
-                      $("#modal3_companyName").val("");
-                      $("#modal3_contactName").val("");
-                      $("#modal3_contractId").val("");
-                      $("#modal3_beginTime").val("");
-                      $("#modal3_endTime").val("");
-                      $("#modal3_area").val("");
-                      $("#modal3_telephone").val("");
-                      $("#modal3_order").val("");
+                      $("#modal3_contactName").text("");
+                      $("#modal3_contractState").text("");
+                      $("#modal3_contractVersion").text("");
+                      $("#modal3_companyName").text("");
+                      $("#modal3_contactName").text("");
+                      $("#modal3_contractId").text("");
+                      $("#modal3_beginTime").text("");
+                      $("#modal3_endTime").text("");
+                      $("#modal3_area").text("");
+                      $("#modal3_telephone").text("");
+                      $("#modal3_order").text("");
                   }
               },
               error: function (result) {
@@ -1640,10 +1555,73 @@ function cancel(item) {
               }
           });
           $('#contractInfoForm').modal('show');
-          $('#btn').text("打印");
           $('#back').hide();
       }
   }
+
+    $("#print").click(function() {
+        /* Act on the event */
+        $("#contractInfoForm").printThis({
+            importCSS: true,
+            importStyle:true,
+          //importJs:true,
+            //printContainer: true,
+            //loadCSS: [ "css/a.css"],
+            //loadJs:["/js/bootstrap/3.3.6/bootstrap.min.js","js/jquery/2.0.0/jquery.min.js","js/bootstrap/navbar.js"],
+           // pageTitle: "二维码",
+            //removeInline: false,
+            printDelay: 333,
+            copyTagClasses: false,
+            //解决多页打印
+            //header: null,
+            //formValues: false,
+            //removeScripts:true
+        });
+//		alert("等待打印");
+    });
+
+    $(function () {
+        //打印初始化
+        // $("#print").click(function () {
+        //     $("#print1").jqprint({
+        //     importStyle:true,
+        //     //printContainer: true,
+        //     loadCSS: [ "css/bootstrap/3.3.6/bootstrap.min.css","css/a.css","css/dashboard.css","css/bootstrap/navbar.css","css/bootstrap/bootstrap-datetimepicker.min.css"],
+        //    // pageTitle: "二维码",
+        //     //removeInline: false,
+        //     printDelay: 333,
+        //     //header: null,
+        //     //formValues: false,
+        //     //removeScripts:true
+        //     });
+        // })
+    })
+
+    //     function preview(oper)
+//     {
+//         if (oper < 10){
+//             bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+//             sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
+//             eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
+//             prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+//             prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+//             window.document.body.innerHTML=prnhtml;
+//             window.print();
+//             window.document.body.innerHTML=bdhtml;
+//         } else {
+//             window.print();
+//         }
+//     }
+//     function print1() {
+//         $('#print1').jqprint({
+//             debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
+//             importCSS: true, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
+//             printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
+//             //表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
+//         });
+//     }
+
+
 </script>
 
 </html>

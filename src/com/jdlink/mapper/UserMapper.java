@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.LoginLog;
 import com.jdlink.domain.User;
 
 import java.util.List;
@@ -27,5 +28,9 @@ public interface UserMapper {
     List<User> getByUsername(String username);
 
     User getById(String id);
+
+    void addLog(LoginLog loginLog);
+
+    List<LoginLog> getLogById(int id);
 
 }
