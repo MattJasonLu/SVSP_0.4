@@ -8,6 +8,7 @@ public enum FormType {
     Gas("气体", 1),
     Liquid("液体", 2),
     Solid("固体", 3),
+    HalfSolid("半固态", 4),
     ;
 
     private String name;

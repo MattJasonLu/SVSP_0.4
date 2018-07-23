@@ -202,7 +202,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="contactName" class="col-sm-4 control-label">报价单名称</label>
+                            <label for="contactName" class="col-sm-4 control-label">成本单名称</label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="">
                             </div>
@@ -276,19 +276,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">是否含税</label>
-                            <div class="col-xs-5">
-                                <label>
-                                    <input type="radio" name="isContainTax" value="true" onchange="changeTax(this);calculateTax();" checked>
-                                </label>是
-                                <label>
-                                    <input type="radio" name="isContainTax" value="false" onchange="changeTax(this);calculateTax();">
-                                </label>否
-                            </div>
-                        </div>
-                    </div>
+                    <!--<div class="form-horizontal col-md-6">-->
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-4 control-label">是否含税</label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<label>-->
+                                    <!--<input type="radio" name="isContainTax" value="true" onchange="changeTax(this);calculateTax();" checked>-->
+                                <!--</label>是-->
+                                <!--<label>-->
+                                    <!--<input type="radio" name="isContainTax" value="false" onchange="changeTax(this);calculateTax();">-->
+                                <!--</label>否-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">是否含运费</label>
@@ -336,7 +336,7 @@
                             <th class="text-center">状态</th>
                             <th class="text-center">危废代码</th>
                             <th class="text-center">合约量</th>
-                            <th class="text-center" id="unitPriceTaxTh">单价<br>(元/吨)(含税)</th>
+                            <th class="text-center" id="unitPriceTaxTh">单价(元/吨)</th>
                             <th class="text-center">税率(%)</th>
                             <th class="text-center" id="unitPriceTh">税额</th>
                             <th class="text-center">PH</th>
@@ -551,7 +551,7 @@
                         $('#location').val(data.data.supplier.location);
                         $('#startDate').val(getTimeStr(data.data.startDate));
                         $('#endDate').val(getTimeStr(data.data.endDate));
-                        $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
+//                        $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
                         $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
                         $('#totalPriceTax').text(data.data.totalPriceTax);
                         $('#totalPrice').text(data.data.totalPrice);
@@ -687,7 +687,7 @@
             },
             'startDate': $("#startDate").val(),
             'endDate': $("#endDate").val(),
-            'isContainTax': $("input[name='isContainTax']:checked").val(),
+//            'isContainTax': $("input[name='isContainTax']:checked").val(),
             'isContainFreight': $("input[name='isContainFreight']:checked").val(),
             'totalPriceTax': $("#totalPriceTax").text(),
             'totalPrice': $("#totalPrice").text(),
@@ -857,7 +857,8 @@
      * 计算税价
      */
     function calculateTax() {
-        var state = $("input[name='isContainTax']:checked").val();
+//        var state = $("input[name='isContainTax']:checked").val();
+        var state = "true";
         // 计算总价
         var totalPrice = 0;
         var totalPriceTax = 0;
