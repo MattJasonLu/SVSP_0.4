@@ -9,6 +9,8 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
 </head>
 <style>
     .img-responsive  {
@@ -20,7 +22,7 @@
 </style>
 <body>
 <!--导航条-->
-<nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1">
+<nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
     <div class="main-title">
         <ul class="nav navbar-nav navbar-left navbar-side">
             <li>
@@ -30,7 +32,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left">
+    <div class="container navbar-left" style="width: 800px;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
@@ -64,6 +66,7 @@
             <ul class="dropdown-menu">
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
+                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="index.html">注销</a></li>
             </ul>
         </li>
@@ -113,8 +116,10 @@
         </a>
     </div>
 </div>
+<div id="embed"></div>
 </body>
 <script type="text/javascript">
+    $('#embed').load('embed/loginLogModal.html');
     $(document).load(function() {
         $("img-responsive center-block").each(function() {
             var maxWidth = document.body.clientWidth; // 图片最大宽度
