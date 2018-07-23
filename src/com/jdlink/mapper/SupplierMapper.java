@@ -15,6 +15,8 @@ public interface SupplierMapper {
 
     void enable(String supplierId);
 
+    void disable(String supplierId);
+
     Supplier getBySupplierId(String supplier);
 
     Supplier getByName(String companyName);

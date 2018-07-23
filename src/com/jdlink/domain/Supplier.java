@@ -126,6 +126,10 @@ public class Supplier {
      * 审核状态
      */
     private CheckState checkState;
+    /**
+     * 账号状态
+     */
+    private ClientState supplierState;
 
     public String getGroupId() {
         return groupId;
@@ -341,6 +345,14 @@ public class Supplier {
 
     public void setCheckState(CheckState checkState) {
         this.checkState = checkState;
+    }
+
+    public ClientState getSupplierState() {
+        return supplierState;
+    }
+
+    public void setSupplierState(ClientState supplierState) {
+        this.supplierState = supplierState;
     }
 
     public SupplierType getSupplierType() {
