@@ -7,6 +7,9 @@ li {
 .client_style {
     margin: 5% 0 5% 5%;
 }
+.container {
+    width: 800px;
+}
 .focus {
     outline: none;
     border: 0px;
@@ -28,10 +31,19 @@ li {
     word-break:keep-all;      /* 不换行 */
     white-space:nowrap;       /* 不换行 */
 }
+/*一般的文字截断(适用于内联与块)：*/
+.text-oneLine-ellipsis{
+    display:block;            /*内联对象需加*/
+    word-break:keep-all;      /* 不换行 */
+    white-space:nowrap;       /* 不换行 */
+    overflow:hidden;          /* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;   /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+}
 #navbar1{
     margin-bottom: 0px;
     border-radius: 5px;
     background: rgb(0,51,102);
+    height: 50px;
 }
 .navbar-side{
     background-color: #FFFFFF;
@@ -62,7 +74,7 @@ li {
 }
 #navbar1 .nav > li > a:hover {
     color: rgb(229,229,229);
-    background-color: #000000;
+    background-color: #0088cc;
 }
 #navbar1 .nav >li >a:active{
     color: rgb(229,229,229);

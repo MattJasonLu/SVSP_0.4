@@ -6,12 +6,13 @@
 <mapper namespace="com.jdlink.mapper.ClientMapper">
 
     <resultMap id="SalesmanRM" type="Salesman">
-        <result property="salesmanId" column="salesmanId"/>
+        <id property="salesmanId" column="salesmanId"/>
         <result property="name" column="name"/>
         <result property="age" column="age"/>
         <result property="sex" column="sex"/>
     </resultMap>
     <resultMap id="ClientRM" type="Client" autoMapping="true">
+        <id property="clientId" column="clientId"/>
         <result property="clientState" column="state" javaType="com.jdlink.domain.ClientState"/>
         <result property="enterpriseType" column="enterpriseType" javaType="com.jdlink.domain.EnterpriseType"/>
         <result property="operationMode" column="operationMode" javaType="com.jdlink.domain.OperationMode"/>
@@ -21,7 +22,7 @@
         <result property="applicationStatus" column="applicationStatus" javaType="com.jdlink.domain.ApplicationStatus"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <result property="clientType" column="clientType" javaType="com.jdlink.domain.ClientType"/>
-        <association property="salesman" column="salesmanId" javaType="Salesman" resultMap="SalesmanRM"/>
+        <association property="salesman" javaType="Salesman" resultMap="SalesmanRM"/>
     </resultMap>
 
     <insert id="add" parameterType="Client" >

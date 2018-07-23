@@ -11,10 +11,17 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <!--引用百度地图API-->
+    <style type="text/css">
+        html,body{margin:0;padding:0;}
+        .iw_poi_title {color:#CC5522;font-size:14px;font-weight:bold;overflow:hidden;padding-right:13px;white-space:nowrap}
+        .iw_poi_content {font:12px arial,sans-serif;overflow:visible;padding-top:4px;white-space:-moz-pre-wrap;word-wrap:break-word}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=OcqSk1RGOIhd1nHCQdfFUAAGLrTcNH0j"></script>
 </head>
 <body>
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -24,14 +31,14 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 800px;">
+        <div class="container navbar-left">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">首页</a></li>
-                    <li><a href="map.html">地图</a></li>
+                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li class="active"><a href="map.html">地图</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -75,80 +82,51 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">流程节点</h1>
-
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="businessModel.html"><img src="image/Business.png" width="80" height="80" class="img-circle"></a>
-                    <h4>商务</h4>
-                    <!--<span class="text-muted">系统节点1</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/LR.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Receive.png" width="80" height="80" class="img-circle"></a>
-                    <h4>接收</h4>
-                    <!--<span class="text-muted">系统节点2</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RB.png" width="80" height="80">
-                </div>
-            </div>
-            <div class="row placeholders">
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Storage.png" width="80" height="80" class="img-circle"></a>
-                    <h4>贮存</h4>
-                    <!--<span class="text-muted">系统节点3</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <h1>产废平台</h1>
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Preprocessing.png" width="80" height="80" class="img-circle"></a>
-                    <h4>预处理</h4>
-                    <!--<span class="text-muted">系统节点4</span>-->
-                </div>
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LB.png" width="80" height="80">
-                </div>
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Management.png" width="80" height="80" class="img-circle"></a>
-                    <h4>处置</h4>
-                    <!--<span class="text-muted">系统节点5</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/RL.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Secondary.png" width="80" height="80" class="img-circle"></a>
-                    <h4>次生</h4>
-                    <!--<span class="text-muted">系统节点6</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-            </div>
+            <h1 class="page-header">地图信息</h1>
+            <!--百度地图容器-->
+            <div style="width:95%;height:750px;border:#ccc solid 1px;" id="dituContent"></div>
         </div>
     </div>
-    <div id="embed"></div>
+    <div id="embed" class="row"></div>
 </body>
-<script>
-    $('#embed').load('embed/loginLogModal.html');
+<script type="text/javascript">
+    //创建和初始化地图函数：
+    function initMap(){
+        createMap();//创建地图
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
+    }
+
+    //创建地图函数：
+    function createMap(){
+        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+        var point = new BMap.Point(119.972394,31.979141);//定义一个中心点坐标
+        map.centerAndZoom(point,11);//设定地图的中心点和坐标并将地图显示在地图容器中
+        window.map = map;//将map变量存储在全局
+    }
+
+    //地图事件设置函数：
+    function setMapEvent(){
+        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+        map.enableKeyboard();//启用键盘上下左右键移动地图
+    }
+
+    //地图控件添加函数：
+    function addMapControl(){
+        //向地图中添加缩放控件
+        var ctrl_nav = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+        map.addControl(ctrl_nav);
+        //向地图中添加缩略图控件
+        var ctrl_ove = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:1});
+        map.addControl(ctrl_ove);
+        //向地图中添加比例尺控件
+        var ctrl_sca = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+        map.addControl(ctrl_sca);
+    }
+
+
+    initMap();//创建和初始化地图
 </script>
 </html>
