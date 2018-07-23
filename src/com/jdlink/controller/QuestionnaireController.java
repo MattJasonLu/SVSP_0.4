@@ -543,21 +543,44 @@ public class QuestionnaireController {
 
     /**
      * 审批调查表
-     * @param questionnaireId
+     * @param questionnaire 问卷
      * @return
      */
     @RequestMapping("examineQuestionnaire")
     @ResponseBody
-    public String examineQuestionnaire(String questionnaireId) {
+    public String examineQuestionnaire(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
-            questionnaireService.examine(questionnaireId);
+            questionnaireService.examine(questionnaire);
             res.put("status", "success");
             res.put("message", "审批成功!");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "审批失败!");
+            res.put("stackTrace", e.getStackTrace());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 退回问卷
+     *
+     * @param questionnaire 问卷信息
+     * @return
+     */
+    @RequestMapping("backQuestionnaire")
+    @ResponseBody
+    public String backQuestionnaire(@RequestBody Questionnaire questionnaire) {
+        JSONObject res = new JSONObject();
+        try {
+            questionnaireService.back(questionnaire);
+            res.put("status", "success");
+            res.put("message", "驳回成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败!");
             res.put("stackTrace", e.getStackTrace());
         }
         return res.toString();
@@ -1251,6 +1274,8 @@ public class QuestionnaireController {
         return mav;
     }
 
+
+
     /**
      * 签收问卷
      *
@@ -1274,28 +1299,7 @@ public class QuestionnaireController {
         return res.toString();
     }
 
-    /**
-     * 退回问卷
-     *
-     * @param questionnaireId
-     * @return
-     */
-    @RequestMapping("backQuestionnaire")
-    @ResponseBody
-    public String backQuestionnaire(String questionnaireId) {
-        JSONObject res = new JSONObject();
-        try {
-            questionnaireService.back(questionnaireId);
-            res.put("status", "success");
-            res.put("message", "签收成功!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "签收失败!");
-            res.put("stackTrace", e.getStackTrace());
-        }
-        return res.toString();
-    }
+
 }
 
 //    @RequestMapping("updateQuestionnaire")

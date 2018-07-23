@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.LoginLog;
 import com.jdlink.domain.User;
 import com.jdlink.mapper.UserMapper;
 import com.jdlink.service.UserService;
@@ -42,4 +43,15 @@ public class UserServiceImpl implements UserService {
     public User getById(String id) {
         return userMapper.getById(id);
     }
+
+    @Override
+    public void addLog(LoginLog loginLog) {
+        userMapper.addLog(loginLog);
+    }
+
+    @Override
+    public List<LoginLog> getLogById(int id) {
+        return userMapper.getLogById(id);
+    }
+
 }

@@ -17,6 +17,14 @@ public class Cost {
      */
     private String costId;
     /**
+     * 名称
+     */
+    private String name;
+    /**
+     * 版本号
+     */
+    private String version;
+    /**
      * 供应商(包含供应商名称、联系人、电话、地址)
      */
     private Supplier supplier;
@@ -181,4 +189,19 @@ public class Cost {
         this.checkState = checkState;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
 }

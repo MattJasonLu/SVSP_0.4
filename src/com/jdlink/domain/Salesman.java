@@ -23,14 +23,6 @@ public class Salesman {
      */
     private boolean sex;
     /**
-     * 客户编号
-     */
-    private String clientId;
-    /**
-     * 客户名称
-     */
-    private String companyName;
-    /**
      * 注册时间
      */
     private Date time;
@@ -49,14 +41,6 @@ public class Salesman {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
     }
 
     public Date getTime() {
@@ -83,14 +67,6 @@ public class Salesman {
         this.sex = sex;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     @Override
     public String toString() {
         return "Salesman{" +
@@ -98,7 +74,6 @@ public class Salesman {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", sex=" + sex +
-                ", clientId='" + clientId + '\'' +
                 ", time=" + time +
                 '}';
     }

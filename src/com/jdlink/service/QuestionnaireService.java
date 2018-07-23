@@ -20,6 +20,6 @@ public interface QuestionnaireService {
     int count();
     void signIn(String questionnaireId);
     void updateAttachmentUrl(Questionnaire questionnaire);
-    void back(String quesionnaireId);
-    void examine(String questionnaireId);
+    void back(Questionnaire questionnaire);
+    void examine(Questionnaire questionnaire);
 }
