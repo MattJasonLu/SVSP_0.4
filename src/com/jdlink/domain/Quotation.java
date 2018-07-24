@@ -72,6 +72,10 @@ public class Quotation {
      * 意见
      */
     private String advice;
+    /**
+     * 是否需要盖章
+     */
+    private boolean isStamp;
 
     public String getQuotationId() {
         return quotationId;
@@ -201,6 +205,14 @@ public class Quotation {
         this.totalTax = totalTax;
     }
 
+    public boolean getIsStamp() {
+        return isStamp;
+    }
+
+    public void setIsStamp(boolean stamp) {
+        isStamp = stamp;
+    }
+
     @Override
     public String toString() {
         return "Quotation{" +
@@ -220,6 +232,7 @@ public class Quotation {
                 ", checkState=" + checkState +
                 ", wastesList=" + wastesList +
                 ", advice='" + advice + '\'' +
+                ", isStamp=" + isStamp +
                 '}';
     }
 }

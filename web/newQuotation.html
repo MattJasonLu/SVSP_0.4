@@ -182,21 +182,9 @@
                     <li><a href="quotation.html">报价管理</a></li>
                     <li class="active">新增报价单</li>
                 </ol>
+                <p class="text-right"><b>报价单号&nbsp;&nbsp;</b><span id="quotationId"></span></p>
             </div>
             <h4 class="sub-header">客户报价单</h4>
-            <!--<form method="post" id="page1Info" enctype="multipart/form-data">-->
-                <div class="row">
-                    <div class="form-horizontal col-md-6">
-                    </div>
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group" align="right">
-                            <label class="col-sm-4 control-label">报价单号</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" name="quotationId" id="quotationId" value="********" style="border: none" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
@@ -296,6 +284,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">是否需盖章</label>
+                            <div class="col-xs-5">
+                                <input type="radio" name="isStamp" value="true">是
+                                <input type="radio" name="isStamp" value="false">否
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
@@ -354,14 +351,14 @@
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].contractAmount" style="width: 50px;" oninput="calculateTax();"></td>
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPriceTax" style="width: 50px;" oninput="calculateTax();"></td>
                                 <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].taxRate" style="width: 50px;" oninput="calculateTax();"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice" style="width: 50px;"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ph" style="width: 50px;"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage" style="width: 50px;"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage" style="width: 50px;"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].calorific" style="width: 50px;"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].halogenPercentage" style="width: 50px;"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage" style="width: 50px;"></td>
-                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint" style="width: 50px;"></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].unitPrice" style="width: 50px;" readonly></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ph" style="width: 50px;" readonly></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].ashPercentage" style="width: 50px;" readonly></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].wetPercentage" style="width: 50px;" readonly></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].calorific" style="width: 50px;" readonly></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].halogenPercentage" style="width: 50px;" readonly></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].sulfurPercentage" style="width: 50px;" readonly></td>
+                                <td class="text-center"><input type="text" class="focus" maxlength="16" name="wastesList[0].flashPoint" style="width: 50px;" readonly></td>
                             </tr>
                             <tr id="plusBtn">
                                 <td><a class="btn btn-default btn-sm" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -531,7 +528,7 @@
             $("#companyName").selectpicker('val', '');
             $("input:radio[name!='addType']").attr("checked", false);
             $("p").text("");
-            $(":input[name!='quotationId']").val('');
+            $(":input[name!='quotationId']").text('');
         }
     }
     // 获取传入参数
@@ -592,7 +589,7 @@
                     if (result != undefined) {
                         console.log(result.data);
                         var data = eval(result);
-                        $('#quotationId').val(data.data.quotationId);
+                        $('#quotationId').text(data.data.quotationId);
                         $('#name').val(data.data.name);
                         $('#version').val(data.data.version);
                         $('#companyName').selectpicker('val', data.data.client.clientId);
@@ -603,8 +600,9 @@
                         $('#endDate').val(getDateStr(data.data.endDate));
 //                        $("input[name='isContainTax'][value='" + data.data.isContainTax + "']").attr("checked",true);
                         $("input[name='isContainFreight'][value='" + data.data.isContainFreight + "']").attr("checked",true);
-                        $('#totalPriceTax').text(data.data.totalPriceTax);
-                        $('#totalPrice').text(data.data.totalPrice);
+                        $("input[name='isStamp'][value='" + data.data.isStamp + "']").attr("checked",true);
+                        $('#totalPriceTax').text(parseFloat(data.data.totalPriceTax).toFixed(3));
+                        $('#totalPrice').text(parseFloat(data.data.totalPrice).toFixed(3));
                         $('#totalAmount').text(data.data.totalAmount);
                         for (var i = 0; i < data.data.wastesList.length; i++) {
                             if (i > 0) addNewLine();
@@ -694,7 +692,7 @@
                 if (result != undefined) {
 //                    console.log(result);
                     if (result.status == "success") {
-                        $("#quotationId").val(result.quotationId);
+                        $("#quotationId").text(result.quotationId);
                     } else { }
                 }
             },
@@ -726,7 +724,7 @@
         var btnName = e.innerHTML;
         var data = {
             'id': Request['id'],
-            'quotationId': $("#quotationId").val(),
+            'quotationId': $("#quotationId").text(),
             'name': $("#name").val(),
             'version': $("#version").val(),
             'client': {
@@ -739,6 +737,7 @@
             'endDate': $("#endDate").val(),
 //            'isContainTax': $("input[name='isContainTax']:checked").val(),
             'isContainFreight': $("input[name='isContainFreight']:checked").val(),
+            'isStamp': $("input[name='isStamp']:checked").val(),
             'totalPriceTax': $("#totalPriceTax").text(),
             'totalPrice': $("#totalPrice").text(),
             'totalAmount': $("#totalAmount").text()
@@ -947,7 +946,9 @@
                     totalAmount += contractAmount;
                 }
             }
-            if (!isNaN(totalPriceTax)) $('#totalPriceTax').text(totalPriceTax);
+            if (!isNaN(totalPriceTax)) {
+                $('#totalPriceTax').text(totalPriceTax.toFixed(3));
+            }
 //            var unitPriceTaxName = e.name.split(".")[0] + ".unitPriceTax";
 //            var taxRateName = e.name.split(".")[0] + ".taxRate";
 //
@@ -974,8 +975,7 @@
                 }
             }
             if (!isNaN(totalPriceTax)) {
-                totalPriceTax.toFixed(3);
-                $('#totalPriceTax').text(totalPriceTax-totalTax);
+                $('#totalPriceTax').text((totalPriceTax-totalTax).toFixed(3));
             }
             // 计算当前行的含税价
 //            var unitPriceName = e.name.split(".")[0] + ".unitPrice";

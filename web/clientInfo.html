@@ -497,7 +497,7 @@
                         <h4 class="text-info text-oneLine">基本信息</h4>
                     </div>
                     <div class="form-horizontal col-md-4">
-                        <img src="image/line.png" style="margin-top: 25px">
+                        <img src="image/line.png" style="margin-top: 1px">
                     </div>
                     <div class="form-horizontal col-md-7"></div>
                 </div>
@@ -595,6 +595,13 @@
                                 <input type="text" class="form-control" id="location" name="location" placeholder="" required>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="location" class="col-sm-4 control-label">处置去向是否为北控 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="radio" name="management" value="true">是
+                                <input type="radio" name="management" value="false">否
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -602,7 +609,7 @@
                         <h4 class="text-info text-oneLine">环评信息</h4>
                     </div>
                     <div class="form-horizontal col-md-4">
-                        <img src="image/line.png" style="margin-top: 25px">
+                        <img src="image/line.png" style="margin-top: 1px">
                     </div>
                 </div>
                 <div class="row">
@@ -628,7 +635,7 @@
                         <div class="form-group">
                             <label for="processDesp" class="col-sm-2 control-label">工艺描述 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-8">
-                                <textarea class="form-control " id="processDesp" name="processDesp" rows="4"  required></textarea>
+                                <textarea class="form-control " id="processDesp" name="processDesp" rows="4" style="max-width: 1114px;min-width: 1114px;" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -638,7 +645,7 @@
                         <h4 class="text-info text-oneLine">联系方式</h4>
                     </div>
                     <div class="form-horizontal col-md-4">
-                        <img src="image/line.png" style="margin-top: 25px">
+                        <img src="image/line.png" style="margin-top: 1px">
                     </div>
                 </div>
                 <div class="row">
@@ -680,6 +687,44 @@
                             <label for="email" class="col-sm-4 control-label">邮箱 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info text-oneLine">开票信息</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png" style="margin-top: 1px">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="contactName" class="col-sm-4 control-label">开户行名称 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="bankName" name="bankName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile" class="col-sm-4 control-label">开户行账号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="mobile" class="col-sm-4 control-label">税号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="taxNumber" name="bankAccount" placeholder="" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile" class="col-sm-4 control-label">开票类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <select class="form-control" id="ticketType" name="ticketType"></select>
                             </div>
                         </div>
                     </div>
