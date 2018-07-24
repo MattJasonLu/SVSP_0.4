@@ -4,12 +4,8 @@ package com.jdlink.domain;
  * Created by matt on 2018/5/18.
  */
 public enum TicketRate1 {
-    Rate1("3%",1),
-    Rate2("5%",2),
-    Rate3("6%",3),
-    Rate4("7%",4),
-    Rate5("17%",5),
-    Rate6("20%",6);
+    Rate1("增值税专用发票16%",1),
+    Rate2("增值税专用发票3%",2);
     private String name;
     private int index;
     TicketRate1(String name, int index) {
