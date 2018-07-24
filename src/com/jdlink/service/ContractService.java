@@ -19,6 +19,7 @@ public interface ContractService {
     void setCheckStateInvalid(Contract contract);
     List<Contract> list();
     List<Contract> list1(String name);
+    List<Contract> list2(String name,String index2);
     List getContractIdList();
     void toSubmit(String id,String nowTime);
      void updateFreight1(String id);
