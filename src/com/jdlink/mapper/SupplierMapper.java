@@ -33,6 +33,8 @@ public interface SupplierMapper {
 
     void setCheckStateFinished(String supplierId);
 
+    void setCheckStateBacked(String supplierId);
+
     int count();
 
 }

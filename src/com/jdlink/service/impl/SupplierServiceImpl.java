@@ -78,6 +78,11 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    public void setCheckStateBacked(String supplierId) {
+        supplierMapper.setCheckStateBacked(supplierId);
+    }
+
+    @Override
     public int count() {
         return supplierMapper.count();
     }

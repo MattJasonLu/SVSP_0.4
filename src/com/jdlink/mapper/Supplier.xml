@@ -77,6 +77,10 @@
         UPDATE t_supplier SET checkState='Finished' WHERE supplierId=#{supplierId};
     </update>
 
+    <update id="setCheckStateBacked" parameterType="String">
+        UPDATE t_supplier SET checkState='Backed' WHERE supplierId=#{supplierId};
+    </update>
+
     <select id="list" resultMap="SupplierRM">
         select * from t_supplier;
     </select>
