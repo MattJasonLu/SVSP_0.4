@@ -26,8 +26,99 @@
     }
 </style>
 <script type="text/javascript">
+function loadContractList1(index) {
+    //localStorage.clear();
+    $('#back').hide();
+    var name=localStorage['name'];
+    console.log(name);
+    if(name=='undefined'||name=="Wastes"||name==undefined)
+    {
+        //name="Wastes";
+        $('#Wa').click();
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "listContractByName",                  // url
+        //     async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data:{"name":name},
+        //     success: function (result) {
+        //         if (result != undefined) {
+        //             //alert(result);
+        //             //console.log(result);
+        //             setContractList(result);
+        //         } else {
+        //             console.log("fail: " + result);
+        //         }
+        //     },
+        //     error:function (result) {
+        //         console.log("error: " + result);
+        //     }
+        // });
+        localStorage.clear();
+    }
+    if(name=="Emergency"){
+        $('#Em').click();
+        //name=undefined;
+        localStorage.clear();
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "listContractByName",                  // url
+        //     async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data:{"name":name},
+        //     success: function (result) {
+        //         if (result != undefined) {
+        //             //alert(result);
+        //             //console.log(result);
+        //             setContractList1(result);
+        //         } else {
+        //             console.log("fail: " + result);
+        //         }
+        //     },
+        //     error:function (result) {
+        //         console.log("error: " + result);
+        //     }
+        //
+        // });
+    }
+    if(name=="Logistics"){
+        $('#Lo').click();
+        localStorage.clear();
+    }
+    if(name=="Derive"){
+        $('#De').click();
+        localStorage.clear();
+    }
+    if(name=="Purchase"){
+
+    }
+    // else{
+    //     $.ajax({
+    //         type: "POST",                       // 方法类型
+    //         url: "listContractByName",                  // url
+    //         async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         dataType: "json",
+    //         data:{"name":name},
+    //         success: function (result) {
+    //             if (result != undefined) {
+    //                 //alert(result);
+    //                 //console.log(result);
+    //                 setContractList(result);
+    //             } else {
+    //                 console.log("fail: " + result);
+    //             }
+    //         },
+    //         error:function (result) {
+    //             console.log("error: " + result);
+    //         }
+    //
+    //     });
+    //     localStorage.clear();
+    // }
+}
     function loadContractList() {
         //localStorage.clear();
+       var state=$("#state").find("option:selected").text();
         $('#back').hide();
        var name=localStorage['name'];
        console.log(name);
@@ -873,12 +964,13 @@ else {
                                 <th class="text-center">
                                     <div class="form-inline">
                                         <label class="control-label">状态</label>
-                                        <select class="form-control" id="state" style="height: 80%; font-size: x-small;">
-                                            <option value="0"></option>
+                                        <select class="form-control" id="state"  onchange="getstate(this)" style="height: 80%; font-size: x-small;" >
+                                            <option value="0">未作废</option>
                                             <option value="1">待审批</option>
                                             <option value="2">审批中</option>
                                             <option value="3">履约中</option>
                                             <option value="4">已作废</option>
+                                            <option value="5">已驳回</option>
                                         </select>
                                     </div>
                                 </th>
@@ -1104,6 +1196,7 @@ else {
     //     forceParse: 0
     // });
 function ContractListByName(item) {
+    $('#state').find("option:selected").text('未作废');//付给他们初始属性
         nameBykey = item.innerHTML;
         if (item.innerHTML == '危废合同') {
             $.ajax({
@@ -1790,9 +1883,13 @@ function ContractListByName(item) {
             $("#pic").css("visibility", "visible");
             var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
             var newImg = document.createElement("img");//创建img对象
-            newImg.style.width = "1500px";
+            newImg.style.width = "1400px";
             newImg.style.height = "600px";
             newImg.src = dataUrl;//将canvas图形url赋给img对象
+           //  canvas.style.width = newImg.width+ "px";
+           //  canvas.style.height = newImg.height+ "px";
+           // var context = canvas.getContext("2d");
+         //然后将画布缩放，将图像放大两倍画到画布上
             $('#pic').append(newImg).printThis({
                 header: null,
                 footer: null,               // postfix to html
@@ -1869,5 +1966,143 @@ function ContractListByName(item) {
         return image;
 
 }
+
+    /**
+     * 根据状态获得列表
+     * @param index
+     */
+
+function getstate(item) {
+        var state=$('#state').find("option:selected").text();
+        index="";
+        if(state=='未作废'){
+            index=0;
+        }
+        if(state=='待审批'){
+            index=5;
+        }
+        if(state=='审批中'){
+            index=1;
+        }
+        if(state=='已作废'){
+            index=7;
+        }
+        if(state=='已驳回'){
+            index=4;
+        }
+        if(state=='履约中'){
+            index=6;
+        }
+        ContractListByName1(nameBykey,index);
+}
+    function ContractListByName1(nameBykey,index) {
+        if (nameBykey== '危废合同') {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Wastes","index":index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "应急处置合同") {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Emergency","index":index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList1(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "物流合同") {
+
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Logistics","index":index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "次生合同") {
+            //console.log(name);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Derive","index":index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "采购合同") {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Purchase","index":index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+    }
 </script>
 </html>
