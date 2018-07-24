@@ -56,15 +56,15 @@ function loadContractSelectList() {
                     contractType1.append(option);
                 });
                 contractType1.get(0).selectedIndex = -1;
-                var province = $("#province");
-                province.children().remove();
-                $.each(data.provinceStrList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    province.append(option);
-                });
-                province.get(0).selectedIndex = -1;
+                // var province = $("#province");
+                // province.children().remove();
+                // $.each(data.provinceStrList, function (index, item) {
+                //     var option = $('<option />');
+                //     option.val(index);
+                //     option.text(item.name);
+                //     province.append(option);
+                // });
+                // province.get(0).selectedIndex = -1;
                 $('.selectpicker').selectpicker('refresh');
                 //获取相应的市级
                 $.ajax({
@@ -106,7 +106,7 @@ function loadContractSelectList() {
                 });
                 var clientName=$('#companyName');
                 clientName.children().remove();
-                $.each(data.companyNameList, function (index, item) {
+                $.each(data.supplierNameList, function (index, item) {
                     var option = $('<option />');
                     option.val(item.companyName);
                     option.text(item.companyName);
@@ -126,16 +126,16 @@ function loadContractSelectList() {
                 });
                 taxRate1.get(0).selectedIndex = -1;
                 //开票税率2下拉框
-                var taxRate2=$('#taxRate2');
-                taxRate2.children().remove();
-                $.each(data.ticketRateStrList2, function (index, item) {
-                   // console.log(item);
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    taxRate2.append(option);
-                });
-                taxRate2.get(0).selectedIndex = -1;
+                // var taxRate2=$('#taxRate2');
+                // taxRate2.children().remove();
+                // $.each(data.ticketRateStrList2, function (index, item) {
+                //    // console.log(item);
+                //     var option = $('<option />');
+                //     option.val(index);
+                //     option.text(item.name);
+                //     taxRate2.append(option);
+                // });
+                // taxRate2.get(0).selectedIndex = -1;
 
             } else {
                 console.log(result);
@@ -493,7 +493,7 @@ function contractSubmit(){
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label for="taxRate1" class="col-sm-4 control-label">开票税率1</label>
+                        <label for="taxRate1" class="col-sm-4 control-label">开票税率</label>
                         <div class="col-xs-4">
                             <select class="form-control" id="taxRate1" name="ticketRate1">
                             </select>
