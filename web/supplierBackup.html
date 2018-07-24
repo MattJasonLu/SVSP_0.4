@@ -187,7 +187,7 @@
                     if (data.operationRecord != null)
                         $("#modal4_operationRecord").text(data.operationRecord.name);
                     $("#modal4_street").text(data.street);
-                    $("#modal4_clientId").text(data.clientId);
+                    $("#modal4_supplierId").text(data.supplierId);
                     $("#modal4_licenseCode").text(data.licenseCode);
                     $("#modal4_postCode").text(data.postCode);
                     $("#modal4_product").text(data.product);
@@ -212,7 +212,7 @@
                     $("#modal4_operationType").text("");
                     $("#modal4_operationRecord").text("");
                     $("#modal4_street").text("");
-                    $("#modal4_clientId").text("");
+                    $("#modal4_supplierId").text("");
                     $("#modal4_licenseCode").text("");
                     $("#modal4_postCode").text("");
                     $("#modal4_product").text("");
@@ -463,7 +463,7 @@
                         <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-xs-4 pull-right">
+                    <div class="input-group col-xs-3 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchSupplier();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
@@ -635,8 +635,8 @@
                             </div>
                         </div>
                         <div class="row text-center">
-                            <a class="btn btn-primary" onclick="">审批</a>
-                            <a class="btn btn-primary" onclick="">驳回</a>
+                            <a class="btn btn-primary" onclick="approval1()">审批</a>
+                            <a class="btn btn-primary" onclick="approval2()">驳回</a>
                             <a class="btn btn-danger" data-dismiss="modal">关闭</a>
                         </div>
                     </form>
@@ -687,10 +687,18 @@
     <div id="embed"></div>
 </body>
 <script type="text/javascript">
+
+    function approval1() {
+        $('#contractInfoForm2').modal('show');
+    }
+    function approval2() {
+        $('#contractInfoForm3').modal('show');
+    }
+
     $('#embed').load('embed/loginLogModal.html');
 
     function passSupplier() {
-        var id = $("#modal4_supplierId").val();
+        var id = $("#modal4_supplierId").text();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "passSupplier",               // url
@@ -717,7 +725,7 @@
         });
     }
     function backSupplier() {
-        var id = $("#modal4_supplierId").val();
+        var id = $("#modal4_supplierId").text();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "backSupplier",               // url
