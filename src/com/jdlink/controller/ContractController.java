@@ -46,9 +46,29 @@ public class ContractController {
     @RequestMapping("listContractByName")
     @ResponseBody
     public String listContractByName(String name) {
-        List<Contract> contractList = contractService.list1(name);
-        JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
-        return array.toString();
+
+           List<Contract> contractList = contractService.list1(name);
+           JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+           return array.toString();
+
+    }
+    /**
+     * 根据合同和状态显示列表
+     */
+    @RequestMapping("listContractByName1")
+    @ResponseBody
+    public String listContractByName1(String name,String index) {
+        if(CheckState.get(Integer.parseInt(index))==null){
+            List<Contract> contractList = contractService.list1(name);
+            JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            return array.toString();
+        }
+        else {
+            String state=CheckState.get(Integer.parseInt(index)).toString();
+            List<Contract> contractList = contractService.list2(name,state);
+            JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            return array.toString();
+        }
     }
 @RequestMapping("saveEmContract")
 @ResponseBody
