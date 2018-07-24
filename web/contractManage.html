@@ -484,13 +484,14 @@ else {
     {
          contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
         var contractType=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
-       if(contractType.indexOf('应急处置合同')!=-1){
+       console.log(contractId+contractType);
+        if(contractType.indexOf('应急处置合同')!=-1){
 
             //做跳转
            //window.location.href = "emergency?contractId="+contractId;
            //转到html便于操作
-           localStorage.name1=contractId;
-           location.href="showemergency.html";
+           // localStorage.name1=contractId;
+           // location.href="showemergency.html";
        }
        else {
            $('#close').show();
@@ -544,12 +545,12 @@ else {
                            $('#modal3_ticketRate1').text(data.ticketRate1.name);
                        }
                        //开票税率2
-                       if(data.ticketRate2==null){
-                           $('#modal3_ticketRate2').text(" ");
-                       }
-                       else {
-                           $('#modal3_ticketRate2').text(data.ticketRate2.name);
-                       }
+                       // if(data.ticketRate2==null){
+                       //     $('#modal3_ticketRate2').text(" ");
+                       // }
+                       // else {
+                       //     $('#modal3_ticketRate2').text(data.ticketRate2.name);
+                       // }
                        //资质开始日期
                        if(data.beginQualification==null){
                            $('#modal3_beginQualification').text(" ");
@@ -603,8 +604,6 @@ else {
            $('#back').hide();//驳回隐藏
            $('#print').show();//打印显示
            $('#print').show();//打印显示
-           localStorage.contractId=contractId;
-           location.href="contractManage.html"
        }
 
     }
@@ -674,12 +673,12 @@ else {
                             $('#modal3_ticketRate1').text(data.ticketRate1.name);
                         }
                         //开票税率2
-                        if(data.ticketRate2==null){
-                            $('#modal3_ticketRate2').text(" ");
-                        }
-                        else {
-                            $('#modal3_ticketRate2').text(data.ticketRate2.name);
-                        }
+                        // if(data.ticketRate2==null){
+                        //     $('#modal3_ticketRate2').text(" ");
+                        // }
+                        // else {
+                        //     $('#modal3_ticketRate2').text(data.ticketRate2.name);
+                        // }
                         //资质开始日期
                         if(data.beginQualification==null){
                             $('#modal3_beginQualification').text(" ");
@@ -1050,7 +1049,7 @@ else {
                                 <p class="text-left"><b>客户名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
                                 <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
                                 <p class="text-left"><b>开票税率1&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
-                                <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>
+                              <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
                                 <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
                                 <p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>
                                 <p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight" disabled="disabled" ></p>
@@ -1403,13 +1402,6 @@ function ContractListByName(item) {
                     else {
                         $('#modal3_ticketRate1').text(data.ticketRate1.name);
                     }
-                    //开票税率2
-                    if (data.ticketRate2 == null) {
-                        $('#modal3_ticketRate2').text(" ");
-                    }
-                    else {
-                        $('#modal3_ticketRate2').text(data.ticketRate2.name);
-                    }
                     //资质开始日期
                     if (data.beginQualification == null) {
                         $('#modal3_beginQualification').text(" ");
@@ -1682,6 +1674,7 @@ function ContractListByName(item) {
     function checkdb(item) {
         var contractId = item.firstElementChild.nextElementSibling.innerHTML;
         var contractType = item.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        console.log(contractId+contractType);
         //取得合同编号
         if (contractType.indexOf('应急处置合同') != -1) {
             //做跳转
@@ -1741,12 +1734,12 @@ function ContractListByName(item) {
                             $('#modal3_ticketRate1').text(data.ticketRate1.name);
                         }
                         //开票税率2
-                        if (data.ticketRate2 == null) {
-                            $('#modal3_ticketRate2').text(" ");
-                        }
-                        else {
-                            $('#modal3_ticketRate2').text(data.ticketRate2.name);
-                        }
+                        // if (data.ticketRate2 == null) {
+                        //     $('#modal3_ticketRate2').text(" ");
+                        // }
+                        // else {
+                        //     $('#modal3_ticketRate2').text(data.ticketRate2.name);
+                        // }
                         //资质开始日期
                         if (data.beginQualification == null) {
                             $('#modal3_beginQualification').text(" ");
@@ -1911,7 +1904,7 @@ function ContractListByName(item) {
 
     $('#close').click(function () {
         $('#pic').hide();
-        ContractListByName1(nameBykey);
+        //ContractListByName1(nameBykey);
     });
 
     function ContractListByName1(nameBykey) {
