@@ -182,21 +182,9 @@
                     <li><a href="quotation.html">报价管理</a></li>
                     <li class="active">新增报价单</li>
                 </ol>
+                <p class="text-right"><b>报价单号&nbsp;&nbsp;</b><span id="quotationId"></span></p>
             </div>
             <h4 class="sub-header">客户报价单</h4>
-            <!--<form method="post" id="page1Info" enctype="multipart/form-data">-->
-                <div class="row">
-                    <div class="form-horizontal col-md-6">
-                    </div>
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group" align="right">
-                            <label class="col-sm-4 control-label">报价单号</label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" name="quotationId" id="quotationId" value="********" style="border: none" readonly>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
@@ -531,7 +519,7 @@
             $("#companyName").selectpicker('val', '');
             $("input:radio[name!='addType']").attr("checked", false);
             $("p").text("");
-            $(":input[name!='quotationId']").val('');
+            $(":input[name!='quotationId']").text('');
         }
     }
     // 获取传入参数
@@ -592,7 +580,7 @@
                     if (result != undefined) {
                         console.log(result.data);
                         var data = eval(result);
-                        $('#quotationId').val(data.data.quotationId);
+                        $('#quotationId').text(data.data.quotationId);
                         $('#name').val(data.data.name);
                         $('#version').val(data.data.version);
                         $('#companyName').selectpicker('val', data.data.client.clientId);
@@ -694,7 +682,7 @@
                 if (result != undefined) {
 //                    console.log(result);
                     if (result.status == "success") {
-                        $("#quotationId").val(result.quotationId);
+                        $("#quotationId").text(result.quotationId);
                     } else { }
                 }
             },
@@ -726,7 +714,7 @@
         var btnName = e.innerHTML;
         var data = {
             'id': Request['id'],
-            'quotationId': $("#quotationId").val(),
+            'quotationId': $("#quotationId").text(),
             'name': $("#name").val(),
             'version': $("#version").val(),
             'client': {
