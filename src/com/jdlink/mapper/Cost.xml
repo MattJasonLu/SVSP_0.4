@@ -19,8 +19,8 @@
                     ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Cost" >
-        INSERT INTO t_cost (costId, name, version, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount, checkState)
-        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState});
+        INSERT INTO t_cost (costId, name, version, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount, checkState, isStamp)
+        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState}, #{isStamp});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_costandwastes (costId, wastesId) VALUES (#{id}, #{wastes.id});
@@ -32,8 +32,8 @@
     </insert>
 
     <insert id="levelUp" parameterType="Cost">
-        INSERT INTO t_cost (costId, name, version, supplierId, supplierType, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPriceTax, totalPrice, totalAmount, checkState)
-        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.supplierType}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState});
+        INSERT INTO t_cost (costId, name, version, supplierId, supplierType, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPriceTax, totalPrice, totalAmount, checkState, isStamp)
+        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.supplierType}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState}, #{isStamp});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_costandwastes (costId, wastesId) VALUES (#{id}, #{wastes.id});
