@@ -1790,7 +1790,7 @@ function ContractListByName(item) {
             $("#pic").css("visibility", "visible");
             var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
             var newImg = document.createElement("img");//创建img对象
-            newImg.style.width = "1500px";
+            newImg.style.width = "1400px";
             newImg.style.height = "600px";
             newImg.src = dataUrl;//将canvas图形url赋给img对象
             $('#pic').append(newImg).printThis({
