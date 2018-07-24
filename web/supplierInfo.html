@@ -208,18 +208,19 @@
                 companyName: $("#companyName").val(),
                 organizationCode: $("#organizationCode").val(),
                 representative: $("#representative").val(),
-                industry: $("#industry").val(),
+                taxNumber: $("#taxNumber").val(),
+                enterpriseAddress: $("#enterpriseAddress").val(),
+                registeredCapital: $("#registeredCapital").val(),
+                operationRange: $("#operationRange").val(),
+                expirationDate: $("#expirationDate").val(),
+                bankName: $("#bankName").val(),
+                bankAccount: $("#bankAccount").val(),
+                taxRate2: $("#taxRate2").val(),
                 enterpriseType: $("#enterpriseType").val(),
-                operationType: $("#operationType").val(),
                 operationRecord: $("#operationRecord").val(),
                 supplierType:$("#supplierType").val(),
-                street: $("#street").val(),
                 licenseCode: $("#licenseCode").val(),
                 postCode: $("#postCode").val(),
-                product: $("#product").val(),
-                operationMode: $("#operationMode").val(),
-                contingencyPlan: $("#contingencyPlan").val(),
-                applicationStatus: $("#applicationStatus").val(),
                 location: $("#location").val(),
                 contactName: $("#contactName").val(),
                 mobile: $("#mobile").val(),
@@ -261,18 +262,19 @@
                 companyName: $("#companyName").val(),
                 organizationCode: $("#organizationCode").val(),
                 representative: $("#representative").val(),
-                industry: $("#industry").val(),
+                taxNumber: $("#taxNumber").val(),
+                enterpriseAddress: $("#enterpriseAddress").val(),
+                registeredCapital: $("#registeredCapital").val(),
+                operationRange: $("#operationRange").val(),
+                expirationDate: $("#expirationDate").val(),
+                bankName: $("#bankName").val(),
+                bankAccount: $("#bankAccount").val(),
+                taxRate2: $("#taxRate2").val(),
                 enterpriseType: $("#enterpriseType").val(),
-                operationType: $("#operationType").val(),
                 operationRecord: $("#operationRecord").val(),
                 supplierType:$("#supplierType").val(),
-                street: $("#street").val(),
                 licenseCode: $("#licenseCode").val(),
                 postCode: $("#postCode").val(),
-                product: $("#product").val(),
-                operationMode: $("#operationMode").val(),
-                contingencyPlan: $("#contingencyPlan").val(),
-                applicationStatus: $("#applicationStatus").val(),
                 location: $("#location").val(),
                 contactName: $("#contactName").val(),
                 mobile: $("#mobile").val(),
@@ -336,18 +338,19 @@
             $("#companyName").val("");
             $("#organizationCode").val("");
             $("#representative").val("");
-            $("#industry").val("");
+            $("#taxNumber").val("");
+            $("#enterpriseAddress").val("");
+            $("#registeredCapital").val("");
+            $("#operationRange").val("");
+            $("#expirationDate").val("");
+            $("#bankName").val("");
+            $("#bankAccount").val("");
+            $("#taxRate2").get(0).selectedIndex = -1;
             $("#enterpriseType").get(0).selectedIndex = -1;
-            $("#operationType").get(0).selectedIndex = -1;
             $("#operationRecord").get(0).selectedIndex = -1;
             $("#supplierType").get(0).selectedIndex = -1;
-            $("#street").val("");
             $("#licenseCode").val("");
             $("#postCode").val("");
-            $("#product").val("");
-            $("#operationMode").get(0).selectedIndex = -1;
-            $("#contingencyPlan").get(0).selectedIndex = -1;
-            $("#applicationStatus").get(0).selectedIndex = -1;
             $("#location").val("");
             $("#contactName").val("");
             $("#mobile").val("");
@@ -483,63 +486,19 @@
                 <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="companyName" class="col-sm-4 control-label">企业名称 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="companyName" class="col-sm-4 control-label">供应商名称 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="companyName" name="companyName" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="organizationCode" class="col-sm-4 control-label">组织机构代码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="representative" class="col-sm-4 control-label">法人代表 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="representative" name="representative" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="industry" class="col-sm-4 control-label">所属行业 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="industry" name="industry" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="enterpriseType" class="col-sm-4 control-label">企业类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <select class="form-control" name="enterpriseType" id="enterpriseType" required>
-                                    <option value="0">--请选择--</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="operationType" class="col-sm-4 control-label">经营单位类别 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <select class="form-control" name="operationType" id="operationType" required>
-                                    <option value="0">--请选择--</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="operationRecord" class="col-sm-4 control-label">危废经营记录情况 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <select class="form-control" name="operationRecord" id="operationRecord" required>
-                                    <option value="0">--请选择--</option>
-                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="supplierType" class="col-sm-4 control-label">供应商类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <select class="form-control" name="supplierType" id="supplierType" required>
-                                    <option value="0">--请选择--</option>
+                                    <option value="1">--请选择--</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
                             <label for="licenseCode" class="col-sm-4 control-label">营业执照注册号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
@@ -553,47 +512,146 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="product" class="col-sm-4 control-label">主要产品 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="organizationCode" class="col-sm-4 control-label">组织机构代码证号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="product" name="product" placeholder=""required>
+                                <input type="text" class="form-control" id="organizationCode" name="organizationCode" placeholder="" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="operationMode" class="col-sm-4 control-label">经营方式 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="taxNumber" class="col-sm-4 control-label">税务登记证号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="operationMode" id="operationMode" required>
+                                <input type="text" class="form-control" id="taxNumber" name="taxNumber" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="enterpriseType" class="col-sm-4 control-label">企业类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <select class="form-control" name="enterpriseType" id="enterpriseType" required>
                                     <option value="0">--请选择--</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="contingencyPlan" class="col-sm-4 control-label">事故防范和应急预案 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <label for="enterpriseAddress" class="col-sm-4 control-label">企业所在地 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="contingencyPlan" id="contingencyPlan" required>
+                                <select class="form-control" name="enterpriseAddress" id="enterpriseAddress" required>
+                                    <option value="0">--请选择--</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!--分割线******************************************************-->
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="representative" class="col-sm-4 control-label">法人代表 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="representative" name="representative" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="registeredCapital" class="col-sm-4 control-label">注册资本 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="registeredCapital" name="registeredCapital" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-right: -320px;">
+                            <label class="col-sm-3 control-label">成立日期 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-sm-4 input-group date">
+                                <input type="text" class="input-sm form-control form_datetime1" name="establishDate" readonly/>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-right: -320px;">
+                            <label class="col-sm-3 control-label">营业期限 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-sm-4 input-group date">
+                                <input type="text" class="input-sm form-control form_datetime1"  name="businessLimit" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="industry" class="col-sm-4 control-label">所属行业 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<input type="text" class="form-control" id="industry" name="industry" placeholder="" required>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="operationType" class="col-sm-4 control-label">经营单位类别 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<select class="form-control" name="operationType" id="operationType" required>-->
+                                    <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label for="operationRange" class="col-sm-4 control-label">经营范围 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control" id="operationRange" name="operationRange" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="operationRecord" class="col-sm-4 control-label">危废经营记录情况 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <select class="form-control" name="operationRecord" id="operationRecord" required>
                                     <option value="0">--请选择--</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="applicationStatus" class="col-sm-4 control-label">申报状态 </label>
+                            <label for="license" class="col-sm-4 control-label">道路运输许可证号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <select class="form-control" name="applicationStatus" id="applicationStatus">
+                                <input type="text" class="form-control" id="license" name="license" placeholder=""required>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="product" class="col-sm-4 control-label">主要产品 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<input type="text" class="form-control" id="product" name="product" placeholder=""required>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <label for="expirationDate" class="col-sm-4 control-label">证件有效期 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <select class="form-control" name="expirationDate" id="expirationDate" required>
                                     <option value="0">--请选择--</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="location" class="col-sm-4 control-label">工商注册地址 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="location" name="location" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="street" class="col-sm-4 control-label">所属街道 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="street" name="street" placeholder="" required>
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="operationMode" class="col-sm-4 control-label">经营方式 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<select class="form-control" name="operationMode" id="operationMode" required>-->
+                                    <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="contingencyPlan" class="col-sm-4 control-label">事故防范和应急预案 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<select class="form-control" name="contingencyPlan" id="contingencyPlan" required>-->
+                                    <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="applicationStatus" class="col-sm-4 control-label">申报状态 </label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<select class="form-control" name="applicationStatus" id="applicationStatus">-->
+                                    <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="location" class="col-sm-4 control-label">工商注册地址 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<input type="text" class="form-control" id="location" name="location" placeholder="" required>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="street" class="col-sm-4 control-label">所属街道 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>-->
+                            <!--<div class="col-xs-5">-->
+                                <!--<input type="text" class="form-control" id="street" name="street" placeholder="" required>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
                 <div class="row">
@@ -630,6 +688,37 @@
                             <label for="email" class="col-sm-4 control-label">邮箱 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info text-oneLine">开票信息</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group" >
+                            <label  for="bankName" class="col-sm-4 control-label">开户行名称 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5" >
+                                <input type="text" class="form-control" id="bankName" name="bankName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label  for="bankAccount" class="col-sm-4 control-label">开户行账号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5" >
+                                <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label for="taxRate2" class="col-sm-4 control-label">开票税率2 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <select class="form-control" id="taxRate2" name="ticketRate2">
+                                </select>
                             </div>
                         </div>
                     </div>
