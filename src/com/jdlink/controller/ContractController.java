@@ -5,6 +5,7 @@ import com.jdlink.domain.*;
 import com.jdlink.service.CityService;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.ContractService;
+import com.jdlink.service.SupplierService;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
 import net.sf.json.JSONArray;
@@ -33,6 +34,8 @@ public class ContractController {
     ContractService contractService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    SupplierService supplierService;
     @RequestMapping("listContract")
     @ResponseBody
     public String listContract() {
@@ -184,6 +187,10 @@ public String submitEmContract(@RequestBody Contract contract) {
               List client= clientService.list();
               JSONArray json=JSONArray.fromObject(client);
               res.put("companyNameList",json);
+        //查询供应闪list形式返回
+        List supplier=supplierService.list();
+        JSONArray json2=JSONArray.fromObject(supplier);
+        res.put("supplierNameList",json2);
               //查询模板名称
         List modelName=contractService.modelName(key);
         List list1=  removeDuplicate(modelName);
