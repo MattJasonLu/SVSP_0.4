@@ -135,6 +135,26 @@ public class Client {
      * 客户类型
      */
     private ClientType clientType;
+    /**
+     * 开户行名称
+     */
+    private String bankName;
+    /**
+     * 开户行账号
+     */
+    private String bankAccount;
+    /**
+     * 税号
+     */
+    private String taxNumber;
+    /**
+     * 税率
+     */
+    private TicketRate1 ticketType;
+    /**
+     * 是否为北控处置
+     */
+    private boolean isDisposal;
 
     public String getClientId() {
         return clientId;
@@ -376,6 +396,46 @@ public class Client {
         this.clientType = clientType;
     }
 
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public String getTaxNumber() {
+        return taxNumber;
+    }
+
+    public void setTaxNumber(String taxNumber) {
+        this.taxNumber = taxNumber;
+    }
+
+    public TicketRate1 getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(TicketRate1 ticketType) {
+        this.ticketType = ticketType;
+    }
+
+    public boolean getIsDisposal() {
+        return isDisposal;
+    }
+
+    public void setIsDisposal(boolean disposal) {
+        isDisposal = disposal;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -408,6 +468,12 @@ public class Client {
                 ", clientState=" + clientState +
                 ", checkState=" + checkState +
                 ", salesman=" + salesman +
+                ", clientType=" + clientType +
+                ", bankName='" + bankName + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", taxNumber='" + taxNumber + '\'' +
+                ", ticketType=" + ticketType +
+                ", isDisposal=" + isDisposal +
                 '}';
     }
 }

@@ -28,7 +28,7 @@
             onfocusout: function (element) {
                 $(element).valid();
                 var phone=$("#phone");//获得电话的对象
-                var mobile=$("#mobile")//获得手机对象
+                var mobile=$("#mobile");//获得手机对象
                   if(element.id=='mobile'){// 手机输入
                     //  console.log("手机");
                     var mobile1=  mobile.valid();//获得手机校验的结果
@@ -135,6 +135,11 @@
             $("#mobile").val("");
             $("#phone").val("");
             $("#email").val("");
+            $("#bankName").val("");
+            $("#bankAccount").val("");
+            $("#taxNumber").val("");
+            $("#ticketType").val("");
+            $("input[name='isDisposal']:checked").prop('checked', false);
         }
     }
     function clientSave() {
@@ -161,7 +166,12 @@
                 contactName: $("#contactName").val(),
                 mobile: $("#mobile").val(),
                 phone: $("#phone").val(),
-                email: $("#email").val()
+                email: $("#email").val(),
+                bankName: $("#bankName").val(),
+                bankAccount: $("#bankAccount").val(),
+                taxNumber: $("#taxNumber").val(),
+                ticketType: $("#ticketType").val(),
+                isDisposal: $("input[name='isDisposal']:checked").val()
             };
             $.ajax({
                 type: "POST",                            // 方法类型
@@ -215,7 +225,12 @@
                 contactName: $("#contactName").val(),
                 mobile: $("#mobile").val(),
                 phone: $("#phone").val(),
-                email: $("#email").val()
+                email: $("#email").val(),
+                bankName: $("#bankName").val(),
+                bankAccount: $("#bankAccount").val(),
+                taxNumber: $("#taxNumber").val(),
+                ticketType: $("#ticketType").val(),
+                isDisposal: $("input[name='isDisposal']:checked").val()
             };
             // 上传用户数据
             $.ajax({
@@ -313,6 +328,15 @@
                         applicationStatus.append(option);
                     });
                     applicationStatus.get(0).selectedIndex = -1;
+                    var ticketType = $("#ticketType");
+                    ticketType.children().remove();
+                    $.each(data.ticketRate1StrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        ticketType.append(option);
+                    });
+                    ticketType.get(0).selectedIndex = -1;
                 } else {
                     console.log(result);
                 }
@@ -326,7 +350,7 @@
      * 保存客户的文件
      */
     function saveClientFiles() {
-// 客户编码
+        // 客户编码
         var clientId = document.getElementById("clientId").innerText;
         // 材料附件
         var materialAttachment = document.getElementById("materialAttachment").files[0];
@@ -598,8 +622,8 @@
                         <div class="form-group">
                             <label for="location" class="col-sm-4 control-label">处置去向是否为北控 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="radio" name="management" value="true">是
-                                <input type="radio" name="management" value="false">否
+                                <input type="radio" name="isDisposal" value="true">是
+                                <input type="radio" name="isDisposal" value="false">否
                             </div>
                         </div>
                     </div>
@@ -635,7 +659,7 @@
                         <div class="form-group">
                             <label for="processDesp" class="col-sm-2 control-label">工艺描述 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-8">
-                                <textarea class="form-control " id="processDesp" name="processDesp" rows="4" style="max-width: 1114px;min-width: 1114px;" required></textarea>
+                                <textarea class="form-control " id="processDesp" name="processDesp" rows="4" style="max-width: 90%;min-width: 90%;" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -660,19 +684,6 @@
                             <label for="mobile" class="col-sm-4 control-label">手机号码 <sup><span id="mobile1" class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="mobile" name="mobile" placeholder="" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">保存之后 </label>
-                            <div class="col-xs-5 radio">
-                                <label>
-                                    <input type="radio" name="addType" id="addType1" value="continue" checked>
-                                    继续添加
-                                </label>
-                                <label>
-                                    <input type="radio" name="addType" id="addType2" value="break">
-                                    返回列表
-                                </label>
                             </div>
                         </div>
                     </div>
@@ -713,12 +724,25 @@
                                 <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="" >
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">保存之后 </label>
+                            <div class="col-xs-5 radio">
+                                <label>
+                                    <input type="radio" name="addType" id="addType1" value="continue" checked>
+                                    继续添加
+                                </label>
+                                <label>
+                                    <input type="radio" name="addType" id="addType2" value="break">
+                                    返回列表
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
                             <label for="mobile" class="col-sm-4 control-label">税号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="taxNumber" name="bankAccount" placeholder="" >
+                                <input type="text" class="form-control" id="taxNumber" name="taxNumber" placeholder="" >
                             </div>
                         </div>
                         <div class="form-group">
