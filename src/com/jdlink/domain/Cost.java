@@ -69,8 +69,9 @@ public class Cost {
     /**
      * 危废列表
      */
-
     private List<Wastes> wastesList = new ArrayList<>();
+
+    private boolean isStamp;
 
     public String getId() { return id; }
 
@@ -93,25 +94,6 @@ public class Cost {
     }
 
     public Client getClient() { return client; }
-
-    @Override
-    public String toString() {
-        return "Cost{" +
-                "id='" + id + '\'' +
-                ", costId='" + costId + '\'' +
-                ", supplier=" + supplier +
-                ", client=" + client +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", isContainTax=" + isContainTax +
-                ", isContainFreight=" + isContainFreight +
-                ", totalPriceTax=" + totalPriceTax +
-                ", totalPrice=" + totalPrice +
-                ", totalAmount=" + totalAmount +
-                ", checkState=" + checkState +
-                ", wastesList=" + wastesList +
-                '}';
-    }
 
     public void setClient(Client client) {
         this.client = client;
@@ -203,5 +185,35 @@ public class Cost {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public boolean getIsStamp() {
+        return isStamp;
+    }
+
+    public void setIsStamp(boolean stamp) {
+        isStamp = stamp;
+    }
+
+    @Override
+    public String toString() {
+        return "Cost{" +
+                "id='" + id + '\'' +
+                ", costId='" + costId + '\'' +
+                ", name='" + name + '\'' +
+                ", version='" + version + '\'' +
+                ", supplier=" + supplier +
+                ", client=" + client +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isContainTax=" + isContainTax +
+                ", isContainFreight=" + isContainFreight +
+                ", totalPriceTax=" + totalPriceTax +
+                ", totalPrice=" + totalPrice +
+                ", totalAmount=" + totalAmount +
+                ", checkState=" + checkState +
+                ", wastesList=" + wastesList +
+                ", isStamp=" + isStamp +
+                '}';
     }
 }
