@@ -291,4 +291,46 @@ public class SupplierController {
         }
         return res.toString();
     }
+
+    /**
+     * 审批通过供应商
+     * @param supplierId 客户编号
+     * @return 成功与否
+     */
+    @RequestMapping("passSupplier")
+    @ResponseBody
+    public String passSupplier(String supplierId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 设置客户审批状态为已完成
+            supplierService.setCheckStateFinished(supplierId);
+            res.put("status", "success");
+            res.put("message", "审批通过");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "审批未通过");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 驳回供应商
+     * @param supplierId 客户编号
+     * @return 成功与否
+     */
+    @RequestMapping("backSupplier")
+    @ResponseBody
+    public String backSupplier(String supplierId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 设置客户审批状态为已驳回
+            supplierService.setCheckStateBacked(supplierId);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
+        }
+        return res.toString();
+    }
 }

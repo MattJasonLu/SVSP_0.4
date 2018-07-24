@@ -33,6 +33,8 @@ public interface SupplierService {
 
     void setCheckStateFinished(String supplierId);
 
+    void setCheckStateBacked(String supplierId);
+
     int count();
 
 }
