@@ -19,27 +19,27 @@
                     ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Cost" >
-        INSERT INTO t_cost (costId, name, version, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount, checkState, isStamp)
-        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState}, #{isStamp});
+        INSERT INTO t_cost (costId, name, version, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount, checkState, isStamp, nowTime)
+        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{supplier.supplierType}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState}, #{isStamp}, #{nowTime});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_costandwastes (costId, wastesId) VALUES (#{id}, #{wastes.id});
-                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint)
+                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint, nowTime)
                 VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
-                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint});
+                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint}), #{nowTime};
             </foreach>
         </if>
     </insert>
 
     <insert id="levelUp" parameterType="Cost">
-        INSERT INTO t_cost (costId, name, version, supplierId, supplierType, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPriceTax, totalPrice, totalAmount, checkState, isStamp)
-        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.supplierType}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState}, #{isStamp});
+        INSERT INTO t_cost (costId, name, version, supplierId, supplierType, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPriceTax, totalPrice, totalAmount, checkState, isStamp, nowTime)
+        VALUES (#{costId}, #{name}, #{version}, #{supplier.supplierId}, #{supplier.supplierType}, #{supplier.contactName}, #{supplier.phone}, #{supplier.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState}, #{isStamp}, #{nowTime});
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO r_costandwastes (costId, wastesId) VALUES (#{id}, #{wastes.id});
-                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint)
+                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint, nowTime)
                 VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
-                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint});
+                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint}), #{nowTime};
             </foreach>
         </if>
 
@@ -47,25 +47,25 @@
 
     <update id="update" parameterType="Cost">
         UPDATE t_cost SET supplierId=#{supplier.supplierId}, contactName=#{supplier.contactName}, phone=#{supplier.phone}, location=#{supplier.location}, startDate=#{startDate}, endDate=#{endDate},
-        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, supplierType=#{supplier.supplierType}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount} WHERE id=#{id};
+        isContainTax=#{isContainTax}, isContainFreight=#{isContainFreight}, supplierType=#{supplier.supplierType}, totalPrice=#{totalPrice}, totalPriceTax=#{totalPriceTax}, totalAmount=#{totalAmount}, nowTime=#{nowTime} WHERE id=#{id};
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 UPDATE t_wastes SET name=#{wastes.name}, formType=#{wastes.formType}, wastesId=#{wastes.wastesId}, contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax},
                 unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate}, ph=#{wastes.ph}, ashPercentage=#{wastes.ashPercentage}, wetPercentage=#{wastes.wetPercentage}, calorific=#{wastes.calorific},
-                halogenPercentage=#{wastes.halogenPercentage}, sulfurPercentage=#{wastes.sulfurPercentage}, flashPoint=#{wastes.flashPoint} WHERE id=#{wastes.id};
+                halogenPercentage=#{wastes.halogenPercentage}, sulfurPercentage=#{wastes.sulfurPercentage}, flashPoint=#{wastes.flashPoint}, nowTime=#{nowTime} WHERE id=#{wastes.id};
             </foreach>
         </if>
     </update>
 
     <select id="list" resultMap="CostRM" parameterType="String">
-        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId
+        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId order by nowTime desc;
         <if test="_parameter != null">
             AND t_cost.checkState=#{state}
         </if>
     </select>
 
     <select id="listNotInvalid" resultMap="CostRM">
-        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId AND t_cost.checkState!='Invalid'
+        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId AND t_cost.checkState!='Invalid' order by nowTime desc;
     </select>
 
     <select id="getWastes" resultType="Wastes">

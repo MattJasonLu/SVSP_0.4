@@ -5,8 +5,8 @@
 
 <mapper namespace="com.jdlink.mapper.SalesmanMapper">
     <insert id="add" parameterType="Salesman" >
-        insert into salesman ( salesmanId, name, age, sex )
-        values (#{salesmanId}, #{name}, #{age}, #{sex})
+        insert into salesman ( salesmanId, name, age, sex, nowTime)
+        values (#{salesmanId}, #{name}, #{age}, #{sex}, #{nowTime})
     </insert>
 
     <delete id="delete" parameterType="Salesman" >
@@ -39,7 +39,7 @@
     </select>
 
     <update id="update" parameterType="Salesman">
-        update salesman set name=#{name},age=#{age},sex=#{sex} where salesmanId=#{salesmanId};
+        update salesman set name=#{name},age=#{age},sex=#{sex}, nowTime=#{nowTime} where salesmanId=#{salesmanId};
     </update>
 
     <update id="assignClient" parameterType="Salesman">
@@ -47,7 +47,7 @@
     </update>
 
     <select id="list" resultType="Salesman">
-        select * from salesman
+        select * from salesman order by nowTime desc;
     </select>
 
     <select id="count" resultType="int">

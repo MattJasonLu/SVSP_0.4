@@ -31,14 +31,14 @@
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
           materialAttachmentUrl, processAttachmentUrl, processDesp, contactName, phone, mobile,
           email, state, industry, product, checkState, bankName, bankAccount, taxNumber, ticketType,
-           isDisposal, clientType)
+           isDisposal, clientType, nowTime)
         values (#{clientId}, #{groupId}, #{companyName},
           #{organizationCode}, #{licenseCode}, #{representative}, #{postCode}, #{enterpriseType},
           #{operationMode}, #{operationType}, #{contingencyPlan}, #{operationRecord}, #{location},
           #{street}, #{applicationStatus}, #{materialAttachmentUrl}, #{processAttachmentUrl},
           #{processDesp}, #{contactName}, #{phone}, #{mobile}, #{email}, #{clientState}, #{industry},
           #{product}, #{checkState}, #{bankName}, #{bankAccount}, #{taxNumber}, #{ticketType}, #{isDisposal},
-          #{clientType});
+          #{clientType}, #{nowTime});
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
           INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
     </insert>
@@ -88,7 +88,7 @@
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, applicationStatus=#{applicationStatus}, processDesp=#{processDesp}, contactName=#{contactName},
          phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}, bankName=#{bankName},
-         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal}
+         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=#{nowTime}
          WHERE clientId=#{clientId};
     </update>
 
@@ -132,18 +132,18 @@
     </update>
 
     <select id="list" resultMap="ClientRM">
-        select client.*, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId
+        select client.*, salesman.name, salesman.age, salesman.sex from client LEFT JOIN salesman ON client.salesmanId = salesman.salesmanId order by nowTime desc;
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
 
     <select id="listAllocated" resultMap="ClientRM">
-        SELECT client.*, salesman.name, salesman.age, salesman.sex from client, salesman WHERE client.salesmanId = salesman.salesmanId AND client.salesmanId IS NOT NULL;
+        SELECT client.*, salesman.name, salesman.age, salesman.sex from client, salesman WHERE client.salesmanId = salesman.salesmanId AND client.salesmanId IS NOT NULL order by nowTime desc;;
     </select>
 
     <select id="listUnallocated" resultMap="ClientRM">
-        SELECT client.* from client WHERE client.salesmanId IS NULL;
+        SELECT client.* from client WHERE client.salesmanId IS NULL order by nowTime desc;;
     </select>
 
     <select id="total" resultType="int">

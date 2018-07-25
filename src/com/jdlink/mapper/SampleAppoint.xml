@@ -6,9 +6,9 @@
 <mapper namespace="com.jdlink.mapper.SampleAppointMapper">
     <insert id="add" parameterType="SampleAppoint" >
         INSERT INTO t_sampleAppoint (appointId, clientId, companyName, productName,
-        code, contactName, telephone, state, appointTime, comment) VALUES (#{appointId},
+        code, contactName, telephone, state, appointTime, comment, nowTime) VALUES (#{appointId},
         #{clientId}, #{companyName}, #{productName}, #{code}, #{contactName}, #{telephone},
-        #{state}, #{appointTime}, #{comment})
+        #{state}, #{appointTime}, #{comment}, #{nowTime})
     </insert>
 
     <delete id="delete" parameterType="SampleAppoint" >
@@ -45,7 +45,7 @@
 
     <update id="update" parameterType="SampleAppoint">
         UPDATE t_sampleappoint SET companyName=#{companyName}, contactName=#{contactName}, telephone=#{telephone},
-          clientId=#{clientId}, appointTime=#{appointTime}, comment=#{comment} WHERE appointId=#{appointId};
+          clientId=#{clientId}, appointTime=#{appointTime}, comment=#{comment}, nowTime=#{nowTime} WHERE appointId=#{appointId};
     </update>
 
     <update id="setAppointed" parameterType="SampleAppoint">

@@ -5,35 +5,35 @@
 
 <mapper namespace="com.jdlink.mapper.DocumentMapper">
     <select id="listByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId};
+        SELECT * FROM t_document WHERE clientId=#{clientId} order by nowTime desc;;
     </select>
 
     <select id="listContractByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='Contract';
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='Contract' order by nowTime desc;;
     </select>
 
     <select id="listManagePlanByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='ManagePlan';
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='ManagePlan' order by nowTime desc;;
     </select>
 
     <select id="listEIAByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='EIA';
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='EIA' order by nowTime desc;;
     </select>
 
     <select id="listBusinessLicenseByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='BusinessLicense';
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='BusinessLicense' order by nowTime desc;;
     </select>
 
     <select id="listInstructionByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='Instruction';
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='Instruction' order by nowTime desc;;
     </select>
 
     <select id="listInvoiceInfoByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='InvoiceInfo';
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='InvoiceInfo' order by nowTime desc;;
     </select>
 
     <select id="listMSDSByClientId" resultType="Document" parameterType="String">
-        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='MSDS';
+        SELECT * FROM t_document WHERE clientId=#{clientId} AND documentType='MSDS' order by nowTime desc;;
     </select>
 
     <select id="getFileById" parameterType="String" resultType="Document">
@@ -41,7 +41,7 @@
     </select>
 
     <select id="add" parameterType="Document">
-        INSERT INTO t_document (clientId, fileName, filePath, documentType) VALUES (#{clientId}, #{fileName}, #{filePath}, #{documentType});
+        INSERT INTO t_document (clientId, fileName, filePath, documentType, nowTime) VALUES (#{clientId}, #{fileName}, #{filePath}, #{documentType}, #{nowTime});
     </select>
 
     <select id="count" resultType="int">
