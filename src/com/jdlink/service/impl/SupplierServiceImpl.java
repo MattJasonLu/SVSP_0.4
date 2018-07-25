@@ -86,4 +86,9 @@ public class SupplierServiceImpl implements SupplierService {
     public int count() {
         return supplierMapper.count();
     }
+
+    @Override
+    public void setFilePath(Supplier supplier) {
+        supplierMapper.setFilePath(supplier);
+    }
 }

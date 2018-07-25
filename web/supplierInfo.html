@@ -272,6 +272,19 @@
                         if (data.operationType != null) operationTypeIndex = data.operationType.index - 1;
                         if (data.operationRecord != null) operationRecordIndex = data.operationRecord.index - 1;
                         if (data.ticketRate != null) ticketRateIndex = data.ticketRate.index - 1;
+
+                        $("#licenseFile1").addClass("form-control");
+                        $("#licenseFile1").prop('type', 'text');
+                        $("#licenseFile2").addClass("form-control");
+                        $("#licenseFile2").prop('type', 'text');
+                        $("#licenseFile1").val(changeFileName(data.licenseFile1Url));
+                        $("#licenseFile2").val(changeFileName(data.licenseFile2Url));
+                        $("#licenseFile1").click(function () {
+                            $(this).prop('type', 'file');
+                        });
+                        $("#licenseFile2").click(function () {
+                            $(this).prop('type', 'file');
+                        });
                     }
                 },
                 error: function (result) {
@@ -279,6 +292,12 @@
                     alert("服务器异常!");
                 }
             });
+        }
+
+        function changeFileName(name) {
+            if (name == null) return "";
+            var arr = name.split("/");
+            return arr[arr.length-1];
         }
     }
     function supplierSave() {
@@ -320,6 +339,7 @@
                 success: function (result) {
                     if (result != undefined) {
                         console.log("success: " + result);
+                        saveSupplierFiles();
                         alert("保存成功!");
                         $(location).attr('href', 'supplierBackup.html');
                     } else {
@@ -375,6 +395,7 @@
                 success: function (result) {
                     if (result != undefined) {
                         console.log("success: " + result);
+                        saveSupplierFiles();
                         alert("提交成功!");
                         if(addType == "continue")
                         $(location).attr('href', 'supplierInfo.html');
@@ -425,6 +446,43 @@
 //            });
             $("#supplierInfoForm").find("select").get(0).selectedIndex = -1;
         }
+    }
+    /**
+     * 保存供应商的文件
+     */
+    function saveSupplierFiles() {
+        var supplierId = $("#supplierId").text();
+        var formFile = new FormData();
+        formFile.append("supplierId", supplierId);
+        if ($("#licenseFile1").prop('type') != 'text') {
+            var licenseFile1 = document.getElementById("licenseFile1").files[0];
+            formFile.append("licenseFile1", licenseFile1);
+        }
+        if ($("#licenseFile2").prop('type') != 'text') {
+            var licenseFile2 = document.getElementById("licenseFile2").files[0];
+            formFile.append("licenseFile2", licenseFile2);
+        }
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "saveSupplierFiles",                     // url
+            cache: false,
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: formFile,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("上传成功");
+                } else {
+
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
     }
 </script>
 <body onload="loadSelectList();">
@@ -795,7 +853,7 @@
                 </div>
                 <div class="row">
                     <div class="form-horizontal col-md-1">
-                        <h4 class="text-info text-oneLine">附件</h4>
+                        <h4 class="text-info text-oneLine">附件信息</h4>
                     </div>
                     <div class="form-horizontal col-md-4">
                         <img src="image/line.png">
@@ -806,7 +864,7 @@
                         <div class="form-group">
                             <label for="licenseFile1" class="col-sm-4 control-label">营业执照 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5" >
-                                <input type="file" class="form-control" id="licenseFile1" name="licenseFile" placeholder="">
+                                <input type="file" id="licenseFile1" name="licenseFile1" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -814,7 +872,7 @@
                         <div class="form-group">
                             <label for="licenseFile2" class="col-sm-4 control-label">道路运输许可证 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5" >
-                                <input type="file" class="form-control" id="licenseFile2" name="licenseFile2" placeholder="">
+                                <input type="file" id="licenseFile2" name="licenseFile2" placeholder="">
                             </div>
                         </div>
                     </div>

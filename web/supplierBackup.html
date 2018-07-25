@@ -200,6 +200,20 @@
                     if (data.operationRecord != null) $('#modal4_operationRecord').text(data.operationRecord.name);
                     if (data.operationType != null) $('#modal4_operationType').text(data.operationType.name);
                     if (data.ticketRate != null) $('#modal4_ticketRate').text(data.ticketRate.name);
+                    $("#modal4_licenseFile1Url").click(function () {
+                        if (data.licenseFile1Url != null && data.licenseFile1Url != "") {
+                            window.open('downloadFile?filePath=' + data.licenseFile1Url);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
+                    $("#modal4_licenseFile2Url").click(function () {
+                        if (data.licenseFile2Url != null && data.licenseFile2Url != "") {
+                            window.open('downloadFile?filePath=' + data.licenseFile2Url);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
                 } else {
                     $("#clientInfoForm1").find("span").text("");
                 }
@@ -570,6 +584,15 @@
                                 <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate"></span></p>
                             </div>
                         </div>
+                        <h4 class="text-info">附件信息</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>营业执照&nbsp;&nbsp;</b><button class="btn btn-default" id="modal3_licenseFile1Url">下载查看</button></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>道路运输许可证&nbsp;&nbsp;</b><button class="btn btn-default" id="modal3_licenseFile2Url">下载查看</button></p>
+                            </div>
+                        </div>
                         <div class="row text-center">
                             <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
                             <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
@@ -630,6 +653,15 @@
                             </div>
                             <div class="form-horizontal col-md-6">
                                 <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal4_ticketRate"></span></p>
+                            </div>
+                        </div>
+                        <h4 class="text-info">附件信息</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>营业执照&nbsp;&nbsp;</b><button class="btn btn-default" id="modal4_licenseFile1Url">下载查看</button></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>道路运输许可证&nbsp;&nbsp;</b><button class="btn btn-default" id="modal4_licenseFile2Url">下载查看</button></p>
                             </div>
                         </div>
                         <div class="row text-center">
@@ -789,6 +821,20 @@
                 if (data.operationRecord != null) $('#modal3_operationRecord').text(data.operationRecord.name);
                 if (data.operationType != null) $('#modal3_operationType').text(data.operationType.name);
                 if (data.ticketRate != null) $('#modal3_ticketRate').text(data.ticketRate.name);
+                $("#modal3_licenseFile1Url").click(function () {
+                    if (data.licenseFile1Url != null && data.licenseFile1Url != "") {
+                        window.open('downloadFile?filePath=' + data.licenseFile1Url);
+                    } else {
+                        alert("未上传文件");
+                    }
+                });
+                $("#modal3_licenseFile2Url").click(function () {
+                    if (data.licenseFile2Url != null && data.licenseFile2Url != "") {
+                        window.open('downloadFile?filePath=' + data.licenseFile2Url);
+                    } else {
+                        alert("未上传文件");
+                    }
+                });
             },
             error:function (result) {
                 

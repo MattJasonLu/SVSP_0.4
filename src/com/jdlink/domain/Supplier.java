@@ -172,6 +172,14 @@ public class Supplier {
      * 当前时间
      */
     private Date nowTime;
+    /**
+     * 营业执照
+     */
+    private String licenseFile1Url;
+    /**
+     * 道路运输许可证
+     */
+    private String licenseFile2Url;
 
     public String getGroupId() {
         return groupId;
@@ -485,6 +493,22 @@ public class Supplier {
         this.nowTime = nowTime;
     }
 
+    public String getLicenseFile1Url() {
+        return licenseFile1Url;
+    }
+
+    public void setLicenseFile1Url(String licenseFile1Url) {
+        this.licenseFile1Url = licenseFile1Url;
+    }
+
+    public String getLicenseFile2Url() {
+        return licenseFile2Url;
+    }
+
+    public void setLicenseFile2Url(String licenseFile2Url) {
+        this.licenseFile2Url = licenseFile2Url;
+    }
+
     @Override
     public String toString() {
         return "Supplier{" +
@@ -527,6 +551,8 @@ public class Supplier {
                 ", bankAccount='" + bankAccount + '\'' +
                 ", ticketRate=" + ticketRate +
                 ", nowTime=" + nowTime +
+                ", licenseFile1Url='" + licenseFile1Url + '\'' +
+                ", licenseFile2Url='" + licenseFile2Url + '\'' +
                 '}';
     }
 }
