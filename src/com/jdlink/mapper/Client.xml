@@ -88,7 +88,7 @@
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, applicationStatus=#{applicationStatus}, processDesp=#{processDesp}, contactName=#{contactName},
          phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}, bankName=#{bankName},
-         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW()}
+         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW()
          WHERE clientId=#{clientId};
     </update>
 
