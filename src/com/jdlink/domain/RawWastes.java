@@ -1,6 +1,7 @@
 package com.jdlink.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,7 +28,30 @@ public class RawWastes {
      * 可能引入物质
      */
     private String draginMaterial;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
 
+    @Override
+    public String toString() {
+        return "RawWastes{" +
+                "materialId='" + materialId + '\'' +
+                ", code='" + code + '\'' +
+                ", mainMaterial='" + mainMaterial + '\'' +
+                ", auxMaterial='" + auxMaterial + '\'' +
+                ", draginMaterial='" + draginMaterial + '\'' +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getMaterialId() {
         return materialId;
@@ -69,14 +93,4 @@ public class RawWastes {
         this.draginMaterial = draginMaterial;
     }
 
-    @Override
-    public String toString() {
-        return "RawWastes{" +
-                "materialId='" + materialId + '\'' +
-                ", code='" + code + '\'' +
-                ", mainMaterial='" + mainMaterial + '\'' +
-                ", auxMaterial='" + auxMaterial + '\'' +
-                ", draginMaterial='" + draginMaterial + '\'' +
-                '}';
-    }
 }

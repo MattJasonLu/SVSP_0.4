@@ -72,6 +72,18 @@ public class Cost {
     private List<Wastes> wastesList = new ArrayList<>();
 
     private boolean isStamp;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getId() { return id; }
 
@@ -214,6 +226,7 @@ public class Cost {
                 ", checkState=" + checkState +
                 ", wastesList=" + wastesList +
                 ", isStamp=" + isStamp +
+                ", nowTime=" + nowTime +
                 '}';
     }
 }

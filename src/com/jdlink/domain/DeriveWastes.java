@@ -1,6 +1,7 @@
 package com.jdlink.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -99,6 +100,49 @@ public class DeriveWastes {
      * 泄漏处理方法
      */
     private String leakMeasures;
+
+    @Override
+    public String toString() {
+        return "DeriveWastes{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", formType=" + formType +
+                ", formTypeDetail='" + formTypeDetail + '\'' +
+                ", smellType=" + smellType +
+                ", smellTypeDetail='" + smellTypeDetail + '\'' +
+                ", solubility=" + solubility +
+                ", solubilityDetail='" + solubilityDetail + '\'' +
+                ", isLowTemp=" + isLowTemp +
+                ", lowTemp=" + lowTemp +
+                ", solubleTemp=" + solubleTemp +
+                ", isMixture=" + isMixture +
+                ", mixingElementList=" + mixingElementList +
+                ", sensitiveElementList=" + sensitiveElementList +
+                ", wasteCharacterList=" + wasteCharacterList +
+                ", wasteProtectList=" + wasteProtectList +
+                ", eyeMeasures='" + eyeMeasures + '\'' +
+                ", skinMeasures='" + skinMeasures + '\'' +
+                ", swallowMeasures='" + swallowMeasures + '\'' +
+                ", suctionMeasures='" + suctionMeasures + '\'' +
+                ", putOutFireMeasures='" + putOutFireMeasures + '\'' +
+                ", leakMeasures='" + leakMeasures + '\'' +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getId() {
         return id;
@@ -284,24 +328,4 @@ public class DeriveWastes {
         this.leakMeasures = leakMeasures;
     }
 
-    @Override
-    public String toString() {
-        return "DeriveWastes{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", code='" + code + '\'' +
-                ", formType=" + formType +
-                ", formTypeDetail='" + formTypeDetail + '\'' +
-                ", smellType=" + smellType +
-                ", smellTypeDetail='" + smellTypeDetail + '\'' +
-                ", solubility=" + solubility +
-                ", solubilityDetail='" + solubilityDetail + '\'' +
-                ", isLowTemp=" + isLowTemp +
-                ", lowTemp=" + lowTemp +
-                ", solubleTemp=" + solubleTemp +
-                ", isMixture=" + isMixture +
-                ", mixingElementList=" + mixingElementList +
-                ", sensitiveElementList=" + sensitiveElementList +
-                '}';
-    }
 }

@@ -30,7 +30,7 @@
         #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
         #{checkState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
         #{createDate}, #{businessLimit}, #{transportLicense}, #{expirationDate}, #{bankName},
-        #{bankAccount}, #{ticketRate}, #{nowTime})
+        #{bankAccount}, #{ticketRate}, NOW())
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -60,7 +60,7 @@
          mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus},
          taxNumber=#{taxNumber}, registeredCapital=#{registeredCapital}, createDate=#{createDate}, businessLimit=#{businessLimit},
          transportLicense=#{transportLicense}, expirationDate=#{expirationDate}, bankName=#{bankName},
-         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}, nowTime=#{nowTime}
+         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}, nowTime=NOW()
          WHERE supplierId=#{supplierId}
     </update>
 

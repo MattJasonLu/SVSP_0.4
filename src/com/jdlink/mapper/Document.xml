@@ -41,7 +41,7 @@
     </select>
 
     <select id="add" parameterType="Document">
-        INSERT INTO t_document (clientId, fileName, filePath, documentType, nowTime) VALUES (#{clientId}, #{fileName}, #{filePath}, #{documentType}, #{nowTime});
+        INSERT INTO t_document (clientId, fileName, filePath, documentType, nowTime) VALUES (#{clientId}, #{fileName}, #{filePath}, #{documentType}, NOW());
     </select>
 
     <select id="count" resultType="int">

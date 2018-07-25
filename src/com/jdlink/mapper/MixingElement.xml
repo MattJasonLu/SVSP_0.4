@@ -6,7 +6,7 @@
 <mapper namespace="com.jdlink.mapper.MixingElementMapper">
     <insert id="add" parameterType="MixingElement" >
         insert into t_mixingElement ( id, name, minimum, average, maximum, nowTime)
-        values (#{id}, #{name}, #{minimum}, #{average}, #{maximum}, #{nowTime});
+        values (#{id}, #{name}, #{minimum}, #{average}, #{maximum}, NOW());
     </insert>
 
     <delete id="delete" parameterType="String" >

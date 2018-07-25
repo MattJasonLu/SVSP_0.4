@@ -26,6 +26,30 @@ public class Salesman {
      * 注册时间
      */
     private Date time;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "Salesman{" +
+                "salesmanId='" + salesmanId + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", sex=" + sex +
+                ", time=" + time +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getSalesmanId() {
         return salesmanId;
@@ -67,14 +91,4 @@ public class Salesman {
         this.sex = sex;
     }
 
-    @Override
-    public String toString() {
-        return "Salesman{" +
-                "salesmanId='" + salesmanId + '\'' +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", sex=" + sex +
-                ", time=" + time +
-                '}';
-    }
 }

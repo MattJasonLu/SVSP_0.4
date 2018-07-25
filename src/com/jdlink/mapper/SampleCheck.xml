@@ -10,13 +10,13 @@
         formType, color, quantity, packageType, mainComponent, nowTime) VALUES (#{checkId}, #{clientId},
         #{appointId}, #{companyName}, #{productName}, #{code}, #{contactName},
         #{telephone}, #{createTime}, #{recipient}, #{formType}, #{color},
-        #{quantity}, #{packageType}, #{mainComponent}, #{nowTime});
+        #{quantity}, #{packageType}, #{mainComponent}, NOW());
     </insert>
 
     <update id="update" parameterType="SampleCheck">
         UPDATE t_samplecheck SET contactName=#{contactName}, telephone=#{telephone}, productName=#{productName},
         code=#{code}, recipient=#{recipient}, color=#{color}, formType=#{formType}, packageType=#{packageType},
-        quantity=#{quantity}, mainComponent=#{mainComponent}, nowTime=#{nowTime} WHERE checkId=#{checkId};
+        quantity=#{quantity}, mainComponent=#{mainComponent}, nowTime=NOW() WHERE checkId=#{checkId};
     </update>
 
     <delete id="delete" parameterType="SampleCheck" >
