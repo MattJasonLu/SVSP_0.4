@@ -52,8 +52,8 @@
                     ofType="com.jdlink.domain.DeriveWastes" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Questionnaire" >
-        insert into questionnaire ( questionnaireId, clientId, time, author, state )
-        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState} );
+        insert into questionnaire ( questionnaireId, clientId, time, author, state, nowTime)
+        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, #{nowTime});
         <if test="rawWastesList.size() > 0">
             <foreach collection="rawWastesList" item="rawWastes" index="index">
             insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)
@@ -86,12 +86,12 @@
                 insert into t_deriveWastes ( id, name, code, formType, formTypeDetail,
                 smellType, smellTypeDetail, solubility, solubilityDetail, isLowTemp,
                 lowTemp, solubleTemp, isMixture, eyeMeasures, skinMeasures, swallowMeasures,
-                suctionMeasures, putOutFireMeasures, leakMeasures )
+                suctionMeasures, putOutFireMeasures, leakMeasures, nowTime)
                 values ( #{deriveWastes.id}, #{deriveWastes.name}, #{deriveWastes.code}, #{deriveWastes.formType}, #{deriveWastes.formTypeDetail},
                 #{deriveWastes.smellType}, #{deriveWastes.smellTypeDetail}, #{deriveWastes.solubility}, #{deriveWastes.solubilityDetail},
                 #{deriveWastes.isLowTemp}, #{deriveWastes.lowTemp}, #{deriveWastes.solubleTemp}, #{deriveWastes.isMixture}, #{deriveWastes.eyeMeasures},
                 #{deriveWastes.skinMeasures}, #{deriveWastes.swallowMeasures}, #{deriveWastes.suctionMeasures}, #{deriveWastes.putOutFireMeasures},
-                #{deriveWastes.leakMeasures} );
+                #{deriveWastes.leakMeasures}, #{nowTime});
                 <if test="deriveWastes.mixingElementList != null and deriveWastes.mixingElementList.size() > 0">
                     <foreach collection="deriveWastes.mixingElementList" item="mixingElement" index="index">
                         insert into r_deriveWastesAndMixingElement (deriveWastesId,mixingElementId)
@@ -202,11 +202,11 @@
     </select>
 
     <update id="update" parameterType="Questionnaire" >
-        update questionnaire set clientId=#{client.clientId}, author=#{author}, state=#{applyState} where questionnaireId=#{questionnaireId};
+        update questionnaire set clientId=#{client.clientId}, author=#{author}, state=#{applyState}, nowTime=#{nowTime} where questionnaireId=#{questionnaireId};
         <if test="rawWastesList.size() > 0">
             <foreach collection="rawWastesList" item="rawWastes" index="index">
                 UPDATE t_rawWastes SET code=#{rawWastes.code}, mainMaterial=#{rawWastes.mainMaterial},
-                auxMaterial=#{rawWastes.auxMaterial}, draginMaterial=#{rawWastes.draginMaterial}
+                auxMaterial=#{rawWastes.auxMaterial}, draginMaterial=#{rawWastes.draginMaterial}, nowTime=#{nowTime}
                 WHERE materialId=#{rawWastes.materialId};
             </foreach>
         </if>
@@ -235,7 +235,7 @@
                 solubility=#{deriveWastes.solubility}, solubilityDetail=#{deriveWastes.solubilityDetail}, isLowTemp=#{deriveWastes.isLowTemp},
                 lowTemp=#{deriveWastes.lowTemp}, solubleTemp=#{deriveWastes.solubleTemp}, isMixture=#{deriveWastes.isMixture}, eyeMeasures=#{deriveWastes.eyeMeasures},
                 skinMeasures=#{deriveWastes.skinMeasures}, swallowMeasures=#{deriveWastes.swallowMeasures}, suctionMeasures=#{deriveWastes.suctionMeasures},
-                putOutFireMeasures=#{deriveWastes.putOutFireMeasures}, leakMeasures=#{deriveWastes.leakMeasures} WHERE id=#{deriveWastes.id};
+                putOutFireMeasures=#{deriveWastes.putOutFireMeasures}, leakMeasures=#{deriveWastes.leakMeasures}, nowTime=#{nowTime} WHERE id=#{deriveWastes.id};
                 <if test="deriveWastes.mixingElementList != null and deriveWastes.mixingElementList.size() > 0">
                     <foreach collection="deriveWastes.mixingElementList" item="mixingElement" index="index">
                         UPDATE t_mixingElement SET  name=#{mixingElement.name}, minimum=#{mixingElement.minimum}, average=#{mixingElement.average}, maximum=#{mixingElement.maximum} WHERE id=#{mixingElement.id};
@@ -273,7 +273,7 @@
         wasteName1=#{wasteName1}, wasteName2=#{wasteName2}, wasteName3=#{wasteName3}, wasteName4=#{wasteName4}, wasteName5=#{wasteName5},
         wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
         conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
-        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},
+        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=#{nowTime}
         isExamined=TRUE
         WHERE questionnaireId=#{questionnaireId};
     </update>
@@ -288,7 +288,7 @@
         wasteName1=#{wasteName1}, wasteName2=#{wasteName2}, wasteName3=#{wasteName3}, wasteName4=#{wasteName4}, wasteName5=#{wasteName5},
         wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
         conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
-        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},
+        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=#{nowTime}
         isExamined=TRUE
         WHERE questionnaireId=#{questionnaireId};
     </update>
@@ -310,6 +310,6 @@
     <select id="listQuestionnaireAdmin" resultType="QuestionnaireAdmin">
         SELECT questionnaire.questionnaireId, client.companyName, client.industry,
           client.product, questionnaire.state, questionnaire.author AS contactName, questionnaire.time
-            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId;
+            FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId order by nowTime desc;;
     </select>
 </mapper>

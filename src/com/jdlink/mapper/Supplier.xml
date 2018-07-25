@@ -21,12 +21,16 @@
         INSERT INTO t_supplier ( supplierId, groupId, companyName,
           organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
-          contactName, phone, mobile, email, industry, product, supplierType, checkState )
+          contactName, phone, mobile, email, industry, product, supplierType, checkState, supplierState,
+          taxNumber, registeredCapital, createDate, businessLimit, transportLicense, expirationDate,
+          bankName, bankAccount, ticketRate,nowTime)
         VALUES (#{supplierId}, #{groupId}, #{companyName}, #{organizationCode}, #{licenseCode},
         #{representative}, #{postCode}, #{enterpriseType}, #{operationMode}, #{operationType},
         #{contingencyPlan}, #{operationRecord}, #{location}, #{street}, #{applicationStatus},
         #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
-        #{checkState})
+        #{checkState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
+        #{createDate}, #{businessLimit}, #{transportLicense}, #{expirationDate}, #{bankName},
+        #{bankAccount}, #{ticketRate}, #{nowTime})
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -53,7 +57,10 @@
          enterpriseType=#{enterpriseType}, operationMode=#{operationMode}, operationType=#{operationType},
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, contactName=#{contactName}, supplierType=#{supplierType}, phone=#{phone},
-         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus}
+         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus},
+         taxNumber=#{taxNumber}, registeredCapital=#{registeredCapital}, createDate=#{createDate}, businessLimit=#{businessLimit},
+         transportLicense=#{transportLicense}, expirationDate=#{expirationDate}, bankName=#{bankName},
+         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}, nowTime=#{nowTime}
          WHERE supplierId=#{supplierId}
     </update>
 
@@ -82,7 +89,7 @@
     </update>
 
     <select id="list" resultMap="SupplierRM">
-        select * from t_supplier;
+        select * from t_supplier order by nowTime desc ;
     </select>
 
     <select id="count" resultType="int">
