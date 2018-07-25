@@ -128,4 +128,7 @@ public class ClientServiceImpl implements ClientService {
     public int count() {
         return clientMapper.count();
     }
+
+    @Override
+    public  List<Client> getClientList(int index, int pageSize){ return clientMapper.getClientList(index,pageSize); }
 }
