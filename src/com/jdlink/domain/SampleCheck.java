@@ -68,6 +68,40 @@ public class SampleCheck {
      * 主要成分
      */
     private String mainComponent;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "SampleCheck{" +
+                "checkId='" + checkId + '\'' +
+                ", appointId='" + appointId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", productName='" + productName + '\'' +
+                ", code='" + code + '\'' +
+                ", contactName='" + contactName + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", createTime=" + createTime +
+                ", recipient='" + recipient + '\'' +
+                ", formType=" + formType +
+                ", color='" + color + '\'' +
+                ", quantity=" + quantity +
+                ", packageType=" + packageType +
+                ", mainComponent='" + mainComponent + '\'' +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getClientId() {
         return clientId;
@@ -189,23 +223,4 @@ public class SampleCheck {
         this.mainComponent = mainComponent;
     }
 
-    @Override
-    public String toString() {
-        return "SampleCheck{" +
-                "checkId='" + checkId + '\'' +
-                ", appointId='" + appointId + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", productName='" + productName + '\'' +
-                ", code='" + code + '\'' +
-                ", contactName='" + contactName + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", createTime=" + createTime +
-                ", recipient='" + recipient + '\'' +
-                ", formType=" + formType +
-                ", color='" + color + '\'' +
-                ", quantity=" + quantity +
-                ", packageType=" + packageType +
-                ", mainComponent='" + mainComponent + '\'' +
-                '}';
-    }
 }

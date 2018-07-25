@@ -6,7 +6,7 @@
 <mapper namespace="com.jdlink.mapper.SensitiveElementMapper">
     <insert id="add" parameterType="SensitiveElement" >
         insert into t_sensitiveElement ( id, chemicalType, isOrganic, nowTime )
-        values (#{id}, #{chemicalType}, #{isOrganic}, #{nowTime});
+        values (#{id}, #{chemicalType}, #{isOrganic}, NOW());
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -18,7 +18,7 @@
     </select>
 
     <update id="update" parameterType="SensitiveElement" >
-        update t_sensitiveElement set chemicalType=#{chemicalType}, isOrganic=#{isOrganic}, nowTime=#{nowTime} where id=#{id}
+        update t_sensitiveElement set chemicalType=#{chemicalType}, isOrganic=#{isOrganic}, nowTime=NOW() where id=#{id}
     </update>
 
     <select id="list" resultType="SensitiveElement">

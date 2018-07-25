@@ -24,7 +24,7 @@
         #{smellType}, #{smellTypeDetail}, #{solubility}, #{solubilityDetail},
         #{isLowTemp}, #{lowTemp}, #{solubleTemp}, #{isMixture}, #{eyeMeasures},
         #{skinMeasures}, #{swallowMeasures}, #{suctionMeasures}, #{putOutFireMeasures},
-        #{leakMeasures}, #{nowTime});
+        #{leakMeasures}, NOW());
         <if test="mixingElementList != null and mixingElementList.size() > 0">
             insert into r_deriveWastesAndMixingElement (deriveWastesId,mixingElementId)
             values
@@ -109,7 +109,7 @@
         smellType=#{smellType}, smellTypeDetail=#{smellTypeDetail}, solubility=#{solubility}, solubilityDetail=#{solubilityDetail},
         isLowTemp=#{isLowTemp}, lowTemp=#{lowTemp}, solubleTemp=#{solubleTemp}, isMixture=#{isMixture}, eyeMeasures=#{eyeMeasures},
         skinMeasures=#{skinMeasures}, swallowMeasures=#{swallowMeasures}, suctionMeasures=#{suctionMeasures},
-        putOutFireMeasures=#{putOutFireMeasures}, leakMeasures=#{leakMeasures}, nowTime=#{nowTime}
+        putOutFireMeasures=#{putOutFireMeasures}, leakMeasures=#{leakMeasures}, nowTime=NOW()
         WHERE t_deriveWastes.id=#{id};
 
         DELETE FROM r_deriveWastesAndWasteCharacter WHERE r_deriveWastesAndWasteCharacter.deriveWastesId=#{id};

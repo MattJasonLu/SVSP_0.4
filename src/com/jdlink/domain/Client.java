@@ -2,6 +2,8 @@ package com.jdlink.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 /**
  * Created by matt on 2018/4/23.
  * 客户类
@@ -155,6 +157,18 @@ public class Client {
      * 是否为北控处置
      */
     private boolean isDisposal;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getClientId() {
         return clientId;
@@ -474,6 +488,7 @@ public class Client {
                 ", taxNumber='" + taxNumber + '\'' +
                 ", ticketType=" + ticketType +
                 ", isDisposal=" + isDisposal +
+                ", nowTime=" + nowTime +
                 '}';
     }
 }

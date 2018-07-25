@@ -8,7 +8,7 @@
         INSERT INTO t_sampleAppoint (appointId, clientId, companyName, productName,
         code, contactName, telephone, state, appointTime, comment, nowTime) VALUES (#{appointId},
         #{clientId}, #{companyName}, #{productName}, #{code}, #{contactName}, #{telephone},
-        #{state}, #{appointTime}, #{comment}, #{nowTime})
+        #{state}, #{appointTime}, #{comment}, NOW())
     </insert>
 
     <delete id="delete" parameterType="SampleAppoint" >
@@ -45,7 +45,7 @@
 
     <update id="update" parameterType="SampleAppoint">
         UPDATE t_sampleappoint SET companyName=#{companyName}, contactName=#{contactName}, telephone=#{telephone},
-          clientId=#{clientId}, appointTime=#{appointTime}, comment=#{comment}, nowTime=#{nowTime} WHERE appointId=#{appointId};
+          clientId=#{clientId}, appointTime=#{appointTime}, comment=#{comment}, nowTime=NOW() WHERE appointId=#{appointId};
     </update>
 
     <update id="setAppointed" parameterType="SampleAppoint">

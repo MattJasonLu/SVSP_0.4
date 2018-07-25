@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>供应商新增</title>
+    <title>供应商信息</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/jquery/jquery.validate.min.js"></script>
     <script src="js/jquery/additional-methods.js"></script>
@@ -33,6 +33,17 @@
     }
 </style>
 <script>
+    // 获取url参数
+    var url=location.search;
+    var Request = {};
+    if(url.indexOf("?")!=-1) {
+        var str = url.substr(1)　//去掉?号
+        strs = str.split("&");
+        for(var i=0;i<strs.length;i++) {
+            Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
+        }
+    }
+
     var validator;
     // 校验表单信息
     $().ready(function () {
@@ -45,11 +56,11 @@
                 if(element.id=='mobile'){// 手机输入
                     //  console.log("手机");
                     var mobile1=  mobile.valid();//获得手机校验的结果
-                    console.log("手机校验结果"+mobile1);
+//                    console.log("手机校验结果"+mobile1);
                     if(mobile1){
                         $("#phone1").hide();
                         $("#mobile1").show();
-                        phone.rules("remove")//删除规则
+                        phone.rules("remove");//删除规则
                     }
                     if(!mobile1){
                         phone.rules("add",{required:true})
@@ -58,7 +69,7 @@
                 if(element.id=='phone'){//电话输入
                     //console.log("电话");
                     var phone2= phone.valid();//获得电话的校验结果
-                    console.log("电话校验结果"+phone2);
+//                    console.log("电话校验结果"+phone2);
                     if(phone2){
                         $("#mobile1").hide();
                         $("#phone1").show();
@@ -123,8 +134,14 @@
 </script>
 <script type="text/javascript">
     function loadSelectList() {
-        // 获取供应商编号
-        getCurrentSupplierId();
+        var supplierTypeIndex, enterpriseTypeIndex, operationTypeIndex,
+                operationRecordIndex, ticketRateIndex;
+        if (Request['id'] == null) {
+            // 获取供应商编号
+            getCurrentSupplierId();
+        } else {
+            loadSupplier();
+        }
         $.ajax({
             type: "POST",                            // 方法类型
             url: "getSelectedList",                  // url
@@ -141,7 +158,8 @@
                         option.text(item.name);
                         enterpriseType.append(option);
                     });
-                    enterpriseType.get(0).selectedIndex = -1;
+                    if (enterpriseTypeIndex != null) enterpriseType.get(0).selectedIndex = enterpriseTypeIndex;
+                    else enterpriseType.get(0).selectedIndex = -1;
                      var operationType = $("#operationType");
                      operationType.children().remove();
                      $.each(data.operationTypeStrList, function (index, item) {
@@ -150,7 +168,8 @@
                          option.text(item.name);
                          operationType.append(option);
                      });
-                     operationType.get(0).selectedIndex = -1;
+                    if (operationTypeIndex != null) operationType.get(0).selectedIndex = operationTypeIndex;
+                    else operationType.get(0).selectedIndex = -1;
                     var operationRecord = $("#operationRecord");
                     operationRecord.children().remove();
                     $.each(data.operationRecordStrList, function (index, item) {
@@ -159,7 +178,8 @@
                         option.text(item.name);
                         operationRecord.append(option);
                     });
-                    operationRecord.get(0).selectedIndex = -1;
+                    if (operationRecordIndex != null) operationRecord.get(0).selectedIndex = operationRecordIndex;
+                    else operationRecord.get(0).selectedIndex = -1;
 //                    var operationMode = $("#operationMode");
 //                    operationMode.children().remove();
 //                    $.each(data.operationModeStrList, function (index, item) {
@@ -195,7 +215,8 @@
                         option.text(item.name);
                         supplierType.append(option);
                     });
-                    supplierType.get(0).selectedIndex = 1;
+                    if (supplierTypeIndex != null) supplierType.get(0).selectedIndex = supplierTypeIndex;
+                    else supplierType.get(0).selectedIndex = 1;
                     var ticketRate = $("#ticketRate");
                     ticketRate.children().remove();
                     $.each(data.ticketRate1StrList, function (index, item) {
@@ -204,7 +225,8 @@
                         option.text(item.name);
                         ticketRate.append(option);
                     });
-                    ticketRate.get(0).selectedIndex = -1;
+                    if (ticketRateIndex != null) ticketRate.get(0).selectedIndex = ticketRateIndex;
+                    else ticketRate.get(0).selectedIndex = -1;
                 } else {
                     console.log(result);
                 }
@@ -213,6 +235,51 @@
                 console.log(result);
             }
         });
+        function loadSupplier() {
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "listSupplierById",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {"id": Request['id']},
+                dataType: "json",
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        var data = eval(result);
+                        $("#supplierId").text(data.supplierId);
+                        $("#companyName").val(data.companyName);
+                        $("#licenseCode").val(data.licenseCode);
+                        $("#postCode").val(data.postCode);
+                        $("#organizationCode").val(data.organizationCode);
+                        $("#taxNumber").val(data.taxNumber);
+                        $("#location").val(data.location);
+                        $("#representative").val(data.representative);
+                        $("#registeredCapital").val(data.registeredCapital);
+                        $("#createDate").val(getDateStr(data.createDate));
+                        $("#businessLimit").val(data.businessLimit);
+                        $("#transportLicense").val(data.transportLicense);
+                        $("#expirationDate").val(getDateStr(data.expirationDate));
+                        $("#contactName").val(data.contactName);
+                        $("#mobile").val(data.mobile);
+                        $("#phone").val(data.phone);
+                        $("#email").val(data.email);
+                        $("#bankName").val(data.bankName);
+                        $("#bankAccount").val(data.bankAccount);
+                        $("#addType2").prop('checked', true);
+
+                        if (data.supplierType != null) supplierTypeIndex = data.supplierType.index - 1;
+                        if (data.enterpriseType != null) enterpriseTypeIndex = data.enterpriseType.index - 1;
+                        if (data.operationType != null) operationTypeIndex = data.operationType.index - 1;
+                        if (data.operationRecord != null) operationRecordIndex = data.operationRecord.index - 1;
+                        if (data.ticketRate != null) ticketRateIndex = data.ticketRate.index - 1;
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常!");
+                }
+            });
+        }
     }
     function supplierSave() {
         if(validator.form()){
@@ -335,7 +402,7 @@
             url: "getCurrentSupplierId",             // url
             dataType: "json",
             success: function (result) {
-                console.log(result);
+//                console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
                     $("#supplierId").text(data.supplierId);
@@ -347,7 +414,7 @@
         });
     }
     /**
-     * 重置客户信息
+     * 重置供应商信息
      */
     function clientReset() {
         var r = confirm("是否重置供应商信息?");
@@ -474,7 +541,7 @@
                 </ol>
                 <p class="text-right"><b>供应商编码&nbsp;&nbsp;</b><span id="supplierId"></span></p>
             </div>
-            <h4 class="sub-header text-left">供应商新增</h4>
+            <h4 class="sub-header text-left">供应商信息</h4>
             <form method="post" id="supplierInfoForm">
                 <div class="row">
                     <div class="form-horizontal col-md-1">
@@ -722,6 +789,32 @@
                             <div class="col-xs-5">
                                 <select class="form-control" id="ticketRate" name="ticketRate">
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-1">
+                        <h4 class="text-info text-oneLine">附件</h4>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <img src="image/line.png">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="licenseFile1" class="col-sm-4 control-label">营业执照 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5" >
+                                <input type="file" class="form-control" id="licenseFile1" name="licenseFile" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="licenseFile2" class="col-sm-4 control-label">道路运输许可证 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5" >
+                                <input type="file" class="form-control" id="licenseFile2" name="licenseFile2" placeholder="">
                             </div>
                         </div>
                     </div>

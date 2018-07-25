@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.ClientState;
 import com.jdlink.domain.Supplier;
 import com.jdlink.service.SupplierService;
 import net.sf.json.JSONArray;
@@ -80,6 +81,7 @@ public class SupplierController {
     public String addSupplier(@RequestBody Supplier supplier) {
         JSONObject res = new JSONObject();
         try {
+            supplier.setSupplierState(ClientState.Enabled);
             supplierService.add(supplier);
             res.put("status", "success");
             res.put("message", "操作成功");

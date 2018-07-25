@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jdlink.mapper.UserMapper">
     <insert id="add" parameterType="User" >
-        insert into user ( username, password, clientId, isAdmin, nowTime)values (#{username}, #{password}, #{clientId}, #{isAdmin}, #{nowTime})
+        insert into user ( username, password, clientId, isAdmin, nowTime)values (#{username}, #{password}, #{clientId}, #{isAdmin}, NOW())
     </insert>
 
     <delete id="delete" parameterType="User" >
@@ -32,7 +32,7 @@
     </select>
 
     <insert id="addLog" parameterType="LoginLog">
-        INSERT INTO t_loginlog (userId, username, time, ip, nowTime) VALUES (#{userId}, #{username}, #{time}, #{ip}, #{nowTime});
+        INSERT INTO t_loginlog (userId, username, time, ip, nowTime) VALUES (#{userId}, #{username}, #{time}, #{ip}, NOW());
     </insert>
 
     <select id="getLogById" parameterType="int" resultType="LoginLog">

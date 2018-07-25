@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import java.util.Date;
+
 /**
  * Created by matt on 2018/4/23.
  */
@@ -10,6 +12,30 @@ public class User {
     private String password;
     private String clientId;
     private boolean isAdmin;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
 
     public int getId() {
         return id;
@@ -51,14 +77,4 @@ public class User {
         isAdmin = admin;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", isAdmin=" + isAdmin +
-                '}';
-    }
 }
