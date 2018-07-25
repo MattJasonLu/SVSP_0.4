@@ -401,7 +401,7 @@ function contractSubmit(){
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyName">供应商名称</label>
                         <div class="col-xs-4">
-                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName">
+                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findSuppier();">
                             </select>
                         </div>
                     </div>
@@ -637,6 +637,30 @@ function contractSubmit(){
     window.history.back=function () {
         localStorage.name="Logistics";
         location.href="contractManage.html";
+    }
+    function findSuppier() {
+        //1获取选中的值====>供应商名称
+      var companyName=($('#companyName').val());
+        //2根据名称获取供应商数据 用ajax
+        $.ajax({
+            type:"POST",
+            url:"getSuppier",
+            dataType: "json",
+            data:{"companyName":companyName},
+            success:function (result) {
+             var obj=eval(result);
+             console.log(obj);
+             //开始赋值
+
+
+            },
+            error:function (result) {
+
+            }
+        });
+
+        //3赋值给相应字段
+
     }
 </script>
 </html>
