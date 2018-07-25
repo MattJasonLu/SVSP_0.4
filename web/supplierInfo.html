@@ -138,15 +138,15 @@
                         enterpriseType.append(option);
                     });
                     enterpriseType.get(0).selectedIndex = -1;
-                    var operationType = $("#operationType");
-                    operationType.children().remove();
-                    $.each(data.operationTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        operationType.append(option);
-                    });
-                    operationType.get(0).selectedIndex = -1;
+                    // var operationType = $("#operationType");
+                    // operationType.children().remove();
+                    // $.each(data.operationTypeStrList, function (index, item) {
+                    //     var option = $('<option />');
+                    //     option.val(index);
+                    //     option.text(item.name);
+                    //     operationType.append(option);
+                    // });
+                    // operationType.get(0).selectedIndex = -1;
                     var operationRecord = $("#operationRecord");
                     operationRecord.children().remove();
                     $.each(data.operationRecordStrList, function (index, item) {
