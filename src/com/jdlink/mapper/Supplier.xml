@@ -21,12 +21,16 @@
         INSERT INTO t_supplier ( supplierId, groupId, companyName,
           organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
-          contactName, phone, mobile, email, industry, product, supplierType, checkState )
+          contactName, phone, mobile, email, industry, product, supplierType, checkState, supplierState,
+          taxNumber, registeredCapital, createDate, businessLimit, transportLicense, expirationDate,
+          bankName, bankAccount, ticketRate)
         VALUES (#{supplierId}, #{groupId}, #{companyName}, #{organizationCode}, #{licenseCode},
         #{representative}, #{postCode}, #{enterpriseType}, #{operationMode}, #{operationType},
         #{contingencyPlan}, #{operationRecord}, #{location}, #{street}, #{applicationStatus},
         #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
-        #{checkState})
+        #{checkState}, #{supplierState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
+        #{createDate}, #{businessLimit}, #{transportLicense}, #{expirationDate}, #{bankName},
+        #{bankAccount}, #{ticketRate})
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -53,7 +57,10 @@
          enterpriseType=#{enterpriseType}, operationMode=#{operationMode}, operationType=#{operationType},
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, contactName=#{contactName}, supplierType=#{supplierType}, phone=#{phone},
-         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus}
+         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus},
+         taxNumber=#{taxNumber}, registeredCapital=#{registeredCapital}, createDate=#{createDate}, businessLimit=#{businessLimit},
+         transportLicense=#{transportLicense}, expirationDate=#{expirationDate}, bankName=#{bankName},
+         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}
          WHERE supplierId=#{supplierId}
     </update>
 
