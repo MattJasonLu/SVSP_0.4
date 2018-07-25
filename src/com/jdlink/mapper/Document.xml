@@ -49,6 +49,6 @@
     </select>
 
     <update id="updateFilePath" parameterType="Document">
-        UPDATE t_document SET filePath=#{filePath} WHERE fileId=#{fileId};
+        UPDATE t_document SET filePath=#{filePath}, nowTime=NOW() WHERE fileId=#{fileId};
     </update>
 </mapper>

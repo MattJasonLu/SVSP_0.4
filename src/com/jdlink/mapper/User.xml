@@ -25,7 +25,7 @@
     </select>
 
     <update id="update" parameterType="User" >
-        update user set password=#{password} where id=#{id}
+        update user set password=#{password}, nowTime=NOW() where id=#{id}
     </update>
     <select id="list" resultType="User">
         select * from user order by nowTime desc;

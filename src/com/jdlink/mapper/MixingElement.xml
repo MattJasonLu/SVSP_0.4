@@ -19,7 +19,7 @@
 
     <update id="update" parameterType="MixingElement" >
         update t_mixingElement set name=#{name}, minimum=#{minimum}, average=#{average},
-          maximum=#{maximum} where id=#{id}
+          maximum=#{maximum}, nowTime=NOW() where id=#{id}
     </update>
     <select id="list" resultType="MixingElement">
         select * from t_mixingElement order by nowTime desc;
