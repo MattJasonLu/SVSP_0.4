@@ -2,6 +2,8 @@ package com.jdlink.domain;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
+
 /**
  * Created by matt on 2018/4/23.
  * 供应商类
@@ -130,6 +132,42 @@ public class Supplier {
      * 账号状态
      */
     private ClientState supplierState;
+    /**
+     * 税号
+     */
+    private String taxNumber;
+    /**
+     * 注册资本
+     */
+    private String registeredCapital;
+    /**
+     * 成立日期
+     */
+    private Date createDate;
+    /**
+     * 营业期限
+     */
+    private String businessLimit;
+    /**
+     * 道路运输许可证号
+     */
+    private String transportLicense;
+    /**
+     * 证件有效期
+     */
+    private Date expirationDate;
+    /**
+     * 开户行名称
+     */
+    private String bankName;
+    /**
+     * 开户行账号
+     */
+    private String bankAccount;
+    /**
+     * 开票税率
+     */
+    private TicketRate1 ticketRate;
 
     public String getGroupId() {
         return groupId;
@@ -363,6 +401,78 @@ public class Supplier {
         this.supplierType = supplierType;
     }
 
+    public String getTaxNumber() {
+        return taxNumber;
+    }
+
+    public void setTaxNumber(String taxNumber) {
+        this.taxNumber = taxNumber;
+    }
+
+    public String getRegisteredCapital() {
+        return registeredCapital;
+    }
+
+    public void setRegisteredCapital(String registeredCapital) {
+        this.registeredCapital = registeredCapital;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getBusinessLimit() {
+        return businessLimit;
+    }
+
+    public void setBusinessLimit(String businessLimit) {
+        this.businessLimit = businessLimit;
+    }
+
+    public String getTransportLicense() {
+        return transportLicense;
+    }
+
+    public void setTransportLicense(String transportLicense) {
+        this.transportLicense = transportLicense;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public TicketRate1 getTicketRate() {
+        return ticketRate;
+    }
+
+    public void setTicketRate(TicketRate1 ticketRate) {
+        this.ticketRate = ticketRate;
+    }
+
     @Override
     public String toString() {
         return "Supplier{" +
@@ -394,6 +504,16 @@ public class Supplier {
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
                 ", checkState=" + checkState +
+                ", supplierState=" + supplierState +
+                ", taxNumber='" + taxNumber + '\'' +
+                ", registeredCapital='" + registeredCapital + '\'' +
+                ", createDate=" + createDate +
+                ", businessLimit='" + businessLimit + '\'' +
+                ", transportLicense='" + transportLicense + '\'' +
+                ", expirationDate=" + expirationDate +
+                ", bankName='" + bankName + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", ticketRate=" + ticketRate +
                 '}';
     }
 }
