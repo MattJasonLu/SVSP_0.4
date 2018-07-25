@@ -23,14 +23,14 @@
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
           contactName, phone, mobile, email, industry, product, supplierType, checkState, supplierState,
           taxNumber, registeredCapital, createDate, businessLimit, transportLicense, expirationDate,
-          bankName, bankAccount, ticketRate)
+          bankName, bankAccount, ticketRate,nowTime)
         VALUES (#{supplierId}, #{groupId}, #{companyName}, #{organizationCode}, #{licenseCode},
         #{representative}, #{postCode}, #{enterpriseType}, #{operationMode}, #{operationType},
         #{contingencyPlan}, #{operationRecord}, #{location}, #{street}, #{applicationStatus},
         #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
         #{checkState}, #{supplierState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
         #{createDate}, #{businessLimit}, #{transportLicense}, #{expirationDate}, #{bankName},
-        #{bankAccount}, #{ticketRate})
+        #{bankAccount}, #{ticketRate}, #{nowTime})
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -60,7 +60,7 @@
          mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus},
          taxNumber=#{taxNumber}, registeredCapital=#{registeredCapital}, createDate=#{createDate}, businessLimit=#{businessLimit},
          transportLicense=#{transportLicense}, expirationDate=#{expirationDate}, bankName=#{bankName},
-         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}
+         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}, nowTime=#{nowTime}
          WHERE supplierId=#{supplierId}
     </update>
 
@@ -89,7 +89,7 @@
     </update>
 
     <select id="list" resultMap="SupplierRM">
-        select * from t_supplier;
+        select * from t_supplier order by nowTime desc ;
     </select>
 
     <select id="count" resultType="int">
