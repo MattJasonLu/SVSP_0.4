@@ -309,7 +309,7 @@
                         option.text(item.name);
                         operationType.append(option);
                     });
-                    if (operationType != null) operationType.get(0).selectedIndex = operationTypeIndex;
+                    if (operationTypeIndex != null) operationType.get(0).selectedIndex = operationTypeIndex;
                     else operationType.get(0).selectedIndex = -1;
                     var operationRecord = $("#operationRecord");
                     operationRecord.children().remove();
@@ -319,7 +319,7 @@
                         option.text(item.name);
                         operationRecord.append(option);
                     });
-                    if (operationRecord != null) operationRecord.get(0).selectedIndex = operationRecordIndex;
+                    if (operationRecordIndex != null) operationRecord.get(0).selectedIndex = operationRecordIndex;
                     else operationRecord.get(0).selectedIndex = -1;
                     var operationMode = $("#operationMode");
                     operationMode.children().remove();
@@ -329,7 +329,7 @@
                         option.text(item.name);
                         operationMode.append(option);
                     });
-                    if (operationMode != null) operationMode.get(0).selectedIndex = operationModeIndex;
+                    if (operationModeIndex != null) operationMode.get(0).selectedIndex = operationModeIndex;
                     else operationMode.get(0).selectedIndex = -1;
                     var contingencyPlan = $("#contingencyPlan");
                     contingencyPlan.children().remove();
@@ -339,7 +339,7 @@
                         option.text(item.name);
                         contingencyPlan.append(option);
                     });
-                    if (contingencyPlan != null) contingencyPlan.get(0).selectedIndex = contingencyPlanIndex;
+                    if (contingencyPlanIndex != null) contingencyPlan.get(0).selectedIndex = contingencyPlanIndex;
                     else contingencyPlan.get(0).selectedIndex = -1;
                     var applicationStatus = $("#applicationStatus");
                     applicationStatus.children().remove();
@@ -349,7 +349,7 @@
                         option.text(item.name);
                         applicationStatus.append(option);
                     });
-                    if (applicationStatus != null) applicationStatus.get(0).selectedIndex = applicationStatusIndex;
+                    if (applicationStatusIndex != null) applicationStatus.get(0).selectedIndex = applicationStatusIndex;
                     else applicationStatus.get(0).selectedIndex = -1;
                     var ticketType = $("#ticketType");
                     ticketType.children().remove();
@@ -359,7 +359,7 @@
                         option.text(item.name);
                         ticketType.append(option);
                     });
-                    if (ticketType != null) ticketType.get(0).selectedIndex = ticketTypeIndex;
+                    if (ticketTypeIndex != null) ticketType.get(0).selectedIndex = ticketTypeIndex;
                     else ticketType.get(0).selectedIndex = -1;
                 } else {
                     console.log(result);
