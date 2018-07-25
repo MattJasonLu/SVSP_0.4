@@ -52,7 +52,16 @@ public class SupplierController {
      JSONObject res=JSONObject.fromBean(supplier);
      return res.toString();
     }
-
+    /**
+     * 根据公司名称查找供应商
+     */
+    @RequestMapping("getSuppier")
+    @ResponseBody
+    public String getSuppier(String companyName){
+        Supplier supplier=supplierService.getByName(companyName);
+        JSONObject res=JSONObject.fromBean(supplier);
+        return res.toString();
+    }
 
 
     @RequestMapping("showSupplier")

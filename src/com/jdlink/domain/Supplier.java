@@ -168,6 +168,10 @@ public class Supplier {
      * 开票税率
      */
     private TicketRate1 ticketRate;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
 
     public String getGroupId() {
         return groupId;
@@ -473,6 +477,14 @@ public class Supplier {
         this.ticketRate = ticketRate;
     }
 
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
+
     @Override
     public String toString() {
         return "Supplier{" +
@@ -514,6 +526,7 @@ public class Supplier {
                 ", bankName='" + bankName + '\'' +
                 ", bankAccount='" + bankAccount + '\'' +
                 ", ticketRate=" + ticketRate +
+                ", nowTime=" + nowTime +
                 '}';
     }
 }

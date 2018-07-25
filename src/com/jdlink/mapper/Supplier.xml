@@ -28,7 +28,7 @@
         #{representative}, #{postCode}, #{enterpriseType}, #{operationMode}, #{operationType},
         #{contingencyPlan}, #{operationRecord}, #{location}, #{street}, #{applicationStatus},
         #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
-        #{checkState}, #{supplierState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
+        #{checkState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
         #{createDate}, #{businessLimit}, #{transportLicense}, #{expirationDate}, #{bankName},
         #{bankAccount}, #{ticketRate}, #{nowTime})
     </insert>
