@@ -107,6 +107,61 @@ public class Questionnaire {
     private String conditionReason3;
 
     private boolean isExamined;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "Questionnaire{" +
+                "questionnaireId='" + questionnaireId + '\'' +
+                ", client=" + client +
+                ", evaluationnaireId='" + evaluationnaireId + '\'' +
+                ", author='" + author + '\'' +
+                ", applyState=" + applyState +
+                ", rawWastesList=" + rawWastesList +
+                ", wasteInclusionTypeList=" + wasteInclusionTypeList +
+                ", wasteProcessList=" + wasteProcessList +
+                ", deriveWastesList=" + deriveWastesList +
+                ", time=" + time +
+                ", attachment=" + attachment +
+                ", attachmentUrl='" + attachmentUrl + '\'' +
+                ", isMaterialComplete=" + isMaterialComplete +
+                ", notCompleteReason='" + notCompleteReason + '\'' +
+                ", isMeetRequire=" + isMeetRequire +
+                ", isCooperate=" + isCooperate +
+                ", isDedicate=" + isDedicate +
+                ", acceptIntend1='" + acceptIntend1 + '\'' +
+                ", wasteName1='" + wasteName1 + '\'' +
+                ", wasteName2='" + wasteName2 + '\'' +
+                ", wasteName3='" + wasteName3 + '\'' +
+                ", wasteName4='" + wasteName4 + '\'' +
+                ", wasteName5='" + wasteName5 + '\'' +
+                ", wasteName6='" + wasteName6 + '\'' +
+                ", otherRisk='" + otherRisk + '\'' +
+                ", acceptIntend2='" + acceptIntend2 + '\'' +
+                ", unacceptReason2='" + unacceptReason2 + '\'' +
+                ", conditionReason2='" + conditionReason2 + '\'' +
+                ", isStore=" + isStore +
+                ", storeReason='" + storeReason + '\'' +
+                ", isProcess=" + isProcess +
+                ", processReason='" + processReason + '\'' +
+                ", acceptIntend3='" + acceptIntend3 + '\'' +
+                ", unacceptReason3='" + unacceptReason3 + '\'' +
+                ", conditionReason3='" + conditionReason3 + '\'' +
+                ", isExamined=" + isExamined +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getQuestionnaireId() {
         return questionnaireId;
@@ -396,44 +451,4 @@ public class Questionnaire {
         isExamined = examined;
     }
 
-    @Override
-    public String toString() {
-        return "Questionnaire{" +
-                "questionnaireId='" + questionnaireId + '\'' +
-                ", client=" + client +
-                ", evaluationnaireId='" + evaluationnaireId + '\'' +
-                ", author='" + author + '\'' +
-                ", applyState=" + applyState +
-                ", rawWastesList=" + rawWastesList +
-                ", wasteInclusionTypeList=" + wasteInclusionTypeList +
-                ", wasteProcessList=" + wasteProcessList +
-                ", deriveWastesList=" + deriveWastesList +
-                ", time=" + time +
-                ", attachment=" + attachment +
-                ", attachmentUrl='" + attachmentUrl + '\'' +
-                ", isMaterialComplete=" + isMaterialComplete +
-                ", notCompleteReason='" + notCompleteReason + '\'' +
-                ", isMeetRequire=" + isMeetRequire +
-                ", isCooperate=" + isCooperate +
-                ", isDedicate=" + isDedicate +
-                ", acceptIntend1='" + acceptIntend1 + '\'' +
-                ", wasteName1='" + wasteName1 + '\'' +
-                ", wasteName2='" + wasteName2 + '\'' +
-                ", wasteName3='" + wasteName3 + '\'' +
-                ", wasteName4='" + wasteName4 + '\'' +
-                ", wasteName5='" + wasteName5 + '\'' +
-                ", wasteName6='" + wasteName6 + '\'' +
-                ", otherRisk='" + otherRisk + '\'' +
-                ", acceptIntend2='" + acceptIntend2 + '\'' +
-                ", unacceptReason2='" + unacceptReason2 + '\'' +
-                ", conditionReason2='" + conditionReason2 + '\'' +
-                ", isStore=" + isStore +
-                ", storeReason='" + storeReason + '\'' +
-                ", isProcess=" + isProcess +
-                ", processReason='" + processReason + '\'' +
-                ", acceptIntend3='" + acceptIntend3 + '\'' +
-                ", unacceptReason3='" + unacceptReason3 + '\'' +
-                ", conditionReason3='" + conditionReason3 + '\'' +
-                '}';
-    }
 }

@@ -36,6 +36,32 @@ public class WasteProcess {
      * 包装现状
      */
     private String packageSituation;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "WasteProcess{" +
+                "processId='" + processId + '\'' +
+                ", code='" + code + '\'' +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                ", lastProcessTime=" + lastProcessTime +
+                ", yearQuantity=" + yearQuantity +
+                ", packageSituation='" + packageSituation + '\'' +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getProcessId() {
         return processId;
@@ -104,16 +130,4 @@ public class WasteProcess {
         this.packageSituation = packageSituation;
     }
 
-    @Override
-    public String toString() {
-        return "WasteProcess{" +
-                "processId='" + processId + '\'' +
-                ", code='" + code + '\'' +
-                ", description='" + description + '\'' +
-                ", quantity=" + quantity +
-                ", lastProcessTime=" + lastProcessTime +
-                ", yearQuantity=" + yearQuantity +
-                ", packageSituation='" + packageSituation + '\'' +
-                '}';
-    }
 }

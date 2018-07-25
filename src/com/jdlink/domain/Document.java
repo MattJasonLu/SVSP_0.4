@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import java.util.Date;
+
 /**
  * Created by matt on 2018/7/8.
  */
@@ -9,6 +11,30 @@ public class Document {
     private String fileName;
     private String filePath;
     private DocumentType documentType;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "fileId='" + fileId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", documentType=" + documentType +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getFileId() {
         return fileId;
@@ -50,14 +76,4 @@ public class Document {
         this.documentType = documentType;
     }
 
-    @Override
-    public String toString() {
-        return "Document{" +
-                "fileId='" + fileId + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", fileName='" + fileName + '\'' +
-                ", filePath='" + filePath + '\'' +
-                ", documentType=" + documentType +
-                '}';
-    }
 }

@@ -600,4 +600,58 @@ private  TicketRate1 ticketRate1;
     public void setContractType(ContractType contractType) {
         this.contractType = contractType;
     }
+
+    @Override
+    public String toString() {
+        return "Contract{" +
+                "contractId='" + contractId + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", contractName='" + contractName + '\'' +
+                ", isCompanyContract=" + isCompanyContract +
+                ", area='" + area + '\'' +
+                ", checkState=" + checkState +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", agreedQuantity=" + agreedQuantity +
+                ", contactName='" + contactName + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", reviewer='" + reviewer + '\'' +
+                ", reviewDepartment='" + reviewDepartment + '\'' +
+                ", reviewDate=" + reviewDate +
+                ", contractType=" + contractType +
+                ", contractVersion=" + contractVersion +
+                ", province=" + province +
+                ", city='" + city + '\'' +
+                ", order1='" + order1 + '\'' +
+                ", isFreight=" + isFreight +
+                ", clientId='" + clientId + '\'' +
+                ", bankName='" + bankName + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", key='" + key + '\'' +
+                ", ticketRate1=" + ticketRate1 +
+                ", ticketRate2=" + ticketRate2 +
+                ", logisticsQualification='" + logisticsQualification + '\'' +
+                ", beginQualification=" + beginQualification +
+                ", endQualification=" + endQualification +
+                ", wasteName=" + wasteName +
+                ", tonNumber=" + tonNumber +
+                ", companyLegal='" + companyLegal + '\'' +
+                ", companyAgent='" + companyAgent + '\'' +
+                ", clientLegal='" + clientLegal + '\'' +
+                ", clientAgent='" + clientAgent + '\'' +
+                ", modelName='" + modelName + '\'' +
+                ", year='" + year + '\'' +
+                ", period='" + period + '\'' +
+                ", contractContent='" + contractContent + '\'' +
+                ", address='" + address + '\'' +
+                ", thing='" + thing + '\'' +
+                ", modelVersion='" + modelVersion + '\'' +
+                ", opinion='" + opinion + '\'' +
+                ", backContent='" + backContent + '\'' +
+                ", keyword='" + keyword + '\'' +
+                ", hazardousList=" + hazardousList +
+                ", nowTime='" + nowTime + '\'' +
+                ", addType='" + addType + '\'' +
+                '}';
+    }
 }
