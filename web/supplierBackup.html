@@ -793,6 +793,7 @@
                //主要产品
                 $('#modal3_product').text(data.product);
                 //经营方式
+                if(data.operationMode.name!=null)
                 $('#modal3_operationMode').text(data.operationMode.name);
                 //事故防范和应急预案
                 $('#modal3_contingencyPlan').text(data.contingencyPlan.name);

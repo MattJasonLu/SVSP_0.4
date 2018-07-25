@@ -566,10 +566,10 @@
      */
     function appointModal() {
         $('.selectpicker').selectpicker('val', '');
-        $("#model-contactName").val("");
-        $("#model-appointTime").val("");
-        $("#model-telephone").val("");
-        $("#model-comment").val("");
+        $("#model-contactName").text("");
+        $("#model-appointTime").text("");
+        $("#model-telephone").text("");
+        $("#model-comment").text("");
         $("#appointBtn").text("预约");
         $("#appointBtn").unbind();
         $("#appointBtn").click(function(){
@@ -596,11 +596,11 @@
                 if (result != undefined) {
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("#model1-companyName").val(data.data.companyName);
-                        $("#model1-contactName").val(data.data.contactName);
-                        $("#model1-telephone").val(data.data.telephone);
-                        $("#model1-appointTime").val(getTimeStr(data.data.appointTime));
-                        $("#model1-comment").val(data.data.comment);
+                        $("#model1-companyName").text(data.data.companyName);
+                        $("#model1-contactName").text(data.data.contactName);
+                        $("#model1-telephone").text(data.data.telephone);
+                        $("#model1-appointTime").text(getTimeStr(data.data.appointTime));
+                        $("#model1-comment").text(data.data.comment);
                         // 显示框体
                         $('#viewAppointModal').modal('show');
                     } else {

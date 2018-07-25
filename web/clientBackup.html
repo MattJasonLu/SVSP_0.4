@@ -893,7 +893,7 @@
      * 审批通过客户
      */
     function passClient() {
-        var id = $("#modal4_clientId").val();
+        var id = $("#modal4_clientId").text();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "passClient",               // url
@@ -924,7 +924,7 @@
      * 驳回客户
      */
     function backClient() {
-        var id = $("#modal4_clientId").val();
+        var id = $("#modal4_clientId").text();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "backClient",               // url
