@@ -95,4 +95,13 @@
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM t_supplier;
     </select>
+
+    <update id="setFilePath" parameterType="Supplier">
+        <if test="licenseFile1Url != null and licenseFile1Url != ''">
+            UPDATE t_supplier SET licenseFile1Url=#{licenseFile1Url} WHERE supplierId=#{supplierId};
+        </if>
+        <if test="licenseFile2Url != null and licenseFile2Url != ''">
+            UPDATE t_supplier SET licenseFile2Url=#{licenseFile2Url} WHERE supplierId=#{supplierId};
+        </if>
+    </update>
 </mapper>
