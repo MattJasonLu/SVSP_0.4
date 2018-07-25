@@ -95,19 +95,19 @@
     </select>
 
     <update id="setStateDisabled" parameterType="String">
-        UPDATE t_quotation SET checkState='Invalid' WHERE id=#{id};
+        UPDATE t_quotation SET checkState='Invalid', nowTime=NOW() WHERE id=#{id};
     </update>
 
     <update id="approval" parameterType="String">
-        UPDATE t_quotation SET checkState='Finished',advice=#{advice} WHERE id=#{id};
+        UPDATE t_quotation SET checkState='Finished',advice=#{advice}, nowTime=NOW() WHERE id=#{id};
     </update>
 
     <update id="reject" parameterType="String">
-        UPDATE t_quotation SET checkState='Backed',advice=#{advice} WHERE id=#{id};
+        UPDATE t_quotation SET checkState='Backed',advice=#{advice}, nowTime=NOW() WHERE id=#{id};
     </update>
 
     <update id="changeEndDate" parameterType="Quotation">
-        UPDATE t_quotation SET endDate=#{endDate}, checkState=#{checkState} WHERE id=#{id};
+        UPDATE t_quotation SET endDate=#{endDate}, checkState=#{checkState}, nowTime=NOW() WHERE id=#{id};
     </update>
 
 

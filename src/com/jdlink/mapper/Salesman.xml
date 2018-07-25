@@ -43,7 +43,7 @@
     </update>
 
     <update id="assignClient" parameterType="Salesman">
-        UPDATE salesman SET clientId=#{clientId},companyName=#{companyName} WHERE salesmanId=#{salesmanId};
+        UPDATE salesman SET clientId=#{clientId},companyName=#{companyName}, nowTime=NOW() WHERE salesmanId=#{salesmanId};
     </update>
 
     <select id="list" resultType="Salesman">
