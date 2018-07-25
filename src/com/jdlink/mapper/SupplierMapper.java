@@ -37,4 +37,6 @@ public interface SupplierMapper {
 
     int count();
 
+    void setFilePath(Supplier supplier);
+
 }

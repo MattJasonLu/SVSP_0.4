@@ -7,20 +7,20 @@
     <insert id="add" parameterType="SampleCheck" >
         INSERT INTO t_sampleCheck (checkId, clientId, appointId, companyName,
         productName, code, contactName, telephone, createTime, recipient,
-        formType, color, quantity, packageType, mainComponent) VALUES (#{checkId}, #{clientId},
+        formType, color, quantity, packageType, mainComponent, nowTime) VALUES (#{checkId}, #{clientId},
         #{appointId}, #{companyName}, #{productName}, #{code}, #{contactName},
         #{telephone}, #{createTime}, #{recipient}, #{formType}, #{color},
-        #{quantity}, #{packageType}, #{mainComponent});
+        #{quantity}, #{packageType}, #{mainComponent}, NOW());
     </insert>
 
     <update id="update" parameterType="SampleCheck">
         UPDATE t_samplecheck SET contactName=#{contactName}, telephone=#{telephone}, productName=#{productName},
         code=#{code}, recipient=#{recipient}, color=#{color}, formType=#{formType}, packageType=#{packageType},
-        quantity=#{quantity}, mainComponent=#{mainComponent} WHERE checkId=#{checkId};
+        quantity=#{quantity}, mainComponent=#{mainComponent}, nowTime=NOW() WHERE checkId=#{checkId};
     </update>
 
     <delete id="delete" parameterType="SampleCheck" >
-        DELETE FROM t_sampleCheck WHERE checkId=#{checkId};
+        DELETE FROM t_sampleCheck, nowTime=NOW() WHERE checkId=#{checkId};
     </delete>
 
     <select id="getById" parameterType="String" resultType="SampleCheck">
@@ -28,6 +28,6 @@
     </select>
 
     <select id="list" resultType="SampleCheck">
-        select * from t_sampleCheck;
+        select * from t_sampleCheck order by nowTime desc;
     </select>
 </mapper>

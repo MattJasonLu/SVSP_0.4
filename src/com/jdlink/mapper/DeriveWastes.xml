@@ -19,12 +19,12 @@
         insert into t_deriveWastes ( id, name, code, formType, formTypeDetail,
         smellType, smellTypeDetail, solubility, solubilityDetail, isLowTemp,
         lowTemp, solubleTemp, isMixture, eyeMeasures, skinMeasures, swallowMeasures,
-        suctionMeasures, putOutFireMeasures, leakMeasures )
+        suctionMeasures, putOutFireMeasures, leakMeasures, nowTime )
         values ( #{id}, #{name}, #{code}, #{formType}, #{formTypeDetail},
         #{smellType}, #{smellTypeDetail}, #{solubility}, #{solubilityDetail},
         #{isLowTemp}, #{lowTemp}, #{solubleTemp}, #{isMixture}, #{eyeMeasures},
         #{skinMeasures}, #{swallowMeasures}, #{suctionMeasures}, #{putOutFireMeasures},
-        #{leakMeasures} );
+        #{leakMeasures}, NOW());
         <if test="mixingElementList != null and mixingElementList.size() > 0">
             insert into r_deriveWastesAndMixingElement (deriveWastesId,mixingElementId)
             values
@@ -101,7 +101,7 @@
     </select>
 
     <select id="list" resultType="DeriveWastes">
-        select * from t_deriveWastes
+        select * from t_deriveWastes order by nowTime desc;
     </select>
 
     <update id="update" parameterType="DeriveWastes">
@@ -109,7 +109,7 @@
         smellType=#{smellType}, smellTypeDetail=#{smellTypeDetail}, solubility=#{solubility}, solubilityDetail=#{solubilityDetail},
         isLowTemp=#{isLowTemp}, lowTemp=#{lowTemp}, solubleTemp=#{solubleTemp}, isMixture=#{isMixture}, eyeMeasures=#{eyeMeasures},
         skinMeasures=#{skinMeasures}, swallowMeasures=#{swallowMeasures}, suctionMeasures=#{suctionMeasures},
-        putOutFireMeasures=#{putOutFireMeasures}, leakMeasures=#{leakMeasures}
+        putOutFireMeasures=#{putOutFireMeasures}, leakMeasures=#{leakMeasures}, nowTime=NOW()
         WHERE t_deriveWastes.id=#{id};
 
         DELETE FROM r_deriveWastesAndWasteCharacter WHERE r_deriveWastesAndWasteCharacter.deriveWastesId=#{id};

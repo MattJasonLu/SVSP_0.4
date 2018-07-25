@@ -46,6 +46,35 @@ public class SampleAppoint {
      * 备注
      */
     private String comment;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "SampleAppoint{" +
+                "appointId='" + appointId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", productName='" + productName + '\'' +
+                ", code='" + code + '\'' +
+                ", contactName='" + contactName + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", state=" + state +
+                ", appointTime=" + appointTime +
+                ", comment='" + comment + '\'' +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getClientId() {
         return clientId;
@@ -127,18 +156,4 @@ public class SampleAppoint {
         this.comment = comment;
     }
 
-    @Override
-    public String toString() {
-        return "SampleAppoint{" +
-                "appointId='" + appointId + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", productName='" + productName + '\'' +
-                ", code='" + code + '\'' +
-                ", contactName='" + contactName + '\'' +
-                ", telephone='" + telephone + '\'' +
-                ", state=" + state +
-                ", appointTime=" + appointTime +
-                ", comment='" + comment + '\'' +
-                '}';
-    }
 }

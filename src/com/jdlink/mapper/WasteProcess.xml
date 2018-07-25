@@ -5,8 +5,8 @@
 
 <mapper namespace="com.jdlink.mapper.WasteProcessMapper">
     <insert id="add" parameterType="WasteProcess" >
-        insert into t_wasteProcess ( processId, code, description, quantity, lastProcessTime, yearQuantity, packageSituation )
-        values (#{processId}, #{code}, #{description}, #{quantity}, #{lastProcessTime}, #{yearQuantity}, #{packageSituation});
+        insert into t_wasteProcess ( processId, code, description, quantity, lastProcessTime, yearQuantity, packageSituation, nowTime)
+        values (#{processId}, #{code}, #{description}, #{quantity}, #{lastProcessTime}, #{yearQuantity}, #{packageSituation}, NOW());
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -25,10 +25,10 @@
 
     <update id="update" parameterType="WasteProcess" >
         update t_wasteProcess set code=#{code},description=#{description},quantity=#{quantity},
-        lastProcessTime=#{lastProcessTime},yearQuantity=#{yearQuantity},packageSituation=#{packageSituation}
+        lastProcessTime=#{lastProcessTime},yearQuantity=#{yearQuantity},packageSituation=#{packageSituation}, nowTime=NOW()
          where processId=#{processId};
     </update>
     <select id="list" resultType="WasteProcess">
-        select * from t_wasteProcess
+        select * from t_wasteProcess order by nowTime desc;
     </select>
 </mapper>

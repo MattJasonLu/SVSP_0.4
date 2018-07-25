@@ -5,8 +5,8 @@
 
 <mapper namespace="com.jdlink.mapper.RawWastesMapper">
     <insert id="add" parameterType="RawWastes" >
-        insert into t_rawWastes ( materialId, code, mainMaterial, auxMaterial, draginMaterial )
-        values (#{materialId}, #{code}, #{mainMaterial}, #{auxMaterial}, #{draginMaterial});
+        insert into t_rawWastes ( materialId, code, mainMaterial, auxMaterial, draginMaterial, nowTime)
+        values (#{materialId}, #{code}, #{mainMaterial}, #{auxMaterial}, #{draginMaterial}, NOW());
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -25,9 +25,9 @@
 
     <update id="update" parameterType="RawWastes" >
         update t_rawWastes set code=#{code}, mainMaterial=#{mainMaterial}, auxMaterial=#{auxMaterial},
-          draginMaterial=#{draginMaterial} where materialId=#{materialId}
+          draginMaterial=#{draginMaterial}, nowTime=NOW() where materialId=#{materialId}
     </update>
     <select id="list" resultType="RawWastes">
-        select * from t_rawWastes
+        select * from t_rawWastes order by nowTime desc;
     </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.ClientState;
 import com.jdlink.domain.Supplier;
 import com.jdlink.service.SupplierService;
 import net.sf.json.JSONArray;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -52,7 +55,16 @@ public class SupplierController {
      JSONObject res=JSONObject.fromBean(supplier);
      return res.toString();
     }
-
+    /**
+     * 根据公司名称查找供应商
+     */
+    @RequestMapping("getSuppier")
+    @ResponseBody
+    public String getSuppier(String companyName){
+        Supplier supplier=supplierService.getByName(companyName);
+        JSONObject res=JSONObject.fromBean(supplier);
+        return res.toString();
+    }
 
 
     @RequestMapping("showSupplier")
@@ -71,6 +83,7 @@ public class SupplierController {
     public String addSupplier(@RequestBody Supplier supplier) {
         JSONObject res = new JSONObject();
         try {
+            supplier.setSupplierState(ClientState.Enabled);
             supplierService.add(supplier);
             res.put("status", "success");
             res.put("message", "操作成功");
@@ -330,6 +343,43 @@ public class SupplierController {
         } catch (Exception e) {
             res.put("status", "fail");
             res.put("message", "驳回失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("saveSupplierFiles")
+    @ResponseBody
+    public String saveSupplierFiles(String supplierId, MultipartFile licenseFile1, MultipartFile licenseFile2) {
+        JSONObject res = new JSONObject();
+        try {
+            Supplier supplier = new Supplier();
+            supplier.setSupplierId(supplierId);
+            // 若文件夹不存在则创建文件夹
+            String supplierPath = "Files/Supplier";
+            File supplierDir = new File(supplierPath);
+            if (!supplierDir.exists()) {
+                supplierDir.mkdirs();
+            }
+            if (licenseFile1 != null) {
+                String licenseFile1Name = supplierId + "-" +  licenseFile1.getOriginalFilename();
+                String licenseFile1Path = supplierPath + "/" + licenseFile1Name;
+                File licenseFile1File = new File(licenseFile1Path);
+                licenseFile1.transferTo(licenseFile1File);
+                supplier.setLicenseFile1Url(licenseFile1Path);
+            }
+            if (licenseFile2 != null) {
+                // 获取文件名字
+                String processName = supplierId + "-" + licenseFile2.getOriginalFilename();
+                String licenseFile2Path = supplierPath + "/" + processName;
+                File licenseFile2File = new File(licenseFile2Path);
+                licenseFile2.transferTo(licenseFile2File);
+                // 更新客户保存文件的路径
+                supplier.setLicenseFile2Url(licenseFile2Path);
+            }
+            // 更新供应商文件路径
+            supplierService.setFilePath(supplier);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return res.toString();
     }

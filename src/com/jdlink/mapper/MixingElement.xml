@@ -5,8 +5,8 @@
 
 <mapper namespace="com.jdlink.mapper.MixingElementMapper">
     <insert id="add" parameterType="MixingElement" >
-        insert into t_mixingElement ( id, name, minimum, average, maximum )
-        values (#{id}, #{name}, #{minimum}, #{average}, #{maximum} );
+        insert into t_mixingElement ( id, name, minimum, average, maximum, nowTime)
+        values (#{id}, #{name}, #{minimum}, #{average}, #{maximum}, NOW());
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -19,9 +19,9 @@
 
     <update id="update" parameterType="MixingElement" >
         update t_mixingElement set name=#{name}, minimum=#{minimum}, average=#{average},
-          maximum=#{maximum} where id=#{id}
+          maximum=#{maximum}, nowTime=NOW() where id=#{id}
     </update>
     <select id="list" resultType="MixingElement">
-        select * from t_mixingElement
+        select * from t_mixingElement order by nowTime desc;
     </select>
 </mapper>

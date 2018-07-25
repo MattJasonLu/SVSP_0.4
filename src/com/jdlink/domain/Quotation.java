@@ -76,6 +76,42 @@ public class Quotation {
      * 是否需要盖章
      */
     private boolean isStamp;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Quotation{" +
+                "id='" + id + '\'' +
+                ", quotationId='" + quotationId + '\'' +
+                ", name='" + name + '\'' +
+                ", version='" + version + '\'' +
+                ", client=" + client +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isContainTax=" + isContainTax +
+                ", isContainFreight=" + isContainFreight +
+                ", totalPriceTax=" + totalPriceTax +
+                ", totalPrice=" + totalPrice +
+                ", totalTax=" + totalTax +
+                ", totalAmount=" + totalAmount +
+                ", checkState=" + checkState +
+                ", wastesList=" + wastesList +
+                ", advice='" + advice + '\'' +
+                ", isStamp=" + isStamp +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getQuotationId() {
         return quotationId;
@@ -213,26 +249,4 @@ public class Quotation {
         isStamp = stamp;
     }
 
-    @Override
-    public String toString() {
-        return "Quotation{" +
-                "id='" + id + '\'' +
-                ", quotationId='" + quotationId + '\'' +
-                ", name='" + name + '\'' +
-                ", version='" + version + '\'' +
-                ", client=" + client +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", isContainTax=" + isContainTax +
-                ", isContainFreight=" + isContainFreight +
-                ", totalPriceTax=" + totalPriceTax +
-                ", totalPrice=" + totalPrice +
-                ", totalTax=" + totalTax +
-                ", totalAmount=" + totalAmount +
-                ", checkState=" + checkState +
-                ", wastesList=" + wastesList +
-                ", advice='" + advice + '\'' +
-                ", isStamp=" + isStamp +
-                '}';
-    }
 }

@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import java.util.Date;
+
 /**
  * Created by matt on 2018/5/2.
  * 混合物成分
@@ -21,6 +23,30 @@ public class MixingElement {
      * 最高预估含量(%)
      */
     private float maximum;
+    /**
+     * 当前时间
+     */
+    private Date nowTime;
+
+    @Override
+    public String toString() {
+        return "MixingElement{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", minimum=" + minimum +
+                ", average=" + average +
+                ", maximum=" + maximum +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
 
     public String getId() {
         return id;

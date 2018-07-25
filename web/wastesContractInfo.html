@@ -157,6 +157,7 @@ function loadContractSelectList() {
                 taxRate2.get(0).selectedIndex = -1;
 
 
+
             } else {
                 console.log(result);
             }
@@ -670,7 +671,6 @@ function contractSubmit(){
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
-
     CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
     $('.form_datetime1').datetimepicker({
         format: 'yyyy-mm-dd',

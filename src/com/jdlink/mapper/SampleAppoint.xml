@@ -6,9 +6,9 @@
 <mapper namespace="com.jdlink.mapper.SampleAppointMapper">
     <insert id="add" parameterType="SampleAppoint" >
         INSERT INTO t_sampleAppoint (appointId, clientId, companyName, productName,
-        code, contactName, telephone, state, appointTime, comment) VALUES (#{appointId},
+        code, contactName, telephone, state, appointTime, comment, nowTime) VALUES (#{appointId},
         #{clientId}, #{companyName}, #{productName}, #{code}, #{contactName}, #{telephone},
-        #{state}, #{appointTime}, #{comment})
+        #{state}, #{appointTime}, #{comment}, NOW())
     </insert>
 
     <delete id="delete" parameterType="SampleAppoint" >
@@ -39,27 +39,27 @@
     </select>
 
     <update id="updatePdtAndCode" parameterType="SampleCheck">
-        UPDATE t_sampleAppoint SET productName=#{productName}, code=#{code} WHERE
+        UPDATE t_sampleAppoint SET productName=#{productName}, code=#{code}, nowTime=NOW() WHERE
         appointId=#{appointId}
     </update>
 
     <update id="update" parameterType="SampleAppoint">
         UPDATE t_sampleappoint SET companyName=#{companyName}, contactName=#{contactName}, telephone=#{telephone},
-          clientId=#{clientId}, appointTime=#{appointTime}, comment=#{comment} WHERE appointId=#{appointId};
+          clientId=#{clientId}, appointTime=#{appointTime}, comment=#{comment}, nowTime=NOW() WHERE appointId=#{appointId};
     </update>
 
     <update id="setAppointed" parameterType="SampleAppoint">
-        UPDATE t_sampleAppoint SET state='Appointed' WHERE appointId=#{appointId}
+        UPDATE t_sampleAppoint SET state='Appointed', nowTime=NOW() WHERE appointId=#{appointId}
     </update>
 
     <update id="setSampleTaked" parameterType="SampleAppoint">
-        UPDATE t_sampleAppoint SET state='SampleTaked' WHERE appointId=#{appointId}
+        UPDATE t_sampleAppoint SET state='SampleTaked', nowTime=NOW() WHERE appointId=#{appointId}
     </update>
 
     <update id="setCanceld" parameterType="SampleAppoint">
-        UPDATE t_sampleAppoint SET state='Canceld' WHERE appointId=#{appointId}
+        UPDATE t_sampleAppoint SET state='Canceld', nowTime=NOW() WHERE appointId=#{appointId}
     </update>
     <update id="updateApplyState" parameterType="_int">
-        UPDATE  t_sampleappoint set state='Invalid' where appointId=#{appointId}
+        UPDATE  t_sampleappoint set state='Invalid', nowTime=NOW() where appointId=#{appointId}
    </update>
 </mapper>

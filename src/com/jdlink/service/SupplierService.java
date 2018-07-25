@@ -37,4 +37,6 @@ public interface SupplierService {
 
     int count();
 
+    void setFilePath(Supplier supplier);
+
 }

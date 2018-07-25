@@ -32,11 +32,11 @@
         reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime)
         values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},#{nowTime})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW())
     </insert>
     <insert id="addEm" parameterType="Contract">
      insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime)
-     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime},#{nowTime});
+     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime},NOW());
         <if test="hazardousList.size() > 0 ">
           <foreach collection="hazardousList"  item="hazardous" index="index">
               insert into r_contractandhazardous(contractId,hazardousId) values (#{contractId}, #{hazardous.id});
@@ -67,27 +67,27 @@
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=#{nowTime} WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=NOW() WHERE contractId=#{contractId};
     </update>
 <update id="updateEm" parameterType="Contract">
 UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
-telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName} WHERE contractId=#{contractId};
+telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName}, nowTime=NOW() WHERE contractId=#{contractId};
 </update>
     <update id="setCheckStateToExamine" parameterType="Contract">
-        UPDATE t_contract SET checkState='ToExamine' WHERE contractId=#{contractId};
+        UPDATE t_contract SET checkState='ToExamine', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
 
     <update id="setCheckStateKeeping" parameterType="Contract">
-        UPDATE t_contract SET checkState='Keeping' WHERE contractId=#{contractId};
+        UPDATE t_contract SET checkState='Keeping', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
 <update id="updateFreight1" parameterType="String">
-    update t_contract  set  isFreight='1' where contractId=#{id}
+    update t_contract  set  isFreight='1', nowTime=NOW() where contractId=#{id}
 </update>
     <update id="updateFreight2" parameterType="String">
-    update t_contract  set  isFreight='0' where contractId=#{id}
+    update t_contract  set  isFreight='0', nowTime=NOW() where contractId=#{id}
 </update>
     <update id="setCheckStateInvalid" parameterType="Contract">
-        UPDATE t_contract SET checkState='Invalid' WHERE contractId=#{contractId};
+        UPDATE t_contract SET checkState='Invalid', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
     <update id="toSubmit"  >
         UPDATE t_contract SET checkState='ToExamine', nowTime=#{1} WHERE contractId=#{0} ;
@@ -117,7 +117,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         delete from  t_contract  where contractId=#{contractId}
     </delete>
     <update id="approval" parameterType="String">
-        update t_contract set checkState="Keeping" where contractId=#{contractId}
+        update t_contract set checkState="Keeping", nowTime=NOW() where contractId=#{contractId}
     </update>
     <select id="modelName" resultMap="ContractRM" >
         select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') ;

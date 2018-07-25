@@ -21,12 +21,16 @@
         INSERT INTO t_supplier ( supplierId, groupId, companyName,
           organizationCode, licenseCode, representative, postCode, enterpriseType, operationMode,
           operationType, contingencyPlan, operationRecord, location, street, applicationStatus,
-          contactName, phone, mobile, email, industry, product, supplierType, checkState )
+          contactName, phone, mobile, email, industry, product, supplierType, checkState, supplierState,
+          taxNumber, registeredCapital, createDate, businessLimit, transportLicense, expirationDate,
+          bankName, bankAccount, ticketRate,nowTime)
         VALUES (#{supplierId}, #{groupId}, #{companyName}, #{organizationCode}, #{licenseCode},
         #{representative}, #{postCode}, #{enterpriseType}, #{operationMode}, #{operationType},
         #{contingencyPlan}, #{operationRecord}, #{location}, #{street}, #{applicationStatus},
         #{contactName}, #{phone}, #{mobile}, #{email}, #{industry}, #{product}, #{supplierType},
-        #{checkState})
+        #{checkState}, #{supplierState}, #{taxNumber}, #{registeredCapital},
+        #{createDate}, #{businessLimit}, #{transportLicense}, #{expirationDate}, #{bankName},
+        #{bankAccount}, #{ticketRate}, NOW())
     </insert>
 
     <delete id="delete" parameterType="String" >
@@ -53,39 +57,51 @@
          enterpriseType=#{enterpriseType}, operationMode=#{operationMode}, operationType=#{operationType},
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, contactName=#{contactName}, supplierType=#{supplierType}, phone=#{phone},
-         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus}
+         mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product},applicationStatus=#{applicationStatus},
+         taxNumber=#{taxNumber}, registeredCapital=#{registeredCapital}, createDate=#{createDate}, businessLimit=#{businessLimit},
+         transportLicense=#{transportLicense}, expirationDate=#{expirationDate}, bankName=#{bankName},
+         bankAccount=#{bankAccount}, ticketRate=#{ticketRate}, nowTime=NOW()
          WHERE supplierId=#{supplierId}
     </update>
 
     <update id="enable" parameterType="String">
-        UPDATE t_supplier SET supplierState='Enabled' WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET supplierState='Enabled', nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="disable" parameterType="String">
-        UPDATE t_supplier SET supplierState='Disabled' WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET supplierState='Disabled', nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateToSubmit" parameterType="String">
-        UPDATE t_supplier SET checkState='ToSubmit' WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkState='ToSubmit', nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateExamining" parameterType="String">
-        UPDATE t_supplier SET checkState='Examining' WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkState='Examining', nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateFinished" parameterType="String">
-        UPDATE t_supplier SET checkState='Finished' WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkState='Finished', nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <update id="setCheckStateBacked" parameterType="String">
-        UPDATE t_supplier SET checkState='Backed' WHERE supplierId=#{supplierId};
+        UPDATE t_supplier SET checkState='Backed', nowTime=NOW() WHERE supplierId=#{supplierId};
     </update>
 
     <select id="list" resultMap="SupplierRM">
-        select * from t_supplier;
+        select * from t_supplier order by nowTime desc ;
     </select>
 
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM t_supplier;
     </select>
+
+    <update id="setFilePath" parameterType="Supplier">
+        <if test="licenseFile1Url != null and licenseFile1Url != ''">
+            UPDATE t_supplier SET licenseFile1Url=#{licenseFile1Url} WHERE supplierId=#{supplierId};
+        </if>
+        <if test="licenseFile2Url != null and licenseFile2Url != ''">
+            UPDATE t_supplier SET licenseFile2Url=#{licenseFile2Url} WHERE supplierId=#{supplierId};
+        </if>
+    </update>
 </mapper>
