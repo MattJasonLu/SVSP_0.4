@@ -56,15 +56,15 @@ function loadContractSelectList() {
                     contractType1.append(option);
                 });
                 contractType1.get(0).selectedIndex = -1;
-                var province = $("#province");
-                province.children().remove();
-                $.each(data.provinceStrList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    province.append(option);
-                });
-                province.get(0).selectedIndex = -1;
+                // var province = $("#province");
+                // province.children().remove();
+                // $.each(data.provinceStrList, function (index, item) {
+                //     var option = $('<option />');
+                //     option.val(index);
+                //     option.text(item.name);
+                //     province.append(option);
+                // });
+                // province.get(0).selectedIndex = -1;
                 $('.selectpicker').selectpicker('refresh');
                 //获取相应的市级
                 $.ajax({
@@ -106,7 +106,7 @@ function loadContractSelectList() {
                 });
                 var clientName=$('#companyName');
                 clientName.children().remove();
-                $.each(data.companyNameList, function (index, item) {
+                $.each(data.supplierNameList, function (index, item) {
                     var option = $('<option />');
                     option.val(item.companyName);
                     option.text(item.companyName);
@@ -126,16 +126,16 @@ function loadContractSelectList() {
                 });
                 taxRate1.get(0).selectedIndex = -1;
                 //开票税率2下拉框
-                var taxRate2=$('#taxRate2');
-                taxRate2.children().remove();
-                $.each(data.ticketRateStrList2, function (index, item) {
-                   // console.log(item);
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    taxRate2.append(option);
-                });
-                taxRate2.get(0).selectedIndex = -1;
+                // var taxRate2=$('#taxRate2');
+                // taxRate2.children().remove();
+                // $.each(data.ticketRateStrList2, function (index, item) {
+                //    // console.log(item);
+                //     var option = $('<option />');
+                //     option.val(index);
+                //     option.text(item.name);
+                //     taxRate2.append(option);
+                // });
+                // taxRate2.get(0).selectedIndex = -1;
 
             } else {
                 console.log(result);
@@ -393,67 +393,26 @@ function contractSubmit(){
             <div class="row">
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
-                        <label class="col-sm-6 control-label" for="submitName">送审人员</label>
-                        <div class="col-xs-6">
+                        <label class="col-sm-4 control-label" for="submitName">送审人员</label>
+                        <div class="col-xs-4">
                             <input type="text" class="form-control"  name="reviewer" id="submitName" placeholder="***" readonly>
                         </div>
                     </div>
-                </div>
-                <div class="form-horizontal col-md-4" >
-                    <div class="form-group"  >
-                        <label class="col-sm-6 control-label" for="submitDate"> 送审日期</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="reviewDate" id="submitDate" placeholder="***" readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-4" >
-                    <div class="form-group">
-                        <label class="col-sm-6 control-label" for="submitDep"> 送审部门</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="companyName">公司名称</label>
+                        <label  class="col-sm-4 control-label" for="companyName">供应商名称</label>
                         <div class="col-xs-4">
                             <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName">
                             </select>
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <label class="col-sm-4 control-label" for="province">所属区域 </label>
-                        <form name="form1" method="post" action="">
-                            <div class="form-inline">
-                                <div class="form-group col-xs-3">
-                                    <select class="selectpicker input-xlarge form-control" id="province"  name="province"  data-live-search="true" data-live-search-placeholder="搜索..." onchange="changeSelect(this.selectedIndex)">
-                                    </select>
-                                </div>
-                                <div class="form-group col-xs-3">
-                                    <select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="form-group" >
-                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-4" id="contractName1" >
-                            <input type="text" class="form-control" id="contractName" name="contractName">
-                        </div>
-                        <div class="col-xs-5" id="contractType2">
-                            <select class="form-control"  type="text" id="contractType1" name="modelName"  >
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label  for="Qualifications" class="col-sm-4 control-label">物流公司资质</label>
-                        <div class="col-xs-7" >
-                            <input type="text" class="form-control" id="Qualifications" name="logisticsQualification" placeholder="">
+                    <div class="form-group" style="margin-left: 48px;">
+                        <label class="col-sm-3 control-label">合同有效期 </label>
+                        <div class="input-group date col-xs-8">
+                            <input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-minus"></span></span>
+                            <input type="text" class="input-sm form-control form_datetime2" name="endTime"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
                     <div class="form-group" >
@@ -462,16 +421,9 @@ function contractSubmit(){
                             <input type="text" class="form-control" id="bankName" name="bankName" placeholder="">
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <label for="taxRate1" class="col-sm-4 control-label">开票税率1</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="taxRate1" name="ticketRate1">
-                            </select>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">保存之后 </label>
-                        <div class="col-xs-5 radio">
+                        <div class="col-xs-4 radio">
                             <label>
                                 <input type="radio" name="addType" id="addType1" value="continue" checked>
                                 继续添加
@@ -482,54 +434,29 @@ function contractSubmit(){
                             </label>
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <label for="contractType" class="col-sm-3 control-label"></label>
-                        <div class="col-xs-5">
-                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Logistics" >
-                            </input>
+                </div>
+                <div class="form-horizontal col-md-4" >
+                    <div class="form-group"  >
+                        <label class="col-sm-4 control-label" for="submitDate"> 送审日期</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control"  name="reviewDate" id="submitDate" placeholder="***" readonly>
                         </div>
                     </div>
-                </div>
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
+                    <div class="form-group" style="margin-left: 48px;">
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
                         <div class="col-xs-8" >
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
+                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司版本
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()">  客户合同
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()">  客户版本
                             </label>
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label class="col-sm-3 control-label">合同有效期 </label>
-                        <div class="input-group date">
-                            <input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-minus"></span></span>
-                            <input type="text" class="input-sm form-control form_datetime2" name="endTime"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label  for="contacts" class="col-sm-3 control-label">联系人</label>
-                        <div class="col-md-3" >
-                            <input type="text" class="form-control" id="contacts" name="contactName" placeholder="">
-                        </div>
-                        <label for="telephone" class="col-sm-3 control-label">联系电话</label>
-                        <div class="col-md-3" >
-                            <input type="text" class="form-control" id="telephone" name="telephone" >
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label class="col-sm-3 control-label">资质有效期 </label>
-                        <div class="input-group date">
-                            <input type="text" class="input-sm form-control form_datetime3" name="beginQualification"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-minus"></span></span>
-                            <input type="text" class="input-sm form-control form_datetime4" name="endQualification"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        <label  for="totalPrice" class="col-sm-4 control-label">合同总价款 </label>
+                        <div class="col-xs-4" >
+                            <input type="text" class="form-control" id="totalPrice" name="totalPrice" placeholder="">
                         </div>
                     </div>
                     <div class="form-group" >
@@ -538,22 +465,112 @@ function contractSubmit(){
                             <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="">
                         </div>
                     </div>
+                </div>
+                <div class="form-horizontal col-md-4" >
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="submitDep"> 送审部门</label>
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>
+                        </div>
+                    </div>
                     <div class="form-group" >
-                        <label for="taxRate2" class="col-sm-4 control-label">开票税率2</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="taxRate2" name="ticketRate2">
+                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
+                        <div class="col-xs-4" id="contractName1" >
+                            <input type="text" class="form-control" id="contractName" name="contractName">
+                        </div>
+                        <div class="col-xs-4" id="contractType2">
+                            <select class="form-control" id="contractType1" name="modelName"></select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left: 50px;">
+                        <label  for="contacts" class="col-sm-3 control-label">联系人</label>
+                        <div class="col-xs-3" >
+                            <input type="text" class="form-control" id="contacts" name="contactName" placeholder="">
+                        </div>
+                        <label for="telephone" class="col-sm-3 control-label" style="margin-left: -50px;">联系电话</label>
+                        <div class="col-xs-4"  style="margin-left: -20px;">
+                            <input type="text" class="form-control" id="telephone" name="telephone" >
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="taxRate1" class="col-sm-4 control-label">开票税率</label>
+                        <div class="col-xs-4">
+                            <select class="form-control" id="taxRate1" name="ticketRate1">
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
+            <!--<div class="row">-->
+                <!--<div class="form-horizontal col-md-6">-->
+                    <!--<div class="form-group" >-->
+                        <!--<label class="col-sm-4 control-label" for="province">所属区域 </label>-->
+                        <!--<form name="form1" method="post" action="">-->
+                            <!--<div class="form-inline">-->
+                                <!--<div class="form-group col-xs-3">-->
+                                    <!--<select class="selectpicker input-xlarge form-control" id="province"  name="province"  data-live-search="true" data-live-search-placeholder="搜索..." onchange="changeSelect(this.selectedIndex)">-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                                <!--<div class="form-group col-xs-3">-->
+                                    <!--<select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label  for="Qualifications" class="col-sm-4 control-label">物流公司资质</label>-->
+                        <!--<div class="col-xs-7" >-->
+                            <!--<input type="text" class="form-control" id="Qualifications" name="logisticsQualification" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-horizontal col-md-6">-->
+                    <!--<div class="form-group" >-->
+                        <!--<label for="contractType" class="col-sm-3 control-label"></label>-->
+                        <!--<div class="col-xs-5">-->
+                            <!--<input class="form-control"  type="text" id="contractType" name="contractType" value="Logistics" >-->
+                            <!--</input>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label class="col-sm-3 control-label">合同有效期 </label>-->
+                        <!--<div class="input-group date col-xs-2">-->
+                            <!--<input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-minus"></span></span>-->
+                            <!--<input type="text" class="input-sm form-control form_datetime2" name="endTime"/>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group" >-->
+                        <!--<label class="col-sm-3 control-label">资质有效期 </label>-->
+                        <!--<div class="input-group date col-xs-2">-->
+                            <!--<input type="text" class="input-sm form-control form_datetime3" name="beginQualification"/>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-minus"></span></span>-->
+                            <!--<input type="text" class="input-sm form-control form_datetime4" name="endQualification"/>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!---->
+                    <!--<div class="form-group" >-->
+                        <!--<label for="taxRate2" class="col-sm-4 control-label">开票税率2</label>-->
+                        <!--<div class="col-xs-4">-->
+                            <!--<select class="form-control" id="taxRate2" name="ticketRate2">-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="row text-center">
                 <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
                 <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
-</div>
+    </div>
 </div>
 
 <div id="embed"></div>

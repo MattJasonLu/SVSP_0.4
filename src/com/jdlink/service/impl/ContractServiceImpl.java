@@ -72,6 +72,11 @@ public class ContractServiceImpl implements ContractService  {
     }
 
     @Override
+    public List<Contract> list2(String name, String index2) {
+        return contractMapper.list2(name,index2);
+    }
+
+    @Override
     public List getContractIdList() {
         return contractMapper.getContractIdList();
     }

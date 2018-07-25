@@ -5,6 +5,7 @@ import com.jdlink.domain.*;
 import com.jdlink.service.CityService;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.ContractService;
+import com.jdlink.service.SupplierService;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
 import net.sf.json.JSONArray;
@@ -33,6 +34,8 @@ public class ContractController {
     ContractService contractService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    SupplierService supplierService;
     @RequestMapping("listContract")
     @ResponseBody
     public String listContract() {
@@ -46,9 +49,29 @@ public class ContractController {
     @RequestMapping("listContractByName")
     @ResponseBody
     public String listContractByName(String name) {
-        List<Contract> contractList = contractService.list1(name);
-        JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
-        return array.toString();
+
+           List<Contract> contractList = contractService.list1(name);
+           JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+           return array.toString();
+
+    }
+    /**
+     * 根据合同和状态显示列表
+     */
+    @RequestMapping("listContractByName1")
+    @ResponseBody
+    public String listContractByName1(String name,String index) {
+        if(CheckState.get(Integer.parseInt(index))==null){
+            List<Contract> contractList = contractService.list1(name);
+            JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            return array.toString();
+        }
+        else {
+            String state=CheckState.get(Integer.parseInt(index)).toString();
+            List<Contract> contractList = contractService.list2(name,state);
+            JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            return array.toString();
+        }
     }
 @RequestMapping("saveEmContract")
 @ResponseBody
@@ -164,6 +187,10 @@ public String submitEmContract(@RequestBody Contract contract) {
               List client= clientService.list();
               JSONArray json=JSONArray.fromObject(client);
               res.put("companyNameList",json);
+        //查询供应闪list形式返回
+        List supplier=supplierService.list();
+        JSONArray json2=JSONArray.fromObject(supplier);
+        res.put("supplierNameList",json2);
               //查询模板名称
         List modelName=contractService.modelName(key);
         List list1=  removeDuplicate(modelName);

@@ -501,6 +501,23 @@
                                 <p class="text-left"><b>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;</b><span id="modal4_email"></span></p>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-1">
+                                <h4 class="text-info text-oneLine">开票信息</h4>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;名&nbsp;&nbsp;称&nbsp;&nbsp;</b><span id="modal4_bankName"></span></p>
+                                <p class="text-left"><b>开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;账&nbsp;&nbsp;号&nbsp;&nbsp;</b><span id="modal4_bankAccount"></span></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>税&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;</b><span id="modal4_taxNumber"></span></p>
+                                <p class="text-left"><b>开&nbsp;&nbsp;&nbsp;票&nbsp;&nbsp;类&nbsp;&nbsp;&nbsp;型&nbsp;&nbsp;</b><span id="modal4_ticketType"></span></p>
+                            </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                             <button type="button" class="btn btn-primary" onclick="approval1();">审批</button>
@@ -573,6 +590,23 @@
                         <p class="text-left"><b>固&nbsp;&nbsp;&nbsp;定&nbsp;&nbsp;电&nbsp;&nbsp;&nbsp;话&nbsp;&nbsp;</b><span id="modal3_phone"></span></p>
                         <p class="text-left"><b>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱&nbsp;&nbsp;</b><span id="modal3_email"></span></p>
                     </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-1">
+                            <h4 class="text-info text-oneLine">开票信息</h4>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <p class="text-left"><b>开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;名&nbsp;&nbsp;称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
+                            <p class="text-left"><b>开&nbsp;&nbsp;户&nbsp;&nbsp;行&nbsp;&nbsp;账&nbsp;&nbsp;号&nbsp;&nbsp;</b><span id="modal3_bankAccount"></span></p>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <p class="text-left"><b>税&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号&nbsp;&nbsp;</b><span id="modal3_taxNumber"></span></p>
+                            <p class="text-left"><b>开&nbsp;&nbsp;&nbsp;票&nbsp;&nbsp;类&nbsp;&nbsp;&nbsp;型&nbsp;&nbsp;</b><span id="modal3_ticketType"></span></p>
+                        </div>
                     </div>
                     <div class="row text-center">
                         <a class="btn btn-primary hidden-print"  onclick="" id="print">打印</a>
@@ -717,6 +751,10 @@
                     $("#modal4_mobile").text(data.mobile);
                     $("#modal4_phone").text(data.phone);
                     $("#modal4_email").text(data.email);
+                    $("#modal4_bankName").text(data.bankName);
+                    $("#modal4_bankAccount").text(data.bankAccount);
+                    $("#modal4_taxNumber").text(data.taxNumber);
+                    $("#modal4_ticketType").text(data.ticketType);
                 } else {
                     $("#modal4_companyName").text("");
                     $("#modal4_organizationCode").text("");
@@ -739,6 +777,10 @@
                     $("#modal4_mobile").text("");
                     $("#modal4_phone").text("");
                     $("#modal4_email").text("");
+                    $("#modal4_bankName").text("");
+                    $("#modal4_bankAccount").text("");
+                    $("#modal4_taxNumber").text("");
+                    $("#modal4_ticketType").text("");
                 }
             },
             error: function (result) {
@@ -808,6 +850,10 @@
                             alert("未上传文件");
                         }
                     });
+                    $("#modal4_bankName").text(data.bankName);
+                    $("#modal4_bankAccount").text(data.bankAccount);
+                    $("#modal4_taxNumber").text(data.taxNumber);
+                    $("#modal4_ticketType").text(data.ticketType);
                 } else {
                     $("#modal3_companyName").text("");
                     $("#modal3_organizationCode").text("");
@@ -830,6 +876,10 @@
                     $("#modal3_mobile").text("");
                     $("#modal3_phone").text("");
                     $("#modal3_email").text("");
+                    $("#modal4_bankName").text("");
+                    $("#modal4_bankAccount").text("");
+                    $("#modal4_taxNumber").text("");
+                    $("#modal4_ticketType").text("");
                 }
             },
             error: function (result) {
@@ -948,7 +998,7 @@
     function adjustClient(item) {
         // 拿到点击条目的客户编号
         var id = getClientId(item);
-        window.location.href = "showClient?id=" + id;
+        window.location.href = "clientInfo.html?id=" + id;
     }
     /**
      * 禁用用户

@@ -312,6 +312,8 @@ public class ClientController {
         res.put("applicationStatusStrList", array6);
         JSONArray array7 = JSONArray.fromArray(SupplierType.values());
         res.put("supplierTypeStrList", array7);
+        JSONArray array8 = JSONArray.fromArray(TicketRate1.values());
+        res.put("ticketRate1StrList", array8);
         return res.toString();
     }
 //业务员分配

@@ -67,7 +67,7 @@
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},ticketRate2=#{ticketRate2},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=#{nowTime} WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=#{nowTime} WHERE contractId=#{contractId};
     </update>
 <update id="updateEm" parameterType="Contract">
 UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
@@ -90,13 +90,16 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         UPDATE t_contract SET checkState='Invalid' WHERE contractId=#{contractId};
     </update>
     <update id="toSubmit"  >
-        UPDATE t_contract SET checkState='Examining', nowTime=#{1} WHERE contractId=#{0} ;
+        UPDATE t_contract SET checkState='ToExamine', nowTime=#{1} WHERE contractId=#{0} ;
     </update>
     <select id="list" resultMap="ContractRM">
         select * from t_contract order by year desc ;
     </select>
     <select id="list1" resultMap="ContractRM">
-        select * from t_contract where contractType=#{name} order by nowTime desc;
+        select * from t_contract where contractType=#{name} and checkState!='Invalid'order by nowTime desc;
+    </select>
+    <select id="list2" resultMap="ContractRM">
+        select * from t_contract where contractType=#{0} and checkState=#{1}order by nowTime desc;
     </select>
     <select id="getContractIdList" resultType="String">
         select contractId from t_contract;
