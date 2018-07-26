@@ -30,7 +30,7 @@ function loadContractList1(index) {
     //localStorage.clear();
     $('#back').hide();
     var name=localStorage['name'];
-    console.log(name);
+    //console.log(name);
     if(name=='undefined'||name=="Wastes"||name==undefined)
     {
         //name="Wastes";
@@ -121,7 +121,7 @@ function loadContractList1(index) {
        var state=$("#state").find("option:selected").text();
         $('#back').hide();
        var name=localStorage['name'];
-       console.log(name);
+      // console.log(name);
         if(name=='undefined'||name=="Wastes"||name==undefined)
         {
             //name="Wastes";
@@ -218,7 +218,7 @@ function loadContractList1(index) {
         $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var obj = eval(item);
-            console.log(obj);
+           // console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
             //console.log(obj);
             if(obj.contractContent==""&&obj.period==""&&obj.year=="") {
@@ -509,7 +509,7 @@ else {
     {
          contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
         var contractType=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
-        console.log(contractId+contractType);
+       // console.log(contractId+contractType);
         if(contractType.indexOf('应急处置合同')!=-1){
 
             //做跳转
@@ -531,7 +531,7 @@ else {
                    'contractId': contractId
                },
                success: function (result) {
-                   console.log(result);
+                  // console.log(result);
                    if (result != undefined) {
                        var data = eval(result);
                        //开始日期
@@ -784,10 +784,10 @@ else {
     function adjustContract(item) {
        //1获取合同id
         var contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-         console.log(contractId);
+        // console.log(contractId);
         //2判断合同的名字然后跳转到相应的jsp页面做修改
         var contractName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
-       console.log(contractName);
+     // console.log(contractName);
         if(contractName.indexOf('危废')!=-1){
             window.location.href = "showContract?contractId="+contractId;
         }
@@ -1185,7 +1185,7 @@ else {
         if(id === "1")
             k.attr("href","wastesContractInfo.html");    //危废合同
         else if(id === "2") {
-            k.attr("href", "emergencyContractInfo.html"); //应急处置意向书
+            k.attr("href", "urgentContractInfo.html"); //应急处置意向书
         }
         else if(id === "3") {
             k.attr("href","logisticsContractInfo.html"); //物流合同
@@ -1568,7 +1568,7 @@ function ContractListByName(item) {
     //把按钮功能分出来做这个是审批
     function confirm1() {
         opinion = $('#advice').val();
-        console.log(opinion);
+        //console.log(opinion);
         //1获取文本框的值
         $.ajax({
             type: "POST",
@@ -1654,8 +1654,8 @@ function ContractListByName(item) {
     function searchContract() {
         var keyword = $("#search").val();
         //判断当前合同类型
-        console.log(nameBykey.substring(0, 2));
-        console.log(keyword);
+        //console.log(nameBykey.substring(0, 2));
+       // console.log(keyword);
         $.ajax({
             type: "POST",                       // 方法类型
             url: "searchContract",                  // url
@@ -1732,7 +1732,7 @@ function ContractListByName(item) {
     function checkdb(item) {
         var contractId = item.firstElementChild.nextElementSibling.innerHTML;
         var contractType = item.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
-        console.log(contractId+contractType);
+        //console.log(contractId+contractType);
         //取得合同编号
         if (contractType.indexOf('应急处置合同') != -1) {
             //做跳转
