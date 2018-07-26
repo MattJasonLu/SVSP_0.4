@@ -11,6 +11,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui.min.js" charset="UTF-8"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <!--引用百度地图API-->
     <style type="text/css">
         html,body{margin:0;padding:0;}
@@ -38,7 +41,7 @@
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
                     <li><a href="wastesPlatform.html">首页</a></li>
-                    <li class="active"><a href="map.html">地图</a></li>
+                    <li class="active"><a href="map.html">工作台</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -82,9 +85,34 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">地图信息</h1>
-            <!--百度地图容器-->
-            <div style="width:95%;height:750px;border:#ccc solid 1px;" id="dituContent"></div>
+            <h1 class="page-header">工作台</h1>
+            <div class="row">
+                <!--百度地图容器-->
+                <div style="width:70%;height:750px;border:#ccc solid 1px;margin-right: 20px;" id="dituContent" class="col-md-8"></div>
+                <div style="width:25%;height:350px;border:#ccc solid 1px;margin-bottom: 20px;" class="col-md-4" >
+                    <div id="calendar">
+                        <h4>2013年10月</h4>
+                        <a href="##" class="a1">上月</a>
+                        <a href="##" class="a2">下月</a>
+                        <ul class="week">
+                            <li>日</li>
+                            <li>一</li>
+                            <li>二</li>
+                            <li>三</li>
+                            <li>四</li>
+                            <li>五</li>
+                            <li>六</li>
+                        </ul>
+                        <ul class="dateList"></ul>
+                    </div>
+                </div>
+                <div style="width:25%;height:380px;border:#ccc solid 1px;margin-top: 370px;margin-left: 71.2%;">
+                    <p style="font-size: 18px;"><span class="glyphicon glyphicon-user"></span><a href="#">某宝</a></p><br>
+                    <p style="font-size: 18px;"><span class="glyphicon glyphicon-user"></span><a href="#">某猫</a></p><br>
+                    <p style="font-size: 18px;"><span class="glyphicon glyphicon-user"></span><a href="#">某会</a></p><br>
+                    <p style="font-size: 18px;"><span class="glyphicon glyphicon-user"></span><a href="#">某东</a></p><br>
+                </div>
+            </div>
         </div>
     </div>
     <div id="embed" class="row"></div>
@@ -128,5 +156,93 @@
 
 
     initMap();//创建和初始化地图
+    $(function() {
+
+        //必要的数据
+        //今天的年 月 日 ；本月的总天数；本月第一天是周几？？？
+        var iNow=0;
+
+        function run(n) {
+
+            var oDate = new Date(); //定义时间
+            oDate.setMonth(oDate.getMonth()+n);//设置月份
+            var year = oDate.getFullYear(); //年
+            var month = oDate.getMonth(); //月
+            var today = oDate.getDate(); //日
+
+            //计算本月有多少天
+            var allDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+
+            //判断闰年
+            if(month == 1) {
+                if(year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+                    allDay = 29;
+                }
+            }
+            //判断本月第一天是星期几
+            oDate.setDate(1); //时间调整到本月第一天
+            var week = oDate.getDay(); //读取本月第一天是星期几
+
+            //console.log(week);
+            $(".dateList").empty();//每次清空
+            //插入空白
+
+            for(var i = 0; i < week; i++) {
+                $(".dateList").append("<li></li>");
+            }
+
+            //日期插入到dateList
+            for(var i = 1; i <= allDay; i++) {
+                $(".dateList").append("<li>" + i + "</li>")
+            }
+            //标记颜色=====================
+            $(".dateList li").each(function(i, elm){
+                //console.log(index,elm);
+                var val = $(this).text();
+                //console.log(val);
+                if (n==0) {
+                    if(val<today){
+                        $(this).addClass('ccc')
+                    }else if(val==today){
+                        $(this).addClass('red')
+                    }else if(i%7==0  ||  i%7==6   ){
+                        $(this).addClass('sun')
+                    }
+                }else if(n<0){
+                    $(this).addClass('ccc')
+                }else if(i%7==0  ||  i%7==6   ){
+                    $(this).addClass('sun')
+                }
+            });
+
+            //定义标题日期
+            $("#calendar h4").text(year + "年" + (month + 1) + "月");
+        };
+        run(0);
+
+        $(".a1").click(function(){
+            iNow--;
+            run(iNow);
+        });
+
+        $(".a2").click(function(){
+            iNow++;
+            run(iNow);
+        })
+    });
 </script>
+<style>
+    * {margin: 0;padding: 0}
+    #calendar {width: 253px;margin: 100px auto;overflow: hidden;padding: 20px;position: relative;margin-top: 25px;}
+    #calendar h4 {text-align: center;margin-bottom: 10px}
+    #calendar .a1 {position: absolute;top: 20px;left: 20px;}
+    #calendar .a2 {position: absolute;top: 20px;right: 20px;}
+    #calendar .week {height: 30px;line-height: 20px;border-bottom: 1px solid #000;margin-bottom: 10px}
+    #calendar .week li {float: left;width: 30px;height: 30px;text-align: center;list-style: none;}
+    #calendar .dateList {overflow: hidden;clear: both}
+    #calendar .dateList li {float: left;width: 30px;height: 30px;text-align: center;line-height: 30px;list-style: none;}
+    #calendar .dateList .ccc {color: #ccc;}
+    #calendar .dateList .red {background: #F90;color: #fff;}
+    #calendar .dateList .sun {color: #f00;}
+</style>
 </html>

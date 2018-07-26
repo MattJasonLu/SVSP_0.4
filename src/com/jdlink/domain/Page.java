@@ -12,11 +12,19 @@ public class Page {
     /**
      * 每页的个数
      */
-    private int count = 20;
+    private int count = 15;
     /**
      * 最后一页的位置
      */
     private int last = 0;
+    /**
+     * 总记录数
+     */
+    private int totalRecord=0;
+    /**
+     * 当前页数（需要跳转的页数）
+     */
+    private int pageNumber=1;
 
     public int getStart() {
         return start;
@@ -41,6 +49,20 @@ public class Page {
     public void setLast(int last) {
         this.last = last;
     }
+
+    public int getTotalRecord() {
+        return totalRecord;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public void setTotalRecord(int totalRecord) { this.totalRecord = totalRecord; }
 
     /**
      * 计算最后页位置
