@@ -45,7 +45,7 @@
         config.pasteFromWordRemoveStyles = false;
         config.removePlugins='elementspath';
     };
-function loadContractSelectList() {
+   function loadContractSelectList() {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
         size: 4
@@ -64,7 +64,7 @@ function loadContractSelectList() {
             if (result != undefined) {
                 var data = eval(result);
                 // 各下拉框数据填充
-                var contractType1 = $("#contractType1");
+                var contractType1 = $("#contractType1");//模板名称下拉框
                 contractType1.children().remove();
                 $.each(data.modelNameList, function (index, item) {
                     if(item!=null&&item.modelName!=""){
@@ -126,37 +126,66 @@ function loadContractSelectList() {
                 clientName.children().remove();
                 $.each(data.companyNameList, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.companyName);
+                    option.val(index);
                     option.text(item.companyName);
                     clientName.append(option);
                 });
                 //clientName.get(0).selectedIndex = -1;
                 $('.selectpicker').selectpicker('refresh');
-                //开票税率下拉框
-                //开票税率1下拉框
+                var options1=$("#companyName option:selected").val(); //获取选中的项
+                var company=data.companyNameList[options1];//取得被选中供应商的信息
+                //开票税率下拉
+                console.log(company);
                 var taxRate1=$('#taxRate1');
+                i="";
                 taxRate1.children().remove();
                 $.each(data.ticketRateStrList1, function (index, item) {
                     // console.log(item);
                     var option = $('<option />');
                     option.val(index);
                     option.text(item.name);
+                    if(company.ticketType!=null){
+                        if(company.ticketType.name==item.name){
+                            i=index;
+                        }
+                    }
+                   else {
+                        i=-1;
+                    }
                     taxRate1.append(option);
                 });
-                taxRate1.get(0).selectedIndex = -1;
+                taxRate1.get(0).selectedIndex = i;
                 //开票税率2下拉框
-                var taxRate2=$('#taxRate2');
-                taxRate2.children().remove();
-                $.each(data.ticketRateStrList2, function (index, item) {
-                    // console.log(item);
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    taxRate2.append(option);
-                });
-                taxRate2.get(0).selectedIndex = -1;
-
-
+                // var taxRate2=$('#taxRate2');
+                // taxRate2.children().remove();
+                // $.each(data.ticketRateStrList2, function (index, item) {
+                //     // console.log(item);
+                //     var option = $('<option />');
+                //     option.val(index);
+                //     option.text(item.name);
+                //     taxRate2.append(option);
+                // });
+                // taxRate2.get(0).selectedIndex = -1;
+              //赋值联系人
+                $('#contactName').prop("value",company.contactName);
+                //赋值联系方式
+                if(company.mobile!=""&&company.phone==""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                if(company.mobile==""&&company.phone!=""){
+                    $('#telephone').prop("value",company.phone);
+                }
+                if(company.mobile==""&&company.phone==""){
+                    $('#telephone').prop("value","");
+                }
+                if(company.mobile!=""&&company.phone!=""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                //赋值开户行名称
+                $('#bankName').prop("value",company.bankName);
+                //赋值开户行账号
+                $('#bankAccount').prop("value",company.bankAccount);
+                $('#company1').prop("value",company.companyName);
 
             } else {
                 console.log(result);
@@ -448,7 +477,7 @@ function contractSubmit(){
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyName">客户名称</label>
                         <div class="col-xs-4">
-                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName">
+                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
                             </select>
                         </div>
                     </div>
@@ -491,7 +520,12 @@ function contractSubmit(){
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label for="taxRate1" class="col-sm-4 control-label">开票税率1</label>
+                        <div class="col-xs-4" >
+                            <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
+                        </div>
+                    </div><!--隐藏域保存客户名称-->
+                    <div class="form-group" >
+                        <label for="taxRate1" class="col-sm-4 control-label">开票税率</label>
                         <div class="col-xs-5">
                             <select class="form-control" id="taxRate1" name="ticketRate1">
                             </select>
@@ -562,13 +596,13 @@ function contractSubmit(){
                             <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="">
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="taxRate2" name="ticketRate2">
-                            </select>
-                        </div>
-                    </div>
+                    <!--<div class="form-group" >-->
+                        <!--<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>-->
+                        <!--<div class="col-xs-5">-->
+                            <!--<select class="form-control" id="taxRate2" name="ticketRate2">-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-group" >
                         <label for="contractType" class="col-sm-3 control-label"></label>
                         <div class="col-xs-5">
@@ -747,6 +781,66 @@ function contractSubmit(){
             }
         });
         $('#modelInfoForm').modal('show');
+    }
+    //客户列表下拉框
+    function findClient() {
+        options=$("#companyName option:selected").val(); //获取选中的项
+        $.ajax({
+            type:"POST",
+            url:"getContractList",
+            dataType: "json",
+            success:function (result) {
+                var obj=eval(result);
+                var company=(obj.companyNameList[options]);//获取供应商的信息
+                 console.log(company);
+                //2赋值
+                //赋值联系人
+                //客户名称
+                $('#company1').prop("value",company.companyName);
+                $('#contactName').prop("value",company.contactName);
+                //赋值联系方式
+                if(company.mobile!=""&&company.phone==""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                if(company.mobile==""&&company.phone!=""){
+                    $('#telephone').prop("value",company.phone);
+                }
+                if(company.mobile==""&&company.phone==""){
+                    $('#telephone').prop("value","");
+                }
+                if(company.mobile!=""&&company.phone!=""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                //赋值开户行名称
+                $('#bankName').prop("value",company.bankName);
+                //赋值开户行账号
+                $('#bankAccount').prop("value",company.bankAccount);
+                $("#telephone").prop("value",company.phone);//电话
+              //赋值开票税率
+                var taxRate1=$('#taxRate1');
+                index1=""
+                taxRate1.children().remove();
+                $.each(obj.ticketRateStrList1, function (index, item) {
+                    //console.log(obj.ticketRateStrList1);
+                    var option = $('<option />');
+                    if(company.ticketType!=null){
+                        if(company.ticketType.name==item.name){
+                            index1=index;
+                        }
+                    }
+                    else {
+                        index1=-1;
+                    }
+                    option.val(index);
+                    option.text(item.name);
+                    taxRate1.append(option);
+                });
+                taxRate1.get(0).selectedIndex =index1;
+            },
+            error:function (result) {
+
+            }
+        });
     }
 </script>
 </html>

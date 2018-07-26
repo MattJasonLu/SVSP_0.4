@@ -181,8 +181,8 @@ public String submitEmContract(@RequestBody Contract contract) {
         res.put("provinceStrList", array2);
         JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
         res.put("ticketRateStrList1", array3);
-        JSONArray array4 = JSONArray.fromArray(TicketRate2.values());
-        res.put("ticketRateStrList2", array4);
+//        JSONArray array4 = JSONArray.fromArray(TicketRate2.values());
+//        res.put("ticketRateStrList2", array4);
         //查询客户list形式返回
               List client= clientService.list();
               JSONArray json=JSONArray.fromObject(client);
@@ -263,7 +263,7 @@ public String submitEmContract(@RequestBody Contract contract) {
         }
 
         System.out.println("当前合同编号:"+contract.getContractId());
-        contract.setCheckState(CheckState.ToSubmit);
+        contract.setCheckState(CheckState.ToSubmit);//设置为待提交
         //设置时间
         //生成日期对象
         Date current_date = new Date();
@@ -314,7 +314,7 @@ public String  submitContract(@RequestBody Contract contract) {
     String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
     contract.setContractId(newId);
     System.out.println("当前合同编号:"+contract.getContractId());
-    contract.setCheckState(CheckState.ToExamine);
+    contract.setCheckState(CheckState.ToExamine);//待审核
     //设置时间
     //生成日期对象
     Date current_date = new Date();
@@ -494,8 +494,8 @@ JSONObject res=new JSONObject();
     public String getContractBymodelName1(String modelName){
         Contract modelContract=contractService.getModel2(modelName);
         JSONObject res=JSONObject.fromBean(modelContract);
-        JSONArray array1 = JSONArray.fromArray(ContractType.values());
-        res.put("contractNameStrList", array1);
+//        JSONArray array1 = JSONArray.fromArray(ContractType.values());
+//        res.put("contractNameStrList", array1);
         return res.toString();
     }
     @RequestMapping("isF")

@@ -52,9 +52,8 @@
     };
 
 function loadContractSelectList() {
-
     var contractType=$('#contractType');
-    contractType.hide();
+    contractType.hide();//合同类型隐藏不需要显示
     var contractName1=$('#contractName1');
     contractName1.hide();
     $('.selectpicker').selectpicker({
@@ -70,6 +69,7 @@ function loadContractSelectList() {
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
+                console.log(data);
                 //1赋值
                 // $('#contacts').prop("value",obj.contactName);//联系人
                 // $('#telephone').prop("value",obj.phone);//联系电话
@@ -94,64 +94,76 @@ function loadContractSelectList() {
                 // province.get(0).selectedIndex = -1;
                 $('.selectpicker').selectpicker('refresh');
                 //获取相应的市级
-                $.ajax({
-                    type: "POST",                            // 方法类型
-                    url: "getCityList",                  // url
-                    dataType: "json",
-                    data:{
-                        'provinceId': 1
-                    },
-                    success: function (result) {
-                        if (result != undefined) {
-                            var data = eval(result);
-                            //console.log(data);
-                            //var contractName = $("#contractName");
-                            //下拉框填充
-                            var city=$("#city");
-                            city.children().remove();
-                            cityIndex="";
-                            $.each(data, function (index, item) {
-                                //  console.log(item);
-                                var option1 = $('<option />');
-                                option1.val(item.cityname);
-                                option1.text(item.cityname);
-                                if(item.cityname=='${contract.city}'){
-                                    cityIndex=index;
-                                }
-                                city.append(option1);
-                            });
-                            $('.selectpicker').selectpicker('refresh');
-
-
-                        } else {
-                            console.log(result);
-                        }
-                    },
-                    error:function (result) {
-                        console.log(result);
-                    }
-                });
-                var clientName=$('#companyName');
-                clientName.children().remove();
+                // $.ajax({
+                //     type: "POST",                            // 方法类型
+                //     url: "getCityList",                  // url
+                //     dataType: "json",
+                //     data:{
+                //         'provinceId': 1
+                //     },
+                //     success: function (result) {
+                //         if (result != undefined) {
+                //             var data = eval(result);
+                //             //console.log(data);
+                //             //var contractName = $("#contractName");
+                //             //下拉框填充
+                //             var city=$("#city");
+                //             city.children().remove();
+                //             cityIndex="";
+                //             $.each(data, function (index, item) {
+                //                 //  console.log(item);
+                //                 var option1 = $('<option />');
+                //                 option1.val(item.cityname);
+                //                 option1.text(item.cityname);
+                //                 if(item.cityname=='${contract.city}'){
+                //                     cityIndex=index;
+                //                 }
+                //                 city.append(option1);
+                //             });
+                //             $('.selectpicker').selectpicker('refresh');
+                //
+                //
+                //         } else {
+                //             console.log(result);
+                //         }
+                //     },
+                //     error:function (result) {
+                //         console.log(result);
+                //     }
+                // });
+                var suppier=$('#suppier');
+                suppier.children().remove();
                 $.each(data.supplierNameList, function (index, item) {
                     var option = $('<option />');
                     option.val(index);
                     option.text(item.companyName);
-                    clientName.append(option);
+                    suppier.append(option);
                 });
                 $('.selectpicker').selectpicker('refresh');
+                //2赋值
                 //开票税率下拉框
                 //开票税率1下拉框
+                var options1=$("#suppier option:selected").val(); //获取选中的项
+                var suppier=data.supplierNameList[options1];//取得被选中供应商的信息
                 var taxRate1=$('#taxRate1');
+                index1=""
                 taxRate1.children().remove();
                 $.each(data.ticketRateStrList1, function (index, item) {
-                   // console.log(item);
+                    console.log(data.ticketRateStrList1);
                     var option = $('<option />');
+                    if(suppier.ticketRate!=null){
+                        if(suppier.ticketRate.name==item.name){
+                            index1=index;
+                        }
+                    }
+                    else {
+                        index1=-1;
+                    }
                     option.val(index);
                     option.text(item.name);
                     taxRate1.append(option);
                 });
-                taxRate1.get(0).selectedIndex = -1;
+                taxRate1.get(0).selectedIndex = index1;
                 //开票税率2下拉框
                 // var taxRate2=$('#taxRate2');
                 // taxRate2.children().remove();
@@ -163,12 +175,10 @@ function loadContractSelectList() {
                 //     taxRate2.append(option);
                 // });
                 // taxRate2.get(0).selectedIndex = -1;
-               var options1=$("#companyName option:selected").val(); //获取选中的项
-                var suppier=(data.supplierNameList[options1]);//获取供应商的信息
-                //2赋值
-                $("#telephone").prop("value",suppier.phone);
-                 $("#contacts").prop("value",suppier.contactName);
-
+                $("#telephone").prop("value",suppier.phone);//赋值联系电话
+                $("#contactName").prop("value",suppier.contactName);//赋值联系人
+                //console.log(suppier.companyName);
+                $("#suppierName").val(suppier.companyName);//赋值供应商名称
             } else {
                 console.log(result);
             }
@@ -431,19 +441,19 @@ function contractSubmit(){
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="companyName">供应商名称</label>
+                        <label  class="col-sm-4 control-label" for="suppier">供应商名称</label>
                         <div class="col-xs-4">
-                            <select class="selectpicker input-sm form-control form-inline" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findSuppier();">
+                            <select class="selectpicker input-sm form-control form-inline" data-live-search="true" data-live-search-placeholder="搜索..." id="suppier" name="suppier" onchange="findSuppier();">
                             </select>
                         </div>
                     </div>
                     <div class="form-group" style="margin-left: 48px;">
                         <label class="col-sm-3 control-label">合同有效期 </label>
                         <div class="input-group date col-xs-8">
-                            <input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>
+                            <input type="text" class="input-sm form-control form_datetime1" name="beginTime" id="beginTime"/>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-minus"></span></span>
-                            <input type="text" class="input-sm form-control form_datetime2" name="endTime"/>
+                            <input type="text" class="input-sm form-control form_datetime2" name="endTime" id="endTime"/>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
@@ -516,9 +526,9 @@ function contractSubmit(){
                         </div>
                     </div>
                     <div class="form-group" style="margin-left: 50px;">
-                        <label  for="contacts" class="col-sm-3 control-label">联系人</label>
+                        <label  for="contactName" class="col-sm-3 control-label">联系人</label>
                         <div class="col-xs-3" >
-                            <input type="text" class="form-control" id="contacts" name="contactName" placeholder="">
+                            <input type="text" class="form-control" id="contactName" name="contactName" placeholder="">
                         </div>
                         <label for="telephone" class="col-sm-3 control-label" style="margin-left: -50px;">联系电话</label>
                         <div class="col-xs-4"  style="margin-left: -20px;">
@@ -532,6 +542,20 @@ function contractSubmit(){
                             </select>
                         </div>
                     </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Logistics" >
+                            </input>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label for="suppierName" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="hidden" id="suppierName" name="suppierName"  >
+                            </input>
+                        </div>
+                    </div><!--隐藏域接收供应商的名称-->
                 </div>
             </div>
             <!--<div class="row">-->
@@ -724,18 +748,42 @@ function contractSubmit(){
     }
     function findSuppier() {
         //1获取选中的值====>供应商名称
-      var companyName=($('#companyName').val());
-        options=$("#companyName option:selected").val(); //获取选中的项
+        //var companyName=($('#suppier').val());
+         options=$("#suppier option:selected").val(); //获取选中的项
         $.ajax({
             type:"POST",
             url:"getContractList",
             dataType: "json",
             success:function (result) {
              var obj=eval(result);
-             var suppier=(obj.supplierNameList[options]);//获取供应商的信息
+              var suppier=(obj.supplierNameList[options]);//获取供应商的信息
+                // console.log(suppier);
                 //2赋值
-                $("#telephone").prop("value",suppier.phone);
-                $("#contacts").prop("value",suppier.contactName);
+                $("#telephone").prop("value",suppier.phone);//电话
+                $("#contactName").prop("value",suppier.contactName);//联系人
+                $('#bankAccount').prop("value",suppier.bankAccount);//开户行账号
+                $('#bankName').prop("value",suppier.bankName);//开户行名称
+                 //$('#suppier').val(suppier.companyName);
+                 $('#suppierName').prop("value",suppier.companyName);
+                var taxRate1=$('#taxRate1');
+                index1=""
+                taxRate1.children().remove();
+                $.each(obj.ticketRateStrList1, function (index, item) {
+                    //console.log(obj.ticketRateStrList1);
+                    var option = $('<option />');
+                    if(suppier.ticketRate!=null){
+                        if(suppier.ticketRate.name==item.name){
+                            index1=index;
+                        }
+                    }
+                    else {
+                        index1=-1;
+                    }
+                    option.val(index);
+                    option.text(item.name);
+                    taxRate1.append(option);
+                });
+                    taxRate1.get(0).selectedIndex =index1;
             },
             error:function (result) {
 
@@ -749,7 +797,6 @@ function contractSubmit(){
      *
      * 合同正文查看
      */
-
     function check1(item) {
         var modelName=item.previousElementSibling.value;
         console.log(modelName);
