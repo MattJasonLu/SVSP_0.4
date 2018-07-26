@@ -1799,7 +1799,7 @@ function ContractListByName(item) {
         var contractType = item.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         //console.log(contractId+contractType);
         //取得合同编号
-        if (contractType.indexOf('应急处置合同') != -1) {
+        if (contractType.indexOf('应急') != -1) {
             //做跳转
             // window.location.href = "emergency?contractId="+contractId;
             //换成html方式
