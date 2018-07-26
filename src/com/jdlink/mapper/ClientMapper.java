@@ -55,4 +55,6 @@ public interface ClientMapper {
 
     int count();
 
+    List<Client> getClientList(int index, int pageSize);      //得到请求页的数据列表
+
 }
