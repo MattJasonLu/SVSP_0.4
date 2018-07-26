@@ -173,7 +173,7 @@ function loadContractList1(index) {
             //
             // });
             //如果是物流就改为供应商
-            $('#toggleName').text("供应商名称");
+            $('#toggleName').text("客户名称");
         }
         if(name=="Logistics"){
             $('#Lo').click();
@@ -342,7 +342,7 @@ function loadContractList1(index) {
         tr.hide();
     }
     function setContractList1(result) {
-        // console.log(eval(result));//可以取到
+        console.log(eval(result));//可以取到
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr1");//克隆一行
         tr.siblings().remove();
@@ -371,49 +371,114 @@ function loadContractList1(index) {
             }
                 var clonedTr = tr.clone();
                 clonedTr.show();
-                clonedTr.children("td").each(function (inner_index) {
-                    // 根据索引为部分td赋值
-                    // console.log(obj);
-                    switch (inner_index) {
-                        // 合同编号
-                        case (1):
-                            $(this).html(obj.contractId);
-                            break;
-                        // 合同名称
-                        case (2):
-                                $(this).html(obj.companyName+obj.contractType.name);
-                            break;
-                        // 状态
-                        case (3):
-                            if (obj.checkState != null)
-                                $(this).html(obj.checkState.name);
-                            break;
-                        // 公司名称
-                        case (4):
-                            $(this).html(obj.companyName);
-                            break;
-                        // 所属区域
-                        case (5):
-                            $(this).html(obj.area);
-                            break;
-                        // 合约量
-                        case (6):
-                            $(this).html(obj.tonNumber);
-                            break;
-                        // 联系人
-                        case (7):
-                            $(this).html(obj.contactName);
-                            break;
-                        // 联系方式
-                        case (8):
-                            $(this).html(obj.telephone);
-                            break;
-                        // 签订日期
-                        case (9):
-                            $(this).html('');
-                            break;
-                    }
-                });
+            clonedTr.children("td").each(function (inner_index) {
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 合同编号
+                    case (1):
+                        $(this).html(obj.contractId);
+                        break;
+                    //供应商名称
+                    case (2):
+                        // $(this).html();
+                        //判断是否是物流合同
+                        if(obj.contractType.name=='物流合同'){
+                            $(this).html(obj.suppierName);
+                        }
+                        else {
+                            $(this).html(obj.company1);
+                        }
+                        break;
+                    // 合同名称
+                    case (3):
+                        if(obj.contractVersion!=null) {
+                            if (obj.contractVersion.name == "公司合同") {
+                                $(this).html(obj.modelName);
+                            }
+                            if(obj.contractVersion.name == "客户合同"){
+                                $(this).html(obj.contractName + obj.contractType.name);
+                            }
+                        }
+                        else {
+                            $(this).html("");
+                        }
+                        break;
+                    // 状态
+                    case (4):
+                        if (obj.checkState != null)
+                            $(this).html(obj.checkState.name);
+                        break;
+                    // 公司名称
+                    // case (5):
+                    //     $(this).html(obj.companyName);
+                    //     break;
+                    // 所属区域
+                    // case (6):
+                    //     if (obj.province != null) {
+                    //         $(this).html(obj.province.name + obj.city);
+                    //     }
+                    //     else {
+                    //         $(this).html("");
+                    //     }
+                    //     break;
+                    // 合约量
+                    case (5):
+                        $(this).html(obj.agreedQuantity.toFixed(2));
+                        break;
+                    // 联系人
+                    case (6):
+                        $(this).html(obj.contactName);
+                        break;
+                    // 联系方式
+                    case (7):
+                        $(this).html(obj.telephone);
+                        break;
+                    // 签订日期
+                    case (8):
+                        if (obj.beginTime != null) {
+                            var time = gettime(obj.beginTime);
+                            $(this).html(time);
+                        }
+                        else {
+                            $(this).html("");
+                        }
+                        break;
+                    // case (10):
+                    //     if(obj.checkState.name == "待审批"){
+                    //
+                    //     }else if(obj.checkState.name == "审批中"){
+                    //         $(this).children().eq(1).attr("class","disabled");
+                    //         $(this).children().eq(1).removeAttr("onclick");
+                    //     }else if(obj.checkState.name == "履约中"){
+                    //         $(this).children().eq(1).attr("class","disabled");
+                    //         $(this).children().eq(1).removeAttr("onclick");
+                    //         $(this).children().eq(2).attr("class","disabled");
+                    //         $(this).children().eq(2).removeAttr("onclick");
+                    //         $(this).children().eq(3).attr("class","disabled");
+                    //         $(this).children().eq(3).removeAttr("onclick");
+                    //     }else{
+                    //         $(this).children().eq(1).attr("class","disabled");
+                    //         $(this).children().eq(1).removeAttr("onclick");
+                    //         $(this).children().eq(2).attr("class","disabled");
+                    //         $(this).children().eq(2).removeAttr("onclick");
+                    //         $(this).children().eq(3).attr("class","disabled");
+                    //         $(this).children().eq(3).removeAttr("onclick");
+                    //     }
+                    //     break;
+                    //截止日期
+                    //截止日期
+                    // 截至日期
+                    case (9):
+                        if (obj.endTime != null) {
+                            var time = gettime(obj.endTime);
+                            $(this).html(time);
+                        }
+                        else {
+                            $(this).html("");
+                        }
+                        break;
+                }
+            });
                 // 把克隆好的tr追加到原来的tr前面
                 clonedTr.removeAttr("id");
                 clonedTr.insertBefore(tr);
@@ -513,10 +578,10 @@ else {
         if(contractType.indexOf('应急处置合同')!=-1){
 
             //做跳转
-           //window.location.href = "emergency?contractId="+contractId;
-           //转到html便于操作
-           // localStorage.name1=contractId;
-           // location.href="showemergency.html";
+            //window.location.href = "emergency?contractId="+contractId;
+            //转到html便于操作
+            // localStorage.name1=contractId;
+            // location.href="showemergency.html";
        }
        else {
            $('#close').show();

@@ -36,8 +36,8 @@
         #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{suppierName},#{company1})
     </insert>
     <insert id="addEm" parameterType="Contract">
-     insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime)
-     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime},NOW());
+     insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime,ticketRate1,contractVersion,city,endTime,modelName,company1,contactName,contractName)
+     values (#{contractId},#{contractType},#{companyName},#{checkState},#{telephone},#{bankName},#{bankAccount},#{area},#{companyLegal},#{companyAgent},#{clientLegal},#{clientAgent},#{address},#{thing},#{province},#{beginTime},NOW(),#{ticketRate1},#{contractVersion},#{city},#{endTime},#{modelName},#{company1},#{contactName},#{contractName});
         <if test="hazardousList.size() > 0 ">
           <foreach collection="hazardousList"  item="hazardous" index="index">
               insert into r_contractandhazardous(contractId,hazardousId) values (#{contractId}, #{hazardous.id});
