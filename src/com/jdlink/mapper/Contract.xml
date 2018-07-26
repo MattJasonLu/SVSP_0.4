@@ -72,7 +72,7 @@
     </update>
 <update id="updateEm" parameterType="Contract">
 UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
-telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},nowTime=NOW() WHERE contractId=#{contractId};
+telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName}, nowTime=NOW() WHERE contractId=#{contractId};
 </update>
     <update id="setCheckStateToExamine" parameterType="Contract">
         UPDATE t_contract SET checkState='ToExamine' WHERE contractId=#{contractId};
