@@ -172,59 +172,50 @@
             data: {
                 'id': id
             },
-            success: function (result) {        //待修改！！！！！！！！！！！！！！！！！！！！
+            success: function (result) {
                 console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
-                    $("#modal4_companyName").text(data.companyName);
-                    $("#modal4_organizationCode").text(data.organizationCode);
-                    $("#modal4_representative").text(data.representative);
-                    $("#modal4_industry").text(data.industry);
-                    if (data.enterpriseType != null)
-                        $("#modal4_enterpriseType").text(data.enterpriseType.name);
-                    if (data.operationType != null)
-                        $("#modal4_operationType").text(data.operationType.name);
-                    if (data.operationRecord != null)
-                        $("#modal4_operationRecord").text(data.operationRecord.name);
-                    $("#modal4_street").text(data.street);
-                    $("#modal4_supplierId").text(data.supplierId);
-                    $("#modal4_licenseCode").text(data.licenseCode);
-                    $("#modal4_postCode").text(data.postCode);
-                    $("#modal4_product").text(data.product);
-                    if (data.operationMode != null)
-                        $("#modal4_operationMode").text(data.operationMode.name);
-                    if (data.contingencyPlan != null)
-                        $("#modal4_contingencyPlan").text(data.contingencyPlan.name);
-                    if (data.applicationStatus != null)
-                        $("#modal4_applicationStatus").text(data.applicationStatus.name);
-                    $("#modal4_location").text(data.location);
-                    $("#modal4_processDesp").text(data.processDesp);
-                    $("#modal4_contactName").text(data.contactName);
-                    $("#modal4_mobile").text(data.mobile);
-                    $("#modal4_phone").text(data.phone);
-                    $("#modal4_email").text(data.email);
+                    $('#modal4_companyName').text(data.companyName);
+                    $('#modal4_licenseCode').text(data.licenseCode);
+                    $('#modal4_postCode').text(data.postCode);
+                    $('#modal4_organizationCode').text(data.organizationCode);
+                    $('#modal4_taxNumber').text(data.taxNumber);
+                    $('#modal4_location').text(data.location);
+                    $('#modal4_expirationDate').text(getDateStr(data.expirationDate));
+                    $('#modal4_supplierId').text(data.supplierId);
+                    $('#modal4_representative').text(data.representative);
+                    $('#modal4_registeredCapital').text(data.registeredCapital);
+                    $('#modal4_createDate').text(getDateStr(data.createDate));
+                    $('#modal4_businessLimit').text(data.businessLimit);
+                    $('#modal4_transportLicense').text(data.transportLicense);
+                    $('#modal4_contactName').text(data.contactName);
+                    $('#modal4_mobile').text(data.mobile);
+                    $('#modal4_phone').text(data.phone);
+                    $('#modal4_email').text(data.email);
+                    $('#modal4_bankName').text(data.bankName);
+                    $('#modal4_bankAccount').text(data.bankAccount);
+                    if (data.supplierType != null) $('#modal4_supplierType').text(data.supplierType.name);
+                    if (data.enterpriseType != null) $('#modal4_enterpriseType').text(data.enterpriseType.name);
+                    if (data.operationRecord != null) $('#modal4_operationRecord').text(data.operationRecord.name);
+                    if (data.operationType != null) $('#modal4_operationType').text(data.operationType.name);
+                    if (data.ticketRate != null) $('#modal4_ticketRate').text(data.ticketRate.name);
+                    $("#modal4_licenseFile1Url").click(function () {
+                        if (data.licenseFile1Url != null && data.licenseFile1Url != "") {
+                            window.open('downloadFile?filePath=' + data.licenseFile1Url);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
+                    $("#modal4_licenseFile2Url").click(function () {
+                        if (data.licenseFile2Url != null && data.licenseFile2Url != "") {
+                            window.open('downloadFile?filePath=' + data.licenseFile2Url);
+                        } else {
+                            alert("未上传文件");
+                        }
+                    });
                 } else {
-                    $("#modal4_companyName").text("");
-                    $("#modal4_organizationCode").text("");
-                    $("#modal4_representative").text("");
-                    $("#modal4_industry").text("");
-                    $("#modal4_enterpriseType").text("");
-                    $("#modal4_operationType").text("");
-                    $("#modal4_operationRecord").text("");
-                    $("#modal4_street").text("");
-                    $("#modal4_supplierId").text("");
-                    $("#modal4_licenseCode").text("");
-                    $("#modal4_postCode").text("");
-                    $("#modal4_product").text("");
-                    $("#modal4_operationMode").text("");
-                    $("#modal4_contingencyPlan").text("");
-                    $("#modal4_applicationStatus").text("");
-                    $("#modal4_location").text("");
-                    $("#modal4_processDesp").text("");
-                    $("#modal4_contactName").text("");
-                    $("#modal4_mobile").text("");
-                    $("#modal4_phone").text("");
-                    $("#modal4_email").text("");
+                    $("#clientInfoForm1").find("span").text("");
                 }
             },
             error: function (result) {
@@ -551,25 +542,25 @@
                         <h4 class="text-info">基本信息</h4>
                         <div class="row">
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>企业名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
-                                <p class="text-left"><b>组织机构代码&nbsp;&nbsp;</b><span id="modal3_organizationCode"></span></p>
-                                <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal3_representative"></span></p>
-                                <p class="text-left"><b>所属行业&nbsp;&nbsp;</b><span id="modal3_industry"></span></p>
-                                <p class="text-left"><b>企业类型&nbsp;&nbsp;</b><span id="modal3_enterpriseType"></span></p>
-                                <p class="text-left"><b>经营单位类别&nbsp;&nbsp;</b><span id="modal3_operationType"></span></p>
-                                <p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal3_operationRecord"></span></p>
+                                <p class="text-left"><b>供应商名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
                                 <p class="text-left"><b>供应商类型&nbsp;&nbsp;</b><span id="modal3_supplierType"></span></p>
-                                <p class="text-left"><b>所属街道&nbsp;&nbsp;</b><span id="modal3_street"></span></p>
+                                <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal3_licenseCode"></span></p>
+                                <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal3_postCode"></span></p>
+                                <p class="text-left"><b>组织机构代码证号&nbsp;&nbsp;</b><span id="modal3_organizationCode"></span></p>
+                                <p class="text-left"><b>税务登记证号&nbsp;&nbsp;</b><span id="modal3_taxNumber"></span></p>
+                                <p class="text-left"><b>企业类型&nbsp;&nbsp;</b><span id="modal3_enterpriseType"></span></p>
+                                <p class="text-left"><b>企业所在地&nbsp;&nbsp;</b><span id="modal3_location"></span></p>
+                                <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal3_expirationDate"></span></p>
                             </div>
                             <div class="form-horizontal col-md-6">
                                 <p class="text-left"><b>供应商编码&nbsp;&nbsp;</b><span id="modal3_supplierId"></span></p>
-                                <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal3_licenseCode"></span></p>
-                                <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal3_postCode"></span></p>
-                                <p class="text-left"><b>主要产品&nbsp;&nbsp;</b><span id="modal3_product"></span></p>
-                                <p class="text-left"><b>经营方式&nbsp;&nbsp;</b><span id="modal3_operationMode"></span></p>
-                                <p class="text-left"><b>事故防范应急预案&nbsp;&nbsp;</b><span id="modal3_contingencyPlan"></span></p>
-                                <p class="text-left"><b>申报状态&nbsp;&nbsp;</b><span id="modal3_applicationStatus"></span></p>
-                                <p class="text-left"><b>工商注册地址&nbsp;&nbsp;</b><span id="modal3_location"></span></p>
+                                <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal3_representative"></span></p>
+                                <p class="text-left"><b>注册资本&nbsp;&nbsp;</b><span id="modal3_registeredCapital"></span></p>
+                                <p class="text-left"><b>成立日期&nbsp;&nbsp;</b><span id="modal3_createDate"></span></p>
+                                <p class="text-left"><b>营业期限&nbsp;&nbsp;</b><span id="modal3_businessLimit"></span></p>
+                                <p class="text-left"><b>经营范围&nbsp;&nbsp;</b><span id="modal3_operationType"></span></p>
+                                <p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal3_operationRecord"></span></p>
+                                <p class="text-left"><b>道路运输许可证号&nbsp;&nbsp;</b><span id="modal3_transportLicense"></span></p>
                             </div>
                         </div>
                         <h4 class="text-info">联系方式</h4>
@@ -581,6 +572,25 @@
                             <div class="form-horizontal col-md-6">
                                 <p class="text-left"><b>联系电话&nbsp;&nbsp;</b><span id="modal3_phone"></span></p>
                                 <p class="text-left"><b>邮箱&nbsp;&nbsp;</b><span id="modal3_email"></span></p>
+                            </div>
+                        </div>
+                        <h4 class="text-info">开票信息</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
+                                <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccount"></span></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate"></span></p>
+                            </div>
+                        </div>
+                        <h4 class="text-info">附件信息</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>营业执照&nbsp;&nbsp;</b><button class="btn btn-default" id="modal3_licenseFile1Url">下载查看</button></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>道路运输许可证&nbsp;&nbsp;</b><button class="btn btn-default" id="modal3_licenseFile2Url">下载查看</button></p>
                             </div>
                         </div>
                         <div class="row text-center">
@@ -600,27 +610,28 @@
                     <h4 class="sub-header">供应商审批</h4>
                     <form method="post" id="clientInfoForm1" enctype="multipart/form-data">
                         <h4 class="text-info">审批</h4>
+                        <h4 class="text-info">基本信息</h4>
                         <div class="row">
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>企业名称&nbsp;&nbsp;</b><span id="modal4_companyName"></span></p>
-                                <p class="text-left"><b>组织机构代码&nbsp;&nbsp;</b><span id="modal4_organizationCode"></span></p>
-                                <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal4_representative"></span></p>
-                                <p class="text-left"><b>所属行业&nbsp;&nbsp;</b><span id="modal4_industry"></span></p>
-                                <p class="text-left"><b>企业类型&nbsp;&nbsp;</b><span id="modal4_enterpriseType"></span></p>
-                                <p class="text-left"><b>经营单位类别&nbsp;&nbsp;</b><span id="modal4_operationType"></span></p>
-                                <p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal4_operationRecord"></span></p>
+                                <p class="text-left"><b>供应商名称&nbsp;&nbsp;</b><span id="modal4_companyName"></span></p>
                                 <p class="text-left"><b>供应商类型&nbsp;&nbsp;</b><span id="modal4_supplierType"></span></p>
-                                <p class="text-left"><b>所属街道&nbsp;&nbsp;</b><span id="modal4_street"></span></p>
+                                <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal4_licenseCode"></span></p>
+                                <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal4_postCode"></span></p>
+                                <p class="text-left"><b>组织机构代码证号&nbsp;&nbsp;</b><span id="modal4_organizationCode"></span></p>
+                                <p class="text-left"><b>税务登记证号&nbsp;&nbsp;</b><span id="modal4_taxNumber"></span></p>
+                                <p class="text-left"><b>企业类型&nbsp;&nbsp;</b><span id="modal4_enterpriseType"></span></p>
+                                <p class="text-left"><b>企业所在地&nbsp;&nbsp;</b><span id="modal4_location"></span></p>
+                                <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal4_expirationDate"></span></p>
                             </div>
                             <div class="form-horizontal col-md-6">
                                 <p class="text-left"><b>供应商编码&nbsp;&nbsp;</b><span id="modal4_supplierId"></span></p>
-                                <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal4_licenseCode"></span></p>
-                                <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal4_postCode"></span></p>
-                                <p class="text-left"><b>主要产品&nbsp;&nbsp;</b><span id="modal4_product"></span></p>
-                                <p class="text-left"><b>经营方式&nbsp;&nbsp;</b><span id="modal4_operationMode"></span></p>
-                                <p class="text-left"><b>事故防范应急预案&nbsp;&nbsp;</b><span id="modal4_contingencyPlan"></span></p>
-                                <p class="text-left"><b>申报状态&nbsp;&nbsp;</b><span id="modal4_applicationStatus"></span></p>
-                                <p class="text-left"><b>工商注册地址&nbsp;&nbsp;</b><span id="modal4_location"></span></p>
+                                <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal4_representative"></span></p>
+                                <p class="text-left"><b>注册资本&nbsp;&nbsp;</b><span id="modal4_registeredCapital"></span></p>
+                                <p class="text-left"><b>成立日期&nbsp;&nbsp;</b><span id="modal4_createDate"></span></p>
+                                <p class="text-left"><b>营业期限&nbsp;&nbsp;</b><span id="modal4_businessLimit"></span></p>
+                                <p class="text-left"><b>经营范围&nbsp;&nbsp;</b><span id="modal4_operationType"></span></p>
+                                <p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal4_operationRecord"></span></p>
+                                <p class="text-left"><b>道路运输许可证号&nbsp;&nbsp;</b><span id="modal4_transportLicense"></span></p>
                             </div>
                         </div>
                         <h4 class="text-info">联系方式</h4>
@@ -632,6 +643,25 @@
                             <div class="form-horizontal col-md-6">
                                 <p class="text-left"><b>联系电话&nbsp;&nbsp;</b><span id="modal4_phone"></span></p>
                                 <p class="text-left"><b>邮箱&nbsp;&nbsp;</b><span id="modal4_email"></span></p>
+                            </div>
+                        </div>
+                        <h4 class="text-info">开票信息</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal4_bankName"></span></p>
+                                <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal4_bankAccount"></span></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal4_ticketRate"></span></p>
+                            </div>
+                        </div>
+                        <h4 class="text-info">附件信息</h4>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>营业执照&nbsp;&nbsp;</b><button class="btn btn-default" id="modal4_licenseFile1Url">下载查看</button></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>道路运输许可证&nbsp;&nbsp;</b><button class="btn btn-default" id="modal4_licenseFile2Url">下载查看</button></p>
                             </div>
                         </div>
                         <div class="row text-center">
@@ -763,51 +793,48 @@
             dataType: "json",
             data:{"id":id},
             success:function (result) {
-                //给文本框赋值
+                // 给文本框赋值
                 var data=eval(result);
                 console.log(data);
-                //企业名称
-               $('#modal3_companyName').text(data.companyName);
-               //组织机构代码
-                $('#modal3_organizationCode').text(data.organizationCode);
-                //法人代表
-                $('#modal3_representative').text(data.representative);
-                //所属行业
-                $('#modal3_industry').text(data.industry);
-                //企业类型
-                $('#modal3_enterpriseType').text(data.enterpriseType.name);
-                //经营单位类别
-                $('#modal3_operationType').text(data.operationType.name);
-               //建立危废经营记录情况
-                $('#modal3_operationRecord').text(data.operationRecord.name);
-                //供应商类型
-                $('#modal3_supplierType').text(data.supplierType.name);
-                //所属街道
-                $('#modal3_street').text(data.street);
-                //供应商编码
-                $('#modal3_supplierId').text(data.supplierId);
-                //营业执照注册号
+                // 企业名称
+                $('#modal3_companyName').text(data.companyName);
                 $('#modal3_licenseCode').text(data.licenseCode);
-               //工商注册地邮编
                 $('#modal3_postCode').text(data.postCode);
-               //主要产品
-                $('#modal3_product').text(data.product);
-                //经营方式
-                $('#modal3_operationMode').text(data.operationMode.name);
-                //事故防范和应急预案
-                $('#modal3_contingencyPlan').text(data.contingencyPlan.name);
-                //申报状态
-                $('#modal3_applicationStatus').text(data.applicationStatus.name);
-                //工商注册地址
+                $('#modal3_organizationCode').text(data.organizationCode);
+                $('#modal3_taxNumber').text(data.taxNumber);
                 $('#modal3_location').text(data.location);
-                //联系人
+                $('#modal3_expirationDate').text(getDateStr(data.expirationDate));
+                $('#modal3_supplierId').text(data.supplierId);
+                $('#modal3_representative').text(data.representative);
+                $('#modal3_registeredCapital').text(data.registeredCapital);
+                $('#modal3_createDate').text(getDateStr(data.createDate));
+                $('#modal3_businessLimit').text(data.businessLimit);
+                $('#modal3_transportLicense').text(data.transportLicense);
                 $('#modal3_contactName').text(data.contactName);
-                //手机号
                 $('#modal3_mobile').text(data.mobile);
-                //联系电话
                 $('#modal3_phone').text(data.phone);
-                //邮箱
                 $('#modal3_email').text(data.email);
+                $('#modal3_bankName').text(data.bankName);
+                $('#modal3_bankAccount').text(data.bankAccount);
+                if (data.supplierType != null) $('#modal3_supplierType').text(data.supplierType.name);
+                if (data.enterpriseType != null) $('#modal3_enterpriseType').text(data.enterpriseType.name);
+                if (data.operationRecord != null) $('#modal3_operationRecord').text(data.operationRecord.name);
+                if (data.operationType != null) $('#modal3_operationType').text(data.operationType.name);
+                if (data.ticketRate != null) $('#modal3_ticketRate').text(data.ticketRate.name);
+                $("#modal3_licenseFile1Url").click(function () {
+                    if (data.licenseFile1Url != null && data.licenseFile1Url != "") {
+                        window.open('downloadFile?filePath=' + data.licenseFile1Url);
+                    } else {
+                        alert("未上传文件");
+                    }
+                });
+                $("#modal3_licenseFile2Url").click(function () {
+                    if (data.licenseFile2Url != null && data.licenseFile2Url != "") {
+                        window.open('downloadFile?filePath=' + data.licenseFile2Url);
+                    } else {
+                        alert("未上传文件");
+                    }
+                });
             },
             error:function (result) {
                 

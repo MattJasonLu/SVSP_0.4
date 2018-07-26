@@ -39,7 +39,7 @@
     </select>
 
     <update id="updatePdtAndCode" parameterType="SampleCheck">
-        UPDATE t_sampleAppoint SET productName=#{productName}, code=#{code} WHERE
+        UPDATE t_sampleAppoint SET productName=#{productName}, code=#{code}, nowTime=NOW() WHERE
         appointId=#{appointId}
     </update>
 
@@ -49,17 +49,17 @@
     </update>
 
     <update id="setAppointed" parameterType="SampleAppoint">
-        UPDATE t_sampleAppoint SET state='Appointed' WHERE appointId=#{appointId}
+        UPDATE t_sampleAppoint SET state='Appointed', nowTime=NOW() WHERE appointId=#{appointId}
     </update>
 
     <update id="setSampleTaked" parameterType="SampleAppoint">
-        UPDATE t_sampleAppoint SET state='SampleTaked' WHERE appointId=#{appointId}
+        UPDATE t_sampleAppoint SET state='SampleTaked', nowTime=NOW() WHERE appointId=#{appointId}
     </update>
 
     <update id="setCanceld" parameterType="SampleAppoint">
-        UPDATE t_sampleAppoint SET state='Canceld' WHERE appointId=#{appointId}
+        UPDATE t_sampleAppoint SET state='Canceld', nowTime=NOW() WHERE appointId=#{appointId}
     </update>
     <update id="updateApplyState" parameterType="_int">
-        UPDATE  t_sampleappoint set state='Invalid' where appointId=#{appointId}
+        UPDATE  t_sampleappoint set state='Invalid', nowTime=NOW() where appointId=#{appointId}
    </update>
 </mapper>

@@ -90,10 +90,10 @@
     </select>
 
     <update id="setStateDisabled" parameterType="String">
-        UPDATE t_cost SET checkState='Invalid' WHERE id=#{id};
+        UPDATE t_cost SET checkState='Invalid', nowTime=NOW() WHERE id=#{id};
     </update>
 
     <update id="changeEndDate" parameterType="Cost">
-    UPDATE t_cost SET endDate=#{endDate} WHERE id=#{id};
+    UPDATE t_cost SET endDate=#{endDate}, nowTime=NOW() WHERE id=#{id};
     </update>
 </mapper>

@@ -88,45 +88,45 @@
          contingencyPlan=#{contingencyPlan}, operationRecord=#{operationRecord}, location=#{location},
          street=#{street}, applicationStatus=#{applicationStatus}, processDesp=#{processDesp}, contactName=#{contactName},
          phone=#{phone}, mobile=#{mobile}, email=#{email}, industry=#{industry}, product=#{product}, bankName=#{bankName},
-         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW()}
-         WHERE clientId=#{clientId};
+         bankAccount=#{bankAccount}, taxNumber=#{taxNumber}, ticketType=#{ticketType}, isDisposal=#{isDisposal},nowTime=NOW()
+         WHERE clientId=#{clientId} order by nowTime desc;
     </update>
 
     <update id="enableState" parameterType="String">
-        UPDATE client SET state='Enabled' WHERE clientId=#{clientId};
+        UPDATE client SET state='Enabled', nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
     <update id="disableState" parameterType="String">
-        UPDATE client SET state='Disabled' WHERE clientId=#{clientId};
+        UPDATE client SET state='Disabled', nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
     <update id="setCheckStateToSubmit" parameterType="String">
-        UPDATE client SET checkState='ToSubmit' WHERE clientId=#{clientId};
+        UPDATE client SET checkState='ToSubmit', nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
     <update id="setCheckStateExamining" parameterType="String">
-        UPDATE client SET checkState='Examining' WHERE clientId=#{clientId};
+        UPDATE client SET checkState='Examining', nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
     <update id="setCheckStateFinished" parameterType="String">
-        UPDATE client SET checkState='Finished' WHERE clientId=#{clientId};
+        UPDATE client SET checkState='Finished', nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
     <update id="setCheckStateBacked" parameterType="String">
-        UPDATE client SET checkState='Backed' WHERE clientId=#{clientId};
+        UPDATE client SET checkState='Backed', nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
     <update id="assignSalesman" parameterType="Client">
-        UPDATE client SET salesmanId=#{salesman.salesmanId} WHERE clientId=#{clientId};
+        UPDATE client SET salesmanId=#{salesman.salesmanId}, nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
     <update id="setFilePath" parameterType="Client">
         <if test="materialAttachmentUrl != null and materialAttachmentUrl != ''">
-            UPDATE client SET materialAttachmentUrl=#{materialAttachmentUrl} WHERE clientId=#{clientId};
+            UPDATE client SET materialAttachmentUrl=#{materialAttachmentUrl}, nowTime=NOW() WHERE clientId=#{clientId};
             INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{materialAttachmentUrl}, 'EIA');
         </if>
         <if test="processAttachmentUrl != null and processAttachmentUrl != ''">
-            UPDATE client SET processAttachmentUrl=#{processAttachmentUrl} WHERE clientId=#{clientId};
+            UPDATE client SET processAttachmentUrl=#{processAttachmentUrl}, nowTime=NOW() WHERE clientId=#{clientId};
             INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
         </if>
     </update>

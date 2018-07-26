@@ -53,7 +53,7 @@
     </resultMap>
     <insert id="add" parameterType="Questionnaire" >
         insert into questionnaire ( questionnaireId, clientId, time, author, state, nowTime)
-        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, NOW());
+        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, NOW(),);
         <if test="rawWastesList.size() > 0">
             <foreach collection="rawWastesList" item="rawWastes" index="index">
             insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)
@@ -91,7 +91,7 @@
                 #{deriveWastes.smellType}, #{deriveWastes.smellTypeDetail}, #{deriveWastes.solubility}, #{deriveWastes.solubilityDetail},
                 #{deriveWastes.isLowTemp}, #{deriveWastes.lowTemp}, #{deriveWastes.solubleTemp}, #{deriveWastes.isMixture}, #{deriveWastes.eyeMeasures},
                 #{deriveWastes.skinMeasures}, #{deriveWastes.swallowMeasures}, #{deriveWastes.suctionMeasures}, #{deriveWastes.putOutFireMeasures},
-                #{deriveWastes.leakMeasures}, NOW());
+                #{deriveWastes.leakMeasures}, NOW(),);
                 <if test="deriveWastes.mixingElementList != null and deriveWastes.mixingElementList.size() > 0">
                     <foreach collection="deriveWastes.mixingElementList" item="mixingElement" index="index">
                         insert into r_deriveWastesAndMixingElement (deriveWastesId,mixingElementId)
@@ -224,7 +224,7 @@
             <foreach collection="wasteProcessList" item="wasteProcess" index="index">
                 UPDATE t_wasteProcess SET code=#{wasteProcess.code}, description=#{wasteProcess.description},
                 quantity=#{wasteProcess.quantity}, lastProcessTime=#{wasteProcess.lastProcessTime},
-                yearQuantity=#{wasteProcess.yearQuantity}, packageSituation=#{wasteProcess.packageSituation}
+                yearQuantity=#{wasteProcess.yearQuantity}, packageSituation=#{wasteProcess.packageSituation}, nowTime=NOW()
                 WHERE processId=#{wasteProcess.processId};
             </foreach>
         </if>
@@ -273,13 +273,13 @@
         wasteName1=#{wasteName1}, wasteName2=#{wasteName2}, wasteName3=#{wasteName3}, wasteName4=#{wasteName4}, wasteName5=#{wasteName5},
         wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
         conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
-        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=NOW()
+        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=NOW(),
         isExamined=TRUE
         WHERE questionnaireId=#{questionnaireId};
     </update>
 
     <update id="signIn" parameterType="String">
-        UPDATE questionnaire SET state='SignedIn' WHERE questionnaireId=#{quesionnaireId}
+        UPDATE questionnaire SET state='SignedIn', nowTime=NOW() WHERE questionnaireId=#{quesionnaireId}
     </update>
 
     <update id="back" parameterType="Questionnaire">
@@ -288,13 +288,13 @@
         wasteName1=#{wasteName1}, wasteName2=#{wasteName2}, wasteName3=#{wasteName3}, wasteName4=#{wasteName4}, wasteName5=#{wasteName5},
         wasteName6=#{wasteName6}, otherRisk=#{otherRisk}, acceptIntend2=#{acceptIntend2}, unacceptReason2=#{unacceptReason2},
         conditionReason2=#{conditionReason2}, isStore=#{isStore}, storeReason=#{storeReason}, isProcess=#{isProcess},
-        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=NOW()
+        processReason=#{processReason}, acceptIntend3=#{acceptIntend3}, unacceptReason3=#{unacceptReason3}, conditionReason3=#{conditionReason3},nowTime=NOW(),
         isExamined=TRUE
         WHERE questionnaireId=#{questionnaireId};
     </update>
 
     <update id="updateAttachmentUrl" parameterType="Questionnaire">
-        UPDATE questionnaire SET attachmentUrl=#{attachmentUrl} WHERE questionnaireId=#{questionnaireId}
+        UPDATE questionnaire SET attachmentUrl=#{attachmentUrl}, nowTime=NOW() WHERE questionnaireId=#{questionnaireId}
     </update>
 
     <select id="list" resultMap="QuestionnaireRM">

@@ -20,7 +20,7 @@
     </update>
 
     <delete id="delete" parameterType="SampleCheck" >
-        DELETE FROM t_sampleCheck WHERE checkId=#{checkId};
+        DELETE FROM t_sampleCheck, nowTime=NOW() WHERE checkId=#{checkId};
     </delete>
 
     <select id="getById" parameterType="String" resultType="SampleCheck">
