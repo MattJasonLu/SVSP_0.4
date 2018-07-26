@@ -18,6 +18,11 @@ public class Page {
      */
     private int last = 0;
 
+    /**
+     * 页数
+     */
+    private int pageNumber=1;
+
     public int getStart() {
         return start;
     }
@@ -40,6 +45,14 @@ public class Page {
 
     public void setLast(int last) {
         this.last = last;
+    }
+
+    public int getPageNumber() {
+        return pageNumber;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     /**

@@ -61,5 +61,4 @@ public interface ClientService {
     void setFilePath(Client client);
 
     int count();
-
 }
