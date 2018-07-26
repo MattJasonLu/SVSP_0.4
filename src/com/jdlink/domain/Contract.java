@@ -239,9 +239,52 @@ private  TicketRate1 ticketRate1;
 
     /**
      *
+     * 合同总价款
+     */
+    private String totalPrice;
+    /*
+    *供应商名称 */
+private  String suppier;
+
+    public String getSuppier() {
+        return suppier;
+    }
+private  String suppierName;
+
+    public String getSuppierName() {
+        return suppierName;
+    }
+
+    public void setSuppierName(String suppierName) {
+        this.suppierName = suppierName;
+    }
+
+    public void setSuppier(String suppier) {
+        this.suppier = suppier;
+    }
+
+    public String getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    /**
+     *
      * 当前时间
      */
     private String nowTime;
+    private  String company1;
+
+    public String getCompany1() {
+        return company1;
+    }
+
+    public void setCompany1(String company1) {
+        this.company1 = company1;
+    }
 
     public String getNowTime() {
         return nowTime;

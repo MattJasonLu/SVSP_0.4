@@ -6,36 +6,58 @@ import java.util.Date;
  * Created by matt on 2018/4/23.
  */
 public class User {
-
+    /**
+     * 用户编号
+     */
     private int id;
+    /**
+     * 用户名
+     */
     private String username;
+    /**
+     * 密码
+     */
     private String password;
+    /**
+     * 客户编号
+     */
     private String clientId;
-    private boolean isAdmin;
+    /**
+     * 是否是客户账户
+     */
+    private boolean isClient;
+    /**
+     * 部门
+     */
+    private String department;
+    /**
+     * 姓名
+     */
+    private String name;
+    /**
+     * 年龄
+     */
+    private int age;
+    /**
+     * 性别
+     */
+    private boolean sex;
+    /**
+     * 岗位
+     */
+    private String job;
+    /**
+     * 级别
+     */
+    private int level;
+    /**
+     * 能否分配账户
+     */
+    private boolean canAllocate;
     /**
      * 当前时间
      */
     private Date nowTime;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", clientId='" + clientId + '\'' +
-                ", isAdmin=" + isAdmin +
-                ", nowTime=" + nowTime +
-                '}';
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
 
     public int getId() {
         return id;
@@ -69,12 +91,94 @@ public class User {
         this.clientId = clientId;
     }
 
-    public boolean getIsAdmin() {
-        return isAdmin;
+    public boolean getIsClient() {
+        return isClient;
     }
 
-    public void setIsAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setIsClient(boolean client) {
+        isClient = client;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public boolean getSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public boolean getCanAllocate() {
+        return canAllocate;
+    }
+
+    public void setCanAllocate(boolean canAllocate) {
+        this.canAllocate = canAllocate;
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", isClient=" + isClient +
+                ", department='" + department + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", sex=" + sex +
+                ", job='" + job + '\'' +
+                ", level=" + level +
+                ", canAllocate=" + canAllocate +
+                ", nowTime=" + nowTime +
+                '}';
+    }
 }

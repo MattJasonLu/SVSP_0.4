@@ -109,13 +109,36 @@ public class UserController {
             res.put("message", "获取日志信息成功");
             res.put("status", "success");
         } catch (NullPointerException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             res.put("message", "未正确登录！");
             res.put("status", "fail");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("message", "获取日志信息失败");
             res.put("status", "fail");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 列出所有用户
+     * @return 所有用户数据
+     */
+    @RequestMapping("listUser")
+    @ResponseBody
+    public String listUser() {
+        JSONObject res = new JSONObject();
+        try {
+            List<User> userList = userService.list();
+            JSONArray data = JSONArray.fromArray(userList.toArray(new User[userList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取用户信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "获取用户信息失败");
+            res.put("exception", e.getMessage());
         }
         return res.toString();
     }

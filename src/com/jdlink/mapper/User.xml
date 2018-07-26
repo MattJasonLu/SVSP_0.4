@@ -5,7 +5,8 @@
 
 <mapper namespace="com.jdlink.mapper.UserMapper">
     <insert id="add" parameterType="User" >
-        insert into user ( username, password, clientId, isAdmin, nowTime)values (#{username}, #{password}, #{clientId}, #{isAdmin}, NOW())
+        INSERT INTO user (username, password, clientId, isClient, nowTime, department, name, age, sex, job, level, canAllocate)
+        VALUES (#{username}, #{password}, #{clientId}, #{isClient}, NOW(), #{department}, #{name}, #{age}, #{sex}, #{job}, #{level}, #{canAllocate});
     </insert>
 
     <delete id="delete" parameterType="User" >

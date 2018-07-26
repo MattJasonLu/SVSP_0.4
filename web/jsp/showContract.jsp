@@ -123,6 +123,10 @@
                 else {
                     $('#contactName').prop("value","");
                 }
+              //赋值开户行名称
+                $('#bankName').prop("value",'${contract.bankName}');
+                //赋值开户行账号
+                $('#bankAccount').prop("value",'${contract.bankAccount}');
 
                if (result != undefined) {
                     // 各下拉框数据填充
@@ -180,10 +184,10 @@
                    var clientName=$('#companyName');
                     clientName.children().remove();
                     index1="";
-                    var s='${contract.companyName}';
+                    var s='${contract.company1}';
                     $.each(data.companyNameList, function (index, item) {
                         var option = $('<option />');
-                        option.val(item.companyName);
+                        option.val(index);
                         option.text(item.companyName);
                         if(item.companyName==s){
                             index1=index;
@@ -192,6 +196,17 @@
                     });
                     clientName.get(0).selectedIndex =index1;
                    $('.selectpicker').selectpicker('refresh');
+                   //赋值客户名称
+                   //供应商名称
+                   if('${contract.company1}'!=""){
+                       $('#company1').prop("value",'${contract.company1}');
+                   }
+                   else {
+                       var options1=$("#companyName option:selected").val(); //获取选中的项
+                       //  console.log(options1);
+                       var company=data.companyNameList[options1];//取得被选中供应商的信息
+                       $('#company1').prop("value",company.companyName);
+                   }
                     // (function (index1){
                     //   changeSelect(index1);
                     // })(index1);
@@ -222,17 +237,17 @@
                    });
                    taxRate1.get(0).selectedIndex = ${contract.ticketRate1.index}-1;
                    //开票税率2下拉框
-                   var taxRate2=$('#taxRate2');
-                   taxRate2.children().remove();
-                   var s1='${contract.ticketRate2}';
-                   $.each(data.ticketRateStrList2, function (index, item) {
-                       // console.log(s1)
-                       var option = $('<option />');
-                       option.val(index);
-                       option.text(item.name);
-                       taxRate2.append(option);
-                   });
-                   taxRate2.get(0).selectedIndex =${contract.ticketRate2.index}-1;
+                   <%--var taxRate2=$('#taxRate2');--%>
+                   <%--taxRate2.children().remove();--%>
+                   <%--var s1='${contract.ticketRate2}';--%>
+                   <%--$.each(data.ticketRateStrList2, function (index, item) {--%>
+                       <%--// console.log(s1)--%>
+                       <%--var option = $('<option />');--%>
+                       <%--option.val(index);--%>
+                       <%--option.text(item.name);--%>
+                       <%--taxRate2.append(option);--%>
+                   <%--});--%>
+                   <%--taxRate2.get(0).selectedIndex =${contract.ticketRate2.index}-1;--%>
                 }
                 else {
                     console.log(result);
@@ -471,7 +486,7 @@
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyName">客户名称</label>
                         <div class="col-xs-4">
-                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName">
+                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
                             </select>
                         </div>
                     </div>
@@ -514,7 +529,7 @@
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label for="taxRate1" class="col-sm-4 control-label">开票税率1</label>
+                        <label for="taxRate1" class="col-sm-4 control-label">开票税率</label>
                         <div class="col-xs-5">
                             <select class="form-control" id="taxRate1" name="ticketRate1">
                             </select>
@@ -533,6 +548,11 @@
                             </input>
                         </div>
                     </div>
+                    <div class="form-group" >
+                        <div class="col-xs-4" >
+                            <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
+                        </div>
+                    </div><!--隐藏域保存客户名称-->
                 </div>
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
@@ -575,13 +595,13 @@
                             <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="">
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="taxRate2" name="ticketRate2">
-                            </select>
-                        </div>
-                    </div>
+                    <%--<div class="form-group" >--%>
+                        <%--<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>--%>
+                        <%--<div class="col-xs-5">--%>
+                            <%--<select class="form-control" id="taxRate2" name="ticketRate2">--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <div class="form-group" >
                         <label for="contractId" class="col-sm-3 control-label">合同编号</label>
                         <div class="col-xs-5" >
@@ -791,6 +811,65 @@
             }
         });
         $('#modelInfoForm').modal('show');
+    }
+    function findClient() {
+        options=$("#companyName option:selected").val(); //获取选中的项
+        $.ajax({
+            type:"POST",
+            url:"getContractList",
+            dataType: "json",
+            success:function (result) {
+                var obj=eval(result);
+                var company=(obj.companyNameList[options]);//获取供应商的信息
+                console.log(company);
+                //2赋值
+                //赋值联系人
+                //客户名称
+                $('#company1').prop("value",company.companyName);
+                $('#contactName').prop("value",company.contactName);
+                //赋值联系方式
+                if(company.mobile!=""&&company.phone==""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                if(company.mobile==""&&company.phone!=""){
+                    $('#telephone').prop("value",company.phone);
+                }
+                if(company.mobile==""&&company.phone==""){
+                    $('#telephone').prop("value","");
+                }
+                if(company.mobile!=""&&company.phone!=""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                //赋值开户行名称
+                $('#bankName').prop("value",company.bankName);
+                //赋值开户行账号
+                $('#bankAccount').prop("value",company.bankAccount);
+                $("#telephone").prop("value",company.phone);//电话
+                //赋值开票税率
+                var taxRate1=$('#taxRate1');
+                index1=""
+                taxRate1.children().remove();
+                $.each(obj.ticketRateStrList1, function (index, item) {
+                    //console.log(obj.ticketRateStrList1);
+                    var option = $('<option />');
+                    if(company.ticketType!=null){
+                        if(company.ticketType.name==item.name){
+                            index1=index;
+                        }
+                    }
+                    else {
+                        index1=-1;
+                    }
+                    option.val(index);
+                    option.text(item.name);
+                    taxRate1.append(option);
+                });
+                taxRate1.get(0).selectedIndex =index1;
+            },
+            error:function (result) {
+
+            }
+        });
     }
 </script>
 </html>
