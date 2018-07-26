@@ -24,8 +24,212 @@
 </head>
 <script>
     function loadEmSelectList() {
+        CKEDITOR.editorConfig = function( config ) {
+            config.toolbarGroups = [
+                { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                { name: 'links', groups: [ 'links' ] },
+                { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                { name: 'insert', groups: [ 'insert' ] },
+                { name: 'forms', groups: [ 'forms' ] },
+                { name: 'tools', groups: [ 'tools' ] },
+                { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                { name: 'others', groups: [ 'others' ] },
+                '/',
+                { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                { name: 'styles', groups: [ 'styles' ] },
+                { name: 'colors', groups: [ 'colors' ] },
+                { name: 'about', groups: [ 'about' ] }
+            ];
+            config.removeButtons = 'Underline,Subscript,Superscript';
+            config.pasteFromWordRemoveFontStyles = false;
+            config.pasteFromWordRemoveStyles = false;
+            config.removePlugins='elementspath';
+        };
         var contractName1=$('#contractName1');
         contractName1.hide();
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4
+        });
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getContractList",                  // url
+            dataType: "json",
+            data:{"key":"应急"},//为了模板选择
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var contractType1 = $("#contractType1");//模板名称下拉框
+                    contractType1.children().remove();
+                    $.each(data.modelNameList, function (index, item) {
+                        if(item!=null&&item.modelName!=""){
+                            //console.log(item);
+                            var option = $('<option />');
+                            option.val(item.modelName);
+                            option.text(item.modelName);
+                            contractType1.append(option);}
+                    });
+                    contractType1.get(0).selectedIndex = -1;
+                    //获得省级
+                    var province = $("#province");
+                    province.children().remove();
+                    $.each(data.provinceStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        province.append(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                    //获取相应的市级
+                    $.ajax({
+                        type: "POST",                            // 方法类型
+                        url: "getCityList",                  // url
+                        dataType: "json",
+                        data:{
+                            'provinceId': 1
+                        },
+                        success: function (result) {
+                            if (result != undefined) {
+                                var data = eval(result);
+                                //console.log(data);
+                                //var contractName = $("#contractName");
+                                //下拉框填充
+                                var city=$("#city");
+                                city.children().remove();
+                                cityIndex="";
+                                $.each(data, function (index, item) {
+                                    //  console.log(item);
+                                    var option1 = $('<option />');
+                                    option1.val(item.cityname);
+                                    option1.text(item.cityname);
+                                    if(item.cityname=='${contract.city}'){
+                                        cityIndex=index;
+                                    }
+                                    city.append(option1);
+                                });
+                                $('.selectpicker').selectpicker('refresh');
+
+
+                            } else {
+                                console.log(result);
+                            }
+                        },
+                        error:function (result) {
+                            console.log(result);
+                        }
+                    });
+                    var clientName=$('#companyName');
+                    clientName.children().remove();
+                    $.each(data.companyNameList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.companyName);
+                        clientName.append(option);
+                    });
+                    //clientName.get(0).selectedIndex = -1;
+                    $('.selectpicker').selectpicker('refresh');
+                    var options1=$("#companyName option:selected").val(); //获取选中的项
+                    var company=data.companyNameList[options1];//取得被选中供应商的信息
+                    //开票税率下拉
+                    console.log(company);
+                    var taxRate1=$('#taxRate1');
+                    i="";
+                    taxRate1.children().remove();
+                    $.each(data.ticketRateStrList1, function (index, item) {
+                        // console.log(item);
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        if(company.ticketType!=null){
+                            if(company.ticketType.name==item.name){
+                                i=index;
+                            }
+                        }
+                        else {
+                            i=-1;
+                        }
+                        taxRate1.append(option);
+                    });
+                    taxRate1.get(0).selectedIndex = i;
+                    //开票税率2下拉框
+                    // var taxRate2=$('#taxRate2');
+                    // taxRate2.children().remove();
+                    // $.each(data.ticketRateStrList2, function (index, item) {
+                    //     // console.log(item);
+                    //     var option = $('<option />');
+                    //     option.val(index);
+                    //     option.text(item.name);
+                    //     taxRate2.append(option);
+                    // });
+                    // taxRate2.get(0).selectedIndex = -1;
+                    //赋值联系人
+                    $('#contactName').prop("value",company.contactName);
+                    //赋值联系方式
+                    if(company.mobile!=""&&company.phone==""){
+                        $('#telephone').prop("value",company.mobile);
+                    }
+                    if(company.mobile==""&&company.phone!=""){
+                        $('#telephone').prop("value",company.phone);
+                    }
+                    if(company.mobile==""&&company.phone==""){
+                        $('#telephone').prop("value","");
+                    }
+                    if(company.mobile!=""&&company.phone!=""){
+                        $('#telephone').prop("value",company.mobile);
+                    }
+                    //赋值开户行名称
+                    $('#bankName').prop("value",company.bankName);
+                    //赋值开户行账号
+                    $('#bankAccount').prop("value",company.bankAccount);
+                    $('#company1').prop("value",company.companyName);
+
+                } else {
+                    console.log(result);
+                }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+    function changeSelect(index) {
+        var index1=index+1;//获得province_id
+        //console.log(index1);
+        //调用ajax
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCityList",                  // url
+            dataType: "json",
+            data:{
+                'provinceId': index1
+            },
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    //console.log(data);
+                    //var contractName = $("#contractName");
+                    //下拉框填充
+                    var city=$("#city");
+                    city.children().remove();
+                    $.each(data, function (index, item) {
+                        var option1 = $('<option />');
+                        option1.val(item.cityname);
+                        option1.text(item.cityname);
+                        city.append(option1);
+                    });
+                    city.get(0).selectedIndex = -1;
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+                    console.log(result);
+                }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+
     }
 </script>
 <body onload="loadEmSelectList();">
@@ -445,6 +649,29 @@
 <div id="embed"></div>
 </body>
 <script>
+    CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
+    $('.form_datetime1').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.form_datetime2').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
     function Appear() {
         $("#contractName1").hide();
         $('#contractType2').show();
@@ -453,7 +680,45 @@
         $('#contractType2').hide();
         $("#contractName1").show();
     }
+    /**
+     *
+     * 合同正文查看
+     */
 
+    function check1(item) {
+        var modelName=item.previousElementSibling.value;
+        //console.log(modelName);
+        $.ajax({
+            type:"POST",
+            url:"getContractBymodelName1",
+            async: false,
+            dataType: "json",
+            data: {
+                'modelName': modelName
+            },
+            success:function (result) {
+                if(result!=undefined){
+                    var obj=eval(result);
+                    //console.log(obj);
+                    //$('input').prop("readonly",true);
+                    // $('textarea').prop("readonly",true);
+                    $('#modal3_modelName').val(obj.modelName);
+                    $('#modal3_contractType').val(obj.contractType.name);
+                    $('#modal3_year').val(obj.year);
+                    $('#modal3_period').val(obj.period);
+                    $('#modelVersion').val(obj.modelVersion);
+                    var text=obj.contractContent;
+                    //console.log(text);
+                    //$('#modal3_contractContent').val($(text).text());//有换行的格式
+                    CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
+                }
+            },
+            error:function (result) {
+
+            }
+        });
+        $('#modelInfoForm').modal('show');
+    }
 
 </script>
 </html>
