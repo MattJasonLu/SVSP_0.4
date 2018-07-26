@@ -30,10 +30,10 @@
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,suppierName)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,suppierName,company1)
         values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{suppierName})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{suppierName},#{company1})
     </insert>
     <insert id="addEm" parameterType="Contract">
      insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime)
@@ -68,11 +68,11 @@
         UPDATE t_contract SET companyName=#{companyName}, clientId=#{clientId}, isCompanyContract=#{isCompanyContract},
         area=#{area}, beginTime=#{beginTime}, endTime=#{endTime}, agreedQuantity=#{agreedQuantity},
         contactName=#{contactName}, telephone=#{telephone}, reviewer=#{reviewer}, reviewDepartment=#{reviewDepartment},
-        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=NOW(),suppierName=#{suppierName},totalPrice=#{totalPrice}WHERE contractId=#{contractId};
+        reviewDate=#{reviewDate},contractType=#{contractType},province=#{province},city=#{city},order1=#{order1},contractVersion=#{contractVersion},bankName=#{bankName},bankAccount=#{bankAccount},ticketRate1=#{ticketRate1},logisticsQualification=#{logisticsQualification},beginQualification=#{beginQualification},endQualification=#{endQualification},modelName=#{modelName},year=#{year},period=#{period},contractContent=#{contractContent},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName},modelVersion=#{modelVersion},nowTime=NOW(),suppierName=#{suppierName},totalPrice=#{totalPrice},company1=#{company1} WHERE contractId=#{contractId};
     </update>
 <update id="updateEm" parameterType="Contract">
 UPDATE t_contract SET companyName=#{companyName},area=#{area},beginTime=#{beginTime},endTime=#{endTime},contactName=#{contactName},
-telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName} WHERE contractId=#{contractId};
+telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount=#{bankAccount},wasteName=#{wasteName},tonNumber=#{tonNumber},companyLegal=#{companyLegal},companyAgent=#{companyAgent},clientLegal=#{clientLegal},companyAgent=#{companyAgent},address=#{address},contractName=#{contractName}  WHERE contractId=#{contractId};
 </update>
     <update id="setCheckStateToExamine" parameterType="Contract">
         UPDATE t_contract SET checkState='ToExamine' WHERE contractId=#{contractId};

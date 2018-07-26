@@ -52,7 +52,6 @@
     };
 
 function loadContractSelectList() {
-
     var contractType=$('#contractType');
     contractType.hide();//合同类型隐藏不需要显示
     var contractName1=$('#contractName1');
@@ -144,6 +143,8 @@ function loadContractSelectList() {
                 //2赋值
                 //开票税率下拉框
                 //开票税率1下拉框
+                var options1=$("#suppier option:selected").val(); //获取选中的项
+                var suppier=data.supplierNameList[options1];//取得被选中供应商的信息
                 var taxRate1=$('#taxRate1');
                 index1=""
                 taxRate1.children().remove();
@@ -174,9 +175,6 @@ function loadContractSelectList() {
                 //     taxRate2.append(option);
                 // });
                 // taxRate2.get(0).selectedIndex = -1;
-                var options1=$("#suppier option:selected").val(); //获取选中的项
-                //  console.log(options1);
-                var suppier=data.supplierNameList[options1];//取得被选中供应商的信息
                 $("#telephone").prop("value",suppier.phone);//赋值联系电话
                 $("#contactName").prop("value",suppier.contactName);//赋值联系人
                 //console.log(suppier.companyName);

@@ -240,9 +240,8 @@ function loadContractList1(index) {
                                 $(this).html(obj.suppierName);
                             }
                             else {
-                                $(this).html("");
+                                $(this).html(obj.company1);
                             }
-
                             break;
                         // 合同名称
                         case (3):
@@ -446,7 +445,7 @@ function loadContractList1(index) {
     //在此提交
         var items = $("input[name='blankCheckbox']:checked");//判断复选框是否选中
         if(items.length>0){
-            var name1= items[0].parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML;
+            var name1= items[0].parentElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
          // console.log(name1);
             if(name1.indexOf("物流")!=-1){
                 var name2="Logistics";
@@ -509,7 +508,7 @@ else {
     function viewContract(item)
     {
          contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-        var contractType=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractType=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         console.log(contractId+contractType);
         if(contractType.indexOf('应急处置合同')!=-1){
 
@@ -532,7 +531,7 @@ else {
                    'contractId': contractId
                },
                success: function (result) {
-                  // console.log(result);
+                   console.log(result);
                    if (result != undefined) {
                        var data = eval(result);
                        //开始日期
@@ -571,13 +570,15 @@ else {
                        $("#modal3_telephone").text(data.telephone);
                      //预计处置费
                        $("#modal3_order").text(data.order1);
-                       if(data.contractVersion.name=='物流合同'){
+                       if(data.contractType.name=='物流合同'){
+                         $('#name1').html("供应商名称&nbsp;&nbsp;");
                            $("#modal3_suppierName").text(data.suppierName);
                        }
                       else {
-                           $("#modal3_suppierName").parent().first().innerHTML="客户名称";
-                           $("#modal3_suppierName").text(data.companyName);//公司名称
+                           $('#name1').html("客户名称&nbsp;&nbsp;");
+                           $("#modal3_suppierName").text(data.company1);//公司名称
                        }
+
                        //开票税率1
                        if(data.ticketRate1==null){
                            $('#modal3_ticketRate1').text(" ");
@@ -1091,7 +1092,7 @@ else {
                                 <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
                                 <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
                                 <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
-                                <p class="text-left"><b>客户名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
+                                <!--<p class="text-left"><b>客户名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
                                 <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
                                 <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
                               <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
@@ -1358,7 +1359,7 @@ function ContractListByName(item) {
     function cancel(item) {
         //查看合同编号
         var contractId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-        var name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         var r = confirm("是否作废该合同？");
         if (r == true) {
             $.ajax({
@@ -1408,7 +1409,7 @@ function ContractListByName(item) {
     function approval(item) {
         //出现模态框和查看一个效果
         contractId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-        name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getContractId",                   // url
@@ -1444,11 +1445,13 @@ function ContractListByName(item) {
                     //$("#modal3_area").text(data.province.name + "" + data.city);
                     $("#modal3_telephone").text(data.telephone);
                     $("#modal3_order").text(data.order1);
-                    if(data.contractVersion.name=="物流合同"){
+                    if(data.contractType.name=='物流合同'){
+                        $('#name1').html("供应商名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(data.suppierName);
                     }
-                    if(data.contractVersion.name!="物流合同"||data.contractVersion==null) {
-                        $("#modal3_companyName").text(data.companyName);//公司名称
+                    else {
+                        $('#name1').html("客户名称&nbsp;&nbsp;");
+                        $("#modal3_suppierName").text(data.company1);//公司名称
                     }
                     //开票税率1
                     if (data.ticketRate1 == null) {
@@ -1614,7 +1617,7 @@ function ContractListByName(item) {
             url: "backContract",
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: {'contractId': contractId, 'backContent': backContent,},
+            data: {'contractId': contractId, 'backContent': backContent},
             success: function (result) {
                 var obj = eval(result);
                 if (obj.state == "success") {
@@ -1728,7 +1731,7 @@ function ContractListByName(item) {
 
     function checkdb(item) {
         var contractId = item.firstElementChild.nextElementSibling.innerHTML;
-        var contractType = item.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
+        var contractType = item.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         console.log(contractId+contractType);
         //取得合同编号
         if (contractType.indexOf('应急处置合同') != -1) {
@@ -1825,7 +1828,14 @@ function ContractListByName(item) {
                             $('#modal3_freight').removeAttr("checked");
                         }
                         //供用商姓名
-                        $('#modal3_suppierName').text(data.suppierName);
+                        if(data.contractType.name=='物流合同'){
+                            $('#name1').html("供应商名称&nbsp;&nbsp;");
+                            $("#modal3_suppierName").text(data.suppierName);
+                        }
+                        else {
+                            $('#name1').html("客户名称&nbsp;&nbsp;");
+                            $("#modal3_suppierName").text(data.company1);//公司名称
+                        }
                         $('#search').prop("readonly", false);
                     } else {
                         $("#modal3_contactName").text("");

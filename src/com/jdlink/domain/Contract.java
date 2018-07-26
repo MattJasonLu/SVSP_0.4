@@ -276,6 +276,15 @@ private  String suppierName;
      * 当前时间
      */
     private String nowTime;
+    private  String company1;
+
+    public String getCompany1() {
+        return company1;
+    }
+
+    public void setCompany1(String company1) {
+        this.company1 = company1;
+    }
 
     public String getNowTime() {
         return nowTime;

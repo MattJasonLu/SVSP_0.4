@@ -177,16 +177,16 @@ public String submitEmContract(@RequestBody Contract contract) {
         JSONObject res = new JSONObject();
         JSONArray array1 = JSONArray.fromArray(ContractType.values());
         res.put("contractNameStrList", array1);
-//        JSONArray array2 = JSONArray.fromArray(Province.values());
-//        res.put("provinceStrList", array2);
+        JSONArray array2 = JSONArray.fromArray(Province.values());
+        res.put("provinceStrList", array2);
         JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
         res.put("ticketRateStrList1", array3);
 //        JSONArray array4 = JSONArray.fromArray(TicketRate2.values());
 //        res.put("ticketRateStrList2", array4);
         //查询客户list形式返回
-//              List client= clientService.list();
-//              JSONArray json=JSONArray.fromObject(client);
-//              res.put("companyNameList",json);
+              List client= clientService.list();
+              JSONArray json=JSONArray.fromObject(client);
+              res.put("companyNameList",json);
         //查询供应闪list形式返回
         List supplier=supplierService.list();
         JSONArray json2=JSONArray.fromObject(supplier);
