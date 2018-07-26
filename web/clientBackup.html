@@ -16,6 +16,219 @@
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
+
+    var currentPage = 1;                          //当前页数
+
+    /**
+     * 计算总页数
+     * */
+    function totalPage() {
+        var totalRecord = 0;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+        var count = 15;                         // 可选
+        var total = loadPages(totalRecord, count);
+        return total;
+    }
+
+    function setPageClone(result) {
+        setClientList(result);
+        var total = totalPage();
+        $("#next").prev().hide();
+        var st = "共" + total + "页";
+        $("#totalPage").text(st);
+        var myArray = new Array();
+        for (var i = 0; i < total; i++) {
+            var li = $("#next").prev();
+            myArray[i] = i + 1;
+            var clonedLi = li.clone();
+            clonedLi.show();
+            clonedLi.find('a:first-child').text(myArray[i]);
+            clonedLi.find('a:first-child').click(function () {
+                var num = $(this).text();
+                switchPage(num);
+            });
+            clonedLi.removeAttr("id");
+            clonedLi.insertAfter(li);
+        }
+
+    }
+
+    /**
+     * 点击页数跳转页面
+     * @param pageNumber 跳转页数
+     * */
+    function switchPage(pageNumber) {
+        console.log("当前页：" + pageNumber);
+        if (pageNumber == 0) {                 //首页
+            pageNumber = 1;
+        }
+        if (pageNumber == -2) {
+            pageNumber = totalPage();        //尾页
+        }
+        if (pageNumber == null || pageNumber == undefined) {
+            console.log("参数为空,返回首页!");
+            pageNumber = 1;
+        }
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        var page = {};
+        page.count = 15;                        //可选
+        page.pageNumber = pageNumber;
+        currentPage = pageNumber;          //当前页面
+        //addClass("active");
+        page.start = (pageNumber - 1) * page.count;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageClientList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setClientList(result);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
+    }
+
+    /**
+     * 输入页数跳转页面
+     * */
+    function inputSwitchPage() {
+        var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+
+        if (pageNumber == null || pageNumber == undefined) {
+            window.alert("跳转页数不能为空！")
+        } else {
+            if (pageNumber == 1) {
+                $("#previous").addClass("disabled");
+                $("#firstPage").addClass("disabled");
+                $("#next").removeClass("disabled");
+                $("#endPage").removeClass("disabled");
+            }
+            if (pageNumber == totalPage()) {
+                $("#next").addClass("disabled");
+                $("#endPage").addClass("disabled");
+                $("#previous").removeClass("disabled");
+                $("#firstPage").removeClass("disabled");
+            }
+                currentPage = pageNumber;
+                var page = {};
+                page.count = 15;//可选
+                page.pageNumber = pageNumber;
+                page.start = (pageNumber - 1) * page.count;
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "loadPageClientList",         // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(page),
+                    dataType: "json",
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (result) {
+                        if (result != undefined) {
+                            console.log(result);
+                            setClientList(result);
+                        } else {
+                            console.log("fail: " + result);
+                        }
+                    },
+                    error: function (result) {
+                        console.log("error: " + result);
+                    }
+                });
+
+
+        }
+    }
+
+    /**
+     * 分页 获取首页内容
+     * */
+    function loadPageClientList() {
+        var pageNumber = 1;                       // 显示首页
+        currentPage = pageNumber;
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        var page = {};
+        page.count = 15;                                 // 可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageClientList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    setPageClone(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
+            }
+        });
+    }
+
+    /**
+     * 计算分页总页数
+     * @param totalRecord
+     * @param count
+     * @returns {number}
+     */
+    function loadPages(totalRecord, count) {
+        if (totalRecord == 0) {
+            window.alert("总记录数为0，请检查！");
+            return 0;
+        }
+        else if (totalRecord % count == 0)
+            return totalRecord / count;
+        else
+            return parseInt(totalRecord / count) + 1;
+    }
+
     function setClientList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
@@ -194,7 +407,7 @@
     // })
 
 </script>
-<body onload="loadClientList()" class="">
+<body onload="loadPageClientList()" class="">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -376,27 +589,33 @@
                 </table>
             </div>
             <!--分页1-->
-
+            <style type="text/css">
+                li{ display:inline;}
+            </style>
             <nav aria-label="Page navigation" style="text-align: center">
-                <ul class="pagination">
-                    <li class="disabled">
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+                    <ol class="pagination">
+                        <li id="firstPage">
+                            <a href='#' onclick="switchPage(0)">首 页</a>
+                        </li>
+                        <li id="previous">
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);">&laquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="#">1</a></li>
+                        <li id="next">
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);">&raquo;</span>
+                            </a>
+                        </li>
+                        <li id="endPage">
+                            <a href='#' onclick="switchPage(-2)">尾 页</a>
+                        </li>
+                        <li ><a id="totalPage"></a></li>
+                        <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                        <li ><input type="text" style="width:50px; height:34px;" id="pageNumber"></li>
+                    </ol>
             </nav>
-
         </div>
     </div>
 
