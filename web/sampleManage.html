@@ -128,6 +128,23 @@
             }
         });
     }
+
+    function addNewLine() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        var id = clonedTr.children().find("input:first-child").prop('name').charAt(11);
+        clonedTr.children().find("input").val("");
+        clonedTr.children().find("input,select").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/[0-9]\d*/, parseInt(id)+1);
+            $(this).prop('name', newName);
+        });
+        clonedTr.addClass("newLine");
+        clonedTr.insertAfter(tr);
+    }
 </script>
 <body onload="loadSampleList();">
     <!--导航条-->
@@ -433,67 +450,69 @@
                     <form id="model-check" method="post">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-left"><b>取&nbsp;&nbsp;样&nbsp;&nbsp;号&nbsp;&nbsp;</b><span id="model2-checkId">****</span></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="text-left"><b>公司名称&nbsp;&nbsp;</b><span id="model2-companyName"></span></p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="text-left"><b>制单日期&nbsp;&nbsp;</b><span id="model2-createTime"></span></p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                                <p class=""><b>取&nbsp;&nbsp;样&nbsp;&nbsp;号&nbsp;&nbsp;</b><span id="model2-checkId">****</span></p>
+                                <p class=""><b>公司名称&nbsp;&nbsp;</b><span id="model2-companyName"></span></p>
                                 <p class="text-left"><b>联&nbsp;&nbsp;系&nbsp;&nbsp;人&nbsp;&nbsp;</b><span id="model2-contactName"></span></p>
-                                <div class="form-group">
-                                    <label for="model-telephone" class="col-sm-5 control-label">样品名称<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-productName" name="productName" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="model-telephone" class="col-sm-5 control-label">接收人<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>制单日期&nbsp;&nbsp;</b><span id="model2-createTime"></span></p>
+                                <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="model2-telephone"></span></p>
+                                <div class="form-group" style="margin: 0 5% 5% -10%;">
+                                    <label for="model2-recipient" class="col-sm-5 control-label">接&nbsp;&nbsp;收&nbsp;&nbsp;人<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control focus" id="model2-recipient" name="recipient" required>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin: 0 3% 0 -6%;">
+                            <div class="form-horizontal col-md-6">
                                 <div class="form-group">
-                                    <label for="model-telephone" class="col-sm-5 control-label">状态<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <label class="col-sm-5 control-label">样品名称<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <select class="form-control focus" id="model2-formType" name="formType" required></select>
+                                        <input type="text" class="form-control focus" name="sampleList[0].productName" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="model-telephone" class="col-sm-5 control-label">拟处置量<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <label class="col-sm-5 control-label">拟处置量<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-quantity" name="quantity" required>
+                                        <input type="number" class="form-control focus" name="sampleList[0].quantity" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-5 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <select class="form-control focus" name="sampleList[0].formType" required></select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="model2-telephone"></span></p>
+                            <div class="form-horizontal col-md-6">
                                 <div class="form-group">
-                                    <label for="model-telephone" class="col-sm-5 control-label">危废代码<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <label class="col-sm-5 control-label">危废代码<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-code" name="code" required>
+                                        <input type="text" class="form-control focus" name="sampleList[0].code" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="model-telephone" class="col-sm-5 control-label">颜色<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <label class="col-sm-5 control-label">颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control focus" id="model2-color" name="telephone" required>
+                                        <input type="text" class="form-control focus" name="sampleList[0].color" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="model-telephone" class="col-sm-5 control-label">包装<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <label class="col-sm-5 control-label">包&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;装<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
-                                        <select class="form-control focus" id="model2-packageType" name="packageType" required></select>
+                                        <select class="form-control focus" name="sampleList[0].packageType" required></select>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row" id="plusBtn">
+                            <div class="col-md-6">
+                                <a class="btn btn-default btn-xs" onclick="addNewLine();" title="增加样品"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                            </div>
+                        </div>
+                        <br>
                         <div class="row">
                             <label for="model-comment" class="col-sm-2 control-label">主要成分</label>
                             <div class="col-sm-10">
@@ -711,9 +730,52 @@
      * 显示收样框
      */
     function checkModal() {
+        $(".newLine").remove();
         var items = $("input[type='checkbox']:checked");
         if (items.length == 1) {
             var id = getAppointIdByCheckbox(items[0]);
+            // 添加下拉框信息
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getSampleSelectList",         // url
+                cache: false,
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+//                console.log(result);
+                    if (result != undefined) {
+                        var data = eval(result);
+                        // 各下拉框数据填充
+                        var formType = $("select[name='sampleList[0].formType']");
+                        // 清空遗留元素
+                        formType.children().remove();
+                        $.each(data.formTypeStrList, function (index, item) {
+                            var option = $('<option />');
+                            option.val(item.index-1);
+                            option.text(item.name);
+                            formType.append(option);
+                        });
+                        formType.get(0).selectedIndex = -1;
+
+                        var packageType = $("select[name='sampleList[0].packageType']");
+                        // 清空遗留元素
+                        packageType.children().remove();
+                        $.each(data.packageTypeStrList, function (index, item) {
+                            var option = $('<option />');
+                            option.val(item.index-1);
+                            option.text(item.name);
+                            packageType.append(option);
+                        });
+                        packageType.get(0).selectedIndex = -1;
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+            $(".newLine").remove();
+            $("#plusBtn").prev().find("input").val("");
             var checkId = id.concat("R");
             $("#model2-checkId").text(checkId);
             // 更新数据
@@ -726,7 +788,7 @@
                 },
                 dataType: "json",
                 success: function (result) {
-                    console.log(result);
+//                console.log(result);
                     if (result != undefined) {
                         var data = eval(result);
                         if (data.status == "success") {
@@ -743,6 +805,7 @@
             });
             var formTypeIndex, packageTypeIndex;
             // 添加已填写的登记信息
+//        console.log(checkId);
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "getSampleCheck",              // url
@@ -752,68 +815,25 @@
                 },
                 dataType: "json",
                 success: function (result) {
-                    console.log(result);
                     if (result != undefined) {
+                        console.log(result);
                         var data = eval(result);
                         if (data.status == "success") {
-                            $("#model2-productName").val(data.data.productName);
                             $("#model2-recipient").val(data.data.recipient);
-                            $("#model2-quantity").val(data.data.quantity);
-                            $("#model2-code").val(data.data.code);
-                            $("#model2-color").val(data.data.color);
                             $("#model2-mainComponent").val(data.data.mainComponent);
-                            formTypeIndex = data.data.formType.index-1;
-                            packageTypeIndex = data.data.packageType.index-1;
+                            for (var i = 0; i < data.data.sampleList.length; i++) {
+                                if (i > 0) addNewLine();
+                                var $i = i;
+                                $("input[name='sampleList[" + $i + "].productName']").val(data.data.sampleList[i].productName);
+                                $("input[name='sampleList[" + $i + "].quantity']").val(data.data.sampleList[i].quantity);
+                                if (data.data.sampleList[i].formType != null) $("select[name='sampleList[" + $i + "].formType']").get(0).selectedIndex = data.data.sampleList[i].formType.index-1;
+                                if (data.data.sampleList[i].packageType != null) $("select[name='sampleList[" + $i + "].packageType']").get(0).selectedIndex = data.data.sampleList[i].packageType.index-1;
+                                $("input[name='sampleList[" + $i + "].code']").val(data.data.sampleList[i].code);
+                                $("input[name='sampleList[" + $i + "].color']").val(data.data.sampleList[i].color);
+                            }
                         } else {
-                            $("#model2-productName").val("");
-                            $("#model2-recipient").val("");
-                            $("#model2-quantity").val("");
-                            $("#model2-code").val("");
-                            $("#model2-color").val("");
-                            $("#model2-mainComponent").val("");
-                            formTypeIndex = -1;
-                            packageTypeIndex = -1;
+
                         }
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                }
-            });
-            // 添加下拉框信息
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "getSampleSelectList",         // url
-                cache: false,
-                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    console.log(result);
-                    if (result != undefined) {
-                        var data = eval(result);
-                        // 各下拉框数据填充
-                        var formType = $("#model2-formType");
-                        // 清空遗留元素
-                        formType.children().remove();
-                        $.each(data.formTypeStrList, function (index, item) {
-                            var option = $('<option />');
-                            option.val(item.index-1);
-                            option.text(item.name);
-                            formType.append(option);
-                        });
-                        formType.get(0).selectedIndex = formTypeIndex;
-                        var packageType = $("#model2-packageType");
-                        // 清空遗留元素
-                        packageType.children().remove();
-                        $.each(data.packageTypeStrList, function (index, item) {
-                            var option = $('<option />');
-                            option.val(item.index-1);
-                            option.text(item.name);
-                            packageType.append(option);
-                        });
-                        packageType.get(0).selectedIndex = packageTypeIndex;
-                    } else {
                     }
                 },
                 error: function (result) {
@@ -838,13 +858,23 @@
             createTime: getStdTimeStr($("#model2-createTime").text()),
             contactName: $("#model2-contactName").text(),
             telephone: $("#model2-telephone").val(),
-            productName: $("#model2-productName").val(),
             recipient: $("#model2-recipient").val(),
-            quantity: $("#model2-quantity").val(),
-            code: $("#model2-code").val(),
-            color: $("#model2-color").val(),
             mainComponent: $("#model2-mainComponent").val()
         };
+        data['sampleList'] = [];
+        // 增加列表
+        var sampleListCount = $("input[name^='sampleList'][name$='productName']").length;
+        for (var i = 0; i < sampleListCount; i++) {
+            var $i = i;
+            var sample = {};
+            sample.productName = $("input[name='sampleList[" + $i + "].productName']").val();
+            sample.quantity = $("input[name='sampleList[" + $i + "].quantity']").val();
+            sample.formType = $("select[name='sampleList[" + $i + "].formType']").val();
+            sample.code = $("input[name='sampleList[" + $i + "].code']").val();
+            sample.color = $("input[name='sampleList[" + $i + "].color']").val();
+            sample.packageType = $("select[name='sampleList[" + $i + "].packageType']").val();
+            data.sampleList.push(sample);
+        }
         $.ajax({
             type: "POST",                            // 方法类型
             url: "addSampleCheck",                 // url
@@ -874,6 +904,48 @@
      * 显示操作按钮对应收样框
      */
     function checkSample(menu) {
+        // 添加下拉框信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getSampleSelectList",         // url
+            cache: false,
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+//                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var formType = $("select[name='sampleList[0].formType']");
+                    // 清空遗留元素
+                    formType.children().remove();
+                    $.each(data.formTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.index-1);
+                        option.text(item.name);
+                        formType.append(option);
+                    });
+                    formType.get(0).selectedIndex = -1;
+
+                    var packageType = $("select[name='sampleList[0].packageType']");
+                    // 清空遗留元素
+                    packageType.children().remove();
+                    $.each(data.packageTypeStrList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.index-1);
+                        option.text(item.name);
+                        packageType.append(option);
+                    });
+                    packageType.get(0).selectedIndex = -1;
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        $(".newLine").remove();
+        $("#plusBtn").prev().find("input").val("");
         var id = getAppointIdByMenu(menu);
         var checkId = id.concat("R");
         $("#model2-checkId").text(checkId);
@@ -918,64 +990,21 @@
                     console.log(result);
                     var data = eval(result);
                     if (data.status == "success") {
-                        $("#model2-productName").val(data.data.productName);
                         $("#model2-recipient").val(data.data.recipient);
-                        $("#model2-quantity").val(data.data.quantity);
-                        $("#model2-code").val(data.data.code);
-                        $("#model2-color").val(data.data.color);
                         $("#model2-mainComponent").val(data.data.mainComponent);
-                        if (data.data.formType != null) formTypeIndex = data.data.formType.index-1;
-                        if (data.data.packageType != null) packageTypeIndex = data.data.packageType.index-1;
+                        for (var i = 0; i < data.data.sampleList.length; i++) {
+                            if (i > 0) addNewLine();
+                            var $i = i;
+                            $("input[name='sampleList[" + $i + "].productName']").val(data.data.sampleList[i].productName);
+                            $("input[name='sampleList[" + $i + "].quantity']").val(data.data.sampleList[i].quantity);
+                            if (data.data.sampleList[i].formType != null) $("select[name='sampleList[" + $i + "].formType']").get(0).selectedIndex = data.data.sampleList[i].formType.index-1;
+                            if (data.data.sampleList[i].packageType != null) $("select[name='sampleList[" + $i + "].packageType']").get(0).selectedIndex = data.data.sampleList[i].packageType.index-1;
+                            $("input[name='sampleList[" + $i + "].code']").val(data.data.sampleList[i].code);
+                            $("input[name='sampleList[" + $i + "].color']").val(data.data.sampleList[i].color);
+                        }
                     } else {
-                        $("#model2-productName").val("");
-                        $("#model2-recipient").val("");
-                        $("#model2-quantity").val("");
-                        $("#model2-code").val("");
-                        $("#model2-color").val("");
-                        $("#model2-mainComponent").val("");
-                        formTypeIndex = -1;
-                        packageTypeIndex = -1;
+
                     }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-        // 添加下拉框信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getSampleSelectList",         // url
-            cache: false,
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-//                console.log(result);
-                if (result != undefined) {
-                    var data = eval(result);
-                    // 各下拉框数据填充
-                    var formType = $("#model2-formType");
-                    // 清空遗留元素
-                    formType.children().remove();
-                    $.each(data.formTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.index-1);
-                        option.text(item.name);
-                        formType.append(option);
-                    });
-                    formType.get(0).selectedIndex = formTypeIndex;
-                    var packageType = $("#model2-packageType");
-                    // 清空遗留元素
-                    packageType.children().remove();
-                    $.each(data.packageTypeStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.index-1);
-                        option.text(item.name);
-                        packageType.append(option);
-                    });
-                    packageType.get(0).selectedIndex = packageTypeIndex;
-                } else {
                 }
             },
             error: function (result) {

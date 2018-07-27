@@ -222,6 +222,14 @@ public class SampleController {
                 sampleAppointService.updatePdtAndCode(sampleCheck);
                 res.put("message", "登记成功");
             } else {
+                // 旧列表更新id
+                for (int i = 0; i < oldSampleCheck.getSampleList().size(); i++) {
+                    sampleCheck.getSampleList().get(i).setSampleId(oldSampleCheck.getSampleList().get(i).getSampleId());
+                }
+                // 新列表直接生成新编号
+                for (int i = oldSampleCheck.getSampleList().size(); i < sampleCheck.getSampleList().size(); i++) {
+                    sampleCheck.getSampleList().get(i).setSampleId(RandomUtil.getRandomEightNumber());
+                }
                 sampleCheckService.update(sampleCheck);
                 res.put("message", "修改成功");
             }

@@ -1,6 +1,8 @@
 package com.jdlink.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by matt on 2018/5/14.
@@ -25,14 +27,6 @@ public class SampleCheck {
      */
     private String companyName;
     /**
-     * 样品名称
-     */
-    private String productName;
-    /**
-     * 代码
-     */
-    private String code;
-    /**
      * 联系人
      */
     private String contactName;
@@ -49,21 +43,9 @@ public class SampleCheck {
      */
     private String recipient;
     /**
-     * 样品状态
+     * 样品列表
      */
-    private FormType formType;
-    /**
-     * 颜色
-     */
-    private String color;
-    /**
-     * 处置量
-     */
-    private float quantity;
-    /**
-     * 拟用包装
-     */
-    private PackageType packageType;
+    private List<Sample> sampleList = new ArrayList<>();
     /**
      * 主要成分
      */
@@ -80,16 +62,11 @@ public class SampleCheck {
                 ", appointId='" + appointId + '\'' +
                 ", clientId='" + clientId + '\'' +
                 ", companyName='" + companyName + '\'' +
-                ", productName='" + productName + '\'' +
-                ", code='" + code + '\'' +
                 ", contactName='" + contactName + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", createTime=" + createTime +
                 ", recipient='" + recipient + '\'' +
-                ", formType=" + formType +
-                ", color='" + color + '\'' +
-                ", quantity=" + quantity +
-                ", packageType=" + packageType +
+                ", sampleList=" + sampleList +
                 ", mainComponent='" + mainComponent + '\'' +
                 ", nowTime=" + nowTime +
                 '}';
@@ -135,22 +112,6 @@ public class SampleCheck {
         this.companyName = companyName;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getContactName() {
         return contactName;
     }
@@ -183,36 +144,12 @@ public class SampleCheck {
         this.recipient = recipient;
     }
 
-    public FormType getFormType() {
-        return formType;
+    public List<Sample> getSampleList() {
+        return sampleList;
     }
 
-    public void setFormType(FormType formType) {
-        this.formType = formType;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public float getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(float quantity) {
-        this.quantity = quantity;
-    }
-
-    public PackageType getPackageType() {
-        return packageType;
-    }
-
-    public void setPackageType(PackageType packageType) {
-        this.packageType = packageType;
+    public void setSampleList(List<Sample> sampleList) {
+        this.sampleList = sampleList;
     }
 
     public String getMainComponent() {
