@@ -90,8 +90,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <update id="setCheckStateInvalid" parameterType="Contract">
         UPDATE t_contract SET checkState='Invalid', nowTime=NOW() WHERE contractId=#{contractId};
     </update>
-    <update id="toSubmit"  >
-        UPDATE t_contract SET checkState='ToExamine', nowTime=#{1} WHERE contractId=#{0} ;
+    <update id="toSubmit"  parameterType="String">
+        UPDATE t_contract SET checkState='ToExamine', nowTime=NOW() WHERE contractId=#{id} ;
     </update>
     <select id="list" resultMap="ContractRM">
         select * from t_contract order by year desc ;
