@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jdlink.domain.*;
 import com.jdlink.service.CityService;
 import com.jdlink.service.ClientService;
@@ -351,8 +352,8 @@ JSONObject res=new JSONObject();
     //格式化当前日期
     String nowTime=SimpleDateFormat.format(current_date);
     Contract contract=contractService.getByContractId(id);
-    contract.setNowTime(nowTime);
-    contractService.toSubmit(id,nowTime);
+    //contract.setNowTime(nowTime);
+    contractService.toSubmit(id);
   res.put("state","提交成功");
   return  res.toString();
 }
@@ -368,10 +369,41 @@ JSONObject res=new JSONObject();
     public String getContractId(String contractId) {
         Date date=new Date();
         System.out.println(date+"eee");
-       Contract contract=contractService.getByContractId(contractId);
+        Contract contract=contractService.getByContractId(contractId);
         JSONObject res= JSONObject.fromBean(contract);
         return res.toString();
     }
+
+    @RequestMapping("getContractId1")
+    @ResponseBody
+    public String getContractId1(String contractId,String key) {
+        JSONObject res = new JSONObject();
+        JSONArray array1 = JSONArray.fromArray(ContractType.values());
+        res.put("contractNameStrList", array1);
+        JSONArray array2 = JSONArray.fromArray(Province.values());
+        res.put("provinceStrList", array2);
+        JSONArray array3 = JSONArray.fromArray(TicketRate1.values());
+        res.put("ticketRateStrList1", array3);
+        //查询客户list形式返回
+        List client= clientService.list();
+        JSONArray json=JSONArray.fromObject(client);
+        res.put("companyNameList",json);
+        //查询模板名称
+        List modelName=contractService.modelName(key);
+        List list1=  removeDuplicate(modelName);
+        JSONArray json1=JSONArray.fromObject(list1);
+        res.put("modelNameList",json1);
+        //查询合同
+        Contract contract=contractService.getByContractId(contractId);
+        JSONObject json2=JSONObject.fromObject(contract);
+        res.put("contract",json2);
+        return res.toString();
+    }
+
+
+
+
+
     @RequestMapping("showContract")
     @ResponseBody
     public ModelAndView showClient(String contractId) {
