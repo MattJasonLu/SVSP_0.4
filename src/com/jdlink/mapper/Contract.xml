@@ -134,4 +134,15 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
           SELECT r_contractandhazardous.hazardousId FROM r_contractandhazardous
           WHERE contractId=#{contractId});
     </select>
+
+    <select id="countTemplate" resultType="int">
+        select count(*) from t_contract where modelName != '' and year != '';
+    </select>
+
+    <select id="listPageTemplate" resultMap="ContractRM">
+        select * from t_contract order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
 </mapper>

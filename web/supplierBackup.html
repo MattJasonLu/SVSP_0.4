@@ -750,11 +750,8 @@
                 </table>
             </div>
             <!--分页-->
-            <style type="text/css">
-                li{ display:inline;}
-            </style>
             <nav aria-label="Page navigation" style="text-align: center">
-                <ol class="pagination" style="width: 610px;">
+                <ol class="pagination" style="width: 800px;">
                     <li id="current"><a href="#"></a> </li>
                     <li id="firstPage">
                         <a href='#' onclick="switchPage(0)">首 页</a>
@@ -775,9 +772,9 @@
                     </li>
                     <li ><a id="totalPage"></a></li>
                     <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                    <li ><input type="text" class="text-center" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
-                    <li>每页显示:</li>
-                    <li >
+                    <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
                         <select id="count" onchange="loadPageSupplierList()">
                             <option>5</option>
                             <option selected>15</option>
@@ -972,6 +969,23 @@
 
     <div id="embed"></div>
 </body>
+<style type="text/css">
+    .pagination > li {
+        display: inline;
+    }
+    .inputText { float:left;
+    }
+    .showLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+    .selectLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+</style>
 <script type="text/javascript">
 
     function approval1() {

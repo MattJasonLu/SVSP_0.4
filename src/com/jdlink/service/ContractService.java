@@ -1,6 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Contract;
+import com.jdlink.domain.Page;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface ContractService {
     void setCheckStateToExamine(Contract contract);
     void setCheckStateKeeping(Contract contract);
     void setCheckStateInvalid(Contract contract);
+    int countTemplate();
+    List<Contract> listPageTemplate(Page page);
     List<Contract> list();
     List<Contract> list1(String name);
     List<Contract> list2(String name,String index2);
