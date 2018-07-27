@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Supplier;
 import com.jdlink.mapper.SupplierMapper;
 import com.jdlink.service.SupplierService;
@@ -61,6 +62,9 @@ public class SupplierServiceImpl implements SupplierService {
     public List<Supplier> list() {
         return supplierMapper.list();
     }
+
+    @Override
+    public List<Supplier> listPage(Page page){ return supplierMapper.listPage(page); }
 
     @Override
     public void setCheckStateToSubmit(String supplierId) {

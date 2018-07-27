@@ -576,13 +576,13 @@ else {
          contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
         var contractType=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
        // console.log(contractId+contractType);
-        if(contractType.indexOf('应急处置合同')!=-1){
+        if(contractType.indexOf('应急')!=-1){
 
             //做跳转
-            //window.location.href = "emergency?contractId="+contractId;
-            //转到html便于操作
-            // localStorage.name1=contractId;
-            // location.href="showemergency.html";
+            window.location.href = "emergency?contractId="+contractId;
+           // 转到html便于操作
+            localStorage.name1=contractId;
+            location.href="showemergency.html";
        }
        else {
            $('#close').show();

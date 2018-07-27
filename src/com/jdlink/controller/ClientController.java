@@ -247,18 +247,33 @@ public class ClientController {
 
     @RequestMapping("loadPageClientList")
     @ResponseBody
-    public  String loadPageClientList(@RequestBody Page page){
+    public String loadPageClientList(@RequestBody Page page){
         try {
             // 取出查询客户
             List<Client> clientList = clientService.list(page);
             // 计算最后页位置
-            page.caculateLast(clientService.total());
+            //page.caculateLast(clientService.total());
             JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
             // 返回结果
             return array.toString();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalRecord")
+    @ResponseBody
+    public int totalRecord(){
+        try {
+            return clientService.total();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
         }
     }
 
@@ -525,18 +540,4 @@ public class ClientController {
         return res.toString();
     }
 
-    /**
-     * 获取总记录数
-     * @return
-     */
-    @RequestMapping("totalRecord")
-    @ResponseBody
-    public int totalRecord(){
-        try {
-            return clientService.total();
-        }catch(Exception e){
-            e.printStackTrace();
-            return 0;
-        }
-    }
 }

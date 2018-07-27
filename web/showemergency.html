@@ -43,8 +43,8 @@
                 if (result != undefined) {
                     var data = eval(result);
                     console.log(data);
-                    $('#area').prop("value",data.area);
-                    $('#companyName').prop("value",data.companyName);
+                    $('#area').prop("value",data.province.name+data.city);
+                    $('#companyName').prop("value",data.company1);
                     $('#companyAgent').prop("value",data.companyAgent);
                     $('#companyLegal').prop("value",data.companyLegal);
                     $('#telephone').prop("value",data.telephone);
@@ -54,14 +54,13 @@
                     $('#clientAgent').prop("value",data.clientAgent);
                     $('#clientLegal').prop("value",data.clientLegal);
                     for(var i=0;i<data.hazardousList.length;i++){
-                        if (i > 0) addNewLine();
+                        if (i > 0)
+                            addNewLine();
                         var $i = i;
-                        $("input[name='hazardousList[" + $i + "].name']").val(data.hazardousList[i].name);
-                        $("input[name='hazardousList[" + $i + "].num']").val(data.hazardousList[i].num);
+                            $("input[name='hazardousList[" + $i + "].name']").val(data.hazardousList[i].name);
+                            $("input[name='hazardousList[" + $i + "].num']").val(data.hazardousList[i].num);
+
                     }
-
-
-
                     //localStorage.removeItem('name1');
                 } else {
                     console.log(result);
@@ -158,7 +157,7 @@
     }
 </script>
 <body onload="loadContractSelectList();">
-<div class="main-title">
+<!--<div class="main-title">
     <ul class="nav navbar-nav navbar-left navbar-side" id="navbar1" style="height: 50px;">
         <li>
             <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
@@ -166,8 +165,8 @@
             </a>
         </li>
     </ul>
-</div>
-<div class="container navbar-left" style="width: 800px;">
+</div>-->
+<!--<div class="container navbar-left" style="width: 800px;">
     <div class="navbar-header">
         <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
     </div>
@@ -210,9 +209,9 @@
             </li>
             <li><a href="archivesManage.html">一企一档</a></li>
         </ul>
-    </div><!--/.nav-collapse -->
-</div>
-<ul class="nav navbar-nav navbar-right">
+    </div>&lt;!&ndash;/.nav-collapse &ndash;&gt;
+</div>-->
+<!--<ul class="nav navbar-nav navbar-right">
     <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
     <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
     <li class="dropdown">
@@ -224,19 +223,19 @@
             <li><a href="index.html">注销</a></li>
         </ul>
     </li>
-</ul>
-</nav>
+</ul>-->
+<!--</nav>-->
 <div class="container-fluid">
-    <div class="row">
+    <!--<div class="row">
         <div class="sidebar">
-            <!--<h4>博客管理系统(四月)</h4>-->
-            <!--<div class="cover">-->
-            <!--<h2><img class="img-circle" src="image/icons.png"/></h2>-->
-            <!--<b>Hi~ 小主</b>-->
-            <!--<p>超级管理员</p>-->
-            <!--</div>-->
+            &lt;!&ndash;<h4>博客管理系统(四月)</h4>&ndash;&gt;
+            &lt;!&ndash;<div class="cover">&ndash;&gt;
+            &lt;!&ndash;<h2><img class="img-circle" src="image/icons.png"/></h2>&ndash;&gt;
+            &lt;!&ndash;<b>Hi~ 小主</b>&ndash;&gt;
+            &lt;!&ndash;<p>超级管理员</p>&ndash;&gt;
+            &lt;!&ndash;</div>&ndash;&gt;
             <ul class="sidenav animated fadeInUp">
-                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                &lt;!&ndash;<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>&ndash;&gt;
                 <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
                 <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
                 <li><a class="withripple" href="#"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
@@ -248,33 +247,19 @@
                 <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
-    </div>
+    </div>-->
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <div class="row">
+      <!--  <div class="row">
             <ol class="breadcrumb">
                 <li><a href="businessModel.html">商务管理</a></li>
                 <li><a href="#">合同管理</a></li>
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
-        </div>
-        <h4 class="sub-header" align="center">危险废物应急处置意向书</h4>
+        </div>-->
+        <h4 class="sub-header"  style="left: 30%;position: absolute;top:1%">危险废物应急处置意向书</h4>
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
             <div class="row">
-                <div class="form-horizontal col-md-4" >
-                </div>
-                <div class="form-horizontal col-md-4" >
-                </div>
-                <div class="form-horizontal col-md-4" >
-                    <div class="form-group">
-                        <label class="col-sm-6 control-label" for="area"> 所属区域</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="area" id="area" >
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-8 pull-left">
+                <div class="form-horizontal col-md-6 pull-left">
                     <div class="form-group pull-left" >
                         <label  class="col-sm-4 control-label" for="companyName">甲方：</label>
                         <div class="col-xs-8">
@@ -282,18 +267,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-4"></div>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-8 pull-left">
+                <div class="form-horizontal col-md-6 pull-left">
                     <div class="form-group pull-left" >
-                        <label  class="col-sm-4 control-label">乙方：</label>
-                        <div class="col-xs-8">
-                            <p>北控安耐得环保科技发展常州有限公司</p>
+                        <label  class="control-label col-md-3">乙方：</label>
+                        <div class="col-md-9">
+                            <span>北控安耐得环保科技发展常州有限公司</span>
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-4"></div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-6 pull-left" >
+                    <div class="form-group pull-left" >
+                        <label class="col-sm-4 control-label" for="area"> 所属区域</label>
+                        <div class="col-xs-8">
+                            <input  class="form-control"  name="area" id="area" >
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
@@ -353,19 +344,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">甲方单位(盖章)</label>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">乙方单位(盖章)</label>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyLegal">法定代表人：</label>
                         <div class="col-xs-4">
@@ -373,7 +364,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="clientLegal">企业负责人：</label>
                         <div class="col-xs-4">
@@ -383,7 +374,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="companyAgent">委托代理人：</label>
                         <div class="col-xs-4">
@@ -391,7 +382,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="clientAgent">委托代理人：</label>
                         <div class="col-xs-4">
@@ -401,7 +392,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="telephone">联系电话：</label>
                         <div class="col-xs-4">
@@ -409,7 +400,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">联系电话：</label>
                         <div class="col-xs-4">
@@ -418,8 +409,9 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="address">单位地址：</label>
                         <div class="col-xs-4">
@@ -427,7 +419,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">单位地址：</label>
                         <div class="col-xs-4">
@@ -437,7 +429,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="bankName">开户：</label>
                         <div class="col-xs-4">
@@ -445,7 +437,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">开户：</label>
                         <div class="col-xs-4">
@@ -455,7 +447,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label" for="bankAccount">账号：</label>
                         <div class="col-xs-4">
@@ -463,7 +455,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">账号：</label>
                         <div class="col-xs-4">
@@ -473,7 +465,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-3">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">日期：</label>
                         <div class="col-xs-4">
@@ -481,7 +473,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-md-6">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group" >
                         <label  class="col-sm-4 control-label">日期：</label>
                         <div class="col-xs-4">
@@ -492,15 +484,14 @@
             </div>
             <br>
             <br>
-            <div class="row text-center">
+            <div class="row" style="position: absolute;bottom: 2% ;left:25%;">
                 <a class="btn btn-success">打印</a>
                 <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
     </div>
 </div>
-
-<div id="embed"></div>
+<!--<div id="embed"></div>-->
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');

@@ -204,16 +204,19 @@ public class SampleController {
     @ResponseBody
     public String addSampleCheck(@RequestBody SampleCheck sampleCheck) {
         JSONObject res = new JSONObject();
+        // 取得预约号
+        String appointId = sampleCheck.getCheckId().split("R")[0];
+        // 设置预约号
+        sampleCheck.setAppointId(appointId);
         try {
             SampleCheck oldSampleCheck = sampleCheckService.getById(sampleCheck.getCheckId());
             if (oldSampleCheck == null) {
-                // 取得预约号
-                String appointId = sampleCheck.getCheckId().split("R")[0];
-                // 设置预约号
-                sampleCheck.setAppointId(appointId);
                 // 取得预约数据
                 SampleAppoint sampleAppoint = sampleAppointService.getById(appointId);
                 sampleCheck.setClientId(sampleAppoint.getClientId());
+                for (Sample sample : sampleCheck.getSampleList()) {
+                    sample.setSampleId(RandomUtil.getRandomEightNumber());
+                }
                 // 添加登记表
                 sampleCheckService.add(sampleCheck);
                 // 更新状态
@@ -222,7 +225,17 @@ public class SampleController {
                 sampleAppointService.updatePdtAndCode(sampleCheck);
                 res.put("message", "登记成功");
             } else {
+                // 旧列表更新id
+                for (int i = 0; i < oldSampleCheck.getSampleList().size(); i++) {
+                    sampleCheck.getSampleList().get(i).setSampleId(oldSampleCheck.getSampleList().get(i).getSampleId());
+                }
+                // 新列表直接生成新编号
+                for (int i = oldSampleCheck.getSampleList().size(); i < sampleCheck.getSampleList().size(); i++) {
+                    sampleCheck.getSampleList().get(i).setSampleId(RandomUtil.getRandomEightNumber());
+                }
                 sampleCheckService.update(sampleCheck);
+                // 更新产品和危废代码
+                sampleAppointService.updatePdtAndCode(sampleCheck);
                 res.put("message", "修改成功");
             }
             res.put("status", "success");

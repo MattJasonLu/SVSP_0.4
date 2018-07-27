@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Supplier;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface SupplierMapper {
     void update(Supplier supplier);
 
     List<Supplier> list();
+
+    List<Supplier> listPage(Page page);
 
     void setCheckStateToSubmit(String supplierId);
 

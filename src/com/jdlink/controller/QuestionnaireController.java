@@ -586,6 +586,42 @@ public class QuestionnaireController {
         return res.toString();
     }
 
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalQuestionnaireRecord")
+    @ResponseBody
+    public int totalQuestionnaireRecord(){
+        try {
+            return questionnaireService.count();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @RequestMapping("loadPageQuestionnaireList")
+    @ResponseBody
+    public  String loadPageQuestionnaireList(@RequestBody Page page){
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Questionnaire> QuestionnaireList = questionnaireService.listPage(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(QuestionnaireList.toArray(new Questionnaire[QuestionnaireList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
 
 
     /********************************************下面暂时不用****************************************/

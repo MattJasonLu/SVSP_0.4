@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
 
 import java.util.List;
@@ -25,6 +26,8 @@ public interface SalesmanService {
     void assignClient(Salesman salesman);
 
     List<Salesman> list();
+
+    List<Salesman> listPage(Page page);
 
     int count();
 

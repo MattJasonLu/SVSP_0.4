@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Questionnaire;
 import com.jdlink.domain.QuestionnaireAdmin;
 import com.jdlink.mapper.QuestionnaireMapper;
@@ -21,6 +22,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public List<Questionnaire> list() {
         return questionnaireMapper.list();
     }
+
+    @Override
+    public List<Questionnaire> listPage(Page page){ return questionnaireMapper.listPage(page);}
 
     @Override
     public List<Questionnaire> search(String keyword) {
