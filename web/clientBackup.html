@@ -658,13 +658,8 @@
             </table>
         </div>
         <!--分页1-->
-        <style type="text/css">
-            li {
-                display: inline;
-            }
-        </style>
-        <nav aria-label="Page navigation" style="text-align: center">
-            <ol class="pagination">
+        <nav aria-label="Page navigation" class="text-center">
+            <ol class="pagination" style="width: 610px;">
                 <li id="current"><a href='#'>当前页：</a>
                 <li id="firstPage">
                     <a href='#' onclick="switchPage(0)">首 页</a>
@@ -1013,6 +1008,11 @@
 <div id="embed"></div>
 
 </body>
+<style type="text/css">
+    .pagination > li {
+        display: inline;
+    }
+</style>
 <!--<style>-->
 <!--.table { padding-bottom: 70px; }-->
 <!--.text-center{-->
