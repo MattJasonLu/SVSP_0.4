@@ -18,6 +18,7 @@
     <link href="css/a.css" rel="stylesheet">
     <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <script language="javascript" src="js/canvas2image.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
 </head>
 <style>
     p{
@@ -575,13 +576,13 @@ else {
          contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
         var contractType=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
        // console.log(contractId+contractType);
-        if(contractType.indexOf('应急处置合同')!=-1){
+        if(contractType.indexOf('应急')!=-1){
 
             //做跳转
-            //window.location.href = "emergency?contractId="+contractId;
-            //转到html便于操作
-            // localStorage.name1=contractId;
-            // location.href="showemergency.html";
+            window.location.href = "emergency?contractId="+contractId;
+           // 转到html便于操作
+            localStorage.name1=contractId;
+            location.href="showemergency.html";
        }
        else {
            $('#close').show();
@@ -901,7 +902,7 @@ else {
 </script>
 <body onload="loadContractList()">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -911,7 +912,7 @@ else {
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left">
+        <div class="container navbar-left" style="width: 800px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
@@ -1019,6 +1020,7 @@ else {
                         <a class="btn btn-primary btn-xs" onclick="contractSubmit()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                         <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="emergencyContractInfo.html"> 应急处置意向书</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
