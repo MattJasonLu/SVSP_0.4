@@ -721,6 +721,33 @@
     /**
      * 增加新行
      */
+    function addNewLine1() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+
+        // 获取编号
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        num++;
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:not(0)").find("input").val("");
+        clonedTr.children().get(0).innerHTML = num;
+        clonedTr.children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).attr('name');
+            var newName = name.replace(/[0-9]\d*/, id);
+            $(this).attr('name', newName);
+        });
+        clonedTr.insertAfter(tr);
+        var $i = id;
+        $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = -1;
+    }
+
+
+    /**
+     * 增加新行
+     */
     function addNewLine() {
         // 获取id为cloneTr的tr元素
         var tr = $("#plusBtn").prev();
@@ -730,23 +757,21 @@
         clonedTr.children("td:eq(1),td:eq(2)").find("input").val("");
         // 获取编号
         var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        console.log(id);
         var num = parseInt(id);
-        if (!isNaN(num)) {
-            num++;
-            id1 = num;
-        } else {
-            id1++;
-            num = id1;
-        }
+        num++;
         clonedTr.children().get(0).innerHTML = num;
-        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-        clonedTr.children("td:eq(0)").prepend(delBtn);
+        //var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        //clonedTr.children("td:eq(0)").prepend(delBtn);
         clonedTr.children("td:not(0)").find("input,select").each(function () {
             var name = $(this).attr('name');
+            console.log(name);
             var newName = name.replace(/[0-9]\d*/, id);
             $(this).attr('name', newName);
         });
         clonedTr.insertAfter(tr);
+        //var $i = id;
+       // $("select[name='hazardousList[" + $i + "].name']").get(0).selectedIndex = -1;
     }
     /*删除行*/
     function delLine(e) {
@@ -784,6 +809,7 @@
         data['hazardousList']=[];
         // 危废的数量
         var hazardousListCount = $("input[name^='hazardousList'][name$='name']").length;
+        console.log(hazardousListCount);
         for (var i = 0; i < hazardousListCount; i++) {
             var $i = i;
             var hazardous = {};
@@ -791,7 +817,7 @@
             hazardous.num=$("input[name='hazardousList[" + $i + "].num']").val();
             data['hazardousList'].push(hazardous);
         }
-        console.log(data);
+
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveEmContract",                       // url
@@ -801,8 +827,7 @@
             //contentType: "application/octet-stream",
             success: function (result) {
                 if (result != undefined) {
-                    //console.log(eval(result));
-                    //console.log("success: " + result);
+                    console.log(data['hazardousList']);
                     alert("保存成功!");
                     if(addType=="continue"){
                         $(location).attr('href','urgentContractInfo.html');
@@ -867,5 +892,65 @@
         localStorage.name="Emergency";
         location.href="contractManage.html";
     });
+    //客户列表下拉框
+    function findClient() {
+        options=$("#companyName option:selected").val(); //获取选中的项
+        $.ajax({
+            type:"POST",
+            url:"getContractList",
+            dataType: "json",
+            success:function (result) {
+                var obj=eval(result);
+                var company=(obj.companyNameList[options]);//获取供应商的信息
+                console.log(company);
+                //2赋值
+                //赋值联系人
+                //客户名称
+                $('#company1').prop("value",company.companyName);
+                $('#contactName').prop("value",company.contactName);
+                //赋值联系方式
+                if(company.mobile!=""&&company.phone==""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                if(company.mobile==""&&company.phone!=""){
+                    $('#telephone').prop("value",company.phone);
+                }
+                if(company.mobile==""&&company.phone==""){
+                    $('#telephone').prop("value","");
+                }
+                if(company.mobile!=""&&company.phone!=""){
+                    $('#telephone').prop("value",company.mobile);
+                }
+                //赋值开户行名称
+                $('#bankName').prop("value",company.bankName);
+                //赋值开户行账号
+                $('#bankAccount').prop("value",company.bankAccount);
+                $("#telephone").prop("value",company.phone);//电话
+                //赋值开票税率
+                var ticketRate1=$('#ticketRate1');
+                index1=""
+                ticketRate1.children().remove();
+                $.each(obj.ticketRateStrList1, function (index, item) {
+                    //console.log(obj.ticketRateStrList1);
+                    var option = $('<option />');
+                    if(company.ticketType!=null){
+                        if(company.ticketType.name==item.name){
+                            index1=index;
+                        }
+                    }
+                    else {
+                        index1=-1;
+                    }
+                    option.val(index);
+                    option.text(item.name);
+                    ticketRate1.append(option);
+                });
+                ticketRate1.get(0).selectedIndex =index1;
+            },
+            error:function (result) {
+
+            }
+        });
+    }
 </script>
 </html>
