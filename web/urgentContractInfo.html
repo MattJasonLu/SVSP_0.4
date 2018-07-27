@@ -120,13 +120,13 @@
                             console.log(result);
                         }
                     });
-                    var clientName=$('#companyName');
-                    clientName.children().remove();
+                    var companyName=$('#companyName');
+                    companyName.children().remove();
                     $.each(data.companyNameList, function (index, item) {
                         var option = $('<option />');
                         option.val(index);
                         option.text(item.companyName);
-                        clientName.append(option);
+                        companyName.append(option);
                     });
                     //clientName.get(0).selectedIndex = -1;
                     $('.selectpicker').selectpicker('refresh');
@@ -134,9 +134,9 @@
                     var company=data.companyNameList[options1];//取得被选中供应商的信息
                     //开票税率下拉
                     console.log(company);
-                    var taxRate1=$('#taxRate1');
+                    var ticketRate1=$('#ticketRate1');
                     i="";
-                    taxRate1.children().remove();
+                    ticketRate1.children().remove();
                     $.each(data.ticketRateStrList1, function (index, item) {
                         // console.log(item);
                         var option = $('<option />');
@@ -150,9 +150,9 @@
                         else {
                             i=-1;
                         }
-                        taxRate1.append(option);
+                        ticketRate1.append(option);
                     });
-                    taxRate1.get(0).selectedIndex = i;
+                    ticketRate1.get(0).selectedIndex = i;
                     //开票税率2下拉框
                     // var taxRate2=$('#taxRate2');
                     // taxRate2.children().remove();
@@ -184,7 +184,6 @@
                     //赋值开户行账号
                     $('#bankAccount').prop("value",company.bankAccount);
                     $('#company1').prop("value",company.companyName);
-
                 } else {
                     console.log(result);
                 }
@@ -441,20 +440,20 @@
                         <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
                         <div class="col-xs-8" >
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
+                                <input type="radio" name="contractVersion" id="contractVersion" class="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 客户合同
+                                <input type="radio" name="contractVersion" id="contractVersion2" class="contractVersion" value="customerContract" onclick="Appear1()"  > 客户合同
                             </label>
                         </div>
                     </div>
                     <div class="form-group" >
                         <label class="col-sm-3 control-label">合同有效期 </label>
                         <div class="input-group date">
-                            <input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>
+                            <input type="text" class="input-sm form-control form_datetime1" name="beginTime" id="beginTime"/>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             <span class="input-group-addon">to</span>
-                            <input type="text" class="input-sm form-control form_datetime2" name="endTime"/>
+                            <input type="text" class="input-sm form-control form_datetime2" name="endTime" id="endTime"/>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
                     </div>
@@ -496,9 +495,9 @@
                         </div>
                     </div><!--单位地址-->
                     <div class="form-group" >
-                        <label for="taxRate1" class="col-sm-3 control-label">开票税率</label>
+                        <label for="ticketRate1" class="col-sm-3 control-label">开票税率</label>
                         <div class="col-xs-5">
-                            <select class="form-control" id="taxRate1" name="ticketRate1">
+                            <select class="form-control" id="ticketRate1" name="ticketRate1">
                             </select>
                         </div>
                     </div><!--开票税率-->
@@ -719,6 +718,154 @@
         });
         $('#modelInfoForm').modal('show');
     }
-
+    /**
+     * 增加新行
+     */
+    function addNewLine() {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#plusBtn").prev();
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        // 克隆后清空新克隆出的行数据
+        clonedTr.children("td:eq(1),td:eq(2)").find("input").val("");
+        // 获取编号
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var num = parseInt(id);
+        if (!isNaN(num)) {
+            num++;
+            id1 = num;
+        } else {
+            id1++;
+            num = id1;
+        }
+        clonedTr.children().get(0).innerHTML = num;
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+        clonedTr.children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).attr('name');
+            var newName = name.replace(/[0-9]\d*/, id);
+            $(this).attr('name', newName);
+        });
+        clonedTr.insertAfter(tr);
+    }
+    /*删除行*/
+    function delLine(e) {
+        var tr = e.parentElement.parentElement;
+        tr.parentNode.removeChild(tr);
+    }
+    /**
+     * 保存
+     */
+    function contractSave() {
+        var addType = $("input[name='addType']:checked").val();
+        //赋值客户名称
+        var data={
+            'contractName':$('#contractName').val(),//客户合同版本合同名称
+            'modelName':$('#contractType1').val(),//公司版本合同合同名称
+            'province':$('#province').val(),//省
+            'city':$('#city').val(),//市
+            'area':$('#area').val(),//单位地址
+            'company1':$('#company1').val(),//甲方
+            'companyLegal':$('#companyLegal').val(),//甲方法定代表人
+            'clientLegal':$('#clientLegal').val(),//乙方法定代表人
+            'companyAgent':$('#companyAgent').val(),//甲方委托代理人
+            'clientAgent':$('#clientAgent').val(),//乙方委托代理人
+            'telephone':$('#telephone').val(),//联系电话
+            'address':$('#address').val(),//单位地址
+            'bankName':$('#bankName').val(),//开户行名称
+            'bankAccount':$('#bankAccount').val(),//开户行账号
+            'beginTime':$('#beginTime').val(),//开始日期
+            'endTime':$('#endTime').val(),//截止日期
+            'ticketRate1':$('#ticketRate1').val(),//税率
+            'contractVersion': $("input[name='contractVersion']:checked").val(),//合同版本名称
+           'contactName': $('#contactName').val()//联系人
+        };
+        console.log($('.contractVersion').val());
+        data['hazardousList']=[];
+        // 危废的数量
+        var hazardousListCount = $("input[name^='hazardousList'][name$='name']").length;
+        for (var i = 0; i < hazardousListCount; i++) {
+            var $i = i;
+            var hazardous = {};
+            hazardous.name = $("input[name='hazardousList[" + $i + "].name']").val();
+            hazardous.num=$("input[name='hazardousList[" + $i + "].num']").val();
+            data['hazardousList'].push(hazardous);
+        }
+        console.log(data);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "saveEmContract",                       // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data:JSON.stringify(data),
+            contentType: "application/json;charset=utf-8",
+            //contentType: "application/octet-stream",
+            success: function (result) {
+                if (result != undefined) {
+                    //console.log(eval(result));
+                    //console.log("success: " + result);
+                    alert("保存成功!");
+                    if(addType=="continue"){
+                        $(location).attr('href','urgentContractInfo.html');
+                    }
+                    if(addType=="break"){
+                        // $(location).attr('href', 'contractManage.html');
+                        localStorage.name="Emergency";
+                        location.href="contractManage.html";
+                    }
+                } else {
+                    console.log("fail: " + result);
+                    alert("保存失败!");
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
+    }
+    /**
+     * 提交
+     */
+    function contractSubmit(){
+        var s=($('#contractInfoForm').serializeJSON());
+        var addType = $("input[name='addType']:checked").val();
+        //console.log(s);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "submitEmContract",                       // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify($('#contractInfoForm').serializeJSON()),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    //(eval(result));
+                    console.log("success: " + result);
+                    alert("提交成功!");
+                    if(addType=="continue"){
+                        $(location).attr('href', 'emergencyContractInfo.html');//跳转
+                    }
+                    else {
+                        localStorage.clear();
+                        $(location).attr('href', 'contractManage.html');
+                        localStorage.name="Emergency";
+                        location.href="contractManage.html";
+                    }
+                } else {
+                    console.log("fail: " + result);
+                    alert("保存失败!");
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
+    }
+    $('#back').click(function () {
+        $(location).attr('href', 'contractManage.html');
+        localStorage.name="Emergency";
+        location.href="contractManage.html";
+    });
 </script>
 </html>
