@@ -700,11 +700,10 @@
 //                        $("textarea").removeAttr("readonly");
 //                       // $("select").attr("disabled","disabled");
 //                        $("select").removeAttr("disabled");
-                        $('.selectpicker').selectpicker('val',data.data.clientId);
-                        $("#model-companyName").text(data.data.clientId);
-                        $("#model-contactName").text(data.data.contactName);
-                        $("#model-telephone").text(data.data.telephone);
-                        $("#model-appointTime").text(getTimeStr(data.data.appointTime));
+                        $("#model-companyName").selectpicker('val',data.data.clientId);
+                        $("#model-contactName").val(data.data.contactName);
+                        $("#model-telephone").val(data.data.telephone);
+                        $("#model-appointTime").val(getTimeStr(data.data.appointTime));
                         $("#model-comment").val(data.data.comment);
                         // 显示框体
                         $('#appointModal').modal('show');

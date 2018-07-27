@@ -29,6 +29,8 @@
         mainComponent=#{mainComponent}, nowTime=NOW() WHERE checkId=#{checkId};
         <if test="sampleList.size() > 0">
             <foreach collection="sampleList" item="sample" index="index">
+                UPDATE t_sample SET productName=#{sample.productName}, code=#{sample.code}, formType=#{sample.formType},
+                color=#{sample.color}, quantity=#{sample.quantity}, packageType=#{sample.packageType} WHERE sampleId=#{sample.sampleId};
                 INSERT INTO t_sample (sampleId, productName, code, formType, color, quantity, packageType) VALUES
                 (#{sample.sampleId}, #{sample.productName}, #{sample.code}, #{sample.formType}, #{sample.color},
                 #{sample.quantity}, #{sample.packageType})
