@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
 import com.jdlink.mapper.SalesmanMapper;
 import com.jdlink.service.ClientService;
@@ -63,5 +64,10 @@ public class SalesmanServiceImpl implements SalesmanService {
     @Override
     public int count() {
         return salesmanMapper.count();
+    }
+
+    @Override
+    public List<Salesman> listPage(Page page) {
+        return salesmanMapper.listPage(page);
     }
 }

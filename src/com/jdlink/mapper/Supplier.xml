@@ -92,6 +92,13 @@
         select * from t_supplier order by nowTime desc ;
     </select>
 
+    <select id="listPage" resultMap="SupplierRM">
+       select * from t_supplier order by nowTime desc
+       <if test="start != null and count != null">
+           limit #{start}, #{count}
+       </if>
+    </select>
+
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM t_supplier;
     </select>

@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.SalesmanService;
@@ -194,5 +195,35 @@ public class SalesmanController {
         return res.toString();
     }
 
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalSalesmanRecord")
+    @ResponseBody
+    public int totalSalesmanRecord(){
+        try {
+            return salesmanService.count();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @RequestMapping("loadPageSalesManList")
+    @ResponseBody
+    public  String loadPageSalesManList(@RequestBody Page page){
+        try {
+            // 取出查询客户
+            List<Salesman> salesmenList = salesmanService.listPage(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(salesmenList.toArray(new Salesman[salesmenList.size()]));
+            // 返回结果
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

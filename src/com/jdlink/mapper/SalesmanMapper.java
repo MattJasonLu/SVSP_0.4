@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface SalesmanMapper {
 
     List<Salesman> get(Map params);
 
+    List<Salesman> listPage(Page page);
+
     Salesman getBySalesmanId(String salesmanId);
 
     List<Salesman> getByClientId(String clientId);
@@ -26,6 +29,9 @@ public interface SalesmanMapper {
 
     List<Salesman> list();
 
+
     int count();
+
+
 
 }

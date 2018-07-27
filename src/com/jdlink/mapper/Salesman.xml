@@ -53,4 +53,11 @@
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM salesman;
     </select>
+
+    <select id="listPage" resultType="Salesman">
+        select salesmanId, name, sex ,age from salesman order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
 </mapper>

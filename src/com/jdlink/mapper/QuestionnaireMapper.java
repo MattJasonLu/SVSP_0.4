@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Questionnaire;
 import com.jdlink.domain.QuestionnaireAdmin;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public interface QuestionnaireMapper {
 
     List<Questionnaire> list();
+    List<Questionnaire> listPage(Page page);
     List<Questionnaire> search(String keyword);
     Questionnaire getById(String questionnaireId);
     List<Questionnaire> getByClientId(String clientId);
