@@ -23,7 +23,7 @@ public interface ContractMapper {
     List<Contract> list1(String name);
     List<Contract> list2(String name,String index2);
     List getContractIdList();
-    void toSubmit(String id,String nowTime);
+    void toSubmit(String id);
     void updateFreight1(String id);
     void updateFreight2(String id);
     List listRate1();
