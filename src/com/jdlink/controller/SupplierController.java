@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.ClientState;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Supplier;
 import com.jdlink.service.SupplierService;
 import net.sf.json.JSONArray;
@@ -381,6 +382,42 @@ public class SupplierController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return res.toString();
+    }
+
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalSupplierRecord")
+    @ResponseBody
+    public int totalSupplierRecord(){
+        try {
+            return supplierService.count();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @RequestMapping("loadPageSupplierList")
+    @ResponseBody
+    public  String loadPageQuestionnaireList(@RequestBody Page page){
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Supplier> QuestionnaireList = supplierService.listPage(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(QuestionnaireList.toArray(new Supplier[QuestionnaireList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
         return res.toString();
     }
 }

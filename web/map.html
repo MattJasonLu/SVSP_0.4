@@ -111,7 +111,8 @@
                     <p style="font-size: 18px;"><img class="img-circle" style="width: 24px;" src="image/user-female-icon.png"><a href="#">某某家电公司</a></p><br>
                     <p style="font-size: 18px;"><img class="img-circle" style="width: 24px;" src="image/user-male-alt-icon.png"><a href="#">某某房地产公司</a></p><br>
                     <p style="font-size: 18px;"><img class="img-circle" style="width: 24px;" src="image/user-male-alt-icon.png"><a href="#">某某房地产公司</a></p><br>
-                    <span class="glyphicon glyphicon-search" onclick="aa();">123</span>
+                    <a href="#" class="asd" onclick="aa();" title="123"><span class="glyphicon glyphicon-search" id="glyphicon"></span></a>
+                    <input type="button" class="ee" onclick="dis();" value="123">
                 </div>
             </div>
         </div>
@@ -122,8 +123,13 @@
     function aa() {
         alert("123");
     }
-    if($("#glyphicon").text == "123")
-    $("#glyphicon").removeAttr("onclick");
+    function dis() {
+        $(".asd").removeAttr("onclick");
+        document.getElementById("glyphicon").style.color="#9d9d9d";
+    }
+    $("#glyphicon").hover(function () {
+        document.getElementById("glyphicon").style.cursor="wait";
+    });
     //创建和初始化地图函数：
     function initMap(){
         createMap();//创建地图

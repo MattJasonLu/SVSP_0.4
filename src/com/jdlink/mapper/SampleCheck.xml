@@ -4,30 +4,57 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.SampleCheckMapper">
+    <resultMap id="SampleCheckRM" type="SampleCheck" autoMapping="true">
+        <collection property="sampleList" select="getSample" column="checkId"
+                    ofType="com.jdlink.domain.Sample" javaType="ArrayList"/>
+    </resultMap>
+
     <insert id="add" parameterType="SampleCheck" >
-        INSERT INTO t_sampleCheck (checkId, clientId, appointId, companyName,
-        productName, code, contactName, telephone, createTime, recipient,
-        formType, color, quantity, packageType, mainComponent, nowTime) VALUES (#{checkId}, #{clientId},
-        #{appointId}, #{companyName}, #{productName}, #{code}, #{contactName},
-        #{telephone}, #{createTime}, #{recipient}, #{formType}, #{color},
-        #{quantity}, #{packageType}, #{mainComponent}, NOW());
+        INSERT INTO t_sampleCheck (checkId, clientId, appointId, companyName, contactName,
+        telephone, createTime, recipient, mainComponent, nowTime) VALUES (#{checkId}, #{clientId}, #{appointId},
+        #{companyName}, #{contactName}, #{telephone}, #{createTime}, #{recipient}, #{mainComponent}, NOW());
+        <if test="sampleList.size() > 0">
+            <foreach collection="sampleList" item="sample" index="index">
+                insert into r_checkandsample (checkId, sampleId) VALUES (#{checkId,jdbcType=VARCHAR},
+                #{sample.sampleId,jdbcType=VARCHAR});
+                insert into t_sample (sampleId, productName, code, formType, color, quantity, packageType) VALUES
+                (#{sample.sampleId}, #{sample.productName}, #{sample.code}, #{sample.formType}, #{sample.color},
+                #{sample.quantity}, #{sample.packageType});
+            </foreach>
+        </if>
     </insert>
 
     <update id="update" parameterType="SampleCheck">
-        UPDATE t_samplecheck SET contactName=#{contactName}, telephone=#{telephone}, productName=#{productName},
-        code=#{code}, recipient=#{recipient}, color=#{color}, formType=#{formType}, packageType=#{packageType},
-        quantity=#{quantity}, mainComponent=#{mainComponent}, nowTime=NOW() WHERE checkId=#{checkId};
+        UPDATE t_samplecheck SET contactName=#{contactName}, telephone=#{telephone}, recipient=#{recipient},
+        mainComponent=#{mainComponent}, nowTime=NOW() WHERE checkId=#{checkId};
+        <if test="sampleList.size() > 0">
+            <foreach collection="sampleList" item="sample" index="index">
+                UPDATE t_sample SET productName=#{sample.productName}, code=#{sample.code}, formType=#{sample.formType},
+                color=#{sample.color}, quantity=#{sample.quantity}, packageType=#{sample.packageType} WHERE sampleId=#{sample.sampleId};
+                INSERT INTO t_sample (sampleId, productName, code, formType, color, quantity, packageType) VALUES
+                (#{sample.sampleId}, #{sample.productName}, #{sample.code}, #{sample.formType}, #{sample.color},
+                #{sample.quantity}, #{sample.packageType})
+                ON DUPLICATE KEY UPDATE t_sample.sampleId=#{sample.sampleId};
+                INSERT INTO r_checkandsample (checkId, sampleId) VALUES (#{checkId}, #{sample.sampleId})
+                ON DUPLICATE KEY UPDATE r_checkandsample.sampleId=#{sample.sampleId};
+            </foreach>
+        </if>
     </update>
 
     <delete id="delete" parameterType="SampleCheck" >
         DELETE FROM t_sampleCheck, nowTime=NOW() WHERE checkId=#{checkId};
     </delete>
 
-    <select id="getById" parameterType="String" resultType="SampleCheck">
+    <select id="getById" parameterType="String" resultMap="SampleCheckRM">
         SELECT * FROM t_sampleCheck WHERE checkId=#{checkId};
     </select>
 
-    <select id="list" resultType="SampleCheck">
+    <select id="list" resultMap="SampleCheckRM">
         select * from t_sampleCheck order by nowTime desc;
+    </select>
+
+    <select id="getSample" resultType="Sample" parameterType="String">
+        SELECT * FROM t_sample WHERE sampleId IN
+        (SELECT r_checkandsample.sampleId FROM r_checkandsample WHERE checkId=#{checkId});
     </select>
 </mapper>

@@ -20,6 +20,15 @@
     var currentPage = 1;                          //当前页数
 
     /**
+     * 返回count值
+     * */
+    function countValue() {
+        var mySelect = document.getElementById("count");
+        var index = mySelect.selectedIndex;
+        return mySelect.options[index].text;
+    }
+
+    /**
      * 计算总页数
      * */
     function totalPage() {
@@ -43,12 +52,13 @@
                 totalRecord = 0;
             }
         });
-        var count = 15;                         // 可选
+        var count = countValue();                         // 可选
         var total = loadPages(totalRecord, count);
         return total;
     }
 
     function setPageClone(result) {
+        $(".beforeClone").remove();
         setClientList(result);
         var total = totalPage();
         $("#next").prev().hide();
@@ -65,6 +75,7 @@
                 var num = $(this).text();
                 switchPage(num);
             });
+            clonedLi.addClass("beforeClone");
             clonedLi.removeAttr("id");
             clonedLi.insertAfter(li);
         }
@@ -76,7 +87,6 @@
      * @param pageNumber 跳转页数
      * */
     function switchPage(pageNumber) {
-        console.log("当前页：" + pageNumber);
         if (pageNumber == 0) {                 //首页
             pageNumber = 1;
         }
@@ -87,6 +97,7 @@
             console.log("参数为空,返回首页!");
             pageNumber = 1;
         }
+        $("#current").find("a").text("当前页：" + pageNumber);
         if (pageNumber == 1) {
             $("#previous").addClass("disabled");
             $("#firstPage").addClass("disabled");
@@ -99,8 +110,16 @@
             $("#previous").removeClass("disabled");
             $("#firstPage").removeClass("disabled");
         }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
         var page = {};
-        page.count = 15;                        //可选
+        page.count = countValue();                        //可选
         page.pageNumber = pageNumber;
         currentPage = pageNumber;          //当前页面
         //addClass("active");
@@ -133,7 +152,7 @@
      * */
     function inputSwitchPage() {
         var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-
+        $("#current").find("a").text("当前页：" + pageNumber);
         if (pageNumber == null || pageNumber == undefined) {
             window.alert("跳转页数不能为空！")
         } else {
@@ -149,10 +168,17 @@
                 $("#previous").removeClass("disabled");
                 $("#firstPage").removeClass("disabled");
             }
+            if (pageNumber > 1) {
+                $("#previous").removeClass("disabled");
+                $("#firstPage").removeClass("disabled");
+            }
+            if (pageNumber < totalPage()) {
+                $("#next").removeClass("disabled");
+                $("#endPage").removeClass("disabled");
+            }
             currentPage = pageNumber;
-            //$("#current").find("a").text("当前页："+currentPage);
             var page = {};
-            page.count = 15;//可选
+            page.count = countValue();//可选
             page.pageNumber = pageNumber;
             page.start = (pageNumber - 1) * page.count;
             $.ajax({
@@ -183,13 +209,12 @@
      * 分页 获取首页内容
      * */
     function loadPageClientList() {
-        var pageNumber = 1;                       // 显示首页
-        currentPage = pageNumber;
-        //$("#current").find("a").text("当前页："+currentPage);
+        $("#current").find("a").text("当前页：1");
         $("#previous").addClass("disabled");
         $("#firstPage").addClass("disabled");
         var page = {};
-        page.count = 15;                                 // 可选
+        var pageNumber = 1;                       // 显示首页
+        page.count = countValue();                                 // 可选
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         $.ajax({
@@ -414,7 +439,7 @@
 
 
 </script>
-<body onload="loadPageClientList()">
+<body onload="loadPageClientList()" class="">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -612,8 +637,9 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"><a href="#" onclick="viewClient(this);" title="查看"><span
-                            class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                    <td class="text-center">
+                        <a href="#" onclick="viewClient(this);" title="查看"><span
+                                class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <a href="#" onclick="commitClient(this);" title="提交"><span
                                 class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>
                         <a href="#" onclick="adjustClient(this);" title="修改"><span
@@ -632,11 +658,9 @@
             </table>
         </div>
         <!--分页1-->
-        <style type="text/css">
-            li{ display:inline;}
-        </style>
-        <nav aria-label="Page navigation" style="text-align: center">
-            <ol class="pagination">
+        <nav aria-label="Page navigation" class="text-center">
+            <ol class="pagination" style="width: 610px;">
+                <li id="current"><a href='#'>当前页：</a>
                 <li id="firstPage">
                     <a href='#' onclick="switchPage(0)">首 页</a>
                 </li>
@@ -654,14 +678,22 @@
                 <li id="endPage">
                     <a href='#' onclick="switchPage(-2)">尾 页</a>
                 </li>
-                <li ><a id="totalPage"></a></li>
-                <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                <li ><input type="text" class="text-center" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
+                <li><a id="totalPage"></a></li>
+                <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                <li><input type="text" class="text-center" maxlength="4" style="width:50px; height:34px;"
+                           id="pageNumber"></li>
+                <li>每页显示:</li>
+                <li>
+                    <select id="count" onchange="loadPageClientList()">
+                        <option>5</option>
+                        <option selected>15</option>
+                        <option>50</option>
+                    </select>
+                </li>
             </ol>
         </nav>
     </div>
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -976,6 +1008,11 @@
 <div id="embed"></div>
 
 </body>
+<style type="text/css">
+    .pagination > li {
+        display: inline;
+    }
+</style>
 <!--<style>-->
 <!--.table { padding-bottom: 70px; }-->
 <!--.text-center{-->
