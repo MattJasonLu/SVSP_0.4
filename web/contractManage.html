@@ -576,15 +576,6 @@ else {
          contractId=item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
         var contractType=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
        // console.log(contractId+contractType);
-        if(contractType.indexOf('应急')!=-1){
-
-            //做跳转
-            window.location.href = "emergency?contractId="+contractId;
-           // 转到html便于操作
-            localStorage.name1=contractId;
-            location.href="showemergency.html";
-       }
-       else {
            $('#close').show();
            $('#btn').text();
            $('#back').text('');
@@ -615,7 +606,13 @@ else {
                            var end="";
                        }
                        //合同状态
-                       $("#modal3_contractState").text(data.checkState.name);
+                       if(data.checkState!=null){
+                           $("#modal3_contractState").text(data.checkState.name);
+                       }
+                       else {
+                           $("#modal3_contractState").text("");
+                       }
+
                      //合同版本
                        $("#modal3_contractVersion").text(data.contractVersion.name);//合同版本
                       // $("#modal3_companyName").text(data.companyName);
@@ -714,8 +711,6 @@ else {
            $('#back').hide();//驳回隐藏
            $('#print').show();//打印显示
            $('#print').show();//打印显示
-       }
-
     }
     /***
     * 查看合同2
@@ -869,7 +864,8 @@ else {
         if(contractName.indexOf('应急')!=-1){
            // window.location.href = "emergency1?contractId="+contractId;
             //换到html页面，便于操作
-
+            localStorage.contractId=contractId;
+            location.href="adjustUrgent.html";
         }
 
     }
@@ -1309,7 +1305,7 @@ else {
     //     forceParse: 0
     // });
 function ContractListByName(item) {
-    $('#state').find("option:selected").text('未作废');//付给他们初始属性
+   $('#state').get(0).selectedIndex=0;
         nameBykey = item.innerHTML;
         if (item.innerHTML == '危废合同') {
             $('#toggleName').text("客户名称");
@@ -1801,14 +1797,13 @@ function ContractListByName(item) {
         var contractType = item.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         //console.log(contractId+contractType);
         //取得合同编号
-        if (contractType.indexOf('应急') != -1) {
-            //做跳转
-            // window.location.href = "emergency?contractId="+contractId;
-            //换成html方式
-            localStorage.name1 = contractId;
-            location.href = "showemergency.html";
-        }
-        else {
+        // if (contractType.indexOf('应急') != -1) {
+        //     //做跳转
+        //     // window.location.href = "emergency?contractId="+contractId;
+        //     //换成html方式
+        //     localStorage.name1 = contractId;
+        //     location.href = "showemergency.html";
+        // }
             $('#btn').hide();//审批隐藏
             $('#print').show();//打印显示
             $.ajax({
@@ -1835,7 +1830,11 @@ function ContractListByName(item) {
                         else {
                             var end = "";
                         }
-                        $("#modal3_contractState").text(data.checkState.name);
+                        if(data.checkState!=null){
+                            $("#modal3_contractState").text(data.checkState.name);
+                        }
+                        else
+                        $("#modal3_contractState").text("");
                         $("#modal3_contractVersion").text(data.contractVersion.name);
                         $("#modal3_companyName").text(data.companyName);
                         if (data.contractVersion.name == "公司合同") {
@@ -1924,7 +1923,7 @@ function ContractListByName(item) {
             });
             $('#contractInfoForm').modal('show');
             $('#back').hide();
-        }
+
     }
 
 //     $("#print").click(function() {

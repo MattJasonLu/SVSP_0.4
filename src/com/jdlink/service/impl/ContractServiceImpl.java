@@ -82,8 +82,8 @@ public class ContractServiceImpl implements ContractService  {
     }
 
     @Override
-    public void toSubmit(String id,String nowTime) {
-        contractMapper.toSubmit(id,nowTime);
+    public void toSubmit(String id) {
+        contractMapper.toSubmit(id);
     }
 
     @Override
