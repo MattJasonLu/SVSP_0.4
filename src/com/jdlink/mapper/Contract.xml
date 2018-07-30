@@ -122,7 +122,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set checkState="Keeping", nowTime=NOW() where contractId=#{contractId}
     </update>
     <select id="modelName" resultMap="ContractRM" >
-        select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') ;
+        select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') and period!="";
     </select>
     <update id="back" parameterType="Contract">
         update t_contract set checkState="Backed",backContent=#{1},nowTime=#{2} where contractId=#{0}
