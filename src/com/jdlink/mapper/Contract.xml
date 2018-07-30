@@ -6,13 +6,14 @@
 <mapper namespace="com.jdlink.mapper.ContractMapper">
 
     <resultMap id="ContractRM" type="Contract">
+        <id property="contractId" column="contractId"/>
         <result property="contractType" column="contractType" javaType="com.jdlink.domain.ContractType"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
         <result property="contractId" column="contractId" javaType="String"/>
         <result property="modelName" column="modelName" javaType="String"/>
         <result property="year" column="year" javaType="String"/>
         <result property="period" column="period" javaType="String"/>
-       <result property="modelName" column="modelName" javaType="String"/>
+        <result property="modelName" column="modelName" javaType="String"/>
         <result property="contractContent" column="contractContent" javaType="String"/>
         <result property="modelVersion" column="modelVersion" javaType="String"/>
         <result property="supplier" column="supplier" javaType="String"/>
@@ -20,8 +21,8 @@
         <result property="city" column="city" javaType="String"></result>
         <result property="opinion" column="opinion" javaType="String"></result>
         <result property="companyName " column="companyName " javaType="String"></result>
-            <result property="province" column="province " javaType="com.jdlink.domain.Province"></result>
-     <result property="contactName" column="contactName" javaType="String"></result>
+        <result property="province" column="province " javaType="com.jdlink.domain.Province"></result>
+        <result property="contactName" column="contactName" javaType="String"></result>
         <result property="telephone " column="telephone " javaType="String"></result>
         <collection property="hazardousList" select="getHazardous" column="contractId"
                     ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
@@ -133,5 +134,16 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         SELECT * FROM t_hazardous WHERE id in (
           SELECT r_contractandhazardous.hazardousId FROM r_contractandhazardous
           WHERE contractId=#{contractId});
+    </select>
+
+    <select id="countTemplate" resultType="int">
+        select count(*) from t_contract where modelName != '' and year != '';
+    </select>
+
+    <select id="listPageTemplate" resultMap="ContractRM">
+        select * from t_contract order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
     </select>
 </mapper>

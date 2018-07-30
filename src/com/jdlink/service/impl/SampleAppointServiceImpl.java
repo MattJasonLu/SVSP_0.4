@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.SampleAppoint;
 import com.jdlink.domain.SampleCheck;
 import com.jdlink.mapper.SampleAppointMapper;
@@ -38,9 +39,15 @@ public class SampleAppointServiceImpl implements SampleAppointService {
     }
 
     @Override
+    public int count(){ return sampleAppointMapper.count(); }
+
+    @Override
     public List<SampleAppoint> list() {
         return sampleAppointMapper.list();
     }
+
+    @Override
+    public List<SampleAppoint> listPage(Page page){ return sampleAppointMapper.listPage(page); }
 
     @Override
     public List<SampleAppoint> getByKeyword(String keyword) {

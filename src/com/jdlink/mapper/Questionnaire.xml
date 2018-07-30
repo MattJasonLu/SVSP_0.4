@@ -308,8 +308,8 @@
           client.product, questionnaire.state, questionnaire.author, questionnaire.time
             FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId ORDER BY questionnaire.time DESC
         <if test="start != null and count != null">
-           limit #{start}, #{count}
-        </if>
+         limit #{start}, #{count}
+   </if>
    </select>
 
     <select id="count" resultType="int">

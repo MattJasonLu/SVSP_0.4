@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import jxl.read.biff.BiffException;
@@ -45,6 +46,13 @@ public class DBUtil {
         }
     }
 
+    /**
+     * 导出
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @throws IOException
+     */
     public void exportExcel(String name,HttpServletResponse response,String sqlWords)  throws IOException {// Table_name 数据库中想要导出的指定表名
         // 创建Excel表。
         org.apache.poi.ss.usermodel.Workbook book = new HSSFWorkbook();
@@ -126,6 +134,12 @@ public class DBUtil {
         //book.write(new FileOutputStream("D://" + name + ".xls"));
     }
 
+
+    /**
+     * 导入
+     * @param file
+     * @param DBTableName
+     */
     public void importExcel(MultipartFile file,String DBTableName) {
 
         try {
@@ -136,19 +150,21 @@ public class DBUtil {
     }
     public void UploadExcel(MultipartFile file,String DBTableName) throws Exception {
         //定义一维数组，存放Excel表里的每一行的各个列的数据
-        Object[] obj ;
+        Object[] obj;
         Object[][] parm;
         InputStream is = null;
         Workbook rwb = null;
         try {
-            is = file.getInputStream();//定义文本输入流
+            //定义文本输入流
+            is = file.getInputStream();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            rwb = Workbook.getWorkbook(is);//打开Workbook
+            //打开Workbook
+            rwb = Workbook.getWorkbook(is);
         } catch (BiffException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -158,25 +174,30 @@ public class DBUtil {
         Sheet sht = rwb.getSheet(0);//得到第一个表d
         int col = sht.getColumns(); //获得Excel列
         int row = sht.getRows(); //获得Excel行
-        Cell c1 ;
-        parm=new Object[row-1][col];
-        //将数据装到parm中去
-        for(int i=1; i < row; i++){
-            obj = new Object[col];
-            for(int j =0 ;j <col; j++){
-                c1 = sht.getCell(j,i);
+        Cell c1;
 
+        parm = new Object[row - 1][col];
+        //将数据装到parm中去
+        //i=1 去掉表格第一行的属性名
+        for (int i = 1; i < row; i++) {
+            obj = new Object[col];
+            for (int j = 0; j < col; j++) {
+                c1 = sht.getCell(j, i);
                 obj[j] = c1.getContents();
-                parm[i-1][j]=obj[j];
+                parm[i - 1][j] = obj[j];
             }
         }
+        //return parm;
+
         //将parm中数据批处理插入到数据库中
         QueryRunner queryRunner = new QueryRunner(true);
         String sql=generateSql(col,DBTableName);
         try {
             queryRunner.batch(con, sql, parm);
+            is.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            //数据完全重复时才会抛出
             throw new IllegalArgumentException("客户数据重复！");
         }
     }

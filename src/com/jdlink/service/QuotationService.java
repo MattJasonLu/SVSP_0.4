@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Quotation;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface QuotationService {
     void levelUp(Quotation quotation);
 
     List<Quotation> list();
+
+    List<Quotation> listPage(Page page);
 
     List<Quotation> list(String state);
 
