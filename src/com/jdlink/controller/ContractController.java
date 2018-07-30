@@ -695,6 +695,42 @@ public String searchContract(String keyword,String nameBykey){
         }
         return listTemp;
     }
+
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalContractTemplateRecord")
+    @ResponseBody
+    public int totalContractTemplateRecord(){
+        try {
+            return contractService.countTemplate();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @RequestMapping("loadPageContractTemplateList")
+    @ResponseBody
+    public  String loadPageContractTemplateList(@RequestBody Page page){
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Contract> contractList = contractService.listPageTemplate(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
 }
 
 

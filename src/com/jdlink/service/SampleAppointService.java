@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.SampleAppoint;
 import com.jdlink.domain.SampleCheck;
 
@@ -18,7 +19,11 @@ public interface SampleAppointService {
 
     int countById(String appointId);
 
+    int count();
+
     List<SampleAppoint> list();
+
+    List<SampleAppoint> listPage(Page page);
 
     List<SampleAppoint> getByKeyword(String keyword);
 

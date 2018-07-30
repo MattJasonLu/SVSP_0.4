@@ -61,6 +61,13 @@
         </if>
     </select>
 
+    <select id="listPage" resultMap="QuotationRM" >
+        SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId order by nowTime desc
+        <if test="start != null and count != null">
+        limit #{start}, #{count}
+        </if>
+    </select>
+
     <select id="listNotInvalid" resultMap="QuotationRM">
         SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND t_quotation.checkState!='Invalid' order by nowTime desc;
         <if test="start != null and count != null">
