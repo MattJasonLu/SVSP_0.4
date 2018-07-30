@@ -19,6 +19,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
+    <script language="javascript" src="js/canvas2image.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
 </head>
 <script type="text/javascript">
     function loadContractSelectList() {
@@ -483,35 +486,22 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-horizontal col-md-6">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">保存之后 </label>
-                        <div class="col-xs-5 radio">
-                            <label>
-                                <input type="radio" name="addType" id="addType1" value="continue" checked>
-                                继续添加
-                            </label>
-                            <label>
-                                <input type="radio" name="addType" id="addType2" value="break">
-                                返回列表
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <br>
             <br>
             <div class="row text-center">
-                <a class="btn btn-success" onclick="contractSave()">保存</a>
+              <!--  <a class="btn btn-success" onclick="contractSave()">保存</a>
                 <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-warning" onclick="clientReset()">重置</a>
+                <a class="btn btn-warning" onclick="clientReset()">重置</a>-->
+                <a class="btn btn-primary" id="print">打印</a>
                 <a class="btn btn-danger" id="back">返回</a>
             </div>
         </form>
     </div>
 </div>
 <div id="embed"></div>
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+<div id="pic" style="border: 0;">
+</div>
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
@@ -598,6 +588,38 @@
         $(location).attr('href', 'contractManage.html');
         localStorage.name="Emergency";
         location.href="contractManage.html";
+    });
+    $('#print').click(function () {
+        $('#print').hide();
+        $('#back').hide();
+        $('#pic').show();
+        html2canvas(document.querySelector("#contractInfoForm")).then(function (canvas) {
+            // document.body.appendChild(canvas);//得到图片
+            $("#pic").css("visibility", "visible");
+            var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
+            var newImg = document.createElement("img");//创建img对象
+            // newImg.style.width = "1200px";
+            // newImg.style.height = "600px";
+            newImg.src = dataUrl;//将canvas图形url赋给img对象
+            //  canvas.style.width = newImg.width+ "px";
+            //  canvas.style.height = newImg.height+ "px";
+            // var context = canvas.getContext("2d");
+            //然后将画布缩放，将图像放大两倍画到画布上
+            $('#pic').append(newImg).printThis({
+                //保留BASE标记或接受URL
+            });//打印img，注意不能直接打印img对象，需要包裹一层div
+            $('#print').show();
+            $('#back').show();
+            //$('#pic').html(''); //打印完毕释放包裹层内容（图像）
+            //
+            // var pic=$('#pic');
+            // pic[0].appendChild(canvas);
+            // convertCanvasToImage(canvas);
+            //Canvas2Image.saveAsImage(canvas);
+        });
+        // $('#contractInfoForm').modal('show');
+        // $('#contractInfoForm').modal('show');
+        $('#pic').html('');//打印完毕释放包裹层内容（图像)
     });
 </script>
 </html>
