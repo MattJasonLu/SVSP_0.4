@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Cost;
+import com.jdlink.domain.Page;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface CostMapper {
     void levelUp(Cost cost);//@Param(value="cost")
 
     List<Cost> list();
+
+    List<Cost> listPage(Page page);
 
     List<Cost> list(String state);
 

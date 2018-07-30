@@ -1,6 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Cost;
+import com.jdlink.domain.Page;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public interface CostService {
     void levelUp(Cost cost);
 
     List<Cost> list();
+
+    List<Cost> listPage(Page page);
 
     List<Cost> list(String state);
 

@@ -137,7 +137,7 @@
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setSampleList(result);
+                    setQuotationList(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -192,7 +192,7 @@
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setSampleList(result);
+                        setQuotationList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -417,7 +417,7 @@
         });
     }
 </script>
-<body onload="loadQuotationList();">
+<body onload="loadPageQuotationList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -642,7 +642,7 @@
                     <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
-                        <select id="count" onchange="loadPageQuotationList()">
+                        <select id="count" onchange="loadPageQuotationList();">
                             <option>5</option>
                             <option selected>15</option>
                             <option>50</option>
