@@ -38,6 +38,23 @@
         ON t_sampleappoint.appointId=t_samplecheck.appointId ORDER BY t_sampleappoint.appointTime DESC;
     </select>
 
+    <select id="listPage" resultType="SampleAppoint">
+        select t_sampleAppoint.appointId, t_sampleappoint.state, t_sampleappoint.companyName, t_sampleappoint.appointTime, t_sampleappoint.productName,
+        t_sampleappoint.code, t_sampleAppoint.contactName, t_sampleAppoint.telephone
+        from t_sampleAppoint LEFT JOIN t_samplecheck
+        ON t_sampleappoint.appointId=t_samplecheck.appointId ORDER BY t_sampleappoint.appointTime DESC
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from t_sampleAppoint
+        LEFT JOIN t_samplecheck
+        ON t_sampleappoint.appointId=t_samplecheck.appointId
+        ORDER BY t_sampleappoint.appointTime DESC;
+    </select>
+
     <update id="updatePdtAndCode" parameterType="SampleCheck">
         <if test="sampleList.size() > 0">
             UPDATE t_sampleAppoint SET productName=#{sampleList[0].productName}, code=#{sampleList[0].code}, nowTime=NOW() WHERE

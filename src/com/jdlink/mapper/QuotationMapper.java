@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Quotation;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,6 +18,8 @@ public interface QuotationMapper {
     void levelUp(Quotation quotation);
 
     List<Quotation> list();
+
+    List<Quotation> listPage(Page page);
 
     List<Quotation> list(String state);
 

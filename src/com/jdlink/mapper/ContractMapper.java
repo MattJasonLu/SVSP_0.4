@@ -19,6 +19,8 @@ public interface ContractMapper {
     void setCheckStateToExamine(Contract contract);
     void setCheckStateKeeping(Contract contract);
     void setCheckStateInvalid(Contract contract);
+    int countTemplate();
+    List<Contract> listPageTemplate();
     List<Contract> list();
     List<Contract> list1(String name);
     List<Contract> list2(String name,String index2);

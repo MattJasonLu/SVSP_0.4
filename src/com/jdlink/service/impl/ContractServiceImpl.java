@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Contract;
+import com.jdlink.domain.Page;
 import com.jdlink.mapper.ContractMapper;
 import com.jdlink.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,12 @@ public class ContractServiceImpl implements ContractService  {
     public void setCheckStateInvalid(Contract contract) {
         contractMapper.setCheckStateInvalid(contract);
     }
+
+    @Override
+    public int countTemplate(){ return contractMapper.countTemplate(); }
+
+    @Override
+    public List<Contract> listPageTemplate(Page page){ return contractMapper.listPageTemplate(); }
 
     @Override
     public List<Contract> list() {

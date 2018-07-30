@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Quotation;
 import com.jdlink.mapper.QuotationMapper;
 import com.jdlink.service.QuotationService;
@@ -36,6 +37,9 @@ public class QuotationServiceImpl implements QuotationService {
     public List<Quotation> list() {
         return quotationMapper.list();
     }
+
+    @Override
+    public List<Quotation> listPage(Page page){ return quotationMapper.listPage(page); }
 
     @Override
     public List<Quotation> list(String state) {

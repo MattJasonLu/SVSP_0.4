@@ -584,7 +584,7 @@
                                                                                    aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" onclick="submitClients();"><span class="glyphicon glyphicon-ok"
                                                                                        aria-hidden="true"></span> 提交</a>
-                    <a class="btn btn-primary btn-xs" onclick="importExcel();"><span
+                    <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel(this);"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
@@ -659,7 +659,7 @@
         </div>
         <!--分页1-->
         <nav aria-label="Page navigation" class="text-center">
-            <ol class="pagination" style="width: 610px;">
+            <ol class="pagination" style="width: 800px;">
                 <li id="current"><a href='#'>当前页：</a>
                 <li id="firstPage">
                     <a href='#' onclick="switchPage(0)">首 页</a>
@@ -680,10 +680,9 @@
                 </li>
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                <li><input type="text" class="text-center" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber"></li>
-                <li>每页显示:</li>
-                <li>
+                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
+                <li class="showLi" >每页显示: </li>
+                <li class="selectLi">
                     <select id="count" onchange="loadPageClientList()">
                         <option>5</option>
                         <option selected>15</option>
@@ -692,6 +691,30 @@
                 </li>
             </ol>
         </nav>
+
+        <!--导入模态框-->
+        <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modelAssign" method="post">
+                            <div class="form-group">
+                                <font size="+2" >提示：</font>
+                                <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                        <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1004,6 +1027,7 @@
         </div>
     </div>
 </div>
+<!--导入-->
 <input type="file" name="excelPath" id="idExcel" style="display:none">
 <div id="embed"></div>
 
@@ -1011,6 +1035,18 @@
 <style type="text/css">
     .pagination > li {
         display: inline;
+    }
+    .inputText { float:left;
+    }
+    .showLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+    .selectLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
     }
 </style>
 <!--<style>-->
@@ -1618,11 +1654,17 @@
      */
     function exportExcel(e) {
         var name = 'client';
-        var sqlWords = "select * from jdlink." + name;
+        var sqlWords = "select clientId,companyName,applicationStatus,checkState,state,contactName,phone,clientType from jdlink."+name;
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 
     }
 
+    /**
+     * 导入模态框
+     * */
+    function importExcelChoose(){
+        $("#importExcelModal").modal('show');
+    }
     /**
      * 导入excel
      *
@@ -1637,7 +1679,7 @@
             formFile.append("tableName", 'client');
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "importExcel",              // url
+                url: "importClientExcel",              // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
                 data: formFile,
