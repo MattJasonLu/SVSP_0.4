@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.ClientService;
+import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -538,6 +539,24 @@ public class ClientController {
             res.put("exception", e.getMessage());
         }
         return res.toString();
+    }
+
+    @RequestMapping("importClientExcel")
+    @ResponseBody
+    public String importClientExcel(MultipartFile excelFile,String tableName){
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db=new DBUtil();
+            db.importExcel(excelFile, tableName);
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！"+e.getMessage());
+        }
+        return res.toString();
+
     }
 
 }

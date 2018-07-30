@@ -18,6 +18,245 @@
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
+
+    var currentPage = 1;                          //当前页数
+
+    /**
+     * 返回count值
+     * */
+    function countValue(){
+        var mySelect=document.getElementById("count");
+        var index=mySelect.selectedIndex;
+        return mySelect.options[index].text;
+    }
+    /**
+     * 计算总页数
+     * */
+    function totalPage() {
+        var totalRecord = 0;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalQuotationRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+        var count = countValue();                         // 可选
+        var total = loadPages(totalRecord, count);
+        return total;
+    }
+
+    /**
+     * 设置克隆页码
+     * */
+    function setPageClone(result) {
+        $(".beforeClone").remove();
+        setQuotationList(result);
+        var total = totalPage();
+        $("#next").prev().hide();
+        var st = "共" + total + "页";
+        $("#totalPage").text(st);
+        var myArray = new Array();
+        for (var i = 0; i < total; i++) {
+            var li = $("#next").prev();
+            myArray[i] = i + 1;
+            var clonedLi = li.clone();
+            clonedLi.show();
+            clonedLi.find('a:first-child').text(myArray[i]);
+            clonedLi.find('a:first-child').click(function () {
+                var num = $(this).text();
+                switchPage(num);
+            });
+            clonedLi.addClass("beforeClone");
+            clonedLi.removeAttr("id");
+            clonedLi.insertAfter(li);
+        }
+
+    }
+
+    /**
+     * 点击页数跳转页面
+     * @param pageNumber 跳转页数
+     * */
+    function switchPage(pageNumber) {
+        console.log("当前页：" + pageNumber);
+        if (pageNumber == 0) {                 //首页
+            pageNumber = 1;
+        }
+        if (pageNumber == -2) {
+            pageNumber = totalPage();        //尾页
+        }
+        if (pageNumber == null || pageNumber == undefined) {
+            console.log("参数为空,返回首页!");
+            pageNumber = 1;
+        }
+        $("#current").find("a").text("当前页："+pageNumber);
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if(pageNumber > 1){
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if(pageNumber < totalPage()){
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        var page = {};
+        page.count = countValue();                        //可选
+        page.pageNumber = pageNumber;
+        currentPage = pageNumber;          //当前页面
+        //addClass("active");
+        page.start = (pageNumber - 1) * page.count;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageQuotationList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setSampleList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+
+    /**
+     * 输入页数跳转页面
+     * */
+    function inputSwitchPage() {
+        var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+        $("#current").find("a").text("当前页："+pageNumber);
+        if (pageNumber == null || pageNumber == undefined) {
+            window.alert("跳转页数不能为空！")
+        } else {
+            if (pageNumber == 1) {
+                $("#previous").addClass("disabled");
+                $("#firstPage").addClass("disabled");
+                $("#next").removeClass("disabled");
+                $("#endPage").removeClass("disabled");
+            }
+            if (pageNumber == totalPage()) {
+                $("#next").addClass("disabled");
+                $("#endPage").addClass("disabled");
+                $("#previous").removeClass("disabled");
+                $("#firstPage").removeClass("disabled");
+            }
+            if(pageNumber > 1){
+                $("#previous").removeClass("disabled");
+                $("#firstPage").removeClass("disabled");
+            }
+            if(pageNumber < totalPage()){
+                $("#next").removeClass("disabled");
+                $("#endPage").removeClass("disabled");
+            }
+            currentPage = pageNumber;
+            var page = {};
+            page.count = countValue();//可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageQuotationList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setSampleList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+
+
+        }
+    }
+
+    /**
+     * 分页 获取首页内容
+     * */
+    function loadPageQuotationList() {
+        var pageNumber = 1;               // 显示首页
+        $("#current").find("a").text("当前页：1");
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        var page = {};
+        page.count = countValue();                                 // 可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageQuotationList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    setPageClone(result);
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
+            }
+        });
+    }
+
+    /**
+     * 计算分页总页数
+     * @param totalRecord
+     * @param count
+     * @returns {number}
+     */
+    function loadPages(totalRecord, count) {
+        if (totalRecord == 0) {
+            window.alert("总记录数为0，请检查！");
+            return 0;
+        }
+        else if (totalRecord % count == 0)
+            return totalRecord / count;
+        else
+            return parseInt(totalRecord / count) + 1;
+    }
+
     function setQuotationList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
@@ -378,23 +617,37 @@
             </div>
             <!--分页-->
             <nav aria-label="Page navigation" style="text-align: center">
-                <ul class="pagination">
-                    <li class="disabled">
+                <ol class="pagination" style="width: 900px;">
+                    <li id="current"><a href="#"></a> </li>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchPage(0)">首 页</a>
+                    </li>
+                    <li id="previous">
                         <a href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);">&laquo;</span>
                         </a>
                     </li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
                         <a href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);">&raquo;</span>
                         </a>
                     </li>
-                </ul>
+                    <li id="endPage">
+                        <a href='#' onclick="switchPage(-2)">尾 页</a>
+                    </li>
+                    <li ><a id="totalPage"></a></li>
+                    <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                    <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count" onchange="loadPageQuotationList()">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                        </select>
+                    </li>
+                </ol>
             </nav>
         </div>
     </div>
@@ -445,7 +698,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer center">
                     <button type="button" class="btn btn-primary" onclick="approval()">通过</button>
                     <button type="button" class="btn btn-default" onclick="reject()">驳回</button>
                 </div>
@@ -455,6 +708,24 @@
     <div id="embed"></div>
     <input type="file" name="excelPath" id="idExcel" style="display:none">
 </body>
+<!--分页格式-->
+<style type="text/css">
+    .pagination > li {
+        display: inline;
+    }
+    .inputText { float:left;
+    }
+    .showLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+    .selectLi{
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+</style>
 <script>
     function showLog() {
         $.ajax({
