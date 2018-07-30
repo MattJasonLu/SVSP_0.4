@@ -67,10 +67,76 @@
         </where>
     </select>
 
-    <select id="getByKeyword" parameterType="String" resultMap="ClientRM">
-        SELECT * FROM client WHERE companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
+    <select id="search" parameterType="Client" resultMap="ClientRM">
+        SELECT * FROM client
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
                 or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
-                or applicationStatus like "%"#{keyword}"%" or state like "%"#{keyword}"%";
+            </if>
+            <if test="clientId != null and clientId != ''">
+                and clientId LIKE "%"#{clientId}"%"
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test="contactName != null and contactName != ''">
+                and contactName LIKE "%"#{contactName}"%"
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone LIKE "%"#{phone}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+            <if test="clientState != null and clientState != ''">
+                and state = #{clientState}
+            </if>
+            <if test="applicationStatus != null and applicationStatus != ''">
+                and applicationStatus = #{applicationStatus}
+            </if>
+            <if test="clientType != null and clientType != ''">
+                and clientType = #{clientType}
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="Client" resultType="int">
+        SELECT COUNT(*) FROM client
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+            </if>
+            <if test="clientId != null and clientId != ''">
+                and clientId LIKE "%"#{clientId}"%"
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test="contactName != null and contactName != ''">
+                and contactName LIKE "%"#{contactName}"%"
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone LIKE "%"#{phone}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+            <if test="clientState != null and clientState != ''">
+                and state = #{clientState}
+            </if>
+            <if test="applicationStatus != null and applicationStatus != ''">
+                and applicationStatus = #{applicationStatus}
+            </if>
+            <if test="clientType != null and clientType != ''">
+                and clientType = #{clientType}
+            </if>
+        </where>
     </select>
 
     <select id="getByClientId" parameterType="String" resultMap="ClientRM">

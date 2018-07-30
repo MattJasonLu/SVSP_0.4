@@ -537,7 +537,11 @@
                                 $(this).html("");
                             }
                             break;
-                        // case (10):
+                        case (10):
+                            if(obj.checkState.name == "已作废"){
+                                $(".glyphicon3").removeAttr("onclick");
+                                document.getElementById("glyphicon3").style.color="#9d9d9d";
+                            }
                         //     if(obj.checkState.name == "待审批"){
                         //
                         //     }else if(obj.checkState.name == "审批中"){
@@ -558,7 +562,7 @@
                         //         $(this).children().eq(3).attr("class","disabled");
                         //         $(this).children().eq(3).removeAttr("onclick");
                         //     }
-                        //     break;
+                            break;
                             //截止日期
                         //截止日期
                         // 截至日期
@@ -683,28 +687,30 @@
                             $(this).html("");
                         }
                         break;
-                    // case (10):
-                    //     if(obj.checkState.name == "待审批"){
-                    //
-                    //     }else if(obj.checkState.name == "审批中"){
-                    //         $(this).children().eq(1).attr("class","disabled");
-                    //         $(this).children().eq(1).removeAttr("onclick");
-                    //     }else if(obj.checkState.name == "履约中"){
-                    //         $(this).children().eq(1).attr("class","disabled");
-                    //         $(this).children().eq(1).removeAttr("onclick");
-                    //         $(this).children().eq(2).attr("class","disabled");
-                    //         $(this).children().eq(2).removeAttr("onclick");
-                    //         $(this).children().eq(3).attr("class","disabled");
-                    //         $(this).children().eq(3).removeAttr("onclick");
-                    //     }else{
-                    //         $(this).children().eq(1).attr("class","disabled");
-                    //         $(this).children().eq(1).removeAttr("onclick");
-                    //         $(this).children().eq(2).attr("class","disabled");
-                    //         $(this).children().eq(2).removeAttr("onclick");
-                    //         $(this).children().eq(3).attr("class","disabled");
-                    //         $(this).children().eq(3).removeAttr("onclick");
-                    //     }
-                    //     break;
+                    case (10):
+                        if(obj.checkState.name == "已作废"){
+                            $(".glyphicon3").removeAttr("onclick");
+                            document.getElementById("glyphicon3").style.color="#9d9d9d";
+                        }
+                        // else if(obj.checkState.name == "审批中"){
+                        //     $(this).children().eq(1).attr("class","disabled");
+                        //     $(this).children().eq(1).removeAttr("onclick");
+                        // }else if(obj.checkState.name == "履约中"){
+                        //     $(this).children().eq(1).attr("class","disabled");
+                        //     $(this).children().eq(1).removeAttr("onclick");
+                        //     $(this).children().eq(2).attr("class","disabled");
+                        //     $(this).children().eq(2).removeAttr("onclick");
+                        //     $(this).children().eq(3).attr("class","disabled");
+                        //     $(this).children().eq(3).removeAttr("onclick");
+                        // }else{
+                        //     $(this).children().eq(1).attr("class","disabled");
+                        //     $(this).children().eq(1).removeAttr("onclick");
+                        //     $(this).children().eq(2).attr("class","disabled");
+                        //     $(this).children().eq(2).removeAttr("onclick");
+                        //     $(this).children().eq(3).attr("class","disabled");
+                        //     $(this).children().eq(3).removeAttr("onclick");
+                        // }
+                        break;
                     //截止日期
                     //截止日期
                     // 截至日期
@@ -1262,6 +1268,7 @@ else {
                         <input type="text" class="form-control" placeholder="搜索..." id="search">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         </span>
                     </div>
                 </div>
@@ -1305,7 +1312,7 @@ else {
                                     </label>
                                 </th>
                                 <th class="text-center">合同编号</th>
-                                <th class="text-center" id="toggleName">供应商名称</th><!--相当于公司名称-->
+                                <th class="text-center" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
                                 <th class="text-center">合同名称</th>
                                 <th class="text-center">
                                     <div class="form-inline">
@@ -1349,7 +1356,7 @@ else {
                                 <td class="text-center">
                                     <a href="#" onclick="viewContract(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                     <a href="#" onclick="adjustContract(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                    <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                                    <a href="#" onclick="cancel(this);" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                                     <a href="#" onclick="approval(this);" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 </td>
                             </tr>
@@ -1580,7 +1587,7 @@ function ContractListByName(item) {
                     if (result != undefined) {
                         //alert(result);
                         //console.log(result);
-                        setContractList1(result);
+                        setContractList(result);
                     } else {
                         console.log("fail: " + result);
                     }

@@ -13,430 +13,16 @@
     <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/page.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
-
-    var currentPage = 1;                          //当前页数
-
-    /**
-     * 返回count值
-     * */
-    function countValue() {
-        var mySelect = document.getElementById("count");
-        var index = mySelect.selectedIndex;
-        return mySelect.options[index].text;
-    }
-
-    /**
-     * 计算总页数
-     * */
-    function totalPage() {
-        var totalRecord = 0;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "totalRecord",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
-        var count = countValue();                         // 可选
-        var total = loadPages(totalRecord, count);
-        return total;
-    }
-
-    function setPageClone(result) {
-        $(".beforeClone").remove();
-        setClientList(result);
-        var total = totalPage();
-        $("#next").prev().hide();
-        var st = "共" + total + "页";
-        $("#totalPage").text(st);
-        var myArray = new Array();
-        for (var i = 0; i < total; i++) {
-            var li = $("#next").prev();
-            myArray[i] = i + 1;
-            var clonedLi = li.clone();
-            clonedLi.show();
-            clonedLi.find('a:first-child').text(myArray[i]);
-            clonedLi.find('a:first-child').click(function () {
-                var num = $(this).text();
-                switchPage(num);
-            });
-            clonedLi.addClass("beforeClone");
-            clonedLi.removeAttr("id");
-            clonedLi.insertAfter(li);
-        }
-
-    }
-
-    /**
-     * 点击页数跳转页面
-     * @param pageNumber 跳转页数
-     * */
-    function switchPage(pageNumber) {
-        if (pageNumber == 0) {                 //首页
-            pageNumber = 1;
-        }
-        if (pageNumber == -2) {
-            pageNumber = totalPage();        //尾页
-        }
-        if (pageNumber == null || pageNumber == undefined) {
-            console.log("参数为空,返回首页!");
-            pageNumber = 1;
-        }
-        $("#current").find("a").text("当前页：" + pageNumber);
-        if (pageNumber == 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        if (pageNumber == totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if (pageNumber > 1) {
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if (pageNumber < totalPage()) {
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        var page = {};
-        page.count = countValue();                        //可选
-        page.pageNumber = pageNumber;
-        currentPage = pageNumber;          //当前页面
-        //addClass("active");
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    // console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                    // setClientList(result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                // setClientList(result);
-            }
-        });
-    }
-
-    /**
-     * 输入页数跳转页面
-     * */
-    function inputSwitchPage() {
-        var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-        $("#current").find("a").text("当前页：" + pageNumber);
-        if (pageNumber == null || pageNumber == undefined) {
-            window.alert("跳转页数不能为空！")
-        } else {
-            if (pageNumber == 1) {
-                $("#previous").addClass("disabled");
-                $("#firstPage").addClass("disabled");
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            if (pageNumber == totalPage()) {
-                $("#next").addClass("disabled");
-                $("#endPage").addClass("disabled");
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if (pageNumber > 1) {
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if (pageNumber < totalPage()) {
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            currentPage = pageNumber;
-            var page = {};
-            page.count = countValue();//可选
-            page.pageNumber = pageNumber;
-            page.start = (pageNumber - 1) * page.count;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageClientList",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                        setClientList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-
-
-        }
-    }
-
-    /**
-     * 分页 获取首页内容
-     * */
-    function loadPageClientList() {
-        $("#current").find("a").text("当前页：1");
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        var page = {};
-        var pageNumber = 1;                       // 显示首页
-        page.count = countValue();                                 // 可选
-        page.pageNumber = pageNumber;
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setPageClone(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                console.log("失败");
-            }
-        });
-    }
-
-    /**
-     * 计算分页总页数
-     * @param totalRecord
-     * @param count
-     * @returns {number}
-     */
-    function loadPages(totalRecord, count) {
-        if (totalRecord == 0) {
-            window.alert("总记录数为0，请检查！");
-            return 0;
-        }
-        else if (totalRecord % count == 0)
-            return totalRecord / count;
-        else
-            return parseInt(totalRecord / count) + 1;
-    }
-
-    function setClientList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 客户编号
-                    case (1):
-                        $(this).html(obj.clientId);
-                        break;
-                    // 客户名称
-                    case (2):
-                        $(this).html(obj.companyName);
-                        break;
-                    // 申报状态
-                    case (3):
-                        if (obj.applicationStatus != null)
-                            $(this).html(obj.applicationStatus.name);
-                        break;
-                    // 审核状态
-                    case (4):
-                        if (obj.checkState != null) {
-                            $(this).html(obj.checkState.name);
-                            // $("#commit").attr(addClass("disabled"));
-                        }
-                        break;
-                    // 账号状态
-                    case (5):
-                        if (obj.clientState != null)
-                            $(this).html(obj.clientState.name);
-                        break;
-                    // 联系人
-                    case (6):
-                        $(this).html(obj.contactName);
-                        break;
-                    // 联系方式
-                    case (7):
-                        $(this).html(obj.phone);
-                        break;
-                    case (8):
-                        if (obj.clientType != null)
-                            $(this).html(obj.clientType.name);
-                        break;
-                    // 操作
-//                    case (9):
-//                        if(obj.clientState.name == "已启用"){
-//                            if(obj.checkState.name == "已完成"){
-//                                $(this).children().eq(1).attr("class","disabled");
-//                                $(this).children().eq(1).removeAttr("onclick");
-//                                $(this).children().eq(2).attr("class","disabled");
-//                                $(this).children().eq(2).removeAttr("onclick");
-//                                $(this).children().eq(3).attr("class","disabled");
-//                                $(this).children().eq(3).removeAttr("onclick");
-//                                $(this).children().eq(4).attr("class","disabled");
-//                                $(this).children().eq(4).removeAttr("onclick");
-//                                $(this).children().eq(6).attr("class","disabled");
-//                                $(this).children().eq(6).removeAttr("onclick");
-//                            }else if(obj.checkState.name == "审批中"){
-//                                $(this).children().eq(1).attr("class","disabled");
-//                                $(this).children().eq(1).removeAttr("onclick");
-//                                $(this).children().eq(2).attr("class","disabled");
-//                                $(this).children().eq(2).removeAttr("onclick");
-//                                $(this).children().eq(4).attr("class","disabled");
-//                                $(this).children().eq(4).removeAttr("onclick");
-//                            }else{
-//                                $(this).children().eq(1).attr("class","disabled");
-//                                $(this).children().eq(1).removeAttr("onclick");
-//                                $(this).children().eq(4).attr("class","disabled");
-//                                $(this).children().eq(4).removeAttr("onclick");
-//                                $(this).children().eq(6).attr("class","disabled");
-//                                $(this).children().eq(6).removeAttr("onclick");
-//                            }
-//                        }else{
-//                            $(this).children().eq(0).attr("class","disabled");
-//                            $(this).children().eq(0).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                            $(this).children().eq(6).attr("class","disabled");
-//                            $(this).children().eq(6).removeAttr("onclick");
-//                        }
-//                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-
-    function loadClientList() {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listClient",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-
-    /**
-     * 查找客户
-     */
-    function searchClient() {
-        var keyword = $("#searchContent").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchClient",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'keyword': keyword
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
 
     function allSelect() {
         var isChecked = $('#allSel').prop('checked');
         if (isChecked) $("input[name='select']").prop('checked', true);
         else $("input[name='select']").prop('checked', false);
     }
-
-    // $(document).ready(function () {
-    //     $("input[name='select']").attr('checked', true);
-    // });
-    // $(document).ready(function () {
-    //给全选设置点击事件
-    // $("input[name='allSel']").click(function () {
-    //     if($(this).is(':checked')){
-    //         $("input[name='select']").attr('checked',true);
-    //     }else{
-    //         $("input[name='select']").attr('checked',false);
-    //     }
-    // });
-    // //给下面的复选框设置click事件
-    // $("[name='select']").click(function () {
-    //     var allSel = false;
-    //     $("[name='select']").each(function () {
-    //         if(!$(this).is(':checked')){
-    //             allSel = true;
-    //         }
-    //     });
-    //     //如果有checkbox没有被选中
-    //     if(allSel){
-    //         $("[name='allSel']").attr('checked',true);
-    //     }else{
-    //         $("[name='allSel']").attr('checked',false);
-    //     }
-    // });
-    // })
-
 
 </script>
 <body onload="loadPageClientList()" class="">
@@ -595,9 +181,73 @@
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchClient();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog"
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog"
                                                                                        aria-hidden="true"></span> 高级查询</a>
                         </span>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-clientId" class="col-sm-4 control-label">客户编号</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-clientId" name="search-clientId" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-clientState" class="col-sm-4 control-label">账号状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-clientState" name="search-clientState"></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-contactName" class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-contactName" name="search-contactName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-applicationStatus" class="col-sm-4 control-label">申报状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-applicationStatus" name="search-applicationStatus"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-phone" class="col-sm-4 control-label">联系电话</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-phone" name="search-phone" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-clientType" class="col-sm-4 control-label">客户类型</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-clientType" name="search-clientType"></select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -665,21 +315,21 @@
                     <a href='#' onclick="switchPage(0)">首 页</a>
                 </li>
                 <li id="previous">
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);">&laquo;</span>
+                    <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li><a href="#">1</a></li>
                 <li id="next">
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);">&raquo;</span>
+                    <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li id="endPage">
                     <a href='#' onclick="switchPage(-2)">尾 页</a>
                 </li>
                 <li><a id="totalPage"></a></li>
-                <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                <li><a href="#" id="jumpPage">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
                 <li class="showLi" >每页显示: </li>
                 <li class="selectLi">
