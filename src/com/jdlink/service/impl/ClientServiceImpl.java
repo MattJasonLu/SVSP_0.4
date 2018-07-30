@@ -80,8 +80,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Client> getByKeyword(String keyword) {
-        return clientMapper.getByKeyword(keyword);
+    public List<Client> search(Client client) {
+        return clientMapper.search(client);
+    }
+
+    @Override
+    public int searchCount(Client client) {
+        return clientMapper.searchCount(client);
     }
 
     @Override

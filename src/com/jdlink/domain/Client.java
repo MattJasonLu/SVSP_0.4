@@ -162,6 +162,10 @@ public class Client {
      */
     private Date nowTime;
 
+    private String keyword;
+
+    private Page page;
+
     public Date getNowTime() {
         return nowTime;
     }
@@ -448,6 +452,22 @@ public class Client {
 
     public void setIsDisposal(boolean disposal) {
         isDisposal = disposal;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     @Override
