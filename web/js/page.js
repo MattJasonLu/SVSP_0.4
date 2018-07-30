@@ -2,9 +2,9 @@
  * Created by matt on 2018/7/30.
  */
 
-/**********************客户显示部分******************/
 var isSearch = false;
 var currentPage = 1;                          //当前页数
+var data;
 
 /**
  * 返回count值
@@ -20,28 +20,51 @@ function countValue() {
  * */
 function totalPage() {
     var totalRecord = 0;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "totalRecord",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            // console.log(result);
-            if (result > 0) {
-                totalRecord = result;
-            } else {
-                console.log("fail: " + result);
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
                 totalRecord = 0;
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            totalRecord = 0;
-        }
-    });
+        });
+    } else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchClientTotal",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
     var count = countValue();                         // 可选
-    var total = loadPages(totalRecord, count);
-    return total;
+    return loadPages(totalRecord, count);
 
     /**
      * 计算分页总页数
@@ -61,6 +84,10 @@ function totalPage() {
     }
 }
 
+/**
+ * 克隆页码
+ * @param result
+ */
 function setPageClone(result) {
     $(".beforeClone").remove();
     setClientList(result);
@@ -77,7 +104,7 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').text(myArray[i]);
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
-            switchPage1(num);
+            switchPage(num);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -85,16 +112,11 @@ function setPageClone(result) {
     }
 }
 
-function switchPage(pageNumber) {
-    if (isSearch) switchPage2(pageNumber);
-    else switchPage1(pageNumber);
-}
-
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
  * */
-function switchPage1(pageNumber) {
+function switchPage(pageNumber) {
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -132,27 +154,52 @@ function switchPage1(pageNumber) {
     currentPage = pageNumber;          //当前页面
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageClientList",         // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined) {
-                // console.log(result);
-                setClientList(result);
-            } else {
-                console.log("fail: " + result);
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageClientList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setClientList(result);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
                 // setClientList(result);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            // setClientList(result);
-        }
-    });
+        });
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchClient",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setClientList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
+    }
 }
 
 /**
@@ -189,27 +236,50 @@ function inputSwitchPage() {
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageClientList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setClientList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
                 }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-
-
+            });
+        } else {
+            data['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchClient",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setClientList(result.data);
+                    } else {
+                        console.log("fail: " + result);
+                        // setClientList(result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    // setClientList(result);
+                }
+            });
+        }
     }
 }
 
@@ -412,10 +482,6 @@ function setSeniorSelectedList() {
     });
 }
 
-/*****************客户查询部分*********************/
-
-var data;
-
 /**
  * 查找客户
  */
@@ -460,7 +526,7 @@ function searchClient() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                setPageClone2(result.data);
+                setPageClone(result.data);
             } else {
                 alert(result.message);
             }
@@ -470,202 +536,4 @@ function searchClient() {
         }
     });
     isSearch = true;
-}
-
-/**
- * 计算总页数
- * */
-function totalPage2() {
-    var totalRecord = 0;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "searchClientTotal",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            // console.log(result);
-            if (result > 0) {
-                totalRecord = result;
-            } else {
-                console.log("fail: " + result);
-                totalRecord = 0;
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            totalRecord = 0;
-        }
-    });
-    var count = countValue();                         // 可选
-    var total = loadPages(totalRecord, count);
-    return total;
-
-    /**
-     * 计算分页总页数
-     * @param totalRecord
-     * @param count
-     * @returns {number}
-     */
-    function loadPages(totalRecord, count) {
-        if (totalRecord == 0) {
-            window.alert("总记录数为0，请检查！");
-            return 0;
-        }
-        else if (totalRecord % count == 0)
-            return totalRecord / count;
-        else
-            return parseInt(totalRecord / count) + 1;
-    }
-}
-
-function setPageClone2(result) {
-    $(".beforeClone").remove();
-    setClientList(result);
-    var total = totalPage2();
-    $("#next").prev().hide();
-    var st = "共" + total + "页";
-    $("#totalPage").text(st);
-    var myArray = new Array();
-    for (var i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i + 1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage2(num);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-
-}
-
-/**
- * 输入页数跳转页面
- * */
-function inputSwitchPage2() {
-    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == null || pageNumber == undefined) {
-        window.alert("跳转页数不能为空！")
-    } else {
-        if (pageNumber == 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        if (pageNumber == totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if (pageNumber > 1) {
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if (pageNumber < totalPage()) {
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        currentPage = pageNumber;
-        var page = {};
-        page.count = countValue();//可选
-        page.pageNumber = pageNumber;
-        page.start = (pageNumber - 1) * page.count;
-        data['page'] = page;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchClient",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result.data);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-
-
-    }
-}
-
-/**
- * 点击页数跳转页面
- * @param pageNumber 跳转页数
- * */
-function switchPage2(pageNumber) {
-    if (pageNumber == 0) {                 //首页
-        pageNumber = 1;
-    }
-    if (pageNumber == -2) {
-        pageNumber = totalPage();        //尾页
-    }
-    if (pageNumber == null || pageNumber == undefined) {
-        console.log("参数为空,返回首页!");
-        pageNumber = 1;
-    }
-    $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == 1) {
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        $("#next").removeClass("disabled");
-        $("#endPage").removeClass("disabled");
-    }
-    if (pageNumber == totalPage()) {
-        $("#next").addClass("disabled");
-        $("#endPage").addClass("disabled");
-        $("#previous").removeClass("disabled");
-        $("#firstPage").removeClass("disabled");
-    }
-    if (pageNumber > 1) {
-        $("#previous").removeClass("disabled");
-        $("#firstPage").removeClass("disabled");
-    }
-    if (pageNumber < totalPage()) {
-        $("#next").removeClass("disabled");
-        $("#endPage").removeClass("disabled");
-    }
-    var page = {};
-    page.count = countValue();                        //可选
-    page.pageNumber = pageNumber;
-    currentPage = pageNumber;          //当前页面
-    //addClass("active");
-    page.start = (pageNumber - 1) * page.count;
-    data['page'] = page;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "searchClient",         // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined) {
-                // console.log(result);
-                setClientList(result.data);
-            } else {
-                console.log("fail: " + result);
-                // setClientList(result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            // setClientList(result);
-        }
-    });
 }
