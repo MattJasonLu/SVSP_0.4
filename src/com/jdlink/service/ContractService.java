@@ -19,7 +19,9 @@ public interface ContractService {
     void setCheckStateKeeping(Contract contract);
     void setCheckStateInvalid(Contract contract);
     int countTemplate();
+    int countManage(int contractIndex);
     List<Contract> listPageTemplate(Page page);
+    List<Contract> listPageManege(Page page);
     List<Contract> list();
     List<Contract> list1(String name);
     List<Contract> list2(String name,String index2);

@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Cost;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.CostService;
 import com.jdlink.util.RandomUtil;
@@ -287,6 +288,42 @@ public class CostController {
             res.put("status", "fail");
             res.put("message", "报价单信息获取失败");
             res.put("exception", e.getMessage());
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalCostRecord")
+    @ResponseBody
+    public int totalCostRecord(){
+        try {
+            return costService.count();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @RequestMapping("loadPageCostList")
+    @ResponseBody
+    public  String loadPageCostList(@RequestBody Page page){
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Cost> costList = costService.listPage(page);
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(costList.toArray(new Cost[costList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
         }
         // 返回结果
         return res.toString();

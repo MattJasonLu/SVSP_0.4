@@ -64,6 +64,14 @@
         </if>
     </select>
 
+    <select id="listPage" resultMap="CostRM" >
+        SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier
+        WHERE t_cost.supplierId=t_supplier.supplierId order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <select id="listNotInvalid" resultMap="CostRM">
         SELECT t_cost.*, t_supplier.companyName FROM t_cost JOIN t_supplier WHERE t_cost.supplierId=t_supplier.supplierId AND t_cost.checkState!='Invalid' order by nowTime desc;
     </select>

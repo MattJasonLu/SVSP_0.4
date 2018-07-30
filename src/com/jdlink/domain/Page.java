@@ -26,6 +26,11 @@ public class Page {
      */
     private int pageNumber=1;
 
+    /**
+     * 合同列表页面作合同索引值
+     */
+    private int contractIndex=0;
+
     public int getStart() {
         return start;
     }
@@ -63,6 +68,14 @@ public class Page {
     }
 
     public void setTotalRecord(int totalRecord) { this.totalRecord = totalRecord; }
+
+    public int getContractIndex() {
+        return contractIndex;
+    }
+
+    public void setContractIndex(int contractIndex) {
+        this.contractIndex = contractIndex;
+    }
 
     /**
      * 计算最后页位置
