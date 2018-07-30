@@ -617,7 +617,7 @@ else {
                         <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 导出</a>
                     </div>
-                    <!--查询框-->n>
+                    <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
@@ -968,7 +968,7 @@ else {
      */
     function exportExcel(e) {
         var name='client';
-        var sqlWords= "select * from jdlink."+ name;
+        var sqlWords= "select clientId,companyName,client.salesmanId,salesman.name,contactName,phone from jdlink.client join jdlink.salesman where jdlink.client.salesmanId=jdlink.salesman.salesmanId";
         window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
