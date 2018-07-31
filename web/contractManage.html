@@ -495,7 +495,7 @@
         $.each(result.data, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var obj = eval(item);
-            // console.log(obj);
+             console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
             //console.log(obj);
             if (obj.contractContent == "" && obj.period == "" && obj.year == "") {
@@ -1332,7 +1332,7 @@
                         <a class="btn btn-primary btn-xs" id="add" onclick="wastes()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" onclick="contractSubmit()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                         <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" onclick="exportExcel(contractIndex)"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                         <a class="btn btn-primary btn-xs" href="emergencyContractInfo.html"> 应急处置意向书</a>
                     </div>
                     <!--查询框-->
@@ -1449,13 +1449,13 @@
                     </li>
                     <li id="previous">
                         <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
-                            <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
+                            <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li><a href="#">1</a></li>
                     <li id="next">
                         <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
-                            <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
+                            <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li id="endPage">
@@ -1670,7 +1670,7 @@
     //     minView: 2,
     //     forceParse: 0
     // });
-    function ContractListByName(item) {
+    function  ContractListByName(item) {
         currentPage = 1;                   //在onload之后执行
         $('#state').get(0).selectedIndex = 0;
         nameBykey = item.innerHTML;
@@ -1876,6 +1876,7 @@
                 // console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
+                    console.log(data);
                     if (data.beginTime != null) {
                         var begin = gettime(data.beginTime);
                     }
@@ -2138,10 +2139,20 @@
      * @param e
      */
     function exportExcel(e) {
-        var name = 't_contract';
-        var sqlWords = "select * from jdlink." + name;
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 
+        if(contractIndex == 0) {
+            var sqlWords = "select contractId,companyName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Wastes'";
+            var name = 't_contract_Wastes';
+        }
+        if(contractIndex == 1) {
+             var sqlWords = "select contractId,companyName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Emergency'";
+             var name = 't_contract_Emergency';
+        }
+        if(contractIndex == 2) {
+            var sqlWords = "select contractId,suppierName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Logistics'";
+            var name = 't_contract_Logistics';
+        }
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
     /**

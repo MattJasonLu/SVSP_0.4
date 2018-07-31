@@ -49,8 +49,13 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> getByKeyword(String keyword) {
-        return supplierMapper.getByKeyword(keyword);
+    public List<Supplier> search(Supplier supplier) {
+        return supplierMapper.search(supplier);
+    }
+
+    @Override
+    public int searchCount(Supplier supplier) {
+        return supplierMapper.searchCount(supplier);
     }
 
     @Override

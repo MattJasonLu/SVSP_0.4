@@ -488,8 +488,10 @@ JSONObject res=new JSONObject();
           String modelVersion1= modelVersion.replace(remove,"");
           if(modelVersion1!=null){
               String  modelVersion2=UpdateVersion.updateVersionID(modelVersion1);
-              contract.setModelVersion(modelVersion2);
+              contract.setModelVersion(modelVersion2);//升级模板号，同时作废前一个模板 相当于添加一个新的模板
+
               System.out.print(modelVersion1+"AAA");
+
           }
       }
         //设置时间
@@ -766,6 +768,14 @@ public String searchContract(String keyword,String nameBykey){
         }
         // 返回结果
         return res.toString();
+    }
+    @RequestMapping("getContent")
+    @ResponseBody
+    public String getContent(String contractId){
+        String content=contractService.getContent(contractId).trim();
+        System.out.println(content);
+        JSONObject res=JSONObject.fromBean(content);
+        return  res.toString();
     }
 }
 

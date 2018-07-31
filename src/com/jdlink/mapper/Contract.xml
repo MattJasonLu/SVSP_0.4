@@ -16,6 +16,7 @@
         <result property="modelName" column="modelName" javaType="String"/>
         <result property="contractContent" column="contractContent" javaType="String"/>
         <result property="modelVersion" column="modelVersion" javaType="String"/>
+        <result property="content" column="content" javaType="String"></result>
         <result property="supplier" column="supplier" javaType="String"/>
         <result property="nowTime" column="nowTime" javaType="String"></result>
         <result property="city" column="city" javaType="String"></result>
@@ -26,15 +27,16 @@
         <result property="telephone " column="telephone " javaType="String"></result>
         <collection property="hazardousList" select="getHazardous" column="contractId"
                     ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
+
     </resultMap>
 
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,suppierName,company1)
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,suppierName,company1,content)
         values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{suppierName},#{company1})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{suppierName},#{company1},#{content})
     </insert>
     <insert id="addEm" parameterType="Contract">
      insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime,ticketRate1,contractVersion,city,endTime,modelName,company1,contactName,contractName)
@@ -55,7 +57,9 @@
         select * from t_contract where (contractId like  binary "%"#{0}"%" or checkState like binary "%"#{0}"%" or companyName like binary "%"#{0}"%"
         or city like binary "%"#{0}"%"  or province like binary  "%"#{0}"%" or contactName like binary "%"#{0}"%" or telephone like  binary  "%"#{0}"%" or beginTime like binary  "%"#{0}"%" or contractType like binary  "%"#{0}"%" )and contractType like  "%"#{1}"%";
     </select>
-
+<select id="getContent" parameterType="String"  resultType="String">
+    select content from t_contract where contractId=#{contractId};
+</select>
     <select id="getByContractId" parameterType="String" resultMap="ContractRM">
         SELECT * FROM t_contract WHERE contractId = #{contractId};
     </select>
@@ -173,7 +177,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 and contractType = 'Emergency'
             </if>
             <if test="contractIndex == 2"><!--物流合同-->
-                and contractType = 'Derive'
+                and contractType = 'Logistics'
             </if>
         </where>
         order by nowTime desc

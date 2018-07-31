@@ -1,9 +1,6 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.ClientState;
-import com.jdlink.domain.Page;
-import com.jdlink.domain.Supplier;
+import com.jdlink.domain.*;
 import com.jdlink.service.SupplierService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -235,24 +232,50 @@ public class SupplierController {
 
     /**
      * 查询供应商信息
-     * @param keyword 关键字
+     * @param supplier 供应商
      * @return 供应商信息列表
      */
     @RequestMapping("searchSupplier")
     @ResponseBody
-    public String searchSupplier(String keyword) {
+    public String searchSupplier(@RequestBody Supplier supplier) {
+        JSONObject res = new JSONObject();
         try {
-            List<Supplier> supplierList = supplierService.getByKeyword(keyword);
-            JSONArray array = JSONArray.fromArray(supplierList.toArray(new Supplier[supplierList.size()]));
-            // 返回结果
-            return array.toString();
+            List<Supplier> supplierList = supplierService.search(supplier);
+            JSONArray data = JSONArray.fromArray(supplierList.toArray(new Supplier[supplierList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            JSONObject res = new JSONObject();
             res.put("status", "fail");
-            res.put("message", "操作失败");
-            return res.toString();
+            res.put("message", "查询失败");
         }
+        return res.toString();
+    }
+
+    @RequestMapping("searchSupplierTotal")
+    @ResponseBody
+    public int searchSupplierTotal(@RequestBody Supplier supplier) {
+        try {
+            return supplierService.searchCount(supplier);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @RequestMapping("getSupplierSeniorSelectedList")
+    @ResponseBody
+    public String getSeniorSelectedList() {
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+        res.put("checkStateList", checkStateList);
+        JSONArray supplierStateList = JSONArray.fromArray(ClientState.values());
+        res.put("supplierStateList", supplierStateList);
+        JSONArray supplierTypeList = JSONArray.fromArray(SupplierType.values());
+        res.put("supplierTypeList", supplierTypeList);
+        return res.toString();
     }
 
     /**

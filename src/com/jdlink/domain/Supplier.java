@@ -181,6 +181,10 @@ public class Supplier {
      */
     private String licenseFile2Url;
 
+    private String keyword;
+
+    private Page page;
+
     public String getGroupId() {
         return groupId;
     }
@@ -507,6 +511,22 @@ public class Supplier {
 
     public void setLicenseFile2Url(String licenseFile2Url) {
         this.licenseFile2Url = licenseFile2Url;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     @Override
