@@ -510,6 +510,13 @@
                             </input>
                         </div>
                     </div>
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="hidden" id="content" name="content"  >
+                            </input>
+                        </div>
+                    </div><!--隐藏域合同正文内容-->
                 </div>
             </div>
             <div class="row text-center">
@@ -662,9 +669,21 @@
                     $('#modal3_year').val(obj.year);
                     $('#modal3_period').val(obj.period);
                     $('#modelVersion').val(obj.modelVersion);
-                    var text=obj.contractContent;
-                    //console.log(text);
-                    //$('#modal3_contractContent').val($(text).text());//有换行的格式
+                    text=obj.contractContent;
+                    //进行赋值
+                    text1=obj.contractContent;
+                    matchStringByIndexOf(text1,'合同名称',$('#contractType1').val());
+                    matchStringByIndexOf(text1,'联系人',$('#contactName').val());
+                    matchStringByIndexOf(text1,'联系方式',$('#telephone').val());
+                    matchStringByIndexOf(text1,'客户名称',$('#company1').val());
+                    matchStringByIndexOf(text1,'签订日期',$('#beginTime').val());
+                    matchStringByIndexOf(text1,'截止日期',$('#endTime').val());
+                    matchStringByIndexOf(text1,'开户行账号',$('#bankAccount').val());
+                    matchStringByIndexOf(text1,'开户行名称',$('#bankName').val());
+                    matchStringByIndexOf(text1,'合同版本',$('#contractVersion').val());
+                    matchStringByIndexOf(text1,'开票税率',$("#ticketRate1").find("option:selected").text());
+                   console.log(text1);
+                    $('#content').prop("value",text1);
                     CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
                 }
             },
@@ -848,8 +867,8 @@
      */
     function contractSave() {
         var addType = $("input[name='addType']:checked").val();
-        var s=($('#contractInfoForm').serializeJSON());
-        console.log(s);
+        // var s=($('#contractInfoForm').serializeJSON());
+        // console.log(s);
         $.ajax({
             type: "POST",                            // 方法类型
             url: "saveContract",                       // url
@@ -984,6 +1003,26 @@
 
             }
         });
+    }
+    function matchStringByIndexOf(parent,child,str)//总字符串 要找的字符串
+    {
+         index = 0;
+        if( ( index = parent.indexOf(child,index)) != -1 )
+        {
+            index = index+child.length;
+            //console.log(parent.substring(index+1,index+10));
+          // target=parent.substring(index+1,index+10);//改变后的字符
+           text1=(changeStr(text1,index+2,index+10,"</strong>","</strong>"+str));
+
+        }
+                              //结果输出
+    }
+    function changeStr(allstr,start,end,str,changeStr){ //allstr:原始字符串，start,开始位置,end：结束位  置,str：要改变的字，changeStr:改变后的字
+        if(allstr.substring(start-1,end) == str){
+            return allstr.substring(0,start-1)+changeStr+allstr.substring(end,allstr.length);
+        }else{
+           return allstr;
+        }
     }
 </script>
 </html>
