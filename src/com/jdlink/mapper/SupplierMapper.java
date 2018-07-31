@@ -22,7 +22,9 @@ public interface SupplierMapper {
 
     Supplier getByName(String companyName);
 
-    List<Supplier> getByKeyword(String keyword);
+    List<Supplier> search(Supplier supplier);
+
+    int searchCount(Supplier supplier);
 
     void update(Supplier supplier);
 
