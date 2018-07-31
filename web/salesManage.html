@@ -12,8 +12,67 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/page.js"></script>
 </head>
 <script type="text/javascript">
+    /**
+     * 设置高级检索下拉框数据填充
+     * */
+    // function setSalseManSeniorSelectedList() {
+    //     $.ajax({
+    //         type: "POST",                       // 方法类型
+    //         url: "getClientSeniorSelectedList",                  // url
+    //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         dataType: "json",
+    //         success: function (result) {
+    //             if (result != undefined) {
+    //                 var data = eval(result);
+    //                 // 高级检索下拉框数据填充
+    //                 var checkState = $("#search-checkState");
+    //                 checkState.children().remove();
+    //                 $.each(data.checkStateList, function (index, item) {
+    //                     var option = $('<option />');
+    //                     option.val(index);
+    //                     option.text(item.name);
+    //                     checkState.append(option);
+    //                 });
+    //                 checkState.get(0).selectedIndex = -1;
+    //                 var clientState = $("#search-clientState");
+    //                 clientState.children().remove();
+    //                 $.each(data.clientStateList, function (index, item) {
+    //                     var option = $('<option />');
+    //                     option.val(index);
+    //                     option.text(item.name);
+    //                     clientState.append(option);
+    //                 });
+    //                 clientState.get(0).selectedIndex = -1;
+    //                 var applicationStatus = $("#search-applicationStatus");
+    //                 applicationStatus.children().remove();
+    //                 $.each(data.applicationStatusList, function (index, item) {
+    //                     var option = $('<option />');
+    //                     option.val(index);
+    //                     option.text(item.name);
+    //                     applicationStatus.append(option);
+    //                 });
+    //                 applicationStatus.get(0).selectedIndex = -1;
+    //                 var clientType = $("#search-clientType");
+    //                 clientType.children().remove();
+    //                 $.each(data.clientTypeList, function (index, item) {
+    //                     var option = $('<option />');
+    //                     option.val(index);
+    //                     option.text(item.name);
+    //                     clientType.append(option);
+    //                 });
+    //                 clientType.get(0).selectedIndex = -1;
+    //             } else {
+    //                 console.log("fail: " + result);
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log("error: " + result);
+    //         }
+    //     });
+    // }
 
     var currentPage = 1;                          //当前页数
 
@@ -446,13 +505,53 @@
                         <input type="text" class="form-control" placeholder="搜索..." id="salesmanId" name="salesmanId">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchSalesman();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         </span>
                     </div>
                 </div>
-
             </div>
-
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-salesmanId" class="col-sm-4 control-label">业务员编号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-salesmanId" name="search-salesmanId" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-name" class="col-sm-4 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-name" name="search-name" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-sex" class="col-sm-4 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-sex" id="search-sex">
+                                        <option value="-1"></option>
+                                        <option value="true">男</option>
+                                        <option value="false">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-old" class="col-sm-4 control-label">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-old" name="search-old" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="table">
                 <table class="table table-striped table-hover table-condensed">
                     <thead>
@@ -499,13 +598,13 @@
                     </li>
                     <li id="previous">
                         <a href="#" aria-label="Previous">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);">&laquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li><a href="#">1</a></li>
                     <li id="next">
                         <a href="#" aria-label="Next">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);">&raquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li id="endPage">
