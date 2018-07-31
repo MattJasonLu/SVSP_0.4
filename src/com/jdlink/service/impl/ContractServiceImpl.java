@@ -164,5 +164,10 @@ contractMapper.updateFreight2(id);
         contractMapper.opinion(contractId,opinion,nowTime);
     }
 
+    @Override
+    public String getContent(String contractId) {
+        return contractMapper.getContent(contractId);
+    }
+
 
 }
