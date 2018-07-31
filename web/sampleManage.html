@@ -1440,7 +1440,7 @@
      */
     function exportExcel(e) {
         var name='t_sampleappoint';
-        var sqlWords= "select * from jdlink."+ name;
+        var sqlWords= "select appointId,state,companyName,appointTime,productName,code,contactName,telephone from t_sampleappoint";
         window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }

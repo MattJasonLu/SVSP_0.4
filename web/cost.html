@@ -290,15 +290,15 @@
                         $(this).html(obj.costId);
                         break;
                     case (2):
-                        $(this).html(obj.name);
+                        $(this).html(obj.supplier.companyName);
                         break;
                         // 联系人
                     case (3):
-                        $(this).html(obj.version);
+                        $(this).html(obj.name);
                         break;
                         // 客户名称
                     case (4):
-                        $(this).html(obj.supplier.companyName);
+                        $(this).html(obj.version);
                         break;
                         // 联系人
                     case (5):
@@ -1036,7 +1036,7 @@
      */
     function exportExcel(e) {
         var name='t_cost';
-        var sqlWords= "select * from jdlink."+ name;
+        var sqlWords= "select costId,t_supplier.companyName,name,version,t_cost.contactName,t_cost.phone,t_cost.location,t_cost.checkState,t_cost.endDate from t_cost join t_supplier where t_cost.supplierId = t_supplier.supplierId";
         window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
