@@ -622,7 +622,7 @@ else {
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchClient();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         </span>
                     </div>
                 </div>
@@ -667,11 +667,11 @@ else {
                                         <option value="0"></option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="search-phone" class="col-sm-4 control-label">联系电话</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-phone" id="search-phone">
-                                        <option value="0"></option>
-                                    </select>
+                                    <input type="text" class="form-control" id="search-phone" name="search-phone" placeholder="">
                                 </div>
                             </div>
                         </div>
