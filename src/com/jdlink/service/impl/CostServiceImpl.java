@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Cost;
+import com.jdlink.domain.Page;
 import com.jdlink.mapper.CostMapper;
 import com.jdlink.service.CostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,9 @@ public class CostServiceImpl implements CostService {
     public List<Cost> list() {
         return costMapper.list();
     }
+
+    @Override
+    public List<Cost> listPage(Page page){ return costMapper.listPage(page); }
 
     @Override
     public List<Cost> list(String state) {

@@ -35,7 +35,9 @@ public interface ClientService {
 
     List<Client> list(Page page);
 
-    List<Client> getByKeyword(String keyword);
+    List<Client> search(Client client);
+
+    int searchCount(Client client);
 
     int total();
 

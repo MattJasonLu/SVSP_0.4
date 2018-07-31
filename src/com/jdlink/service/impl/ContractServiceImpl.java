@@ -66,7 +66,13 @@ public class ContractServiceImpl implements ContractService  {
     public int countTemplate(){ return contractMapper.countTemplate(); }
 
     @Override
-    public List<Contract> listPageTemplate(Page page){ return contractMapper.listPageTemplate(); }
+    public int countManage(int contractIndex){ return contractMapper.countManage(contractIndex); }
+
+    @Override
+    public List<Contract> listPageTemplate(Page page){ return contractMapper.listPageTemplate(page); }
+
+    @Override
+    public List<Contract> listPageManege(Page page){ return contractMapper.listPageManege(page); }
 
     @Override
     public List<Contract> list() {

@@ -17,7 +17,9 @@ public interface ClientMapper {
 
     Client getByClientId(String clientId);
 
-    List<Client> getByKeyword(String keyword);
+    List<Client> search(Client client);
+
+    int searchCount(Client client);
 
     Client getByName(String companyName);
 
