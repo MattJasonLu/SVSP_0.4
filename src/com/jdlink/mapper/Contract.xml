@@ -177,7 +177,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
                 and contractType = 'Emergency'
             </if>
             <if test="contractIndex == 2"><!--物流合同-->
-                and contractType = 'Derive'
+                and contractType = 'Logistics'
             </if>
         </where>
         order by nowTime desc
