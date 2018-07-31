@@ -249,7 +249,7 @@ private  String suppier;
     public String getSuppier() {
         return suppier;
     }
-private  String suppierName;
+  private  String suppierName;
 
     public String getSuppierName() {
         return suppierName;
@@ -463,10 +463,18 @@ private  String suppierName;
     public void setLogisticsQualification(String logisticsQualification) {
         this.logisticsQualification = logisticsQualification;
     }
+/**
+ * 合同正文
+ */
+private String content;
 
+    public String getContent() {
+        return content;
+    }
 
-
-
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public void setBankName(String bankName) {
         this.bankName = bankName;

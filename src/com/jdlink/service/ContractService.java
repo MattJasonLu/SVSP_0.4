@@ -40,4 +40,5 @@ public interface ContractService {
     List<String> modelName(String key);
     void back(String contractId,String backContent,String nowTime);
     void opinion(String contractId,String opinion,String nowTime);
+    String getContent(String contractId);
 }

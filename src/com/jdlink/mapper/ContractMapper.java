@@ -42,4 +42,5 @@ public interface ContractMapper {
     void back(String contractId,String backContent,String nowTime);
     void opinion(String contractId,String opinion,String nowTime);
     Contract getModel2(String modelName);
+    String getContent(String contractId);
 }
