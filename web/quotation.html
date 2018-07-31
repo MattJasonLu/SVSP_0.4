@@ -1046,7 +1046,7 @@
      */
     function exportExcel(e) {
         var name='t_quotation';
-        var sqlWords= "select * from jdlink."+ name;
+        var sqlWords= "select quotationId,name,version,client.companyName,t_quotation.contactName,t_quotation.phone,t_quotation.location,t_quotation.checkState,endDate FROM t_quotation join client where client.clientId = t_quotation.clientId";
         window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }

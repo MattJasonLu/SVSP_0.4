@@ -749,7 +749,7 @@
      */
     function exportExcel(e) {
         var name='salesman';
-        var sqlWords= "select * from jdlink."+ name;
+        var sqlWords= "select salesmanId,name,sex,age from jdlink."+ name;
         window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
