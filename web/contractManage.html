@@ -1177,13 +1177,18 @@
         var contractName = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         // console.log(contractName);
         if (contractName.indexOf('危废') != -1) {
-            window.location.href = "showContract?contractId=" + contractId;
+            //使用html便于操作
+            localStorage.contractId = contractId;
+            location.href = "adjustWaste.html";
+            //window.location.href = "showContract?contractId=" + contractId;
         }
         if (contractName.indexOf('次生') != -1) {
             window.location.href = "Secondary?contractId=" + contractId;
         }
         if (contractName.indexOf('物流') != -1) {
-            window.location.href = "logistics?contractId=" + contractId;
+            localStorage.contractId = contractId;
+            location.href = "adjustLogistics.html";
+            //window.location.href = "logistics?contractId=" + contractId;
         }
         if (contractName == '采购') {
             //window.location.href = "showContract?contractId="+contractId;
