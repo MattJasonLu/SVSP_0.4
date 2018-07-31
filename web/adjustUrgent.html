@@ -63,11 +63,27 @@
             data:{'contractId':contractId,"key":'应急'},
             success: function (result) {
                 var data=eval(result);
-                var contract= data.contract;
-                console.log(contract);
-                $("#content").prop("value",contract);
+                 var contract= data.contract;
+                 //console.log(contract.modelName);
+                //console.log(modelName);
                // console.log(contract);
                 //赋值签订时间
+                //初始显示模板
+                //console.log($('#model1').val());
+                $.ajax({
+                    type: "POST",                            // 方法类型
+                    url: "getContractBymodelName1",                  // url
+                    dataType: "json",
+                    data:{'modelName':contract.modelName},
+                    success:function (result) {
+                        var obj=eval(result);
+                      $('#content').val(obj.contractContent);
+                    },
+                    error:function (result) {
+                        alert("服务器异常！")
+
+                    }
+                });
                 if(contract.beginTime!=null){
                     $("#beginTime").prop("value",getTime(contract.beginTime));
                 }
@@ -251,22 +267,6 @@
             },
             error:function (result) {
                 console.log(result);
-            }
-        });
-        //初始显示模板
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getContractBymodelName1",                  // url
-            dataType: "json",
-            data:{'modelName':$('#contractType1').val()},
-            success:function (result) {
-                var obj=eval(result);
-                console.log($("#contractType1").get(0).selectedindex)
-
-            },
-            error:function (result) {
-                alert("服务器异常！")
-
             }
         });
     }
@@ -627,6 +627,12 @@
                             <input type="hidden" class="form-control" id="contractId" name="contractId"  readonly >
                         </div>
                     </div>
+                   <!-- <div class="form-group" >
+                        <label for="contractId" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5" >
+                            <input type="hidden" class="form-control" id="model1" name="model1"  >
+                        </div>
+                    </div>-->
                 </div>
             </div>
             <div class="row text-center">
@@ -796,7 +802,6 @@
      *
      * 合同正文查看
      */
-
     function check1(item) {
         var modelName=item.previousElementSibling.value;
         //console.log(modelName);
