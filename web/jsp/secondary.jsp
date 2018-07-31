@@ -365,7 +365,7 @@
     }
 </script>
 <body onload="loadContractSelectList();">
-<nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1">
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
         <ul class="nav navbar-nav navbar-left navbar-side">
             <li>
@@ -375,7 +375,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left">
+    <div class="container navbar-left" style="width: 800px;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>

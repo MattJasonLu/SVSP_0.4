@@ -9,6 +9,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <script src="js/ckeditor/ckeditor.js"></script>
+    <script src="js/ckeditor/config.js"></script>
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
@@ -567,13 +568,13 @@
                     </li>
                     <li id="previous">
                         <a href="#" aria-label="Previous">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);">&laquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li><a href="#">1</a></li>
                     <li id="next">
                         <a href="#" aria-label="Next">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);">&raquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li id="endPage">

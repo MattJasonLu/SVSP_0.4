@@ -546,13 +546,83 @@
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchQuotation()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         </span>
                     </div>
                 </div>
-
             </div>
-
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-quotationId" class="col-sm-4 control-label">报价单编号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-quotationId" name="search-quotationId" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-client" class="col-sm-4 control-label">联系人</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-client" name="search-client" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-endDate" class="col-sm-4 control-label">到期日期</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-endDate" name="search-endDate" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-name" class="col-sm-4 control-label">报价单名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-name" name="search-name" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-client" class="col-sm-4 control-label">联系方式</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-client" id="search-state">
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-version" class="col-sm-4 control-label">版本号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-version" name="search-version" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-client" class="col-sm-4 control-label">所属区域</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-client" id="search-author">
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-client" class="col-sm-4 control-label">客户名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-time" name="search-client" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">状态</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-checkState" name="search-checkState" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="table">
                 <table class="table table-striped table-hover table-condensed">
                     <thead>
@@ -625,13 +695,13 @@
                     </li>
                     <li id="previous">
                         <a href="#" aria-label="Previous">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);">&laquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li><a href="#">1</a></li>
                     <li id="next">
                         <a href="#" aria-label="Next">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);">&raquo;</span>
+                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li id="endPage">

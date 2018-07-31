@@ -108,7 +108,7 @@
 </script>
 <body onload="loadContractSelectList();">
 <div class="main-title">
-    <ul class="nav navbar-nav navbar-left navbar-side" id="navbar1">
+    <ul class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <li>
             <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
                 <span class="glyphicon glyphicon-menu-hamburger"></span>
@@ -116,7 +116,7 @@
         </li>
     </ul>
 </div>
-<div class="container navbar-left">
+<div class="container navbar-left" style="width: 800px;">
     <div class="navbar-header">
         <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
     </div>

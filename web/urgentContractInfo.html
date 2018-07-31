@@ -675,7 +675,7 @@
                     matchStringByIndexOf(text1,'合同名称',$('#contractType1').val());
                     matchStringByIndexOf(text1,'联系人',$('#contactName').val());
                     matchStringByIndexOf(text1,'联系方式',$('#telephone').val());
-                    matchStringByIndexOf(text1,'客户名称',$('#company1').val());
+                    matchStringByIndexOf(text1,'公司名称',$('#company1').val());
                     matchStringByIndexOf(text1,'签订日期',$('#beginTime').val());
                     matchStringByIndexOf(text1,'截止日期',$('#endTime').val());
                     matchStringByIndexOf(text1,'开户行账号',$('#bankAccount').val());
@@ -1010,6 +1010,7 @@
         if( ( index = parent.indexOf(child,index)) != -1 )
         {
             index = index+child.length;
+            console.log(index);
             //console.log(parent.substring(index+1,index+10));
           // target=parent.substring(index+1,index+10);//改变后的字符
            text1=(changeStr(text1,index+2,index+10,"</strong>","</strong>"+str));

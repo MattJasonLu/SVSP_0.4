@@ -495,7 +495,7 @@
         $.each(result.data, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var obj = eval(item);
-            // console.log(obj);
+             console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
             //console.log(obj);
             if (obj.contractContent == "" && obj.period == "" && obj.year == "") {
@@ -574,11 +574,11 @@
                                 $(this).html("");
                             }
                             break;
-                        case (10):
-                            if(obj.checkState.name == "已作废"){
-                                $(".glyphicon3").removeAttr("onclick");
-                                document.getElementById("glyphicon3").style.color="#9d9d9d";
-                            }
+                        // case (10):
+                        //     if(obj.checkState.name == "已作废"){
+                        //         $(".glyphicon3").removeAttr("onclick");
+                        //         document.getElementById("glyphicon3").style.color="#9d9d9d";
+                        //     }
                         //     if(obj.checkState.name == "待审批"){
                         //
                         //     }else if(obj.checkState.name == "审批中"){
@@ -599,7 +599,7 @@
                         //         $(this).children().eq(3).attr("class","disabled");
                         //         $(this).children().eq(3).removeAttr("onclick");
                         //     }
-                            break;
+                        //     break;
                             //截止日期
                         //截止日期
                         // 截至日期
@@ -728,11 +728,11 @@
                             $(this).html("");
                         }
                         break;
-                    case (10):
-                        if(obj.checkState.name == "已作废"){
-                            $(".glyphicon3").removeAttr("onclick");
-                            document.getElementById("glyphicon3").style.color="#9d9d9d";
-                        }
+                    // case (10):
+                    //     if(obj.checkState.name == "已作废"){
+                    //         $(".glyphicon3").removeAttr("onclick");
+                    //         document.getElementById("glyphicon3").style.color="#9d9d9d";
+                    //     }
                         // else if(obj.checkState.name == "审批中"){
                         //     $(this).children().eq(1).attr("class","disabled");
                         //     $(this).children().eq(1).removeAttr("onclick");
@@ -751,7 +751,7 @@
                         //     $(this).children().eq(3).attr("class","disabled");
                         //     $(this).children().eq(3).removeAttr("onclick");
                         // }
-                        break;
+                        // break;
                     //截止日期
                     //截止日期
                     // 截至日期
@@ -1670,7 +1670,7 @@
     //     minView: 2,
     //     forceParse: 0
     // });
-    function ContractListByName(item) {
+    function  ContractListByName(item) {
         currentPage = 1;                   //在onload之后执行
         $('#state').get(0).selectedIndex = 0;
         nameBykey = item.innerHTML;
@@ -1876,6 +1876,7 @@
                 // console.log(result);
                 if (result != undefined) {
                     var data = eval(result);
+                    console.log(data);
                     if (data.beginTime != null) {
                         var begin = gettime(data.beginTime);
                     }

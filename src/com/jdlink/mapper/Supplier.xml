@@ -37,10 +37,70 @@
         DELETE FROM t_supplier WHERE supplierId=#{supplierId}
     </delete>
 
-    <select id="getByKeyword" parameterType="String" resultMap="SupplierRM">
-        select * from t_supplier WHERE companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
-          or supplierType like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
-          or applicationStatus like "%"#{keyword}"%" or contactName like "%"#{keyword}"%";
+    <select id="search" parameterType="Supplier" resultMap="SupplierRM">
+        SELECT * FROM t_supplier
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                and supplierId LIKE "%"#{supplierId}"%"
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test="contactName != null and contactName != ''">
+                and contactName LIKE "%"#{contactName}"%"
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone LIKE "%"#{phone}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+            <if test="supplierState != null and supplierState != ''">
+                and supplierState = #{supplierState}
+            </if>
+            <if test="supplierType != null and supplierType != ''">
+                and supplierType = #{supplierType}
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="Supplier" resultType="int">
+        SELECT COUNT(*) FROM t_supplier
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or supplierId like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+            </if>
+            <if test="supplierId != null and supplierId != ''">
+                and supplierId LIKE "%"#{supplierId}"%"
+            </if>
+            <if test="companyName != null and companyName != ''">
+                and companyName LIKE "%"#{companyName}"%"
+            </if>
+            <if test="contactName != null and contactName != ''">
+                and contactName LIKE "%"#{contactName}"%"
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone LIKE "%"#{phone}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+            <if test="supplierState != null and supplierState != ''">
+                and supplierState = #{supplierState}
+            </if>
+            <if test="supplierType != null and supplierType != ''">
+                and supplierType = #{supplierType}
+            </if>
+        </where>
     </select>
 
     <select id="getBySupplierId" parameterType="String" resultMap="SupplierRM">
