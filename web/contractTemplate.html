@@ -827,6 +827,26 @@
         });
 
     }
+    function matchStringByIndexOf(parent,child,str)//总字符串 要找的字符串
+    {
+        index = 0;
+        if( ( index = parent.indexOf(child,index)) != -1 )
+        {
+            index = index+child.length;
+            console.log(index);
+            //console.log(parent.substring(index+1,index+10));
+            // target=parent.substring(index+1,index+10);//改变后的字符
+            text1=(changeStr(text1,index+2,index+10,"</strong>","</strong>"+str));
 
+        }
+        //结果输出
+    }
+    function changeStr(allstr,start,end,str,changeStr){ //allstr:原始字符串，start,开始位置,end：结束位  置,str：要改变的字，changeStr:改变后的字
+        if(allstr.substring(start-1,end) == str){
+            return allstr.substring(0,start-1)+changeStr+allstr.substring(end,allstr.length);
+        }else{
+            return allstr;
+        }
+    }
 </script>
 </html>

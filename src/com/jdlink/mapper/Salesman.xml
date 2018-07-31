@@ -60,4 +60,50 @@
             limit #{start}, #{count}
         </if>
     </select>
+
+    <select id="search" parameterType="Salesman" resultType="Salesman">
+        SELECT * FROM salesman
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and salesmanId like "%"#{keyword}"%" or name like "%"#{keyword}"%"
+            </if>
+            <if test="salesmanId != null and salesmanId != ''">
+                and salesmanId LIKE "%"#{salesmanId}"%"
+            </if>
+            <if test="name != null and name != ''">
+                and name LIKE "%"#{name}"%"
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+            <if test="age != null and age != ''">
+                and age = #{age}
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="Salesman" resultType="int">
+        SELECT COUNT(*) FROM salesman
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and salesmanId like "%"#{keyword}"%" or name like "%"#{keyword}"%"
+            </if>
+            <if test="salesmanId != null and salesmanId != ''">
+                and salesmanId LIKE "%"#{salesmanId}"%"
+            </if>
+            <if test="name != null and name != ''">
+                and name LIKE "%"#{name}"%"
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+            <if test="age != null and age != ''">
+                and age = #{age}
+            </if>
+        </where>
+    </select>
 </mapper>

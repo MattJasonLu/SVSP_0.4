@@ -29,6 +29,10 @@ public interface SalesmanService {
 
     List<Salesman> listPage(Page page);
 
+    List<Salesman> search(Salesman salesman);
+
+    int searchCount(Salesman salesman);
+
     int count();
 
 }

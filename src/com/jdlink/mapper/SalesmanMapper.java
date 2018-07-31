@@ -29,6 +29,9 @@ public interface SalesmanMapper {
 
     List<Salesman> list();
 
+    List<Salesman> search(Salesman salesman);
+
+    int searchCount(Salesman salesman);
 
     int count();
 

@@ -1,10 +1,8 @@
 package com.jdlink.service.impl;
 
-import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
 import com.jdlink.mapper.SalesmanMapper;
-import com.jdlink.service.ClientService;
 import com.jdlink.service.SalesmanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,5 +67,15 @@ public class SalesmanServiceImpl implements SalesmanService {
     @Override
     public List<Salesman> listPage(Page page) {
         return salesmanMapper.listPage(page);
+    }
+
+    @Override
+    public List<Salesman> search(Salesman salesman) {
+        return salesmanMapper.search(salesman);
+    }
+
+    @Override
+    public int searchCount(Salesman salesman) {
+        return salesmanMapper.searchCount(salesman);
     }
 }
