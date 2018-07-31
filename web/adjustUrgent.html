@@ -65,6 +65,8 @@
                 var data=eval(result);
                 var contract= data.contract;
                 console.log(contract);
+                $("#content").prop("value",contract);
+               // console.log(contract);
                 //赋值签订时间
                 if(contract.beginTime!=null){
                     $("#beginTime").prop("value",getTime(contract.beginTime));
@@ -249,6 +251,22 @@
             },
             error:function (result) {
                 console.log(result);
+            }
+        });
+        //初始显示模板
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getContractBymodelName1",                  // url
+            dataType: "json",
+            data:{'modelName':$('#contractType1').val()},
+            success:function (result) {
+                var obj=eval(result);
+                console.log($("#contractType1").get(0).selectedindex)
+
+            },
+            error:function (result) {
+                alert("服务器异常！")
+
             }
         });
     }
@@ -446,7 +464,7 @@
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
-        <h4 class="sub-header">危废合同申请表修改</h4>
+        <h4 class="sub-header">应急合同申请表修改</h4>
         <form method="post" id="contractInfoForm1" enctype="multipart/form-data" >
             <div class="row">
                 <div class="form-horizontal col-md-4">
@@ -546,6 +564,14 @@
                             <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
                         </div>
                     </div><!--隐藏域保存客户名称-->
+                    <div class="form-group" >
+                        <label for="contractType" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="hidden" id="content" name="content"  >
+                            </input>
+                        </div>
+                    </div><!--隐藏域合同正文内容-->
+
                 </div>
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
@@ -794,6 +820,7 @@
                     $('#modal3_period').val(obj.period);
                     $('#modelVersion').val(obj.modelVersion);
                     var text=obj.contractContent;
+                    $("#content").prop("value",text);
                     //console.log(text);
                     //$('#modal3_contractContent').val($(text).text());//有换行的格式
                     CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
