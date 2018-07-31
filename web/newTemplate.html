@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:text-align="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>新建模板</title>
@@ -39,6 +39,8 @@
         config.removeButtons = 'Underline,Subscript,Superscript';
         config.pasteFromWordRemoveFontStyles = false;
         config.pasteFromWordRemoveStyles = false;
+        config.width = 1500;
+        config.height = 500;
     };
     $(window).on('load', function () {
         // 中文重写select 查询为空提示信息
@@ -221,10 +223,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-12">
+               <center> <div class="form-horizontal col-md-12">
                     合同正文：<br>
-                    <textarea id="TextArea1" cols="20" rows="2"  name="contractContent" class="ckeditor" wrap="hard"></textarea>
+                    <textarea id="TextArea1"   name="contractContent" class="ckeditor" wrap="hard" ></textarea>
                 </div>
+               </center>
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
