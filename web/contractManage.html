@@ -1332,7 +1332,7 @@
                         <a class="btn btn-primary btn-xs" id="add" onclick="wastes()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" onclick="contractSubmit()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                         <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" onclick="exportExcel(contractIndex)"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                         <a class="btn btn-primary btn-xs" href="emergencyContractInfo.html"> 应急处置意向书</a>
                     </div>
                     <!--查询框-->
@@ -2138,10 +2138,20 @@
      * @param e
      */
     function exportExcel(e) {
-        var name = 't_contract';
-        var sqlWords = "select * from jdlink." + name;
-        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 
+        if(contractIndex == 0) {
+            var sqlWords = "select contractId,companyName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Wastes'";
+            var name = 't_contract_Wastes';
+        }
+        if(contractIndex == 1) {
+             var sqlWords = "select contractId,companyName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Emergency'";
+             var name = 't_contract_Emergency';
+        }
+        if(contractIndex == 2) {
+            var sqlWords = "select contractId,suppierName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Logistics'";
+            var name = 't_contract_Logistics';
+        }
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
 
     /**
