@@ -122,7 +122,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         update t_contract set checkState="Keeping", nowTime=NOW() where contractId=#{contractId}
     </update>
     <select id="modelName" resultMap="ContractRM" >
-        select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') ;
+        select distinct modelName from t_contract where modelName like CONCAT('%',#{key},'%') and period!="";
     </select>
     <update id="back" parameterType="Contract">
         update t_contract set checkState="Backed",backContent=#{1},nowTime=#{2} where contractId=#{0}
@@ -140,10 +140,46 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         select count(*) from t_contract where modelName != '' and year != '';
     </select>
 
+    <select id="countManage" resultType="int">
+        select count(*) from t_contract
+        <where>
+            <if test="contractIndex == 0"><!--危废合同-->
+                and contractType = 'Wastes'
+            </if>
+            <if test="contractIndex == 1"><!--应急合同-->
+                and contractType = 'Emergency'
+            </if>
+            <if test="contractIndex == 2"><!--物流合同-->
+                and contractType = 'Logistics'
+            </if>
+        </where>
+    </select>
+
     <select id="listPageTemplate" resultMap="ContractRM">
-        select * from t_contract order by nowTime desc
+        select * from t_contract where modelName != '' and year != ''
+        order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
+
+    <select id="listPageManege" resultMap="ContractRM">
+        select * from t_contract
+        <where>
+            <if test="contractIndex == 0"><!--危废合同-->
+                and contractType = 'Wastes'
+            </if>
+            <if test="contractIndex == 1"><!--应急合同-->
+                and contractType = 'Emergency'
+            </if>
+            <if test="contractIndex == 2"><!--物流合同-->
+                and contractType = 'Derive'
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
 </mapper>

@@ -1,6 +1,8 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Contract;
+import com.jdlink.domain.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,7 +22,9 @@ public interface ContractMapper {
     void setCheckStateKeeping(Contract contract);
     void setCheckStateInvalid(Contract contract);
     int countTemplate();
-    List<Contract> listPageTemplate();
+    int countManage(@Param("contractIndex")int contractIndex);
+    List<Contract> listPageTemplate(Page page);
+    List<Contract> listPageManege(Page page);
     List<Contract> list();
     List<Contract> list1(String name);
     List<Contract> list2(String name,String index2);

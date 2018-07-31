@@ -315,11 +315,31 @@ public class ClientController {
 
     @RequestMapping("searchClient")
     @ResponseBody
-    public String searchClient(String keyword) {
-        List<Client> clientList = clientService.getByKeyword(keyword);
-        JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
-        // 返回结果
-        return array.toString();
+    public String searchClient(@RequestBody Client client) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Client> clientList = clientService.search(client);
+            JSONArray data = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("searchClientTotal")
+    @ResponseBody
+    public int searchClientTotal(@RequestBody Client client) {
+        try {
+            return clientService.searchCount(client);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**
@@ -349,7 +369,24 @@ public class ClientController {
         res.put("ticketRate1StrList", array8);
         return res.toString();
     }
-//业务员分配
+
+    @RequestMapping("getClientSeniorSelectedList")
+    @ResponseBody
+    public String getSeniorSelectedList() {
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+        res.put("checkStateList", checkStateList);
+        JSONArray clientStateList = JSONArray.fromArray(ClientState.values());
+        res.put("clientStateList", clientStateList);
+        JSONArray applicationStatusList = JSONArray.fromArray(ApplicationStatus.values());
+        res.put("applicationStatusList", applicationStatusList);
+        JSONArray clientTypeList = JSONArray.fromArray(ClientType.values());
+        res.put("clientTypeList", clientTypeList);
+        return res.toString();
+    }
+
+    //业务员分配
     @RequestMapping("getClient")
     @ResponseBody
     public String getClient(String id) {
