@@ -2277,7 +2277,7 @@
                 var obj = eval(result);
                 console.log(obj);
                 //开始赋值
-                if (obj.contractVersion.name == '公司合同') {
+                if (obj.contractVersion.name == '公司合同'&&obj.contractType.name=='应急处置合同') {
                     text=obj.content;
                     matchStringByIndexOf(text, 'contractName', obj.modelName);
                     //合同编号
@@ -2331,7 +2331,7 @@
                     CKEDITOR.instances.TextArea1.setData(text);//获取值
                     $('#viewModal').modal('show');
                 }
-                if (obj.contractVersion.name == '客户合同') {
+                else {
                     // alert("其他形式")
                     if (obj.beginTime != null) {
                         var begin = gettime(obj.beginTime);
