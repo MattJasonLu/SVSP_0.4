@@ -953,11 +953,11 @@
                     $("#modal3_order").text(data.order1);
                     if (data.contractType.name == '物流合同') {
                         $('#name1').html("供应商名称&nbsp;&nbsp;");
-                        $("#modal3_suppierName").text(data.suppierName);
+                        //$("#modal3_suppierName").text(data.suppierName);
                         //供用商姓名
                         $('#modal3_suppierName').text(data.suppierName);
                     }
-                    else {
+                    if (data.contractType.name != '物流合同') {
                         $('#name1').html("客户名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(data.company1);//公司名称
 
@@ -1324,33 +1324,18 @@
             <!--</div>-->
             <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
-                                                                           aria-hidden="true"></span><span
-                        class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span
-                        class="sr-only">(current)</span></a></li>
-                <li class="active"><a class="withripple" href="businessModel.html"><span
-                        class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span
-                        class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-log-in"
-                                                         aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span
-                        class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-save"
-                                                         aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span
-                        class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-sort-by-attributes-alt"
-                                                         aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span
-                        class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-retweet"
-                                                         aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span
-                        class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-tags"
-                                                         aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span
-                        class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-signal"
-                                                         aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span
-                        class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span
-                        class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
     </div>
@@ -1532,7 +1517,7 @@
                             <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
                             <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
                             <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
-                            <p class="text-left"><b>客户名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
+                            <!--<p class="text-left"><b>客户名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
                             <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
                             <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
                             <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
@@ -2281,7 +2266,7 @@
                 var obj = eval(result);
                 console.log(obj);
                 //开始赋值
-                if (obj.contractVersion.name == '公司合同'&&obj.contractType.name=='应急处置合同') {
+                if (obj.contractVersion.name == '公司合同') {
                     text=obj.content;
                     matchStringByIndexOf(text, 'contractName', obj.modelName);
                     //合同编号
@@ -2335,7 +2320,7 @@
                     CKEDITOR.instances.TextArea1.setData(text);//获取值
                     $('#viewModal').modal('show');
                 }
-                else {
+                if (obj.contractVersion.name == '客户合同') {
                     // alert("其他形式")
                     if (obj.beginTime != null) {
                         var begin = gettime(obj.beginTime);
@@ -2366,7 +2351,10 @@
                     $("#modal3_contractId").text(obj.contractId);
                     $("#modal3_beginTime").text(begin);
                     $("#modal3_endTime").text(end);
-                    $("#modal3_area").text(obj.province.name + "" + obj.city);
+                    if(obj.province!=null){
+                        $("#modal3_area").text(obj.province.name + "" + obj.city);
+                    }
+
                     $("#modal3_telephone").text(obj.telephone);
                     $("#modal3_order").text(obj.order1);
                     // 开票税率1
