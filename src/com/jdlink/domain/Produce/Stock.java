@@ -1,4 +1,4 @@
-package com.jdlink.domain.生产;
+package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Wastes;
 
@@ -41,6 +41,16 @@ public class Stock {
      * 是否自营
      */
     private boolean selfEmployed;
+   //是否需要添加
+    private String addType;
+
+    public String getAddType() {
+        return addType;
+    }
+
+    public void setAddType(String addType) {
+        this.addType = addType;
+    }
 
     public boolean isSelfEmployed() {
         return selfEmployed;
