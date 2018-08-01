@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>合同列表</title>
+    <script src="js/ckeditor/ckeditor.js"></script>
+    <script src="js/ckeditor/config.js"></script>
     <script type="text/javascript" src="js/html2canvas.js"></script>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
@@ -27,7 +29,27 @@
     }
 </style>
 <script type="text/javascript">
-
+    CKEDITOR.editorConfig = function( config ) {
+        config.toolbarGroups = [
+            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+            { name: 'links', groups: [ 'links' ] },
+            { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+            { name: 'insert', groups: [ 'insert' ] },
+            { name: 'forms', groups: [ 'forms' ] },
+            { name: 'tools', groups: [ 'tools' ] },
+            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+            { name: 'others', groups: [ 'others' ] },
+            '/',
+            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+            { name: 'styles', groups: [ 'styles' ] },
+            { name: 'colors', groups: [ 'colors' ] },
+            { name: 'about', groups: [ 'about' ] }
+        ];
+        config.removeButtons = 'Underline,Subscript,Superscript';
+        config.pasteFromWordRemoveFontStyles = false;
+        config.pasteFromWordRemoveStyles = false;
+    };
     var currentPage = 1;                          //当前页数
     var contractIndex = 0;                        //合同索引值
     /**
@@ -487,19 +509,173 @@
         // }
     }
 
+    // function setContractList(result) {
+    //     // console.log(eval(result));//可以取到
+    //     // 获取id为cloneTr的tr元素
+    //     var tr = $("#cloneTr1");//克隆一行
+    //     tr.siblings().remove();
+    //     $.each(result.data, function (index, item) {
+    //         // 克隆tr，每次遍历都可以产生新的tr
+    //         var obj = eval(item);
+    //         // 循环遍历cloneTr的每一个td元素，并赋值
+    //         //console.log(obj);
+    //         if (obj.data.modelVersion=="") {
+    //             // 循环遍历cloneTr的每一个td元素，并赋值
+    //             var clonedTr = tr.clone();
+    //             clonedTr.show();
+    //             clonedTr.children("td").each(function (inner_index) {
+    //                 // 根据索引为部分td赋值
+    //                 switch (inner_index) {
+    //                     // 合同编号
+    //                     case (1):
+    //                         $(this).html(obj.contractId);
+    //                         break;
+    //                     //供应商名称
+    //                     case (2):
+    //                         // $(this).html();
+    //                         //判断是否是物流合同
+    //                         if (obj.contractType.name == '物流合同') {
+    //                             $(this).html(obj.suppierName);
+    //                         }
+    //                         else {
+    //                             $(this).html(obj.company1);
+    //                         }
+    //                         break;
+    //                     // 合同名称
+    //                     case (3):
+    //                         if (obj.contractVersion != null) {
+    //                             if (obj.contractVersion.name == "公司合同") {
+    //                                 $(this).html(obj.modelName);
+    //                             }
+    //                             if (obj.contractVersion.name == "客户合同") {
+    //                                 $(this).html(obj.contractName + obj.contractType.name);
+    //                             }
+    //                         }
+    //                         else {
+    //                             $(this).html("");
+    //                         }
+    //                         break;
+    //                     // 状态
+    //                     case (4):
+    //                         if (obj.checkState != null)
+    //                             $(this).html(obj.checkState.name);
+    //                         break;
+    //                     // 公司名称
+    //                     // case (5):
+    //                     //     $(this).html(obj.companyName);
+    //                     //     break;
+    //                     // 所属区域
+    //                     // case (6):
+    //                     //     if (obj.province != null) {
+    //                     //         $(this).html(obj.province.name + obj.city);
+    //                     //     }
+    //                     //     else {
+    //                     //         $(this).html("");
+    //                     //     }
+    //                     //     break;
+    //                     // 合约量
+    //                     case (5):
+    //                         $(this).html(obj.agreedQuantity.toFixed(2));
+    //                         break;
+    //                     // 联系人
+    //                     case (6):
+    //                         $(this).html(obj.contactName);
+    //                         break;
+    //                     // 联系方式
+    //                     case (7):
+    //                         $(this).html(obj.telephone);
+    //                         break;
+    //                     // 签订日期
+    //                     case (8):
+    //                         if (obj.beginTime != null) {
+    //                             var time = gettime(obj.beginTime);
+    //                             $(this).html(time);
+    //                         }
+    //                         else {
+    //                             $(this).html("");
+    //                         }
+    //                         break;
+    //                     case (10):
+    //                         if(obj.checkState.name == "已作废"){
+    //                             $(".glyphicon3").removeAttr("onclick");
+    //                             document.getElementById("glyphicon3").style.color="#9d9d9d";
+    //                         }
+    //                     //     if(obj.checkState.name == "待审批"){
+    //                     //
+    //                     //     }else if(obj.checkState.name == "审批中"){
+    //                     //         $(this).children().eq(1).attr("class","disabled");
+    //                     //         $(this).children().eq(1).removeAttr("onclick");
+    //                     //     }else if(obj.checkState.name == "履约中"){
+    //                     //         $(this).children().eq(1).attr("class","disabled");
+    //                     //         $(this).children().eq(1).removeAttr("onclick");
+    //                     //         $(this).children().eq(2).attr("class","disabled");
+    //                     //         $(this).children().eq(2).removeAttr("onclick");
+    //                     //         $(this).children().eq(3).attr("class","disabled");
+    //                     //         $(this).children().eq(3).removeAttr("onclick");
+    //                     //     }else{
+    //                     //         $(this).children().eq(1).attr("class","disabled");
+    //                     //         $(this).children().eq(1).removeAttr("onclick");
+    //                     //         $(this).children().eq(2).attr("class","disabled");
+    //                     //         $(this).children().eq(2).removeAttr("onclick");
+    //                     //         $(this).children().eq(3).attr("class","disabled");
+    //                     //         $(this).children().eq(3).removeAttr("onclick");
+    //                     //     }
+    //                         break;
+    //                         //截止日期
+    //                     //截止日期
+    //                     // 截至日期
+    //                     case (9):
+    //                         if (obj.endTime != null) {
+    //                             var time = gettime(obj.endTime);
+    //                             $(this).html(time);
+    //                         }
+    //                         else {
+    //                             $(this).html("");
+    //                         }
+    //                         break;
+    //                 }
+    //             });
+    //             // 把克隆好的tr追加到原来的tr前面
+    //             clonedTr.removeAttr("id");
+    //             clonedTr.insertBefore(tr);
+    //         }
+    //     });
+    //     // 隐藏无数据的tr
+    //     tr.hide();
+    // }
+
     function setContractList(result) {
-        // console.log(eval(result));//可以取到
+        //console.log(eval(result));//可以取到
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr1");//克隆一行
         tr.siblings().remove();
         $.each(result.data, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             var obj = eval(item);
-             console.log(obj);
+           // console.log(obj);
             // 循环遍历cloneTr的每一个td元素，并赋值
-            //console.log(obj);
-            if (obj.contractContent == "" && obj.period == "" && obj.year == "") {
-                // 循环遍历cloneTr的每一个td元素，并赋值
+            if (obj.contractId == "") {
+                obj.contractId = ""
+            }
+            if (obj.contractType == null) {
+                obj.contractType.name = "";
+            }
+            if (obj.companyName == "") {
+                obj.companyName = "";
+            }
+            if (obj.province == null) {
+                obj.province = "";
+            }
+            if (obj.city == "") {
+                obj.city = "";
+            }
+            if (obj.contactName == "") {
+                obj.contactName = "";
+            }
+            if (obj.telephone == "") {
+                obj.telephone = "";
+            }
+            if (obj.contractContent == "") {
                 var clonedTr = tr.clone();
                 clonedTr.show();
                 clonedTr.children("td").each(function (inner_index) {
@@ -600,7 +776,8 @@
                         //         $(this).children().eq(3).removeAttr("onclick");
                         //     }
                         //     break;
-                            //截止日期
+                        //截止日期
+
                         //截止日期
                         // 截至日期
                         case (9):
@@ -614,161 +791,11 @@
                             break;
                     }
                 });
+
                 // 把克隆好的tr追加到原来的tr前面
                 clonedTr.removeAttr("id");
                 clonedTr.insertBefore(tr);
             }
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-
-    function setContractList1(result) {
-        console.log(eval(result));//可以取到
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr1");//克隆一行
-        tr.siblings().remove();
-        $.each(result.data, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var obj = eval(item);
-            // console.log(obj);
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            if (obj.contractId == "") {
-                obj.contractId = ""
-            }
-            if (obj.contractType == null) {
-                obj.contractType.name = "";
-            }
-            if (obj.companyName == "") {
-                obj.companyName = "";
-            }
-            if (obj.province == null) {
-                obj.province = "";
-            }
-            if (obj.city == "") {
-                obj.city = "";
-            }
-            if (obj.contactName == "") {
-                obj.contactName = "";
-            }
-            if (obj.telephone == "") {
-                obj.telephone = "";
-            }
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            clonedTr.children("td").each(function (inner_index) {
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 合同编号
-                    case (1):
-                        $(this).html(obj.contractId);
-                        break;
-                    //供应商名称
-                    case (2):
-                        // $(this).html();
-                        //判断是否是物流合同
-                        if (obj.contractType.name == '物流合同') {
-                            $(this).html(obj.suppierName);
-                        }
-                        else {
-                            $(this).html(obj.company1);
-                        }
-                        break;
-                    // 合同名称
-                    case (3):
-                        if (obj.contractVersion != null) {
-                            if (obj.contractVersion.name == "公司合同") {
-                                $(this).html(obj.modelName);
-                            }
-                            if (obj.contractVersion.name == "客户合同") {
-                                $(this).html(obj.contractName + obj.contractType.name);
-                            }
-                        }
-                        else {
-                            $(this).html("");
-                        }
-                        break;
-                    // 状态
-                    case (4):
-                        if (obj.checkState != null)
-                            $(this).html(obj.checkState.name);
-                        break;
-                    // 公司名称
-                    // case (5):
-                    //     $(this).html(obj.companyName);
-                    //     break;
-                    // 所属区域
-                    // case (6):
-                    //     if (obj.province != null) {
-                    //         $(this).html(obj.province.name + obj.city);
-                    //     }
-                    //     else {
-                    //         $(this).html("");
-                    //     }
-                    //     break;
-                    // 合约量
-                    case (5):
-                        $(this).html(obj.agreedQuantity.toFixed(2));
-                        break;
-                    // 联系人
-                    case (6):
-                        $(this).html(obj.contactName);
-                        break;
-                    // 联系方式
-                    case (7):
-                        $(this).html(obj.telephone);
-                        break;
-                    // 签订日期
-                    case (8):
-                        if (obj.beginTime != null) {
-                            var time = gettime(obj.beginTime);
-                            $(this).html(time);
-                        }
-                        else {
-                            $(this).html("");
-                        }
-                        break;
-                    // case (10):
-                    //     if(obj.checkState.name == "已作废"){
-                    //         $(".glyphicon3").removeAttr("onclick");
-                    //         document.getElementById("glyphicon3").style.color="#9d9d9d";
-                    //     }
-                        // else if(obj.checkState.name == "审批中"){
-                        //     $(this).children().eq(1).attr("class","disabled");
-                        //     $(this).children().eq(1).removeAttr("onclick");
-                        // }else if(obj.checkState.name == "履约中"){
-                        //     $(this).children().eq(1).attr("class","disabled");
-                        //     $(this).children().eq(1).removeAttr("onclick");
-                        //     $(this).children().eq(2).attr("class","disabled");
-                        //     $(this).children().eq(2).removeAttr("onclick");
-                        //     $(this).children().eq(3).attr("class","disabled");
-                        //     $(this).children().eq(3).removeAttr("onclick");
-                        // }else{
-                        //     $(this).children().eq(1).attr("class","disabled");
-                        //     $(this).children().eq(1).removeAttr("onclick");
-                        //     $(this).children().eq(2).attr("class","disabled");
-                        //     $(this).children().eq(2).removeAttr("onclick");
-                        //     $(this).children().eq(3).attr("class","disabled");
-                        //     $(this).children().eq(3).removeAttr("onclick");
-                        // }
-                        // break;
-                    //截止日期
-                    //截止日期
-                    // 截至日期
-                    case (9):
-                        if (obj.endTime != null) {
-                            var time = gettime(obj.endTime);
-                            $(this).html(time);
-                        }
-                        else {
-                            $(this).html("");
-                        }
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
         });
         // 隐藏无数据的tr
         tr.hide();
@@ -927,10 +954,13 @@
                     if (data.contractType.name == '物流合同') {
                         $('#name1').html("供应商名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(data.suppierName);
+                        //供用商姓名
+                        $('#modal3_suppierName').text(data.suppierName);
                     }
                     else {
                         $('#name1').html("客户名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(data.company1);//公司名称
+
                     }
 
                     //开票税率1
@@ -976,8 +1006,13 @@
                     if (data.freight == false) {//不需要运费
                         $('#modal3_freight').removeAttr("checked");
                     }
-                    //供用商姓名
-                    $('#modal3_suppierName').text(data.suppierName);
+
+
+
+
+
+
+
                     $('#search').prop("readonly", false);
                 } else {
                     $("#modal3_contactName").text("");
@@ -1142,13 +1177,18 @@
         var contractName = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
         // console.log(contractName);
         if (contractName.indexOf('危废') != -1) {
-            window.location.href = "showContract?contractId=" + contractId;
+            //使用html便于操作
+            localStorage.contractId = contractId;
+            location.href = "adjustWaste.html";
+            //window.location.href = "showContract?contractId=" + contractId;
         }
         if (contractName.indexOf('次生') != -1) {
             window.location.href = "Secondary?contractId=" + contractId;
         }
         if (contractName.indexOf('物流') != -1) {
-            window.location.href = "logistics?contractId=" + contractId;
+            localStorage.contractId = contractId;
+            location.href = "adjustLogistics.html";
+            //window.location.href = "logistics?contractId=" + contractId;
         }
         if (contractName == '采购') {
             //window.location.href = "showContract?contractId="+contractId;
@@ -1492,7 +1532,7 @@
                             <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
                             <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
                             <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
-                            <!--<p class="text-left"><b>客户名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
+                            <p class="text-left"><b>客户名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
                             <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
                             <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
                             <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
@@ -1576,6 +1616,27 @@
         </div>
     </div>
 </div>
+<!--合同正文查看模态框-->
+<div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="client_style">
+                <h4 class="sub-header">合同正文</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea id="TextArea1" cols="110" rows="25"  name="contractContent" class="ckeditor" wrap="hard"></textarea>
+                    </div>
+                </div>
+                    <div class="row text-center">
+                        <a class="btn btn-primary hidden-print" onclick="">打印</a>
+                        <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
 <div id="pic" style="border: 0;">
 </div>
@@ -1603,6 +1664,7 @@
     }
 </style>
 <script>
+    CKEDITOR.replace('TextArea1',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
     function wastes() {
         // var item = $("#1").attr("class");
         var id = $("ul#myTab li.active").attr("id");
@@ -1724,7 +1786,7 @@
                     if (result != undefined) {
                         //alert(result);
                         //console.log(result);
-                        setContractList1(result);
+                        setContractList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -1906,7 +1968,7 @@
                     }
                     else {
                         $('#name1').html("客户名称&nbsp;&nbsp;");
-                        $("#modal3_suppierName").text(data.company1);//公司名称
+                        $("#modal3_companyName").text(data.company1);//公司名称
                     }
                     //开票税率1
                     if (data.ticketRate1 == null) {
@@ -2154,7 +2216,6 @@
         }
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
     }
-
     /**
      * 导入excel
      *
@@ -2217,114 +2278,142 @@
                 'contractId': contractId
             },
             success: function (result) {
-                // console.log(result);
-                if (result != undefined) {
-                    var data = eval(result);
-                    if (data.beginTime != null) {
-                        var begin = gettime(data.beginTime);
+                var obj = eval(result);
+                console.log(obj);
+                //开始赋值
+                if (obj.contractVersion.name == '公司合同'&&obj.contractType.name=='应急处置合同') {
+                    text=obj.content;
+                    matchStringByIndexOf(text, 'contractName', obj.modelName);
+                    //合同编号
+                    matchStringByIndexOf(text, 'contractId', obj.contractId);
+                    //合同状态
+                    matchStringByIndexOf(text, 'checkState', obj.checkState.name);
+                    //客户名称
+                    matchStringByIndexOf(text, 'company1', obj.company1);
+                    //合同版本
+                    matchStringByIndexOf(text, 'contractVersion', obj.contractVersion.name);
+                    //签订日期
+                    if (obj.beginTime != null) {
+                        var beginTime = gettime(obj.beginTime);
+                        matchStringByIndexOf(text, 'beginTime', beginTime.toString());
+                    }
+                    if (obj.beginTime == null) {
+                        matchStringByIndexOf(text, 'beginTime', "");
+                    }
+                    //截止日期
+                    if (obj.endTime != null) {
+                        var endTime = gettime(obj.endTime);
+                        matchStringByIndexOf(text, 'endTime', endTime.toString());
+                    }
+                    else {
+                        matchStringByIndexOf(text, 'endTime', "");
+                    }
+                    //开户行名称
+                    matchStringByIndexOf(text, 'bankName', obj.bankName);
+                    //开户行账号
+                    matchStringByIndexOf(text, 'bankAccount', obj.bankAccount);
+                    //开票税率
+                    if (obj.ticketRate1 != null) {
+                        matchStringByIndexOf(text, 'ticketRate', obj.ticketRate1.name);
+                    }
+                    else {
+                        matchStringByIndexOf(text, 'ticketRate', "");
+                    }
+                    //联系人
+                    matchStringByIndexOf(text, 'contactName', obj.contactName);
+                    //联系方式
+                    matchStringByIndexOf(text, 'telephone', obj.telephone);
+                    //是否包含运费
+                    if (obj.freight == false) {
+                        matchStringByIndexOf(text, 'freight', "否");
+                    }
+                    if (obj.freight == true) {
+                        matchStringByIndexOf(text, 'freight', "是");
+                    }
+                    //预计处置费
+                    matchStringByIndexOf(text, 'order1', obj.order1);
+                    CKEDITOR.instances.TextArea1.setData(text);//获取值
+                    $('#viewModal').modal('show');
+                }
+                else {
+                    // alert("其他形式")
+                    if (obj.beginTime != null) {
+                        var begin = gettime(obj.beginTime);
                     }
                     else {
                         var begin = "";
                     }
-                    if (data.endTime != null) {
-                        var end = gettime(data.endTime);
+                    if (obj.endTime != null) {
+                        var end = gettime(obj.endTime);
                     }
                     else {
                         var end = "";
                     }
-                    if (data.checkState != null) {
-                        $("#modal3_contractState").text(data.checkState.name);
+                    if (obj.checkState != null) {
+                        $("#modal3_contractState").text(obj.checkState.name);
                     }
                     else
                         $("#modal3_contractState").text("");
-                    $("#modal3_contractVersion").text(data.contractVersion.name);
-                    $("#modal3_companyName").text(data.companyName);
-                    if (data.contractVersion.name == "公司合同") {
-                        $("#modal3_contractName").text(data.modelName);//合同名称
+                    $("#modal3_contractVersion").text(obj.contractVersion.name);
+                    $("#modal3_companyName").text(obj.companyName);
+                    if (obj.contractVersion.name == "公司合同") {
+                        $("#modal3_contractName").text(obj.modelName);//合同名称
                     }
-                    if (data.contractVersion.name == "客户合同") {
-                        $("#modal3_contractName").text(data.contractName + data.contractType.name);//合同名称
+                    if (obj.contractVersion.name == "客户合同") {
+                        $("#modal3_contractName").text(obj.contractName + obj.contractType.name);//合同名称
                     }
-                    $("#modal3_contactName").text(data.contactName);
-                    $("#modal3_contractId").text(data.contractId);
+                    $("#modal3_contactName").text(obj.contactName);
+                    $("#modal3_contractId").text(obj.contractId);
                     $("#modal3_beginTime").text(begin);
                     $("#modal3_endTime").text(end);
-                    // $("#modal3_area").text(data.province.name + "" + data.city);
-                    $("#modal3_telephone").text(data.telephone);
-                    $("#modal3_order").text(data.order1);
-                    //开票税率1
-                    if (data.ticketRate1 == null) {
+                    $("#modal3_area").text(obj.province.name + "" + obj.city);
+                    $("#modal3_telephone").text(obj.telephone);
+                    $("#modal3_order").text(obj.order1);
+                    // 开票税率1
+                    if (obj.ticketRate1 == null) {
                         $('#modal3_ticketRate1').text(" ");
                     }
                     else {
-                        $('#modal3_ticketRate1').text(data.ticketRate1.name);
+                        $('#modal3_ticketRate1').text(obj.ticketRate1.name);
                     }
                     //开票税率2
-                    // if (data.ticketRate2 == null) {
-                    //     $('#modal3_ticketRate2').text(" ");
-                    // }
-                    // else {
-                    //     $('#modal3_ticketRate2').text(data.ticketRate2.name);
-                    // }
-                    //资质开始日期
-                    // if (data.beginQualification == null) {
-                    //     $('#modal3_beginQualification').text(" ");
-                    // }
-                    // else {
-                    //     var begin1 = gettime(data.beginQualification);
-                    //     $('#modal3_beginQualification').text(begin1);
-                    // }
-                    //资质结束日期
-                    // if (data.endQualification == null) {
-                    //     $('#modal3_endQualification').text(" ");
-                    // }
-                    // else {
-                    //     var end1 = gettime(data.endQualification);
-                    //     $('#modal3_endQualification').text(end1);
-                    // }
-                    //物流公司资质
-                    //$('#modal3_logisticsQualification').text(data.logisticsQualification);
-                    //开户行名称
-                    $('#modal3_bankName').text(data.bankName);
-                    //开户行账号
-                    $('#modal3_bankAccout').text(data.bankAccount);
-                    if (data.freight == true) {//需要运费
+                    if (obj.ticketRate2 == null) {
+                        $('#modal3_ticketRate2').text(" ");
+                    }
+                    else {
+                        $('#modal3_ticketRate2').text(obj.ticketRate2.name);
+                    }
+                    // 开户行名称
+                    $('#modal3_bankName').text(obj.bankName);
+                    // 开户行账号
+                    $('#modal3_bankAccout').text(obj.bankAccount);
+                    if (obj.freight == true) {//需要运费
                         $('#modal3_freight').removeAttr("checked");
                         $('#modal3_freight').prop("checked", true);
                     }
-                    if (data.freight == false) {//不需要运费
+                    if (obj.freight == false) {//不需要运费
                         $('#modal3_freight').removeAttr("checked");
                     }
-                    //供用商姓名
-                    if (data.contractType.name == '物流合同') {
+                    // 供用商姓名
+                    if (obj.contractType.name == '物流合同') {
                         $('#name1').html("供应商名称&nbsp;&nbsp;");
-                        $("#modal3_suppierName").text(data.suppierName);
+                        $("#modal3_suppierName").text(obj.suppierName);
                     }
                     else {
                         $('#name1').html("客户名称&nbsp;&nbsp;");
-                        $("#modal3_suppierName").text(data.company1);//公司名称
+                        $("#modal3_suppierName").text(obj.company1);//公司名称
                     }
                     $('#search').prop("readonly", false);
-                } else {
-                    $("#modal3_contactName").text("");
-                    $("#modal3_contractState").text("");
-                    $("#modal3_contractVersion").text("");
-                    $("#modal3_companyName").text("");
-                    $("#modal3_contactName").text("");
-                    $("#modal3_contractId").text("");
-                    $("#modal3_beginTime").text("");
-                    $("#modal3_endTime").text("");
-                    $("#modal3_area").text("");
-                    $("#modal3_telephone").text("");
-                    $("#modal3_order").text("");
+                    $('#contractInfoForm').modal('show');
                 }
             },
+
             error: function (result) {
-                console.log(result);
+
             }
         });
-        $('#contractInfoForm').modal('show');
         $('#back').hide();
+
 
     }
 
@@ -2629,6 +2718,32 @@
                     console.log("error: " + result);
                 }
             });
+        }
+    }
+    function matchStringByIndexOf(parent,child,str)//总字符串 要找的字符串
+    {
+        index = 0;
+        if( ( index = parent.indexOf(child,index)) != -1 )
+        {
+            index = index+child.length;
+            console.log(index);
+            console.log(parent.substring(index+1,index+2));
+            // target=parent.substring(index+1,index+10);//改变后的字符
+            if(str!=""){
+                text=(changeStr(text,index+2,index+2," "," "+"value="+str+" style='border:none; font-size:26px'"));
+            }
+            if(str==""){
+                text=(changeStr(text,index+2,index+2," "," "+"value=' '"+" style='border:none; font-size:26px'"));
+            }
+
+        }
+        //结果输出
+    }
+    function changeStr(allstr,start,end,str,changeStr){ //allstr:原始字符串，start,开始位置,end：结束位  置,str：要改变的字，changeStr:改变后的字
+        if(allstr.substring(start-1,end) == str){
+            return allstr.substring(0,start-1)+changeStr+allstr.substring(end,allstr.length);
+        }else{
+            return allstr;
         }
     }
 </script>

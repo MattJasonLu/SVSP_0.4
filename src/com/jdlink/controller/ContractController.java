@@ -388,6 +388,10 @@ JSONObject res=new JSONObject();
         List client= clientService.list();
         JSONArray json=JSONArray.fromObject(client);
         res.put("companyNameList",json);
+
+        List supplier=supplierService.list();
+        JSONArray json3=JSONArray.fromObject(supplier);
+        res.put("supplierNameList",json3);
         //查询模板名称
         List modelName=contractService.modelName(key);
         List list1=  removeDuplicate(modelName);

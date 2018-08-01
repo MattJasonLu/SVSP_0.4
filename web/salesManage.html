@@ -15,362 +15,6 @@
     <script src="js/page.js"></script>
 </head>
 <script type="text/javascript">
-    /**
-     * 设置高级检索下拉框数据填充
-     * */
-    // function setSalseManSeniorSelectedList() {
-    //     $.ajax({
-    //         type: "POST",                       // 方法类型
-    //         url: "getClientSeniorSelectedList",                  // url
-    //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //         dataType: "json",
-    //         success: function (result) {
-    //             if (result != undefined) {
-    //                 var data = eval(result);
-    //                 // 高级检索下拉框数据填充
-    //                 var checkState = $("#search-checkState");
-    //                 checkState.children().remove();
-    //                 $.each(data.checkStateList, function (index, item) {
-    //                     var option = $('<option />');
-    //                     option.val(index);
-    //                     option.text(item.name);
-    //                     checkState.append(option);
-    //                 });
-    //                 checkState.get(0).selectedIndex = -1;
-    //                 var clientState = $("#search-clientState");
-    //                 clientState.children().remove();
-    //                 $.each(data.clientStateList, function (index, item) {
-    //                     var option = $('<option />');
-    //                     option.val(index);
-    //                     option.text(item.name);
-    //                     clientState.append(option);
-    //                 });
-    //                 clientState.get(0).selectedIndex = -1;
-    //                 var applicationStatus = $("#search-applicationStatus");
-    //                 applicationStatus.children().remove();
-    //                 $.each(data.applicationStatusList, function (index, item) {
-    //                     var option = $('<option />');
-    //                     option.val(index);
-    //                     option.text(item.name);
-    //                     applicationStatus.append(option);
-    //                 });
-    //                 applicationStatus.get(0).selectedIndex = -1;
-    //                 var clientType = $("#search-clientType");
-    //                 clientType.children().remove();
-    //                 $.each(data.clientTypeList, function (index, item) {
-    //                     var option = $('<option />');
-    //                     option.val(index);
-    //                     option.text(item.name);
-    //                     clientType.append(option);
-    //                 });
-    //                 clientType.get(0).selectedIndex = -1;
-    //             } else {
-    //                 console.log("fail: " + result);
-    //             }
-    //         },
-    //         error: function (result) {
-    //             console.log("error: " + result);
-    //         }
-    //     });
-    // }
-
-    var currentPage = 1;                          //当前页数
-
-    /**
-     * 返回count值
-     * */
-    function countValue(){
-        var mySelect=document.getElementById("count");
-        var index=mySelect.selectedIndex;
-        return mySelect.options[index].text;
-    }
-    /**
-     * 计算总页数
-     * */
-    function totalPage() {
-        var totalRecord = 0;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "totalSalesmanRecord",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
-        var count = countValue();                         // 可选
-        var total = loadPages(totalRecord, count);
-        return total;
-    }
-
-    /**
-     * 设置克隆页码
-     * */
-    function setPageClone(result) {
-        $(".beforeClone").remove();
-        setSalesmanList(result);
-        var total = totalPage();
-        $("#next").prev().hide();
-        var st = "共" + total + "页";
-        $("#totalPage").text(st);
-        var myArray = new Array();
-        for (var i = 0; i < total; i++) {
-            var li = $("#next").prev();
-            myArray[i] = i + 1;
-            var clonedLi = li.clone();
-            clonedLi.show();
-            clonedLi.find('a:first-child').text(myArray[i]);
-            clonedLi.find('a:first-child').click(function () {
-                var num = $(this).text();
-                switchPage(num);
-            });
-            clonedLi.addClass("beforeClone");
-            clonedLi.removeAttr("id");
-            clonedLi.insertAfter(li);
-        }
-
-    }
-
-    /**
-     * 点击页数跳转页面
-     * @param pageNumber 跳转页数
-     * */
-    function switchPage(pageNumber) {
-        console.log("当前页：" + pageNumber);
-        if (pageNumber == 0) {                 //首页
-            pageNumber = 1;
-        }
-        if (pageNumber == -2) {
-            pageNumber = totalPage();        //尾页
-        }
-        if (pageNumber == null || pageNumber == undefined) {
-            console.log("参数为空,返回首页!");
-            pageNumber = 1;
-        }
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        if (pageNumber == totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber > 1){
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber < totalPage()){
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        var page = {};
-        page.count = countValue();                        //可选
-        page.pageNumber = pageNumber;
-        currentPage = pageNumber;          //当前页面
-        //addClass("active");
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageSalesManList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    setSalesmanList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-
-    /**
-     * 输入页数跳转页面
-     * */
-    function inputSwitchPage() {
-        var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == null || pageNumber == undefined) {
-            window.alert("跳转页数不能为空！")
-        } else {
-            if (pageNumber == 1) {
-                $("#previous").addClass("disabled");
-                $("#firstPage").addClass("disabled");
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            if (pageNumber == totalPage()) {
-                $("#next").addClass("disabled");
-                $("#endPage").addClass("disabled");
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber > 1){
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber < totalPage()){
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            currentPage = pageNumber;
-            var page = {};
-            page.count = countValue();//可选
-            page.pageNumber = pageNumber;
-            page.start = (pageNumber - 1) * page.count;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageSalesManList",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                        setSalesmanList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-
-
-        }
-    }
-
-    /**
-     * 分页 获取首页内容
-     * */
-    function loadPageSalesManList() {
-        var pageNumber = 1;               // 显示首页
-        $("#current").find("a").text("当前页：1");
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        var page = {};
-        page.count = countValue();                                 // 可选
-        page.pageNumber = pageNumber;
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageSalesManList",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setPageClone(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                console.log("失败");
-            }
-        });
-    }
-
-    /**
-     * 计算分页总页数
-     * @param totalRecord
-     * @param count
-     * @returns {number}
-     */
-    function loadPages(totalRecord, count) {
-        if (totalRecord == 0) {
-            window.alert("总记录数为0，请检查！");
-            return 0;
-        }
-        else if (totalRecord % count == 0)
-            return totalRecord / count;
-        else
-            return parseInt(totalRecord / count) + 1;
-    }
-
-    function setSalesmanList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                        // 客户编号
-                    case (1):
-                        $(this).html(obj.salesmanId);
-                        break;
-                        // 客户名称
-                    case (2):
-                        $(this).html(obj.name);
-                        break;
-                        // 申报状态
-                    case (3):
-                        $(this).html(obj.sex==true?'男':'女');
-                        break;
-                        // 审核状态
-                    case (4):
-                        $(this).html(obj.age);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-    function loadSalesmanList() {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listSalesman",                  // url
-            cache: false,
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setSalesmanList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
     function allSelect() {
         var isChecked = $('#allSel').prop('checked');
         if (isChecked) $("input[name='select']").prop('checked',true);
@@ -502,7 +146,7 @@
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="salesmanId" name="salesmanId">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" name="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchSalesman();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -515,7 +159,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-salesmanId" class="col-sm-4 control-label">业务员编号</label>
+                                <label for="search-salesmanId" class="col-sm-5 control-label">业务员编号</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-salesmanId" name="search-salesmanId" placeholder="">
                                 </div>
@@ -523,7 +167,7 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-name" class="col-sm-4 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+                                <label for="search-name" class="col-sm-4 control-label">姓名</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-name" name="search-name" placeholder="">
                                 </div>
@@ -531,10 +175,9 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-sex" class="col-sm-4 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                                <label for="search-sex" class="col-sm-4 control-label">性别</label>
                                 <div class="col-xs-7">
                                     <select class="form-control" name="search-sex" id="search-sex">
-                                        <option value="-1"></option>
                                         <option value="true">男</option>
                                         <option value="false">女</option>
                                     </select>
@@ -543,9 +186,9 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-old" class="col-sm-4 control-label">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄</label>
+                                <label for="search-age" class="col-sm-4 control-label">年龄</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-old" name="search-old" placeholder="">
+                                    <input type="text" class="form-control" id="search-age" name="search-age" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -594,24 +237,24 @@
                 <ol class="pagination" style="width: 800px;">
                     <li id="current"><a href="#"></a> </li>
                     <li id="firstPage">
-                        <a href='#' onclick="switchPage(0)">首 页</a>
+                        <a href='#' onclick="switchSalesPage(0)">首 页</a>
                     </li>
                     <li id="previous">
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
+                        <a href="#" aria-label="Previous" onclick="switchSalesPage(parseInt(currentPage)-1);">
+                            <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li><a href="#">1</a></li>
                     <li id="next">
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
+                        <a href="#" aria-label="Next" onclick="switchSalesPage(parseInt(currentPage)+1);">
+                            <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
                         </a>
                     </li>
                     <li id="endPage">
-                        <a href='#' onclick="switchPage(-2)">尾 页</a>
+                        <a href='#' onclick="switchSalesPage(-2)">尾 页</a>
                     </li>
                     <li ><a id="totalPage"></a></li>
-                    <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                    <li ><a href="#" onclick="inputSalesSwitchPage()">跳转</a></li>
                     <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
@@ -812,35 +455,7 @@
             }
         });
     }
-    /**
-     * 查询业务员
-     */
-    function searchSalesman() {
-        var clientIdKeyword = $("#clientId").val();
-        var salesmanIdKeyword = $("#salesmanId").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchSalesman",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {
-                'clientId': clientIdKeyword,
-                'salesmanId': salesmanIdKeyword
-            },
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setSalesmanList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
+
 
     /**
      * 导出excel

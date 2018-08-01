@@ -116,25 +116,34 @@ public class SalesmanController {
         }
     }
 
-//    @RequestMapping("searchSalesman")
-//    @ResponseBody
-//    public String searchSalesman(Salesman salesman) {
-//        try {
-//            // 根据两个id编号查询
-//            Map param = new HashMap();
-//            param.put("clientId", salesman.getClientId());
-//            param.put("salesmanId", salesman.getSalesmanId());
-//            List<Salesman> salesmanList = salesmanService.get(param);
-//            JSONArray array = JSONArray.fromArray(salesmanList.toArray(new Salesman[salesmanList.size()]));
-//            // 返回结果
-//            return array.toString();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            JSONObject res = new JSONObject();
-//            res.put("status", "fail");
-//            return res.toString();
-//        }
-//    }
+    @RequestMapping("searchSalesman")
+    @ResponseBody
+    public String searchSalesman(@RequestBody Salesman salesman) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Salesman> salesmanList = salesmanService.search(salesman);
+            JSONArray data = JSONArray.fromArray(salesmanList.toArray(new Salesman[salesmanList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("searchSalesmanTotal")
+    @ResponseBody
+    public int searchSalesmanTotal(@RequestBody Salesman salesman) {
+        try {
+            return salesmanService.searchCount(salesman);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
     @RequestMapping("bindClient")
     @ResponseBody

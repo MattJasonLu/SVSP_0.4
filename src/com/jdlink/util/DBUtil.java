@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.NumberFormat;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,8 +64,6 @@ public class DBUtil {
             // 创建sql语句，对team进行查询所有数据
             String sql = sqlWords;
             ResultSet rs = st.executeQuery(sql);
-
-
             Row row1 = sheet.createRow(0);
             ResultSetMetaData rsmd = rs.getMetaData();
             int colnum = rsmd.getColumnCount();
@@ -140,15 +139,15 @@ public class DBUtil {
      * @param file
      * @param DBTableName
      */
-    public void importExcel(MultipartFile file,String DBTableName) {
+    public void importExcel(MultipartFile file,String DBTableName,String id) {
 
         try {
-            UploadExcel(file,DBTableName);
+            UploadExcel(file,DBTableName,id);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void UploadExcel(MultipartFile file,String DBTableName) throws Exception {
+    public void UploadExcel(MultipartFile file,String DBTableName,String id) throws Exception {
         //定义一维数组，存放Excel表里的每一行的各个列的数据
         Object[] obj;
         Object[][] parm;
@@ -181,11 +180,22 @@ public class DBUtil {
         //i=1 去掉表格第一行的属性名
         for (int i = 1; i < row; i++) {
             obj = new Object[col];
-            for (int j = 0; j < col; j++) {
+            for (int j = 1; j < col; j++) {
                 c1 = sht.getCell(j, i);
                 obj[j] = c1.getContents();
+                //在此转换中英文
+                if(obj[j] == "")
+                    obj[j] = null;
                 parm[i - 1][j] = obj[j];
             }
+            NumberFormat nf = NumberFormat.getInstance();
+            //设置是否使用分组
+            nf.setGroupingUsed(false);
+            //设置最大整数位数
+            nf.setMaximumIntegerDigits(4);
+            //设置最小整数位数
+            nf.setMinimumIntegerDigits(4);
+            parm[i-1][0]=nf.format(Integer.parseInt(id)+i-1);
         }
         //return parm;
 

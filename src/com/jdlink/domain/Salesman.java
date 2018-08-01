@@ -31,6 +31,10 @@ public class Salesman {
      */
     private Date nowTime;
 
+    private String keyword;
+
+    private Page page;
+
     @Override
     public String toString() {
         return "Salesman{" +
@@ -91,4 +95,19 @@ public class Salesman {
         this.sex = sex;
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 }

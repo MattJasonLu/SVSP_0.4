@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.*;
+import com.jdlink.util.DBUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -620,6 +622,24 @@ public class QuestionnaireController {
         }
         // 返回结果
         return res.toString();
+    }
+
+    @RequestMapping("importQuestionnaireExcel")
+    @ResponseBody
+    public String importQuestionnaireExcel(MultipartFile excelFile, String tableName, String id){
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db=new DBUtil();
+            db.importExcel(excelFile, tableName, id);
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！"+e.getMessage());
+        }
+        return res.toString();
+
     }
 
 
