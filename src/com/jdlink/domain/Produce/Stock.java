@@ -36,7 +36,7 @@ public class Stock {
     /**
     * 危废列表
      */
-   private List<Wastes> wastes;
+   private List<Wastes> wastesList;
     /**
      * 是否自营
      */
@@ -109,11 +109,11 @@ public class Stock {
     }
 
     public List<Wastes> getWastes() {
-        return wastes;
+        return wastesList;
     }
 
     public void setWastes(List<Wastes> wastes) {
-        this.wastes = wastes;
+        this.wastesList = wastes;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Stock {
                 ", transport='" + transport + '\'' +
                 ", transportTelephone='" + transportTelephone + '\'' +
                 ", plateNumber='" + plateNumber + '\'' +
-                ", wastes=" + wastes +
+                ", wastes=" + wastesList +
                 '}';
     }
 }
