@@ -3079,8 +3079,8 @@
      */
     function exportExcel(e) {
         var name='questionnaire';
-        var sqlWords = 'select * from questionnaire';
-        //var sqlWords = 'select questionnaireId,client.companyName,enterpriseType,product,checkState,author,time from client join questionnaire where client.clientId = questionnaire.clientId';
+       // var sqlWords = 'select * from questionnaire';
+        var sqlWords = 'select questionnaireId,client.companyName,enterpriseType,product,checkState,author,time from client join questionnaire where client.clientId = questionnaire.clientId';
         window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
