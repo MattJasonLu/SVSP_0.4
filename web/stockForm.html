@@ -204,7 +204,7 @@
                 </div>
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
-                        <label for="transportTelephone" class="col-sm-4 control-label">运输公司联系电话</label>
+                        <label for="transportTelephone" class="col-sm-5 control-label">运输公司联系电话</label>
                         <div class="col-xs-5">
                             <input type="text" class="form-control" id="transportTelephone" name="transportTelephone" placeholder="">
                         </div>
@@ -223,7 +223,7 @@
                 <p class="text-left" style="color: #e5454d;font-size: 17px;">库存具体明细&nbsp;&nbsp;</p>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-8 center-block">
+                <div class="form-horizontal col-md-11 center-block">
                     <table class="table table-bordered">
                         <tr>
                             <th>序号</th>
@@ -257,7 +257,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-3">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group">
                         <div class="checkbox col-md-5">
                             <label>
@@ -336,13 +336,19 @@
         }
         $.ajax({
            type:'POST',
-            url:"",
+            url:"addStock",
             data:JSON.stringify(data),
             contentType: "application/json;charset=utf-8",
-            success:function () {
-
+            success:function (result) {
+               var obj=eval(result);
+                if(obj.state=="suceess"){
+                    alert("添加成功")
+                }
+                if(obj.state=="fail"){
+                    alert("添加失败")
+                }
             },
-            error:function () {
+            error:function (result) {
 
             }
         });

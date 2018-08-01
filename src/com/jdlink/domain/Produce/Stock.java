@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Wastes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class Stock {
     /**
     * 危废列表
      */
-   private List<Wastes> wastesList;
+   private List<Wastes> wastesList=new ArrayList<>();
     /**
      * 是否自营
      */
