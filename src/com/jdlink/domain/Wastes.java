@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.生产.Stock;
+
 /**
  * Created by matt on 2018/7/4.
  */
@@ -66,6 +68,83 @@ public class Wastes {
      * 闪点
      */
     private float flashPoint;
+    /**
+     * 废物数量
+     */
+    private double wasteAmount;
+    /**
+     * 废物成分
+     */
+    private String component;
+    /**
+     * 备注
+     */
+
+    private String remarks;
+    /**
+     * 和库存申报表存在一对多联系
+     */
+    private Stock stock;
+
+    @Override
+    public String toString() {
+        return "Wastes{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", formType=" + formType +
+                ", wastesId='" + wastesId + '\'' +
+                ", contractAmount=" + contractAmount +
+                ", unitPriceTax=" + unitPriceTax +
+                ", unitPrice=" + unitPrice +
+                ", taxRate=" + taxRate +
+                ", tax=" + tax +
+                ", ph=" + ph +
+                ", ashPercentage=" + ashPercentage +
+                ", wetPercentage=" + wetPercentage +
+                ", calorific=" + calorific +
+                ", halogenPercentage=" + halogenPercentage +
+                ", sulfurPercentage=" + sulfurPercentage +
+                ", flashPoint=" + flashPoint +
+                ", wasteAmount=" + wasteAmount +
+                ", component='" + component + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", stock=" + stock +
+                '}';
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
+
+    public double getWasteAmount() {
+        return wasteAmount;
+    }
+
+    public void setWasteAmount(double wasteAmount) {
+        this.wasteAmount = wasteAmount;
+    }
+
+    public String getComponent() {
+        return component;
+    }
+
+    public void setComponent(String component) {
+        this.component = component;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+
 
     public String getId() {
         return id;
@@ -195,25 +274,4 @@ public class Wastes {
         this.tax = tax;
     }
 
-    @Override
-    public String toString() {
-        return "Wastes{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", formType=" + formType +
-                ", wastesId='" + wastesId + '\'' +
-                ", contractAmount=" + contractAmount +
-                ", unitPriceTax=" + unitPriceTax +
-                ", unitPrice=" + unitPrice +
-                ", taxRate=" + taxRate +
-                ", tax=" + tax +
-                ", ph=" + ph +
-                ", ashPercentage=" + ashPercentage +
-                ", wetPercentage=" + wetPercentage +
-                ", calorific=" + calorific +
-                ", halogenPercentage=" + halogenPercentage +
-                ", sulfurPercentage=" + sulfurPercentage +
-                ", flashPoint=" + flashPoint +
-                '}';
-    }
 }
