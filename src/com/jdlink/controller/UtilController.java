@@ -33,11 +33,11 @@ public class UtilController {
 
     @RequestMapping("importExcel")
     @ResponseBody
-    public String importExcel(MultipartFile excelFile,String tableName){
+    public String importExcel(MultipartFile excelFile,String tableName,String id){
         JSONObject res = new JSONObject();
         try {
             DBUtil db=new DBUtil();
-            db.importExcel(excelFile, tableName);
+            db.importExcel(excelFile, tableName, id);
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

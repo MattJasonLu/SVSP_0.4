@@ -1042,7 +1042,7 @@
                         <a class="btn btn-primary btn-xs" href="questionnaire1.html" onclick="clearQuestionnaire();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
                         <a class="btn btn-primary btn-xs" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
-                        <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="importExcelChoose()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
@@ -1194,6 +1194,31 @@
                     </li>
                 </ol>
             </nav>
+
+            <!--导入模态框-->
+            <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modelAssign" method="post">
+                                <div class="form-group">
+                                    <font size="+2">提示：</font>
+                                    <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer center">
+                            <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                            <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -3051,22 +3076,54 @@
      */
     function exportExcel(e) {
         var name='questionnaire';
-        var sqlWords='select questionnaireId,client.companyName,enterpriseType,product,checkState,author,time from client join questionnaire where client.clientId = questionnaire.clientId';
+        var sqlWords = 'select * from questionnaire';
+        //var sqlWords = 'select questionnaireId,client.companyName,enterpriseType,product,checkState,author,time from client join questionnaire where client.clientId = questionnaire.clientId';
         window.open('exportExcel?name='+name+'&sqlWords='+sqlWords);
 
     }
 
+    /**
+     * 导入模态框
+     * */
+    function importExcelChoose() {
+        $("#importExcelModal").modal('show');
+    }
+
+    /**
+     * 导入excel
+     *
+     */
     function importExcel() {
         document.getElementById("idExcel").click();
-        document.getElementById("idExcel").addEventListener("change",function () {
+        document.getElementById("idExcel").addEventListener("change", function () {
+            var id = '0000';
             console.log("change");
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getCurrentQuestionnaireId",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: false,
+                success: function (result) {
+                    if (result != undefined || result != NaN) {
+                        id = result.questionnaireId;
+                    } else {
+                        alert("数据获取失败！ " + result);
+                    }
+                },
+                error: function (result) {
+                    alert("导入失败，请检查后重试！")
+                    console.log("error" + result);
+                }
+            });
             var eFile = document.getElementById("idExcel").files[0];
             var formFile = new FormData();
             formFile.append("excelFile", eFile);
             formFile.append("tableName", 'questionnaire');
+            formFile.append("id", id);
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "importExcel",              // url
+                url: "importQuestionnaireExcel",              // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 dataType: "json",
                 data: formFile,
@@ -3077,7 +3134,7 @@
                         console.log(result);
                         if (result.status == "success") {
                             alert(result.message);
-                            window.location.reload();
+                            window.location.reload();         //刷新
                         } else {
                             alert(result.message);
                         }
@@ -3089,6 +3146,17 @@
             });
         });
 
+    }
+
+    /**
+     * 下载模板
+     * */
+    function downloadModal() {
+        var filePath = 'Files/EIA/Material/questionnaire模板.xls';
+        var r = confirm("是否下载模板?");
+        if (r == true) {
+            window.open('downloadFile?filePath=' + filePath);
+        }
     }
     /*打印*/
     $("#print").click(function() {

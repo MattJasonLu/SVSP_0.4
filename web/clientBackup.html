@@ -181,8 +181,9 @@
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchClient();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog"
-                                                                                       aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-cog"
+                                    aria-hidden="true"></span> 高级查询</a>
                         </span>
                 </div>
             </div>
@@ -194,7 +195,8 @@
                         <div class="form-group">
                             <label for="search-clientId" class="col-sm-4 control-label">客户编号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-clientId" name="search-clientId" placeholder="">
+                                <input type="text" class="form-control" id="search-clientId" name="search-clientId"
+                                       placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -209,7 +211,8 @@
                         <div class="form-group">
                             <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                                <input type="text" class="form-control" id="search-companyName"
+                                       name="search-companyName" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -222,15 +225,18 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-contactName" class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
+                            <label for="search-contactName"
+                                   class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-contactName" name="search-contactName" placeholder="">
+                                <input type="text" class="form-control" id="search-contactName"
+                                       name="search-contactName" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="search-applicationStatus" class="col-sm-4 control-label">申报状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-applicationStatus" name="search-applicationStatus"></select>
+                                <select class="form-control" id="search-applicationStatus"
+                                        name="search-applicationStatus"></select>
                             </div>
                         </div>
                     </div>
@@ -238,7 +244,8 @@
                         <div class="form-group">
                             <label for="search-phone" class="col-sm-4 control-label">联系电话</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-phone" name="search-phone" placeholder="">
+                                <input type="text" class="form-control" id="search-phone" name="search-phone"
+                                       placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -316,13 +323,15 @@
                 </li>
                 <li id="previous">
                     <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li><a href="#">1</a></li>
                 <li id="next">
                     <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
-                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li id="endPage">
@@ -330,8 +339,9 @@
                 </li>
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
-                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
-                <li class="showLi" >每页显示: </li>
+                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                           id="pageNumber"></li>
+                <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="loadPageClientList()">
                         <option>5</option>
@@ -347,13 +357,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
                     </div>
                     <div class="modal-body">
                         <form id="modelAssign" method="post">
                             <div class="form-group">
-                                <font size="+2" >提示：</font>
+                                <font size="+2">提示：</font>
                                 <font size="+1" class="text-center">请按照模板格式导入数据！</font>
                             </div>
                         </form>
@@ -686,14 +697,18 @@
     .pagination > li {
         display: inline;
     }
-    .inputText { float:left;
+
+    .inputText {
+        float: left;
     }
-    .showLi{
+
+    .showLi {
         float: left;
         height: 38px;
         line-height: 38px;
     }
-    .selectLi{
+
+    .selectLi {
         float: left;
         height: 38px;
         line-height: 38px;
@@ -1304,7 +1319,8 @@
      */
     function exportExcel(e) {
         var name = 'client';
-        var sqlWords = "select clientId,companyName,applicationStatus,checkState,state,contactName,phone,clientType from jdlink."+name;
+        var sqlWords = "select * from client ";
+        //  var sqlWords = "select clientId,companyName,applicationStatus,checkState,state,contactName,phone,clientType from jdlink."+name;
         window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 
     }
@@ -1312,9 +1328,10 @@
     /**
      * 导入模态框
      * */
-    function importExcelChoose(){
+    function importExcelChoose() {
         $("#importExcelModal").modal('show');
     }
+
     /**
      * 导入excel
      *
@@ -1322,11 +1339,31 @@
     function importExcel() {
         document.getElementById("idExcel").click();
         document.getElementById("idExcel").addEventListener("change", function () {
+            var id = '0000';
             console.log("change");
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getCurrentClientId",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: false,
+                success: function (result) {
+                    if (result != undefined || result != NaN) {
+                        id = result.clientId;
+                    } else {
+                        alert("数据获取失败！ " + result);
+                    }
+                },
+                error: function (result) {
+                    alert("导入失败，请检查后重试！")
+                    console.log("error" + result);
+                }
+            });
             var eFile = document.getElementById("idExcel").files[0];
             var formFile = new FormData();
             formFile.append("excelFile", eFile);
             formFile.append("tableName", 'client');
+            formFile.append("id", id);
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "importClientExcel",              // url
@@ -1352,6 +1389,17 @@
             });
         });
 
+    }
+
+    /**
+     * 下载模板
+     * */
+    function downloadModal() {
+        var filePath = 'Files/EIA/Material/client模板.xls';
+        var r = confirm("是否下载模板?");
+        if (r == true) {
+            window.open('downloadFile?filePath=' + filePath);
+        }
     }
 
     /**打印*/
