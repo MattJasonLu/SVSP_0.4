@@ -451,19 +451,18 @@
                     </li>
                     <li id="previous">
                         <a href="#" aria-label="Previous" onclick="switchSupplierPage(parseInt(currentPage)-1);">
-                            <span aria-hidden="true">&laquo;</span>
+                            <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
                         </a>
                     </li>
                     <li><a href="#">1</a></li>
                     <li id="next">
                         <a href="#" aria-label="Next" onclick="switchSupplierPage(parseInt(currentPage)+1);">
-                            <span aria-hidden="true">&raquo;</span>
+                            <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
                         </a>
                     </li>
                     <li id="endPage">
                         <a href='#' onclick="switchSupplierPage(-2)">尾 页</a>
                     </li>
-                    <li ><a id="totalPage"></a></li>
                     <li ><a href="#" onclick="inputSwitchSupplierPage()">跳转</a></li>
                     <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
                     <li class="showLi">每页显示:</li>
