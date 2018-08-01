@@ -60,13 +60,13 @@
             type: "POST",                            // 方法类型
             url: "getContractId1",                  // url
             dataType: "json",
-            data:{'contractId':contractId,"key":'应急'},
+            data:{'contractId':contractId,"key":'物流'},
             success: function (result) {
                 var data=eval(result);
-                 var contract= data.contract;
-                 //console.log(contract.modelName);
+                var contract= data.contract;
+                //console.log(contract.modelName);
                 //console.log(modelName);
-               // console.log(contract);
+                // console.log(contract);
                 //赋值签订时间
                 //初始显示模板
                 //console.log($('#model1').val());
@@ -77,7 +77,7 @@
                     data:{'modelName':contract.modelName},
                     success:function (result) {
                         var obj=eval(result);
-                      $('#content').val(obj.contractContent);
+                        $('#content').val(obj.contractContent);
                     },
                     error:function (result) {
                         alert("服务器异常！")
@@ -111,9 +111,9 @@
                 }
                 //赋值合同版本
                 var contractVersion=contract.contractVersion.name;
-              if(contractVersion=='公司合同'){
-                  contractVersion='companyContract'
-              }
+                if(contractVersion=='公司合同'){
+                    contractVersion='companyContract'
+                }
                 if(contractVersion=='客户合同'){
                     contractVersion='customerContract'
                 }
@@ -200,30 +200,29 @@
                             console.log(result);
                         }
                     });
-                    var clientName=$('#companyName');
-                    clientName.children().remove();
+                    var suppier=$('#suppier');
+                    suppier.children().remove();
                     index2="";
-                    $.each(data.companyNameList, function (index, item) {
+                    $.each(data.supplierNameList, function (index, item) {
                         var option = $('<option />');
                         option.val(index);
                         option.text(item.companyName);
-                        if(item.companyName==contract.company1){
+                        if(item.companyName==contract.suppierName){
                             index2=index;
                         }
-                        clientName.append(option);
+                        suppier.append(option);
                     });
-                    clientName.get(0).selectedIndex =index2;
+                    suppier.get(0).selectedIndex =index2;
                     $('.selectpicker').selectpicker('refresh');
-                    //赋值客户名称
-                    //供应商名称
-                    if(contract.company1!=""){
-                        $('#company1').prop("value",contract.company1);
+                    //赋值供应商名称
+                    if(contract.suppierName!=""){
+                        $('#suppierName').prop("value",contract.suppierName);
                     }
                     else {
-                        var options1=$("#companyName option:selected").val(); //获取选中的项
+                        var options1=$("#suppier option:selected").val(); //获取选中的项
                         //  console.log(options1);
-                        var company=data.companyNameList[options1];//取得被选中供应商的信息
-                        $('#company1').prop("value",company.companyName);
+                        var company=data.supplierNameList[options1];//取得被选中供应商的信息
+                        $('#suppierName').prop("value",company.suppierName);
                     }
                     //赋值模板列表
                     var contractType1=$('#contractType1');
@@ -251,9 +250,9 @@
                         option.val(index);
                         option.text(item.name);
                         if(contract.ticketRate1!=null){
-                              if(contract.ticketRate1.name==item.name){
-                                  index4=index;
-                              }
+                            if(contract.ticketRate1.name==item.name){
+                                index4=index;
+                            }
                         }
                         else index4=-1;
                         ticketRate1.append(option);
@@ -340,7 +339,7 @@
     }
     //获取时间
     function getTime(time) {
-       // var date=new Date(time);//转成Date
+        // var date=new Date(time);//转成Date
         var year=time.year+1900;
         var mouth=time.month+1;
         var day=time.date;
@@ -464,7 +463,7 @@
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
-        <h4 class="sub-header">应急合同申请表修改</h4>
+        <h4 class="sub-header">物流合同申请表修改</h4>
         <form method="post" id="contractInfoForm1" enctype="multipart/form-data" >
             <div class="row">
                 <div class="form-horizontal col-md-4">
@@ -495,9 +494,9 @@
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="companyName">客户名称</label>
-                        <div class="col-xs-4">
-                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
+                        <label  class="col-sm-4 control-label" for="suppier">供应商名称</label>
+                        <div class="col-xs-5">
+                            <select class="selectpicker input-sm form-control form-inline" data-live-search="true" data-live-search-placeholder="搜索..." id="suppier" name="suppier" onchange="findSuppier();">
                             </select>
                         </div>
                     </div>
@@ -555,15 +554,10 @@
                     <div class="form-group" >
                         <label for="contractType" class="col-sm-3 control-label"></label>
                         <div class="col-xs-5">
-                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Emergency" >
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Logistics" >
                             </input>
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <div class="col-xs-4" >
-                            <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
-                        </div>
-                    </div><!--隐藏域保存客户名称-->
                     <div class="form-group" >
                         <label for="contractType" class="col-sm-3 control-label"></label>
                         <div class="col-xs-5">
@@ -614,25 +608,24 @@
                             <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="">
                         </div>
                     </div>
-                    <!--<%&#45;&#45;<div class="form-group" >&#45;&#45;%>-->
-                    <!--<%&#45;&#45;<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>&#45;&#45;%>-->
-                    <!--<%&#45;&#45;<div class="col-xs-5">&#45;&#45;%>-->
-                        <!--<%&#45;&#45;<select class="form-control" id="taxRate2" name="ticketRate2">&#45;&#45;%>-->
-                            <!--<%&#45;&#45;</select>&#45;&#45;%>-->
-                        <!--<%&#45;&#45;</div>&#45;&#45;%>-->
-                    <!--<%&#45;&#45;</div>&#45;&#45;%>-->
                     <div class="form-group" >
                         <label for="contractId" class="col-sm-3 control-label"></label>
                         <div class="col-xs-5" >
                             <input type="hidden" class="form-control" id="contractId" name="contractId"  readonly >
                         </div>
                     </div>
-                   <!-- <div class="form-group" >
-                        <label for="contractId" class="col-sm-3 control-label"></label>
-                        <div class="col-xs-5" >
-                            <input type="hidden" class="form-control" id="model1" name="model1"  >
+                    <div class="form-group" >
+                        <label for="suppierName" class="col-sm-3 control-label"></label>
+                        <div class="col-xs-5">
+                            <input class="form-control"  type="hidden" id="suppierName" name="suppierName">
                         </div>
-                    </div>-->
+                    </div><!--隐藏域接收供应商的名称-->
+                    <!-- <div class="form-group" >
+                         <label for="contractId" class="col-sm-3 control-label"></label>
+                         <div class="col-xs-5" >
+                             <input type="hidden" class="form-control" id="model1" name="model1"  >
+                         </div>
+                     </div>-->
                 </div>
             </div>
             <div class="row text-center">
@@ -736,7 +729,7 @@
                     console.log("success: " + result);
                     alert("保存修改成功!");
                     $(location).attr('href', 'contractManage.html');
-                    localStorage.name="Emergency";
+                    localStorage.name="Logistics";
                     location.href="contractManage.html";
                 } else {
                     console.log("fail: " + result);
@@ -774,7 +767,7 @@
     }
     $('#back').click(function () {
         $(location).attr('href', 'contractManage.html');
-        localStorage.name="Emergency";
+        localStorage.name="Logistics";
         location.href="contractManage.html";
     });
     function Appear() {
@@ -824,48 +817,33 @@
         });
         $('#modelInfoForm').modal('show');
     }
-    function findClient() {
-        options=$("#companyName option:selected").val(); //获取选中的项
+    function findSuppier() {
+        //1获取选中的值====>供应商名称
+        //var companyName=($('#suppier').val());
+        options=$("#suppier option:selected").val(); //获取选中的项
         $.ajax({
             type:"POST",
             url:"getContractList",
             dataType: "json",
             success:function (result) {
                 var obj=eval(result);
-                var company=(obj.companyNameList[options]);//获取供应商的信息
-                console.log(company);
+                var suppier=(obj.supplierNameList[options]);//获取供应商的信息
+                // console.log(suppier);
                 //2赋值
-                //赋值联系人
-                //客户名称
-                $('#company1').prop("value",company.companyName);
-                $('#contactName').prop("value",company.contactName);
-                //赋值联系方式
-                if(company.mobile!=""&&company.phone==""){
-                    $('#telephone').prop("value",company.mobile);
-                }
-                if(company.mobile==""&&company.phone!=""){
-                    $('#telephone').prop("value",company.phone);
-                }
-                if(company.mobile==""&&company.phone==""){
-                    $('#telephone').prop("value","");
-                }
-                if(company.mobile!=""&&company.phone!=""){
-                    $('#telephone').prop("value",company.mobile);
-                }
-                //赋值开户行名称
-                $('#bankName').prop("value",company.bankName);
-                //赋值开户行账号
-                $('#bankAccount').prop("value",company.bankAccount);
-                $("#telephone").prop("value",company.phone);//电话
-                //赋值开票税率
-                var ticketRate1=$('#ticketRate1');
+                $("#telephone").prop("value",suppier.phone);//电话
+                $("#contactName").prop("value",suppier.contactName);//联系人
+                $('#bankAccount').prop("value",suppier.bankAccount);//开户行账号
+                $('#bankName').prop("value",suppier.bankName);//开户行名称
+                //$('#suppier').val(suppier.companyName);
+                $('#suppierName').prop("value",suppier.companyName);
+                var taxRate1=$('#taxRate1');
                 index1=""
-                ticketRate1.children().remove();
+                taxRate1.children().remove();
                 $.each(obj.ticketRateStrList1, function (index, item) {
                     //console.log(obj.ticketRateStrList1);
                     var option = $('<option />');
-                    if(company.ticketType!=null){
-                        if(company.ticketType.name==item.name){
+                    if(suppier.ticketRate!=null){
+                        if(suppier.ticketRate.name==item.name){
                             index1=index;
                         }
                     }
@@ -874,14 +852,17 @@
                     }
                     option.val(index);
                     option.text(item.name);
-                    ticketRate1.append(option);
+                    taxRate1.append(option);
                 });
-                ticketRate1.get(0).selectedIndex =index1;
+                taxRate1.get(0).selectedIndex =index1;
             },
             error:function (result) {
 
             }
         });
+
+        //3赋值给相应字段
+
     }
 </script>
 </html>
