@@ -37,6 +37,18 @@ public class Stock {
     * 危废列表
      */
    private List<Wastes> wastes;
+    /**
+     * 是否自营
+     */
+    private boolean selfEmployed;
+
+    public boolean isSelfEmployed() {
+        return selfEmployed;
+    }
+
+    public void setSelfEmployed(boolean selfEmployed) {
+        this.selfEmployed = selfEmployed;
+    }
 
     public String getStockId() {
         return stockId;
