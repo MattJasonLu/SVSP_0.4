@@ -66,7 +66,7 @@
                 var contract= data.contract;
                 //console.log(contract.modelName);
                 //console.log(modelName);
-                // console.log(contract);
+                 console.log(contract);
                 //赋值签订时间
                 //初始显示模板
                 //console.log($('#model1').val());
@@ -77,7 +77,10 @@
                     data:{'modelName':contract.modelName},
                     success:function (result) {
                         var obj=eval(result);
-                        $('#content').val(obj.contractContent);
+                        if(obj!=null){
+                            $('#content').val(obj.contractContent);
+                        }
+
                     },
                     error:function (result) {
                         alert("服务器异常！")
@@ -142,64 +145,64 @@
                 if (result != undefined) {
                     // 各下拉框数据填充
                     //省级填充
-                    index1="";
-                    var province = $("#province");
-                    province.children().remove();
-                    $.each(data.provinceStrList, function (index, item) {
-                        var option = $('<option />');
-                        option.val(index);
-                        option.text(item.name);
-                        if(data.province!=null){
-                            if(item.name==contract.province.name){
-                                index1=index;
-                            }
-                        }else {
-                            index1=-1;
-                        }
-
-                        province.append(option);
-                    });
-                    province.get().selectedIndex=index1;
-                    $('.selectpicker').selectpicker('refresh');
+                    // index1="";
+                    // var province = $("#province");
+                    // province.children().remove();
+                    // $.each(data.provinceStrList, function (index, item) {
+                    //     var option = $('<option />');
+                    //     option.val(index);
+                    //     option.text(item.name);
+                    //     if(data.province!=null){
+                    //         if(item.name==contract.province.name){
+                    //             index1=index;
+                    //         }
+                    //     }else {
+                    //         index1=-1;
+                    //     }
+                    //
+                    //     province.append(option);
+                    // });
+                    // province.get().selectedIndex=index1;
+                    // $('.selectpicker').selectpicker('refresh');
                     // console.log(provinceId);//省市ID
                     //获取相应的市级
-                    provinceId=contract.province.index;
-                    $.ajax({
-                        type: "POST",                            // 方法类型
-                        url: "getCityList",                  // url
-                        dataType: "json",
-                        data:{
-                            'provinceId': provinceId
-                        },
-                        success: function (result) {
-                            if (result != undefined) {
-                                var data = eval(result);
-                                //console.log(data);
-                                //var contractName = $("#contractName");
-                                //下拉框填充
-                                var city=$("#city");
-                                city.children().remove();
-                                cityIndex="";
-                                $.each(data, function (index, item) {
-                                    //  console.log(item);
-                                    var option1 = $('<option />');
-                                    option1.val(item.cityname);
-                                    option1.text(item.cityname);
-                                    if(data.city==item.cityname){
-                                        cityIndex=index;
-                                    }
-                                    city.append(option1);
-                                });
-                                $('.selectpicker').selectpicker('refresh');
-                                city.get(0).selectedIndex = cityIndex;
-                            } else {
-                                console.log(result);
-                            }
-                        },
-                        error:function (result) {
-                            console.log(result);
-                        }
-                    });
+                    // provinceId=contract.province.index;
+                    // $.ajax({
+                    //     type: "POST",                            // 方法类型
+                    //     url: "getCityList",                  // url
+                    //     dataType: "json",
+                    //     data:{
+                    //         'provinceId': provinceId
+                    //     },
+                    //     success: function (result) {
+                    //         if (result != undefined) {
+                    //             var data = eval(result);
+                    //             //console.log(data);
+                    //             //var contractName = $("#contractName");
+                    //             //下拉框填充
+                    //             var city=$("#city");
+                    //             city.children().remove();
+                    //             cityIndex="";
+                    //             $.each(data, function (index, item) {
+                    //                 //  console.log(item);
+                    //                 var option1 = $('<option />');
+                    //                 option1.val(item.cityname);
+                    //                 option1.text(item.cityname);
+                    //                 if(data.city==item.cityname){
+                    //                     cityIndex=index;
+                    //                 }
+                    //                 city.append(option1);
+                    //             });
+                    //             $('.selectpicker').selectpicker('refresh');
+                    //             city.get(0).selectedIndex = cityIndex;
+                    //         } else {
+                    //             console.log(result);
+                    //         }
+                    //     },
+                    //     error:function (result) {
+                    //         console.log(result);
+                    //     }
+                    // });
                     var suppier=$('#suppier');
                     suppier.children().remove();
                     index2="";
@@ -363,7 +366,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left">
+    <div class="container navbar-left" style="width: 900px;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
@@ -405,17 +408,7 @@
                     </ul>
                 </li>
                 <li><a href="#">一企一档</a></li>
-
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">个人信息</a></li>
-                        <li><a href="#">待办事项</a></li>
-                        <li><a href="index.html">注销</a></li>
-                    </ul>
-                </li>
+                <li ><a href="stockManage.html">库存申报</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -503,21 +496,21 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group" >
-                        <label class="col-sm-4 control-label" for="province">所属区域 </label>
-                        <form name="form1" method="post" action="">
-                            <div class="form-inline">
-                                <div class="form-group col-xs-3">
-                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">
-                                    </select>
-                                </div>
-                                <div class="form-group col-xs-3">
-                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="city" name="city">
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <!--<div class="form-group" >-->
+                        <!--<label class="col-sm-4 control-label" for="province">所属区域 </label>-->
+                        <!--<form name="form1" method="post" action="">-->
+                            <!--<div class="form-inline">-->
+                                <!--<div class="form-group col-xs-3">-->
+                                    <!--<select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                                <!--<div class="form-group col-xs-3">-->
+                                    <!--<select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="city" name="city">-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
                     <div class="form-group" >
                         <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
                         <div class="col-xs-4" id="contractName1" >
@@ -799,7 +792,7 @@
             success:function (result) {
                 if(result!=undefined){
                     var obj=eval(result);
-                    //console.log(obj);
+                    console.log(obj);
                     //$('input').prop("readonly",true);
                     // $('textarea').prop("readonly",true);
                     $('#modal3_modelName').val(obj.modelName);
