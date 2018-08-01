@@ -60,13 +60,13 @@
             type: "POST",                            // 方法类型
             url: "getContractId1",                  // url
             dataType: "json",
-            data:{'contractId':contractId,"key":'应急'},
+            data:{'contractId':contractId,"key":'危废'},//key是查询危废类别的模板
             success: function (result) {
                 var data=eval(result);
-                 var contract= data.contract;
-                 //console.log(contract.modelName);
+                var contract= data.contract;
+                //console.log(contract.modelName);
                 //console.log(modelName);
-               // console.log(contract);
+                // console.log(contract);
                 //赋值签订时间
                 //初始显示模板
                 //console.log($('#model1').val());
@@ -74,10 +74,10 @@
                     type: "POST",                            // 方法类型
                     url: "getContractBymodelName1",                  // url
                     dataType: "json",
-                    data:{'modelName':contract.modelName},
+                    data:{'modelName':contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
                     success:function (result) {
                         var obj=eval(result);
-                      $('#content').val(obj.contractContent);
+                        $('#content').val(obj.contractContent);//获得模板的内容
                     },
                     error:function (result) {
                         alert("服务器异常！")
@@ -111,9 +111,9 @@
                 }
                 //赋值合同版本
                 var contractVersion=contract.contractVersion.name;
-              if(contractVersion=='公司合同'){
-                  contractVersion='companyContract'
-              }
+                if(contractVersion=='公司合同'){
+                    contractVersion='companyContract'
+                }
                 if(contractVersion=='客户合同'){
                     contractVersion='customerContract'
                 }
@@ -200,6 +200,7 @@
                             console.log(result);
                         }
                     });
+                    //客户名称下拉框
                     var clientName=$('#companyName');
                     clientName.children().remove();
                     index2="";
@@ -251,9 +252,9 @@
                         option.val(index);
                         option.text(item.name);
                         if(contract.ticketRate1!=null){
-                              if(contract.ticketRate1.name==item.name){
-                                  index4=index;
-                              }
+                            if(contract.ticketRate1.name==item.name){
+                                index4=index;
+                            }
                         }
                         else index4=-1;
                         ticketRate1.append(option);
@@ -340,7 +341,7 @@
     }
     //获取时间
     function getTime(time) {
-       // var date=new Date(time);//转成Date
+        // var date=new Date(time);//转成Date
         var year=time.year+1900;
         var mouth=time.month+1;
         var day=time.date;
@@ -464,7 +465,7 @@
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
-        <h4 class="sub-header">应急合同申请表修改</h4>
+        <h4 class="sub-header">危废合同申请表修改</h4>
         <form method="post" id="contractInfoForm1" enctype="multipart/form-data" >
             <div class="row">
                 <div class="form-horizontal col-md-4">
@@ -555,7 +556,7 @@
                     <div class="form-group" >
                         <label for="contractType" class="col-sm-3 control-label"></label>
                         <div class="col-xs-5">
-                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Emergency" >
+                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
                             </input>
                         </div>
                     </div>
@@ -617,9 +618,9 @@
                     <!--<%&#45;&#45;<div class="form-group" >&#45;&#45;%>-->
                     <!--<%&#45;&#45;<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>&#45;&#45;%>-->
                     <!--<%&#45;&#45;<div class="col-xs-5">&#45;&#45;%>-->
-                        <!--<%&#45;&#45;<select class="form-control" id="taxRate2" name="ticketRate2">&#45;&#45;%>-->
-                            <!--<%&#45;&#45;</select>&#45;&#45;%>-->
-                        <!--<%&#45;&#45;</div>&#45;&#45;%>-->
+                    <!--<%&#45;&#45;<select class="form-control" id="taxRate2" name="ticketRate2">&#45;&#45;%>-->
+                    <!--<%&#45;&#45;</select>&#45;&#45;%>-->
+                    <!--<%&#45;&#45;</div>&#45;&#45;%>-->
                     <!--<%&#45;&#45;</div>&#45;&#45;%>-->
                     <div class="form-group" >
                         <label for="contractId" class="col-sm-3 control-label"></label>
@@ -627,12 +628,12 @@
                             <input type="hidden" class="form-control" id="contractId" name="contractId"  readonly >
                         </div>
                     </div>
-                   <!-- <div class="form-group" >
-                        <label for="contractId" class="col-sm-3 control-label"></label>
-                        <div class="col-xs-5" >
-                            <input type="hidden" class="form-control" id="model1" name="model1"  >
-                        </div>
-                    </div>-->
+                    <!-- <div class="form-group" >
+                         <label for="contractId" class="col-sm-3 control-label"></label>
+                         <div class="col-xs-5" >
+                             <input type="hidden" class="form-control" id="model1" name="model1"  >
+                         </div>
+                     </div>-->
                 </div>
             </div>
             <div class="row text-center">
@@ -736,7 +737,7 @@
                     console.log("success: " + result);
                     alert("保存修改成功!");
                     $(location).attr('href', 'contractManage.html');
-                    localStorage.name="Emergency";
+                    localStorage.name="Wastes";
                     location.href="contractManage.html";
                 } else {
                     console.log("fail: " + result);
@@ -774,7 +775,7 @@
     }
     $('#back').click(function () {
         $(location).attr('href', 'contractManage.html');
-        localStorage.name="Emergency";
+        localStorage.name="Wastes";
         location.href="contractManage.html";
     });
     function Appear() {
