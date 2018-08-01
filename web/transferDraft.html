@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接收管理</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+</head>
+<body>
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container navbar-left" style="width: 800px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页</a></li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">运输计划单</a></li>
+                        <li><a href="#">转移联单</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">送样登记</a></li>
+                        <li><a href="#">化验结果</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#">入库管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">危废入库</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">次生入库</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">磅单管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">危废查询</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">医废出入库登记</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="#" onclick="showLog();">登录日志</a></li>
+                <li><a href="index.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <ul class="sidenav animated fadeInUp">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="businessModel.html">接收管理</a></li>
+                    <li><a href="#">转移管理</a></li>
+                    <li class="active">转移联单</li>
+                </ol>
+            </div>
+            <h4 class="sub-header">联单列表</h4>
+            <div>
+                <!--操作按钮-->
+
+                <div class="pull-left">
+                    <a class="btn btn-primary btn-xs" href="transferDraftInfo.html"><span class="glyphicon glyphicon-plus"
+                                                                                   aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span
+                            class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" onclick="exportExcel(this);"><span
+                            class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                </div>
+                <!--查询框-->
+                <div class="input-group col-xs-3 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                    <span class="input-group-btn">
+                            <a class="btn btn-default" onclick=""><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-cog"
+                                    aria-hidden="true"></span> 高级查询</a>
+                        </span>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-clientId" class="col-sm-4 control-label">客户编号</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-clientId" name="search-clientId"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-companyName"
+                                       name="search-companyName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-clientState" class="col-sm-4 control-label">账号状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-clientState" name="search-clientState"></select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-contactName"
+                                   class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-contactName"
+                                       name="search-contactName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-applicationStatus" class="col-sm-4 control-label">申报状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-applicationStatus"
+                                        name="search-applicationStatus"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-phone" class="col-sm-4 control-label">联系电话</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-phone" name="search-phone"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-clientType" class="col-sm-4 control-label">客户类型</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-clientType" name="search-clientType"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table">
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                   id="allSel" onclick="allSelect();">
+                        </label>
+                    </th>
+                    <th class="text-center">联单编号</th>
+                    <th class="text-center" style="width: 300px">产生单位</th>
+                    <th class="text-center">运输单位</th>
+                    <th class="text-center">接收单位</th>
+                    <th class="text-center">发运人</th>
+                    <th class="text-center">运达地</th>
+                    <th class="text-center">转移时间</th>
+                    <th class="text-center">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="cloneTr">
+                    <td class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="checkbox1">
+                        </label>
+                    </td>
+                    <td class="text-center">0001</td>
+                    <td class="text-center">测试产生单位</td>
+                    <td class="text-center">测试运输单位</td>
+                    <td class="text-center">常州北控安耐得</td>
+                    <td class="text-center">张三</td>
+                    <td class="text-center">南京</td>
+                    <td class="text-center">2018-08-01</td>
+                    <td class="text-center">
+                        <a href="#" onclick="" title="查看"><span
+                                class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" onclick="" title="修改"><span
+                                class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <a href="#" onclick="" title="作废"><span
+                                class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--分页1-->
+        <nav aria-label="Page navigation" class="text-center">
+            <ol class="pagination" style="width: 800px;">
+                <li id="current"><a href='#'>当前页：</a>
+                <li id="firstPage">
+                    <a href='#' onclick="">首 页</a>
+                </li>
+                <li id="previous">
+                    <a href="#" aria-label="Previous" onclick="">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li id="next">
+                    <a href="#" aria-label="Next" onclick="">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                    </a>
+                </li>
+                <li id="endPage">
+                    <a href='#' onclick="">尾 页</a>
+                </li>
+                <li><a id="totalPage"></a></li>
+                <li><a href="#" onclick="">跳转</a></li>
+                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                           id="pageNumber"></li>
+                <li class="showLi">每页显示:</li>
+                <li class="selectLi">
+                    <select id="count" onchange="">
+                        <option>5</option>
+                        <option selected>15</option>
+                        <option>50</option>
+                    </select>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<div id="embed"></div>
+</body>
+<script>
+    $('#embed').load('embed/loginLogModal.html');
+</script>
+</html>
