@@ -1,6 +1,6 @@
 package com.jdlink.domain;
 
-import com.jdlink.domain.生产.Stock;
+import com.jdlink.domain.Produce.Stock;
 
 /**
  * Created by matt on 2018/7/4.
@@ -85,6 +85,18 @@ public class Wastes {
      * 和库存申报表存在一对多联系
      */
     private Stock stock;
+    /**
+     * 危废类别(8位)
+     */
+ private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     @Override
     public String toString() {
@@ -109,6 +121,7 @@ public class Wastes {
                 ", component='" + component + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", stock=" + stock +
+                ", code='" + code + '\'' +
                 '}';
     }
 
