@@ -77,7 +77,10 @@
                     data:{'modelName':contract.modelName},
                     success:function (result) {
                         var obj=eval(result);
-                      $('#content').val(obj.contractContent);
+                        if(obj!=null){
+                            $('#content').val(obj.contractContent);
+                        }
+
                     },
                     error:function (result) {
                         alert("服务器异常！")

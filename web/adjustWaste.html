@@ -64,12 +64,7 @@
             success: function (result) {
                 var data=eval(result);
                 var contract= data.contract;
-                //console.log(contract.modelName);
-                //console.log(modelName);
-                // console.log(contract);
-                //赋值签订时间
-                //初始显示模板
-                //console.log($('#model1').val());
+                console.log(contract);
                 $.ajax({
                     type: "POST",                            // 方法类型
                     url: "getContractBymodelName1",                  // url
@@ -77,7 +72,10 @@
                     data:{'modelName':contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
                     success:function (result) {
                         var obj=eval(result);
-                        $('#content').val(obj.contractContent);//获得模板的内容
+                        if(obj!=null){
+                            $('#content').val(obj.contractContent);//获得模板的内容
+                        }
+
                     },
                     error:function (result) {
                         alert("服务器异常！")
