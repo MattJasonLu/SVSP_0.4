@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>联单信息</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+</head>
+<body>
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container navbar-left" style="width: 800px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页</a></li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">运输计划单</a></li>
+                        <li><a href="#">转移联单</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">送样登记</a></li>
+                        <li><a href="#">化验结果</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#">入库管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">危废入库</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">次生入库</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="#">磅单管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">危废查询</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">医废出入库登记</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="#" onclick="showLog();">登录日志</a></li>
+                <li><a href="index.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <ul class="sidenav animated fadeInUp">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="businessModel.html">接收管理</a></li>
+                    <li><a href="#">转移管理</a></li>
+                    <li><a href="transferDraft.html">转移联单</a></li>
+                    <li class="active">联单信息</li>
+                </ol>
+            </div>
+            <h4 class="sub-header">联单信息</h4>
+        </div>
+        <form method="post" id="produceForm">
+            <div class="row">
+                <div class="form-horizontal col-md-2">
+                    <h4 class="text-info text-oneLine">危险产生单位填写</h4>
+                </div>
+                <div class="form-horizontal col-md-10">
+                    <img src="image/line.png" style="margin-top: 1px">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-8">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">产生单位</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                        <label class="col-sm-3 control-label">单位盖章</label>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">电话</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-8">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">通讯地址</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">运输单位</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">通讯地址</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">接收单位</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">通讯地址</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮编</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">电话</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮编</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">电话</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮编</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">废物名称</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">拟转移量</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">危废特性</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">废物类别</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">转&nbsp;&nbsp;移&nbsp;&nbsp;量</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">形&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">八&nbsp;&nbsp;位&nbsp;&nbsp;码</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">签&nbsp;&nbsp;收&nbsp;&nbsp;量</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">包装方式</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-8">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">外运目的</label>
+                        <div class="checkbox col-xs-10">
+                            <label>
+                                <input type="checkbox">中转储存
+                            </label>
+                            <label>
+                                <input type="checkbox">利用
+                            </label>
+                            <label>
+                                <input type="checkbox">处理
+                            </label>
+                            <label>
+                                <input type="checkbox">处置
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">主要危险成分</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">危险特性与禁忌</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">应急措施</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">应急设备</label>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">发运人</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">运达地</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">转移时间</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form method="post" id="transportForm">
+            <div class="row">
+                <div class="form-horizontal col-md-2">
+                    <h4 class="text-info text-oneLine">废物运输单位填写</h4>
+                </div>
+                <div class="form-horizontal col-md-10">
+                    <img src="image/line.png" style="margin-top: 1px">
+                </div>
+            </div>
+            <p class="text-center">运输者须知：必须核对以上栏目事项，当与实际情况不符时，有权拒绝接收</p>
+            <div class="row">
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">第一承运人</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">运输时间</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">车（船）型</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">牌号</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">道路运输证号</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">运输起点</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">经由地</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">运输终点</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">运输人签字</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">第二承运人</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">运输时间</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">车（船）型</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">牌号</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">道路运输证号</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">运输起点</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">经由地</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">运输终点</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">运输人签字</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form method="post" id="acceptForm">
+            <div class="row">
+                <div class="form-horizontal col-md-2">
+                    <h4 class="text-info text-oneLine">废物接收单位填写</h4>
+                </div>
+                <div class="form-horizontal col-md-10">
+                    <img src="image/line.png" style="margin-top: 1px">
+                </div>
+            </div>
+            <p class="text-center">接收者须知：必须核对以上栏目事项，当与实际情况不符时，有权拒绝接收</p>
+            <div class="row">
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">通讯地址</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">经营许可证号</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">接收日期</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">废物处置方式</label>
+                        <div class="checkbox col-xs-10">
+                            <label>
+                                <input type="checkbox">利用
+                            </label>
+                            <label>
+                                <input type="checkbox">贮存
+                            </label>
+                            <label>
+                                <input type="checkbox">焚烧
+                            </label>
+                            <label>
+                                <input type="checkbox">安全填埋
+                            </label>
+                            <label>
+                                <input type="checkbox">其他
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">单位负责人签字</label>
+                        <div class="col-xs-9">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">单位盖章</label>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">日期</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row text-center" style="margin-top: 5%;">
+            <a class="btn btn-success" onclick="">保存</a>
+            <a class="btn btn-primary" onclick="">提交</a>
+            <a class="btn btn-warning" onclick="">重置</a>
+            <a class="btn btn-danger" href="transferDraft.html">返回</a>
+        </div>
+    </div>
+</div>
+<div id="embed"></div>
+</body>
+<script>
+    $('#embed').load('embed/loginLogModal.html');
+</script>
+</html>

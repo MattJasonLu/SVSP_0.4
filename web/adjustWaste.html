@@ -64,12 +64,7 @@
             success: function (result) {
                 var data=eval(result);
                 var contract= data.contract;
-                //console.log(contract.modelName);
-                //console.log(modelName);
-                // console.log(contract);
-                //赋值签订时间
-                //初始显示模板
-                //console.log($('#model1').val());
+                console.log(contract);
                 $.ajax({
                     type: "POST",                            // 方法类型
                     url: "getContractBymodelName1",                  // url
@@ -77,7 +72,10 @@
                     data:{'modelName':contract.modelName},//如果是公司合同就会有合同模板名称作为合同名称
                     success:function (result) {
                         var obj=eval(result);
-                        $('#content').val(obj.contractContent);//获得模板的内容
+                        if(obj!=null){
+                            $('#content').val(obj.contractContent);//获得模板的内容
+                        }
+
                     },
                     error:function (result) {
                         alert("服务器异常！")
@@ -365,7 +363,7 @@
             </li>
         </ul>
     </div>
-    <div class="container navbar-left">
+    <div class="container navbar-left" style="width: 900px;">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
@@ -407,19 +405,9 @@
                     </ul>
                 </li>
                 <li><a href="#">一企一档</a></li>
-
+                <li ><a href="stockManage.html">库存申报</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">个人信息</a></li>
-                        <li><a href="#">待办事项</a></li>
-                        <li><a href="index.html">注销</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!--/.nav-collapse -->
+        </div>
     </div>
     <ul class="nav navbar-nav navbar-right">
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
