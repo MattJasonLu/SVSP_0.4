@@ -40,6 +40,22 @@ public class Stock {
      */
    private List<Wastes> wastesList=new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "stockId='" + stockId + '\'' +
+                ", proContactName='" + proContactName + '\'' +
+                ", proTelephone='" + proTelephone + '\'' +
+                ", transport='" + transport + '\'' +
+                ", transportTelephone='" + transportTelephone + '\'' +
+                ", plateNumber='" + plateNumber + '\'' +
+                ", wastesList=" + wastesList +
+                ", selfEmployed=" + selfEmployed +
+                ", addType='" + addType + '\'' +
+                ", checkState=" + checkState +
+                '}';
+    }
+
     public List<Wastes> getWastesList() {
         return wastesList;
     }
@@ -133,16 +149,4 @@ public class Stock {
     }
 
 
-    @Override
-    public String toString() {
-        return "Stock{" +
-                "stockId='" + stockId + '\'' +
-                ", proContactName='" + proContactName + '\'' +
-                ", proTelepgone='" + proTelephone + '\'' +
-                ", transport='" + transport + '\'' +
-                ", transportTelephone='" + transportTelephone + '\'' +
-                ", plateNumber='" + plateNumber + '\'' +
-                ", wastes=" + wastesList +
-                '}';
-    }
 }
