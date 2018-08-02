@@ -14,7 +14,10 @@ public enum CheckState implements CodeBaseEnum{
     Keeping("履约中", 6),
     Invalid("已作废", 7),
     Enabled("生效中", 8),
-    Disabled("已失效", 9)
+    Disabled("已失效", 9),
+    Tested("已化验",10),
+    Submitted("已提交",11),
+    Confirm("已确认",12)
     ;
 
     private String name;

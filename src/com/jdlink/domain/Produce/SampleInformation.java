@@ -1,5 +1,10 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.ApplyState;
+import com.jdlink.domain.CheckState;
+
+import java.util.Date;
+
 public class SampleInformation {
     /**
      * 公司代码
@@ -16,7 +21,17 @@ public class SampleInformation {
     /**
      * 样品预约状态
      */
-    //private SampleState sampleState;
+    private ApplyState applyState;
+
+    private String wastesName;
+
+    private Date samplingDate;
+
+    private String samplingNumber;
+
+    private boolean isProductionLine;
+
+    private boolean isStorageArea;
 
     private boolean isPH; // PH值
 
@@ -37,6 +52,38 @@ public class SampleInformation {
     private boolean isFlashPoint;  // 闪点
 
     private boolean isViscosity;  // 粘度
+
+    public Date getSamplingDate() {
+        return samplingDate;
+    }
+
+    public void setSamplingDate(Date samplingDate) {
+        this.samplingDate = samplingDate;
+    }
+
+    public String getSamplingNumber() {
+        return samplingNumber;
+    }
+
+    public void setSamplingNumber(String samplingNumber) {
+        this.samplingNumber = samplingNumber;
+    }
+
+    public boolean isProductionLine() {
+        return isProductionLine;
+    }
+
+    public void setProductionLine(boolean productionLine) {
+        isProductionLine = productionLine;
+    }
+
+    public boolean isStorageArea() {
+        return isStorageArea;
+    }
+
+    public void setStorageArea(boolean storageArea) {
+        isStorageArea = storageArea;
+    }
 
     public String getCompanyCode() {
         return companyCode;
@@ -61,14 +108,6 @@ public class SampleInformation {
     public void setLaboratorySigner(String laboratorySigner) {
         this.laboratorySigner = laboratorySigner;
     }
-
-//    public SampleState getSampleState() {
-//        return sampleState;
-//    }
-//
-//    public void setSampleState(SampleState sampleState) {
-//        this.sampleState = sampleState;
-//    }
 
     public boolean getIsPH() {
         return isPH;
@@ -150,22 +189,4 @@ public class SampleInformation {
         isViscosity = viscosity;
     }
 
-    @Override
-    public String toString() {
-        return "SampleInformation{" +
-                "companyCode='" + companyCode + '\'' +
-                ", wastesCode='" + wastesCode + '\'' +
-                ", laboratorySigner='" + laboratorySigner + '\'' +
-                ", isPH=" + isPH +
-                ", isAsh=" + isAsh +
-                ", isWater=" + isWater +
-                ", isHeat=" + isHeat +
-                ", isSulfur=" + isSulfur +
-                ", isChlorine=" + isChlorine +
-                ", isFluorine=" + isFluorine +
-                ", isPhosphorus=" + isPhosphorus +
-                ", isFlashPoint=" + isFlashPoint +
-                ", isViscosity=" + isViscosity +
-                '}';
-    }
 }
