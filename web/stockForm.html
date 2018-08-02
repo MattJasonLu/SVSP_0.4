@@ -19,7 +19,42 @@
 </head>
 <script>
     function init1() {
-        $("#transport1").hide();
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            style: 'btn-info',
+            size: 4
+        });//下拉框样式
+        $("#transport1").hide();//三个文本框隐藏
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getWastesInfoList",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result.data);
+                    // 各下拉框数据填充
+                    var wastesInfoList = $("#code");
+                    // 清空遗留元素
+                    wastesInfoList.children().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.code);
+                        option.text(item.code);
+                        wastesInfoList.append(option);
+                    });
+                    wastesInfoList.removeAttr('id');
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
     }
 </script>
 <body onload="init1()">
@@ -41,7 +76,7 @@
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
                 <li><a href="wastesPlatform.html">首页</a></li>
-                <li class="dropdown active">
+                <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="clientBackup.html">客户备案</a></li>
@@ -82,8 +117,8 @@
                         <li><a href="cost.html">成本管理</a></li>
                     </ul>
                 </li>
-                <li><a href="archivesManage.html">一企一档</a></li>
-                <li><a href="stockManage.html">库存申报</a></li>
+                <li ><a href="archivesManage.html">一企一档</a></li>
+                <li class="active"><a href="stockManage.html">库存申报</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -158,47 +193,71 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <p class="text-left" style="color: #e5454d;font-size: 17px;">库存具体明细&nbsp;&nbsp;</p>
-            </div>
-            <div class="row">
-                <div class="form-horizontal col-md-12">
+            <div class="row" id="transport1">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td class="text-center" style="width: 70px;">序号</td>
-                                    <td class="text-center">废物名称</td>
-                                    <td class="text-center">危废编码(类别)</td>
-                                    <td class="text-center">数量(公斤)</td>
-                                    <td class="text-center">成分</td>
-                                    <td class="text-center">备注</td>
-                                </tr>
-                                <tr id="cloneTr2">
-                                    <td class="text-center">1</td><!--序号-->
-                                    <td class="text-center"><input type="text" class="focus" name="name" style="width:100%; height:100%;"></td><!--废物名称-->
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="code" id="code"></select>
-                                        </div>
-                                    </td><!--危废编码-->
-                                    <td class="text-center"><input type="text" class="focus" name="wasteAmount" style="width:100%; height:100%;"></td><!--危废数量-->
-                                    <td class="text-center"><input type="number" class="focus" name="component" style="width:100%; height:100%;"></td><!--危废成分-->
-                                    <td class="text-center"><input type="text" class="focus" name="remarks" style="width:100%; height:100%;"></td><!--备注-->
-                                </tr>
-                                <tr id="plusBtn1">
-                                    <td><a class="btn btn-default btn-xs" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </table>
+                        <label for="transport" class="col-sm-4 control-label">运输公司</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="transport" name="transport" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label for="transportTelephone" class="col-sm-5 control-label">运输公司联系电话</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="transportTelephone" name="transportTelephone" placeholder="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-4">
+                    <div class="form-group">
+                        <label for="plateNumber" class="col-sm-4 control-label">车牌号</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="plateNumber" name="plateNumber" placeholder="">
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="form-horizontal col-md-3">
+                <p class="text-left" style="color: #e5454d;font-size: 17px;">库存具体明细&nbsp;&nbsp;</p>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-11 center-block">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>序号</th>
+                            <th>危险废物的名称</th>
+                            <th>危废编码(类别)</th>
+                            <th>数量(公斤)</th>
+                            <th>成分</th>
+                            <th>备注</th>
+                        </tr>
+                        <tr id="cloneTr1">
+                            <td class="text-center">1</td><!--序号-->
+                            <td class="text-center"><input type="text" class="focus" name="wastesList[0].name" style="width:100%; height:100%;"></td><!--废物名称-->
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesList[0].code" id="code"></select>
+                                </div>
+                            </td><!--危废编码-->
+                            <td class="text-center"><input type="text" class="focus" name="wastesList[0].wasteAmount" style="width:100%; height:100%;"></td><!--危废数量-->
+                            <td class="text-center"><input type="text" class="focus" name="wastesList[0].component" style="width:100%; height:100%;"></td><!--危废成分-->
+                            <td class="text-center"><input type="text" class="focus" name="wastesList[0].remarks" style="width:100%; height:100%;"></td><!--备注-->
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-4">
                     <div class="form-group">
                         <div class="checkbox col-md-5">
                             <label>
@@ -210,35 +269,26 @@
                 <div class="form-horizontal col-md-4">
                 </div>
             </div>
-            <div class="row" id="transport1">
-                <div class="form-horizontal col-md-2">
-                    <div class="form-group">
-                        <label for="transport" class="col-sm-4 control-label">运输公司</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="transport" name="transport" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-4">
-                    <div class="form-group">
-                        <label for="transportTelephone" class="col-sm-4 control-label">运输公司联系电话</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="transportTelephone" name="transportTelephone" placeholder="">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-2">
-                    <div class="form-group">
-                        <label for="plateNumber" class="col-sm-4 control-label">车牌号</label>
-                        <div class="col-xs-5">
-                            <input type="text" class="form-control" id="plateNumber" name="plateNumber" placeholder="">
+            <div class="row">
+                <div class="form-horizontal col-md-3" style="position:absolute;left:5%">
+                    <div class="form-group" >
+                        <label class="col-sm-4 control-label">保存之后 </label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="addType" id="addType1" value="continue" checked>
+                                继续添加
+                            </label>
+                            <label>
+                                <input type="radio" name="addType" id="addType2" value="break">
+                                返回列表
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
-            <br> <br> <br> <br> <br> <br> <br> <br> <br>
+            <br> <br> <br> <br> <br>
             <div class="row text-center">
-                <a class="btn btn-primary">保存</a>
+                <a class="btn btn-primary" onclick="save();">保存</a>
                 <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
             </div>
         </form>
@@ -258,31 +308,79 @@
 
      }
     }
-    function addNewLine1() {
+    function delLine(e) {
+        var tr = e.parentElement.parentElement;
+        tr.parentNode.removeChild(tr);
+    }
+    function save() {
+        //收集数据
+        var data={
+            'proContactName':$("#proContactName").val(),//产废单位联系人
+            'proTelepgone':$("#proTelepgone").val(),//产废联系人电话
+            'transport':$("#transport").val(),//运输公司
+            'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
+            'plateNumber':$("#plateNumber").val(),//车牌号
+            };
+        data['wastesList']=[];
+        // 危废的数量
+        var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
+        for (var i = 0; i < wastesListCount; i++) {
+            var $i = i;
+            var wastes = {};
+            wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
+            wastes.code=$("select[name='wastesList[" + $i + "].code']").selectpicker('val');
+            wastes.wasteAmount=$("input[name='wastesList[" + $i + "].wasteAmount']").val();
+            wastes.component=$("input[name='wastesList[" + $i + "].component']").val();
+            wastes.remarks=$("input[name='wastesList[" + $i + "].remarks']").val();
+            data['wastesList'].push(wastes);
+        }
+        $.ajax({
+           type:'POST',
+            url:"addStock",
+            data:JSON.stringify(data),
+            contentType: "application/json;charset=utf-8",
+            success:function (result) {
+               var obj=eval(result);
+                if(obj.state=="suceess"){
+                    alert("添加成功")
+                }
+                if(obj.state=="fail"){
+                    alert("添加失败")
+                }
+            },
+            error:function (result) {
+
+            }
+        });
+
+
+    }
+    function addNewLine() {
         // 获取id为cloneTr的tr元素
-        var tr = $("#plusBtn1").prev();
+        var tr = $("#plusBtn").prev();
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         // 克隆后清空新克隆出的行数据
         clonedTr.children("td:eq(1),td:eq(3),td:eq(4),td:eq(5)").find("input").val("");
         // 获取编号
-        var id = $("#plusBtn1").prev().children().get(0).innerHTML;
-        var num = parseInt(id);
-        if (!isNaN(num)) {
-            num++;
-            id2 = num;
-        } else {
-            id2++;
-            num = id2;
-        }
+        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        console.log(id.charAt(id.length-1));
+        var num = parseInt(id.charAt(id.length-1));
+        console.log(num);
+        num++;
         clonedTr.children().get(0).innerHTML = num;
-        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id2--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-        clonedTr.children("td:eq(0)").prepend(delBtn);
+        clonedTr.children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/[0-9]\d*/, num-1);
+            console.log(newName);
+            $(this).prop('name', newName);
+        });
         clonedTr.insertAfter(tr);
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+
     }
-    function delLine(e) {
-        var tr = e.parentElement.parentElement;
-        tr.parentNode.removeChild(tr);
-    }
+
+
 </script>
 </html>
