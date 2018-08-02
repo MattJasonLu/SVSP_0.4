@@ -364,17 +364,21 @@
         clonedTr.children("td:eq(1),td:eq(3),td:eq(4),td:eq(5)").find("input").val("");
         // 获取编号
         var id = $("#plusBtn").prev().children().get(0).innerHTML;
-        var num = parseInt(id);
+        console.log(id.charAt(id.length-1));
+        var num = parseInt(id.charAt(id.length-1));
+        console.log(num);
         num++;
         clonedTr.children().get(0).innerHTML = num;
-       // var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-        //clonedTr.children("td:eq(0)").prepend(delBtn);
         clonedTr.children("td:not(0)").find("input,select").each(function () {
             var name = $(this).prop('name');
-            var newName = name.replace(/[0-9]\d*/, id);
-            $(this).attr('name', newName);
+            var newName = name.replace(/[0-9]\d*/, num-1);
+            console.log(newName);
+            $(this).prop('name', newName);
         });
         clonedTr.insertAfter(tr);
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+
     }
 
 

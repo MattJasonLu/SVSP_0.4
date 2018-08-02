@@ -6,6 +6,6 @@ public interface StockMapper {
     /**
      * 添加申报信息
      */
-    void add(Stock Stock);
+    void add(Stock stock);
 
 }

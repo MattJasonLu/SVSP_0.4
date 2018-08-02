@@ -11,7 +11,7 @@
         <result property="transportTelephone" column="transportTelephone" javaType="String"></result>
         <result property="plateNumber" column="plateNumber" javaType="String"></result>
     </resultMap>
-<insert id="add" parameterMap="Stock">
+<insert id="add" parameterType="Stock">
 insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime)
 values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW());
     <if test="wastesList.size() > 0 ">
