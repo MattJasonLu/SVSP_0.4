@@ -16,7 +16,7 @@ public class SampleInformation {
     /**
      * 样品预约状态
      */
-    private SampleState sampleState;
+    //private SampleState sampleState;
 
     private boolean isPH; // PH值
 
@@ -62,13 +62,13 @@ public class SampleInformation {
         this.laboratorySigner = laboratorySigner;
     }
 
-    public SampleState getSampleState() {
-        return sampleState;
-    }
-
-    public void setSampleState(SampleState sampleState) {
-        this.sampleState = sampleState;
-    }
+//    public SampleState getSampleState() {
+//        return sampleState;
+//    }
+//
+//    public void setSampleState(SampleState sampleState) {
+//        this.sampleState = sampleState;
+//    }
 
     public boolean getIsPH() {
         return isPH;
@@ -156,7 +156,6 @@ public class SampleInformation {
                 "companyCode='" + companyCode + '\'' +
                 ", wastesCode='" + wastesCode + '\'' +
                 ", laboratorySigner='" + laboratorySigner + '\'' +
-                ", sampleState=" + sampleState +
                 ", isPH=" + isPH +
                 ", isAsh=" + isAsh +
                 ", isWater=" + isWater +
