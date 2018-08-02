@@ -6,6 +6,8 @@ import com.jdlink.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StockServiceImpl implements StockService {
     @Autowired
@@ -13,5 +15,15 @@ public class StockServiceImpl implements StockService {
     @Override
     public void add(Stock stock) {
         stockMapper.add(stock);
+    }
+
+    @Override
+    public List getStockIdList() {
+        return stockMapper.getStockIdList();
+    }
+
+    @Override
+    public List<Stock> list() {
+        return stockMapper.list();
     }
 }

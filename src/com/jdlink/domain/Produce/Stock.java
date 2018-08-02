@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Wastes;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class Stock {
     /**
      *产废联系电话
      */
-     private String proTelepgone;
+     private String proTelephone;
     /**
      *运输公司
      */
@@ -38,12 +39,34 @@ public class Stock {
     * 危废列表
      */
    private List<Wastes> wastesList=new ArrayList<>();
+
+    public List<Wastes> getWastesList() {
+        return wastesList;
+    }
+
+    public void setWastesList(List<Wastes> wastesList) {
+        this.wastesList = wastesList;
+    }
+
     /**
      * 是否自营
      */
     private boolean selfEmployed;
    //是否需要添加
     private String addType;
+    /**
+     * 状态
+     */
+    private CheckState checkState;
+
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public String getAddType() {
         return addType;
@@ -77,12 +100,12 @@ public class Stock {
         this.proContactName = proContactName;
     }
 
-    public String getProTelepgone() {
-        return proTelepgone;
+    public String getProTelephone() {
+        return proTelephone;
     }
 
-    public void setProTelepgone(String proTelepgone) {
-        this.proTelepgone = proTelepgone;
+    public void setProTelephone(String proTelephone) {
+        this.proTelephone = proTelephone;
     }
 
     public String getTransport() {
@@ -109,20 +132,13 @@ public class Stock {
         this.plateNumber = plateNumber;
     }
 
-    public List<Wastes> getWastes() {
-        return wastesList;
-    }
-
-    public void setWastes(List<Wastes> wastes) {
-        this.wastesList = wastes;
-    }
 
     @Override
     public String toString() {
         return "Stock{" +
                 "stockId='" + stockId + '\'' +
                 ", proContactName='" + proContactName + '\'' +
-                ", proTelepgone='" + proTelepgone + '\'' +
+                ", proTelepgone='" + proTelephone + '\'' +
                 ", transport='" + transport + '\'' +
                 ", transportTelephone='" + transportTelephone + '\'' +
                 ", plateNumber='" + plateNumber + '\'' +

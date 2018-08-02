@@ -84,7 +84,16 @@ public class Wastes {
     /**
      * 和库存申报表存在一对多联系
      */
-    private Stock stock;
+    private String stockId ;
+
+    public String getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
+    }
+
     /**
      * 危废类别(8位)
      */
@@ -120,18 +129,11 @@ public class Wastes {
                 ", wasteAmount=" + wasteAmount +
                 ", component='" + component + '\'' +
                 ", remarks='" + remarks + '\'' +
-                ", stock=" + stock +
+                ", stockId='" + stockId + '\'' +
                 ", code='" + code + '\'' +
                 '}';
     }
 
-    public Stock getStock() {
-        return stock;
-    }
-
-    public void setStock(Stock stock) {
-        this.stock = stock;
-    }
 
     public double getWasteAmount() {
         return wasteAmount;
