@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.TransferDraft;
 
 import java.util.List;
@@ -38,12 +39,25 @@ public interface TransferDraftMapper {
      * 列出所有联单
      * @return 联单列表
      */
-    List<TransferDraft> list();
+    List<TransferDraft> list(Page page);
 
     /**
      * 获取联单数量
      * @return 联单数量
      */
     int count();
+
+    /**
+     * 查询数据
+     * @param transferDraft 查询信息
+     * @return 结果
+     */
+    List<TransferDraft> search(TransferDraft transferDraft);
+
+    /**
+     * 查询数量
+     * @return 查询数量
+     */
+    int searchCount(TransferDraft transferDraft);
 
 }

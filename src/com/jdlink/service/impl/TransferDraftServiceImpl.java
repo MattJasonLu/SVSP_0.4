@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.TransferDraft;
 import com.jdlink.mapper.TransferDraftMapper;
 import com.jdlink.service.TransferDraftService;
@@ -38,12 +39,22 @@ public class TransferDraftServiceImpl implements TransferDraftService {
     }
 
     @Override
-    public List<TransferDraft> list() {
-        return transferDraftMapper.list();
+    public List<TransferDraft> list(Page page) {
+        return transferDraftMapper.list(page);
     }
 
     @Override
     public int count() {
         return transferDraftMapper.count();
+    }
+
+    @Override
+    public List<TransferDraft> search(TransferDraft transferDraft) {
+        return transferDraftMapper.search(transferDraft);
+    }
+
+    @Override
+    public int searchCount(TransferDraft transferDraft) {
+        return transferDraftMapper.searchCount(transferDraft);
     }
 }
