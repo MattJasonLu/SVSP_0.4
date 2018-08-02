@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.TransferDraftMapper">
+    <insert id="add" parameterType="TransferDraft" >
+        INSERT INTO t_pr_transferdraft (id, checkState, produceCompanyId, transportCompanyId, acceptCompanyId,
+        wastesId, outwardIsTransit, outwardIsUse, outwardIsDeal, outwardIsDispose, mainDangerComponent,
+        dangerCharacter, emergencyMeasure, emergencyEquipment, dispatcher, destination, transferTime,
+        firstCarrier, firstCarryTime, firstModel, firstTransportNumber, firstOrigin, firstStation,
+        firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel,
+        secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
+        acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn,
+        disposeIsLandFill, disposeIsOther, headSign, signDate, nowTime) VALUES (#{id}, #{checkState}, #{produceCompanyId},
+        #{transportCompanyId}, #{acceptCompanyId}, #{wastesId}, #{outwardIsTransit}, #{outwardIsUse},
+        #{outwardIsDeal}, #{outwardIsDispose}, #{mainDangerComponent}, #{dangerCharacter}, #{emergencyMeasure},
+        #{emergencyEquipment}, #{dispatcher}, #{destination}, #{transferTime}, #{firstCarrier},
+        #{firstCarryTime}, #{firstModel}, #{firstTransportNumber}, #{firstOrigin}, #{firstStation},
+        #{firstDestination}, #{firstCarrierSign}, #{secondCarrier}, #{secondCarryTime}, #{secondModel},
+        #{secondTransportNumber}, #{secondOrigin}, #{secondStation}, #{secondDestination}, #{secondCarrierSign},
+        #{acceptCompanyLicense}, #{recipient}, #{acceptDate}, #{disposeIsUse}, #{disposeIsStore}, #{disposeIsBurn},
+        #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW());
+    </insert>
+
+    <select id="getById" parameterType="String" resultType="TransferDraft">
+        SELECT * FROM t_pr_transferdraft WHERE id=#{id};
+    </select>
+
+    <update id="update" parameterType="TransferDraft" >
+        UPDATE t_pr_transferdraft SET produceCompanyId=#{produceCompanyId}, transportCompanyId=#{transportCompanyId},
+        acceptCompanyId=#{acceptCompanyId}, wastesId=#{wastesId}, outwardIsTransit=#{outwardIsTransit},
+        outwardIsUse=#{outwardIsUse}, outwardIsDeal=#{outwardIsDeal}, outwardIsDispose=#{outwardIsDispose},
+        mainDangerComponent=#{mainDangerComponent}, dangerCharacter=#{dangerCharacter}, emergencyMeasure=#{emergencyMeasure},
+        emergencyEquipment=#{emergencyEquipment}, dispatcher=#{dispatcher}, destination=#{destination},
+        transferTime=#{transferTime}, firstCarrier=#{firstCarrier}, firstCarryTime=#{firstCarryTime}, firstModel=#{firstModel},
+        firstTransportNumber=#{firstTransportNumber}, firstOrigin=#{firstOrigin}, firstStation=#{firstStation},
+        firstDestination=#{firstDestination}, firstCarrierSign=#{firstCarrierSign}, secondCarrier=#{secondCarrier},
+        secondCarryTime=#{secondCarryTime}, secondModel=#{secondModel}, secondTransportNumber=#{secondTransportNumber},
+        secondOrigin=#{secondOrigin}, secondStation=#{secondStation}, secondDestination=#{secondDestination},
+        secondCarrierSign=#{secondCarrierSign}, acceptCompanyLicense=#{acceptCompanyLicense}, recipient=#{recipient},
+        acceptDate=#{acceptDate}, disposeIsUse=#{disposeIsUse}, disposeIsStore=#{disposeIsStore}, disposeIsBurn=#{disposeIsBurn},
+        disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate},
+        nowTime=NOW() WHERE id=#{id};
+    </update>
+
+    <update id="setStateInvalid" parameterType="String">
+        UPDATE t_pr_transferdraft SET checkState='Invalid' WHERE id=#{id};
+    </update>
+
+    <select id="list" resultType="TransferDraft">
+        SELECT * FROM t_pr_transferdraft ORDER BY nowTime DESC;
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_pr_transferdraft;
+    </select>
+</mapper>

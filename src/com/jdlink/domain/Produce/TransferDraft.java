@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Supplier;
 import com.jdlink.domain.Wastes;
@@ -11,6 +12,14 @@ import java.util.Date;
  * 转运联单
  */
 public class TransferDraft {
+    /**
+     * 联单编号
+     */
+    private String id;
+    /**
+     * 状态
+     */
+    private CheckState checkState;
     // 生产单位填写信息
     /**
      * 产生单位
@@ -155,7 +164,7 @@ public class TransferDraft {
     /**
      * 废物处置方式-是否利用
      */
-    private boolean disposeIsUser;
+    private boolean disposeIsUse;
     /**
      * 废物处置方式-是否贮存
      */
@@ -180,6 +189,22 @@ public class TransferDraft {
      * 填写日期
      */
     private Date signDate;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public Client getProduceCompany() {
         return produceCompany;
@@ -453,12 +478,12 @@ public class TransferDraft {
         this.acceptDate = acceptDate;
     }
 
-    public boolean isDisposeIsUser() {
-        return disposeIsUser;
+    public boolean isDisposeIsUse() {
+        return disposeIsUse;
     }
 
-    public void setDisposeIsUser(boolean disposeIsUser) {
-        this.disposeIsUser = disposeIsUser;
+    public void setDisposeIsUse(boolean disposeIsUse) {
+        this.disposeIsUse = disposeIsUse;
     }
 
     public boolean isDisposeIsStore() {
@@ -512,7 +537,8 @@ public class TransferDraft {
     @Override
     public String toString() {
         return "TransferDraft{" +
-                "produceCompany=" + produceCompany +
+                "id='" + id + '\'' +
+                ", produceCompany=" + produceCompany +
                 ", transportCompany=" + transportCompany +
                 ", acceptCompany=" + acceptCompany +
                 ", wastes=" + wastes +
@@ -546,7 +572,7 @@ public class TransferDraft {
                 ", acceptCompanyLicense='" + acceptCompanyLicense + '\'' +
                 ", recipient='" + recipient + '\'' +
                 ", acceptDate=" + acceptDate +
-                ", disposeIsUser=" + disposeIsUser +
+                ", disposeIsUse=" + disposeIsUse +
                 ", disposeIsStore=" + disposeIsStore +
                 ", disposeIsBurn=" + disposeIsBurn +
                 ", disposeIsLandFill=" + disposeIsLandFill +
