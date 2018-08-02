@@ -129,11 +129,14 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" onclick="clearQuestionnaire();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" onclick="signInQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
-                        <a class="btn btn-primary btn-xs" onclick="backQuestionnaireByCheckBox();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 退回</a>
-                        <a class="btn btn-primary btn-xs" onclick="importExcelChoose()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 签收</a>
+                        <a class="btn btn-primary btn-xs" onclick="setInvalid()"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" onclick="setTested()"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 化验</a>
+                        <a class="btn btn-primary btn-xs" onclick="submit()"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 提交</a>
+                        <a class="btn btn-primary btn-xs" onclick="confirm()"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 签收</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
@@ -579,7 +582,7 @@
                                     </tr>
                                     <tr>
                                         <td>9</td>
-                                        <td><input type="checkbox">铁Te</td>
+                                        <td><input type="checkbox">铁Fe</td>
                                         <td><p class="text-left"><span></span></p></td>
                                         <td><p class="text-left"><span></span></p></td>
                                         <td><p class="text-left"><span></span></p></td>
@@ -608,7 +611,7 @@
                                         <td><p class="text-left"><span></span></p></td>
                                         <td><p class="text-left"><span></span></p></td>
                                         <td>26</td>
-                                        <td><input type="checkbox">铊Ti</td>
+                                        <td><input type="checkbox">铊Tl</td>
                                         <td><p class="text-left"><span></span></p></td>
                                         <td><p class="text-left"><span></span></p></td>
                                         <td><p class="text-left"><span></span></p></td>
@@ -696,10 +699,62 @@
 <script>
     $('#embed').load('embed/loginLogModal.html');
     /**
-     * 显示模态框
+     * 查看模态框
      * */
     function view() {
         $("#viewExcelModal").modal('show');
+    }
+    function setInvalid() {    //已作废
+        var id = "Q000000001";
+        $.ajax({
+            type:"POST",
+            url:"setLaboratoryTestInvalid",
+            async:false,
+            dataType:"json",
+            data:{"laboratoryTestNumber":id},
+            success:function (result) {
+                console.log(result);
+            }
+        })
+    }
+    function setTested() {   //已化验
+        var id = "Q000000001";
+        $.ajax({
+            type:"POST",
+            url:"setLaboratoryTestTested",
+            async:false,
+            dataType:"json",
+            data:{"laboratoryTestNumber":id},
+            success:function (result) {
+                console.log(result);
+            }
+        })
+    }
+    function submit() {   //已提交
+        var id = "Q000000001";
+        $.ajax({
+            type:"POST",
+            url:"submit",
+            async:false,
+            dataType:"json",
+            data:{"laboratoryTestNumber":id},
+            success:function (result) {
+                console.log(result);
+            }
+        })
+    }
+    function confirm() {   //已确认
+        var id = "Q000000001";
+        $.ajax({
+            type:"POST",
+            url:"confirm",
+            async:false,
+            dataType:"json",
+            data:{"laboratoryTestNumber":id},
+            success:function (result) {
+                console.log(result);
+            }
+        })
     }
 </script>
 </html>

@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Produce.HeavyMetal;
 import com.jdlink.domain.Produce.Parameter;
 
 import java.util.Date;
@@ -15,6 +16,8 @@ public class MixingElement {
     private String name;
 
     private Parameter parameter;
+
+    private HeavyMetal heavyMetal;
     /**
      * 最低预估含量(%)
      */
