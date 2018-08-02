@@ -39,6 +39,15 @@ public class Stock {
     * 危废列表
      */
    private List<Wastes> wastesList=new ArrayList<>();
+
+    public List<Wastes> getWastesList() {
+        return wastesList;
+    }
+
+    public void setWastesList(List<Wastes> wastesList) {
+        this.wastesList = wastesList;
+    }
+
     /**
      * 是否自营
      */
@@ -50,13 +59,6 @@ public class Stock {
      */
     private CheckState checkState;
 
-    public List<Wastes> getWastesList() {
-        return wastesList;
-    }
-
-    public void setWastesList(List<Wastes> wastesList) {
-        this.wastesList = wastesList;
-    }
 
     public CheckState getCheckState() {
         return checkState;
@@ -130,13 +132,6 @@ public class Stock {
         this.plateNumber = plateNumber;
     }
 
-    public List<Wastes> getWastes() {
-        return wastesList;
-    }
-
-    public void setWastes(List<Wastes> wastes) {
-        this.wastesList = wastes;
-    }
 
     @Override
     public String toString() {

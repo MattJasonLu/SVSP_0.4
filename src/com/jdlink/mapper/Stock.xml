@@ -10,6 +10,8 @@
         <result property="transport" column="transport" javaType="String"></result>
         <result property="transportTelephone" column="transportTelephone" javaType="String"></result>
         <result property="plateNumber" column="plateNumber" javaType="String"></result>
+        <result property="checkState" column="checkState" javaType="CheckState"></result>
+        <collection property="wastesList" select="getWastes" column="stockId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
 <insert id="add" parameterType="Stock">
 insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState)
@@ -21,5 +23,15 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
     <select id="getStockIdList" resultType="String">
         select  stockId from  t_pr_stock;
     </select>
-
+<select id="list" resultMap="StockRM">
+    select * from t_pr_stock;
+    <if test="start != null and count != null">
+        limit #{start}, #{count}
+    </if>
+</select>
+    <select id="getWastes" resultType="Wastes">
+        SELECT * FROM t_wastes WHERE stockId in (
+          SELECT t_pr_stock.stockId FROM t_pr_stock
+          WHERE t_wastes.stockId=#{stockId});
+    </select>
 </mapper>

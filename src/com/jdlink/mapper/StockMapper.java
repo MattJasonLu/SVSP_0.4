@@ -13,4 +13,9 @@ public interface StockMapper {
      * 获取申报Id
      */
     List getStockIdList();
+    /**
+     * 获取库存信息
+     *
+     */
+    List<Stock> list();
 }

@@ -1,10 +1,12 @@
 package com.jdlink.controller;
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Contract;
 import com.jdlink.domain.Hazardous;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.StockService;
 import com.jdlink.util.RandomUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,17 +46,33 @@ public class StockController {
         }
         stock.setCheckState(CheckState.ToSubmit);//设置为待提交
         // 设置每个危废的编码,唯一
-        for (Wastes wastesList : stock.getWastes()) {
+        for (Wastes wastesList : stock.getWastesList()) {
             wastesList.setId(RandomUtil.getRandomEightNumber());
             wastesList.setStockId(stock.getStockId());
-            //System.out.println(JSONObject.fromBean(wastesList).toString());
         }
             stockService.add(stock);
-            //res.put("state","success");
-
-
-            // res.put("state","fail");
-
         return res.toString();
     }
+
+    @RequestMapping("loadPageStocktList")
+    @ResponseBody
+    public String loadPageStocktList(){
+        JSONObject res = new JSONObject();
+     //1查找所有的库存申报信息
+        try {
+            List<Stock> stockList=stockService.list();
+            JSONArray array = JSONArray.fromArray(stockList.toArray(new Stock[stockList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("stocktList",array);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+         return  res.toString();
+
+    }
+
 }
