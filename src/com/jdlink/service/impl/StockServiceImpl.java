@@ -21,4 +21,9 @@ public class StockServiceImpl implements StockService {
     public List getStockIdList() {
         return stockMapper.getStockIdList();
     }
+
+    @Override
+    public List<Stock> list() {
+        return stockMapper.list();
+    }
 }

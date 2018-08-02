@@ -7,4 +7,5 @@ import java.util.List;
 public interface StockService {
     void add(Stock stock);
     List getStockIdList();
+    List<Stock> list();
 }

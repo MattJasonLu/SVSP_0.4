@@ -16,46 +16,10 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/stock.js"></script>
 </head>
 <script>
-    function init1() {
-        $('.selectpicker').selectpicker({
-            language: 'zh_CN',
-            style: 'btn-info',
-            size: 4
-        });//下拉框样式
-        $("#transport1").show();//三个文本框隐藏
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getWastesInfoList",              // url
-            cache: false,
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined) {
-                    var data = eval(result.data);
-                    // 各下拉框数据填充
-                    var wastesInfoList = $("#code");
-                    // 清空遗留元素
-                    wastesInfoList.children().remove();
-                    $.each(data, function (index, item) {
-                        var option = $('<option />');
-                        option.val(item.code);
-                        option.text(item.code);
-                        wastesInfoList.append(option);
-                    });
-                    wastesInfoList.removeAttr('id');
-                    $('.selectpicker').selectpicker('refresh');
-                } else {
-                    console.log(result);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
-    }
+
 </script>
 <body onload="init1()">
 <!--导航条-->
@@ -297,93 +261,7 @@
 <div id="embed"></div>
 </body>
 <script>
-    //判断是否是自运单位
-    function judge(item) {
-       var s= $('input[type=checkbox]:checked').val();
-     if(s=='on'){
-   $("#transport1").hide(1000);
-     }
-     else {
-         $("#transport1").show(1000);
 
-     }
-    }
-    function delLine(e) {
-        var tr = e.parentElement.parentElement;
-        tr.parentNode.removeChild(tr);
-    }
-    function save() {
-        //收集数据
-        var data={
-            'proContactName':$("#proContactName").val(),//产废单位联系人
-            'proTelephone':$("#proTelephone").val(),//产废联系人电话
-            'transport':$("#transport").val(),//运输公司
-            'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
-            'plateNumber':$("#plateNumber").val(),//车牌号
-            };
-        data['wastesList']=[];
-        // 危废的数量
-        var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
-        for (var i = 0; i < wastesListCount; i++) {
-            var $i = i;
-            var wastes = {};
-            wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
-            wastes.code=$("select[name='wastesList[" + $i + "].code']").selectpicker('val');
-            wastes.wasteAmount=$("input[name='wastesList[" + $i + "].wasteAmount']").val();
-            wastes.component=$("input[name='wastesList[" + $i + "].component']").val();
-            wastes.remarks=$("input[name='wastesList[" + $i + "].remarks']").val();
-            data['wastesList'].push(wastes);
-        }
-        $.ajax({
-           type:'POST',
-            url:"addStock",
-            data:JSON.stringify(data),
-            contentType: "application/json;charset=utf-8",
-            success:function (result) {
-
-                if(result!=null){
-                    alert("添加成功!");
-                    var obj=eval(result);
-                    console.log(obj);
-
-                }
-               else{
-                    alert("添加失败")
-                }
-            },
-            error:function (result) {
-
-            }
-        });
-
-
-    }
-    function addNewLine() {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#plusBtn").prev();
-        // 克隆tr，每次遍历都可以产生新的tr
-        var clonedTr = tr.clone();
-        // 克隆后清空新克隆出的行数据
-        clonedTr.children("td:eq(1),td:eq(3),td:eq(4),td:eq(5)").find("input").val("");
-        // 获取编号
-        var id = $("#plusBtn").prev().children().get(0).innerHTML;
-        //console.log(id);
-       var id1=(id.replace(/[^0-9]/ig,""));
-        var num = parseInt(id1);
-        num++;
-        clonedTr.children().get(0).innerHTML = num;
-        clonedTr.children("td:not(0)").find("input,select").each(function () {
-            var name = $(this).prop('name');
-            var newName = name.replace(/[0-9]\d*/, num-1);
-            console.log(newName);
-            $(this).prop('name', newName);
-        });
-        clonedTr.insertAfter(tr);
-        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-        clonedTr.children("td:eq(0)").prepend(delBtn);
-
-
-    }
 
 
 </script>
