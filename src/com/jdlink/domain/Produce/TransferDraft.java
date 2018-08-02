@@ -1,9 +1,6 @@
 package com.jdlink.domain.Produce;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Supplier;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.*;
 
 import java.util.Date;
 
@@ -96,6 +93,10 @@ public class TransferDraft {
      */
     private String firstModel;
     /**
+     * 牌号1
+     */
+    private String firstBrand;
+    /**
      * 道路运输证号1
      */
     private String firstTransportNumber;
@@ -127,6 +128,10 @@ public class TransferDraft {
      * 车（船）型2
      */
     private String secondModel;
+    /**
+     * 牌号2
+     */
+    private String secondBrand;
     /**
      * 道路运输证号2
      */
@@ -189,6 +194,18 @@ public class TransferDraft {
      * 填写日期
      */
     private Date signDate;
+    /**
+     * 记录最后操作时间，用于排序
+     */
+    private Date nowTime;
+    /**
+     * 关键字，用于查询
+     */
+    private String keyword;
+    /**
+     * 页码，用于翻页
+     */
+    private Page page;
 
     public String getId() {
         return id;
@@ -532,6 +549,46 @@ public class TransferDraft {
 
     public void setSignDate(Date signDate) {
         this.signDate = signDate;
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getFirstBrand() {
+        return firstBrand;
+    }
+
+    public void setFirstBrand(String firstBrand) {
+        this.firstBrand = firstBrand;
+    }
+
+    public String getSecondBrand() {
+        return secondBrand;
+    }
+
+    public void setSecondBrand(String secondBrand) {
+        this.secondBrand = secondBrand;
     }
 
     @Override

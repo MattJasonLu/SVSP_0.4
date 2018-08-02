@@ -12,8 +12,8 @@
         firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel,
         secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
         acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn,
-        disposeIsLandFill, disposeIsOther, headSign, signDate, nowTime) VALUES (#{id}, #{checkState}, #{produceCompanyId},
-        #{transportCompanyId}, #{acceptCompanyId}, #{wastesId}, #{outwardIsTransit}, #{outwardIsUse},
+        disposeIsLandFill, disposeIsOther, headSign, signDate, nowTime) VALUES (#{id}, #{checkState}, #{produceCompany.clientId},
+        #{transportCompany.supplierId}, #{acceptCompany.clientId}, #{wastes.id}, #{outwardIsTransit}, #{outwardIsUse},
         #{outwardIsDeal}, #{outwardIsDispose}, #{mainDangerComponent}, #{dangerCharacter}, #{emergencyMeasure},
         #{emergencyEquipment}, #{dispatcher}, #{destination}, #{transferTime}, #{firstCarrier},
         #{firstCarryTime}, #{firstModel}, #{firstTransportNumber}, #{firstOrigin}, #{firstStation},
@@ -21,6 +21,11 @@
         #{secondTransportNumber}, #{secondOrigin}, #{secondStation}, #{secondDestination}, #{secondCarrierSign},
         #{acceptCompanyLicense}, #{recipient}, #{acceptDate}, #{disposeIsUse}, #{disposeIsStore}, #{disposeIsBurn},
         #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW());
+
+        INSERT INTO t_wastes (id, name, category, code, prepareTransferCount, transferCount, signCount, wastesCharacter,
+        formType, packageType) VALUES (#{wastes.id}, #{wastes.name}, #{wastes.category}, #{wastes.code},
+        #{wastes.prepareTransferCount}, #{wastes.transferCount}, #{wastes.signCount}, #{wastes.wastesCharacter},
+        #{wastes.formType}, #{wastes.packageType});
     </insert>
 
     <select id="getById" parameterType="String" resultType="TransferDraft">
@@ -28,8 +33,8 @@
     </select>
 
     <update id="update" parameterType="TransferDraft" >
-        UPDATE t_pr_transferdraft SET produceCompanyId=#{produceCompanyId}, transportCompanyId=#{transportCompanyId},
-        acceptCompanyId=#{acceptCompanyId}, wastesId=#{wastesId}, outwardIsTransit=#{outwardIsTransit},
+        UPDATE t_pr_transferdraft SET produceCompanyId=#{produceCompany.clientId}, transportCompanyId=#{transportCompany.supplierId},
+        acceptCompanyId=#{acceptCompany.clientId}, wastesId=#{wastesId}, outwardIsTransit=#{outwardIsTransit},
         outwardIsUse=#{outwardIsUse}, outwardIsDeal=#{outwardIsDeal}, outwardIsDispose=#{outwardIsDispose},
         mainDangerComponent=#{mainDangerComponent}, dangerCharacter=#{dangerCharacter}, emergencyMeasure=#{emergencyMeasure},
         emergencyEquipment=#{emergencyEquipment}, dispatcher=#{dispatcher}, destination=#{destination},
@@ -49,10 +54,43 @@
     </update>
 
     <select id="list" resultType="TransferDraft">
-        SELECT * FROM t_pr_transferdraft ORDER BY nowTime DESC;
+        SELECT * FROM t_pr_transferdraft ORDER BY nowTime DESC
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
     </select>
 
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM t_pr_transferdraft;
+    </select>
+
+    <select id="search" parameterType="TransferDraft" resultType="TransferDraft">
+        SELECT * FROM t_pr_transferdraft
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="TransferDraft" resultType="int">
+        SELECT COUNT(*) FROM t_pr_transferdraft
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
+                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
+            </if>
+        </where>
     </select>
 </mapper>
