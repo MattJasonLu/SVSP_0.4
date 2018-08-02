@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Produce.Stock;
+import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.StockMapper;
 import com.jdlink.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StockServiceImpl implements StockService {
+public class StockServiceImpl implements StockService  {
     @Autowired
     StockMapper stockMapper;
     @Override
@@ -36,4 +37,11 @@ public class StockServiceImpl implements StockService {
     public void updateStock(Stock stock) {
         stockMapper.updateStock(stock);
     }
+
+    @Override
+    public void updateWastes(Wastes wastes) {
+        stockMapper.updateWastes(wastes);
+    }
+
+
 }

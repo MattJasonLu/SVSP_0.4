@@ -34,7 +34,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
           SELECT t_pr_stock.stockId FROM t_pr_stock
           WHERE t_wastes.stockId=#{stockId});
     </select>
-    <update id="updateWastes" parameterType="String">
+    <update id="updateWastes" parameterType="Wastes">
          update t_wastes set name=#{wastes.name},code=#{wastes.code},
             wasteAmount=#{wastes.wasteAmount},component=#{wastes.component},
             remarks=#{wastes.remarks} where stockId=#{stockId}
@@ -47,7 +47,11 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         update t_pr_stock set proContactName=#{proContactName},proTelephone=#{proTelephone},
         transport=#{transport},transportTelephone=#{transportTelephone},
         plateNumber=#{plateNumber},selfEmployed=#{selfEmployed},
-        nowTime=NOW(),checkState=#{checkState} where stockId=#{stockId}
-
+        nowTime=NOW(),checkState=#{checkState} where stockId=#{stockId};
+        <if test="wastesList.size()> 0" >
+        <foreach collection="wastesList"  item="wastes" index="index">
+            update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{wastes.stockId};
+        </foreach>
+        </if>
     </update>
  </mapper>
