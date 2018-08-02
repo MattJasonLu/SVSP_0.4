@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.SampleInformationMapper">
+    <insert id="add" parameterType="SampleInformation">
+        INSERT INTO t_pr_sampleinformation (companyCode, wastesCode, applyState, laboratorySigner, isPH, isAsh, isWater, isHeat, isSulfur, isChlorine, isFluorine, isPhosphorus, isFlashPoint, isViscosity)
+        VALUES (#{companyCode},#{wastesCode},#{applyState},#{laboratorySigner},#{isPH},#{isAsh},#{isWater},#{isHeat},#{isSulfur},
+        #{isChlorine},#{isFluorine},#{isPhosphorus},#{isFlashPoint},#{isViscosity})
+      </insert>
+
+    <select id="listPage" resultType="SampleInformation">
+        select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity
+        from t_pr_sampleinformation
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from t_pr_sampleinformation;
+    </select>
+
+    <select id="getByCode" resultType="SampleInformation">
+        select * from t_pr_sampleinformation WHERE companyCode = #{companyCode}
+    </select>
+
+    <update id="addCheck" parameterType="String">
+        UPDATE t_pr_sampleinformation SET applyState = 'SampleTaked' WHERE companyCode = #{companyCode}
+    </update>
+
+    <update id="update" parameterType="SampleInformation">
+        UPDATE t_pr_sampleinformation SET wastesCode = #{wastesCode},laboratorySigner = #{laboratorySigner},isPH = #{isPH},
+        isAsh = #{isAsh},isWater = #{isWater},isHeat = #{isHeat},isSulfur = #{isSulfur},isChlorine = #{isChlorine},
+        isFluorine = #{isFluorine},isPhosphorus = #{isPhosphorus},isFlashPoint = #{isFlashPoint},isViscosity = #{isViscosity}
+        WHERE companyCode =#{companyCode}
+    </update>
+
+</mapper>

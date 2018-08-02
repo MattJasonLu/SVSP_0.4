@@ -22,15 +22,25 @@ public class SampleInformation {
      * 样品预约状态
      */
     private ApplyState applyState;
-
+    /**
+     * 危废名称
+     */
     private String wastesName;
-
+    /**
+     * 取样日期
+     */
     private Date samplingDate;
-
+    /**
+     * 取样号
+     */
     private String samplingNumber;
-
+    /**
+     * 生产线上取样
+     */
     private boolean isProductionLine;
-
+    /**
+     * 储存区取样
+     */
     private boolean isStorageArea;
 
     private boolean isPH; // PH值
