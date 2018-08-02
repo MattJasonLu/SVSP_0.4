@@ -18,4 +18,11 @@ public interface StockMapper {
      *
      */
     List<Stock> list();
+    /**
+     * 根据编号获取ID
+     *
+     */
+    Stock getById(String stockId);
+    //库存信息更新
+    void updateStock(Stock stock);
 }

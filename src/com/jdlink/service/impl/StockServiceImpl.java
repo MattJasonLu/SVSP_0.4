@@ -26,4 +26,14 @@ public class StockServiceImpl implements StockService {
     public List<Stock> list() {
         return stockMapper.list();
     }
+
+    @Override
+    public Stock getById(String stockId) {
+        return stockMapper.getById(stockId);
+    }
+
+    @Override
+    public void updateStock(Stock stock) {
+        stockMapper.updateStock(stock);
+    }
 }

@@ -652,7 +652,7 @@ function addNewLine() {
     clonedTr.children("td:not(0)").find("input,select").each(function () {
         var name = $(this).prop('name');
         var newName = name.replace(/[0-9]\d*/, num-1);
-        console.log(newName);
+        //console.log(newName);
         $(this).prop('name', newName);
     });
     clonedTr.insertAfter(tr);
@@ -661,4 +661,116 @@ function addNewLine() {
 
 
 }
+//修改库存信息页面跳转
+function adjustStock(item){
+   var stockId= item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    //1页面跳转到修改页面
+    localStorage.stockId=stockId;
+    location.href="adjustStock.html"
+}
+//修改页面的初始
+function loadAdjustStock() {
+    //获取申报编号
+   var stockId =localStorage['stockId'];
+   $('#stockId').prop("value",stockId);
+  //通过ajax 根据id获取信息
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getStockById",                  // url
+        dataType: "json",
+        data:{'stockId':stockId},
+        success:function (result) {
+      if(result!=undefined&&result.status=='success'){
+          var obj=eval(result.stock);
+          var data=eval(result.data);
+          console.log(obj);
+          //1开始赋值
+          //产废单位联系人
+          $('#proContactName').prop('value',obj.proContactName);
+          //产废联系人电话
+          $('#proTelephone').prop('value',obj.proTelephone);
+          //运输公司
+          $('#transport').prop('value',obj.transport);
+          //运输公司联系电话
+          $('#transportTelephone').prop('value',obj.transportTelephone);
+          //车牌号
+          $('#plateNumber').prop('value',obj.plateNumber);
+          //各下拉框数据填充
+          var wastesInfoList = $("#code");
+          // 清空遗留元素
+          wastesInfoList.children().remove();
+          $.each(data, function (index, item) {
+              var option = $('<option />');
+              option.val(item.code);
+              option.text(item.code);
+              wastesInfoList.append(option);
+          });
+          wastesInfoList.removeAttr('id');
+          $('.selectpicker').selectpicker('refresh');
+          for(var i=0;i<obj.wastesList.length;i++){
+              if (i > 0)
+                  addNewLine();
+              var $i = i;
+              $("input[name='wastesList[" + $i + "].name']").val(obj.wastesList[i].name);//危险废物的名称
+              $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//危废数量
+              $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
+              $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
+          }
+      }
+      else
+      {
+          alert(result.message);
+      }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
 
+
+
+}
+//修改页面方法
+function adjustStock1() {
+    var data={
+        'proContactName':$("#proContactName").val(),//产废单位联系人
+        'proTelephone':$("#proTelephone").val(),//产废联系人电话
+        'transport':$("#transport").val(),//运输公司
+        'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
+        'plateNumber':$("#plateNumber").val(),//车牌号
+        'stockId':$("#stockId").val(),//库存编号
+    };
+    data['wastesList']=[];
+    var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
+    for (var i = 0; i < wastesListCount; i++) {
+        var $i = i;
+        var wastes = {};
+        wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
+        wastes.code=$("select[name='wastesList[" + $i + "].code']").selectpicker('val');
+        wastes.wasteAmount=$("input[name='wastesList[" + $i + "].wasteAmount']").val();
+        wastes.component=$("input[name='wastesList[" + $i + "].component']").val();
+        wastes.remarks=$("input[name='wastesList[" + $i + "].remarks']").val();
+        data['wastesList'].push(wastes);
+    }
+    $.ajax({
+        type:'POST',
+        url:"adjustStock",
+        data:JSON.stringify(data),
+        async: false,
+        dataType: "json",
+        contentType: "application/octet-stream",
+        success:function (result) {
+            if(result!=null){
+                alert("修改成功!");
+                location.href="stockManage.html";
+
+            }
+            else{
+                alert("添加失败")
+            }
+        },
+        error:function (result) {
+
+        }
+    });
+}

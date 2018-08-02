@@ -8,4 +8,6 @@ public interface StockService {
     void add(Stock stock);
     List getStockIdList();
     List<Stock> list();
+    Stock getById(String stockId);
+    void updateStock(Stock stock);
 }
