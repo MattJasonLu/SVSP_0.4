@@ -24,7 +24,7 @@
             style: 'btn-info',
             size: 4
         });//下拉框样式
-        $("#transport1").hide();//三个文本框隐藏
+        $("#transport1").show();//三个文本框隐藏
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getWastesInfoList",              // url
@@ -186,9 +186,9 @@
                 </div>
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
-                        <label for="proTelepgone" class="col-sm-4 control-label">产废联系人电话</label>
+                        <label for="proTelephone" class="col-sm-4 control-label">产废联系人电话</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" id="proTelepgone" name="proTelepgone" placeholder="">
+                            <input type="text" class="form-control" id="proTelephone" name="proTelephone" placeholder="">
                         </div>
                     </div>
                 </div>
@@ -289,7 +289,7 @@
             <br> <br> <br> <br> <br>
             <div class="row text-center">
                 <a class="btn btn-primary" onclick="save();">保存</a>
-                <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
+                <a class="btn btn-danger" href="stockManage.html">返回</a>
             </div>
         </form>
     </div>
@@ -301,10 +301,10 @@
     function judge(item) {
        var s= $('input[type=checkbox]:checked').val();
      if(s=='on'){
-   $("#transport1").show(1000);
+   $("#transport1").hide(1000);
      }
      else {
-         $("#transport1").hide(1000);
+         $("#transport1").show(1000);
 
      }
     }
@@ -316,7 +316,7 @@
         //收集数据
         var data={
             'proContactName':$("#proContactName").val(),//产废单位联系人
-            'proTelepgone':$("#proTelepgone").val(),//产废联系人电话
+            'proTelephone':$("#proTelephone").val(),//产废联系人电话
             'transport':$("#transport").val(),//运输公司
             'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
             'plateNumber':$("#plateNumber").val(),//车牌号
@@ -340,11 +340,14 @@
             data:JSON.stringify(data),
             contentType: "application/json;charset=utf-8",
             success:function (result) {
-               var obj=eval(result);
-                if(obj.state=="suceess"){
-                    alert("添加成功")
+
+                if(result!=null){
+                    alert("添加成功!");
+                    var obj=eval(result);
+                    console.log(obj);
+
                 }
-                if(obj.state=="fail"){
+               else{
                     alert("添加失败")
                 }
             },
@@ -364,9 +367,9 @@
         clonedTr.children("td:eq(1),td:eq(3),td:eq(4),td:eq(5)").find("input").val("");
         // 获取编号
         var id = $("#plusBtn").prev().children().get(0).innerHTML;
-        console.log(id.charAt(id.length-1));
-        var num = parseInt(id.charAt(id.length-1));
-        console.log(num);
+        //console.log(id);
+       var id1=(id.replace(/[^0-9]/ig,""));
+        var num = parseInt(id1);
         num++;
         clonedTr.children().get(0).innerHTML = num;
         clonedTr.children("td:not(0)").find("input,select").each(function () {
@@ -378,6 +381,7 @@
         clonedTr.insertAfter(tr);
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
         clonedTr.children("td:eq(0)").prepend(delBtn);
+
 
     }
 
