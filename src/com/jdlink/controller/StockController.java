@@ -98,26 +98,26 @@ public class StockController {
      return  res.toString();
     }
     //修改申报信息
-//    @RequestMapping("adjustStock")
-//    @ResponseBody
-//    public String adjustStock(@RequestBody Stock stock) {
-//        JSONObject res=new JSONObject();
-//        try {
-//            //1数据更新
-//            List<Wastes> wastesList = stock.getWastesList();
-//            stockService.updateStock(stock);
-//            JSONObject json=JSONObject.fromBean(stock);
-//            res.put("stock1", json);
-//            res.put("status", "success");
-//            res.put("message", "更新成功");
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//
-//            res.put("status", "fail");
-//
-//            res.put("message", "更新失败");
-//        }
-//        return res.toString();
-//    }
+    @RequestMapping("adjust1Stock")
+    @ResponseBody
+    public String adjustStock(@RequestBody Stock stock) {
+        JSONObject res=new JSONObject();
+        try {
+            //1数据更新
+            List<Wastes> wastesList = stock.getWastesList();
+            stockService.updateStock(stock);
+            JSONObject json=JSONObject.fromBean(stock);
+            res.put("stock1", json);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+
+            res.put("status", "fail");
+
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
 }

@@ -666,13 +666,15 @@ function adjustStock(item){
    var stockId= item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     //1页面跳转到修改页面
     localStorage.stockId=stockId;
-    location.href="adjustStock.html"
+    console.log(localStorage.stockId);
+    location.href="adjustStock.html";
 }
 //修改页面的初始
 function loadAdjustStock() {
     //获取申报编号
    var stockId =localStorage['stockId'];
    $('#stockId').prop("value",stockId);
+   console.log("here");
   //通过ajax 根据id获取信息
     $.ajax({
         type: "POST",                            // 方法类型
@@ -754,11 +756,11 @@ function adjustStock1() {
     }
     $.ajax({
         type:'POST',
-        url:"adjustStock",
+        url:"adjust1Stock",
         data:JSON.stringify(data),
         async: false,
         dataType: "json",
-        contentType: "application/octet-stream",
+        contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if(result!=null){
                 alert("修改成功!");
