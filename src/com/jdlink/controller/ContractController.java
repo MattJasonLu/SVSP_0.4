@@ -1,6 +1,4 @@
 package com.jdlink.controller;
-
-
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jdlink.domain.*;
 import com.jdlink.service.CityService;

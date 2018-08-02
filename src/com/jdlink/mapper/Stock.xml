@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.StockMapper" >
+    <resultMap id="StockRM" type="Stock" autoMapping="true">
+        <result property="stockId" column="stockId" javaType="String"></result>
+        <result property="proContactName" column="proContactName" javaType="String"></result>
+        <result property="proTelepgone" column="proTelepgone" javaType="String"></result>
+        <result property="transport" column="transport" javaType="String"></result>
+        <result property="transportTelephone" column="transportTelephone" javaType="String"></result>
+        <result property="plateNumber" column="plateNumber" javaType="String"></result>
+    </resultMap>
+<insert id="add" parameterType="Stock">
+insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime)
+values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW());
+    <if test="wastesList.size() > 0 ">
+        <foreach collection="wastesList"  item="wastes" index="index">
+
+       insert into t_wastes(name,code,wasteAmount,component,remarks,stockId) values (#{wastes.name},#{wastes.code},#{wastes.wasteAmount},#{wastes.component},#{wastes.remarks},#{wastes.stockeId});
+        </foreach>
+    </if>
+
+
+</insert>
+
+</mapper>
