@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.StockMapper" >
-    <resultMap id="StockRM" type="Stock" autoMapping="true">
+    <resultMap id="StockRM" type="Stock">
         <result property="stockId" column="stockId" javaType="String"></result>
         <result property="proContactName" column="proContactName" javaType="String"></result>
         <result property="proTelepgone" column="proTelepgone" javaType="String"></result>
@@ -12,16 +12,14 @@
         <result property="plateNumber" column="plateNumber" javaType="String"></result>
     </resultMap>
 <insert id="add" parameterType="Stock">
-insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime)
-values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW());
-    <if test="wastesList.size() > 0 ">
+insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState)
+values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),#{checkState});
         <foreach collection="wastesList"  item="wastes" index="index">
-
-       insert into t_wastes(name,code,wasteAmount,component,remarks,stockId) values (#{wastes.name},#{wastes.code},#{wastes.wasteAmount},#{wastes.component},#{wastes.remarks},#{wastes.stockeId});
+       insert into t_wastes(id,name,code,wasteAmount,component,remarks,stockId) values (#{wastes.id},#{wastes.name},#{wastes.code},#{wastes.wasteAmount},#{wastes.component},#{wastes.remarks},#{stockId});
         </foreach>
-    </if>
-
-
 </insert>
+    <select id="getStockIdList" resultType="String">
+        select  stockId from  t_pr_stock;
+    </select>
 
 </mapper>
