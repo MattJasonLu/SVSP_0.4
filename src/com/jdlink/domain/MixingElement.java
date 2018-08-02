@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Produce.Parameter;
+
 import java.util.Date;
 
 /**
@@ -11,6 +13,8 @@ public class MixingElement {
     private String id;
 
     private String name;
+
+    private Parameter parameter;
     /**
      * 最低预估含量(%)
      */

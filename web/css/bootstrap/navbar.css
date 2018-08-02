@@ -1,3 +1,22 @@
+th {
+    text-align:center;
+    vertical-align: middle;
+}
+.pagination > li {
+    display: inline;
+}
+.inputText { float:left;
+}
+.showLi{
+    float: left;
+    height: 38px;
+    line-height: 38px;
+}
+.selectLi{
+    float: left;
+    height: 38px;
+    line-height: 38px;
+}
 th td {
     text-align: center;
 }
