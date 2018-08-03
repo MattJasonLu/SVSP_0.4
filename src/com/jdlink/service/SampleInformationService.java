@@ -12,4 +12,8 @@ public interface SampleInformationService {
     SampleInformation getByCode(String companyCode);
     void addCheck(String companyCode);
     void update(SampleInformation sampleInformation);
+    List<SampleInformation> listByKeyword(String keyword);
+    void updateSampleInfo(String companyCode);
+    int searchCount(SampleInformation sampleInformation);
+    List<SampleInformation> search(SampleInformation sampleInformation);
 }

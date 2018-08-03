@@ -174,7 +174,7 @@
                 <div class="input-group col-xs-3 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchSample();"><span
+                            <a class="btn btn-default" onclick="searchSampleInfo();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -182,11 +182,11 @@
                 </div>
             </div>
 
-        </div>
+        </div><!--高级查询-->
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search-companyCode" class="col-sm-5 control-label">公司代码</label>
                             <div class="col-xs-7">
@@ -203,37 +203,66 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-state" class="col-sm-2 control-label">样品状态</label>
+                            <label for="search-addItems" class="col-sm-5 control-label">增加检测项目</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-state" name="search-state"
-                                       placeholder="">
+                                <div class="checkbox" id="search-addItems">
+                                    <label>
+                                        <input type="checkbox" name="isFlashPoint1" id="isFlashPoint1"
+                                               value="true">闪点
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isViscosity1" id="isViscosity1"
+                                               value="true">黏度
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="search-basicItems" class="col-sm-5 control-label">基础检测项目</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-basicItems" id="search-basicItems">
-                                    <option value="0"></option>
-                                </select>
+                                <div class="checkbox" id="search-basicItems">
+                                    <label>
+                                        <input type="checkbox" name="isPH1" id="isPH1" value="true">PH
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isAsh1" id="isAsh1" value="true">灰分
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isWater1" id="isWater1" value="true">水分
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isHeat1" id="isHeat1" value="true">热值
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isS1" id="isS1" value="true">硫
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isCl1" id="isCl1" value="true">氯
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isF1" id="isF1" value="true">氟
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="isP1" id="isP1" value="true">磷
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-addItems" class="col-sm-4 control-label">增加检测项目</label>
+                            <label for="search-state" class="col-sm-4 control-label">样品状态</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-addItems" name="search-addItems"
-                                       placeholder="">
+                                <select class="form-control" name="search-state" id="search-state"></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-signer" class="col-sm-2 control-label">化验室签收人</label>
+                            <label for="search-signer" class="col-sm-4 control-label">化验室签收人</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-signer" id="search-signer">
-                                    <option value="0"></option>
-                                </select>
+                                <input type="text" class="form-control" id="search-signer" name="search-signer"
+                                       placeholder="">
                             </div>
                         </div>
                     </div>
@@ -337,19 +366,17 @@
                 <form class="form-horizontal" id="model-appoint" method="post">
                     <div class="row">
                         <div class="form-group">
-                            <label for="model-companyCode" class="col-sm-3 control-label">公司代码</label>
-                            <div class="col-sm-4">
+                            <label for="model-companyCode" class="col-sm-4 control-label">公司代码</label>
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control" id="model-companyCode" name="companyCode"
                                        required>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="model-wastesCode" class="col-sm-3 control-label">危废代码</label>
-                                <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="model-wastesCode" name="wastesCode"
-                                           required>
-                                </div>
+                        <div class="form-group">
+                            <label for="model-wastesCode" class="col-sm-4 control-label">危废代码</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-constrol" id="model-wastesCode" name="wastesCode"
+                                       required>
                             </div>
                         </div>
                     </div>
@@ -392,33 +419,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="model-addItems" class="col-sm-4 control-label">增加项目</label>
-                            <div class="col-sm-7">
-                                <form method="post" id="model-addItems">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="isFlashPoint" id="isFlashPoint"
-                                                           value="true">闪点
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="isViscosity" id="isViscosity"
-                                                           value="true">黏度
-                                                </label>
-                                            </div>
+                    <div class="form-group">
+                        <label for="model-addItems" class="col-sm-4 control-label">增加项目</label>
+                        <div class="col-sm-7">
+                            <form method="post" id="model-addItems">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="isFlashPoint" id="isFlashPoint"
+                                                       value="true">闪点
+                                            </label>
+                                            <label>
+                                                <input type="checkbox" name="isViscosity" id="isViscosity"
+                                                       value="true">黏度
+                                            </label>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group">
                             <label for="model-signer" class="col-sm-4 control-label">化验室签收人</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <input type="text" class="form-control" id="model-signer" name="signer" required>
                             </div>
                         </div>

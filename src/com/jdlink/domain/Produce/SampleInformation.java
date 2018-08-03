@@ -2,10 +2,15 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.ApplyState;
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Page;
+import com.jdlink.domain.Wastes;
 
 import java.util.Date;
+import java.util.List;
 
 public class SampleInformation {
+
+    private String id;
     /**
      * 公司代码
      */
@@ -22,6 +27,12 @@ public class SampleInformation {
      * 样品预约状态
      */
     private ApplyState applyState;
+
+    /**
+     *查询关键字
+     */
+    private String keyword;
+
     /**
      * 危废名称
      */
@@ -34,6 +45,9 @@ public class SampleInformation {
      * 取样号
      */
     private String samplingNumber;
+
+    private  List<Wastes> wastesList ;
+
     /**
      * 生产线上取样
      */
@@ -62,6 +76,24 @@ public class SampleInformation {
     private boolean isFlashPoint;  // 闪点
 
     private boolean isViscosity;  // 粘度
+
+    private Page page;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<Wastes> getWastesList() {
+        return wastesList;
+    }
+
+    public void setWastesList(List<Wastes> wastesList) {
+        this.wastesList = wastesList;
+    }
 
     public String getWastesName() {
         return wastesName;
@@ -238,4 +270,46 @@ public class SampleInformation {
         isViscosity = viscosity;
     }
 
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    @Override
+    public String toString() {
+        return "SampleInformation{" +
+                "companyCode='" + companyCode + '\'' +
+                ", wastesCode='" + wastesCode + '\'' +
+                ", laboratorySigner='" + laboratorySigner + '\'' +
+                ", applyState=" + applyState +
+                ", keyword='" + keyword + '\'' +
+                ", wastesName='" + wastesName + '\'' +
+                ", samplingDate=" + samplingDate +
+                ", samplingNumber='" + samplingNumber + '\'' +
+                ", isProductionLine=" + isProductionLine +
+                ", isStorageArea=" + isStorageArea +
+                ", isPH=" + isPH +
+                ", isAsh=" + isAsh +
+                ", isWater=" + isWater +
+                ", isHeat=" + isHeat +
+                ", isSulfur=" + isSulfur +
+                ", isChlorine=" + isChlorine +
+                ", isFluorine=" + isFluorine +
+                ", isPhosphorus=" + isPhosphorus +
+                ", isFlashPoint=" + isFlashPoint +
+                ", isViscosity=" + isViscosity +
+                ", page=" + page +
+                '}';
+    }
 }
