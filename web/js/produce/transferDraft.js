@@ -418,22 +418,26 @@ function searchData() {
  */
 function addData(state) {
     var transferId;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getCurrentTransferDraftId",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                transferId = result.transferDraftId;
-            } else {
-                console.log("fail: " + result);
+    if (localStorage.transferDraftId == null) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getCurrentTransferDraftId",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    transferId = result.transferDraftId;
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
+        });
+    } else {
+        transferId = localStorage.transferDraftId;
+    }
     var data = {
         id: transferId,
         produceCompany: {
@@ -455,7 +459,7 @@ function addData(state) {
             postCode: $("#acceptCompanyPostcode").val()
         },
         wastes: {
-            name: $("#wasteName").val(),
+            name: $("#wastesName").val(),
             prepareTransferCount: $("#wastesPrepareTransferCount").val(),
             wastesCharacter: $("#wastesCharacter").val(),
             category: $("#wastesCategory").val(),

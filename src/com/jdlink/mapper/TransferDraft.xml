@@ -4,20 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.TransferDraftMapper">
-    <resultMap id="ClientRM" type="Client">
-        <result property="clientId" column="clientId"/>
-        <result property="companyName" column="companyName"/>
-        <result property="postCode" column="postCode"/>
-        <result property="location" column="location"/>
-        <result property="phone" column="phone"/>
-    </resultMap>
-    <resultMap id="SupplierRM" type="Supplier">
-        <result property="supplierId" column="supplierId"/>
-        <result property="companyName" column="companyName"/>
-        <result property="postCode" column="postCode"/>
-        <result property="location" column="location"/>
-        <result property="phone" column="phone"/>
-    </resultMap>
     <resultMap id="WastesRM" type="Wastes" autoMapping="true">
         <result property="id" column="id"/>
         <result property="formType" column="formType" javaType="com.jdlink.domain.FormType"/>
@@ -72,7 +58,7 @@
 
     <update id="update" parameterType="TransferDraft" >
         UPDATE t_pr_transferdraft SET produceCompanyId=#{produceCompany.clientId}, transportCompanyId=#{transportCompany.supplierId},
-        acceptCompanyId=#{acceptCompany.clientId}, wastesId=#{wastesId}, outwardIsTransit=#{outwardIsTransit},
+        acceptCompanyId=#{acceptCompany.clientId}, outwardIsTransit=#{outwardIsTransit},
         outwardIsUse=#{outwardIsUse}, outwardIsDeal=#{outwardIsDeal}, outwardIsDispose=#{outwardIsDispose},
         mainDangerComponent=#{mainDangerComponent}, dangerCharacter=#{dangerCharacter}, emergencyMeasure=#{emergencyMeasure},
         emergencyEquipment=#{emergencyEquipment}, dispatcher=#{dispatcher}, destination=#{destination},
@@ -85,6 +71,10 @@
         acceptDate=#{acceptDate}, disposeIsUse=#{disposeIsUse}, disposeIsStore=#{disposeIsStore}, disposeIsBurn=#{disposeIsBurn},
         disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate},
         nowTime=NOW() WHERE id=#{id};
+
+        UPDATE t_wastes SET name=#{wastes.name}, category=#{wastes.category}, code=#{wastes.code}, prepareTransferCount=#{wastes.prepareTransferCount},
+        transferCount=#{wastes.transferCount}, signCount=#{wastes.signCount}, wastesCharacter=#{wastes.wastesCharacter}, formType=#{wastes.formType},
+        packageType=#{wastes.packageType} WHERE id=#{wastes.id};
     </update>
 
     <update id="setStateInvalid" parameterType="String">

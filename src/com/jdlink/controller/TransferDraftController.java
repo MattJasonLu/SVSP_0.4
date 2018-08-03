@@ -80,15 +80,25 @@ public class TransferDraftController {
             transferDraft.getTransportCompany().setSupplierId(transportCompanyId);
             String acceptCompanyId = clientService.getByName(transferDraft.getAcceptCompany().getCompanyName()).getClientId();
             transferDraft.getAcceptCompany().setClientId(acceptCompanyId);
-            // 更新危废物品的代码
-            transferDraft.getWastes().setId(RandomUtil.getRandomEightNumber());
-            transferDraftService.add(transferDraft);
-            res.put("status", "success");
-            res.put("message", "新增成功");
+            // 获取旧的数据
+            TransferDraft oldTransferDraft = transferDraftService.getById(transferDraft.getId());
+            // 如果已存在数据则更新，否则进行新建
+            if (oldTransferDraft != null) {
+                transferDraft.getWastes().setId(oldTransferDraft.getWastes().getId());
+                transferDraftService.update(transferDraft);
+                res.put("status", "success");
+                res.put("message", "修改成功");
+            } else {
+                // 更新危废物品的代码
+                transferDraft.getWastes().setId(RandomUtil.getRandomEightNumber());
+                transferDraftService.add(transferDraft);
+                res.put("status", "success");
+                res.put("message", "新增成功");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "新增失败");
+            res.put("message", "操作失败");
         }
         return res.toString();
     }
@@ -174,12 +184,12 @@ public class TransferDraftController {
             List<TransferDraft> transferDraftList = transferDraftService.list(page);
             JSONArray data = JSONArray.fromArray(transferDraftList.toArray(new TransferDraft[transferDraftList.size()]));
             res.put("status", "success");
-            res.put("message", "更新成功");
+            res.put("message", "获取信息成功");
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "更新失败");
+            res.put("message", "获取信息失败");
         }
         return res.toString();
     }
