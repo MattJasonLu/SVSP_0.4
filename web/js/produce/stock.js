@@ -23,7 +23,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalRecord",                  // url
+            url: "totalStockRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -43,7 +43,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchClientTotal",                  // url
+            url: "searchStockTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -315,7 +315,7 @@ function loadPageStocktList() {
         }
     });
     // 设置高级检索的下拉框数据
-    //setSeniorSelectedList();
+    setSeniorSelectedList();
     isSearch = false;
 }
 
@@ -357,15 +357,26 @@ function setStockList(result) {
                     break;
                 // 运输公司
                 case (5):
+                    if(obj.selfEmployed==false){
                         $(this).html(obj.transport);
+                    }
+                    else
+                        $(this).html("");
                     break;
                 // 公司联系电话
                 case (6):
-                    $(this).html(obj.transportTelephone);
+                    if(obj.selfEmployed==false){
+                        $(this).html(obj.transportTelephone);
+                    }
+                    else
+                        $(this).html("");
                     break;
                 // 运输车车牌号
                 case (7):
-                    $(this).html(obj.plateNumber);
+                    if(obj.selfEmployed==false){
+                        $(this).html(obj.plateNumber);
+                    }
+                else $(this).html("");
                     break;
                 // case (8):
                 //     if (obj.clientType != null)
@@ -422,66 +433,39 @@ function setStockList(result) {
 /**
  * 设置高级检索的下拉框数据
  */
-// function setSeniorSelectedList() {
-//     $.ajax({
-//         type: "POST",                       // 方法类型
-//         url: "getClientSeniorSelectedList",                  // url
-//         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-//         dataType: "json",
-//         success: function (result) {
-//             if (result != undefined) {
-//                 var data = eval(result);
-//                 // 高级检索下拉框数据填充
-//                 var checkState = $("#search-checkState");
-//                 checkState.children().remove();
-//                 $.each(data.checkStateList, function (index, item) {
-//                     var option = $('<option />');
-//                     option.val(index);
-//                     option.text(item.name);
-//                     checkState.append(option);
-//                 });
-//                 checkState.get(0).selectedIndex = -1;
-//                 var clientState = $("#search-clientState");
-//                 clientState.children().remove();
-//                 $.each(data.clientStateList, function (index, item) {
-//                     var option = $('<option />');
-//                     option.val(index);
-//                     option.text(item.name);
-//                     clientState.append(option);
-//                 });
-//                 clientState.get(0).selectedIndex = -1;
-//                 var applicationStatus = $("#search-applicationStatus");
-//                 applicationStatus.children().remove();
-//                 $.each(data.applicationStatusList, function (index, item) {
-//                     var option = $('<option />');
-//                     option.val(index);
-//                     option.text(item.name);
-//                     applicationStatus.append(option);
-//                 });
-//                 applicationStatus.get(0).selectedIndex = -1;
-//                 var clientType = $("#search-clientType");
-//                 clientType.children().remove();
-//                 $.each(data.clientTypeList, function (index, item) {
-//                     var option = $('<option />');
-//                     option.val(index);
-//                     option.text(item.name);
-//                     clientType.append(option);
-//                 });
-//                 clientType.get(0).selectedIndex = -1;
-//             } else {
-//                 console.log("fail: " + result);
-//             }
-//         },
-//         error: function (result) {
-//             console.log("error: " + result);
-//         }
-//     });
-// }
+function setSeniorSelectedList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCheckStateList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    checkState.append(option);
+                });
+                checkState.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
 
 /**
- * 查找客户
+ * 查找申报信息
  */
-function searchClient() {
+function searchStock() {
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
@@ -490,14 +474,13 @@ function searchClient() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            clientId: $("#search-clientId").val(),
-            companyName: $("#search-companyName").val(),
-            contactName: $("#search-contactName").val(),
-            phone: $("#search-phone").val(),
-            checkState: $("#search-checkState").val(),
-            clientState: $("#search-clientState").val(),
-            applicationStatus: $("#search-applicationStatus").val(),
-            clientType: $("#search-clientType").val(),
+            stockId: $("#search-stockId").val(),//库存编号
+            proContactName: $("#search-proContactName").val(),//产废单位联系人
+            proTelephone: $("#search-proTelephone").val(),//产废单位联系电话
+            transport: $("#search-transport").val(),//运输公司
+            transportTelephone: $("#search-transportTelephone").val(),//运输公司电话
+            plateNumber: $("#search-plateNumber").val(),//车牌号
+            checkState: $("#search-checkState").val(),//审核状态
             page: page
         };
         console.log(data);
@@ -507,10 +490,11 @@ function searchClient() {
             keyword: $("#searchContent").val(),
             page: page
         };
+        console.log(data);
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchClient",                  // url
+        url: "searchStock",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -583,6 +567,16 @@ function judge() {
 
     }
 }
+//判断是否是自运单位修改
+function judge1() {
+    var s = $('#selfEmployed').prop('checked');
+    if(s==true){
+        $("#transport1").hide(1000);
+    }
+    else {
+        $("#transport1").show(1000);
+    }
+}
 //删除行方法
 function delLine(e) {
     var tr = e.parentElement.parentElement;
@@ -597,6 +591,7 @@ function save() {
         'transport':$("#transport").val(),//运输公司
         'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
         'plateNumber':$("#plateNumber").val(),//车牌号
+        'selfEmployed':$('#selfEmployed').prop('checked')
     };
     data['wastesList']=[];
     // 危废的数量
@@ -697,6 +692,8 @@ function loadAdjustStock() {
           $('#transportTelephone').prop('value',obj.transportTelephone);
           //车牌号
           $('#plateNumber').prop('value',obj.plateNumber);
+          //赋值是否自运单位
+          $('#selfEmployed').prop('checked',obj.selfEmployed);
           //各下拉框数据填充
           var wastesInfoList = $("#code");
           // 清空遗留元素
@@ -741,6 +738,7 @@ function adjustStock1() {
         'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
         'plateNumber':$("#plateNumber").val(),//车牌号
         'stockId':$("#stockId").val(),//库存编号
+       'selfEmployed':$('#selfEmployed').prop('checked'),
     };
     data['wastesList']=[];
     var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
@@ -776,13 +774,12 @@ function adjustStock1() {
         }
     });
 }
-    function allSelect1() {
+function allSelect1() {
         var isChecked = $('#allSel1').prop('checked');
         console.log(isChecked);
         if (isChecked) $("input[name='blankCheckbox1']").prop('checked', true);
         else $("input[name='blankCheckbox1']").prop('checked', false);
-    }
-    //提交
+    }//提交
 function contractSubmit() {
     //在此提交
     var items = $("input[name='blankCheckbox1']:checked");//判断复选框是否选中
@@ -889,6 +886,8 @@ function viewStock(item) {
                 $('#proContactName').text(obj.proContactName);
                 //赋值产废单位电话
                 $('#proTelephone').text(obj.proTelephone);
+                //赋值是否自运单位
+                $('#selfEmployed').prop('checked',obj.selfEmployed);
                 for(var i=0;i<obj.wastesList.length;i++){
                     if (i > 0) addWastesNewLine();
                     var $i = i;

@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Wastes;
 
@@ -31,5 +32,8 @@ public interface StockMapper {
     //提交申报
     void submitStock(String stockId);
     void cancelStock(String stockId);
+    List<Stock> search(Stock stock);
+    int total();
+    int searchCount(Stock stock);
 
 }

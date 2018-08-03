@@ -144,13 +144,79 @@
                 <div class="input-group col-xs-3 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="searchStock();"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                     </span>
+
                 </div>
             </div>
         </div>
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-stockId" class="col-sm-4 control-label">库存编号</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-stockId" name="search-stockId"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-proContactName" class="col-sm-4 control-label">产废单位联系人</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-proContactName"
+                                       name="search-proContactName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-plateNumber" class="col-sm-4 control-label">运输车车牌号</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-plateNumber"
+                                name="search-plateNumber" placeholder="">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-proTelephone"
+                                   class="col-sm-4 control-label">单位联系电话</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-proTelephone"
+                                       name="search-proTelephone" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-transportTelephone" class="col-sm-4 control-label">公司联系电话</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-transportTelephone" name="search-transportTelephone"
+                                       placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-transport" class="col-sm-4 control-label">运输公司</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-transport" name="search-transport"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="table">
             <table class="table table-striped table-hover table-condensed">
                 <thead>
@@ -298,5 +364,7 @@
         </div>
     </div>
 </div>
+<!--高级查询-->
+
 </body>
 </html>

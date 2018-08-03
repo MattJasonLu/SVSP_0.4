@@ -155,5 +155,58 @@ public class StockController {
 
         return res.toString();
     }
+    //获取审核状态
+    @RequestMapping("getCheckStateList")
+    @ResponseBody
+    public String getCheckStateList(){
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+        res.put("checkStateList", checkStateList);
+        return res.toString();
+    }
+//查询功能
+    @RequestMapping("searchStock")
+    @ResponseBody
+    public String searchStock(@RequestBody Stock stock){
+        JSONObject res = new JSONObject();
+        try {
+            List<Stock> stockList = stockService.search(stock);
+            JSONArray data = JSONArray.fromArray(stockList.toArray(new Stock[stockList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
 
+    }
+
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalStockRecord")
+    @ResponseBody
+    public int totalStockRecord(){
+        try {
+            return stockService.total();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    @RequestMapping("searchStockTotal")
+    @ResponseBody
+    public int searchStockTotal(@RequestBody Stock stock) {
+        try {
+            return stockService.searchCount(stock);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

@@ -53,5 +53,20 @@ public class StockServiceImpl implements StockService  {
         stockMapper.cancelStock(stockId);
     }
 
+    @Override
+    public List<Stock> search(Stock stock) {
+        return stockMapper.search(stock);
+    }
+
+    @Override
+    public int total() {
+        return stockMapper.total();
+    }
+
+    @Override
+    public int searchCount(Stock stock) {
+        return stockMapper.searchCount(stock);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Wastes;
 
@@ -14,4 +15,7 @@ public interface StockService {
     void updateWastes(Wastes wastes);
     void submitStock(String stockId);
     void cancelStock(String stockId);
+    List<Stock> search(Stock stock);
+    int total();
+    int searchCount(Stock stock);
 }
