@@ -304,6 +304,7 @@ function loadPageList() {
         }
     });
     isSearch = false;
+    getCheckState();
 }
 
 /**
@@ -373,14 +374,20 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            clientId: $("#search-clientId").val(),
-            companyName: $("#search-companyName").val(),
-            contactName: $("#search-contactName").val(),
-            phone: $("#search-phone").val(),
+            id: $("#search-draftId").val(),
             checkState: $("#search-checkState").val(),
-            clientState: $("#search-clientState").val(),
-            applicationStatus: $("#search-applicationStatus").val(),
-            clientType: $("#search-clientType").val(),
+            produceCompany: {
+                companyName: $("#search-produceCompanyName").val()
+            },
+            transportCompany: {
+                companyName: $("#search-transportCompanyName").val()
+            },
+            acceptCompany: {
+                companyName: $("#search-acceptCompanyName").val()
+            },
+            dispatcher: $("#search-dispatcher").val(),
+            destination: $("#search-destination").val(),
+            transferTime: $("#search-transferTime").val(),
             page: page
         };
         console.log(data);
@@ -571,6 +578,38 @@ function getSelectedInfo() {
                     wastespackagetype.append(option);
                 });
                 wastespackagetype.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+/**
+ * 设置高级查询的审核状态数据
+ */
+function getCheckState() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCheckState",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    checkState.append(option);
+                });
+                checkState.get(0).selectedIndex = -1;
             } else {
                 console.log("fail: " + result);
             }
