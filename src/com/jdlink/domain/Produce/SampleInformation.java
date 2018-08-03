@@ -63,6 +63,39 @@ public class SampleInformation {
 
     private boolean isViscosity;  // 粘度
 
+    public String getWastesName() {
+        return wastesName;
+    }
+
+    public void setWastesName(String wastesName) {
+        this.wastesName = wastesName;
+    }
+
+    @Override
+    public String toString() {
+        return "SampleInformation{" +
+                "companyCode='" + companyCode + '\'' +
+                ", wastesCode='" + wastesCode + '\'' +
+                ", laboratorySigner='" + laboratorySigner + '\'' +
+                ", applyState=" + applyState +
+                ", wastesName='" + wastesName + '\'' +
+                ", samplingDate=" + samplingDate +
+                ", samplingNumber='" + samplingNumber + '\'' +
+                ", isProductionLine=" + isProductionLine +
+                ", isStorageArea=" + isStorageArea +
+                ", isPH=" + isPH +
+                ", isAsh=" + isAsh +
+                ", isWater=" + isWater +
+                ", isHeat=" + isHeat +
+                ", isSulfur=" + isSulfur +
+                ", isChlorine=" + isChlorine +
+                ", isFluorine=" + isFluorine +
+                ", isPhosphorus=" + isPhosphorus +
+                ", isFlashPoint=" + isFlashPoint +
+                ", isViscosity=" + isViscosity +
+                '}';
+    }
+
     public Date getSamplingDate() {
         return samplingDate;
     }
@@ -205,23 +238,4 @@ public class SampleInformation {
         isViscosity = viscosity;
     }
 
-    @Override
-    public String toString() {
-        return "SampleInformation{" +
-                "companyCode='" + companyCode + '\'' +
-                ", wastesCode='" + wastesCode + '\'' +
-                ", laboratorySigner='" + laboratorySigner + '\'' +
-                ", applyState=" + applyState +
-                ", isPH=" + isPH +
-                ", isAsh=" + isAsh +
-                ", isWater=" + isWater +
-                ", isHeat=" + isHeat +
-                ", isSulfur=" + isSulfur +
-                ", isChlorine=" + isChlorine +
-                ", isFluorine=" + isFluorine +
-                ", isPhosphorus=" + isPhosphorus +
-                ", isFlashPoint=" + isFlashPoint +
-                ", isViscosity=" + isViscosity +
-                '}';
-    }
 }

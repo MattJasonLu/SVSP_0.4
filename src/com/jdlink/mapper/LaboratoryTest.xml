@@ -3,22 +3,49 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.LaboratoryTestMapper" >
+    <resultMap id="ClientRM" type="Client" autoMapping="true">
+        <result property="clientId" column="clientId" />
+        <result property="companyName" column="companyName" />
+        <result property="contactName" column="contactName" />
+    </resultMap>
     <resultMap id="LaboratoryTestRM" type="LaboratoryTest" autoMapping="true">
+        <association property="client" javaType="Client" resultMap="ClientRM"/>
         <collection property="sampleInformationList" select="getSampleInformationList" column="laboratoryTestNumber"
                     ofType="com.jdlink.domain.Produce.SampleInformation" javaType="ArrayList"/>
+        <collection property="parameterList" select="getParameterList" column="laboratoryTestNumber"
+                    ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
+        <collection property="heavyMetalList" select="getHeavyMetalList" column="laboratoryTestNumber"
+                    ofType="com.jdlink.domain.Produce.HeavyMetal" javaType="ArrayList"/>
     </resultMap>
-    <resultMap id="SampleInformationRM" type="LaboratoryTest">
+    <resultMap id="SampleInformationRM" type="SampleInformation">
         <result property="samplingDate" column="samplingDate"/>
         <result property="wastesName" column="wastesName"/>
         <result property="wastesNumber" column="samplingNumber"/>
+
     </resultMap>
+    <!--<resultMap id="ParameterRM" type="Parameter">-->
+        <!--<result property="name" column="parameterList"/>-->
+    <!--</resultMap>-->
+    <!--<resultMap id="HeavyMetalRM" type="HeavyMetal">-->
+        <!--<result property="name" column="heavyMetalList"/>-->
+    <!--</resultMap>-->
 
     <select id="getLaboratoryTestById" parameterType="String" resultMap="LaboratoryTestRM">
-        select * from t_pr_laboratorytest where laboratoryTestNumber= #{laboratoryTestNumber};
+        select t_pr_laboratorytest.*,client.companyName,client.contactName,client.phone,client.industry,client.product,
+        client.location from t_pr_laboratorytest JOIN client where t_pr_laboratorytest.clientId=client.clientId
+        and laboratoryTestNumber= #{laboratoryTestNumber};
     </select>
 
-    <select id="getSampleInformationList" parameterType="String" resultMap="SampleInformationRM">
+    <select id="getSampleInformationList" parameterType="String" resultType="SampleInformation">
         select * from t_pr_sampleinformation where laboratoryTestNumber=#{laboratoryTestNumber};
+    </select>
+
+    <select id="getParameterList" parameterType="String" resultType="MixingElement">
+        select * from t_mixingelement where laboratoryTestNumber=#{laboratoryTestNumber};
+    </select>
+
+    <select id="getHeavyMetalList" parameterType="String" resultType="MixingElement">
+        select * from t_mixingelement where laboratoryTestNumber=#{laboratoryTestNumber};
     </select>
 
     <update id="setInvalid" parameterType="String">
