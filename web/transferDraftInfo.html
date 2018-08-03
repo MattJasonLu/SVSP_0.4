@@ -11,6 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/transferDraft.js"></script>
 </head>
 <body>
 <!--导航条-->
@@ -131,7 +132,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">产生单位</label>
                         <div class="col-xs-7">
-                            <input type="text" class="form-control" placeholder="" name="produceCompanyName" id="produceCompanyName">
+                            <input type="text" class="form-control" placeholder="" name="produceCompanyName" id="produceCompanyName" value="测试生产单位">
                         </div>
                         <label class="col-sm-3 control-label">单位盖章</label>
                     </div>
@@ -156,7 +157,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">运输单位</label>
                         <div class="col-xs-9">
-                            <input type="text" class="form-control" placeholder="" name="transportCompanyName" id="transportCompanyName">
+                            <input type="text" class="form-control" placeholder="" name="transportCompanyName" id="transportCompanyName" value="测试运输单位">
                         </div>
                     </div>
                     <div class="form-group">
@@ -168,7 +169,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">接收单位</label>
                         <div class="col-xs-9">
-                            <input type="text" class="form-control" placeholder="" name="acceptCompanyName" id="acceptCompanyName">
+                            <input type="text" class="form-control" placeholder="" name="acceptCompanyName" id="acceptCompanyName" value="常州北控安耐得有限公司">
                         </div>
                     </div>
                     <div class="form-group">
@@ -248,7 +249,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">形&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" placeholder="" name="wastesFormType" id="wastesFormType">
+                            <select class="form-control" name="wastesFormType" id="wastesFormType"></select>
                         </div>
                     </div>
                 </div>
@@ -268,7 +269,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">包装方式</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" placeholder="" name="wastesPackageType" id="wastesPackageType">
+                            <select class="form-control" name="wastesPackageType" id="wastesPackageType"></select>
                         </div>
                     </div>
                 </div>
@@ -597,9 +598,9 @@
             </div>
         </form>
         <div class="row text-center" style="margin-top: 5%;">
-            <a class="btn btn-success" onclick="">保存</a>
-            <a class="btn btn-primary" onclick="">提交</a>
-            <a class="btn btn-warning" onclick="">重置</a>
+            <a class="btn btn-success" onclick="addData('save');">保存</a>
+            <a class="btn btn-primary" onclick="addData('submit');">提交</a>
+            <a class="btn btn-warning" onclick="resetDate();">重置</a>
             <a class="btn btn-danger" href="transferDraft.html">返回</a>
         </div>
     </div>
@@ -608,5 +609,6 @@
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
+    getSelectedInfo();
 </script>
 </html>

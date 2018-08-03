@@ -24,7 +24,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         select  stockId from  t_pr_stock;
     </select>
 <select id="list" resultMap="StockRM">
-    select * from t_pr_stock;
+    select * from t_pr_stock order by nowTime desc ;
     <if test="start != null and count != null">
         limit #{start}, #{count}
     </if>
@@ -34,4 +34,24 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
           SELECT t_pr_stock.stockId FROM t_pr_stock
           WHERE t_wastes.stockId=#{stockId});
     </select>
-</mapper>
+    <update id="updateWastes" parameterType="Wastes">
+         update t_wastes set name=#{wastes.name},code=#{wastes.code},
+            wasteAmount=#{wastes.wasteAmount},component=#{wastes.component},
+            remarks=#{wastes.remarks} where stockId=#{stockId}
+    </update>
+
+    <select id="getById" parameterType="String" resultMap="StockRM">
+        select * from  t_pr_stock where stockId=#{stockId}
+    </select>
+    <update id="updateStock" parameterType="Stock" >
+        update t_pr_stock set proContactName=#{proContactName},proTelephone=#{proTelephone},
+        transport=#{transport},transportTelephone=#{transportTelephone},
+        plateNumber=#{plateNumber},selfEmployed=#{selfEmployed},
+        nowTime=NOW(),checkState=#{checkState} where stockId=#{stockId};
+        <if test="wastesList.size()> 0" >
+        <foreach collection="wastesList"  item="wastes" index="index">
+            update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{wastes.stockId};
+        </foreach>
+        </if>
+    </update>
+ </mapper>

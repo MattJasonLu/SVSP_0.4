@@ -22,11 +22,10 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalRecord",                  // url
+            url: "totalTransferDraftRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
-                // console.log(result);
                 if (result > 0) {
                     totalRecord = result;
                 } else {
@@ -42,13 +41,12 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchClientTotal",                  // url
+            url: "searchTransferDraftTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
-                // console.log(result);
                 if (result > 0) {
                     totalRecord = result;
                 } else {
@@ -88,7 +86,7 @@ function loadPages(totalRecord, count) {
  */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setClientList(result);
+    setDataList(result);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -155,46 +153,40 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageClientList",         // url
+            url: "loadPageTransferDraftList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
-                if (result != undefined) {
-                    // console.log(result);
-                    setClientList(result);
+                if (result != undefined && result.status == "success") {
+                    setDataList(result.data);
                 } else {
-                    console.log("fail: " + result);
-                    // setClientList(result);
+                    console.log(result);
                 }
             },
             error: function (result) {
                 console.log("error: " + result);
-                // setClientList(result);
             }
         });
     } else {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchClient",         // url
+            url: "searchTransferDraft",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
-                if (result != undefined) {
-                    // console.log(result);
-                    setClientList(result.data);
+                if (result != undefined && result.status == "success") {
+                    setDataList(result.data);
                 } else {
                     console.log("fail: " + result);
-                    // setClientList(result);
                 }
             },
             error: function (result) {
                 console.log("error: " + result);
-                // setClientList(result);
             }
         });
     }
@@ -237,15 +229,15 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageClientList",         // url
+                url: "loadPageTransferDraftList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
-                    if (result != undefined) {
+                    if (result != undefined && result.status == "success") {
                         console.log(result);
-                        setClientList(result);
+                        setDataList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -258,23 +250,21 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchClient",         // url
+                url: "searchTransferDraft",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
-                    if (result != undefined) {
+                    if (result != undefined && result.status == "success") {
                         // console.log(result);
-                        setClientList(result.data);
+                        setDataList(result.data);
                     } else {
                         console.log("fail: " + result);
-                        // setClientList(result);
                     }
                 },
                 error: function (result) {
                     console.log("error: " + result);
-                    // setClientList(result);
                 }
             });
         }
@@ -284,7 +274,7 @@ function inputSwitchPage() {
 /**
  * 分页 获取首页内容
  * */
-function loadPageClientList() {
+function loadPageList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -295,15 +285,15 @@ function loadPageClientList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "loadPageClientList",          // url
+        url: "loadPageTransferDraftList",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
-            if (result != undefined) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
-                setPageClone(result);
+                setPageClone(result.data);
             } else {
                 console.log("fail: " + result);
             }
@@ -319,10 +309,10 @@ function loadPageClientList() {
 }
 
 /**
- * 设置客户数据
+ * 设置数据
  * @param result
  */
-function setClientList(result) {
+function setDataList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
@@ -483,7 +473,7 @@ function setSeniorSelectedList() {
 /**
  * 查找客户
  */
-function searchClient() {
+function searchData() {
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
@@ -512,7 +502,7 @@ function searchClient() {
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchClient",                  // url
+        url: "searchTransferDraft",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -530,4 +520,168 @@ function searchClient() {
         }
     });
     isSearch = true;
+}
+
+/**
+ * 增加数据
+ */
+function addData(state) {
+    var transferId;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentTransferDraftId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                transferId = result.transferDraftId;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    var data = {
+        id: transferId,
+        produceCompany: {
+            companyName: $("#produceCompanyName").val(),
+            phone: $("#produceCompanyPhone").val(),
+            location: $("#produceCompanyLocation").val(),
+            postCode: $("#produceCompanyPostcode").val()
+        },
+        transportCompany: {
+            companyName: $("#transportCompanyName").val(),
+            phone: $("#transportCompanyPhone").val(),
+            location: $("#transportCompanyLocation").val(),
+            postCode: $("#transportCompanyPostcode").val()
+        },
+        acceptCompany: {
+            companyName: $("#acceptCompanyName").val(),
+            phone: $("#acceptCompanyPhone").val(),
+            location: $("#acceptCompanyLocation").val(),
+            postCode: $("#acceptCompanyPostcode").val()
+        },
+        wastes: {
+            name: $("#wasteName").val(),
+            prepareTransferCount: $("#wastesPrepareTransferCount").val(),
+            wastesCharacter: $("#wastesCharacter").val(),
+            category: $("#wastesCategory").val(),
+            transferCount: $("#wastesTransferCount").val(),
+            formType: $("#wastesFormType").val(),
+            code: $("#wastesCode").val(),
+            signCount: $("#wastesSignCount").val(),
+            packageType: $("#wastesPackageType").val()
+        },
+        outwardIsTransit: $("#outwardIsTransit").prop("checked"),
+        outwardIsUse: $("#outwardIsUse").prop("checked"),
+        outwardIsDeal: $("#outwardIsDeal").prop("checked"),
+        outwardIsDispose: $("#outwardIsDispose").prop("checked"),
+        mainDangerComponent: $("#mainDangerComponent").val(),
+        dangerCharacter: $("#dangerCharacter").val(),
+        emergencyMeasure: $("#emergencyMeasure").val(),
+        emergencyEquipment: $("#emergencyEquipment").val(),
+        dispatcher: $("#dispatcher").val(),
+        destination: $("#destination").val(),
+        transferTime: $("#transferTime").val(),
+        // 运输单位填写
+        firstCarrier: $("#firstCarrier").val(),
+        firstCarryTime: $("#firstCarryTime").val(),
+        firstModel: $("#firstModel").val(),
+        firstBrand: $("#firstBrand").val(),
+        firstTransportNumber: $("#firstTransportNumber").val(),
+        firstOrigin: $("#firstOrigin").val(),
+        firstStation: $("#firstStation").val(),
+        firstDestination: $("#firstDestination").val(),
+        firstCarrierSign: $("#firstCarrierSign").val(),
+        secondCarrier: $("#secondCarrier").val(),
+        secondCarryTime: $("#secondCarryTime").val(),
+        secondModel: $("#secondModel").val(),
+        secondBrand: $("#secondBrand").val(),
+        secondTransportNumber: $("#secondTransportNumber").val(),
+        secondOrigin: $("#secondOrigin").val(),
+        secondStation: $("#secondStation").val(),
+        secondDestination: $("#secondDestination").val(),
+        secondCarrierSign: $("#secondCarrierSign").val(),
+        acceptCompanyLicense: $("#acceptCompanyLicense").val(),
+        recipient: $("#recipient").val(),
+        acceptDate: $("#acceptDate").val(),
+        disposeIsUse: $("#disposeIsUse").prop("checked"),
+        disposeIsStore: $("#disposeIsStore").prop("checked"),
+        disposeIsBurn: $("#disposeIsBurn").prop("checked"),
+        disposeIsLandFill: $("#disposeIsLandFill").prop("checked"),
+        disposeIsOther: $("#disposeIsOther").prop("checked"),
+        headSign: $("#headSign").val(),
+        signDate: $("#signDate").val(),
+        checkState: state == 'save' ? 'ToSubmit' : 'ToExamine'
+    };
+    // 上传用户数据
+    $.ajax({
+        type: "POST",                           // 方法类型
+        url: "addTransferDraft",                // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined) {
+                if (result.status == "success") {
+                    alert(result.message);
+                    // if (addType == "continue") window.location.reload();
+                    // else $(location).attr('href', 'transferDraft.html');//跳转
+
+                    $(location).attr('href', 'transferDraft.html');
+                } else {
+                    console.log(result);
+                    alert(result.message);
+                }
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
+}
+
+/**
+ * 设置物质形态和包装方式的枚举信息
+ */
+function getSelectedInfo() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getFormTypeAndPackageType",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesFormType = $("#wastesFormType");
+                wastesFormType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    wastesFormType.append(option);
+                });
+                wastesFormType.get(0).selectedIndex = -1;
+                var wastespackagetype = $("#wastesPackageType");
+                wastespackagetype.children().remove();
+                $.each(data.packageTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    wastespackagetype.append(option);
+                });
+                wastespackagetype.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
