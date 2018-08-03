@@ -84,5 +84,20 @@ public class StockServiceImpl implements StockService  {
         stockMapper.back(stockId,opinion);
     }
 
+    @Override
+    public void delete(Stock stock) {
+        stockMapper.delete(stock);
+    }
+
+    @Override
+    public void addList(Stock stock) {
+        stockMapper.addList(stock);
+    }
+
+    @Override
+    public void time1(Stock stock) {
+        stockMapper.time1( stock);
+    }
+
 
 }

@@ -104,18 +104,26 @@ public class StockController {
         JSONObject res=new JSONObject();
         try {
             //1数据更新
-            List<Wastes> wastesList = stock.getWastesList();
-            stockService.updateStock(stock);
-            JSONObject json=JSONObject.fromBean(stock);
+            //总体思想 删除旧列表，新增新列表
+            //获取旧列表 将其删除
+            List<Wastes> oldWastesList = stockService.getById(stock.getStockId()).getWastesList();
+            System.out.println("旧列表" + oldWastesList);
+            stockService.delete(stock);
+            List<Wastes> newWastesList = stock.getWastesList();
+            for (int i=0;i<newWastesList.size(); i++) {
+                newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());//给新列表赋值ID
+            }
+            System.out.println("新列表" + newWastesList);
+            stockService.addList(stock);
+            stockService.time1(stock);
+            JSONObject json = JSONObject.fromBean(stock);
             res.put("stock1", json);
             res.put("status", "success");
             res.put("message", "更新成功");
         }
         catch (Exception e){
             e.printStackTrace();
-
             res.put("status", "fail");
-
             res.put("message", "更新失败");
         }
         return res.toString();
