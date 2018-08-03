@@ -50,7 +50,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         nowTime=NOW(),checkState=#{checkState} where stockId=#{stockId};
         <if test="wastesList.size()> 0" >
         <foreach collection="wastesList"  item="wastes" index="index">
-            update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{wastes.stockId};
+            update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{stockId};
         </foreach>
         </if>
     </update>
