@@ -614,6 +614,38 @@ function setInvalid(e) {    //已作废
 }
 
 /**
+ * 作废转移联单
+ */
+function setSubmit(e) {    //已作废
+    var r = confirm("确认提交该联单吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setTransferDraftToExamine",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
+/**
  * 修改数据
  * @param e
  */

@@ -126,6 +126,27 @@ public class TransferDraftController {
     }
 
     /**
+     * 作废转移联单
+     * @param id 联单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setTransferDraftToExamine")
+    @ResponseBody
+    public String setTransferDraftToExamine(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            // 作废转移联单
+            transferDraftService.setStateToExamine(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+    }
+    /**
      * 获取联单数据
      * @param id 联单编号
      * @return 获取的联单数据

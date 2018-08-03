@@ -81,6 +81,10 @@
         UPDATE t_pr_transferdraft SET checkState='Invalid' WHERE id=#{id};
     </update>
 
+    <update id="setStateToExamine" parameterType="String">
+        UPDATE t_pr_transferdraft SET checkState='ToExamine' WHERE id=#{id};
+    </update>
+
     <select id="list" resultType="TransferDraft">
         SELECT * FROM t_pr_transferdraft ORDER BY nowTime DESC
         <if test="start != null and count != null">
