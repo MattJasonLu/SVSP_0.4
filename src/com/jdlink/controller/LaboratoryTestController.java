@@ -1,7 +1,6 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Produce.LaboratoryTest;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import com.jdlink.service.LaboratoryTestService;
 import org.springframework.beans.factory.annotation.Autowired;

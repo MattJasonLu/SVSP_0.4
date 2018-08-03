@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.StockMapper;
@@ -29,6 +30,11 @@ public class StockServiceImpl implements StockService  {
     }
 
     @Override
+    public List<Stock> list(Page page) {
+        return stockMapper.list(page);
+    }
+
+    @Override
     public Stock getById(String stockId) {
         return stockMapper.getById(stockId);
     }
@@ -41,6 +47,41 @@ public class StockServiceImpl implements StockService  {
     @Override
     public void updateWastes(Wastes wastes) {
         stockMapper.updateWastes(wastes);
+    }
+
+    @Override
+    public void submitStock(String stockId) {
+        stockMapper.submitStock(stockId);
+    }
+
+    @Override
+    public void cancelStock(String stockId) {
+        stockMapper.cancelStock(stockId);
+    }
+
+    @Override
+    public List<Stock> search(Stock stock) {
+        return stockMapper.search(stock);
+    }
+
+    @Override
+    public int total() {
+        return stockMapper.total();
+    }
+
+    @Override
+    public int searchCount(Stock stock) {
+        return stockMapper.searchCount(stock);
+    }
+
+    @Override
+    public void opinion(String stockId, String opinion) {
+        stockMapper.opinion(stockId,opinion);
+    }
+
+    @Override
+    public void back(String stockId, String opinion) {
+        stockMapper.back(stockId,opinion);
     }
 
 

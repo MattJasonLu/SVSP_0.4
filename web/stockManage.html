@@ -136,7 +136,7 @@
                 <!--操作按钮-->
                 <div class="pull-left col-md-6 boo">
                     <a class="btn btn-primary btn-xs" id="add" href="stockForm.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                    <a class="btn btn-primary btn-xs" onclick="contractSubmit()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                     <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel(contractIndex)"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -144,20 +144,86 @@
                 <div class="input-group col-xs-3 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="searchStock();"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                     </span>
+
                 </div>
             </div>
         </div>
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-stockId" class="col-sm-4 control-label">库存编号</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-stockId" name="search-stockId"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-proContactName" class="col-sm-4 control-label">产废单位联系人</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-proContactName"
+                                       name="search-proContactName" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-plateNumber" class="col-sm-4 control-label">运输车车牌号</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-plateNumber"
+                                name="search-plateNumber" placeholder="">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-proTelephone"
+                                   class="col-sm-4 control-label">单位联系电话</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-proTelephone"
+                                       name="search-proTelephone" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-transportTelephone" class="col-sm-4 control-label">公司联系电话</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-transportTelephone" name="search-transportTelephone"
+                                       placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-transport" class="col-sm-4 control-label">运输公司</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-transport" name="search-transport"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="table">
             <table class="table table-striped table-hover table-condensed">
                 <thead>
                 <tr>
                     <th class="text-center">
                         <label>
-                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                            <input class="checkbox" onclick="allSelect1()" type="checkbox" value="option1"   id="allSel1"/>
                         </label>
                     </th>
                     <th class="text-center">库存编号</th>
@@ -174,7 +240,7 @@
                 <tr id="cloneTr">
                     <td class="text-center">
                         <label>
-                            <input class="checkbox" type="checkbox" id="blankCheckbox"  name="blankCheckbox"  value="option1" aria-label="...">
+                            <input class="checkbox" type="checkbox" id="blankCheckbox1"  name="blankCheckbox1"  value="option1" aria-label="...">
                         </label>
                     </td><!--checkbox-->
                     <td class="text-center"></td><!--编号-->
@@ -185,7 +251,7 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">
-                        <a href="#" onclick="viewContract(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" onclick="viewStock(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <a href="#" onclick="adjustStock(this);" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                         <a href="#" onclick="cancel(this);" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                         <a href="#" onclick="approval(this);" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
@@ -228,6 +294,118 @@
                 </li>
             </ol>
         </nav>
+    </div>
+</div>
+<!--查看页面模态框-->
+<div class="modal fade bs-example-modal-lg" id="stockInfoForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print1">
+        <div class="modal-content" >
+            <h4 class="sub-header text-center">库存申报信息</h4>
+            <div style="margin: 5%;">
+                <div class="modal-body">
+                        <div class="row">
+                            <div class="form-horizontal col-md-6 form-inline">
+                                <p class="text-left"><b>产废单位联系人&nbsp;&nbsp;</b><span id="proContactName"></span></p>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <p class="text-left"><b>产废单位联系电话&nbsp;&nbsp;</b><span id="proTelephone"></span></p>
+                            </div>
+                        </div>
+                    <h4><b>库存具体明细 </b></h4>
+                    <form id="model-appoint4" method="post">
+                        <table class="table table-bordered text-nowrap">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>危险废物的名称</th>
+                                <th>危废编码</th>
+                                <th>数量(公斤)</th>
+                                <th>成分</th>
+                                <th>备注</th>
+                            </tr>
+                            </thead>
+                            <tr id="cloneTr1">
+                                <td class="text-center">1</td><!--序号-->
+                                <td class="text-center"><input type="text" class="focus" name="wastesList[0].name" style="width:100%; height:100%;"></td><!--废物名称-->
+                                <td class="text-center">
+                                        <input class="focus" type="text"  name="wastesList[0].code" id="code">
+                                </td><!--危废编码-->
+                                <td class="text-center"><input type="text" class="focus" name="wastesList[0].wasteAmount" style="width:100%; height:100%;"></td><!--危废数量-->
+                                <td class="text-center"><input type="text" class="focus" name="wastesList[0].component" style="width:100%; height:100%;"></td><!--危废成分-->
+                                <td class="text-center"><input type="text" class="focus" name="wastesList[0].remarks" style="width:100%; height:100%;"></td><!--备注-->
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-4">
+                        <p class="text-left"><b>运输公司&nbsp;&nbsp;</b><span id="transport"></span></p>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                    </div>
+                    <div class="form-horizontal col-md-5">
+                        <p class="text-left"><b>车牌号&nbsp;&nbsp;</b><span id="plateNumber"></span></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <p class="text-left"><b>是否自运单位&nbsp;&nbsp;</b> <input type="checkbox" id="selfEmployed" disabled="disabled"></p>
+                    </div>
+                    <div class="form-horizontal col-md-1"></div>
+                    <div class="form-horizontal col-md-5">
+                        <p class="text-left"><b>运输公司联系电话&nbsp;&nbsp;</b><span id="transportTelephone"></span></p>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <a class="btn btn-primary hidden-print" onclick="showApproval()" id="btn">审批</a>
+                    <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                    <a class="btn btn-danger hidden-print" id="back" onclick="showBack()">驳回</a>
+                    <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+!--审批页面-->
+<div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">审批意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="opinion"  name="opinion" style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">
+                    确认审批
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="file" name="excelPath" id="idExcel" style="display:none">
+<!--驳回页面-->
+<div class="modal fade" id="contractInfoForm4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">驳回意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="backContent" name="backContent"  style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 </body>

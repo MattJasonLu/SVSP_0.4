@@ -120,4 +120,152 @@ public class StockController {
         }
         return res.toString();
     }
+    //提交申报信息
+    @RequestMapping("submitStock")
+    @ResponseBody
+    public String submitStock(String stockId){
+   JSONObject res=new JSONObject();
+   try {
+       stockService.submitStock(stockId);
+       res.put("status", "success");
+       res.put("message", "提交成功");
+   }
+   catch (Exception e){
+       e.printStackTrace();
+       res.put("status", "fail");
+       res.put("message", "提交失败");
+   }
+        return res.toString();
+    }
+    //作废申报信息
+    @RequestMapping("cancelStock")
+    @ResponseBody
+    public String cancelStock(String stockId){
+        JSONObject res=new JSONObject();
+        try {
+            stockService.cancelStock(stockId);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+
+        return res.toString();
+    }
+    //获取审核状态
+    @RequestMapping("getCheckStateList")
+    @ResponseBody
+    public String getCheckStateList(){
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+        res.put("checkStateList", checkStateList);
+        return res.toString();
+    }
+//查询功能
+    @RequestMapping("searchStock")
+    @ResponseBody
+    public String searchStock(@RequestBody Stock stock){
+        JSONObject res = new JSONObject();
+        try {
+            List<Stock> stockList = stockService.search(stock);
+            JSONArray data = JSONArray.fromArray(stockList.toArray(new Stock[stockList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+
+    }
+
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalStockRecord")
+    @ResponseBody
+    public int totalStockRecord(){
+        try {
+            return stockService.total();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    @RequestMapping("searchStockTotal")
+    @ResponseBody
+    public int searchStockTotal(@RequestBody Stock stock) {
+        try {
+            return stockService.searchCount(stock);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     *
+     * 库存审批
+     */
+    @RequestMapping("approvalStock")
+    @ResponseBody
+    public String approvalStock(String stockId,String opinion){
+        JSONObject res=new JSONObject();
+        try{
+            res.put("status", "success");
+            res.put("message", "审批通过！");
+            stockService.opinion(stockId,opinion);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败！");
+        }
+
+
+        return res.toString();
+    }
+    /**
+     *
+     * 库存驳回
+     */
+    @RequestMapping("backStock")
+    @ResponseBody
+    public String backStock(String stockId,String backContent){
+        JSONObject res=new JSONObject();
+        try{
+            res.put("status", "success");
+            res.put("message", "驳回通过！");
+            stockService.back(stockId,backContent);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败！");
+        }
+        return res.toString();
+
+    }
+    @RequestMapping("loadPageStockList")
+    @ResponseBody
+    public String loadPageStockList(@RequestBody Page page){
+        try {
+            // 取出查询客户
+            List<Stock> stockList = stockService.list(page);
+            // 计算最后页位置
+            //page.caculateLast(clientService.total());
+            JSONArray array = JSONArray.fromArray(stockList.toArray(new Stock[stockList.size()]));
+            // 返回结果
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
