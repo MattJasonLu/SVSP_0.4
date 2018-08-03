@@ -13,7 +13,7 @@
     <script src="js/util.js"></script>
     <script src="js/produce/transferDraft.js"></script>
 </head>
-<body>
+<body onload="loadData();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -601,7 +601,7 @@
             <a class="btn btn-success" onclick="addData('save');">保存</a>
             <a class="btn btn-primary" onclick="addData('submit');">提交</a>
             <a class="btn btn-warning" onclick="resetDate();">重置</a>
-            <a class="btn btn-danger" href="transferDraft.html">返回</a>
+            <a class="btn btn-danger" href="transferDraft.html" onclick="localStorage.removeItem('transferDraftId');">返回</a>
         </div>
     </div>
 </div>

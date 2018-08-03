@@ -120,7 +120,7 @@
                 <!--操作按钮-->
 
                 <div class="pull-left">
-                    <a class="btn btn-primary btn-xs" href="transferDraftInfo.html"><span class="glyphicon glyphicon-plus"
+                    <a class="btn btn-primary btn-xs" href="transferDraftInfo.html" onclick="localStorage.removeItem('transferDraftId');"><span class="glyphicon glyphicon-plus"
                                                                                    aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
@@ -227,6 +227,7 @@
                     <th class="text-center">发运人</th>
                     <th class="text-center">运达地</th>
                     <th class="text-center">转移时间</th>
+                    <th class="text-center">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -244,12 +245,13 @@
                     <td class="text-center">张三</td>
                     <td class="text-center">南京</td>
                     <td class="text-center">2018-08-01</td>
+                    <td class="text-center">已完成</td>
                     <td class="text-center">
-                        <a href="#" onclick="" title="查看"><span
+                        <a href="#" onclick="viewData(this);" title="查看"><span
                                 class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        <a href="#" onclick="" title="修改"><span
+                        <a href="#" onclick="adjustData(this);" title="修改"><span
                                 class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                        <a href="#" onclick="" title="作废"><span
+                        <a href="#" onclick="setInvalid(this);" title="作废"><span
                                 class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                     </td>
                 </tr>
@@ -285,7 +287,7 @@
                            id="pageNumber"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
-                    <select id="count" onchange="">
+                    <select id="count" onchange="loadPageList()">
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>

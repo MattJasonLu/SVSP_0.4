@@ -63,49 +63,6 @@ public class LaboratoryTest {
     private  List<MixingElement> heavyMetalList = new ArrayList<>();
 
 
-
-
-    public CheckState getCheckState() {
-        return checkState;
-    }
-
-    public void setCheckState(CheckState checkState) {
-        this.checkState = checkState;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public List<SampleInformation> getSampleInformationList() {
-        return sampleInformationList;
-    }
-
-    public void setSampleInformationList(List<SampleInformation> sampleInformationList) {
-        this.sampleInformationList = sampleInformationList;
-    }
-
-    public List<MixingElement> getParameterList() {
-        return parameterList;
-    }
-
-    public void setParameterList(List<MixingElement> parameterList) {
-        this.parameterList = parameterList;
-    }
-
-    public List<MixingElement> getHeavyMetalList() {
-        return heavyMetalList;
-    }
-
-    public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
-        this.heavyMetalList = heavyMetalList;
-    }
-
-
     public String getLaboratoryTestNumber() {
         return laboratoryTestNumber;
     }
@@ -120,6 +77,14 @@ public class LaboratoryTest {
 
     public void setQueryNumber(String queryNumber) {
         this.queryNumber = queryNumber;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public String getRecord() {
@@ -160,6 +125,38 @@ public class LaboratoryTest {
 
     public void setLaboratoryDate(String laboratoryDate) {
         this.laboratoryDate = laboratoryDate;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
+    public List<SampleInformation> getSampleInformationList() {
+        return sampleInformationList;
+    }
+
+    public void setSampleInformationList(List<SampleInformation> sampleInformationList) {
+        this.sampleInformationList = sampleInformationList;
+    }
+
+    public List<MixingElement> getParameterList() {
+        return parameterList;
+    }
+
+    public void setParameterList(List<MixingElement> parameterList) {
+        this.parameterList = parameterList;
+    }
+
+    public List<MixingElement> getHeavyMetalList() {
+        return heavyMetalList;
+    }
+
+    public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
+        this.heavyMetalList = heavyMetalList;
     }
 
     @Override

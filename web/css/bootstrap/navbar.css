@@ -113,10 +113,11 @@ li {
     color: rgb(229,229,229);
 }
 .sidenav > li > a > span :active{
-    color: rgb(229,229,229);
+    color: rgb(50,50,50);
 }
 .sidenav > li > a > span :after{
-    color: rgb(229,229,229);
+    color: rgb(50,50,50);
+    background-color: #0088cc;
 }
 .sidespan {
     color: rgb(229,229,229);
