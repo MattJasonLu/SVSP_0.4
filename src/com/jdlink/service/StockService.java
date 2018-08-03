@@ -12,4 +12,6 @@ public interface StockService {
     Stock getById(String stockId);
     void updateStock(Stock stock);
     void updateWastes(Wastes wastes);
+    void submitStock(String stockId);
+    void cancelStock(String stockId);
 }

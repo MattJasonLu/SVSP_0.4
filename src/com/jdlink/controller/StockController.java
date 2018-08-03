@@ -120,4 +120,40 @@ public class StockController {
         }
         return res.toString();
     }
+    //提交申报信息
+    @RequestMapping("submitStock")
+    @ResponseBody
+    public String submitStock(String stockId){
+   JSONObject res=new JSONObject();
+   try {
+       stockService.submitStock(stockId);
+       res.put("status", "success");
+       res.put("message", "提交成功");
+   }
+   catch (Exception e){
+       e.printStackTrace();
+       res.put("status", "fail");
+       res.put("message", "提交失败");
+   }
+        return res.toString();
+    }
+    //作废申报信息
+    @RequestMapping("cancelStock")
+    @ResponseBody
+    public String cancelStock(String stockId){
+        JSONObject res=new JSONObject();
+        try {
+            stockService.cancelStock(stockId);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+
+        return res.toString();
+    }
+
 }

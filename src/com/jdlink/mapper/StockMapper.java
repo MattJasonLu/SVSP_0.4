@@ -28,4 +28,8 @@ public interface StockMapper {
     void updateStock(Stock stock);
 //更新危废表
     void updateWastes(Wastes wastes);
+    //提交申报
+    void submitStock(String stockId);
+    void cancelStock(String stockId);
+
 }

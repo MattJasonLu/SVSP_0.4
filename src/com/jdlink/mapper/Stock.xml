@@ -54,4 +54,10 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         </foreach>
         </if>
     </update>
+    <update id="submitStock" parameterType="String">
+        update t_pr_stock set  checkState='ToExamine' ,nowTime=NOW() where stockId=#{stockId};
+    </update>
+    <update id="cancelStock" parameterType="String">
+          update t_pr_stock set  checkState='Invalid' ,nowTime=NOW() where stockId=#{stockId};
+    </update>
  </mapper>

@@ -776,3 +776,170 @@ function adjustStock1() {
         }
     });
 }
+    function allSelect1() {
+        var isChecked = $('#allSel1').prop('checked');
+        console.log(isChecked);
+        if (isChecked) $("input[name='blankCheckbox1']").prop('checked', true);
+        else $("input[name='blankCheckbox1']").prop('checked', false);
+    }
+    //提交
+function contractSubmit() {
+    //在此提交
+    var items = $("input[name='blankCheckbox1']:checked");//判断复选框是否选中
+    if (items.length > 0) {
+        function getContractById(id) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "submitStock",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {
+                    'stockId': id
+                },
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                    } else {
+                        alert(result.message)
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！");
+                    console.log("error: " + result);
+                }
+            });
+        }
+
+        items.each(function () {//遍历
+            var id = getContractId1(this);//获得合同编号
+            //console.log(id);
+            getContractById(id);
+
+        });
+        alert("提交成功!");
+        location.reload();
+    }
+    else {
+        alert("请勾选要提交的合同！")
+    }
+}
+//获取编号
+function getContractId1(item) {
+    return item.parentElement.parentElement.nextElementSibling.innerHTML;
+}
+//作废
+function cancel(item) {
+    //查看合同编号
+    var stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    var r = confirm("是否作废该合同？");
+    if (r == true) {
+        $.ajax({
+            type: "POST",
+            url: "cancelStock",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {"stockId": stockId},
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert("作废成功！");
+                    location.reload();
+                }
+                else {
+                    alert("作废失败")
+                    location.reload();
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+    else {
+        alert("取消作废")
+    }
+}
+//查看
+function viewStock(item) {
+    //申报编号
+   var stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getStockById",                   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'stockId': stockId
+        },
+        success: function (result)  {
+            if (result != undefined && result.status == "success") {
+          console.log(result.stock);
+          var obj=result.stock;
+           //1赋值
+                //产废单位联系人
+                if(obj.selfEmployed==false){//说明不是自运单位
+                    $('#transport').text(obj.transport);//运输公司
+                    $('#plateNumber').text(obj.plateNumber);//车牌号
+                    $('#transportTelephone').text(obj.transportTelephone);//运输公司联系方式
+                }
+                if(obj.selfEmployed==true){//说明不是自运单位
+                    $('#transport').text("");//运输公司
+                    $('#plateNumber').text("");//车牌号
+                    $('#transportTelephone').text("");//运输公司联系方式
+                }
+                //赋值产废单位联系人
+                $('#proContactName').text(obj.proContactName);
+                //赋值产废单位电话
+                $('#proTelephone').text(obj.proTelephone);
+                for(var i=0;i<obj.wastesList.length;i++){
+                    if (i > 0) addWastesNewLine();
+                    var $i = i;
+                    $("input[name='wastesList[" + $i + "].name']").val(obj.wastesList[i].name);//废物名称
+                    $("input[name='wastesList[" + $i + "].code']").val(obj.wastesList[i].code);//废物编码
+                    $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//废物数量
+                    $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
+                    $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
+                }
+
+
+            } else {
+               alert(result.message);
+                $("#modal3_contactName").text("");
+                $("#modal3_contractState").text("");
+                $("#modal3_contractVersion").text("");
+                $("#modal3_companyName").text("");
+                $("#modal3_contactName").text("");
+                $("#modal3_contractId").text("");
+                $("#modal3_beginTime").text("");
+                $("#modal3_endTime").text("");
+                $("#modal3_area").text("");
+                $("#modal3_telephone").text("");
+                $("#modal3_order").text("");
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    $('#stockInfoForm').modal('show');
+
+}
+//添加危废列表新行
+function addWastesNewLine() {
+var tr=$('#cloneTr1');
+    // 克隆tr，每次遍历都可以产生新的tr
+   var clonedTr=tr.clone();
+    // 获取编号
+    var id = tr.children().get(0).innerHTML;
+    var num = parseInt(id);
+    num++;
+    clonedTr.children().get(0).innerHTML = num;
+    var temp = num-2+"";
+    var temp2 = num-1+"";
+    clonedTr.find("input[name='wastesList[" + temp + "].name']").attr('name', "rawWastes[" + temp2 + "].name");
+    clonedTr.find("input[name='wastesList[" + temp + "].code']").attr('name', "rawWastes[" + temp2 + "].code");
+    clonedTr.find("input[name='wastesList[" + temp + "].wasteAmount']").attr('name', "rawWastes[" + temp2 + "].wasteAmount");
+    clonedTr.find("input[name='wastesList[" + temp + "].component']").attr('name', "rawWastes[" + temp2 + "].component");
+    clonedTr.find("input[name='wastesList[" + temp + "].remarks']").attr('name', "rawWastes[" + temp2 + "].remarks");
+    clonedTr.addClass("newLine");
+    clonedTr.insertAfter(tr);
+    
+}

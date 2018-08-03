@@ -43,5 +43,15 @@ public class StockServiceImpl implements StockService  {
         stockMapper.updateWastes(wastes);
     }
 
+    @Override
+    public void submitStock(String stockId) {
+        stockMapper.submitStock(stockId);
+    }
+
+    @Override
+    public void cancelStock(String stockId) {
+        stockMapper.cancelStock(stockId);
+    }
+
 
 }
