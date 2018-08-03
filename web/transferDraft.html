@@ -120,7 +120,7 @@
                 <!--操作按钮-->
 
                 <div class="pull-left">
-                    <a class="btn btn-primary btn-xs" href="transferDraftInfo.html"><span class="glyphicon glyphicon-plus"
+                    <a class="btn btn-primary btn-xs" href="transferDraftInfo.html" onclick="localStorage.removeItem('transferDraftId');"><span class="glyphicon glyphicon-plus"
                                                                                    aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span
                             class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
@@ -145,9 +145,9 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-clientId" class="col-sm-4 control-label">客户编号</label>
+                            <label for="search-draftId" class="col-sm-4 control-label">联单编号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-clientId" name="search-clientId"
+                                <input type="text" class="form-control" id="search-draftId" name="search-draftId"
                                        placeholder="">
                             </div>
                         </div>
@@ -161,16 +161,17 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
+                            <label for="search-produceCompanyName" class="col-sm-4 control-label">产生单位</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="">
+                                <input type="text" class="form-control" id="search-produceCompanyName"
+                                       name="search-produceCompanyName" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-clientState" class="col-sm-4 control-label">账号状态</label>
+                            <label for="search-dispatcher" class="col-sm-4 control-label">发运人</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-clientState" name="search-clientState"></select>
+                                <input type="text" class="form-control" id="search-dispatcher"
+                                       name="search-dispatcher" placeholder="">
                             </div>
                         </div>
 
@@ -178,32 +179,33 @@
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-contactName"
-                                   class="col-sm-4 control-label">联&nbsp;&nbsp;系&nbsp;&nbsp;人</label>
+                                   class="col-sm-4 control-label">运输单位</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-contactName"
                                        name="search-contactName" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-applicationStatus" class="col-sm-4 control-label">申报状态</label>
+                            <label for="search-transportCompanyName" class="col-sm-4 control-label">运达地</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-applicationStatus"
-                                        name="search-applicationStatus"></select>
+                                <input type="text" class="form-control" id="search-transportCompanyName"
+                                       name="search-transportCompanyName" placeholder="">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-phone" class="col-sm-4 control-label">联系电话</label>
+                            <label for="search-acceptCompanyName" class="col-sm-4 control-label">接收单位</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-phone" name="search-phone"
+                                <input type="text" class="form-control" id="search-acceptCompanyName" name="search-acceptCompanyName"
                                        placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-clientType" class="col-sm-4 control-label">客户类型</label>
+                            <label for="search-transferTime" class="col-sm-4 control-label">转移时间</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-clientType" name="search-clientType"></select>
+                                <input type="text" class="form-control" id="search-transferTime" name="search-transferTime"
+                                       placeholder="">
                             </div>
                         </div>
                     </div>
@@ -227,6 +229,7 @@
                     <th class="text-center">发运人</th>
                     <th class="text-center">运达地</th>
                     <th class="text-center">转移时间</th>
+                    <th class="text-center">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -244,12 +247,15 @@
                     <td class="text-center">张三</td>
                     <td class="text-center">南京</td>
                     <td class="text-center">2018-08-01</td>
+                    <td class="text-center">已完成</td>
                     <td class="text-center">
-                        <a href="#" onclick="" title="查看"><span
+                        <a href="#" onclick="viewData(this);" title="查看"><span
                                 class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                        <a href="#" onclick="" title="修改"><span
+                        <a href="#" onclick="setSubmit(this);" title="提交"><span
+                                class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>
+                        <a href="#" onclick="adjustData(this);" title="修改"><span
                                 class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                        <a href="#" onclick="" title="作废"><span
+                        <a href="#" onclick="setInvalid(this);" title="作废"><span
                                 class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                     </td>
                 </tr>
@@ -285,7 +291,7 @@
                            id="pageNumber"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
-                    <select id="count" onchange="">
+                    <select id="count" onchange="loadPageList()">
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>
