@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Wastes;
 
@@ -24,6 +25,7 @@ public interface StockMapper {
      * 根据编号获取ID
      *
      */
+    List<Stock> list(Page page);
     Stock getById(String stockId);
     //库存信息更新
     void updateStock(Stock stock);

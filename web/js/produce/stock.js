@@ -156,7 +156,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageClientList",         // url
+            url: "loadPageStockList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -164,7 +164,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setClientList(result);
+                    setStockList(result);
                 } else {
                     console.log("fail: " + result);
                     // setClientList(result);
@@ -238,7 +238,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageClientList",         // url
+                url: "loadPageStockList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -259,7 +259,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchClient",         // url
+                url: "searchStock",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",

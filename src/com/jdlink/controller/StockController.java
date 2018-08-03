@@ -252,4 +252,20 @@ public class StockController {
         return res.toString();
 
     }
+    @RequestMapping("loadPageStockList")
+    @ResponseBody
+    public String loadPageStockList(@RequestBody Page page){
+        try {
+            // 取出查询客户
+            List<Stock> stockList = stockService.list(page);
+            // 计算最后页位置
+            //page.caculateLast(clientService.total());
+            JSONArray array = JSONArray.fromArray(stockList.toArray(new Stock[stockList.size()]));
+            // 返回结果
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

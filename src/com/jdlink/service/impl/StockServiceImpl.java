@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.StockMapper;
@@ -26,6 +27,11 @@ public class StockServiceImpl implements StockService  {
     @Override
     public List<Stock> list() {
         return stockMapper.list();
+    }
+
+    @Override
+    public List<Stock> list(Page page) {
+        return stockMapper.list(page);
     }
 
     @Override
