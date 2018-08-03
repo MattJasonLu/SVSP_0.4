@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
 import java.util.ArrayList;
@@ -39,6 +40,49 @@ public class Stock {
     * 危废列表
      */
    private List<Wastes> wastesList=new ArrayList<>();
+    /**
+     * 审批意见
+     */
+    private  String opinion;
+    /**
+     * 驳回意见
+     */
+    private  String backContent;
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
+    }
+
+    public String getBackContent() {
+        return backContent;
+    }
+
+    public void setBackContent(String backContent) {
+        this.backContent = backContent;
+    }
+
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+    private  String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     @Override
     public String toString() {
