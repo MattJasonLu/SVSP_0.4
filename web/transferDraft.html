@@ -11,8 +11,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/transferDraft.js"></script>
 </head>
-<body>
+<body onload="loadPageList()">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -130,7 +131,7 @@
                 <div class="input-group col-xs-3 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick=""><span
+                            <a class="btn btn-default" onclick="searchData()"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog"
@@ -260,26 +261,26 @@
             <ol class="pagination" style="width: 800px;">
                 <li id="current"><a href='#'>当前页：</a>
                 <li id="firstPage">
-                    <a href='#' onclick="">首 页</a>
+                    <a href='#' onclick="switchPage(0)">首 页</a>
                 </li>
                 <li id="previous">
-                    <a href="#" aria-label="Previous" onclick="">
+                    <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
                         <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
                                                        aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li><a href="#">1</a></li>
                 <li id="next">
-                    <a href="#" aria-label="Next" onclick="">
+                    <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
                         <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
                                                        aria-hidden="true"></span></span>
                     </a>
                 </li>
                 <li id="endPage">
-                    <a href='#' onclick="">尾 页</a>
+                    <a href='#' onclick="switchPage(-2)">尾 页</a>
                 </li>
                 <li><a id="totalPage"></a></li>
-                <li><a href="#" onclick="">跳转</a></li>
+                <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
                            id="pageNumber"></li>
                 <li class="showLi">每页显示:</li>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.LaboratoryTestMapper" >
+    <resultMap id="LaboratoryTestRM" type="LaboratoryTest" autoMapping="true">
+        <collection property="sampleInformationList" select="getSampleInformationList" column="laboratoryTestNumber"
+                    ofType="com.jdlink.domain.Produce.SampleInformation" javaType="ArrayList"/>
+    </resultMap>
+    <resultMap id="SampleInformationRM" type="LaboratoryTest">
+        <result property="samplingDate" column="samplingDate"/>
+        <result property="wastesName" column="wastesName"/>
+        <result property="wastesNumber" column="samplingNumber"/>
+    </resultMap>
+
+    <select id="getLaboratoryTestById" parameterType="String" resultMap="LaboratoryTestRM">
+        select * from t_pr_laboratorytest where laboratoryTestNumber= #{laboratoryTestNumber};
+    </select>
+
+    <select id="getSampleInformationList" parameterType="String" resultMap="SampleInformationRM">
+        select * from t_pr_sampleinformation where laboratoryTestNumber=#{laboratoryTestNumber};
+    </select>
+
+    <update id="setInvalid" parameterType="String">
+        update t_pr_laboratorytest set checkState = 'Invalid' where laboratoryTestNumber = #{laboratoryTestNumber};
+    </update>
+
+    <update id="setTested" parameterType="String">
+        update t_pr_laboratorytest set checkState = 'Tested' where laboratoryTestNumber = #{laboratoryTestNumber};
+    </update>
+
+    <update id="submit" parameterType="String">
+        update t_pr_laboratorytest set checkState = 'Submitted' where laboratoryTestNumber = #{laboratoryTestNumber};
+    </update>
+
+    <update id="confirm" parameterType="String">
+        update t_pr_laboratorytest set checkState = 'Confirm' where laboratoryTestNumber = #{laboratoryTestNumber};
+    </update>
+</mapper>

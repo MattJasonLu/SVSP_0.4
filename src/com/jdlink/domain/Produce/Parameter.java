@@ -6,17 +6,17 @@ package com.jdlink.domain.Produce;
 public enum Parameter {
     Viscosity("粘度", 1),
     Density("密度",2),
-    PHvalue("酸碱度",2),
-//    Density("热值",2),
-//    Density("密度",2),
-//    Density("密度",2),
-//    Density("密度",2),
-//    Density("密度",2),
-//    Density("密度",2),
-//    Density("密度",2),
-//    Density("密度",2),
-//    Density("密度",2),
-//    Density("密度",2),
+    PH("酸碱度",3),
+    Heat("热值",4),
+    Ash("密度",5),
+    FlashPoint("闪点",6),
+    MeltingPoint("熔点",7),
+    BoilingPoint("沸点",8),
+    WaterContent("含水率",9),
+    SolidSubstanceContent("固体物质含量",10),
+    SulfurContent("硫含量",11),
+    ChlorineContent("氯含量",12),
+    FluorineContent("氟含量",13),
     ;
 
     private String name;
