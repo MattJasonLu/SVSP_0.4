@@ -856,6 +856,10 @@ function cancel(item) {
 }
 //查看
 function viewStock(item) {
+    //查看页面 审批隐藏 打印显示 驳回隐藏
+    $('#btn').hide();//审批隐藏
+    $('#print').show();//打印显示
+    $('#back').hide();
     //申报编号
    var stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     $.ajax({
@@ -941,4 +945,135 @@ var tr=$('#cloneTr1');
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
     
+}
+//审批
+function approval(item) {
+    //出现模态框和查看一个效果
+    //审批显示 打印隐藏 驳回显示
+    $('#btn').show();//审批显示
+    $('#print').hide();//打印隐藏
+    $('#back').show();
+     stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getStockById",                   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'stockId': stockId
+        },
+        success: function (result)  {
+            if (result != undefined && result.status == "success") {
+                console.log(result.stock);
+                var obj=result.stock;
+                //1赋值
+                //产废单位联系人
+                if(obj.selfEmployed==false){//说明不是自运单位
+                    $('#transport').text(obj.transport);//运输公司
+                    $('#plateNumber').text(obj.plateNumber);//车牌号
+                    $('#transportTelephone').text(obj.transportTelephone);//运输公司联系方式
+                }
+                if(obj.selfEmployed==true){//说明不是自运单位
+                    $('#transport').text("");//运输公司
+                    $('#plateNumber').text("");//车牌号
+                    $('#transportTelephone').text("");//运输公司联系方式
+                }
+                //赋值产废单位联系人
+                $('#proContactName').text(obj.proContactName);
+                //赋值产废单位电话
+                $('#proTelephone').text(obj.proTelephone);
+                //赋值是否自运单位
+                $('#selfEmployed').prop('checked',obj.selfEmployed);
+                //赋值审批意见
+                $('#opinion').val(obj.opinion);
+                //赋值驳回意见
+                $('#backContent').val(obj.backContent);
+                for(var i=0;i<obj.wastesList.length;i++){
+                    if (i > 0) addWastesNewLine();
+                    var $i = i;
+                    $("input[name='wastesList[" + $i + "].name']").val(obj.wastesList[i].name);//废物名称
+                    $("input[name='wastesList[" + $i + "].code']").val(obj.wastesList[i].code);//废物编码
+                    $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//废物数量
+                    $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
+                    $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
+                }
+
+
+            } else {
+                alert(result.message);
+                $("#modal3_contactName").text("");
+                $("#modal3_contractState").text("");
+                $("#modal3_contractVersion").text("");
+                $("#modal3_companyName").text("");
+                $("#modal3_contactName").text("");
+                $("#modal3_contractId").text("");
+                $("#modal3_beginTime").text("");
+                $("#modal3_endTime").text("");
+                $("#modal3_area").text("");
+                $("#modal3_telephone").text("");
+                $("#modal3_order").text("");
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    $('#stockInfoForm').modal('show');//出现第一个模态框
+}
+//审批界面和驳回界面
+function showApproval(){
+    $('#contractInfoForm3').modal('show');
+}
+function showBack(){
+    $('#contractInfoForm4').modal('show');
+}
+//把按钮功能分出来做这个是审批
+function confirm1() {
+    opinion = $('#opinion').val();
+    //console.log(opinion);
+    //1获取文本框的值
+    $.ajax({
+        type: "POST",
+        url: "approvalStock",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'stockId': stockId, 'opinion': opinion},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+            }
+            else {
+                alert("审批失败")
+            }
+            location.reload();
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+});
+}
+//把按钮功能分出来做这个是驳回
+function back1() {
+    backContent = $('#backContent').val();
+    //设置状态驳回
+    $.ajax({
+        type: "POST",
+        url: "backStock",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'stockId': stockId, 'backContent': backContent},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+            }
+            else {
+                alert(result.message)
+            }
+            location.reload();
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
 }

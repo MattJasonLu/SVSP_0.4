@@ -18,4 +18,6 @@ public interface StockService {
     List<Stock> search(Stock stock);
     int total();
     int searchCount(Stock stock);
+    void opinion(String stockId,String opinion);
+    void back(String stockId,String opinion);
 }

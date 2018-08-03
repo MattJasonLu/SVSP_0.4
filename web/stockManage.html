@@ -356,15 +356,57 @@
                         <p class="text-left"><b>运输公司联系电话&nbsp;&nbsp;</b><span id="transportTelephone"></span></p>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default hidden-print" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary hidden-print" onclick="" id="print">打印</button>
+                <div class="row text-center">
+                    <a class="btn btn-primary hidden-print" onclick="showApproval()" id="btn">审批</a>
+                    <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                    <a class="btn btn-danger hidden-print" id="back" onclick="showBack()">驳回</a>
+                    <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!--高级查询-->
-
+!--审批页面-->
+<div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">审批意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="opinion"  name="opinion" style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">
+                    确认审批
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="file" name="excelPath" id="idExcel" style="display:none">
+<!--驳回页面-->
+<div class="modal fade" id="contractInfoForm4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">驳回意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="backContent" name="backContent"  style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

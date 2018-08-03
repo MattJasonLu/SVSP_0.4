@@ -40,6 +40,31 @@ public class Stock {
     * 危废列表
      */
    private List<Wastes> wastesList=new ArrayList<>();
+    /**
+     * 审批意见
+     */
+    private  String opinion;
+    /**
+     * 驳回意见
+     */
+    private  String backContent;
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
+    }
+
+    public String getBackContent() {
+        return backContent;
+    }
+
+    public void setBackContent(String backContent) {
+        this.backContent = backContent;
+    }
+
     private Page page;
 
     public Page getPage() {

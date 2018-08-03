@@ -132,6 +132,10 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
             </if>
         </where>
     </select>
-
-
+    <update id="opinion" parameterType="Stock">
+    update t_pr_stock set opinion=#{1},checkState="Keeping",nowTime=NOW() where stockId=#{0};
+   </update>
+    <update id="back" parameterType="Stock">
+        update t_pr_stock set checkState="Backed",backContent=#{1},nowTime=NOW() where stockId=#{0}
+    </update>
  </mapper>

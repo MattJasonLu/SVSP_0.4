@@ -209,4 +209,47 @@ public class StockController {
             return 0;
         }
     }
+    /**
+     *
+     * 库存审批
+     */
+    @RequestMapping("approvalStock")
+    @ResponseBody
+    public String approvalStock(String stockId,String opinion){
+        JSONObject res=new JSONObject();
+        try{
+            res.put("status", "success");
+            res.put("message", "审批通过！");
+            stockService.opinion(stockId,opinion);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败！");
+        }
+
+
+        return res.toString();
+    }
+    /**
+     *
+     * 库存驳回
+     */
+    @RequestMapping("backStock")
+    @ResponseBody
+    public String backStock(String stockId,String backContent){
+        JSONObject res=new JSONObject();
+        try{
+            res.put("status", "success");
+            res.put("message", "驳回通过！");
+            stockService.back(stockId,backContent);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败！");
+        }
+        return res.toString();
+
+    }
 }

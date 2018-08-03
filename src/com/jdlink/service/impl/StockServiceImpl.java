@@ -68,5 +68,15 @@ public class StockServiceImpl implements StockService  {
         return stockMapper.searchCount(stock);
     }
 
+    @Override
+    public void opinion(String stockId, String opinion) {
+        stockMapper.opinion(stockId,opinion);
+    }
+
+    @Override
+    public void back(String stockId, String opinion) {
+        stockMapper.back(stockId,opinion);
+    }
+
 
 }
