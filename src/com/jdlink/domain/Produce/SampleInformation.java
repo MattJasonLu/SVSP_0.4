@@ -119,6 +119,12 @@ public class SampleInformation {
         this.laboratorySigner = laboratorySigner;
     }
 
+    public ApplyState getApplyState() { return applyState;
+    }
+
+    public void setApplyState(ApplyState applyState) { this.applyState = applyState;
+    }
+
     public boolean getIsPH() {
         return isPH;
     }
@@ -199,4 +205,23 @@ public class SampleInformation {
         isViscosity = viscosity;
     }
 
+    @Override
+    public String toString() {
+        return "SampleInformation{" +
+                "companyCode='" + companyCode + '\'' +
+                ", wastesCode='" + wastesCode + '\'' +
+                ", laboratorySigner='" + laboratorySigner + '\'' +
+                ", applyState=" + applyState +
+                ", isPH=" + isPH +
+                ", isAsh=" + isAsh +
+                ", isWater=" + isWater +
+                ", isHeat=" + isHeat +
+                ", isSulfur=" + isSulfur +
+                ", isChlorine=" + isChlorine +
+                ", isFluorine=" + isFluorine +
+                ", isPhosphorus=" + isPhosphorus +
+                ", isFlashPoint=" + isFlashPoint +
+                ", isViscosity=" + isViscosity +
+                '}';
+    }
 }
