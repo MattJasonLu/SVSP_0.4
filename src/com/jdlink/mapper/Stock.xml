@@ -48,12 +48,11 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         transport=#{transport},transportTelephone=#{transportTelephone},
         plateNumber=#{plateNumber},selfEmployed=#{selfEmployed},
         nowTime=NOW() where stockId=#{stockId};
-        <if test="wastesList.size()> 0" >
-        <foreach collection="wastesList"  item="wastes" index="index">
-            update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{stockId};
-
-        </foreach>
-        </if>
+        <!--<if test="wastesList.size()> 0" >-->
+        <!--<foreach collection="wastesList"  item="wastes" index="index">-->
+            <!--update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{stockId};-->
+        <!--</foreach>-->
+        <!--</if>-->
     </update>
     <update id="submitStock" parameterType="String">
         update t_pr_stock set  checkState='ToExamine' ,nowTime=NOW() where stockId=#{stockId};

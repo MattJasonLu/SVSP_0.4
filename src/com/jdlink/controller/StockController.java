@@ -108,14 +108,16 @@ public class StockController {
             //获取旧列表 将其删除
             List<Wastes> oldWastesList = stockService.getById(stock.getStockId()).getWastesList();
             System.out.println("旧列表" + oldWastesList);
-            stockService.delete(stock);
+            stockService.delete(stock);//删除旧列表
             List<Wastes> newWastesList = stock.getWastesList();
             for (int i=0;i<newWastesList.size(); i++) {
                 newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());//给新列表赋值ID
             }
             System.out.println("新列表" + newWastesList);
-            stockService.addList(stock);
-            stockService.time1(stock);
+            stockService.addList(stock);//添加新列表
+            //更新stock字段
+            stockService.updateStock(stock);
+            //stockService.time1(stock);
             JSONObject json = JSONObject.fromBean(stock);
             res.put("stock1", json);
             res.put("status", "success");
