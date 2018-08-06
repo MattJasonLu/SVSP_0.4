@@ -1,7 +1,6 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.ApplyState;
-import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
