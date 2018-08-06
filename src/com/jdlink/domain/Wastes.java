@@ -110,6 +110,11 @@ public class Wastes {
     /**
      * 类别
      */
+    private String category;
+    /**
+     * 危废编码
+     */
+    private String wastesCode;
 
     private boolean isPH; // PH值
 
@@ -129,9 +134,15 @@ public class Wastes {
 
     private boolean isFlashPoint;  // 闪点
 
-    private boolean isViscosity;  // 粘度
+    private boolean isViscosity;  // 黏度
 
-    private String category;
+    public String getWastesCode() {
+        return wastesCode;
+    }
+
+    public void setWastesCode(String wastesCode) {
+        this.wastesCode = wastesCode;
+    }
 
     public String getId() {
         return id;

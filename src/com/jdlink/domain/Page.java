@@ -85,4 +85,16 @@ public class Page {
         if (0 == total % count) last = total - count;
         else last = total - total % count;
     }
+
+    @Override
+    public String toString() {
+        return "Page{" +
+                "start=" + start +
+                ", count=" + count +
+                ", last=" + last +
+                ", totalRecord=" + totalRecord +
+                ", pageNumber=" + pageNumber +
+                ", contractIndex=" + contractIndex +
+                '}';
+    }
 }
