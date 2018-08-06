@@ -38,7 +38,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="compatibilityPlan.html">首页</a></li>
                     <li><a href="weekPlan.html">配伍周计划</a></li>
-                    <li><a href="#">物料需求单</a></li>
+                    <li><a href="materialDemand.html">物料需求单</a></li>
                     <li><a href="#">生产计划单</a></li>
                     <li class="active"><a href="thresholdTable.html">基础数据阈值表</a></li>
                 </ul>
@@ -99,6 +99,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 编辑</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
@@ -106,14 +107,6 @@
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 重置</a>
-                    </div>
-                    <!--查询框-->
-                    <div class="input-group col-xs-3 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
-                        <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                        </span>
                     </div>
                 </div>
             </div>

@@ -13,91 +13,10 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/materialDemand.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
-    function setClientList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 企业编号
-                    case (0):
-                        $(this).html(obj.clientId);
-                        break;
-                    // 企业名称
-                    case (1):
-                        $(this).html(obj.companyName);
-                        break;
-                    // 由谁添加
-                    case (2):
-                        $(this).html(obj.contactName);
-                        break;
-                    // 添加时间
-                    case (3):
-                        $(this).html(getNowDate());
-                        break;
-                    // 编辑时间
-                    case (4):
-                        $(this).html(getNowDate());
-                        break;
-                    // 操作
-                    case (5):
-
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-    function loadClientList() {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listClient",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-    var m = new Date();
-    var month = m.getMonth();
-    var y = new Date();
-    var year = y.getFullYear();
-    //当月的第几周
-    var getMonthWeek = function (a, b, c) {
-        //a = d = 当前日期
-        //b = 6 - w = 当前周的还有几天过完(不算今天)
-        //a + b 的和在除以7 就是当天是当前月份的第几周
-        var date = new Date(a, parseInt(b) - 1, c), w = date.getDay(), d = date.getDate();
-        return Math.ceil((d + 6 - w) / 7);
-    };
-    $(".week").text(getMonthWeek());
-    $(".month").text(month);
-    $(".year").text(year);
-    console.log(getMonthWeek()+month+year);
 </script>
 <body >
     <!--导航条-->
@@ -119,7 +38,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="#">首页</a></li>
                     <li class="active"><a href="weekPlan.html">配伍周计划</a></li>
-                    <li><a href="#">物料需求单</a></li>
+                    <li><a href="materialDemand.html">物料需求单</a></li>
                     <li><a href="#">生产计划单</a></li>
                     <li><a href="thresholdTable.html">基础数据阈值表</a></li>
                 </ul>
@@ -180,9 +99,13 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>
                         <a class="btn btn-primary btn-xs" href="newWarehouse.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 审批</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成物料需求单</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
@@ -283,6 +206,86 @@
                             <td class="text-center">1</td>
                             <td class="text-left">废液</td>
                             <td class="text-center">废液5号</td>
+                            <td class="text-right">0.5</td>
+                            <td class="text-right">100</td>
+                            <td class="text-right">300</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">30</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td class="text-left">废液</td>
+                            <td class="text-center">废液4号</td>
+                            <td class="text-right">0.5</td>
+                            <td class="text-right">100</td>
+                            <td class="text-right">300</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">30</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td class="text-left">废液</td>
+                            <td class="text-center">废液3号</td>
+                            <td class="text-right">0.5</td>
+                            <td class="text-right">100</td>
+                            <td class="text-right">300</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">30</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">4</td>
+                            <td class="text-left">废液</td>
+                            <td class="text-center">废液2号</td>
+                            <td class="text-right">0.5</td>
+                            <td class="text-right">100</td>
+                            <td class="text-right">300</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">30</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">5</td>
+                            <td class="text-left">废液</td>
+                            <td class="text-center">废液1号</td>
+                            <td class="text-right">0.5</td>
+                            <td class="text-right">100</td>
+                            <td class="text-right">300</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">20</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">10</td>
+                            <td class="text-right">30</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">6</td>
+                            <td class="text-left">废液</td>
+                            <td class="text-center">废液0号</td>
                             <td class="text-right">0.5</td>
                             <td class="text-right">100</td>
                             <td class="text-right">300</td>
