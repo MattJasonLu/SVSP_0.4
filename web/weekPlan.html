@@ -357,9 +357,10 @@
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
                     <li><a href="#">首页</a></li>
-                    <li class="active"><a href="#">配伍周计划</a></li>
+                    <li class="active"><a href="weekPlan.html">配伍周计划</a></li>
                     <li><a href="#">物料需求单</a></li>
                     <li><a href="#">生产计划单</a></li>
+                    <li><a href="thresholdTable.html">基础数据阈值表</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -548,39 +549,6 @@
                 </div>
             </div>
             <!--分页-->
-            <nav aria-label="Page navigation" style="text-align: center">
-                <ol class="pagination" style="width: 900px;">
-                    <li id="current"><a href="#"></a> </li>
-                    <li id="firstPage">
-                        <a href='#' onclick="switchPage(0)">首 页</a>
-                    </li>
-                    <li id="previous">
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li id="next">
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
-                        </a>
-                    </li>
-                    <li id="endPage">
-                        <a href='#' onclick="switchPage(-2)">尾 页</a>
-                    </li>
-                    <li ><a id="totalPage"></a></li>
-                    <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                    <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
-                    <li class="showLi">每页显示:</li>
-                    <li class="selectLi">
-                        <select id="count" onchange="loadPageClientList();">
-                            <option>5</option>
-                            <option selected>15</option>
-                            <option>50</option>
-                        </select>
-                    </li>
-                </ol>
-            </nav>
         </div>
     </div>
     <div id="embed"></div>
