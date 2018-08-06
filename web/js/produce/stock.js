@@ -669,7 +669,6 @@ function loadAdjustStock() {
     //获取申报编号
    var stockId =localStorage['stockId'];
    $('#stockId').prop("value",stockId);
-   console.log("here");
   //通过ajax 根据id获取信息
     $.ajax({
         type: "POST",                            // 方法类型
@@ -694,6 +693,12 @@ function loadAdjustStock() {
           $('#plateNumber').prop('value',obj.plateNumber);
           //赋值是否自运单位
           $('#selfEmployed').prop('checked',obj.selfEmployed);
+          if(obj.selfEmployed==true){
+              $('#transport1').hide();//是自运公司 隐藏
+          }
+          if(obj.selfEmployed==false){
+              $('#transport1').show();//不是自运公司 显示
+          }
           //各下拉框数据填充
           var wastesInfoList = $("#code");
           // 清空遗留元素
