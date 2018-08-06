@@ -4,20 +4,31 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.TransferDraftMapper">
+    <resultMap id="WastesRM" type="Wastes" autoMapping="true">
+        <result property="id" column="id"/>
+        <result property="formType" column="formType" javaType="com.jdlink.domain.FormType"/>
+        <result property="packageType" column="packageType" javaType="com.jdlink.domain.PackageType"/>
+    </resultMap>
+    <resultMap id="TransferDraftRM" type="TransferDraft" autoMapping="true">
+        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+        <association property="transportCompany" column="transportCompanyId" select="getTransportCompany"/>
+        <association property="acceptCompany" column="acceptCompanyId" select="getAcceptCompany"/>
+        <association property="wastes" column="wastesId" select="getWastes"/>
+    </resultMap>
     <insert id="add" parameterType="TransferDraft" >
         INSERT INTO t_pr_transferdraft (id, checkState, produceCompanyId, transportCompanyId, acceptCompanyId,
         wastesId, outwardIsTransit, outwardIsUse, outwardIsDeal, outwardIsDispose, mainDangerComponent,
         dangerCharacter, emergencyMeasure, emergencyEquipment, dispatcher, destination, transferTime,
-        firstCarrier, firstCarryTime, firstModel, firstTransportNumber, firstOrigin, firstStation,
-        firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel,
+        firstCarrier, firstCarryTime, firstModel, firstBrand, firstTransportNumber, firstOrigin, firstStation,
+        firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel, secondBrand,
         secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
         acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn,
         disposeIsLandFill, disposeIsOther, headSign, signDate, nowTime) VALUES (#{id}, #{checkState}, #{produceCompany.clientId},
         #{transportCompany.supplierId}, #{acceptCompany.clientId}, #{wastes.id}, #{outwardIsTransit}, #{outwardIsUse},
         #{outwardIsDeal}, #{outwardIsDispose}, #{mainDangerComponent}, #{dangerCharacter}, #{emergencyMeasure},
         #{emergencyEquipment}, #{dispatcher}, #{destination}, #{transferTime}, #{firstCarrier},
-        #{firstCarryTime}, #{firstModel}, #{firstTransportNumber}, #{firstOrigin}, #{firstStation},
-        #{firstDestination}, #{firstCarrierSign}, #{secondCarrier}, #{secondCarryTime}, #{secondModel},
+        #{firstCarryTime}, #{firstModel}, #{firstBrand}, #{firstTransportNumber}, #{firstOrigin}, #{firstStation},
+        #{firstDestination}, #{firstCarrierSign}, #{secondCarrier}, #{secondCarryTime}, #{secondModel}, #{secondBrand},
         #{secondTransportNumber}, #{secondOrigin}, #{secondStation}, #{secondDestination}, #{secondCarrierSign},
         #{acceptCompanyLicense}, #{recipient}, #{acceptDate}, #{disposeIsUse}, #{disposeIsStore}, #{disposeIsBurn},
         #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW());
@@ -28,29 +39,50 @@
         #{wastes.formType}, #{wastes.packageType});
     </insert>
 
-    <select id="getById" parameterType="String" resultType="TransferDraft">
-        SELECT * FROM t_pr_transferdraft WHERE id=#{id};
+    <select id="getById" parameterType="String" resultMap="TransferDraftRM">
+        SELECT t_pr_transferdraft.* FROM t_pr_transferdraft WHERE t_pr_transferdraft.id=#{id};
+    </select>
+
+    <select id="getProduceCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{produceCompanyId};
+    </select>
+    <select id="getAcceptCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{acceptCompanyId};
+    </select>
+    <select id="getTransportCompany" parameterType="String" resultType="Supplier">
+        SELECT * FROM t_supplier WHERE supplierId=#{transportCompanyId};
+    </select>
+    <select id="getWastes" parameterType="String" resultMap="WastesRM">
+        SELECT * FROM t_wastes WHERE id=#{wastesId};
     </select>
 
     <update id="update" parameterType="TransferDraft" >
         UPDATE t_pr_transferdraft SET produceCompanyId=#{produceCompany.clientId}, transportCompanyId=#{transportCompany.supplierId},
-        acceptCompanyId=#{acceptCompany.clientId}, wastesId=#{wastesId}, outwardIsTransit=#{outwardIsTransit},
+        acceptCompanyId=#{acceptCompany.clientId}, outwardIsTransit=#{outwardIsTransit},
         outwardIsUse=#{outwardIsUse}, outwardIsDeal=#{outwardIsDeal}, outwardIsDispose=#{outwardIsDispose},
         mainDangerComponent=#{mainDangerComponent}, dangerCharacter=#{dangerCharacter}, emergencyMeasure=#{emergencyMeasure},
         emergencyEquipment=#{emergencyEquipment}, dispatcher=#{dispatcher}, destination=#{destination},
-        transferTime=#{transferTime}, firstCarrier=#{firstCarrier}, firstCarryTime=#{firstCarryTime}, firstModel=#{firstModel},
+        transferTime=#{transferTime}, firstCarrier=#{firstCarrier}, firstCarryTime=#{firstCarryTime}, firstModel=#{firstModel}, firstBrand=#{firstBrand},
         firstTransportNumber=#{firstTransportNumber}, firstOrigin=#{firstOrigin}, firstStation=#{firstStation},
         firstDestination=#{firstDestination}, firstCarrierSign=#{firstCarrierSign}, secondCarrier=#{secondCarrier},
-        secondCarryTime=#{secondCarryTime}, secondModel=#{secondModel}, secondTransportNumber=#{secondTransportNumber},
+        secondCarryTime=#{secondCarryTime}, secondModel=#{secondModel}, secondBrand=#{secondBrand}, secondTransportNumber=#{secondTransportNumber},
         secondOrigin=#{secondOrigin}, secondStation=#{secondStation}, secondDestination=#{secondDestination},
         secondCarrierSign=#{secondCarrierSign}, acceptCompanyLicense=#{acceptCompanyLicense}, recipient=#{recipient},
         acceptDate=#{acceptDate}, disposeIsUse=#{disposeIsUse}, disposeIsStore=#{disposeIsStore}, disposeIsBurn=#{disposeIsBurn},
         disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate},
         nowTime=NOW() WHERE id=#{id};
+
+        UPDATE t_wastes SET name=#{wastes.name}, category=#{wastes.category}, code=#{wastes.code}, prepareTransferCount=#{wastes.prepareTransferCount},
+        transferCount=#{wastes.transferCount}, signCount=#{wastes.signCount}, wastesCharacter=#{wastes.wastesCharacter}, formType=#{wastes.formType},
+        packageType=#{wastes.packageType} WHERE id=#{wastes.id};
     </update>
 
     <update id="setStateInvalid" parameterType="String">
         UPDATE t_pr_transferdraft SET checkState='Invalid' WHERE id=#{id};
+    </update>
+
+    <update id="setStateToExamine" parameterType="String">
+        UPDATE t_pr_transferdraft SET checkState='ToExamine' WHERE id=#{id};
     </update>
 
     <select id="list" resultType="TransferDraft">
@@ -68,11 +100,17 @@
         SELECT * FROM t_pr_transferdraft
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
-                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+                and dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like "%"#{keyword}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
+            </if>
+            <if test="dispatcher != null and dispatcher != ''">
+                and dispatcher LIKE "%"#{dispatcher}"%"
+            </if>
+            <if test="transferTime != null and transferTime != ''">
+                and transferTime LIKE "%"#{transferTime}"%"
             </if>
         </where>
         order by nowTime desc

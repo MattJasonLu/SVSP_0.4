@@ -48,11 +48,11 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         transport=#{transport},transportTelephone=#{transportTelephone},
         plateNumber=#{plateNumber},selfEmployed=#{selfEmployed},
         nowTime=NOW() where stockId=#{stockId};
-        <if test="wastesList.size()> 0" >
-        <foreach collection="wastesList"  item="wastes" index="index">
-            update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{stockId};
-        </foreach>
-        </if>
+        <!--<if test="wastesList.size()> 0" >-->
+        <!--<foreach collection="wastesList"  item="wastes" index="index">-->
+            <!--update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{stockId};-->
+        <!--</foreach>-->
+        <!--</if>-->
     </update>
     <update id="submitStock" parameterType="String">
         update t_pr_stock set  checkState='ToExamine' ,nowTime=NOW() where stockId=#{stockId};
@@ -137,5 +137,16 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
    </update>
     <update id="back" parameterType="Stock">
         update t_pr_stock set checkState="Backed",backContent=#{1},nowTime=NOW() where stockId=#{0}
+    </update>
+    <delete id="delete" parameterType="Stock">
+           delete  from  t_wastes where t_wastes.stockId=#{stockId};
+    </delete>
+    <insert id="addList" parameterType="Stock">
+        <foreach collection="wastesList"  item="wastes" index="index">
+            insert into t_wastes(id,name,code,wasteAmount,component,remarks,stockId) values (#{wastes.id},#{wastes.name},#{wastes.code},#{wastes.wasteAmount},#{wastes.component},#{wastes.remarks},#{stockId});
+        </foreach>
+    </insert>
+    <update id="time1" parameterType="Stock">
+        update t_pr_stock set nowTime=NOW() where stockId=#{stockId};
     </update>
  </mapper>

@@ -29,6 +29,11 @@ public class TransferDraftServiceImpl implements TransferDraftService {
     }
 
     @Override
+    public void setStateToExamine(String id) {
+        transferDraftMapper.setStateToExamine(id);
+    }
+
+    @Override
     public TransferDraft getById(String id) {
         return transferDraftMapper.getById(id);
     }
