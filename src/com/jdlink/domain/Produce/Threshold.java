@@ -19,6 +19,27 @@ public class Threshold {
     private float ashMax;
     //灰分最小值
     private float ashMin;
+    //水分最大值
+    private float waterMax;
+
+    public float getWaterMax() {
+        return waterMax;
+    }
+
+    public void setWaterMax(float waterMax) {
+        this.waterMax = waterMax;
+    }
+
+    public float getWaterMin() {
+        return waterMin;
+    }
+
+    public void setWaterMin(float waterMin) {
+        this.waterMin = waterMin;
+    }
+
+    //水分最小值
+    private float waterMin;
     //硫最大值
     private  float sMax;
     //硫最小值
@@ -28,13 +49,22 @@ public class Threshold {
     //氯最小值
     private  float clMin;
     //磷最大值
-    private  String pMax;
+    private  float pMax;
     //磷最小炮值
     private  float pMin;
     //弗最大值
     private float fMax;
     //弗最小值
     private float fMin;
+
+    public float getpMax() {
+        return pMax;
+    }
+
+    public void setpMax(float pMax) {
+        this.pMax = pMax;
+    }
+
     //PH最大值
     private  float phMax;
     //PH最小值
@@ -44,7 +74,15 @@ public class Threshold {
     //起始日期
     private Date beginTime;
     //结束日期
-    private Date endTimeTime;
+    private Date endTime;
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getThresholdId() {
         return thresholdId;
@@ -134,12 +172,32 @@ public class Threshold {
         this.clMin = clMin;
     }
 
-    public String getpMax() {
-        return pMax;
-    }
-
-    public void setpMax(String pMax) {
-        this.pMax = pMax;
+    @Override
+    public String toString() {
+        return "Threshold{" +
+                "thresholdId='" + thresholdId + '\'' +
+                ", handleCategory=" + handleCategory +
+                ", formType=" + formType +
+                ", calorificMax=" + calorificMax +
+                ", calorificMin=" + calorificMin +
+                ", ashMax=" + ashMax +
+                ", ashMin=" + ashMin +
+                ", waterMax=" + waterMax +
+                ", waterMin=" + waterMin +
+                ", sMax=" + sMax +
+                ", sMin=" + sMin +
+                ", clMax=" + clMax +
+                ", clMin=" + clMin +
+                ", pMax=" + pMax +
+                ", pMin=" + pMin +
+                ", fMax=" + fMax +
+                ", fMin=" + fMin +
+                ", phMax=" + phMax +
+                ", phMin=" + phMin +
+                ", safety=" + safety +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                '}';
     }
 
     public float getpMin() {
@@ -196,39 +254,5 @@ public class Threshold {
 
     public void setBeginTime(Date beginTime) {
         this.beginTime = beginTime;
-    }
-
-    public Date getEndTimeTime() {
-        return endTimeTime;
-    }
-
-    public void setEndTimeTime(Date endTimeTime) {
-        this.endTimeTime = endTimeTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Threshold{" +
-                "thresholdId='" + thresholdId + '\'' +
-                ", handleCategory=" + handleCategory +
-                ", formType=" + formType +
-                ", calorificMax=" + calorificMax +
-                ", calorificMin=" + calorificMin +
-                ", ashMax=" + ashMax +
-                ", ashMin=" + ashMin +
-                ", sMax=" + sMax +
-                ", sMin=" + sMin +
-                ", clMax=" + clMax +
-                ", clMin=" + clMin +
-                ", pMax='" + pMax + '\'' +
-                ", pMin=" + pMin +
-                ", fMax=" + fMax +
-                ", fMin=" + fMin +
-                ", phMax=" + phMax +
-                ", phMin=" + phMin +
-                ", safety=" + safety +
-                ", beginTime=" + beginTime +
-                ", endTimeTime=" + endTimeTime +
-                '}';
     }
 }
