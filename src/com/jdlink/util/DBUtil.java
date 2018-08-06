@@ -208,7 +208,7 @@ public class DBUtil {
         } catch (SQLException e) {
             e.printStackTrace();
             //数据完全重复时才会抛出
-            throw new IllegalArgumentException("客户数据重复！");
+            throw new IllegalArgumentException("数据重复！");
         }
     }
     public String  generateSql(int columnCount,String DBTableName) {
