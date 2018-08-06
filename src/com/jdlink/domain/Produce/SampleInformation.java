@@ -286,30 +286,5 @@ public class SampleInformation {
         this.keyword = keyword;
     }
 
-    @Override
-    public String toString() {
-        return "SampleInformation{" +
-                "companyCode='" + companyCode + '\'' +
-                ", wastesCode='" + wastesCode + '\'' +
-                ", laboratorySigner='" + laboratorySigner + '\'' +
-                ", applyState=" + applyState +
-                ", keyword='" + keyword + '\'' +
-                ", wastesName='" + wastesName + '\'' +
-                ", samplingDate=" + samplingDate +
-                ", samplingNumber='" + samplingNumber + '\'' +
-                ", isProductionLine=" + isProductionLine +
-                ", isStorageArea=" + isStorageArea +
-                ", isPH=" + isPH +
-                ", isAsh=" + isAsh +
-                ", isWater=" + isWater +
-                ", isHeat=" + isHeat +
-                ", isSulfur=" + isSulfur +
-                ", isChlorine=" + isChlorine +
-                ", isFluorine=" + isFluorine +
-                ", isPhosphorus=" + isPhosphorus +
-                ", isFlashPoint=" + isFlashPoint +
-                ", isViscosity=" + isViscosity +
-                ", page=" + page +
-                '}';
-    }
+
 }
