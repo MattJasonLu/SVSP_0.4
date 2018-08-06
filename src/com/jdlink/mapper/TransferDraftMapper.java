@@ -23,6 +23,12 @@ public interface TransferDraftMapper {
     void setStateInvalid(String id);
 
     /**
+     * 设置状态为待审批
+     * @param id 联单编号
+     */
+    void setStateToExamine(String id);
+
+    /**
      * 通过联单编号获取联单对象
      * @param id 联单编号
      * @return 联单对象

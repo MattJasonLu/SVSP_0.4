@@ -5,14 +5,14 @@
 
 <mapper namespace="com.jdlink.mapper.SampleInformationMapper">
     <insert id="add" parameterType="SampleInformation">
-        INSERT INTO t_pr_sampleinformation (companyCode, wastesCode, applyState, laboratorySigner, isPH, isAsh, isWater, isHeat, isSulfur, isChlorine, isFluorine, isPhosphorus, isFlashPoint, isViscosity)
+        INSERT INTO t_pr_sampleinformation (companyCode, wastesCode, applyState, laboratorySigner, isPH, isAsh, isWater, isHeat, isSulfur, isChlorine, isFluorine, isPhosphorus, isFlashPoint, isViscosity,nowTime)
         VALUES (#{companyCode},#{wastesCode},#{applyState},#{laboratorySigner},#{isPH},#{isAsh},#{isWater},#{isHeat},#{isSulfur},
-        #{isChlorine},#{isFluorine},#{isPhosphorus},#{isFlashPoint},#{isViscosity})
+        #{isChlorine},#{isFluorine},#{isPhosphorus},#{isFlashPoint},#{isViscosity},NOW())
       </insert>
 
     <select id="listPage" resultType="SampleInformation">
         select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity
-        from t_pr_sampleinformation
+        from t_pr_sampleinformation ORDER BY nowTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -22,19 +22,192 @@
         select count(*) from t_pr_sampleinformation;
     </select>
 
+    <!--<select id="getWastes" resultType="Wastes">-->
+        <!--SELECT * FROM t_wastes WHERE id in (-->
+          <!--SELECT t_pr_sampleinformation.id FROM r_quotationandwastes-->
+          <!--WHERE quotationId=#{id});-->
+    <!--</select>-->
+
     <select id="getByCode" resultType="SampleInformation">
-        select * from t_pr_sampleinformation WHERE companyCode = #{companyCode}
+        select * from t_pr_sampleinformation WHERE companyCode = #{companyCode} ORDER BY nowTime DESC;
+    </select>
+
+    <select id="listByKeyword" parameterType="String" resultType="SampleInformation">
+        select * from t_pr_sampleinformation
+        <where>
+            <if test='1 == 1'>
+                companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like "%"#{keyword}"%"
+            </if>
+            <if test='keyword == "已"'>
+                or applyState = 'SampleTaked' or applyState = 'Appointed'
+            </if>
+            <if test='keyword == "预约"'>
+                or applyState =  'Appointed' or applyState = 'Canceld'
+            </if>
+            <if test='keyword == "已取样" || keyword == "取样"'>
+                or applyState = 'SampleTaked'
+            </if>
+            <if test='keyword== "已预约"'>
+                or applyState =  'Appointed'
+            </if>
+            <if test='keyword == "预约取消"'>
+                or applyState = 'Canceld'
+            </if>
+        </where>
+        ORDER BY nowTime DESC;
+    </select>
+
+    <select id="searchCount" parameterType="SampleInformation" resultType="int">
+        SELECT COUNT(*) FROM t_pr_sampleinformation
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like "%"#{keyword}"%"
+            </if>
+            <if test='keyword == "已"'>
+                or applyState = 'SampleTaked' or applyState = 'Appointed'
+            </if>
+            <if test='keyword == "预约"'>
+                or applyState =  'Appointed' or applyState = 'Canceld'
+            </if>
+            <if test='keyword == "已取样" || keyword == "取样"'>
+                or applyState = 'SampleTaked'
+            </if>
+            <if test='keyword== "已预约"'>
+                or applyState =  'Appointed'
+            </if>
+            <if test='keyword == "预约取消"'>
+                or applyState = 'Canceld'
+            </if>
+            <if test='companyCode != null and companyCode != ""'>
+                and companyCode LIKE "%"#{companyCode}"%"
+            </if>
+            <if test='wastesCode != null and wastesCode != ""'>
+                and wastesCode LIKE "%"#{wastesCode}"%"
+            </if>
+            <if test='applyState != null and applyState != ""'>
+                and applyState LIKE "%"#{applyState}"%"
+            </if>
+            <if test='laboratorySigner != null and laboratorySigner != ""'>
+                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+            </if>
+            <if test='isPH != null and isPH != ""'>
+                and isPH = #{isPH}
+            </if>
+            <if test='isAsh != null and isAsh != ""'>
+                and isAsh = #{isAsh}
+            </if>
+            <if test='isWater != null and isWater != ""'>
+                and isWater = #{isWater}
+            </if>
+            <if test='isHeat != null and isHeat != ""'>
+                and isHeat = #{isHeat}
+            </if>
+            <if test='isSulfur != null and isSulfur != ""'>
+                and isSulfur = #{isSulfur}
+            </if>
+            <if test='isChlorine != null and isChlorine != ""'>
+                and isChlorine = #{isChlorine}
+            </if>
+            <if test='isFluorine != null and isFluorine != ""'>
+                and isFluorine = #{isFluorine}
+            </if>
+            <if test='isPhosphorus != null and isPhosphorus != ""'>
+                and isPhosphorus = #{isPhosphorus}
+            </if>
+            <if test='isFlashPoint != null and isFlashPoint != ""'>
+                and isFlashPoint = #{isFlashPoint}
+            </if>
+            <if test='isViscosity != null and isViscosity != ""'>
+                and isViscosity = #{isViscosity}
+            </if>
+        </where>
+    </select>
+
+    <select id="search" parameterType="SampleInformation" resultType="SampleInformation">
+        SELECT * FROM t_pr_sampleinformation
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like "%"#{keyword}"%"
+            </if>
+            <if test='keyword == "已"'>
+                or applyState = 'SampleTaked' or applyState = 'Appointed'
+            </if>
+            <if test='keyword == "预约"'>
+                or applyState =  'Appointed' or applyState = 'Canceld'
+            </if>
+            <if test='keyword == "已取样" || keyword == "取样"'>
+                or applyState = 'SampleTaked'
+            </if>
+            <if test='keyword== "已预约"'>
+                or applyState =  'Appointed'
+            </if>
+            <if test='keyword == "预约取消"'>
+                or applyState = 'Canceld'
+            </if>
+            <if test='companyCode != null and companyCode != ""'>
+                and companyCode LIKE "%"#{companyCode}"%"
+            </if>
+            <if test='wastesCode != null and wastesCode != ""'>
+                and wastesCode LIKE "%"#{wastesCode}"%"
+            </if>
+            <if test='applyState != null and applyState != ""'>
+                and applyState LIKE "%"#{applyState}"%"
+            </if>
+            <if test='laboratorySigner != null and laboratorySigner != ""'>
+                and laboratorySigner LIKE "%"#{laboratorySigner}"%"
+            </if>
+            <if test='isPH != null and isPH != ""'>
+                and isPH = #{isPH}
+            </if>
+            <if test='isAsh != null and isAsh != ""'>
+                and isAsh = #{isAsh}
+            </if>
+            <if test='isWater != null and isWater != ""'>
+                and isWater = #{isWater}
+            </if>
+            <if test='isHeat != null and isHeat != ""'>
+                and isHeat = #{isHeat}
+            </if>
+            <if test='isSulfur != null and isSulfur != ""'>
+                and isSulfur = #{isSulfur}
+            </if>
+            <if test='isChlorine != null and isChlorine != ""'>
+                and isChlorine = #{isChlorine}
+            </if>
+            <if test='isFluorine != null and isFluorine != ""'>
+                and isFluorine = #{isFluorine}
+            </if>
+            <if test='isPhosphorus != null and isPhosphorus != ""'>
+                and isPhosphorus = #{isPhosphorus}
+            </if>
+            <if test='isFlashPoint != null and isFlashPoint != ""'>
+                and isFlashPoint = #{isFlashPoint}
+            </if>
+            <if test='isViscosity != null and isViscosity != ""'>
+                and isViscosity = #{isViscosity}
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
     </select>
 
     <update id="addCheck" parameterType="String">
-        UPDATE t_pr_sampleinformation SET applyState = 'SampleTaked' WHERE companyCode = #{companyCode}
+        UPDATE t_pr_sampleinformation SET applyState = 'SampleTaked',nowTime = NOW() WHERE companyCode = #{companyCode}
     </update>
 
     <update id="update" parameterType="SampleInformation">
         UPDATE t_pr_sampleinformation SET wastesCode = #{wastesCode},laboratorySigner = #{laboratorySigner},isPH = #{isPH},
         isAsh = #{isAsh},isWater = #{isWater},isHeat = #{isHeat},isSulfur = #{isSulfur},isChlorine = #{isChlorine},
-        isFluorine = #{isFluorine},isPhosphorus = #{isPhosphorus},isFlashPoint = #{isFlashPoint},isViscosity = #{isViscosity}
+        isFluorine = #{isFluorine},isPhosphorus = #{isPhosphorus},isFlashPoint = #{isFlashPoint},isViscosity = #{isViscosity},nowTime = NOW()
         WHERE companyCode =#{companyCode}
     </update>
+
+    <update id="updateSampleInfo" parameterType="String">
+        update t_pr_sampleinformation set applyState = 'Invalid' where companyCode = #{companyCode}
+    </update>
+
+
 
 </mapper>

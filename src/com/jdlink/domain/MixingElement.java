@@ -35,16 +35,20 @@ public class MixingElement {
      */
     private Date nowTime;
 
-    @Override
-    public String toString() {
-        return "MixingElement{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", minimum=" + minimum +
-                ", average=" + average +
-                ", maximum=" + maximum +
-                ", nowTime=" + nowTime +
-                '}';
+    public Parameter getParameter() {
+        return parameter;
+    }
+
+    public void setParameter(Parameter parameter) {
+        this.parameter = parameter;
+    }
+
+    public HeavyMetal getHeavyMetal() {
+        return heavyMetal;
+    }
+
+    public void setHeavyMetal(HeavyMetal heavyMetal) {
+        this.heavyMetal = heavyMetal;
     }
 
     public Date getNowTime() {
@@ -94,4 +98,19 @@ public class MixingElement {
     public void setMaximum(float maximum) {
         this.maximum = maximum;
     }
+
+    @Override
+    public String toString() {
+        return "MixingElement{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", parameter=" + parameter +
+                ", heavyMetal=" + heavyMetal +
+                ", minimum=" + minimum +
+                ", average=" + average +
+                ", maximum=" + maximum +
+                ", nowTime=" + nowTime +
+                '}';
+    }
+
 }
