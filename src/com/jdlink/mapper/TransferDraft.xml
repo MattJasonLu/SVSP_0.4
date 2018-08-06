@@ -100,8 +100,8 @@
         SELECT * FROM t_pr_transferdraft
         <where>
             <if test="keyword != null and keyword != ''">
-                and dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
-                or transferTime like "%"#{keyword}"%"
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
@@ -110,7 +110,10 @@
                 and dispatcher LIKE "%"#{dispatcher}"%"
             </if>
             <if test="transferTime != null and transferTime != ''">
-                and transferTime LIKE "%"#{transferTime}"%"
+                and transferTime LIKE binary "%"#{transferTime}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
             </if>
         </where>
         order by nowTime desc
@@ -123,11 +126,20 @@
         SELECT COUNT(*) FROM t_pr_transferdraft
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
-                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
+            </if>
+            <if test="dispatcher != null and dispatcher != ''">
+                and dispatcher LIKE "%"#{dispatcher}"%"
+            </if>
+            <if test="transferTime != null and transferTime != ''">
+                and transferTime LIKE binary "%"#{transferTime}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
             </if>
         </where>
     </select>
