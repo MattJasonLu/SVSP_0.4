@@ -22,4 +22,7 @@ public interface StockService {
     int searchCount(Stock stock);
     void opinion(String stockId,String opinion);
     void back(String stockId,String opinion);
+    void delete(Stock stock);
+    void addList(Stock stock);
+    void time1(Stock stock);
 }
