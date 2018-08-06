@@ -23,15 +23,17 @@
         firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel, secondBrand,
         secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
         acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn,
-        disposeIsLandFill, disposeIsOther, headSign, signDate, nowTime) VALUES (#{id}, #{checkState}, #{produceCompany.clientId},
-        #{transportCompany.supplierId}, #{acceptCompany.clientId}, #{wastes.id}, #{outwardIsTransit}, #{outwardIsUse},
+        disposeIsLandFill, disposeIsOther, headSign, signDate, produceCompanyName, transportCompanyName, acceptCompanyName,
+        nowTime) VALUES (#{id}, #{checkState}, #{produceCompany.clientId}, #{transportCompany.supplierId},
+        #{acceptCompany.clientId}, #{wastes.id}, #{outwardIsTransit}, #{outwardIsUse},
         #{outwardIsDeal}, #{outwardIsDispose}, #{mainDangerComponent}, #{dangerCharacter}, #{emergencyMeasure},
         #{emergencyEquipment}, #{dispatcher}, #{destination}, #{transferTime}, #{firstCarrier},
         #{firstCarryTime}, #{firstModel}, #{firstBrand}, #{firstTransportNumber}, #{firstOrigin}, #{firstStation},
         #{firstDestination}, #{firstCarrierSign}, #{secondCarrier}, #{secondCarryTime}, #{secondModel}, #{secondBrand},
         #{secondTransportNumber}, #{secondOrigin}, #{secondStation}, #{secondDestination}, #{secondCarrierSign},
         #{acceptCompanyLicense}, #{recipient}, #{acceptDate}, #{disposeIsUse}, #{disposeIsStore}, #{disposeIsBurn},
-        #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW());
+        #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, #{produceCompany.companyName},
+        #{transportCompany.companyName}, #{acceptCompany.companyName}, NOW());
 
         INSERT INTO t_wastes (id, name, category, code, prepareTransferCount, transferCount, signCount, wastesCharacter,
         formType, packageType) VALUES (#{wastes.id}, #{wastes.name}, #{wastes.category}, #{wastes.code},
@@ -70,7 +72,8 @@
         secondCarrierSign=#{secondCarrierSign}, acceptCompanyLicense=#{acceptCompanyLicense}, recipient=#{recipient},
         acceptDate=#{acceptDate}, disposeIsUse=#{disposeIsUse}, disposeIsStore=#{disposeIsStore}, disposeIsBurn=#{disposeIsBurn},
         disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate},
-        nowTime=NOW() WHERE id=#{id};
+        produceCompanyName=#{produceCompany.companyName}, transportCompanyName=#{transportCompany.companyName},
+        acceptCompanyName=#{acceptCompany.companyName}, nowTime=NOW() WHERE id=#{id};
 
         UPDATE t_wastes SET name=#{wastes.name}, category=#{wastes.category}, code=#{wastes.code}, prepareTransferCount=#{wastes.prepareTransferCount},
         transferCount=#{wastes.transferCount}, signCount=#{wastes.signCount}, wastesCharacter=#{wastes.wastesCharacter}, formType=#{wastes.formType},
@@ -79,6 +82,10 @@
 
     <update id="setStateInvalid" parameterType="String">
         UPDATE t_pr_transferdraft SET checkState='Invalid' WHERE id=#{id};
+    </update>
+
+    <update id="setStateToExamine" parameterType="String">
+        UPDATE t_pr_transferdraft SET checkState='ToExamine' WHERE id=#{id};
     </update>
 
     <select id="list" resultType="TransferDraft">
@@ -96,11 +103,30 @@
         SELECT * FROM t_pr_transferdraft
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
-                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
+                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
+            </if>
+            <if test="produceCompany != null and produceCompany.companyName != null and produceCompany.companyName != ''">
+                and produceCompanyName LIKE "%"#{produceCompany.companyName}"%"
+            </if>
+            <if test="transportCompany != null and transportCompany.companyName != null and transportCompany.companyName != ''">
+                and transportCompanyName LIKE "%"#{transportCompany.companyName}"%"
+            </if>
+            <if test="acceptCompany != null and acceptCompany.companyName != null and acceptCompany.companyName != ''">
+                and acceptCompanyName LIKE "%"#{acceptCompany.companyName}"%"
+            </if>
+            <if test="dispatcher != null and dispatcher != ''">
+                and dispatcher LIKE "%"#{dispatcher}"%"
+            </if>
+            <if test="transferTime != null and transferTime != ''">
+                and transferTime LIKE binary "%"#{transferTime}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
             </if>
         </where>
         order by nowTime desc
@@ -113,11 +139,20 @@
         SELECT COUNT(*) FROM t_pr_transferdraft
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyName like "%"#{keyword}"%" or clientId like "%"#{keyword}"%"
-                or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
+                and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
+            </if>
+            <if test="dispatcher != null and dispatcher != ''">
+                and dispatcher LIKE "%"#{dispatcher}"%"
+            </if>
+            <if test="transferTime != null and transferTime != ''">
+                and transferTime LIKE binary "%"#{transferTime}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
             </if>
         </where>
     </select>

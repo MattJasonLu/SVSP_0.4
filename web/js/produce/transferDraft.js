@@ -304,6 +304,7 @@ function loadPageList() {
         }
     });
     isSearch = false;
+    getCheckState();
 }
 
 /**
@@ -373,14 +374,20 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            clientId: $("#search-clientId").val(),
-            companyName: $("#search-companyName").val(),
-            contactName: $("#search-contactName").val(),
-            phone: $("#search-phone").val(),
+            id: $("#search-draftId").val(),
             checkState: $("#search-checkState").val(),
-            clientState: $("#search-clientState").val(),
-            applicationStatus: $("#search-applicationStatus").val(),
-            clientType: $("#search-clientType").val(),
+            produceCompany: {
+                companyName: $("#search-produceCompanyName").val()
+            },
+            transportCompany: {
+                companyName: $("#search-transportCompanyName").val()
+            },
+            acceptCompany: {
+                companyName: $("#search-acceptCompanyName").val()
+            },
+            dispatcher: $("#search-dispatcher").val(),
+            destination: $("#search-destination").val(),
+            transferTime: $("#search-transferTime").val(),
             page: page
         };
         console.log(data);
@@ -582,6 +589,38 @@ function getSelectedInfo() {
 }
 
 /**
+ * 设置高级查询的审核状态数据
+ */
+function getCheckState() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCheckState",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    checkState.append(option);
+                });
+                checkState.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+/**
  * 作废转移联单
  */
 function setInvalid(e) {    //已作废
@@ -591,6 +630,38 @@ function setInvalid(e) {    //已作废
         $.ajax({
             type: "POST",
             url: "setTransferDraftInvalid",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
+/**
+ * 作废转移联单
+ */
+function setSubmit(e) {    //已作废
+    var r = confirm("确认提交该联单吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setTransferDraftToExamine",
             async: false,
             dataType: "json",
             data: {

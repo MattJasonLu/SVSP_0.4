@@ -13,316 +13,12 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/threshold.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
-
-    var currentPage = 1;                          //当前页数
-
-    /**
-     * 返回count值
-     * */
-    function countValue(){
-        var mySelect=document.getElementById("count");
-        var index=mySelect.selectedIndex;
-        return mySelect.options[index].text;
-    }
-    /**
-     * 计算总页数
-     * */
-    function totalPage() {
-        var totalRecord = 0;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "totalRecord",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
-        var count = countValue();                         // 可选
-        var total = loadPages(totalRecord, count);
-        return total;
-    }
-
-    /**
-     * 设置克隆页码
-     * */
-    function setPageClone(result) {
-        $(".beforeClone").remove();
-        setClientList(result);
-        var total = totalPage();
-        $("#next").prev().hide();
-        var st = "共" + total + "页";
-        $("#totalPage").text(st);
-        var myArray = new Array();
-        for (var i = 0; i < total; i++) {
-            var li = $("#next").prev();
-            myArray[i] = i + 1;
-            var clonedLi = li.clone();
-            clonedLi.show();
-            clonedLi.find('a:first-child').text(myArray[i]);
-            clonedLi.find('a:first-child').click(function () {
-                var num = $(this).text();
-                switchPage(num);
-            });
-            clonedLi.addClass("beforeClone");
-            clonedLi.removeAttr("id");
-            clonedLi.insertAfter(li);
-        }
-
-    }
-
-    /**
-     * 点击页数跳转页面
-     * @param pageNumber 跳转页数
-     * */
-    function switchPage(pageNumber) {
-        console.log("当前页：" + pageNumber);
-        if (pageNumber == 0) {                 //首页
-            pageNumber = 1;
-        }
-        if (pageNumber == -2) {
-            pageNumber = totalPage();        //尾页
-        }
-        if (pageNumber == null || pageNumber == undefined) {
-            console.log("参数为空,返回首页!");
-            pageNumber = 1;
-        }
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        if (pageNumber == totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber > 1){
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber < totalPage()){
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        var page = {};
-        page.count = countValue();                        //可选
-        page.pageNumber = pageNumber;
-        currentPage = pageNumber;          //当前页面
-        //addClass("active");
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-
-    /**
-     * 输入页数跳转页面
-     * */
-    function inputSwitchPage() {
-        var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == null || pageNumber == undefined) {
-            window.alert("跳转页数不能为空！")
-        } else {
-            if (pageNumber == 1) {
-                $("#previous").addClass("disabled");
-                $("#firstPage").addClass("disabled");
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            if (pageNumber == totalPage()) {
-                $("#next").addClass("disabled");
-                $("#endPage").addClass("disabled");
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber > 1){
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber < totalPage()){
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            currentPage = pageNumber;
-            var page = {};
-            page.count = countValue();//可选
-            page.pageNumber = pageNumber;
-            page.start = (pageNumber - 1) * page.count;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageClientList",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                        setClientList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-
-
-        }
-    }
-
-    /**
-     * 分页 获取首页内容
-     * */
-    function loadPageClientList() {
-        var pageNumber = 1;               // 显示首页
-        $("#current").find("a").text("当前页：1");
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        var page = {};
-        page.count = countValue();                                 // 可选
-        page.pageNumber = pageNumber;
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setPageClone(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                console.log("失败");
-            }
-        });
-    }
-
-    /**
-     * 计算分页总页数
-     * @param totalRecord
-     * @param count
-     * @returns {number}
-     */
-    function loadPages(totalRecord, count) {
-        if (totalRecord == 0) {
-            window.alert("总记录数为0，请检查！");
-            return 0;
-        }
-        else if (totalRecord % count == 0)
-            return totalRecord / count;
-        else
-            return parseInt(totalRecord / count) + 1;
-    }
-
-    function setClientList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 企业编号
-                    case (0):
-                        $(this).html(obj.clientId);
-                        break;
-                    // 企业名称
-                    case (1):
-                        $(this).html(obj.companyName);
-                        break;
-                    // 由谁添加
-                    case (2):
-                        $(this).html(obj.contactName);
-                        break;
-                    // 添加时间
-                    case (3):
-                        $(this).html(getNowDate());
-                        break;
-                    // 编辑时间
-                    case (4):
-                        $(this).html(getNowDate());
-                        break;
-                    // 操作
-                    case (5):
-
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-    function loadClientList() {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listClient",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
 </script>
-<body onload="loadPageClientList()">
+<body onload="loadThresholdList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -340,11 +36,11 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">首页</a></li>
-                    <li><a href="#">开票信息</a></li>
-                    <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li><a href="userManage.html">账号管理</a></li>
-                    <li><a href="#">处置类别阈值表</a></li>
+                    <li><a href="compatibilityPlan.html">首页</a></li>
+                    <li><a href="weekPlan.html">配伍周计划</a></li>
+                    <li><a href="#">物料需求单</a></li>
+                    <li><a href="#">生产计划单</a></li>
+                    <li class="active"><a href="thresholdTable.html">基础数据阈值表</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -487,169 +183,76 @@
                 <div class="form-horizontal col-md-12">
                     <table class="table table-bordered">
                         <thead>
-                        <tr>
-                            <th class="text-center" colspan="21">基础数据阈值表(<span class="year"></span>年<span class="month"></span>月第<span class="week"></span>周)</th>
+                        <tr >
+                            <th class="text-center" colspan="22">基础数据阈值表(<span class="year"></span>年<span class="month"></span>月第<span class="week"></span>周)</th>
                         </tr>
-                        </thead>
                         <tbody>
                         <tr>
-                            <td class="text-center" rowspan="2">序号</td>
-                            <td class="text-center" rowspan="2">处理类别</td>
-                            <td class="text-center" rowspan="2">形态</td>
-                            <td class="text-center" colspan="2">热值</td>
-                            <td class="text-center" colspan="2">灰分</td>
-                            <td class="text-center" colspan="2">水分</td>
-                            <td class="text-center" colspan="2">S</td>
-                            <td class="text-center" colspan="2">CL</td>
-                            <td class="text-center" colspan="2">P</td>
-                            <td class="text-center" colspan="2">F</td>
-                            <td class="text-center" colspan="2">PH</td>
-                            <td class="text-center" rowspan="2">起始日期</td>
-                            <td class="text-center" rowspan="2">结束日期</td>
+                            <th class="text-center" rowspan="2">序号</th>
+                            <th class="text-center" rowspan="2">处理类别</th>
+                            <th class="text-center" rowspan="2">物质形态</th>
+                            <th class="text-center" colspan="2">热值</th>
+                            <th class="text-center" colspan="2">灰分</th>
+                            <th class="text-center" colspan="2">水分</th>
+                            <th class="text-center" colspan="2">S</th>
+                            <th class="text-center" colspan="2">CL</th>
+                            <th class="text-center" colspan="2">P</th>
+                            <th class="text-center" colspan="2">F</th>
+                            <th class="text-center" colspan="2">PH</th>
+                            <th class="text-center" rowspan="2">安全库存量</th>
+                            <th class="text-center" rowspan="2">起始日期</th>
+                            <th class="text-center" rowspan="2">结束日期</th>
                         </tr>
                         <tr>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
-                            <td class="text-center">max</td>
-                            <td class="text-center">min</td>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
+                            <th class="text-center">max</th>
+                            <th class="text-center">min</th>
                         </tr>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td class="text-center">污泥</td>
-                            <td class="text-center">半固态</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">10</td>
-                            <td class="text-center">2018-08-03</td>
-                            <td class="text-center">2018-08-03</td>
+                        </thead>
+                        <tr id="clonedTr2">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <!--分页-->
-            <nav aria-label="Page navigation" style="text-align: center">
-                <ol class="pagination" style="width: 900px;">
-                    <li id="current"><a href="#"></a> </li>
-                    <li id="firstPage">
-                        <a href='#' onclick="switchPage(0)">首 页</a>
-                    </li>
-                    <li id="previous">
-                        <a href="#" aria-label="Previous">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
-                        </a>
-                    </li>
-                    <li><a href="#">1</a></li>
-                    <li id="next">
-                        <a href="#" aria-label="Next">
-                            <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
-                        </a>
-                    </li>
-                    <li id="endPage">
-                        <a href='#' onclick="switchPage(-2)">尾 页</a>
-                    </li>
-                    <li ><a id="totalPage"></a></li>
-                    <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                    <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
-                    <li class="showLi">每页显示:</li>
-                    <li class="selectLi">
-                        <select id="count" onchange="loadPageClientList();">
-                            <option>5</option>
-                            <option selected>15</option>
-                            <option>50</option>
-                        </select>
-                    </li>
-                </ol>
-            </nav>
         </div>
     </div>
     <div id="embed"></div>
 </body>
-<!--分页格式-->
-<style type="text/css">
-    .pagination > li {
-        display: inline;
-    }
-    .inputText { float:left;
-    }
-    .showLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-    .selectLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-</style>
-
-<script type="text/javascript">
-
-    var clientId;
-
-    /**
-     * 导航问题
-     * */
-    $(function(){
-        autoNav();
-    });
-
-    //解决底部自动导航的问题
-    function autoNav(){
-        //获取内容的高度
-        var bodyHeight = $("body").height();
-        //获取底部导航的高度
-        var navHeight = $(".navbar").height();
-        //获取显示屏的高度
-        var iHeight = document.documentElement.clientHeight||document.body.clientHeight;
-        //如果内容的高度大于（窗口的高度 - 导航的高度）,z则需要添加一个div，设置其高度
-        if(bodyHeight > (iHeight - navHeight)){
-            $("body").append('<div style="height: '+navHeight+'px"></div>');
-        }
-    }
-    /**
-     * 获取用户的编号
-     * @param item
-     * @returns {string}
-     */
-    function getClientId(e) {
-        return e.firstElementChild.innerHTML;
-    }
-
-    /**
-     * 显示客户的文件列表
-     * @param e
-     */
-    function showClientFiles(e) {
-        var clientId = getClientId(e);
-        window.location.href = "archives.html?clientId=" + clientId;
-    }
-
-</script>
 </html>

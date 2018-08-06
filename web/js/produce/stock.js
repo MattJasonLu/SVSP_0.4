@@ -669,7 +669,6 @@ function loadAdjustStock() {
     //获取申报编号
    var stockId =localStorage['stockId'];
    $('#stockId').prop("value",stockId);
-   console.log("here");
   //通过ajax 根据id获取信息
     $.ajax({
         type: "POST",                            // 方法类型
@@ -694,6 +693,12 @@ function loadAdjustStock() {
           $('#plateNumber').prop('value',obj.plateNumber);
           //赋值是否自运单位
           $('#selfEmployed').prop('checked',obj.selfEmployed);
+          if(obj.selfEmployed==true){
+              $('#transport1').hide();//是自运公司 隐藏
+          }
+          if(obj.selfEmployed==false){
+              $('#transport1').show();//不是自运公司 显示
+          }
           //各下拉框数据填充
           var wastesInfoList = $("#code");
           // 清空遗留元素
@@ -901,8 +906,6 @@ function viewStock(item) {
                     $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
                     $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
                 }
-
-
             } else {
                alert(result.message);
                 $("#modal3_contactName").text("");
@@ -923,28 +926,30 @@ function viewStock(item) {
         }
     });
     $('#stockInfoForm').modal('show');
-
+    localStorage.clear();
 }
 //添加危废列表新行
 function addWastesNewLine() {
-var tr=$('#cloneTr1');
+    $("#body2").children().last().clone().remove();
+    var tr = $("#body2").children().last();
     // 克隆tr，每次遍历都可以产生新的tr
    var clonedTr=tr.clone();
     // 获取编号
     var id = tr.children().get(0).innerHTML;
-    var num = parseInt(id);
+    //console.log(id);
+    var  num = parseInt(id);
     num++;
+    console.log(num);
     clonedTr.children().get(0).innerHTML = num;
-    var temp = num-2+"";
-    var temp2 = num-1+"";
-    clonedTr.find("input[name='wastesList[" + temp + "].name']").attr('name', "rawWastes[" + temp2 + "].name");
-    clonedTr.find("input[name='wastesList[" + temp + "].code']").attr('name', "rawWastes[" + temp2 + "].code");
-    clonedTr.find("input[name='wastesList[" + temp + "].wasteAmount']").attr('name', "rawWastes[" + temp2 + "].wasteAmount");
-    clonedTr.find("input[name='wastesList[" + temp + "].component']").attr('name', "rawWastes[" + temp2 + "].component");
-    clonedTr.find("input[name='wastesList[" + temp + "].remarks']").attr('name', "rawWastes[" + temp2 + "].remarks");
+    var temp = num-2;
+    var temp2 = num-1;
+    clonedTr.find("input[name='wastesList[" + temp + "].name']").prop('name', "wastesList[" + temp2 + "].name");
+    clonedTr.find("input[name='wastesList[" + temp + "].code']").prop('name', "wastesList[" + temp2 + "].code");
+    clonedTr.find("input[name='wastesList[" + temp + "].wasteAmount']").prop('name', "wastesList[" + temp2 + "].wasteAmount");
+    clonedTr.find("input[name='wastesList[" + temp + "].component']").prop('name', "wastesList[" + temp2 + "].component");
+    clonedTr.find("input[name='wastesList[" + temp + "].remarks']").prop('name', "wastesList[" + temp2 + "].remarks");
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
-    
 }
 //审批
 function approval(item) {
@@ -1077,3 +1082,7 @@ function back1() {
         }
     });
 }
+function re1(){
+    $('.newLine').remove();
+}
+

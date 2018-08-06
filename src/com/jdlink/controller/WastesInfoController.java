@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.PackageType;
 import com.jdlink.domain.WastesInfo;
@@ -56,6 +57,19 @@ public class WastesInfoController {
         res.put("formTypeList", formTypeList);
         JSONArray packageTypeList = JSONArray.fromArray(PackageType.values());
         res.put("packageTypeList", packageTypeList);
+        return res.toString();
+    }
+
+    /**
+     * 获取审核状态
+     * @return 物质形态和包装方式
+     */
+    @RequestMapping("getCheckState")
+    @ResponseBody
+    public String getCheckState() {
+        JSONObject res = new JSONObject();
+        JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+        res.put("checkStateList", checkStateList);
         return res.toString();
     }
 }

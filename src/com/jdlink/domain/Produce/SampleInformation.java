@@ -1,7 +1,6 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.ApplyState;
-import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
@@ -262,6 +261,7 @@ public class SampleInformation {
         this.keyword = keyword;
     }
 
+
     @Override
     public String toString() {
         return "SampleInformation{" +
@@ -290,6 +290,7 @@ public class SampleInformation {
                 ", page=" + page +
                 '}';
     }
+
 
 
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.ThresholdMapper" >
+    <resultMap id="ThresholdRM" type="Threshold" autoMapping="true">
+        <result property="thresholdId" column="thresholdId"></result>
+        <result property="handleCategory" column="handleCategory" javaType="HandleCategory"></result>
+        <result property="formType" column="formType" javaType="FormType"></result>
+        <result property="calorificMax" column="calorificmax"></result>
+        <result property="ashMax" column="ashmax"></result>
+        <result property="waterMax" column="watermax"></result>
+        <result property="clMax" column="CLmax"></result>
+        <result property="pMax" column="Pmax"></result>
+        <result property="sMax" column="Smax"></result>
+        <result property="fMax" column="Fmax"></result>
+        <result property="phMax" column="PHmax"></result>
+        <result property="calorificMin" column="calorificmin"></result>
+        <result property="waterMin" column="watermin"></result>
+        <result property="waterMin" column="watermin"></result>
+        <result property="clMin" column="CLmin"></result>
+        <result property="pMin" column="Pmin"></result>
+        <result property="fMin" column="Fmin"></result>
+        <result property="phMin" column="PHmin"></result>
+        <result property="safety" column="Safety"></result>
+        <result property="waterMin" column="watermin"></result>
+        <result property="waterMin" column="watermin"></result>
+        <result property="ashMin" column="ashmin"></result>
+    </resultMap>
+<select id="list" resultMap="ThresholdRM">
+    select  * from t_pr_threshold;
+</select>
+</mapper>
