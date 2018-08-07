@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.CompatibilityMapper" >
+    <resultMap id="CompatibilityRM" type="Compatibility" autoMapping="true">
+        <result property="pwId" column="pwId" ></result>
+        <result property="handleCategory" column="handleCategory" javaType="HandleCategory"></result>
+        <result property="formType" column="formType" javaType="FormType"></result>
+        <result property="calorific" column="calorific" ></result>
+        <result property="ash" column="ash" ></result>
+        <result property="water" column="water" ></result>
+        <result property="S" column="S"></result>
+        <result property="CL" column="CL" ></result>
+        <result property="P" column="P" ></result>
+        <result property="F" column="F" ></result>
+        <result property="PH" column="PH" ></result>
+        <result property="dailyProportionsTotal" column="dailyProportionsTotal" ></result>
+        <result property="weeklyDemandTotal" column="weeklyDemandTotal" ></result>
+        <result property="calorificTotal" column="calorificTotal"></result>
+        <result property="proportion" column="proportion"></result>
+        <result property="checkState" column="checkState" javaType="CheckState"></result>
+        <result property="weeklyDemand" column="weeklyDemand" ></result>
+    </resultMap>
+    <select id="total" resultType="int">
+        SELECT COUNT(*) FROM t_pr_pw;
+    </select>
+    <select id="getByCompatibilityId" parameterType="String" resultMap="CompatibilityRM">
+  SELECT * FROM t_pr_pw WHERE pwId = #{pwId}
+    </select>
+</mapper>
