@@ -4,14 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.SampleInformationMapper">
+    <resultMap id="SampleInformationRM" type="SampleInformation" autoMapping="true">
+        <result property="id" column="id"/>
+        <result property="companyCode" column="companyCode"/>
+        <result property="applyState" column="applyState"/>
+        <result property="laboratorySigner" column="laboratorySigner"/>
+        <collection property="wastesList" select="getSampleInfo" column="sampleInfoId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+    </resultMap>
+
     <insert id="add" parameterType="SampleInformation">
-        INSERT INTO t_pr_sampleinformation (companyCode, wastesCode, applyState, laboratorySigner, isPH, isAsh, isWater, isHeat, isSulfur, isChlorine, isFluorine, isPhosphorus, isFlashPoint, isViscosity,nowTime)
-        VALUES (#{companyCode},#{wastesCode},#{applyState},#{laboratorySigner},#{isPH},#{isAsh},#{isWater},#{isHeat},#{isSulfur},
-        #{isChlorine},#{isFluorine},#{isPhosphorus},#{isFlashPoint},#{isViscosity},NOW())
-      </insert>
+        INSERT INTO t_pr_sampleinformation (id,companyCode, laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,nowTime)
+        VALUES (#{id},#{companyCode},#{laboratorySigner},#{wastesList[0].isPH}, #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
+        #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine}, #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity}, NOW());
+        <if test="wastesList.size() > 0">
+            <foreach collection="wastesList" item="wastes" index="index">
+                INSERT INTO r_sampleinfoandwastes (sampleInfoId, wastesId) VALUES (#{id,jdbcType=VARCHAR},#{wastes.id,jdbcType=VARCHAR});
+                INSERT INTO t_wastes (id,wastesCode,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity) VALUES
+                (#{wastes.id}, #{wastes.wastesCode},#{wastes.isPH}, #{wastes.isAsh}, #{wastes.isWater}, #{wastes.isHeat},
+                #{wastes.isSulfur}, #{wastes.isChlorine}, #{wastes.isFluorine}, #{wastes.isPhosphorus}, #{wastes.isFlashPoint}, #{wastes.isViscosity});
+            </foreach>
+        </if>
+</insert>
 
     <select id="listPage" resultType="SampleInformation">
-        select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity
+        select id,companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity
         from t_pr_sampleinformation ORDER BY nowTime DESC
         <if test="start != null and count != null">
             limit #{start}, #{count}
@@ -22,11 +38,17 @@
         select count(*) from t_pr_sampleinformation;
     </select>
 
-    <!--<select id="getWastes" resultType="Wastes">-->
-        <!--SELECT * FROM t_wastes WHERE id in (-->
-          <!--SELECT t_pr_sampleinformation.id FROM r_quotationandwastes-->
-          <!--WHERE quotationId=#{id});-->
-    <!--</select>-->
+    <select id="wastesCount" resultType="int">
+        select count(*) from t_wastes;
+    </select>
+
+    <select id="getByWastesId" parameterType="String" resultType="Wastes">
+        SELECT * FROM t_wastes WHERE wastesId = #{id}
+    </select>
+
+    <select id="getBySampleInformationId" parameterType="String" resultMap="SampleInformationRM">
+        SELECT * FROM t_pr_sampleinformation WHERE id = #{id}
+    </select>
 
     <select id="getByCode" resultType="SampleInformation">
         select * from t_pr_sampleinformation WHERE companyCode = #{companyCode} ORDER BY nowTime DESC;
@@ -191,6 +213,11 @@
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
+    </select>
+
+    <select id="getSampleInfo" resultType="SampleInformation" parameterType="int">
+        SELECT * FROM t_wastes WHERE id IN
+        (SELECT r_sampleinfoandwastes.wastesId FROM r_sampleinfoandwastes WHERE sampleInfoId=#{id});
     </select>
 
     <update id="addCheck" parameterType="String">
