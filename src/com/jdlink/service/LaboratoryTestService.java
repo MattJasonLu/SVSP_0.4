@@ -13,6 +13,10 @@ public interface LaboratoryTestService {
 
     LaboratoryTest getLaboratoryTestById(String laboratoryTestNumber);
 
+    List<LaboratoryTest> search(LaboratoryTest laboratoryTest);
+
+    int searchCount(LaboratoryTest laboratoryTest);
+
     void setInvalid(String laboratoryTestNumber);
 
     void setTested(String laboratoryTestNumber);

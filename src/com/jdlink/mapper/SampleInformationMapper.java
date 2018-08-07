@@ -12,11 +12,11 @@ public interface SampleInformationMapper {
     int count();
     int wastesCount();
     List<SampleInformation> listPage(Page page);
-    SampleInformation getByCode(String companyCode);
+    SampleInformation getById(String sampleId);
     void addCheck(String companyCode);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(@Param(value="keyword") String keyword);
-    void updateSampleInfo(String companyCode);
+    void updateSampleInfo(String sampleId);
     int searchCount(SampleInformation sampleInformation);
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);
