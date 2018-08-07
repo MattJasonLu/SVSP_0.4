@@ -5,6 +5,7 @@ import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.service.SampleInformationService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,6 +67,28 @@ public class PRSampleInfoController {
         } while (sampleInformationService.getBySampleInformationId(id) != null);
         JSONObject res = new JSONObject();
         res.put("id", id);
+        return res.toString();
+    }
+
+    /**
+     * 整数成规范8位字符
+     * @param number
+     * @return
+     */
+    @RequestMapping("normalization")
+    @ResponseBody
+    public String normalization(int number){
+        // 得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(8);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(8);
+        String num = nf.format(number);
+        JSONObject res = new JSONObject();
+        res.put("id", num);
         return res.toString();
     }
 
@@ -131,11 +154,11 @@ public class PRSampleInfoController {
 
     @RequestMapping("getSampleInformation")
     @ResponseBody
-    public String getSampleInformation(String companyCode){
+    public String getSampleInformation(String sampleId){
         JSONObject res = new JSONObject();
         try {
             //根据公司代码查询出相应的对象信息
-            SampleInformation sampleInformation = sampleInformationService.getByCode(companyCode);
+            SampleInformation sampleInformation = sampleInformationService.getById(sampleId);
             //新建一个对象并给它赋值为sampleInformation
             JSONObject data = JSONObject.fromBean(sampleInformation);
             res.put("data", data);
@@ -206,10 +229,10 @@ public class PRSampleInfoController {
 
     @RequestMapping("cancelSampleInformation")
     @ResponseBody
-    public String cancelSampleInformation(String companyCode){
+    public String cancelSampleInformation(String sampleId){
         JSONObject res = new JSONObject();
         try{
-            sampleInformationService.updateSampleInfo(companyCode);
+            sampleInformationService.updateSampleInfo(sampleId);
             res.put("status","success");
             res.put("message","作废数据成功！");
         }catch (Exception e){

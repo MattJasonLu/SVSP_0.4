@@ -528,7 +528,7 @@ function addItems(data) {
  * @param menu
  * @returns {string}
  */
-function getcompanyCodeByMenu(menu) {
+function getSampleIdByMenu(menu) {
     return menu.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
@@ -545,13 +545,14 @@ function getCompanyCodeByCheckbox(checkbox) {
  * 查看预约登记单
  */
 function viewSample(menu) {
-    var companyCode = getcompanyCodeByMenu(menu);
+    $(".newLine").remove();
+    var sampleId = getSampleIdByMenu(menu);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getSampleInformation",                 // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
         data: {
-            'companyCode': companyCode
+            'sampleId': sampleId
         },
         dataType: "json",
         success: function (result) {
@@ -560,10 +561,18 @@ function viewSample(menu) {
                 var data = eval(result.data);
                 if (result.status == "success") {
                     $("#model1-companyCode").text(data.companyCode);
-                    $("#model1-wastesCode").text(data.wastesCode);
-                    $("#model1-basicItems").text(basicItems(data));
-                    $("#model1-addItems").text(addItems(data));
                     $("#model1-signer").text(data.laboratorySigner);
+                    console.log(data.wastesList);
+                    for(var i = 0;i < data.wastesList.length;i++){
+                       if(i > 0) addLine();
+                       var $i = i;
+                       $("#model1["+ $i +"].wastesCode").text(data.wastesList[i].wastesCode);
+                       console.log($("#model1["+ $i +"].wastesCode").text());
+                       $("#model1["+ $i +"].basicItems").text(basicItems(data.wastesList[i]));
+                       console.log($("#model1["+ $i +"].basicItems").text());
+                       $("#model1["+ $i +"].addItems").text(addItems(data.wastesList[i]));
+                       console.log($("#model1["+ $i +"].addItems").text());
+                    }
                     // 显示框体
                     $('#viewAppointModal').modal('show');
                 } else {
@@ -576,6 +585,26 @@ function viewSample(menu) {
             alert("服务器异常!");
         }
     });
+}
+
+function addLine() {
+    // 获取id为plusBtn的tr元素
+    var tr = $("#cloneBefore").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    var num = clonedTr.children().find("span:first").prop('id').charAt(7);
+    clonedTr.children().find("span").val("");
+    clonedTr.children().find("span").each(function () {
+       var id = $(this).prop('id');
+       var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
+        $(this).prop('id',newId);
+        // var name = $(this).prop('name');
+        // var newName = name.replace(/[0-9]\d*/, parseInt(id) + 1);
+        // $(this).prop('name', newName);
+    });
+    clonedTr.addClass("newLine");
+    clonedTr.insertAfter(tr);
 }
 
 /**
@@ -620,11 +649,10 @@ function addCheck() {
 function addNewLine() {
     // 获取id为plusBtn的tr元素
     var tr = $("#addBtn").prev();
-    console.log(tr.html());
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    var id = clonedTr.children().find("input:first-child").prop('name').charAt(12);
+    var id = clonedTr.children().find("input:first-child").prop('name').charAt(11);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("input:checkbox").prop('checked', false);
     clonedTr.children().find("input").each(function () {
@@ -634,7 +662,6 @@ function addNewLine() {
     });
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
-    clonedTr = tr;
 }
 
 /**
@@ -677,7 +704,6 @@ function checkModal() {
             }
         });
         // 添加已填写的登记信息
-        var checkId = id.concat("R");
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getSampleCheck",              // url
@@ -696,10 +722,10 @@ function checkModal() {
                         for (var i = 0; i < data.data.wastesList.length; i++) {
                             if (i > 0) addNewLine();
                             var $i = i;
-                            $("input[name='wastesListList[" + $i + "].productName']").val(data.data.wastesList[i].productName);
-                            $("input[name='wastesListList[" + $i + "].quantity']").val(data.data.wastesList[i].quantity);
-                            $("input[name='wastesListList[" + $i + "].code']").val(data.data.wastesList[i].code);
-                            $("input[name='wastesListList[" + $i + "].color']").val(data.data.wastesList[i].color);
+                            $("input[name='wastesList[" + $i + "].productName']").val(data.data.wastesList[i].productName);
+                            $("input[name='wastesList[" + $i + "].quantity']").val(data.data.wastesList[i].quantity);
+                            $("input[name='wastesList[" + $i + "].code']").val(data.data.wastesList[i].code);
+                            $("input[name='wastesList[" + $i + "].color']").val(data.data.wastesList[i].color);
                         }
                     } else {
 
@@ -912,24 +938,45 @@ function addAppoint() {
     sampleInformation.laboratorySigner = $("#model-signer").val();
     sampleInformation['wastesList'] = [];
     var lineCount = $("input[name^='wastesList'][name$='wastesCode']").length;
+    var wastesId = null;
+    //获取wastesId
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getCurrentWastesId",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            //alert("wastesId获取成功!");
+            wastesId = result.id;
+        },
+        error: function (result) {
+            //  alert("wastesId获取失败!");
+            console.log(result);
+        }
+    });
+    var id1 = parseInt(wastesId);
     for (var i = 0; i < lineCount; i++) {
         var wastes = {};
-        //获取wastesId
+        var $i = i;
+        //id 递增
+        var id2 = id1++;
+        //wastes.id格式规范化
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "getCurrentWastesId",                 // url
+            url: "normalization",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
+            data:{
+                number : id2,
+            },
             success: function (result) {
                 //alert("wastesId获取成功!");
                 wastes.id = result.id;
             },
-            error: function (result) {
-              //  alert("wastesId获取失败!");
-                console.log(result);
+            error: function () {
+                console.log("转换8位字符失败！");
             }
         });
-        var $i = i;
         wastes.wastesCode = $("input[name='wastesList[" + $i + "].wastesCode']").val();
         wastes.isPH = $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastesList[" + $i + "].isAsh']").prop('checked');
@@ -973,7 +1020,7 @@ function addAppoint() {
  * 删除预约单----->改作废
  */
 function deleteSample(menu) {
-    var companyCode = getcompanyCodeByMenu(menu);
+    var sampleId = getSampleIdByMenu(menu);
     var msg = "是否作废该条记录？";
     if (confirm(msg) == true) {
         $.ajax({
@@ -981,7 +1028,7 @@ function deleteSample(menu) {
             url: "cancelSampleInformation",              // url
             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                'companyCode': companyCode
+                'sampleId': sampleId
             },
             dataType: "json",
             success: function (result) {

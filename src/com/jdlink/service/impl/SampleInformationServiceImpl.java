@@ -31,7 +31,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public List<SampleInformation> listPage(Page page){ return sampleInformationMapper.listPage(page); }
 
     @Override
-    public SampleInformation getByCode(String companyCode){ return sampleInformationMapper.getByCode(companyCode); }
+    public SampleInformation getById(String sampleId){ return sampleInformationMapper.getById(sampleId); }
 
     @Override
     public void addCheck(String companyCode){ sampleInformationMapper.addCheck(companyCode); }
@@ -43,7 +43,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public List<SampleInformation> listByKeyword(String keyword){ return sampleInformationMapper.listByKeyword(keyword); }
 
     @Override
-    public void updateSampleInfo(String companyCode){ sampleInformationMapper.updateSampleInfo(companyCode); }
+    public void updateSampleInfo(String sampleId){ sampleInformationMapper.updateSampleInfo(sampleId); }
 
     @Override
     public int searchCount(SampleInformation sampleInformation){ return sampleInformationMapper.searchCount(sampleInformation); }
