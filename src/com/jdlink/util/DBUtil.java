@@ -5,33 +5,32 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import org.apache.poi.hssf.usermodel.HSSFCell;
+
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+//import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.binary.XSSFBUtils;
+import org.apache.poi.xssf.usermodel.*;
+import org.apache.poi.xssf.usermodel.charts.XSSFDateAxis;
 import org.springframework.web.multipart.MultipartFile;
-
-
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
-
 import java.io.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.NumberFormat;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.http.HttpServletResponse;
 
-import jxl.read.biff.BiffException;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+
 
 public class DBUtil {
     public final static String url = "jdbc:mysql://172.16.1.92:3306/jdlink"; // 数据库URL
@@ -153,14 +152,9 @@ public class DBUtil {
         //定义一维数组，存放Excel表里的每一行的各个列的数据
         Object[] obj;
         Object[][] parm;
-        String fileName = file.getOriginalFilename();   //原文件名
         InputStream is = null;
-        Workbook rwb = null;
-        XSSFWorkbook xwb=null;
-        int col=0;//总列数
-        int row=0;//总行数
-        Sheet sht;//2003
-        XSSFSheet sht1;//2007
+
+        String fileName = file.getOriginalFilename();
         try {
             //定义文本输入流
             is = file.getInputStream();
@@ -169,67 +163,137 @@ public class DBUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            if(fileName.endsWith("xls")){
-                //2003
+        //2003
+        if (fileName.endsWith("xls")) {
+            try {
                 //打开Workbook
+                //rwb = WorkbookFactory.create(is);
+                Workbook rwb;
                 rwb = Workbook.getWorkbook(is);
-            }else if(fileName.endsWith("xlsx")){
-                //2007
-              xwb = new XSSFWorkbook(is);  //利用poi读取excel文件流
+                Sheet sht = rwb.getSheet(0);//得到第一个表d
+                int col = sht.getColumns(); //获得Excel列
+                int row = sht.getRows(); //获得Excel行
+                Cell c1;
+                parm = new Object[row - 1][col];
+                //将数据装到parm中去
+                //i=1 去掉表格第一行的属性名
+                for (int i = 1; i < row; i++) {
+                    obj = new Object[col];
+                    for (int j = 1; j < col; j++) {
+                        c1 = sht.getCell(j, i);
+                        obj[j] = c1.getContents();
+                        //在此转换中英文
+                        if (obj[j] == "")
+                            obj[j] = null;
+                        parm[i - 1][j] = obj[j];
+                    }
+                    NumberFormat nf = NumberFormat.getInstance();
+                    //设置是否使用分组
+                    nf.setGroupingUsed(false);
+                    //设置最大整数位数
+                    nf.setMaximumIntegerDigits(4);
+                    //设置最小整数位数
+                    nf.setMinimumIntegerDigits(4);
+                    parm[i - 1][0] = nf.format(Integer.parseInt(id) + i - 1);
+                }
+                //将parm中数据批处理插入到数据库中
+                QueryRunner queryRunner = new QueryRunner(true);
+                String sql = generateSql(col, DBTableName);
+                try {
+                    queryRunner.batch(con, sql, parm);
+                    is.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    //数据完全重复时才会抛出
+                    throw new IllegalArgumentException("数据重复！");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (BiffException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         //获取Excel表的Sheet1区域的数据
-        //得到第一个表d
-        if((sht =rwb.getSheet(0))!=null){
-            col = sht.getColumns(); //获得Excel列
-            row = sht.getRows(); //获得Excel行
-        }
-        //得到第一个表d
-       if((sht1=xwb.getSheetAt(0))!=null){
-            col = sht1.getRow(0).getPhysicalNumberOfCells();//获得Excel列
-            row = sht1.getLastRowNum(); //获得Excel行
-        }
-        Cell c1;
-        parm = new Object[row - 1][col];
-        //将数据装到parm中去
-        //i=1 去掉表格第一行的属性名
-        for (int i = 1; i < row; i++) {
-            obj = new Object[col];
-            for (int j = 1; j < col; j++) {
-                c1 = sht.getCell(j, i);
-                obj[j] = c1.getContents();
-                //在此转换中英文
-                if(obj[j] == "")
-                    obj[j] = null;
-                parm[i - 1][j] = obj[j];
-            }
-            NumberFormat nf = NumberFormat.getInstance();
-            //设置是否使用分组
-            nf.setGroupingUsed(false);
-            //设置最大整数位数
-            nf.setMaximumIntegerDigits(4);
-            //设置最小整数位数
-            nf.setMinimumIntegerDigits(4);
-            parm[i-1][0]=nf.format(Integer.parseInt(id)+i-1);
-        }
         //return parm;
+        //2007
+        if (fileName.endsWith("xlsx")) {
+            XSSFWorkbook xwb = new XSSFWorkbook(is);
+            XSSFSheet xSheet = xwb.getSheetAt(0);
+            //获得总列数
+            int col=xSheet.getRow(0).getPhysicalNumberOfCells();
+            int row=xSheet.getLastRowNum();//获得总行数
+            System.out.println(row);
+            parm = new Object[row][col];
+            for (int i = 1; i < row+1; i++) {
+                XSSFRow row1 = xSheet.getRow(i);
+                obj = new Object[col];
+                for (int j = 1; j < col; j++) {
+                    XSSFCell cellStyle = row1.getCell(j);
+                    if(cellStyle!=null){
+                        String cat= cellStyle.getCellTypeEnum().toString();
+                        if(cat=="NUMERIC"){
+                            obj[j] = cellStyle.getNumericCellValue();
+                            int style = cellStyle.getCellStyle().getDataFormat();
+                            if (HSSFDateUtil.isCellDateFormatted(cellStyle)){
+                                Date date = cellStyle.getDateCellValue();
+                                switch (style) {
+                                    case 178:
+                                        obj[j] = new SimpleDateFormat("yyyy'年'M'月'd'日'").format(date);
+                                        break;
+                                    case 14:
+                                        obj[j] = new SimpleDateFormat("yyyy/MM/dd").format(date);
+                                        break;
+                                    case 179:
+                                        obj[j] = new SimpleDateFormat("yyyy/MM/dd").format(date);
+                                        break;
+                                    case 181:
+                                        obj[j] = new SimpleDateFormat("yyyy/MM/dd").format(date);
+                                        break;
+                                    case 22:
+                                        obj[j] = new SimpleDateFormat(" yyyy/MM/dd").format(date);
+                                        break;
+                                    default:
+                                        break;
+                                }
 
-        //将parm中数据批处理插入到数据库中
-        QueryRunner queryRunner = new QueryRunner(true);
-        String sql=generateSql(col,DBTableName);
-        try {
-            queryRunner.batch(con, sql, parm);
-            is.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            //数据完全重复时才会抛出
-            throw new IllegalArgumentException("数据重复！");
+                            }
+                        }
+                        if(cat=="STRING"){
+                            obj[j] = cellStyle.getStringCellValue();
+                        }
+
+//                   else {
+//                            SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MM/dd");
+//                            obj[j]= sdf.format(cellStyle.getDateCellValue());
+//                        }
+                        System.out.println(obj[j]);
+                    }
+                    else {
+                        obj[j]="";
+                    }
+                    //在此转换中英文
+                    if (obj[j] == "")
+                        obj[j] = null;
+                    parm[i-1][j] = obj[j];
+                }
+                NumberFormat nf = NumberFormat.getInstance();
+                //设置是否使用分组
+                nf.setGroupingUsed(false);
+                //设置最大整数位数
+                nf.setMaximumIntegerDigits(4);
+                //设置最小整数位数
+                nf.setMinimumIntegerDigits(4);
+                parm[i - 1][0] = nf.format(Integer.parseInt(id) + i - 1);
+            }
+            //将parm中数据批处理插入到数据库中
+            QueryRunner queryRunner = new QueryRunner(true);
+            String sql = generateSql(col, DBTableName);
+            try {
+                queryRunner.batch(con, sql, parm);
+                is.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                //数据完全重复时才会抛出
+                throw new IllegalArgumentException("数据重复！");
+            }
         }
     }
     public String  generateSql(int columnCount,String DBTableName) {
@@ -245,5 +309,13 @@ public class DBUtil {
         return prefix;
     }
 
-
+//    private String getValue(XSSFCell xCell) {
+//        if (xCell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN) {
+//            return String.valueOf(xCell.getBooleanCellValue());
+//        } else if (xCell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+//            return String.valueOf(xCell.getNumericCellValue());
+//        } else {
+//            return String.valueOf(xCell.getStringCellValue());
+//        }
+//    }
 }

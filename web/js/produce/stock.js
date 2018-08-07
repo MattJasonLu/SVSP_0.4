@@ -700,7 +700,7 @@ function loadAdjustStock() {
               $('#transport1').show();//不是自运公司 显示
           }
           //各下拉框数据填充
-          var wastesInfoList = $("#code");
+          var wastesInfoList = $(".code");
           // 清空遗留元素
           wastesInfoList.children().remove();
           $.each(data, function (index, item) {
@@ -709,8 +709,10 @@ function loadAdjustStock() {
               option.text(item.code);
               wastesInfoList.append(option);
           });
-          wastesInfoList.removeAttr('id');
+          wastesInfoList.removeAttr('class');
           $('.selectpicker').selectpicker('refresh');
+
+
           for(var i=0;i<obj.wastesList.length;i++){
               if (i > 0)
                   addNewLine();
@@ -719,6 +721,7 @@ function loadAdjustStock() {
               $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//危废数量
               $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
               $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
+
           }
       }
       else
