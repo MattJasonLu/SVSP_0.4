@@ -386,6 +386,8 @@ function allSelect() {
  * */
 function view(e) {
     var id = getIdByMenu(e);
+    // 清除上一次增加的行
+    $(".newLine").remove();
     $.ajax({
         type:"POST",
         url:"getLaboratoryTest",
@@ -410,6 +412,7 @@ function view(e) {
                 if (data.sampleInformationList.length > 0) {
                     for (var i = 0; i < data.sampleInformationList.length; i++) {
                         var $i = i;
+                        if (i > 0) addNewLine();
                         $("span[id='sampleInformationList[" + $i + "].samplingDate']").text(getDateStr(data.sampleInformationList[i].samplingDate));
                         $("span[id='sampleInformationList[" + $i + "].wastesName']").text(data.sampleInformationList[i].wastesName);
                         $("span[id='sampleInformationList[" + $i + "].samplingNumber_1']").text(data.sampleInformationList[i].samplingNumber);
@@ -574,4 +577,50 @@ function setConfirm(e) {
  */
 function getIdByMenu(e) {
     return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+}
+
+/**
+ * 增加新行
+ */
+function addNewLine() {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#hiddenTr").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 清除数据
+    clonedTr.find('span').text('');
+    clonedTr.find('input').prop('checked', false);
+    // 获取编号
+    var id = tr.children().get(0).innerHTML;
+    var num = parseInt(id);
+    // 改变克隆行的输入框name
+    changeId(clonedTr);
+    clonedTr.addClass("newLine");
+    clonedTr.children().get(0).innerHTML = ++num;
+    clonedTr.insertAfter(tr);
+
+    // 克隆化验结果
+    // 获取id为cloneTr的tr元素
+    var tr2 = $("#hiddenTr2").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr2 = tr2.clone();
+    // 清除数据
+    clonedTr2.find('span').text('');
+    clonedTr2.find('input').prop('checked', false);
+    // 改变克隆行的输入框name
+    changeId(clonedTr2);
+    clonedTr2.addClass("newLine");
+    clonedTr2.insertAfter(tr2);
+
+    /**
+     * 改变id
+     * @param element
+     */
+    function changeId(element) {
+        element.find("span[id*='sampleInformationList'],input[id*='sampleInformationList']").each(function () {
+            var oldId = $(this).prop("id");
+            var newId = oldId.replace(/[0-9]\d*/, id);
+            $(this).prop('id', newId);
+        });
+    }
 }
