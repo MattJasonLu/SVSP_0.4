@@ -186,18 +186,27 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
+
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-companyCode" class="col-sm-5 control-label">公司代码</label>
-                            <div class="col-xs-7">
+                            <label for="search-id" class="col-sm-4 control-label">预约单号</label>
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control" id="search-id"
+                                       name="search-companyCode"
+                                       placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="search-companyCode" class="col-sm-4 control-label">公司代码</label>
+                            <div class="col-xs-4">
                                 <input type="text" class="form-control" id="search-companyCode"
                                        name="search-companyCode"
                                        placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-wastesCode" class="col-sm-5 control-label">危废代码</label>
-                            <div class="col-xs-7">
+                            <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
+                            <div class="col-xs-4">
                                 <input type="text" class="form-control" id="search-wastesCode"
                                        name="search-wastesCode" placeholder="">
                             </div>
@@ -279,6 +288,7 @@
                                    id="allSel" onclick="allSelect()">
                         </label>
                     </th>
+                    <th class="text-center">预约单号</th>
                     <th class="text-center">公司代码</th>
                     <th class="text-center">危废代码</th>
                     <th class="text-center">样品状态</th>
@@ -296,6 +306,7 @@
                                    aria-label="...">
                         </label>
                     </td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -364,53 +375,82 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="model-appoint" method="post">
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="model-companyCode" class="col-sm-4 control-label">公司代码</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" id="model-companyCode" name="companyCode"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="model-wastesCode" class="col-sm-4 control-label">危废代码</label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-constrol" id="model-wastesCode" name="wastesCode"
-                                       required>
-                            </div>
+                    <div class="form-group form-horizontal col-md-12 row">
+                        <label for="model-companyCode" class="col-sm-2 control-label">公司代码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control focus" id="model-companyCode"
+                                   name="model-companyCode"
+                                   required>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="model-basicItems" class="col-sm-4 control-label">基础项目</label>
-                            <div class="col-sm-7">
-                                <form method="post" id="model-basicItems">
+                    <div>
+                        <div class="form-group form-horizontal col-md-12 ">
+                            <label class="col-sm-2 control-label">危废代码</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control focus"
+                                       name="wastesList[0].wastesCode"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group form-horizontal col-md-12 ">
+                            <label class="col-sm-2 control-label">基础项目</label>
+                            <div class="col-sm-10">
+                                <form method="post" >
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" name="isPH" id="isPH" value="true">PH
+                                                    <input type="checkbox" name="wastesList[0].isPH"
+                                                            value="true">PH
                                                 </label>
                                                 <label>
-                                                    <input type="checkbox" name="isAsh" id="isAsh" value="true">灰分
+                                                    <input type="checkbox" name="wastesList[0].isAsh"
+                                                            value="true">灰分
                                                 </label>
                                                 <label>
-                                                    <input type="checkbox" name="isWater" id="isWater" value="true">水分
+                                                    <input type="checkbox" name="wastesList[0].isWater"
+                                                           id="wastesList[0].isWater" value="true">水分
                                                 </label>
                                                 <label>
-                                                    <input type="checkbox" name="isHeat" id="isHeat" value="true">热值
+                                                    <input type="checkbox" name="wastesList[0].isHeat"
+                                                           value="true">热值
                                                 </label>
                                                 <label>
-                                                    <input type="checkbox" name="isS" id="isS" value="true">硫
+                                                    <input type="checkbox" name="wastesList[0].isS"
+                                                            value="true">硫
                                                 </label>
                                                 <label>
-                                                    <input type="checkbox" name="isCl" id="isCl" value="true">氯
+                                                    <input type="checkbox" name="wastesList[0].isCl"
+                                                            value="true">氯
                                                 </label>
                                                 <label>
-                                                    <input type="checkbox" name="isF" id="isF" value="true">氟
+                                                    <input type="checkbox" name="wastesList[0].isF"
+                                                            value="true">氟
                                                 </label>
                                                 <label>
-                                                    <input type="checkbox" name="isP" id="isP" value="true">磷
+                                                    <input type="checkbox" name="wastesList[0].isP"
+                                                            value="true">磷
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12 ">
+                            <label class="col-sm-2 control-label">增加项目</label>
+                            <div class="col-sm-10">
+                                <form method="post">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="wastesList[0].isFlashPoint"
+                                                           value="true">闪点
+                                                </label>
+                                                <label>
+                                                    <input type="checkbox" name="wastesList[0].isViscosity"
+                                                           value="true">黏度
                                                 </label>
                                             </div>
                                         </div>
@@ -419,33 +459,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="model-addItems" class="col-sm-4 control-label">增加项目</label>
-                        <div class="col-sm-7">
-                            <form method="post" id="model-addItems">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="isFlashPoint" id="isFlashPoint"
-                                                       value="true">闪点
-                                            </label>
-                                            <label>
-                                                <input type="checkbox" name="isViscosity" id="isViscosity"
-                                                       value="true">黏度
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                    <div class="row" id="addBtn">
+                        <div class="col-md-12">
+                            <a class="btn btn-default btn-xs" onclick="addNewLine();" title="增加样品"><span
+                                    class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="model-signer" class="col-sm-4 control-label">化验室签收人</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="model-signer" name="signer" required>
-                            </div>
+                    <div class="form-group col-md-12 row">
+                        <label for="model-signer" class="col-sm-3 control-label">化验室签收人</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control focus" id="model-signer" name="signer" required>
                         </div>
                     </div>
                 </form>
@@ -481,8 +504,6 @@
                     <div class="col-md-6">
                         <p class="text-left"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
                                 id="model1-signer"></span></p>
-                        <p class="text-left"><b>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注&nbsp;&nbsp;</b><span
-                                id="model1-comment"></span></p>
                     </div>
                 </div>
             </div>
