@@ -42,11 +42,11 @@ public class CompatibilityController {
 
     @RequestMapping("importCompatibilityExcel")
     @ResponseBody
-    public String importClientExcel(MultipartFile excelFile, String tableName, String id){
+    public String importCompatibilityExcel(MultipartFile excelFile, String tableName, String id){
         JSONObject res = new JSONObject();
         try {
             DBUtil db=new DBUtil();
-            db.importExcel(excelFile, tableName, "1");
+            db.importExcel(excelFile, tableName,id);
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

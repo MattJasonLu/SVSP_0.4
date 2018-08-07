@@ -27,4 +27,7 @@
         <result property="waterMin" column="watermin"></result>
         <result property="ashMin" column="ashmin"></result>
     </resultMap>
+    <select id="list" resultMap="ThresholdRM">
+    select  * from t_pr_threshold;
+</select>
 </mapper>
