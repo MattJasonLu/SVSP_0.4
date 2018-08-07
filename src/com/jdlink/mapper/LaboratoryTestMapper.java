@@ -11,7 +11,11 @@ public interface LaboratoryTestMapper {
 
      List<LaboratoryTest> list(Page page);
 
-     LaboratoryTest getLaboratoryTestById(String laboratoryTestNumber) ;
+     LaboratoryTest getLaboratoryTestById(String laboratoryTestNumber);
+
+     List<LaboratoryTest> search(LaboratoryTest laboratoryTest);
+
+     int searchCount(LaboratoryTest laboratoryTest);
 
      void setInvalid(String laboratoryTestNumber);
 

@@ -309,6 +309,7 @@ function loadPageList() {
         }
     });
     isSearch = false;
+    getCheckState();
 }
 
 /**
@@ -370,6 +371,60 @@ function setDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+}
+
+/**
+ * 查找
+ */
+function searchData() {
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    // 精确查询
+    if ($("#senior").is(':visible')) {
+        data = {
+            laboratoryTestNumber: $("#search-laboratoryTestNumber").val(),
+            queryNumber: $("#search-queryNumber").val(),
+            client: {
+                companyName: $("#search-companyName").val()
+            },
+            record: $("#search-record").val(),
+            laboratory: $("#search-laboratory").val(),
+            laboratoryDate: $("#search-laboratoryDate").val(),
+            laboratoryCompany: $("#search-laboratoryCompany").val(),
+            checkState: $("#search-checkState").val(),
+            page: page
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        data = {
+            keyword: $("#searchContent").val(),
+            page: page
+        };
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchLaboratoryTest",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setPageClone(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    isSearch = true;
 }
 
 /**
@@ -484,6 +539,44 @@ function setInvalid(e) {
 }
 
 /**
+ * 多选作废
+ */
+function setInvalidMulti() {
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length > 0) {
+        var r = confirm("确认作废选中化验单吗？");
+        if (r) {
+            for (var i = 0; i < items.length; i++) {
+                var id = getIdByCheckBox(items[i]);
+                $.ajax({
+                    type: "POST",
+                    url: "setLaboratoryTestInvalid",
+                    async: false,
+                    dataType: "json",
+                    data: {"laboratoryTestNumber": id},
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            console.log(result);
+                        } else {
+                            alert(result.message);
+                            return null;
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert("服务器异常");
+                    }
+                });
+            }
+            alert("作废成功");
+            window.location.reload();
+        }
+    } else {
+        alert("未选中任何化验单！");
+    }
+}
+
+/**
  * 已化验
  */
 function setTested(e) {
@@ -519,7 +612,7 @@ function setSubmit(e) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "submit",
+            url: "setLaboratoryTestSubmit",
             async: false,
             dataType: "json",
             data: {"laboratoryTestNumber": id},
@@ -537,6 +630,44 @@ function setSubmit(e) {
                 alert("服务器异常");
             }
         });
+    }
+}
+
+/**
+ * 多选提交
+ */
+function setSubmitMulti() {
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length > 0) {
+        var r = confirm("确认作废选中化验单吗？");
+        if (r) {
+            for (var i = 0; i < items.length; i++) {
+                var id = getIdByCheckBox(items[i]);
+                $.ajax({
+                    type: "POST",
+                    url: "setLaboratoryTestSubmit",
+                    async: false,
+                    dataType: "json",
+                    data: {"laboratoryTestNumber": id},
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            console.log(result);
+                        } else {
+                            alert(result.message);
+                            return null;
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert("服务器异常");
+                    }
+                });
+            }
+            alert("提交成功");
+            window.location.reload();
+        }
+    } else {
+        alert("未选中任何化验单！");
     }
 }
 
@@ -549,7 +680,7 @@ function setConfirm(e) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "confirm",
+            url: "setLaboratoryTestConfirm",
             async: false,
             dataType: "json",
             data: {"laboratoryTestNumber": id},
@@ -571,12 +702,91 @@ function setConfirm(e) {
 }
 
 /**
+ * 多选签收
+ */
+function setConfirmMulti() {
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    if (items.length > 0) {
+        var r = confirm("确认签收选中化验单吗？");
+        if (r) {
+            for (var i = 0; i < items.length; i++) {
+                var id = getIdByCheckBox(items[i]);
+                $.ajax({
+                    type: "POST",
+                    url: "setLaboratoryTestConfirm",
+                    async: false,
+                    dataType: "json",
+                    data: {"laboratoryTestNumber": id},
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            console.log(result);
+                        } else {
+                            alert(result.message);
+                            return null;
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert("服务器异常");
+                    }
+                });
+            }
+            alert("签收成功");
+            window.location.reload();
+        }
+    } else {
+        alert("未选中任何化验单！");
+    }
+}
+
+/**
  * 通过操作菜单来获取编号
  * @param e 点击的按钮
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
     return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+}
+
+/**
+ * 通过复选框来获取id
+ * @param e
+ * @returns {string}
+ */
+function getIdByCheckBox(e) {
+    return e.parentElement.parentElement.nextElementSibling.innerHTML;
+}
+
+/**
+ * 设置高级查询的审核状态数据
+ */
+function getCheckState() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCheckState",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    checkState.append(option);
+                });
+                checkState.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**
