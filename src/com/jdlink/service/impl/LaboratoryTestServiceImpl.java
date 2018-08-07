@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.mapper.LaboratoryTestMapper;
 import com.jdlink.service.LaboratoryTestService;
@@ -16,6 +17,16 @@ public class LaboratoryTestServiceImpl implements LaboratoryTestService {
 
     @Autowired
     LaboratoryTestMapper laboratoryTestMapper;
+
+    @Override
+    public int count() {
+        return laboratoryTestMapper.count();
+    }
+
+    @Override
+    public List<LaboratoryTest> list(Page page) {
+        return laboratoryTestMapper.list(page);
+    }
 
     @Override
     public LaboratoryTest getLaboratoryTestById(String laboratoryTestNumber) {

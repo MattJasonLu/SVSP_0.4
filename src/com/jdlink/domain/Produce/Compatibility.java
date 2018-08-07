@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
 
 public class Compatibility {
@@ -13,7 +14,7 @@ public class Compatibility {
     private float proportion;
     //每日配比量
     private  float dailyProportions;
-    //周需求总量
+    //每周需求总量
     private float  weeklyDemand;
     //热值
     private float calorific;
@@ -37,6 +38,16 @@ public class Compatibility {
     private float weeklyDemandTotal;
     //热值总量
     private float calorificTotal;
+//审核状态
+    private CheckState checkState;
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     @Override
     public String toString() {

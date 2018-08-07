@@ -3,6 +3,7 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Sample;
+import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.SampleInformationMapper;
 import com.jdlink.service.SampleInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class SampleInformationServiceImpl implements SampleInformationService {
 
     @Override
     public int count(){ return sampleInformationMapper.count(); }
+
+    @Override
+    public int wastesCount(){ return sampleInformationMapper.wastesCount(); }
 
     @Override
     public List<SampleInformation> listPage(Page page){ return sampleInformationMapper.listPage(page); }
@@ -47,4 +51,9 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     @Override
     public List<SampleInformation> search(SampleInformation sampleInformation){ return sampleInformationMapper.search(sampleInformation); }
 
+    @Override
+    public SampleInformation getBySampleInformationId(String id){ return sampleInformationMapper.getBySampleInformationId(id); }
+
+    @Override
+    public Wastes getByWastesId(String id){ return sampleInformationMapper.getByWastesId(id); }
 }

@@ -1,9 +1,11 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.ApplyState;
+import com.jdlink.domain.MixingElement;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +47,19 @@ public class SampleInformation {
      */
     private String samplingNumber;
 
-    private  List<Wastes> wastesList ;
+    /**
+     * 危废列表
+     */
+    private  List<Wastes> wastesList;
+
+    /**
+     * 参数列表
+     */
+    private List<MixingElement> parameterList = new ArrayList<>();
+    /**
+     * 重金属列表
+     */
+    private  List<MixingElement> heavyMetalList = new ArrayList<>();
 
     /**
      * 生产线上取样
@@ -55,6 +69,10 @@ public class SampleInformation {
      * 储存区取样
      */
     private boolean isStorageArea;
+    /**
+     * 检测日期
+     */
+    private Date testDate;
 
     private boolean isPH; // PH值
 
@@ -102,31 +120,6 @@ public class SampleInformation {
         this.wastesName = wastesName;
     }
 
-    @Override
-    public String toString() {
-        return "SampleInformation{" +
-                "companyCode='" + companyCode + '\'' +
-                ", wastesCode='" + wastesCode + '\'' +
-                ", laboratorySigner='" + laboratorySigner + '\'' +
-                ", applyState=" + applyState +
-                ", wastesName='" + wastesName + '\'' +
-                ", samplingDate=" + samplingDate +
-                ", samplingNumber='" + samplingNumber + '\'' +
-                ", isProductionLine=" + isProductionLine +
-                ", isStorageArea=" + isStorageArea +
-                ", isPH=" + isPH +
-                ", isAsh=" + isAsh +
-                ", isWater=" + isWater +
-                ", isHeat=" + isHeat +
-                ", isSulfur=" + isSulfur +
-                ", isChlorine=" + isChlorine +
-                ", isFluorine=" + isFluorine +
-                ", isPhosphorus=" + isPhosphorus +
-                ", isFlashPoint=" + isFlashPoint +
-                ", isViscosity=" + isViscosity +
-                '}';
-    }
-
     public Date getSamplingDate() {
         return samplingDate;
     }
@@ -143,19 +136,19 @@ public class SampleInformation {
         this.samplingNumber = samplingNumber;
     }
 
-    public boolean isProductionLine() {
+    public boolean getIsProductionLine() {
         return isProductionLine;
     }
 
-    public void setProductionLine(boolean productionLine) {
+    public void setIsProductionLine(boolean productionLine) {
         isProductionLine = productionLine;
     }
 
-    public boolean isStorageArea() {
+    public boolean getIsStorageArea() {
         return isStorageArea;
     }
 
-    public void setStorageArea(boolean storageArea) {
+    public void setIsStorageArea(boolean storageArea) {
         isStorageArea = storageArea;
     }
 
@@ -285,5 +278,52 @@ public class SampleInformation {
         this.keyword = keyword;
     }
 
+    public Date getTestDate() {
+        return testDate;
+    }
 
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
+    }
+
+    public List<MixingElement> getParameterList() {
+        return parameterList;
+    }
+
+    public void setParameterList(List<MixingElement> parameterList) {
+        this.parameterList = parameterList;
+    }
+
+    public List<MixingElement> getHeavyMetalList() {
+        return heavyMetalList;
+    }
+
+    public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
+        this.heavyMetalList = heavyMetalList;
+    }
+
+    @Override
+    public String toString() {
+        return "SampleInformation{" +
+                "companyCode='" + companyCode + '\'' +
+                ", wastesCode='" + wastesCode + '\'' +
+                ", laboratorySigner='" + laboratorySigner + '\'' +
+                ", applyState=" + applyState +
+                ", wastesName='" + wastesName + '\'' +
+                ", samplingDate=" + samplingDate +
+                ", samplingNumber='" + samplingNumber + '\'' +
+                ", isProductionLine=" + isProductionLine +
+                ", isStorageArea=" + isStorageArea +
+                ", isPH=" + isPH +
+                ", isAsh=" + isAsh +
+                ", isWater=" + isWater +
+                ", isHeat=" + isHeat +
+                ", isSulfur=" + isSulfur +
+                ", isChlorine=" + isChlorine +
+                ", isFluorine=" + isFluorine +
+                ", isPhosphorus=" + isPhosphorus +
+                ", isFlashPoint=" + isFlashPoint +
+                ", isViscosity=" + isViscosity +
+                '}';
+    }
 }

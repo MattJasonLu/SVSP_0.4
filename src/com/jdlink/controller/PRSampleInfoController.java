@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,54 @@ public class PRSampleInfoController {
             res.put("message", "增加失败");
             res.put("exception", e.getMessage());
         }
+        return res.toString();
+    }
+
+    @RequestMapping("getCurrentSampleInformationId")
+    @ResponseBody
+    public String getCurrentSampleInformationId() {
+       // 得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        // 获取最新编号
+        String id;
+        int index = sampleInformationService.count();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (sampleInformationService.getBySampleInformationId(id) != null);
+        JSONObject res = new JSONObject();
+        res.put("id", id);
+        return res.toString();
+    }
+
+    @RequestMapping("getCurrentWastesId")
+    @ResponseBody
+    public String getCurrentWastesId() {
+        // 得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(8);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(8);
+        // 获取最新编号
+        String id;
+        int index = sampleInformationService.wastesCount();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (sampleInformationService.getByWastesId(id) != null);
+        JSONObject res = new JSONObject();
+        res.put("id", id);
         return res.toString();
     }
 
