@@ -299,6 +299,7 @@ public class DBUtil {
     public String  generateSql(int columnCount,String DBTableName) {
         String prefix = "INSERT INTO " + DBTableName + " VALUES (";
         String suffix = ")";
+
         for (int i = 0; i < columnCount; i++) {
             if (i == columnCount - 1) {
                 prefix += "?"+suffix;
