@@ -2,9 +2,9 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
-import com.jdlink.domain.MixingElement;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,7 +21,7 @@ public class LaboratoryTest {
      */
     private String queryNumber;
     /**
-     * 客户对象
+     * 客户对象(企业名称、地址、联系人、联系电话、所属行业、主要产品，共六个属性)
      */
     private Client client;
     /**
@@ -31,7 +31,7 @@ public class LaboratoryTest {
     /**
      * 填报日期
      */
-    private String recordDate;
+    private Date recordDate;
     /**
      * 化验人
      */
@@ -43,7 +43,7 @@ public class LaboratoryTest {
     /**
      * 化验时间
      */
-    private String laboratoryDate;
+    private Date laboratoryDate;
 
     /**
      * 单据状态
@@ -53,14 +53,6 @@ public class LaboratoryTest {
      * 样品列表
      */
     private List<SampleInformation> sampleInformationList = new ArrayList<>();
-    /**
-     * 参数列表
-     */
-    private List<MixingElement> parameterList = new ArrayList<>();
-    /**
-     * 重金属列表
-     */
-    private  List<MixingElement> heavyMetalList = new ArrayList<>();
 
 
     public String getLaboratoryTestNumber() {
@@ -95,11 +87,11 @@ public class LaboratoryTest {
         this.record = record;
     }
 
-    public String getRecordDate() {
+    public Date getRecordDate() {
         return recordDate;
     }
 
-    public void setRecordDate(String recordDate) {
+    public void setRecordDate(Date recordDate) {
         this.recordDate = recordDate;
     }
 
@@ -119,11 +111,11 @@ public class LaboratoryTest {
         this.laboratoryCompany = laboratoryCompany;
     }
 
-    public String getLaboratoryDate() {
+    public Date getLaboratoryDate() {
         return laboratoryDate;
     }
 
-    public void setLaboratoryDate(String laboratoryDate) {
+    public void setLaboratoryDate(Date laboratoryDate) {
         this.laboratoryDate = laboratoryDate;
     }
 
@@ -143,22 +135,6 @@ public class LaboratoryTest {
         this.sampleInformationList = sampleInformationList;
     }
 
-    public List<MixingElement> getParameterList() {
-        return parameterList;
-    }
-
-    public void setParameterList(List<MixingElement> parameterList) {
-        this.parameterList = parameterList;
-    }
-
-    public List<MixingElement> getHeavyMetalList() {
-        return heavyMetalList;
-    }
-
-    public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
-        this.heavyMetalList = heavyMetalList;
-    }
-
     @Override
     public String toString() {
         return "LaboratoryTest{" +
@@ -166,14 +142,12 @@ public class LaboratoryTest {
                 ", queryNumber='" + queryNumber + '\'' +
                 ", client=" + client +
                 ", record='" + record + '\'' +
-                ", recordDate='" + recordDate + '\'' +
+                ", recordDate=" + recordDate +
                 ", laboratory='" + laboratory + '\'' +
                 ", laboratoryCompany='" + laboratoryCompany + '\'' +
-                ", laboratoryDate='" + laboratoryDate + '\'' +
+                ", laboratoryDate=" + laboratoryDate +
                 ", checkState=" + checkState +
                 ", sampleInformationList=" + sampleInformationList +
-                ", parameterList=" + parameterList +
-                ", heavyMetalList=" + heavyMetalList +
                 '}';
     }
 }
