@@ -15,6 +15,8 @@ public class MixingElement {
 
     private String name;
 
+    private String samplingNumber;
+
     private Parameter parameter;
 
     private HeavyMetal heavyMetal;
@@ -97,6 +99,14 @@ public class MixingElement {
 
     public void setMaximum(float maximum) {
         this.maximum = maximum;
+    }
+
+    public String getSamplingNumber() {
+        return samplingNumber;
+    }
+
+    public void setSamplingNumber(String samplingNumber) {
+        this.samplingNumber = samplingNumber;
     }
 
     @Override

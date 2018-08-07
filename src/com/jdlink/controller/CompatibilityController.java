@@ -36,7 +36,6 @@ public class CompatibilityController {
         } while (compatibilityService.getByCompatibilityId(id) != null);
         JSONObject res = new JSONObject();
         res.put("compatibilityId", id);
-        System.out.println(id+"AAA");
         return res.toString();
     }
 

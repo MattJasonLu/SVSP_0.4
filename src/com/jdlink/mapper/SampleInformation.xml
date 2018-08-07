@@ -5,11 +5,12 @@
 
 <mapper namespace="com.jdlink.mapper.SampleInformationMapper">
     <resultMap id="SampleInformationRM" type="SampleInformation" autoMapping="true">
-        <result property="id" column="id"/>
+        <id property="id" column="id"/>
         <result property="companyCode" column="companyCode"/>
         <result property="applyState" column="applyState"/>
         <result property="laboratorySigner" column="laboratorySigner"/>
-        <collection property="wastesList" select="getSampleInfo" column="sampleInfoId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+        <collection property="wastesList" select="getSampleInfo" column="sampleInfoId"
+                    ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
 
     <insert id="add" parameterType="SampleInformation">
@@ -234,7 +235,5 @@
     <update id="updateSampleInfo" parameterType="String">
         update t_pr_sampleinformation set applyState = 'Invalid' where companyCode = #{companyCode}
     </update>
-
-
 
 </mapper>
