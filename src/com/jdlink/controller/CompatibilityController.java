@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.util.DBUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,6 +88,28 @@ public class CompatibilityController {
 
     }
 
+    //加载数据
+    @RequestMapping("getList1")
+    @ResponseBody
+    public String getList1(){
+        JSONObject res=new JSONObject();
+        try {
+            //1首先查找最新一期的compatibilityId
+            List<String> compatibilityIdList=compatibilityService.check();
+            JSONArray array = JSONArray.fromArray(compatibilityIdList.toArray(new String[compatibilityIdList.size()]));
+            res.put("compatibilityIdList",array);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+      catch (Exception e){
+          e.printStackTrace();
+          res.put("status", "fail");
+          res.put("message", "查询失败");
+      }
+        return  res.toString();
+    }
+
+
     //获取最后一位四位编号
      public static String getId(String id){
         while (id.length()!=4){
@@ -110,4 +133,5 @@ public class CompatibilityController {
         }
         return id;
     }
+
 }
