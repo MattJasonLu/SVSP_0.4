@@ -5,11 +5,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -29,7 +32,6 @@ import jxl.read.biff.BiffException;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-
 
 public class DBUtil {
     public final static String url = "jdbc:mysql://172.16.1.92:3306/jdlink"; // 数据库URL
@@ -151,8 +153,14 @@ public class DBUtil {
         //定义一维数组，存放Excel表里的每一行的各个列的数据
         Object[] obj;
         Object[][] parm;
+        String fileName = file.getOriginalFilename();   //原文件名
         InputStream is = null;
         Workbook rwb = null;
+        XSSFWorkbook xwb=null;
+        int col=0;//总列数
+        int row=0;//总行数
+        Sheet sht;//2003
+        XSSFSheet sht1;//2007
         try {
             //定义文本输入流
             is = file.getInputStream();
@@ -162,19 +170,32 @@ public class DBUtil {
             e.printStackTrace();
         }
         try {
-            //打开Workbook
-            rwb = Workbook.getWorkbook(is);
+            if(fileName.endsWith("xls")){
+                //2003
+                //打开Workbook
+                rwb = Workbook.getWorkbook(is);
+            }else if(fileName.endsWith("xlsx")){
+                //2007
+              xwb = new XSSFWorkbook(is);  //利用poi读取excel文件流
+            }
+
         } catch (BiffException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         //获取Excel表的Sheet1区域的数据
-        Sheet sht = rwb.getSheet(0);//得到第一个表d
-        int col = sht.getColumns(); //获得Excel列
-        int row = sht.getRows(); //获得Excel行
+        //得到第一个表d
+        if((sht =rwb.getSheet(0))!=null){
+            col = sht.getColumns(); //获得Excel列
+            row = sht.getRows(); //获得Excel行
+        }
+        //得到第一个表d
+       if((sht1=xwb.getSheetAt(0))!=null){
+            col = sht1.getRow(0).getPhysicalNumberOfCells();//获得Excel列
+            row = sht1.getLastRowNum(); //获得Excel行
+        }
         Cell c1;
-
         parm = new Object[row - 1][col];
         //将数据装到parm中去
         //i=1 去掉表格第一行的属性名
