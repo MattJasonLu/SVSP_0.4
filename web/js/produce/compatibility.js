@@ -1,7 +1,7 @@
 /*********************
  * jackYang
  */
-
+var isSearch = false;
 //导入数据
 function importExcel() {
     document.getElementById("idExcel").click();
@@ -84,6 +84,9 @@ function getList1() {
             alert("服务器异常！")
         }
     });
+    // 设置高级检索的下拉框数据
+    setPwList();
+    isSearch = false;
 }
 /*加载表格数据
 * 
@@ -573,4 +576,102 @@ function  viewPw(){
     }
 
 
+}
+
+/**
+ * 设置高级检索的下拉框数据
+ */
+function setPwList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSelectList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    checkState.append(option);
+                });
+                checkState.get(0).selectedIndex = -1;
+                //处理类别
+                var handleCategory=$('#search-handleCategory');
+                handleCategory.children().remove();
+                $.each(data.handleCategoryList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    handleCategory.append(option);
+                });
+                handleCategory.get(0).selectedIndex = -1;
+                //形态
+                var formType=$('#search-formType');
+                formType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    formType.append(option);
+                });
+                formType.get(0).selectedIndex = -1;
+
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+}
+/**
+ * 查询配伍信息
+ */
+function searchPw() {
+    // 精确查询
+    if ($("#senior").is(':visible')) {
+        data = {
+            pwId: $("#search-pwId").val(),//序号
+            handleCategory: $("#search-handleCategory").val(),//处理类别
+            formType: $("#search-formType").val(),//形态
+            proportion: $("#search-proportion").val(),//比例
+            dailyProportions: $("#search-dailyProportions").val(),//每日配比量
+            plateNumber: $("#search-plateNumber").val(),//车牌号
+            checkState: $("#search-checkState").val(),//审核状态
+        };
+        console.log(data);
+        // 模糊查询
+    } else {
+        data = {
+            keyword: $("#searchContent").val(),
+        };
+        console.log(data);
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchStock",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setPageClone(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    isSearch = true;
 }

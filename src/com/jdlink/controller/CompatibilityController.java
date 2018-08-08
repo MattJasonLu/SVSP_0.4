@@ -1,7 +1,10 @@
 package com.jdlink.controller;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+import com.jdlink.domain.CheckState;
+import com.jdlink.domain.FormType;
 import com.jdlink.domain.Produce.Compatibility;
+import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
@@ -186,6 +189,27 @@ public class CompatibilityController {
    }
         return res.toString();
     }
+    //加载下拉框数据
+    @RequestMapping("getSelectList")
+    @ResponseBody
+    public String getSelectList(){
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        //审核状态
+        JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+        res.put("checkStateList", checkStateList);
+        //形态
+        JSONArray formTypeList=JSONArray.fromArray(FormType.values());
+        res.put("formTypeList", formTypeList);
+        //处理类别
+        JSONArray handleCategoryList=JSONArray.fromArray(HandleCategory.values());
+        res.put("handleCategoryList", handleCategoryList);
+        return res.toString();
+    }
+
+
+
+
     //获取最后一位四位编号
      public static String getId(String id){
         while (id.length()!=4){
