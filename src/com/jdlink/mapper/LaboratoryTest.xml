@@ -28,6 +28,74 @@
         </if>
     </select>
 
+    <select id="search" parameterType="LaboratoryTest" resultMap="LaboratoryTestRM">
+        SELECT * FROM t_pr_laboratorytest
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and laboratoryTestNumber LIKE "%"#{keyword}"%" or queryNumber like "%"#{keyword}"%"
+                or record like "%"#{keyword}"%" or recordDate like binary "%"#{keyword}"%"
+                or laboratory like "%"#{keyword}"%" or laboratoryCompany like "%"#{keyword}"%"
+            </if>
+            <if test="laboratoryTestNumber != null and laboratoryTestNumber != ''">
+                and laboratoryTestNumber LIKE "%"#{laboratoryTestNumber}"%"
+            </if>
+            <if test="queryNumber != null and queryNumber != ''">
+                and queryNumber LIKE "%"#{queryNumber}"%"
+            </if>
+            <if test="record != null and record != ''">
+                and record LIKE "%"#{record}"%"
+            </if>
+            <if test="recordDate != null and recordDate != ''">
+                and recordDate LIKE "%"#{recordDate}"%"
+            </if>
+            <if test="laboratory != null and laboratory != ''">
+                and laboratory LIKE "%"#{laboratory}"%"
+            </if>
+            <if test="laboratoryCompany != null and laboratoryCompany != ''">
+                and laboratoryCompany LIKE binary "%"#{laboratoryCompany}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="LaboratoryTest" resultType="int">
+        SELECT COUNT(*) FROM t_pr_laboratorytest
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and laboratoryTestNumber LIKE "%"#{keyword}"%" or queryNumber like "%"#{keyword}"%"
+                or record like "%"#{keyword}"%" or recordDate like binary "%"#{keyword}"%"
+                or laboratory like "%"#{keyword}"%" or laboratoryCompany like "%"#{keyword}"%"
+            </if>
+            <if test="laboratoryTestNumber != null and laboratoryTestNumber != ''">
+                and laboratoryTestNumber LIKE "%"#{laboratoryTestNumber}"%"
+            </if>
+            <if test="queryNumber != null and queryNumber != ''">
+                and queryNumber LIKE "%"#{queryNumber}"%"
+            </if>
+            <if test="record != null and record != ''">
+                and record LIKE "%"#{record}"%"
+            </if>
+            <if test="recordDate != null and recordDate != ''">
+                and recordDate LIKE "%"#{recordDate}"%"
+            </if>
+            <if test="laboratory != null and laboratory != ''">
+                and laboratory LIKE "%"#{laboratory}"%"
+            </if>
+            <if test="laboratoryCompany != null and laboratoryCompany != ''">
+                and laboratoryCompany LIKE binary "%"#{laboratoryCompany}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+    </select>
+
     <select id="getClient" resultType="Client">
         SELECT * FROM client WHERE clientId=#{clientId};
     </select>

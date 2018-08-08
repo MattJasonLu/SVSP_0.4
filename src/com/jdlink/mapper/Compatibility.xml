@@ -28,4 +28,18 @@
     <select id="getByCompatibilityId" parameterType="String" resultMap="CompatibilityRM">
   SELECT * FROM t_pr_pw WHERE pwId = #{pwId}
     </select>
+    <select id="getLastId" resultType="int">
+        select count(*) from t_pr_pw;
+    </select>
+    <update id="updateCompatibility">
+        update t_pr_pw set compatibilityId=#{0},nowTime=NOW()
+        where  pwId between #{1} and #{2};
+    </update>
+    <!--查找配伍编号-->
+    <select id="check" resultType="String">
+        select compatibilityId from  t_pr_pw order by nowTime desc ;
+    </select>
+    <select id="list" parameterType="String">
+        select * from t_pr_pw where compatibilityId=#{compatibilityId}
+    </select>
 </mapper>

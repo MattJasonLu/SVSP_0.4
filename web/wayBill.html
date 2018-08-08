@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>企业列表</title>
+    <title>接运单</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -13,7 +13,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/page.js"></script>
     <script src="js/produce/transportPlan.js"></script>
+    <script src="js/produce/wayBill.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
@@ -130,7 +132,8 @@
                     <ol class="breadcrumb">
                         <li><a href="#">接收管理</a></li>
                         <li>转移管理</li>
-                        <li class="active">运输计划单</li>
+                        <li>运输计划单</li>
+                        <li class="active">接运单</li>
                     </ol>
                 </div>
                 <h4 class="sub-header">运输计划单</h4>
@@ -139,20 +142,12 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#" onclick="view1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 修改</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 删除</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 确认</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 审批</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 保存</a>
-                        <a class="btn btn-primary btn-xs" href="wayBill.html"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成结运单</a>
+                        <a class="btn btn-primary btn-xs" href="#" onclick=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#" onclick="edit();"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-xs-3 pull-right">
+                    <div class="input-group col-md-3"></div>
+                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
@@ -167,75 +162,33 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">单位名称</label>
+                                <label for="search-salesman" class="col-sm-4 control-label">业务员</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-salesman" name="search-salesman" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">单位</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
+                                <label for="search-wastes" class="col-sm-4 control-label">废物</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesName" name="search-wastesName" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesCode" name="search-wastesCode" placeholder="">
+                                    <input type="text" class="form-control" id="search-wastes" name="search-wastes" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-calorificValue" class="col-sm-4 control-label">热值</label>
+                                <label for="search-billNumber" class="col-sm-4 control-label">接运单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-calorificValue" name="search-calorificValue" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-ashContent" class="col-sm-4 control-label">灰分</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-ashContent" name="search-ashContent" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-waterContent" class="col-sm-4 control-label">水分</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-waterContent" name="search-waterContent" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-S" class="col-sm-4 control-label">S</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-S" name="search-S" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-CL" class="col-sm-4 control-label">CL</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-CL" name="search-CL" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-P" class="col-sm-4 control-label">P</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-P" name="search-P" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-F" class="col-sm-4 control-label">F</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-F" name="search-F" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-PH" class="col-sm-4 control-label">PH</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-PH" name="search-PH" placeholder="">
+                                    <input type="text" class="form-control" id="search-billNumber" name="search-billNumber" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -248,86 +201,96 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th class="text-center" colspan="16"><span class="year">年</span>第<span class="week"></span>周三期生产经营运输计划</th>
+                            <th class="text-center" colspan="16">接运单接收明细</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td class="text-center">产废单位</td>
-                            <td class="text-center">入场时间</td>
-                            <td class="text-center">废物名称</td>
-                            <td class="text-center">废物代码</td>
-                            <td class="text-center">重量/t</td>
-                            <td class="text-center">物质形态</td>
-                            <td class="text-center">包装形式</td>
-                            <td class="text-center">热值/KCal/</td>
-                            <td class="text-center">PH</td>
-                            <td class="text-center">灰分/%</td>
-                            <td class="text-center">水分/%</td>
-                            <td class="text-center">氯含量/%</td>
-                            <td class="text-center">硫含量/%</td>
-                            <td class="text-center">磷含量/%</td>
-                            <td class="text-center">氟含量/%</td>
-                            <td class="text-center">处理方式</td>
+                            <td class="text-center">创建人</td>
+                            <td class="text-center">创建时间</td>
+                            <td class="text-center">业务员</td>
+                            <td class="text-center">接运单号</td>
+                            <td class="text-center">接运单日期</td>
+                            <td class="text-center">单位</td>
+                            <td class="text-center">废物</td>
+                            <td class="text-center">数量</td>
+                            <td class="text-center">单价</td>
+                            <td class="text-center">运费</td>
+                            <td class="text-center">合计</td>
+                            <td class="text-center billDate1">开票日期</td>
+                            <td class="text-center billNumber1">发票号码</td>
                         </tr>
                         <tr>
-                            <td class="text-center">1</td>
-                            <td class="text-center">2018-08-07</td>
-                            <td class="text-left">废液</td>
-                            <td class="text-center">QW10001</td>
-                            <td class="text-right">5</td>
-                            <td class="text-right">液态</td>
-                            <td class="text-right">标准装</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">焚烧</td>
+                            <td class="text-center">小张</td>
+                            <td class="text-right">8月8日</td>
+                            <td class="text-right">小磊</td>
+                            <td class="text-right">QW10001</td>
+                            <td class="text-right">8月8日</td>
+                            <td class="text-right">常州上通汽车销售服务有限公司</td>
+                            <td class="text-right">废包装塑料桶</td>
+                            <td class="text-right">550</td>
+                            <td class="text-right">5.5</td>
+                            <td class="text-right">0</td>
+                            <td class="text-right">3025</td>
+                            <td class="text-right billDate">8月5日</td>
+                            <td class="text-right billNumber">17634706</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">小张</td>
+                            <td class="text-right">8月8日</td>
+                            <td class="text-right">小华</td>
+                            <td class="text-right">QW10002</td>
+                            <td class="text-right">8月8日</td>
+                            <td class="text-right">日邦树脂(无锡)有限公司</td>
+                            <td class="text-right">废有机树脂</td>
+                            <td class="text-right">5260</td>
+                            <td class="text-right">5.5</td>
+                            <td class="text-right">0</td>
+                            <td class="text-right">28930</td>
+                            <td class="text-right billDate">8月5日</td>
+                            <td class="text-right billNumber">17634711</td>
                         </tr>
                         </tbody>
                     </table>
-                    <br>
-                    <div class="row">
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="clockmaker" class="col-sm-4 control-label">制表人</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="clockmaker" name="clockmaker" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="departmentHead" class="col-sm-4 control-label">部门主管</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="departmentHead" name="departmentHead" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="group" class="col-sm-4 control-label">小组</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="group" name="group" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="leadingOfficial" class="col-sm-4 control-label">生产负责人</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="leadingOfficial" name="leadingOfficial" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!--分页-->
+            <nav aria-label="Page navigation" class="text-center">
+                <ol class="pagination" style="width: 800px;">
+                    <li id="current"><a href='#'>当前页：</a>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchPage(0)">首 页</a>
+                    </li>
+                    <li id="previous">
+                        <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
+                        <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li id="endPage">
+                        <a href='#' onclick="switchPage(-2)">尾 页</a>
+                    </li>
+                    <li><a id="totalPage"></a></li>
+                    <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+                    <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                               id="pageNumber"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count" onchange="loadPageClientList()">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                        </select>
+                    </li>
+                </ol>
+            </nav>
         </div>
     </div>
     <!--新增模态框-->

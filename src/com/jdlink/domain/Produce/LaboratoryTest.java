@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +54,18 @@ public class LaboratoryTest {
      * 样品列表
      */
     private List<SampleInformation> sampleInformationList = new ArrayList<>();
-
+    /**
+     * 记录最后操作时间，用于排序
+     */
+    private Date nowTime;
+    /**
+     * 关键字，用于查询
+     */
+    private String keyword;
+    /**
+     * 页码，用于翻页
+     */
+    private Page page;
 
     public String getLaboratoryTestNumber() {
         return laboratoryTestNumber;
@@ -133,6 +145,30 @@ public class LaboratoryTest {
 
     public void setSampleInformationList(List<SampleInformation> sampleInformationList) {
         this.sampleInformationList = sampleInformationList;
+    }
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     @Override
