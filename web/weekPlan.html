@@ -19,7 +19,7 @@
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
 </script>
-<body >
+<body onload="getList1();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -31,7 +31,7 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 920px;">
+        <div class="container navbar-left" style="width: 900px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
@@ -186,7 +186,6 @@
                         <tr>
                             <th class="text-center" colspan="15">配伍计划表(<span class="year"></span>年<span class="month"></span>月第<span class="week"></span>周)</th>
                         </tr>
-                        </thead>
                         <tbody>
                         <tr>
                             <th class="text-center">序号</th>
@@ -205,14 +204,35 @@
                             <th class="text-center">PH</th>
                             <th class="text-center">状态</th>
                         </tr>
+                        </thead>
+                        <tr id="cloneTr1">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-center"></td>
+                        </tr>
                         <tr>
-                            <td class="text-center"></td>
-                            <td class="text-left"></td>
-                            <td class="text-center"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
+                            <th >合计</th>
+                            <td colspan="3"></td>
+                            <td id="dailyProportionsTotal" class="text-right"></td>
+                            <td id="weeklyDemandTotal" class="text-right"></td>
+                            <td colspan="9"></td>
+                        </tr>
+                        <tr>
+                            <th>加权平均</th>
+                            <td colspan="5"></td>
+                            <td id="calorific" class="text-right"></td><!--热值平均-->
                             <td class="text-right"></td>
                             <td class="text-right"></td>
                             <td class="text-right"></td>
@@ -252,35 +272,35 @@
     }
 </style>
 
-<script type="text/javascript">
+<!--<script type="text/javascript">-->
 
-    var clientId;
+    <!--var clientId;-->
 
-    /**
-     * 导航问题
-     * */
-    $(function(){
-        autoNav();
-    });
+    <!--/**-->
+     <!--* 导航问题-->
+     <!--* */-->
+    <!--$(function(){-->
+        <!--autoNav();-->
+    <!--});-->
 
-    //解决底部自动导航的问题
-    function autoNav(){
-        //获取内容的高度
-        var bodyHeight = $("body").height();
-        //获取底部导航的高度
-        var navHeight = $(".navbar").height();
-        //获取显示屏的高度
-        var iHeight = document.documentElement.clientHeight||document.body.clientHeight;
-        //如果内容的高度大于（窗口的高度 - 导航的高度）,z则需要添加一个div，设置其高度
-        if(bodyHeight > (iHeight - navHeight)){
-            $("body").append('<div style="height: '+navHeight+'px"></div>');
-        }
-    }
-    /**
-     * 获取用户的编号
-     * @param item
-     * @returns {string}
-     */
+    <!--//解决底部自动导航的问题-->
+    <!--function autoNav(){-->
+        <!--//获取内容的高度-->
+        <!--var bodyHeight = $("body").height();-->
+        <!--//获取底部导航的高度-->
+        <!--var navHeight = $(".navbar").height();-->
+        <!--//获取显示屏的高度-->
+        <!--var iHeight = document.documentElement.clientHeight||document.body.clientHeight;-->
+        <!--//如果内容的高度大于（窗口的高度 - 导航的高度）,z则需要添加一个div，设置其高度-->
+        <!--if(bodyHeight > (iHeight - navHeight)){-->
+            <!--$("body").append('<div style="height: '+navHeight+'px"></div>');-->
+        <!--}-->
+    <!--}-->
+    <!--/**-->
+     <!--* 获取用户的编号-->
+     <!--* @param item-->
+     <!--* @returns {string}-->
+     <!--*/-->
 
-</script>
+<!--</script>-->
 </html>

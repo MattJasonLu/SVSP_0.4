@@ -220,6 +220,7 @@ public class DBUtil {
             //获得总列数
             int col=xSheet.getRow(0).getPhysicalNumberOfCells();
             int row=xSheet.getLastRowNum();//获得总行数
+            //int row = xSheet.getPhysicalNumberOfRows();
             System.out.println(row);
             parm = new Object[row][col];
             for (int i = 1; i < row+1; i++) {
@@ -299,6 +300,7 @@ public class DBUtil {
     public String  generateSql(int columnCount,String DBTableName) {
         String prefix = "INSERT INTO " + DBTableName + " VALUES (";
         String suffix = ")";
+
         for (int i = 0; i < columnCount; i++) {
             if (i == columnCount - 1) {
                 prefix += "?"+suffix;
