@@ -10,4 +10,6 @@ public interface CompatibilityService {
     int getLastId();
     List<String> check();
     void updateCompatibility(String compatibilityId,String id,String id2);
+    List<String> check1();
+    List<Compatibility> list(String compatibilityId);
 }

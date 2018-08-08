@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
@@ -61,17 +62,16 @@ public class CompatibilityController {
             //获取月
             String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
             //序列号
-            String number=null;
+           String number = "001";
            //先查看数据库的配伍编号
            List<String> compatibilityIList= compatibilityService.check();
-           if(compatibilityIList.size()<=0){//不存在
-               number="001";
+           if(id.equals("0001")){//不存在
+            number="001";
            }
-           if(compatibilityIList.size()>0){
+         if(!id.equals("0001")){
                String s= compatibilityIList.get(0);//原字符串
                String s2=s.substring(s.length()-3,s.length());//最后一个3字符
                number=getString3(String.valueOf( Integer.parseInt(s2)+1));
-
            }
             //配伍编号
             String compatibilityId=year+mouth+number;
@@ -95,9 +95,15 @@ public class CompatibilityController {
         JSONObject res=new JSONObject();
         try {
             //1首先查找最新一期的compatibilityId
-            List<String> compatibilityIdList=compatibilityService.check();
+            List<String> compatibilityIdList=compatibilityService.check1();
             JSONArray array = JSONArray.fromArray(compatibilityIdList.toArray(new String[compatibilityIdList.size()]));
             res.put("compatibilityIdList",array);
+            //最新的一个配伍编号
+            String compatibilityId=compatibilityIdList.get(0);
+            List<Compatibility> compatibilityList=compatibilityService.list(compatibilityId);
+            JSONArray array1=JSONArray.fromArray(compatibilityList.toArray(new Compatibility[compatibilityList.size()]));
+            res.put("compatibilityList",array1);
+            res.put("length",compatibilityList.size());
             res.put("status", "success");
             res.put("message", "查询成功");
         }
