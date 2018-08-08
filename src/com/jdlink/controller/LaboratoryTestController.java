@@ -64,6 +64,45 @@ public class LaboratoryTestController {
     }
 
     /**
+     * 查询数据
+     * @param laboratoryTest 参数
+     * @return 查询到的数据
+     */
+    @RequestMapping("searchLaboratoryTest")
+    @ResponseBody
+    public String searchLaboratoryTest(@RequestBody LaboratoryTest laboratoryTest) {
+        JSONObject res = new JSONObject();
+        try {
+            List<LaboratoryTest> laboratoryTestList = laboratoryTestService.search(laboratoryTest);
+            JSONArray data = JSONArray.fromArray(laboratoryTestList.toArray(new LaboratoryTest[laboratoryTestList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询数据的数量
+     * @param laboratoryTest
+     * @return
+     */
+    @RequestMapping("searchLaboratoryTestTotal")
+    @ResponseBody
+    public int searchLaboratoryTestTotal(@RequestBody LaboratoryTest laboratoryTest){
+        try {
+            return laboratoryTestService.searchCount(laboratoryTest);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
      * 获取化验单对象
      * @param laboratoryTestNumber 化验单号
      * @return 化验单对象
@@ -139,7 +178,7 @@ public class LaboratoryTestController {
      * @param laboratoryTestNumber 化验单号
      * @return 成功与否
      */
-    @RequestMapping("submit")
+    @RequestMapping("setLaboratoryTestSubmit")
     @ResponseBody
     public String submit(String laboratoryTestNumber){
         JSONObject res = new JSONObject();
@@ -161,7 +200,7 @@ public class LaboratoryTestController {
      * @param laboratoryTestNumber 化验单号
      * @return 成功与否
      */
-    @RequestMapping("confirm")
+    @RequestMapping("setLaboratoryTestConfirm")
     @ResponseBody
     public String confirm(String laboratoryTestNumber){
         JSONObject res = new JSONObject();

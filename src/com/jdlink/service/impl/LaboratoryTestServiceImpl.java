@@ -34,6 +34,16 @@ public class LaboratoryTestServiceImpl implements LaboratoryTestService {
     }
 
     @Override
+    public List<LaboratoryTest> search(LaboratoryTest laboratoryTest) {
+        return laboratoryTestMapper.search(laboratoryTest);
+    }
+
+    @Override
+    public int searchCount(LaboratoryTest laboratoryTest) {
+        return laboratoryTestMapper.searchCount(laboratoryTest);
+    }
+
+    @Override
     public void setInvalid(String laboratoryTestNumber) {
         laboratoryTestMapper.setInvalid(laboratoryTestNumber);
     }

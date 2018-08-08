@@ -374,38 +374,40 @@
                 <h4 class="modal-title" id="myModalLabel">样品送样/取产预约</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" id="model-appoint" method="post">
-                    <div class="form-group form-horizontal col-md-12 row">
-                        <label for="model-companyCode" class="col-sm-2 control-label">公司代码</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control focus" id="model-companyCode"
-                                   name="model-companyCode"
-                                   required>
-                        </div>
+                <div class="form-group form-horizontal col-md-12 row">
+                    <label for="model-companyCode" class="col-sm-2 control-label">公司代码</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control focus" id="model-companyCode"
+                               name="model-companyCode"
+                               required>
                     </div>
+                </div>
+                <form class="form-horizontal" id="model-appoint" method="post">
                     <div>
                         <div class="form-group form-horizontal col-md-12 ">
-                            <label class="col-sm-2 control-label">危废代码</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control focus"
-                                       name="wastesList[0].wastesCode"
-                                       required>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">危废代码</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control focus"
+                                           name="wastesList[0].wastesCode"
+                                           required>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group form-horizontal col-md-12 ">
                             <label class="col-sm-2 control-label">基础项目</label>
                             <div class="col-sm-10">
-                                <form method="post" >
+                                <form method="post">
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" name="wastesList[0].isPH"
-                                                            value="true">PH
+                                                           value="true">PH
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="wastesList[0].isAsh"
-                                                            value="true">灰分
+                                                           value="true">灰分
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="wastesList[0].isWater"
@@ -417,19 +419,19 @@
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="wastesList[0].isS"
-                                                            value="true">硫
+                                                           value="true">硫
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="wastesList[0].isCl"
-                                                            value="true">氯
+                                                           value="true">氯
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="wastesList[0].isF"
-                                                            value="true">氟
+                                                           value="true">氟
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="wastesList[0].isP"
-                                                            value="true">磷
+                                                           value="true">磷
                                                 </label>
                                             </div>
                                         </div>
@@ -490,22 +492,25 @@
                 <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-7">
-                        <p class="text-left"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode"></span></p>
-                        <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span id="model1-basicItems"></span></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model1-wastesCode"></span></p>
-                        <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span id="model1-addItems"></span></p>
-                    </div>
+                <div class="col-md-12 row">
+                    <p class="text-left"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode" name="model1-companyCode"></span></p>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
+                        <div class="col-sm-6">
+                            <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model1[0].wastesCode"></span></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span id="model1[0].basicItems"></span></p>
+                            <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span id="model1[0]addItems"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="cloneBefore">
                         <p class="text-left"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                id="model1-signer"></span></p>
+                                id="model1-signer" name="model1-signer"></span></p>
                     </div>
                 </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

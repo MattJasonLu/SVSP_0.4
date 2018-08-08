@@ -36,17 +36,16 @@ public class CompatibilityController {
         } while (compatibilityService.getByCompatibilityId(id) != null);
         JSONObject res = new JSONObject();
         res.put("compatibilityId", id);
-        System.out.println(id+"AAA");
         return res.toString();
     }
 
     @RequestMapping("importCompatibilityExcel")
     @ResponseBody
-    public String importClientExcel(MultipartFile excelFile, String tableName, String id){
+    public String importCompatibilityExcel(MultipartFile excelFile, String tableName, String id){
         JSONObject res = new JSONObject();
         try {
             DBUtil db=new DBUtil();
-            db.importExcel(excelFile, tableName, "1");
+            db.importExcel(excelFile, tableName,id);
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.CompatibilityMapper" >
     <resultMap id="CompatibilityRM" type="Compatibility" autoMapping="true">
-        <result property="pwId" column="pwId" ></result>
+        <result property="pwId" column="pwId"  ></result>
         <result property="handleCategory" column="handleCategory" javaType="HandleCategory"></result>
         <result property="formType" column="formType" javaType="FormType"></result>
         <result property="calorific" column="calorific" ></result>
