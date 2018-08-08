@@ -21,6 +21,10 @@
         SELECT COUNT(*) FROM t_pr_laboratorytest;
     </select>
 
+    <insert id="add" parameterType="LaboratoryTest">
+
+    </insert>
+
     <select id="list" resultMap="LaboratoryTestRM">
         SELECT * FROM t_pr_laboratorytest ORDER BY nowTime DESC
         <if test="start != null and count != null">

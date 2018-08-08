@@ -1,8 +1,17 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Client;
+import com.jdlink.domain.MixingElement;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.HeavyMetal;
 import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.Parameter;
+import com.jdlink.domain.Produce.SampleInformation;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.LaboratoryTestService;
+import com.jdlink.util.DateUtil;
+import com.jdlink.util.ImportUtil;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +19,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +36,8 @@ public class LaboratoryTestController {
      */
     @Autowired
     LaboratoryTestService laboratoryTestService;
+    @Autowired
+    ClientService clientService;
 
     /**
      * 获取化验单列表
@@ -100,6 +114,147 @@ public class LaboratoryTestController {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 导入excel文件来增加化验单
+     * @param excelFile 化验单excel文件
+     * @return 导入成功与否
+     */
+    @RequestMapping("importLaboratoryTestExcel")
+    @ResponseBody
+    public String importLaboratoryTestExcel(MultipartFile excelFile){
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            // 化验单对象
+            LaboratoryTest laboratoryTest = new LaboratoryTest();
+            List<SampleInformation> sampleInformationList = new ArrayList<>();
+            for (int i = 0; i < data.length; i++) {
+                if (i == 2) {
+                    // 创建客户对象
+                    Client client = new Client();
+                    client.setCompanyName(data[i][0].toString());
+                    // 通过客户名称查询到客户，若不存在则添加，否则直接更新
+                    Client oldClient = clientService.getByName(client.getCompanyName());
+                    if (oldClient == null) {
+                        client.setClientId(clientService.getCurrentId());
+                        client.setLocation(data[i][1].toString());
+                        client.setContactName(data[i][2].toString());
+                        client.setPhone(data[i][3].toString());
+                        client.setIndustry(data[i][4].toString());
+                        client.setProduct(data[i][5].toString());
+                        clientService.add(client);
+                    } else {
+                        client = oldClient;
+                    }
+                    // 化验单数据
+                    laboratoryTest.setClient(client);
+                    laboratoryTest.setRecord(data[i][6].toString());
+                    laboratoryTest.setRecordDate(DateUtil.getDateFromStr(data[i][7].toString()));
+                }
+                if (i >= 2) {
+                    SampleInformation sampleInformation = new SampleInformation();
+                    sampleInformation.setId(RandomUtil.getRandomEightNumber());
+                    sampleInformation.setSamplingDate(DateUtil.getDateFromStr(data[i][8].toString()));
+                    sampleInformation.setWastesName(data[i][9].toString());
+                    sampleInformation.setSamplingNumber(data[i][10].toString());
+                    sampleInformation.setIsProductionLine(data[i][11] != null && data[i][11].toString().equals("√"));
+                    sampleInformation.setIsStorageArea(data[i][12] != null && data[i][12].toString().equals("√"));
+                    // 参数列表
+                    List<MixingElement> parameterList = new ArrayList<>();
+                    for (int j = 0, k = 13; j < Parameter.values().length; j++, k+=3) {
+                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
+                            MixingElement parameter = new MixingElement();
+                            parameter.setId(RandomUtil.getRandomEightNumber());
+                            parameter.setParameter(Parameter.values()[j]);
+                            parameter.setMinimum(Float.parseFloat(data[i][k].toString()));
+                            parameter.setAverage(Float.parseFloat(data[i][k+1].toString()));
+                            parameter.setMaximum(Float.parseFloat(data[i][k+2].toString()));
+                            parameterList.add(parameter);
+                        }
+                    }
+                    for (int j = 0, k = 52; j < 3; j++, k+=3) {
+                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
+                            MixingElement parameter = new MixingElement();
+                            parameter.setId(RandomUtil.getRandomEightNumber());
+                            parameter.setName("其他" + (j+1));
+                            parameter.setMinimum(Float.parseFloat(data[i][k].toString()));
+                            parameter.setAverage(Float.parseFloat(data[i][k+1].toString()));
+                            parameter.setMaximum(Float.parseFloat(data[i][k+2].toString()));
+                            parameterList.add(parameter);
+                        }
+                    }
+                    // 重金属列表
+                    List<MixingElement> heavyMetalList = new ArrayList<>();
+                    for (int j = 0, k = 61; j < HeavyMetal.values().length; j++, k+=3) {
+                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
+                            MixingElement heavyMetal = new MixingElement();
+                            heavyMetal.setId(RandomUtil.getRandomEightNumber());
+                            heavyMetal.setHeavyMetal(HeavyMetal.values()[j]);
+                            heavyMetal.setMinimum(Float.parseFloat(data[i][k].toString()));
+                            heavyMetal.setAverage(Float.parseFloat(data[i][k+1].toString()));
+                            heavyMetal.setMaximum(Float.parseFloat(data[i][k+2].toString()));
+                            heavyMetalList.add(heavyMetal);
+                        }
+                    }
+                    for (int j = 0, k = 139; j < 3; j++, k+=3) {
+                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
+                            MixingElement heavyMetal = new MixingElement();
+                            heavyMetal.setId(RandomUtil.getRandomEightNumber());
+                            heavyMetal.setName("其他" + (j+1));
+                            heavyMetal.setMinimum(Float.parseFloat(data[i][k].toString()));
+                            heavyMetal.setAverage(Float.parseFloat(data[i][k+1].toString()));
+                            heavyMetal.setMaximum(Float.parseFloat(data[i][k+2].toString()));
+                            heavyMetalList.add(heavyMetal);
+                        }
+                    }
+                    // 设置列表
+                    sampleInformation.setParameterList(parameterList);
+                    sampleInformation.setHeavyMetalList(heavyMetalList);
+                    sampleInformationList.add(sampleInformation);
+                }
+            }
+            laboratoryTest.setSampleInformationList(sampleInformationList);
+            laboratoryTestService.add(laboratoryTest);
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败，请重试！");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+
+    }
+
+    /**
+     * 获取目前的客户编号
+     * @return 客户编号
+     */
+    @RequestMapping("getCurrentLaboratoryTestId")
+    @ResponseBody
+    public String getCurrentLaboratoryTestId() {
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        // 获取最新编号
+        String id;
+        int index = laboratoryTestService.count();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (laboratoryTestService.getLaboratoryTestById(id) != null);
+        JSONObject res = new JSONObject();
+        res.put("laboratoryTestId", id);
+        return res.toString();
     }
 
     /**

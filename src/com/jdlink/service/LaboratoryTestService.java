@@ -9,6 +9,8 @@ public interface LaboratoryTestService {
 
     int count();
 
+    void add(LaboratoryTest laboratoryTest);
+
     List<LaboratoryTest> list(Page page);
 
     LaboratoryTest getLaboratoryTestById(String laboratoryTestNumber);

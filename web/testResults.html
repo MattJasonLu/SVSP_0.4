@@ -12,7 +12,6 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
 </head>
 <body onload="loadPageList()">
     <!--导航条-->
@@ -123,7 +122,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="importExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="setInvalidMulti();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 作废</a>
                         <a class="btn btn-primary btn-xs disabled" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 化验</a>
                         <a class="btn btn-primary btn-xs" onclick="setSubmitMulti();"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> 提交</a>
@@ -276,7 +275,7 @@
                                id="pageNumber"></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
-                        <select id="count" onchange="loadPageClientList()">
+                        <select id="count" onchange="loadPageList()">
                             <option>5</option>
                             <option selected>15</option>
                             <option>50</option>
@@ -679,6 +678,8 @@
             </div>
         </div>
     </div>
+    <!--导入-->
+    <input type="file" name="excelPath" id="idExcel" class="hidden">
     <div id="embed"></div>
 </body>
 <style>
