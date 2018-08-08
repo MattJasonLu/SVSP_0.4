@@ -40,7 +40,17 @@ public class Compatibility {
     private float calorificTotal;
 //审核状态
     private CheckState checkState;
+    //配伍编号
 
+    public String getCompatibilityId() {
+        return compatibilityId;
+    }
+
+    public void setCompatibilityId(String compatibilityId) {
+        this.compatibilityId = compatibilityId;
+    }
+
+    private String compatibilityId;
     public CheckState getCheckState() {
         return checkState;
     }

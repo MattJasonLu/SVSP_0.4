@@ -1,3 +1,7 @@
+/*********************
+ * jackYang
+ */
+
 //导入数据
 function importExcel() {
     document.getElementById("idExcel").click();
@@ -52,4 +56,29 @@ function importExcel() {
         });
     });
 
+}
+
+/**
+ * 加载配伍周计划数据
+ */
+
+function getList1() {
+    $.ajax({
+        type:"POST",
+        url:"getList1",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
 }
