@@ -41,6 +41,26 @@ public class Compatibility {
 //审核状态
     private CheckState checkState;
     //配伍编号
+    //审批内容
+    private String approvalContent;
+    //驳回内容
+    private String backContent;
+
+    public String getApprovalContent() {
+        return approvalContent;
+    }
+
+    public void setApprovalContent(String approvalContent) {
+        this.approvalContent = approvalContent;
+    }
+
+    public String getBackContent() {
+        return backContent;
+    }
+
+    public void setBackContent(String backContent) {
+        this.backContent = backContent;
+    }
 
     public String getCompatibilityId() {
         return compatibilityId;

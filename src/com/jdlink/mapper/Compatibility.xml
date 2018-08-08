@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.CompatibilityMapper" >
-    <resultMap id="CompatibilityRM" type="Compatibility" >
+<mapper namespace="com.jdlink.mapper.CompatibilityMapper"  >
+    <resultMap id="CompatibilityRM" type="Compatibility" autoMapping="true">
         <result property="pwId" column="pwId"  ></result>
         <result property="handleCategory" column="handleCategory"></result>
         <result property="formType" column="formType"></result>
@@ -44,6 +44,18 @@
         select compatibilityId from  t_pr_pw  where nowTime!="" order by nowTime desc ;
     </select>
     <select id="list" parameterType="String" resultType="Compatibility">
-        select * from t_pr_pw where compatibilityId=#{compatibilityId}
+        select * from t_pr_pw where compatibilityId=#{compatibilityId} order by nowTime desc ;
     </select>
+    <update id="approval" >
+        update t_pr_pw set checkState='Keeping',approvalContent=#{1},nowTime=NOW() where pwId=#{0};
+    </update>
+    <update id="back" >
+        update t_pr_pw set checkState='Backed',backContent=#{1},nowTime=NOW() where pwId=#{0};
+    </update>
+    <select id="getByPwId1" resultType="Compatibility" parameterType="String">
+        select * from t_pr_pw where pwId=#{pwId};
+    </select>
+    <update id="cancel" parameterType="String">
+        update t_pr_pw set checkState='Invalid',nowTime=NOW() where pwId=#{pwId}
+    </update>
 </mapper>

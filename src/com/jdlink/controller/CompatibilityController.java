@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.util.DBUtil;
@@ -7,6 +8,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,7 +89,6 @@ public class CompatibilityController {
 
 
     }
-
     //加载数据
     @RequestMapping("getList1")
     @ResponseBody
@@ -114,8 +115,77 @@ public class CompatibilityController {
       }
         return  res.toString();
     }
+   //审批配伍计划
+    @RequestMapping("approvalPw")
+    @ResponseBody
+    public String approvalPw(String pwId,String opinion){
+      JSONObject res=new JSONObject();
+       try {
+        compatibilityService.approval(pwId,opinion);
+           res.put("status", "success");
+           res.put("message", "审批通过!");
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "审批失败!");
+       }
+        return res.toString();
+    }
+    //驳回配伍计划
+    @RequestMapping("backPw")
+    @ResponseBody
+    public String backPw(String pwId,String backContent){
+        JSONObject res=new JSONObject();
+        try {
+            compatibilityService.back(pwId,backContent);
+            res.put("status", "success");
+            res.put("message", "驳回通过!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败!");
+        }
+        return res.toString();
+    }
+    //作废配屋计划
+    @RequestMapping("cancelPw")
+    @ResponseBody
+    public String cancelPw(String pwId){
+        JSONObject res=new JSONObject();
+        try {
+            compatibilityService.cancel(pwId);
+            res.put("status", "success");
+            res.put("message", "作废成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败!");
+        }
+        return res.toString();
+    }
 
-
+    //通过序号获得信息
+    @RequestMapping("getByPwId2")
+    @ResponseBody
+    public String getByPwId2(String pwId){
+        System.out.println(pwId);
+        JSONObject res=new JSONObject();
+    try {
+        Compatibility compatibility=compatibilityService.getByPwId1(pwId);
+        res.put("data",compatibility);
+        res.put("status", "success");
+        res.put("message", "查询成功");
+   }
+   catch (Exception e){
+       e.printStackTrace();
+       res.put("status", "fail");
+       res.put("message", "查询失败");
+   }
+        return res.toString();
+    }
     //获取最后一位四位编号
      public static String getId(String id){
         while (id.length()!=4){

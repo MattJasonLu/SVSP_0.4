@@ -8,7 +8,7 @@ public enum Parameter {
     Density("密度",2),
     PH("酸碱度",3),
     Heat("热值",4),
-    Ash("密度",5),
+    Ash("灰分",5),
     FlashPoint("闪点",6),
     MeltingPoint("熔点",7),
     BoilingPoint("沸点",8),
