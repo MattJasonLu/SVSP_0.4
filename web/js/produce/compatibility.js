@@ -89,6 +89,7 @@ function getList1() {
 * 
 */
 function setCompatibility(obj,n) {
+    arrayId=[];
     var tr = $("#cloneTr1");//克隆一行
     //tr.siblings().remove();
     //每日配比量合计
@@ -206,4 +207,244 @@ function setCompatibility(obj,n) {
 function ProportionsTotal(dailyProportions) {
     var dailyProportionsTotal=dailyProportionsTotal+dailyProportions;
     return dailyProportionsTotal
+}
+/*
+* 操作行选定*/
+ function selected1(item){
+     //1获得表单编号
+       var pwId=item.firstElementChild.innerHTML;
+           if($(item).css('background-color')=='rgb(127, 255, 212)'){
+               $(item).css('background-color',"");
+               //删除所选Id
+               arrayId.pop(pwId);
+           }
+        else
+           {
+               if(arrayId.length==0){
+                   arrayId.push(pwId);
+               }
+              if(arrayId.length==1) {
+                  $(item).css("background",'Aquamarine').siblings().css("background","");
+                  arrayId.length=0;
+                  arrayId.push(pwId);
+               }
+         }
+
+ }
+ //审批
+function approval3() {
+   //1获得所选编号的数组进行遍历
+      var pwId1=arrayId[0];
+      if(arrayId.length==1){
+           pwId= getFour(pwId1);
+           //console.log(pwId);
+          //approvalPw(pwId);
+          //弹出一个模态框
+          $.ajax({
+              type: "POST",                       // 方法类型
+              url: "getByPwId2",         // url
+              // 同步：意思是当有返回值以后才会进行后面的js程序
+              data: {"pwId":pwId.toString()},
+              dataType: "json",
+              //contentType: 'application/json;charset=utf-8',
+              success:function (result) {
+                  if (result != undefined && result.status == "success"){
+                      console.log(result);
+                      var obj=result.data;
+                      console.log(obj);
+                      //开始赋值
+                      //配伍编号
+                      $("#compatibilityId").text(obj.compatibilityId);
+                      //处理类别
+                      if(obj.handleCategory!=null){
+                          $("#handleCategory").text(obj.handleCategory.name);
+                      }
+                      else {
+                          $("#compatibilityId").text("");
+                      }
+                      //形态
+                      if(obj.formType!=null){
+                          $("#formType").text(obj.formType.name);
+                      }
+                      else {
+                          ("#formType").text("");
+                      }
+                      //每日配比量
+                      $("#dailyProportions").text(obj.dailyProportions);
+                      //周需求总量
+                      $("#weeklyDemand").text(obj.weeklyDemand);
+                      //热值
+                      $("#calorific1").text(obj.calorific);
+                      //状态
+                      if(obj.checkState!=null){
+                          $("#checkState").text(obj.checkState.name);
+                      }
+                      else {
+                          $("#checkState").text("");
+                      }
+                      //序号
+                      $("#pwId").text(obj.pwId);
+                      //灰分
+                      $("#ash").text(obj.ash);
+                      //水分
+                      $("#water").text(obj.water);
+                      //氯
+                      $("#CL").text(obj.CL);
+                      //硫
+                      $("#S").text(obj.s);
+                      //磷
+                      $("#P").text(obj.p);
+                      //弗
+                      $("#F").text(obj.f);
+                      //酸碱度
+                      $("#PH").text(obj.PH);
+                      //比例
+                      $("#proportion").text(obj.proportion);
+                      //审批意见
+                      $('#advice').text(obj.approvalContent);
+                      //驳回意见
+                      $("#backContent").text(obj.backContent);
+
+                  }
+                  else {
+                      alert(result.message);
+                  }
+              },
+              error:function (result) {
+                  alert("服务器异常！")
+              }
+          });
+          $("#contractInfoForm").modal('show');
+      }
+  else {
+          alert("请选择数据！")
+      }
+}
+/**
+ * 出现具体审批的模态框
+ */
+function approvalModal() {
+    $('#contractInfoForm2').modal('show');
+}
+/**
+ * 出现具体驳回的模态框
+ */
+function backModal() {
+$("#contractInfoForm3").modal('show');
+}
+//把按钮功能分出来做这个是审批
+function confirm1() {
+    opinion = $('#advice').val();
+    //console.log(opinion);
+    //1获取文本框的值
+    $.ajax({
+        type: "POST",
+        url: "approvalPw",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'pwId': pwId, 'opinion': opinion,},
+        success: function (result) {
+           if(result != undefined && result.status == "success"){
+               alert(result.message);
+               console.log(result);
+               window.location.reload();
+           }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+//把按钮功能分出来做这个是驳回
+function back1() {
+    backContent = $('#backContent').val();
+    //设置状态驳回
+    $.ajax({
+        type: "POST",
+        url: "backPw",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'pwId': pwId, 'backContent': backContent},
+        success: function (result) {
+            if(result != undefined && result.status == "success"){
+                alert(result.message);
+                console.log(result);
+                window.location.reload();
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+//审批具体方法
+// function approvalPw(pwId) {
+//     $.ajax({
+//         type: "POST",                       // 方法类型
+//         url: "approvalPw",         // url
+//         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//         data: {"pwId":pwId},
+//         dataType: "json",
+//         contentType: 'application/json;charset=utf-8',
+//         success:function (result) {
+//
+//         },
+//         error:function (result) {
+//
+//         }
+//     });
+//
+//
+// }
+//序号变成四位
+function getFour(pwId) {
+    var pwld1=""+pwId;
+    while (pwld1.length!=4) {
+        pwld1="0"+pwld1;
+    }
+    return pwld1;
+}
+
+/**
+ * 作废方法
+ */
+function cancelPw() {
+    var pwId1=arrayId[0];
+    if(arrayId.length==1){
+        pwId= getFour(pwId1);
+        if(confirm("确定作废该数据?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "cancelPw",         // url
+                // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {"pwId":pwId.toString()},
+                dataType: "json",
+                success:function (result) {
+                    if(result != undefined && result.status == "success"){
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result.message)
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
+                }
+                
+            });
+      
+        }
+        
+    }
+    else {
+        alert("请选择数据！")
+    }
 }
