@@ -27,7 +27,7 @@
 </style>
 <body >
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar1" style="height: 50px;">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -37,51 +37,64 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 800px;">
+        <div class="container navbar-left" style="width: 900px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">首页</a></li>
+                    <li><a href="wastesPlatform.html">首页</a></li>
                     <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="transportPlan.html">运输计划单</a></li>
+                            <li><a href="#">客户备案</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">转移联单</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">送样登记</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="testResults.html">化验结果</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
                             <li class="dropdown-submenu">
-                                <a href="#">入库管理</a>
+                                <a href="#">业务员分配管理</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="warehouseManage.html">危废入库</a></li>
+                                    <li><a href="salesManage.html">业务员管理</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#">次生入库</a></li>
+                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li class="dropdown-submenu">
-                                <a href="#">磅单管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">危废查询</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">医废出入库登记</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sampleManage.html">客户样品登记</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="wayBill.html">接运单管理</a></li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">供应商管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="supplierBackup.html">供应商备案</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">合同管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="contractManage.html">合同列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="contractTemplate.html">合同模板</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="salesmanContract.html">业务员合同</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">价格管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="quotation.html">报价管理</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="cost.html">成本管理</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="archivesManage.html">一企一档</a></li>
+                    <li ><a href="stockManage.html">库存申报</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -89,7 +102,8 @@
             <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
             <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li class="dropdown">
-                <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">待办事项</a></li>
@@ -130,13 +144,13 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="#">接收管理</a></li>
-                        <li>转移管理</li>
-                        <li>运输计划单</li>
+                        <li><a href="#">商务管理</a></li>
+                        <li>客户管理</li>
                         <li class="active">接运单</li>
                     </ol>
+                    <p class="text-right"><b>序列号&nbsp;&nbsp;</b><span id="id"></span></p>
                 </div>
-                <h4 class="sub-header">运输计划单</h4>
+                <h4 class="sub-header">接运单明细</h4>
             </div>
             <div class="row">
                 <div>
@@ -195,7 +209,6 @@
                     </div>
                 </div>
             </div>
-            <br>
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     <table class="table table-bordered">
@@ -222,33 +235,33 @@
                         </tr>
                         <tr>
                             <td class="text-center">小张</td>
-                            <td class="text-right">8月8日</td>
-                            <td class="text-right">小磊</td>
-                            <td class="text-right">QW10001</td>
-                            <td class="text-right">8月8日</td>
-                            <td class="text-right">常州上通汽车销售服务有限公司</td>
-                            <td class="text-right">废包装塑料桶</td>
-                            <td class="text-right">550</td>
-                            <td class="text-right">5.5</td>
-                            <td class="text-right">0</td>
-                            <td class="text-right">3025</td>
-                            <td class="text-right billDate">8月5日</td>
-                            <td class="text-right billNumber">17634706</td>
+                            <td class="text-center">8月8日</td>
+                            <td class="text-center">小磊</td>
+                            <td class="text-center">QW10001</td>
+                            <td class="text-center">8月8日</td>
+                            <td class="text-center">常州上通汽车销售服务有限公司</td>
+                            <td class="text-center">废包装塑料桶</td>
+                            <td class="text-center">550</td>
+                            <td class="text-center">5.5</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">3025</td>
+                            <td class="text-center billDate">8月5日</td>
+                            <td class="text-center billNumber">17634706</td>
                         </tr>
                         <tr>
                             <td class="text-center">小张</td>
-                            <td class="text-right">8月8日</td>
-                            <td class="text-right">小华</td>
-                            <td class="text-right">QW10002</td>
-                            <td class="text-right">8月8日</td>
-                            <td class="text-right">日邦树脂(无锡)有限公司</td>
-                            <td class="text-right">废有机树脂</td>
-                            <td class="text-right">5260</td>
-                            <td class="text-right">5.5</td>
-                            <td class="text-right">0</td>
-                            <td class="text-right">28930</td>
-                            <td class="text-right billDate">8月5日</td>
-                            <td class="text-right billNumber">17634711</td>
+                            <td class="text-center">8月8日</td>
+                            <td class="text-center">小华</td>
+                            <td class="text-center">QW10002</td>
+                            <td class="text-center">8月8日</td>
+                            <td class="text-center">日邦树脂(无锡)有限公司</td>
+                            <td class="text-center">废有机树脂</td>
+                            <td class="text-center">5260</td>
+                            <td class="text-center">5.5</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">28930</td>
+                            <td class="text-center billDate">8月5日</td>
+                            <td class="text-center billNumber">17634711</td>
                         </tr>
                         </tbody>
                     </table>
@@ -581,18 +594,18 @@
                                     </label>
                                 </td>
                                 <td class="text-center">1</td>
-                                <td class="text-left">废液</td>
+                                <td class="text-center">废液</td>
                                 <td class="text-center">QW10001</td>
-                                <td class="text-right">液态</td>
-                                <td class="text-right">标准装</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">10</td>
+                                <td class="text-center">液态</td>
+                                <td class="text-center">标准装</td>
+                                <td class="text-center">20</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center">20</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center">20</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center">10</td>
+                                <td class="text-center">10</td>
                             </tr>
                             </tbody>
                         </table>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>运输计划单</title>
+    <title>业务员考核</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -42,44 +42,9 @@
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
                     <li><a href="#">首页</a></li>
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="transportPlan.html">运输计划单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">转移联单</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">送样登记</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="testResults.html">化验结果</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a href="#">入库管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="warehouseManage.html">危废入库</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">次生入库</a></li>
-                                </ul>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-submenu">
-                                <a href="#">磅单管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">危废查询</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">医废出入库登记</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                    <li><a href="#">生产日报</a></li>
+                    <li><a href="#">质量日报</a></li>
+                    <li class="active"><a href="assessment.html">业务员考核</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -128,203 +93,139 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="#">接收管理</a></li>
-                        <li>转移管理</li>
-                        <li class="active">运输计划单</li>
+                        <li><a href="#">报表管理</a></li>
+                        <li class="active">业务员考核</li>
                     </ol>
                 </div>
-                <h4 class="sub-header">运输计划单</h4>
-            </div>
-            <div class="row">
-                <div>
-                    <!--操作按钮-->
-                    <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#" onclick="view1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 修改</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 删除</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 确认</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 审批</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 保存</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成结运单</a>
-                    </div>
-                    <!--查询框-->
-                    <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
-                        <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="panel panel-default" id="senior" style="display: none;">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">单位名称</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesName" name="search-wastesName" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesCode" name="search-wastesCode" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-calorificValue" class="col-sm-4 control-label">热值</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-calorificValue" name="search-calorificValue" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-ashContent" class="col-sm-4 control-label">灰分</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-ashContent" name="search-ashContent" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-waterContent" class="col-sm-4 control-label">水分</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-waterContent" name="search-waterContent" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-S" class="col-sm-4 control-label">S</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-S" name="search-S" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-CL" class="col-sm-4 control-label">CL</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-CL" name="search-CL" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-P" class="col-sm-4 control-label">P</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-P" name="search-P" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-F" class="col-sm-4 control-label">F</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-F" name="search-F" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-PH" class="col-sm-4 control-label">PH</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-PH" name="search-PH" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h4 class="sub-header"><span class="months"></span>月份考核</h4>
             </div>
             <br>
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th class="text-center" colspan="16"><span class="year">年</span>第<span class="week"></span>周三期生产经营运输计划</th>
-                        </tr>
-                        </thead>
                         <tbody>
                         <tr>
+                            <td class="text-center">到账日期</td>
                             <td class="text-center">产废单位</td>
-                            <td class="text-center">入场时间</td>
-                            <td class="text-center">废物名称</td>
-                            <td class="text-center">废物代码</td>
-                            <td class="text-center">重量/t</td>
-                            <td class="text-center">物质形态</td>
-                            <td class="text-center">包装形式</td>
-                            <td class="text-center">热值/KCal/Kg</td>
-                            <td class="text-center">PH</td>
-                            <td class="text-center">灰分/%</td>
-                            <td class="text-center">水分/%</td>
-                            <td class="text-center">氯含量/%</td>
-                            <td class="text-center">硫含量/%</td>
-                            <td class="text-center">磷含量/%</td>
-                            <td class="text-center">氟含量/%</td>
-                            <td class="text-center">处理方式</td>
+                            <td class="text-center">业务员</td>
+                            <td class="text-center">开票时间</td>
+                            <td class="text-center">接运单时间</td>
+                            <td class="text-center">系数</td>
+                            <td class="text-center">接运单金额</td>
+                            <td class="text-center">到账金额</td>
+                            <td class="text-center">有效金额</td>
+                            <td class="text-center">提成</td>
+                            <td class="text-center">当月发放金额</td>
+                            <td class="text-center">未发放金额</td>
+                            <td class="text-center">备注</td>
                         </tr>
                         <tr>
-                            <td class="text-center">1</td>
-                            <td class="text-center">2018-08-07</td>
-                            <td class="text-left">废液</td>
-                            <td class="text-center">QW10001</td>
-                            <td class="text-right">5</td>
-                            <td class="text-right">液态</td>
-                            <td class="text-right">标准装</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">20</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">10</td>
-                            <td class="text-right">焚烧</td>
+                            <td class="text-center">20180607</td>
+                            <td class="text-center">日邦树脂(无锡)有限公司</td>
+                            <td class="text-center">7月5日</td>
+                            <td class="text-center">6/11</td>
+                            <td class="text-center">0.004</td>
+                            <td class="text-center">28930</td>
+                            <td class="text-center">30000.00</td>
+                            <td class="text-center">28930.00</td>
+                            <td class="text-center">115.72</td>
+                            <td class="text-center">王菁</td>
+                            <td class="text-center">王菁</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">201805</td>
+                            <td class="text-center">常州上海汽车销售服务有限公司</td>
+                            <td class="text-center">7月5日</td>
+                            <td class="text-center">6/11</td>
+                            <td class="text-center">0.004</td>
+                            <td class="text-center">28930</td>
+                            <td class="text-center">30000.00</td>
+                            <td class="text-center">28930.00</td>
+                            <td class="text-center">115.72</td>
+                            <td class="text-center">王菁</td>
+                            <td class="text-center">王菁</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">201805</td>
+                            <td class="text-center">常州上海汽车销售服务有限公司</td>
+                            <td class="text-center">7月5日</td>
+                            <td class="text-center">6/11</td>
+                            <td class="text-center">0.004</td>
+                            <td class="text-center">28930</td>
+                            <td class="text-center">30000.00</td>
+                            <td class="text-center">28930.00</td>
+                            <td class="text-center">115.72</td>
+                            <td class="text-center">王菁</td>
+                            <td class="text-center">王菁</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center">300.00</td>
+                            <td class="text-center">240.00</td>
+                            <td class="text-center">60.00</td>
+                            <td class="text-center">王菁</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center">300.00</td>
+                            <td class="text-center">240.00</td>
+                            <td class="text-center">60.00</td>
+                            <td class="text-center">戴凌云</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center">300.00</td>
+                            <td class="text-center">240.00</td>
+                            <td class="text-center">60.00</td>
+                            <td class="text-center">戴凌云</td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center">400.00</td>
+                            <td class="text-center">320.00</td>
+                            <td class="text-center">80.00</td>
+                            <td class="text-center">普端宏</td>
+                            <td class="text-center"></td>
                         </tr>
                         </tbody>
                     </table>
-                    <br>
-                    <div class="row">
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="clockmaker" class="col-sm-4 control-label">制表人</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="clockmaker" name="clockmaker" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="departmentHead" class="col-sm-4 control-label">部门主管</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="departmentHead" name="departmentHead" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="group" class="col-sm-4 control-label">小组</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="group" name="group" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="leadingOfficial" class="col-sm-4 control-label">生产负责人</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control focus" id="leadingOfficial" name="leadingOfficial" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <!--分页-->
