@@ -336,7 +336,7 @@ function setSampleList(result) {
                     break;
                 //危废代码
                 case (3):
-                    $(this).html(obj.wastesCode);
+                    $(this).html(obj.code);
                     break;
                 // 样品状态
                 case (4):
@@ -564,7 +564,7 @@ function viewSample(menu) {
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addLine();
                         var $i = i;
-                        $("span[id='model[" + $i + "].wastesCode']").text(data.wastesList[i].wastesCode);
+                        $("span[id='model[" + $i + "].wastesCode']").text(data.wastesList[i].code);
                         $("span[id='model[" + $i + "].basicItems']").text(basicItems(data.wastesList[i]));
                         $("span[id='model[" + $i + "].addItems']").text(addItems(data.wastesList[i]));
                     }
@@ -686,7 +686,7 @@ function checkModal() {
                         for (var i = 0; i < data.wastesList.length; i++) {
                             if (i > 0) addNextLine();
                             var $i = i;
-                            $("span[id='checkModel[" + $i + "].wastesCode']").text(data.wastesList[i].wastesCode);
+                            $("span[id='checkModel[" + $i + "].wastesCode']").text(data.wastesList[i].code);
                             $("span[id='checkModel[" + $i + "].basicItems']").text(basicItems(data.wastesList[i]));
                             $("span[id='checkModel[" + $i + "].addItems']").text(addItems(data.wastesList[i]));
                         }
@@ -760,7 +760,7 @@ function adjustSample(menu) {
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addNewLine();
                         var $i = i;
-                        $("input[name='wastesList[" + $i + "].wastesCode']").val(data.wastesList[i].wastesCode);
+                        $("input[name='wastesList[" + $i + "].wastesCode']").val(data.wastesList[i].code);
                         $("input[name='wastesList[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
                         $("input[name='wastesList[" + $i + "].isAsh']").prop('checked', data.wastesList[i].isAsh);
                         $("input[name='wastesList[" + $i + "].isWater']").prop('checked', data.wastesList[i].isWater);
@@ -822,7 +822,7 @@ function updateAppointBySampleId(sampleId) {
                 alert("服务器异常!");
             }
         });
-        wastes.wastesCode = $("input[name='wastesList[" + $i + "].wastesCode']").val();
+        wastes.code = $("input[name='wastesList[" + $i + "].wastesCode']").val();
         wastes.isPH = $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastesList[" + $i + "].isAsh']").prop('checked');
         wastes.isWater = $("input[name='wastesList[" + $i + "].isWater']").prop('checked');
@@ -992,7 +992,7 @@ function addAppoint() {
                 console.log("转换8位字符失败！");
             }
         });
-        wastes.wastesCode = $("input[name='wastesList[" + $i + "].wastesCode']").val();
+        wastes.code = $("input[name='wastesList[" + $i + "].wastesCode']").val();
         wastes.isPH = $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastesList[" + $i + "].isAsh']").prop('checked');
         wastes.isWater = $("input[name='wastesList[" + $i + "].isWater']").prop('checked');
