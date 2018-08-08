@@ -314,6 +314,10 @@ function approval3() {
                   alert("服务器异常！")
               }
           });
+          //审批按钮显示
+          $('#approval').show();
+          //驳回按钮显示
+          $('#back').show();
           $("#contractInfoForm").modal('show');
       }
   else {
@@ -418,33 +422,154 @@ function cancelPw() {
     var pwId1=arrayId[0];
     if(arrayId.length==1){
         pwId= getFour(pwId1);
-        if(confirm("确定作废该数据?")){
-            //点击确定后操作
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "cancelPw",         // url
-                // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {"pwId":pwId.toString()},
-                dataType: "json",
-                success:function (result) {
-                    if(result != undefined && result.status == "success"){
-                        alert(result.message);
-                        window.location.reload();
+        //根据id信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getByPwId2",         // url
+            // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {"pwId":pwId.toString()},
+            dataType: "json",
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    var obj=result.data;
+                  //状态判断
+                    if(obj.checkState.name=='履约中'){
+                        if(confirm("确定作废该数据?")){
+                            //点击确定后操作
+                            $.ajax({
+                                type: "POST",                       // 方法类型
+                                url: "cancelPw",         // url
+                                // 同步：意思是当有返回值以后才会进行后面的js程序
+                                data: {"pwId":pwId.toString()},
+                                dataType: "json",
+                                success:function (result) {
+                                    if(result != undefined && result.status == "success"){
+                                        alert(result.message);
+                                        window.location.reload();
+                                    }
+                                    else {
+                                        alert(result.message)
+                                    }
+                                },
+                                error:function (result) {
+                                    alert("服务器异常！")
+                                }
+
+                            });
+
+                        }
                     }
                     else {
-                        alert(result.message)
+                        alert("无法作废，仅在履约状态下可操作")
                     }
-                },
-                error:function (result) {
-                    alert("服务器异常！")
                 }
-                
-            });
-      
-        }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+        });
+
         
     }
     else {
         alert("请选择数据！")
     }
+}
+
+/**
+ * 查看
+ */
+function  viewPw(){
+    var pwId1=arrayId[0];
+    if(arrayId.length==1){
+        pwId= getFour(pwId1);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getByPwId2",         // url
+            // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {"pwId":pwId.toString()},
+            dataType: "json",
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    var obj=result.data;
+                    console.log(obj);
+                    //开始赋值
+                    //配伍编号
+                    $("#compatibilityId").text(obj.compatibilityId);
+                    //处理类别
+                    if(obj.handleCategory!=null){
+                        $("#handleCategory").text(obj.handleCategory.name);
+                    }
+                    else {
+                        $("#compatibilityId").text("");
+                    }
+                    //形态
+                    if(obj.formType!=null){
+                        $("#formType").text(obj.formType.name);
+                    }
+                    else {
+                        ("#formType").text("");
+                    }
+                    //每日配比量
+                    $("#dailyProportions").text(obj.dailyProportions);
+                    //周需求总量
+                    $("#weeklyDemand").text(obj.weeklyDemand);
+                    //热值
+                    $("#calorific1").text(obj.calorific);
+                    //状态
+                    if(obj.checkState!=null){
+                        $("#checkState").text(obj.checkState.name);
+                    }
+                    else {
+                        $("#checkState").text("");
+                    }
+                    //序号
+                    $("#pwId").text(obj.pwId);
+                    //灰分
+                    $("#ash").text(obj.ash);
+                    //水分
+                    $("#water").text(obj.water);
+                    //氯
+                    $("#CL").text(obj.CL);
+                    //硫
+                    $("#S").text(obj.s);
+                    //磷
+                    $("#P").text(obj.p);
+                    //弗
+                    $("#F").text(obj.f);
+                    //酸碱度
+                    $("#PH").text(obj.PH);
+                    //比例
+                    $("#proportion").text(obj.proportion);
+                    //审批意见
+                    $('#advice').text(obj.approvalContent);
+                    //驳回意见
+                    $("#backContent").text(obj.backContent);
+
+                }
+                else {
+                    alert(result.message);
+                }
+                //审批按钮隐藏
+                $('#approval').hide();
+                //驳回按钮隐藏
+                $('#back').hide();
+                $("#contractInfoForm").modal('show');
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+    else {
+        alert("请选择数据！")
+    }
+
+
 }
