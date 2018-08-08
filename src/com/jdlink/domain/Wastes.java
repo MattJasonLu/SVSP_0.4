@@ -72,10 +72,6 @@ public class Wastes {
      */
     private float flashPoint;
     /**
-     * 废物数量
-     */
-    private double wasteAmount;
-    /**
      * 废物成分
      */
     private String component;
@@ -112,9 +108,17 @@ public class Wastes {
      */
     private String category;
     /**
-     * 危废编码
+     * 废物数量
      */
-    private String wastesCode;
+    private double wasteAmount;
+    /**
+     * 单个危废合计
+     */
+    private Float wastesTotal;
+    /**
+     * 运费
+     */
+    private Float freight;
 
     private boolean isPH; // PH值
 
@@ -136,12 +140,21 @@ public class Wastes {
 
     private boolean isViscosity;  // 黏度
 
-    public String getWastesCode() {
-        return wastesCode;
+
+    public Float getWastesTotal() {
+        return wastesTotal;
     }
 
-    public void setWastesCode(String wastesCode) {
-        this.wastesCode = wastesCode;
+    public void setWastesTotal(Float wastesTotal) {
+        this.wastesTotal = wastesTotal;
+    }
+
+    public Float getFreight() {
+        return freight;
+    }
+
+    public void setFreight(Float freight) {
+        this.freight = freight;
     }
 
     public String getId() {
@@ -470,6 +483,21 @@ public class Wastes {
                 ", signCount=" + signCount +
                 ", wastesCharacter='" + wastesCharacter + '\'' +
                 ", category='" + category + '\'' +
+                ", quantity=" +
+                ", wastesTotal=" + wastesTotal +
+                ", unitWastesPrice=" +
+                ", freight=" + freight +
+                ", wastesCode='" + '\'' +
+                ", isPH=" + isPH +
+                ", isAsh=" + isAsh +
+                ", isWater=" + isWater +
+                ", isHeat=" + isHeat +
+                ", isSulfur=" + isSulfur +
+                ", isChlorine=" + isChlorine +
+                ", isFluorine=" + isFluorine +
+                ", isPhosphorus=" + isPhosphorus +
+                ", isFlashPoint=" + isFlashPoint +
+                ", isViscosity=" + isViscosity +
                 '}';
     }
 }

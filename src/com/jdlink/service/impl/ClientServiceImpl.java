@@ -7,6 +7,7 @@ import com.jdlink.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -136,4 +137,25 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public  List<Client> getClientList(int index, int pageSize){ return clientMapper.getClientList(index,pageSize); }
+
+    @Override
+    public String getCurrentId() {
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        // 获取最新编号
+        String id;
+        int index = total();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (getByClientId(id) != null);
+        return id;
+    }
 }

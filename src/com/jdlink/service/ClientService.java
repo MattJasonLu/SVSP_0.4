@@ -66,4 +66,6 @@ public interface ClientService {
 
     List<Client> getClientList(int index, int pageSize);      //得到请求页的数据列表
 
+    String getCurrentId();
+
 }
