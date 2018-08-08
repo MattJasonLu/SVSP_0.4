@@ -132,7 +132,8 @@ function setCompatibility(obj,n) {
                   //比例
                 case (3):
                     //num = num.toFixed(2); // 输出结果为 2.45
-                    $(this).html(data.proportion.toFixed(1));
+                    //$(this).html(data.proportion.toFixed(1));
+                    $(this).html((data.dailyProportions/data.weeklyDemand).toFixed(3)*100);
                     break;
                 // 每日配比量
                 case (4):
