@@ -31,7 +31,7 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 920px;">
+        <div class="container navbar-left" style="width: 900px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
@@ -186,7 +186,6 @@
                         <tr>
                             <th class="text-center" colspan="15">配伍计划表(<span class="year"></span>年<span class="month"></span>月第<span class="week"></span>周)</th>
                         </tr>
-                        </thead>
                         <tbody>
                         <tr>
                             <th class="text-center">序号</th>
@@ -205,14 +204,35 @@
                             <th class="text-center">PH</th>
                             <th class="text-center">状态</th>
                         </tr>
+                        </thead>
+                        <tr id="cloneTr1">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-right"></td>
+                            <td class="text-center"></td>
+                        </tr>
                         <tr>
-                            <td class="text-center"></td>
-                            <td class="text-left"></td>
-                            <td class="text-center"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
+                            <th >合计</th>
+                            <td colspan="3"></td>
+                            <td id="dailyProportionsTotal" class="text-right"></td>
+                            <td id="weeklyDemandTotal" class="text-right"></td>
+                            <td colspan="9"></td>
+                        </tr>
+                        <tr>
+                            <th>加权平均</th>
+                            <td colspan="5"></td>
+                            <td id="calorific" class="text-right"></td><!--热值平均-->
                             <td class="text-right"></td>
                             <td class="text-right"></td>
                             <td class="text-right"></td>

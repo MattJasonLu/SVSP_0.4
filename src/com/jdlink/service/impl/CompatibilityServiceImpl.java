@@ -36,4 +36,14 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     public void updateCompatibility(String compatibilityId, String id, String id2) {
         compatibilityMapper.updateCompatibility(compatibilityId,id,id2);
     }
+
+    @Override
+    public List<String> check1() {
+        return compatibilityMapper.check1();
+    }
+
+    @Override
+    public List<Compatibility> list(String compatibilityId) {
+        return compatibilityMapper.list(compatibilityId);
+    }
 }
