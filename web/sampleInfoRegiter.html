@@ -20,6 +20,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/sampleInfoRegiter.js"></script>
+    <script src="js/time.js"></script>
 </head>
 <body onload="loadPageSampleInformationList();">
 <!--导航条-->
@@ -292,9 +293,10 @@
                     <th class="text-center">公司代码</th>
                     <th class="text-center">危废代码</th>
                     <th class="text-center">样品状态</th>
-                    <th class="text-center" style="width: 300px">基础检测项目</th>
+                    <th class="text-center">基础检测项目</th>
                     <th class="text-center">增加检测项目</th>
                     <th class="text-center">化验室签收人</th>
+                    <th class="text-center">收样日期</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -306,6 +308,7 @@
                                    aria-label="...">
                         </label>
                     </td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -492,22 +495,28 @@
                 <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
             </div>
             <div class="modal-body">
-                <div class="col-md-12 row">
-                    <p class="text-left"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode" name="model1-companyCode"></span></p>
-                </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="col-sm-6">
-                            <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model1[0].wastesCode"></span></p>
+                    <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode"
+                                                                               name="model1-companyCode"></span></p>
+                    <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
+                            id="model1-signer" name="model1-signer"></span></p>
+
+                </div>
+                <div>
+                    <div>
+                        <div class="col-sm-12 row">
+                            <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model[0].wastesCode"></span></p>
                         </div>
-                        <div class="col-sm-6">
-                            <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span id="model1[0].basicItems"></span></p>
-                            <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span id="model1[0]addItems"></span></p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span id="model[0].basicItems"></span></p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span id="model[0].addItems"></span></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6" id="cloneBefore">
-                        <p class="text-left"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                id="model1-signer" name="model1-signer"></span></p>
+                    <div id="cloneBefore">
                     </div>
                 </div>
 
@@ -530,25 +539,35 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-7">
-                        <p class="text-left"><b>公司代码&nbsp;&nbsp;</b><span id="model2-companyCode"></span></p>
-                        <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span id="model2-basicItems"></span></p>
+                    <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model2-companyCode"
+                                                                               name="model2-companyCode"></span></p>
+                    <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
+                            id="model2-signer" name="model1-signer"></span></p>
+                </div>
+                <div>
+                    <div>
+                        <div class="col-sm-12 row">
+                            <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="checkModel[0].wastesCode"></span></p>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span id="checkModel[0].basicItems"></span>
+                                </p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span id="checkModel[0].addItems"></span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model2-wastesCode"></span></p>
-                        <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span id="model2-addItems"></span></p>
+                    <div id="clone">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="text-left"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                id="model2-signer"></span></p>
-                    </div>
-                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="addCheck();">确认登记</button>
+                <button type="button" class="btn btn-primary" onclick="confirmCheck();">确认登记</button>
             </div>
         </div>
     </div>
