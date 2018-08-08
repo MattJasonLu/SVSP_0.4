@@ -24,6 +24,11 @@ public class LaboratoryTestServiceImpl implements LaboratoryTestService {
     }
 
     @Override
+    public void add(LaboratoryTest laboratoryTest) {
+        laboratoryTestMapper.add(laboratoryTest);
+    }
+
+    @Override
     public List<LaboratoryTest> list(Page page) {
         return laboratoryTestMapper.list(page);
     }
