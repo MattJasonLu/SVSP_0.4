@@ -172,12 +172,12 @@ public class PRSampleInfoController {
         return res.toString();
     }
 
-    @RequestMapping("addSampleInformationCheck")
+    @RequestMapping("confirmSampleInformationCheck")
     @ResponseBody
-    public String addSampleInformationCheck(String companyCode){
+    public String confirmSampleInformationCheck(String sampleId){
         JSONObject res = new JSONObject();
         try{
-            sampleInformationService.addCheck(companyCode);
+            sampleInformationService.confirmCheck(sampleId);
             res.put("status","success");
             res.put("message","确认登记成功！");
         }catch (Exception e){
@@ -190,7 +190,7 @@ public class PRSampleInfoController {
 
     @RequestMapping("updateSampleInformation")
     @ResponseBody
-    public String updateSampleInformation(SampleInformation sampleInformation){
+    public String updateSampleInformation(@RequestBody SampleInformation sampleInformation){
         JSONObject res = new JSONObject();
         try{
             sampleInformationService.update(sampleInformation);

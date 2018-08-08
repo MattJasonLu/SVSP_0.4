@@ -13,7 +13,7 @@ public interface SampleInformationMapper {
     int wastesCount();
     List<SampleInformation> listPage(Page page);
     SampleInformation getById(String sampleId);
-    void addCheck(String companyCode);
+    void confirmCheck(String sampleId);
     void update(SampleInformation sampleInformation);
     List<SampleInformation> listByKeyword(@Param(value="keyword") String keyword);
     void updateSampleInfo(String sampleId);

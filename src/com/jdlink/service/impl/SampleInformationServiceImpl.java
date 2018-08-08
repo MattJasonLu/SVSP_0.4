@@ -34,7 +34,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public SampleInformation getById(String sampleId){ return sampleInformationMapper.getById(sampleId); }
 
     @Override
-    public void addCheck(String companyCode){ sampleInformationMapper.addCheck(companyCode); }
+    public void confirmCheck(String sampleId){ sampleInformationMapper.confirmCheck(sampleId); }
 
     @Override
     public void update(SampleInformation sampleInformation){ sampleInformationMapper.update(sampleInformation); }
@@ -56,4 +56,5 @@ public class SampleInformationServiceImpl implements SampleInformationService {
 
     @Override
     public Wastes getByWastesId(String id){ return sampleInformationMapper.getByWastesId(id); }
+
 }
