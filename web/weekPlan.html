@@ -101,12 +101,12 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>
-                        <a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick="viewPw();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>
+                        <!--<a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                         <a class="btn btn-primary btn-xs" onclick="importExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>
-                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 审批</a>
+                        <a class="btn btn-primary btn-xs" onclick="cancelPw()"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" onclick="approval3()"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 审批</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成物料需求单</a>
                     </div>
                     <!--查询框-->
@@ -191,7 +191,7 @@
                             <th class="text-center">序号</th>
                             <th class="text-center">处理类别</th>
                             <th class="text-center">形态</th>
-                            <th class="text-center">比例</th>
+                            <th class="text-center">比例(%)</th>
                             <th class="text-center">每日配比量</th>
                             <th class="text-center">周需求总量</th>
                             <th class="text-center">热值</th>
@@ -205,8 +205,8 @@
                             <th class="text-center">状态</th>
                         </tr>
                         </thead>
-                        <tr id="cloneTr1">
-                            <td class="text-center"></td>
+                        <tr id="cloneTr1" onclick="selected1(this)">
+                            <td class="text-center"></td><!--序号-->
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-right"></td>
@@ -252,6 +252,101 @@
     <div id="embed"></div>
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" style="display:none">
+    <!--审批模态框-->
+    <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document" style="width:700px">
+            <div class="modal-content">
+                <div class="client_style">
+                    <h4 class="sub-header text-center">配伍信息</h4>
+                    <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
+                        <div class="row form-inline" id="print1">
+                            <div class="form-horizontal col-md-6 form-inline">
+                                <p class="text-left"><b>配伍编号&nbsp;&nbsp;</b><span id="compatibilityId"></span></p>
+                                <p class="text-left"><b>处理类别&nbsp;&nbsp;</b><span id="handleCategory"></span></p>
+                                <p class="text-left"><b>形态&nbsp;&nbsp;</b><span id="formType"></span></p>
+                                <!--<p class="text-left"><b>客户名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
+                                <p class="text-left"><b>比例&nbsp;&nbsp;</b><span id="proportion"></span></p>
+                                <p class="text-left"><b>每日配比量&nbsp;&nbsp;</b><span id="dailyProportions"></span></p>
+                                <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
+                                <p class="text-left"><b>周需求总量&nbsp;&nbsp;</b><span id="weeklyDemand"></span></p>
+                                <!--<p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>-->
+                                <p class="text-left"><b>热值&nbsp;&nbsp;</b><span id="calorific1"></span> </p>
+                                <p class="text-left"><b>状态&nbsp;&nbsp;</b><span id="checkState"></span></p>
+                                <!--<div class="form-group">
+                                    <label for="modal3_freight" class="col-sm-4 control-label">是否包含运费 </label>
+                                       <div class="col-xs-8">
+                                       </div>
+                                    <input type="checkbox" class="col-xs-1" id="modal3_freight" name="freight" disabled="disabled" >
+                                </div>-->
+                            </div>
+                            <div class="form-horizontal col-md-6 form-inline">
+                                <p class="text-left"><b>序号&nbsp;&nbsp;</b><span id="pwId"></span></p>
+                                <p class="text-left"><b>灰分&nbsp;&nbsp;</b><span id="ash"></span></p>
+                                <p class="text-left"><b>水分&nbsp;&nbsp;</b><span
+                                        id="water"></span></p>
+                                <p class="text-left"><b>CL&nbsp;&nbsp;</b><span id="CL"></span></p>
+                                <p class="text-left"><b>S&nbsp;&nbsp;</b><span id="S"></span></p>
+                                <!--<p class="text-left"><b>资质开始日期&nbsp;&nbsp;</b><span id="modal3_beginQualification"></span></p>-->
+                                <!--<p class="text-left"><b>资质结束日期&nbsp;&nbsp;</b><span id="modal3_endQualification"></span></p>-->
+                                <p class="text-left"><b>P&nbsp;&nbsp;</b><span id="P"></span></p>
+                                <!--<p class="text-left"><b>所属区域&nbsp;&nbsp;</b><span id="modal3_area"></span></p>-->
+                                <p class="text-left"><b>F&nbsp;&nbsp;</b><span id="F"></span></p>
+                                <p class="text-left"><b>PH&nbsp;&nbsp;</b><span id="PH"></span></p>
+                            </div>
+                        </div>
+                        <br> <br>
+                        <div class="row text-center">
+                            <a class="btn btn-primary hidden-print"  id="approval" onclick="approvalModal()">审批</a>
+                            <a class="btn btn-danger hidden-print" id="back" onclick="backModal()">驳回</a>
+                            <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--审批页面-->
+    <div class="modal fade" id="contractInfoForm2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="sub-header text-center">审批意见</h5>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">
+                        确认审批
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--驳回页面-->
+    <div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="sub-header text-center">驳回意见</h5>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <!--分页格式-->
 <style type="text/css">

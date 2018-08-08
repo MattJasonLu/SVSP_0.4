@@ -46,4 +46,24 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     public List<Compatibility> list(String compatibilityId) {
         return compatibilityMapper.list(compatibilityId);
     }
+
+    @Override
+    public Compatibility getByPwId1(String pwId) {
+        return compatibilityMapper.getByPwId1(pwId);
+    }
+
+    @Override
+    public void approval(String pwId, String opinion) {
+        compatibilityMapper.approval(pwId,opinion);
+    }
+
+    @Override
+    public void back(String pwId, String opinion) {
+        compatibilityMapper.back(pwId,opinion);
+    }
+
+    @Override
+    public void cancel(String pwId) {
+        compatibilityMapper.cancel(pwId);
+    }
 }

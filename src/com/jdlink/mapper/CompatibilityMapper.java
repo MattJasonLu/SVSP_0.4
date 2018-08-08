@@ -12,4 +12,8 @@ public interface CompatibilityMapper {
     List<String> check1();
     void updateCompatibility(String compatibilityId,String id,String id2);
     List<Compatibility> list(String compatibilityId);
+    Compatibility getByPwId1(String pwId);
+     void  approval(String pwId,String opinion);
+    void  back(String pwId,String opinion);
+    void  cancel(String pwId);
 }
