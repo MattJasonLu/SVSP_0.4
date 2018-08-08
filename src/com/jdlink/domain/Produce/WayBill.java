@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Salesman;
 import com.jdlink.domain.Wastes;
@@ -64,6 +65,10 @@ public class WayBill {
      * 处置单位经手人
      */
     private String receiveCompanyOperator;
+    /**
+     * 结运单状态
+     */
+    private CheckState state;
 
     public String getId() {
         return id;
@@ -72,8 +77,6 @@ public class WayBill {
     public void setId(String id) {
         this.id = id;
     }
-
-
 
     public Float getTotal() {
         return total;
@@ -179,6 +182,14 @@ public class WayBill {
         this.receiveCompanyOperator = receiveCompanyOperator;
     }
 
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "WayBill{" +
@@ -196,6 +207,7 @@ public class WayBill {
                 ", invoiceNumber='" + invoiceNumber + '\'' +
                 ", produceCompanyOperator='" + produceCompanyOperator + '\'' +
                 ", receiveCompanyOperator='" + receiveCompanyOperator + '\'' +
+                ", state=" + state +
                 '}';
     }
 }
