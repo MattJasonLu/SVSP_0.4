@@ -96,6 +96,7 @@ function setCompatibility(obj,n) {
     var tr = $("#cloneTr1");//克隆一行
     //tr.siblings().remove();
     //每日配比量合计
+    tr.siblings().remove();
     dailyProportionsTotal=0;
     //每周需求总量
     weeklyDemandTotal=0;
@@ -104,7 +105,6 @@ function setCompatibility(obj,n) {
     $.each(obj,function (index,item) {
         var data=eval(item);
         var clonedTr = tr.clone();
-        clonedTr.show();
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
             switch (inner_index) {
@@ -140,46 +140,46 @@ function setCompatibility(obj,n) {
                     break;
                 // 每日配比量
                 case (4):
-                    $(this).html(data.dailyProportions);
+                    $(this).html(data.dailyProportions.toFixed(1));
                     dailyProportionsTotal+=data.dailyProportions;
                     break;
                 //周需求总量
                 case (5):
-                    $(this).html(data.weeklyDemand);
+                    $(this).html(data.weeklyDemand.toFixed(1));
                     weeklyDemandTotal+=data.weeklyDemand;
                     break;
                 // 热值
                 case (6):
-                        $(this).html(data.calorific);
+                        $(this).html(data.calorific.toFixed(1));
                     calorificTotal+=data.calorific;
                     break;
                    // 灰分
                 case (7):
-                        $(this).html(data.ash);
+                        $(this).html(data.ash.toFixed(1));
                     break;
                     //水分
                 case (8):
-                    $(this).html(data.water);
+                    $(this).html(data.water.toFixed(1));
                     break;
                 //CL
                 case (9):
-                    $(this).html(data.CL);
+                    $(this).html(data.CL.toFixed(1));
                     break;
                 //S
                 case (10):
-                    $(this).html(data.s);
+                    $(this).html(data.s.toFixed(1));
                     break;
                 //P
                 case (11):
-                    $(this).html(data.p);
+                    $(this).html(data.p.toFixed(1));
                     break;
                 //F
                 case (12):
-                    $(this).html(data.f);
+                    $(this).html(data.f.toFixed(1));
                     break;
                 //PH
                 case (13):
-                    $(this).html(data.PH);
+                    $(this).html(data.PH.toFixed(1));
                     break;
                 //状态
                 case (14):
@@ -194,15 +194,16 @@ function setCompatibility(obj,n) {
         });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
+        clonedTr.removeAttr("style");
         clonedTr.insertBefore(tr);
     });
     // 隐藏无数据的tr
     tr.hide();
     console.log(dailyProportionsTotal);
     //赋值每日配比量合计
-    $("#dailyProportionsTotal").text(dailyProportionsTotal);
-    //赋值每日配比量合计
-    $("#weeklyDemandTotal").text(weeklyDemandTotal);
+    $("#dailyProportionsTotal").text(dailyProportionsTotal.toFixed(1));
+    //赋值周需求总量合计
+    $("#weeklyDemandTotal").text(weeklyDemandTotal.toFixed(1));
     //计算热值平均
     $("#calorific").text((calorificTotal/n).toFixed(1));
 }
@@ -635,28 +636,58 @@ function setPwList() {
  * 查询配伍信息
  */
 function searchPw() {
+    //找到最新的配伍编号
+    compatibilityId="";
+$.ajax({
+    type:"POST",
+    url:"getList1",
+    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    success:function (result) {
+   if(result != undefined && result.status == "success"){
+       compatibilityId=result.theNewestId;
+   }
+    },
+    error:function (result) {
+
+    }
+
+
+});
+
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
             pwId: $("#search-pwId").val(),//序号
             handleCategory: $("#search-handleCategory").val(),//处理类别
             formType: $("#search-formType").val(),//形态
-            proportion: $("#search-proportion").val(),//比例
+           // proportion: $("#search-proportion").val(),//比例
             dailyProportions: $("#search-dailyProportions").val(),//每日配比量
-            plateNumber: $("#search-plateNumber").val(),//车牌号
-            checkState: $("#search-checkState").val(),//审核状态
+            weeklyDemand: $("#search-weeklyDemand").val(),//每周需求总量
+            calorific: $("#search-calorific").val(),//热值
+            ash: $("#search-ash").val(),//灰分
+            water: $("#search-water").val(),//水分
+            cl: $("#search-CL").val(),//氯
+            s: $("#search-S").val(),//硫
+            p: $("#search-P").val(),//磷
+            f: $("#search-F").val(),//弗
+            ph: $("#search-PH").val(),//PH
+            checkState:$("#search-checkState").val(),//状态
+            compatibilityId:compatibilityId,//配伍编号
         };
         console.log(data);
         // 模糊查询
     } else {
-        data = {
-            keyword: $("#searchContent").val(),
-        };
+            data = {
+                keyword: $("#searchContent").val(),
+                compatibilityId:compatibilityId,//配伍编号
+            };
         console.log(data);
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchStock",                  // url
+        url: "searchPw",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -664,7 +695,9 @@ function searchPw() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                setPageClone(result.data);
+                var obj=result.data;
+                var n=result.length;
+                setCompatibility(obj,n);
             } else {
                 alert(result.message);
             }
