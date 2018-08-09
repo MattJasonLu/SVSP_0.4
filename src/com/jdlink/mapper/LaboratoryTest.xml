@@ -22,7 +22,33 @@
     </select>
 
     <insert id="add" parameterType="LaboratoryTest">
-
+        INSERT INTO t_pr_laboratorytest (laboratorytestnumber, querynumber, clientId, record, recorddate,
+        laboratory, laboratorycompany, laboratorydate, checkState, nowTime) VALUES (#{laboratoryTestNumber},
+        #{queryNumber}, #{client.clientId}, #{record}, #{recordDate}, #{laboratory}, #{laboratoryCompany},
+        #{laboratoryDate}, #{checkState}, NOW());
+        <if test="sampleInformationList.size() > 0">
+            <foreach collection="sampleInformationList" item="sampleInformation" index="index">
+                INSERT INTO t_pr_sampleinformation (id, companyCode, wastesName, samplingDate,
+                samplingNumber, isProductionLine, isStorageArea, laboratoryTestNumber, testDate,
+                nowTime) VALUES (#{sampleInformation.id}, #{client.clientId}, #{sampleInformation.wastesName},
+                #{sampleInformation.samplingDate}, #{sampleInformation.samplingNumber}, #{sampleInformation.isProductionLine},
+                #{sampleInformation.isStorageArea}, #{laboratoryTestNumber}, #{sampleInformation.testDate}, NOW());
+                <if test="sampleInformation.parameterList.size() > 0">
+                    <foreach collection="sampleInformation.parameterList" item="parameter" index="index">
+                        INSERT INTO t_mixingelement (id, name, minimum, average, maximum, nowTime, parameter,
+                        sampleInfoId) VALUES (#{parameter.id}, #{parameter.name}, #{parameter.minimum}, #{parameter.average},
+                        #{parameter.maximum}, NOW(), #{parameter.parameter}, #{sampleInformation.id});
+                    </foreach>
+                </if>
+                <if test="sampleInformation.heavyMetalList.size() > 0">
+                    <foreach collection="sampleInformation.heavyMetalList" item="heavyMetal" index="index">
+                        INSERT INTO t_mixingelement (id, name, minimum, average, maximum, nowTime, heavyMetal,
+                        sampleInfoId) VALUES (#{heavyMetal.id}, #{heavyMetal.name}, #{heavyMetal.minimum}, #{heavyMetal.average},
+                        #{heavyMetal.maximum}, NOW(), #{heavyMetal.heavyMetal}, #{sampleInformation.id});
+                    </foreach>
+                </if>
+            </foreach>
+        </if>
     </insert>
 
     <select id="list" resultMap="LaboratoryTestRM">
