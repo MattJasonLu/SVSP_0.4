@@ -56,6 +56,7 @@ public class CompatibilityController {
     @ResponseBody
     public String importCompatibilityExcel(MultipartFile excelFile, String tableName, String id){
         JSONObject res = new JSONObject();
+        String fileName = excelFile.getOriginalFilename();
         Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
         //配伍对象
         Calendar cal = Calendar.getInstance();
@@ -117,9 +118,26 @@ public class CompatibilityController {
                 //PH 14
                 compatibility.setPH(Float.parseFloat(data[i][13].toString()));
                 //开始时间 15
-                compatibility.setBeginTime(DateUtil.getDateFromStr(data[i][14].toString()));
+                if(fileName.endsWith("xlsx")){//2007
+                    compatibility.setBeginTime(DateUtil.getDateFromStr(data[i][14].toString()));
+                }
+                else if(fileName.endsWith("xls")){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Date beginTime= sdf.parse("20"+data[i][14].toString());
+                    compatibility.setBeginTime(beginTime);
+                }
+
+
                 //结束时间 16
-                compatibility.setEndTime(DateUtil.getDateFromStr(data[i][15].toString()));
+                if(fileName.endsWith("xlsx")){//2007
+                    compatibility.setEndTime(DateUtil.getDateFromStr(data[i][15].toString()));
+                }
+                else if(fileName.endsWith("xls")){
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                   Date endTime= sdf.parse("20"+data[i][15].toString());
+                    compatibility.setEndTime(endTime);
+                }
+
                 //每日配比量合计 17
                 compatibility.setDailyProportionsTotal(Float.parseFloat(data[i][16].toString()));
                 //周需求总和 18

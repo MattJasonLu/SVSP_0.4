@@ -121,11 +121,12 @@ public class ImportUtil {
                 int row = xSheet.getPhysicalNumberOfRows();
                 System.out.println(row);
                 param = new Object[row][col];
-                for (int i = 0; i < row+1; i++) {
+                for (int i = 0; i < row; i++) {
                     XSSFRow row1 = xSheet.getRow(i);
                     obj = new Object[col];
                     for (int j = 0; j < col; j++) {
                         XSSFCell cellStyle = row1.getCell(j);
+                      //System.out.println(cellStyle+"==>");
                         if (cellStyle != null) {
                             String cat = cellStyle.getCellTypeEnum().toString();
                             if (cat.equals("NUMERIC")) {
@@ -189,4 +190,3 @@ public class ImportUtil {
     //        }
     //    }
 }
-
