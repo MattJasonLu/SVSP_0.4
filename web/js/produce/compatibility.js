@@ -140,46 +140,46 @@ function setCompatibility(obj,n) {
                     break;
                 // 每日配比量
                 case (4):
-                    $(this).html(data.dailyProportions);
+                    $(this).html(data.dailyProportions.toFixed(1));
                     dailyProportionsTotal+=data.dailyProportions;
                     break;
                 //周需求总量
                 case (5):
-                    $(this).html(data.weeklyDemand);
+                    $(this).html(data.weeklyDemand.toFixed(1));
                     weeklyDemandTotal+=data.weeklyDemand;
                     break;
                 // 热值
                 case (6):
-                        $(this).html(data.calorific);
+                        $(this).html(data.calorific.toFixed(1));
                     calorificTotal+=data.calorific;
                     break;
                    // 灰分
                 case (7):
-                        $(this).html(data.ash);
+                        $(this).html(data.ash.toFixed(1));
                     break;
                     //水分
                 case (8):
-                    $(this).html(data.water);
+                    $(this).html(data.water.toFixed(1));
                     break;
                 //CL
                 case (9):
-                    $(this).html(data.CL);
+                    $(this).html(data.CL.toFixed(1));
                     break;
                 //S
                 case (10):
-                    $(this).html(data.s);
+                    $(this).html(data.s.toFixed(1));
                     break;
                 //P
                 case (11):
-                    $(this).html(data.p);
+                    $(this).html(data.p.toFixed(1));
                     break;
                 //F
                 case (12):
-                    $(this).html(data.f);
+                    $(this).html(data.f.toFixed(1));
                     break;
                 //PH
                 case (13):
-                    $(this).html(data.PH);
+                    $(this).html(data.PH.toFixed(1));
                     break;
                 //状态
                 case (14):
@@ -201,9 +201,9 @@ function setCompatibility(obj,n) {
     tr.hide();
     console.log(dailyProportionsTotal);
     //赋值每日配比量合计
-    $("#dailyProportionsTotal").text(dailyProportionsTotal);
-    //赋值每日配比量合计
-    $("#weeklyDemandTotal").text(weeklyDemandTotal);
+    $("#dailyProportionsTotal").text(dailyProportionsTotal.toFixed(1));
+    //赋值周需求总量合计
+    $("#weeklyDemandTotal").text(weeklyDemandTotal.toFixed(1));
     //计算热值平均
     $("#calorific").text((calorificTotal/n).toFixed(1));
 }

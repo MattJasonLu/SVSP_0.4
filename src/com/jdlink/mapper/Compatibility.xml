@@ -21,7 +21,6 @@
         <result property="proportion" column="proportion"></result>
         <result property="checkState" column="checkState" javaType="CheckState"></result>
         <result property="weeklyDemand" column="weeklyDemand" ></result>
-        <result property="checkState" column="checkState" javaType="CheckState"></result>
     </resultMap>
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM t_pr_pw;
@@ -94,8 +93,8 @@
             <if test="CL != null and CL != ''">
                 and cl LIKE "%"#{CL}"%"
             </if>
-            <if test="S != null and S != ''">
-                and s LIKE "%"#{S}"%"
+            <if test="s != null and s != ''">
+                and S LIKE "%"#{s}"%"
             </if>
             <if test="P != null and P != ''">
                 and p LIKE "%"#{P}"%"
@@ -117,6 +116,9 @@
             </if>
             <if test="compatibilityId != null and compatibilityId != ''">
                 and compatibilityId=#{compatibilityId}
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState=#{checkState}
             </if>
         </where>
     </select>
