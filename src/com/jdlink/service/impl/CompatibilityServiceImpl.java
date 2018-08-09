@@ -71,4 +71,9 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     public List<Compatibility> search(Compatibility compatibility) {
         return compatibilityMapper.search(compatibility);
     }
+
+    @Override
+    public void add(Compatibility compatibility) {
+        compatibilityMapper.add(compatibility);
+    }
 }

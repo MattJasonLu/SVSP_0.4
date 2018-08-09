@@ -27,7 +27,14 @@ public enum FormType {
         }
         return null;
     }
-
+    public static FormType getFormType(String keyword) {
+        for (FormType p : FormType.values()) {
+            if(p.getName().contains(keyword)){
+                return p;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }

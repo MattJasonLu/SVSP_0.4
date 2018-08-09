@@ -7,6 +7,7 @@ import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.util.DBUtil;
+import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -56,45 +57,132 @@ public class CompatibilityController {
     public String importCompatibilityExcel(MultipartFile excelFile, String tableName, String id){
         JSONObject res = new JSONObject();
         Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
-        for(int i=0;i<data.length;i++){
-            for(int j=0;j<data[i].length;j++){
-                System.out.print(data[i][j]+"==>");
-            }
-        }
-        try {
-            DBUtil db=new DBUtil();
-            db.importExcel(excelFile, tableName,id);
-            System.out.println("起始编号:"+id);
-            int id1=compatibilityService.getLastId();
-            String id2= getId(String.valueOf(id1));
-            System.out.println("末尾编号:"+id2);
-            Calendar cal = Calendar.getInstance();
-           //获取年
-            String year=String.valueOf(cal.get(Calendar.YEAR));
-            //获取月
-            String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
-            //序列号
-           String number = "001";
-           //先查看数据库的配伍编号
-           List<String> compatibilityIList= compatibilityService.check();
-           if(id.equals("0001")){//不存在
+        //配伍对象
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year=String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
+        //序列号
+        String number = "001";
+        //先查看数据库的配伍编号
+        List<String> compatibilityIList= compatibilityService.check();
+        if(id.equals("0001")){//不存在
             number="001";
-           }
-         if(!id.equals("0001")){
-               String s= compatibilityIList.get(0);//原字符串
-               String s2=s.substring(s.length()-3,s.length());//最后一个3字符
-               number=getString3(String.valueOf( Integer.parseInt(s2)+1));
-           }
-            //配伍编号
-            String compatibilityId=year+mouth+number;
-            compatibilityService.updateCompatibility(compatibilityId,id,id2);
+        }
+        if(!id.equals("0001")){
+            String s= compatibilityIList.get(0);//原字符串
+            String s2=s.substring(s.length()-3,s.length());//最后一个3字符
+            number=getString3(String.valueOf( Integer.parseInt(s2)+1));
+        }
+        //配伍编号
+        String compatibilityId=year+mouth+number;
+        //进行数据绑定
+        try {
+            for(int i=1;i<data.length;i++){
+                Compatibility compatibility=new Compatibility();
+                //序号绑定
+                String id1= getId(String.valueOf(Integer.parseInt(id)+(i-1))) ;
+                compatibility.setPwId(id1);
+                //第二列是一个枚举进行进行判断，首先是遍历第二列 处理方式
+                HandleCategory handleCategory =(HandleCategory.getHandleCategory(data[i][1].toString()));
+                compatibility.setHandleCategory(handleCategory);//射入
+                //第三列是一个枚举进行进行判断，首先是遍历第二列 物质形态
+                FormType formType=FormType.getFormType(data[i][2].toString());
+                compatibility.setFormType(formType);
+                //第四列是比例
+                compatibility.setProportion(Float.parseFloat(data[i][3].toString()));
+                //第五列是每日配置量
+                compatibility.setDailyProportions(Float.parseFloat(data[i][4].toString()));
+                //第六列是周需求总量
+                compatibility.setWeeklyDemand(Float.parseFloat(data[i][5].toString()));
+                //第七列是热值
+                compatibility.setCalorific(Float.parseFloat(data[i][6].toString()));
+                //第八列是灰分
+                if(data[i][7]!=null){
+                    compatibility.setAsh(Float.parseFloat(data[i][7].toString()));
+                }
+                //第九列是水分
+                if(data[i][8]!=null){
+                    compatibility.setAsh(Float.parseFloat(data[i][8].toString()));
+                }
+                //第十列是氯
+                compatibility.setCL(Float.parseFloat(data[i][9].toString()));
+                //硫 11
+                compatibility.setS(Float.parseFloat(data[i][10].toString()));
+                //磷 12
+                compatibility.setP(Float.parseFloat(data[i][11].toString()));
+                //弗 13
+                compatibility.setF(Float.parseFloat(data[i][12].toString()));
+                //PH 14
+                compatibility.setPH(Float.parseFloat(data[i][13].toString()));
+                //开始时间 15
+                compatibility.setBeginTime(DateUtil.getDateFromStr(data[i][14].toString()));
+                //结束时间 16
+                compatibility.setEndTime(DateUtil.getDateFromStr(data[i][15].toString()));
+                //每日配比量合计 17
+                compatibility.setDailyProportionsTotal(Float.parseFloat(data[i][16].toString()));
+                //周需求总和 18
+                compatibility.setWeeklyDemandTotal(Float.parseFloat(data[i][17].toString()));
+                //热量总和 19
+                compatibility.setCalorificTotal(Float.parseFloat(data[i][18].toString()));
+                //状态 20
+                compatibility.setCheckState(CheckState.getCheckState(data[i][19].toString()));
+                //当前时间 21
+                //compatibility.setNowTime(DateUtil.getDateFromStr(data[i][20].toString()));
+                //配伍编号 22
+                compatibility.setCompatibilityId(compatibilityId);
+                //审批内容 23
+                compatibility.setApprovalContent(data[i][22].toString());
+                //驳回内容 24
+                compatibility.setBackContent(data[i][23].toString());
+                //数据绑定完成
+                //进行数据添加
+                compatibilityService.add(compatibility);
+            }
             res.put("status", "success");
-            res.put("message", "导入成功");
-        } catch (Exception e) {
+            res.put("message", "添加成功");
+        }
+        catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "导入失败，请重试！"+e.getMessage());
+            res.put("message", "添加失败！");
         }
+
+//        try {
+//            DBUtil db=new DBUtil();
+//            db.importExcel(excelFile, tableName,id);
+//            System.out.println("起始编号:"+id);
+//            int id1=compatibilityService.getLastId();
+//            String id2= getId(String.valueOf(id1));
+//            System.out.println("末尾编号:"+id2);
+//            Calendar cal = Calendar.getInstance();
+//           //获取年
+//            String year=String.valueOf(cal.get(Calendar.YEAR));
+//            //获取月
+//            String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
+//            //序列号
+//           String number = "001";
+//           //先查看数据库的配伍编号
+//           List<String> compatibilityIList= compatibilityService.check();
+//           if(id.equals("0001")){//不存在
+//            number="001";
+//           }
+//         if(!id.equals("0001")){
+//               String s= compatibilityIList.get(0);//原字符串
+//               String s2=s.substring(s.length()-3,s.length());//最后一个3字符
+//               number=getString3(String.valueOf( Integer.parseInt(s2)+1));
+//           }
+//            //配伍编号
+//            String compatibilityId=year+mouth+number;
+//            compatibilityService.updateCompatibility(compatibilityId,id,id2);
+//            res.put("status", "success");
+//            res.put("message", "导入成功");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            res.put("status", "fail");
+//            res.put("message", "导入失败，请重试！"+e.getMessage());
+//        }
         return res.toString();
 
 
