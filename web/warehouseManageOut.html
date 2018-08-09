@@ -13,6 +13,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
+    <script src="js/produce/warehouseManage.js"></script>
 </head>
 <body onload="loadPageLaboratoryList()" class="" >
     <!--导航条-->
@@ -32,19 +33,19 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">首页</a></li>
+                    <li><a href="receiveManagement.html">首页</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">运输计划单</a></li>
+                            <li><a href="transportPlan.html">运输计划单</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">转移联单</a></li>
+                            <li><a href="transferDraft.html">转移联单</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">送样登记</a></li>
+                            <li><a href="sampleInfoRegiter.html">送样登记</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="testResults.html">化验结果</a></li>
                         </ul>
@@ -55,20 +56,13 @@
                             <li class="dropdown-submenu">
                                 <a href="#">入库管理</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">危废入库</a></li>
+                                    <li><a href="warehouseManage.html">危废入库</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="#">次生入库</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li class="dropdown-submenu">
-                                <a href="#">磅单管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">危废查询</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">医废出入库登记</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="#">磅单管理</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -149,29 +143,29 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-questionnaireId" class="col-sm-4 control-label">调查表编号</label>
+                                <label for="search-warehouseId" class="col-sm-4 control-label">仓库号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-questionnaireId" name="search-questionnaireId" placeholder="">
+                                    <input type="text" class="form-control" id="search-warehouseId" name="search-warehouseId" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
+                                <label for="search-storageDate" class="col-sm-4 control-label">出库日期</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                                    <input type="text" class="form-control" id="search-storageDate" name="search-storageDate" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-industry" class="col-sm-4 control-label">所属行业</label>
+                                <label for="search-storageNumber" class="col-sm-4 control-label">出库单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-industry" name="search-industry" placeholder="">
+                                    <input type="text" class="form-control" id="search-storageNumber" name="search-storageNumber" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-state" class="col-sm-4 control-label">状态</label>
+                                <label for="search-wastesId" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-state" id="search-state">
+                                    <select class="form-control" name="search-wastesId" id="search-wastesId">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -179,15 +173,15 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-product" class="col-sm-4 control-label">主要产品</label>
+                                <label for="search-storageQuantity" class="col-sm-4 control-label">出库数量</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-product" name="search-product" placeholder="">
+                                    <input type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-author" class="col-sm-4 control-label">填报人</label>
+                                <label for="search-materialForm" class="col-sm-4 control-label">物质形态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-author" id="search-author">
+                                    <select class="form-control" name="search-materialForm" id="search-materialForm">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -195,9 +189,9 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-time" class="col-sm-4 control-label">填报日期</label>
+                                <label for="search-packingType" class="col-sm-4 control-label">包装类型</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-time" name="search-time" placeholder="">
+                                    <input type="text" class="form-control" id="search-packingType" name="search-packingType" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -214,6 +208,7 @@
                             </label>
                         </th>
                         <th class="text-center">仓库号</th>
+                        <th class="text-center">转移联单号</th>
                         <th class="text-center">出库日期</th>
                         <th class="text-center">出库单号</th>
                         <th class="text-center">出库类型</th>
@@ -236,6 +231,7 @@
                             </label>
                         </td>
                         <td class="text-center">Q10000001</td>
+                        <td class="text-center">W10000001</td>
                         <td class="text-center">2018-08-02</td>
                         <td class="text-center">QW001</td>
                         <td class="text-center">危废入库</td>
@@ -245,13 +241,13 @@
                         <td class="text-center">张三</td>
                         <td class="text-center">李四</td>
                         <td class="text-center">8000</td>
-                        <td class="text-center"><select class="form-control focus" name="wastesList[0].formType" style="width: 100px;margin-left: 60px;">
+                        <td class="text-center"><select class="form-control focus" name="wastesList[0].formType" style="width: 100px;margin-left: 60px;" title="">
                             <option value="- please select your options -"> </option>
                             <option value="1" class="s">固态</option>
                             <option value="2" class="s">半固态</option>
                             <option value="3" class="s">液态</option>
                         </select></td>
-                        <td class="text-center"><select class="form-control focus" name="wastesList[0].formType" style="width: 100px;margin-left: 60px;">
+                        <td class="text-center"><select class="form-control focus" name="wastesList[0].formType" style="width: 100px;margin-left: 60px;" title="">
                             <option value="- please select your options -"> </option>
                             <option value="1" class="s">桶装</option>
                             <option value="2" class="s">罐装</option>
@@ -259,9 +255,10 @@
                         </select></td>
                         <td class="text-center">
                             <a href="#" onclick="view();" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="view();" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <a href="#" onclick="cancel();" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                             <a href="#" onclick="view();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
                             <a href="#" onclick="view();" title="签收"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <a href="#" onclick="view();" title="属性调整"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
@@ -293,10 +290,10 @@
                     <li><a id="totalPage"></a></li>
                     <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
                     <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                               id="pageNumber"></li>
+                               id="pageNumber" title=""></li>
                     <li class="showLi">每页显示:</li>
                     <li class="selectLi">
-                        <select id="count" onchange="loadPageClientList()">
+                        <select id="count" onchange="loadPageClientList()" title="">
                             <option>5</option>
                             <option selected>15</option>
                             <option>50</option>
@@ -304,6 +301,58 @@
                     </li>
                 </ol>
             </nav>
+            <!--查看模态框-->
+            <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document" id="print1">
+                    <div class="modal-content" >
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="TitleMyModalLabel">出库计划单</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td class="text-center">产废单位</td>
+                                    <td class="text-center">出场时间</td>
+                                    <td class="text-center">废物名称</td>
+                                    <td class="text-center">废物代码</td>
+                                    <td class="text-center">重量/t</td>
+                                    <td class="text-center">物质形态</td>
+                                    <td class="text-center">包装形式</td>
+                                    <td class="text-center">热值/KCal/Kg</td>
+                                    <td class="text-center">PH</td>
+                                    <td class="text-center">灰分/%</td>
+                                    <td class="text-center">水分/%</td>
+                                    <td class="text-center">氯含量/%</td>
+                                    <td class="text-center">硫含量/%</td>
+                                    <td class="text-center">磷含量/%</td>
+                                    <td class="text-center">氟含量/%</td>
+                                    <td class="text-center">处理方式</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center modal-companyName">1</td>
+                                    <td class="text-center modal-einlass">2018-08-07</td>
+                                    <td class="text-left wastesName">废液</td>
+                                    <td class="text-center wastesCode">QW10001</td>
+                                    <td class="text-right modal-weight">5</td>
+                                    <td class="text-right modal-materialForm">液态</td>
+                                    <td class="text-right modal-packingType">标准装</td>
+                                    <td class="text-right modal-KCal">20</td>
+                                    <td class="text-right modal-PH">10</td>
+                                    <td class="text-right modal-ashContent">20</td>
+                                    <td class="text-right modal-waterContent">10</td>
+                                    <td class="text-right modal-CLContent">20</td>
+                                    <td class="text-right modal-SContent">10</td>
+                                    <td class="text-right modal-PContent">10</td>
+                                    <td class="text-right modal-FContent">10</td>
+                                    <td class="text-right modal-processingMethod">焚烧</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="embed"></div>
@@ -316,26 +365,8 @@
     .pagination > li {
         display: inline;
     }
-    .inputText { float:left;
-    }
-    .showLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-    .selectLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
 </style>
 <script>
-    //全选复选框
-    function allSelect() {
-        var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
-    }
     $('#embed').load('embed/loginLogModal.html');
 </script>
 </html>
