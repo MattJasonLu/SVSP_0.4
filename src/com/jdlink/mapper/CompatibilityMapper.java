@@ -16,4 +16,5 @@ public interface CompatibilityMapper {
      void  approval(String pwId,String opinion);
     void  back(String pwId,String opinion);
     void  cancel(String pwId);
+    List<Compatibility> search(Compatibility compatibility);
 }
