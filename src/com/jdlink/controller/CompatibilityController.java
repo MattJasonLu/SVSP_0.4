@@ -7,6 +7,7 @@ import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.util.DBUtil;
+import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,12 @@ public class CompatibilityController {
     @ResponseBody
     public String importCompatibilityExcel(MultipartFile excelFile, String tableName, String id){
         JSONObject res = new JSONObject();
+        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+        for(int i=0;i<data.length;i++){
+            for(int j=0;j<data[i].length;j++){
+                System.out.print(data[i][j]+"==>");
+            }
+        }
         try {
             DBUtil db=new DBUtil();
             db.importExcel(excelFile, tableName,id);

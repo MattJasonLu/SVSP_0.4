@@ -85,7 +85,7 @@ public class StockController {
             JSONObject json=JSONObject.fromBean(stock);
             List<WastesInfo> wastesInfoList = wastesInfoService.list();
           JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
-            res.put("data", data.toString());
+            res.put("data", data);
             res.put("stock",json);
             res.put("status", "success");
             res.put("message", "查询成功");
