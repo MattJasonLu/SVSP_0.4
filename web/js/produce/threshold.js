@@ -11,7 +11,7 @@ function loadThresholdList() {
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
-            if (result != undefined && result.status == "success"){
+            if (result !== undefined && result.status === "success"){
                  console.log(result);
             setThresholdList(result);
             }
@@ -23,6 +23,7 @@ function loadThresholdList() {
            alert("服务器异常！");
         }
     });
+    $("#weekDate").text(getWeekDate());
 }
 /*
 * 加载数据至克隆表格中
@@ -151,19 +152,31 @@ function setThresholdList(result) {
     // 隐藏无数据的tr
     tr.hide();
 }
-//获取时间
+
+// var day = obj.day
 function gettime(obj) {
-    var year = (parseInt(obj.year) + 1900).toString();
-    var mouth = parseInt((obj.month) + 1).toString();
-    if (mouth.length != 2) {
-        mouth = 0 + mouth;
+    if (month.length !== 2) {
+        month = 0 + month;
     }
     //  dataLeftCompleting(2, "0", mouth.toString()).toString();
     var day = parseInt((obj.date)).toString();
     //ataLeftCompleting(2, "0", day.toString()).toString();
-    if (day.length != 2) {
+    if (day.length !== 2) {
         day = 0 + day;
     }
-    var time1 = year + "-" + mouth + "-" + day;
-    return time1;
+    return day;
+}
+
+console.log(getWeekDate());
+
+function getWeekDate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth()+1;
+    var day = obj.getDate();
+    if(day % 7 > 0)  var a = 1; else a = 0;
+    var week = parseInt(day / 7) + a;
+    return year + "年" + month + "月第" + week + "周";
+
 }
