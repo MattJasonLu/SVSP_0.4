@@ -22,9 +22,9 @@
     </select>
 
     <insert id="add" parameterType="LaboratoryTest">
-        INSERT INTO t_pr_laboratorytest (laboratorytestnumber, querynumber, clientId, record, recorddate,
+        INSERT INTO t_pr_laboratorytest (laboratorytestnumber, querynumber, clientId, companyName, record, recorddate,
         laboratory, laboratorycompany, laboratorydate, checkState, nowTime) VALUES (#{laboratoryTestNumber},
-        #{queryNumber}, #{client.clientId}, #{record}, #{recordDate}, #{laboratory}, #{laboratoryCompany},
+        #{queryNumber}, #{client.clientId}, #{client.companyName}, #{record}, #{recordDate}, #{laboratory}, #{laboratoryCompany},
         #{laboratoryDate}, #{checkState}, NOW());
         <if test="sampleInformationList.size() > 0">
             <foreach collection="sampleInformationList" item="sampleInformation" index="index">
@@ -63,8 +63,9 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and laboratoryTestNumber LIKE "%"#{keyword}"%" or queryNumber like "%"#{keyword}"%"
-                or record like "%"#{keyword}"%" or recordDate like binary "%"#{keyword}"%"
-                or laboratory like "%"#{keyword}"%" or laboratoryCompany like "%"#{keyword}"%"
+                or companyName like "%"#{keyword}"%" or record like "%"#{keyword}"%"
+                or laboratoryDate like binary "%"#{keyword}"%" or laboratory like "%"#{keyword}"%"
+                or laboratoryCompany like "%"#{keyword}"%"
             </if>
             <if test="laboratoryTestNumber != null and laboratoryTestNumber != ''">
                 and laboratoryTestNumber LIKE "%"#{laboratoryTestNumber}"%"
@@ -72,17 +73,20 @@
             <if test="queryNumber != null and queryNumber != ''">
                 and queryNumber LIKE "%"#{queryNumber}"%"
             </if>
+            <if test="client != null and client.companyName != null and client.companyName != ''">
+                and companyName LIKE "%"#{client.companyName}"%"
+            </if>
             <if test="record != null and record != ''">
                 and record LIKE "%"#{record}"%"
             </if>
-            <if test="recordDate != null and recordDate != ''">
-                and recordDate LIKE "%"#{recordDate}"%"
+            <if test="laboratoryDate != null and laboratoryDate != ''">
+                and laboratoryDate LIKE binary "%"#{laboratoryDate}"%"
             </if>
             <if test="laboratory != null and laboratory != ''">
                 and laboratory LIKE "%"#{laboratory}"%"
             </if>
             <if test="laboratoryCompany != null and laboratoryCompany != ''">
-                and laboratoryCompany LIKE binary "%"#{laboratoryCompany}"%"
+                and laboratoryCompany LIKE "%"#{laboratoryCompany}"%"
             </if>
             <if test="checkState != null and checkState != ''">
                 and checkState = #{checkState}
@@ -99,8 +103,9 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and laboratoryTestNumber LIKE "%"#{keyword}"%" or queryNumber like "%"#{keyword}"%"
-                or record like "%"#{keyword}"%" or recordDate like binary "%"#{keyword}"%"
-                or laboratory like "%"#{keyword}"%" or laboratoryCompany like "%"#{keyword}"%"
+                or companyName like "%"#{keyword}"%" or record like "%"#{keyword}"%"
+                or laboratoryDate like binary "%"#{keyword}"%" or laboratory like "%"#{keyword}"%"
+                or laboratoryCompany like "%"#{keyword}"%"
             </if>
             <if test="laboratoryTestNumber != null and laboratoryTestNumber != ''">
                 and laboratoryTestNumber LIKE "%"#{laboratoryTestNumber}"%"
@@ -108,17 +113,20 @@
             <if test="queryNumber != null and queryNumber != ''">
                 and queryNumber LIKE "%"#{queryNumber}"%"
             </if>
+            <if test="client != null and client.companyName != null and client.companyName != ''">
+                and companyName LIKE "%"#{client.companyName}"%"
+            </if>
             <if test="record != null and record != ''">
                 and record LIKE "%"#{record}"%"
             </if>
-            <if test="recordDate != null and recordDate != ''">
-                and recordDate LIKE "%"#{recordDate}"%"
+            <if test="laboratoryDate != null and laboratoryDate != ''">
+                and laboratoryDate LIKE binary "%"#{laboratoryDate}"%"
             </if>
             <if test="laboratory != null and laboratory != ''">
                 and laboratory LIKE "%"#{laboratory}"%"
             </if>
             <if test="laboratoryCompany != null and laboratoryCompany != ''">
-                and laboratoryCompany LIKE binary "%"#{laboratoryCompany}"%"
+                and laboratoryCompany LIKE "%"#{laboratoryCompany}"%"
             </if>
             <if test="checkState != null and checkState != ''">
                 and checkState = #{checkState}
