@@ -45,6 +45,16 @@ public class Compatibility {
     private String approvalContent;
     //驳回内容
     private String backContent;
+    //关键字
+    private  String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public String getApprovalContent() {
         return approvalContent;
