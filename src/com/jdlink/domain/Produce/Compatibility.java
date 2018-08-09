@@ -3,6 +3,8 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
 
+import java.util.Date;
+
 public class Compatibility {
     //序号
     private String pwId;
@@ -47,6 +49,36 @@ public class Compatibility {
     private String backContent;
     //关键字
     private  String keyword;
+//开始日期
+    private  Date beginTime;
+    //结束日期
+    private  Date endTime;
+//当前时间
+    private  Date nowTime;
+
+    public Date getNowTime() {
+        return nowTime;
+    }
+
+    public void setNowTime(Date nowTime) {
+        this.nowTime = nowTime;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getKeyword() {
         return keyword;

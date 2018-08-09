@@ -23,6 +23,14 @@ public enum HandleCategory {
         }
         return null;
     }
+    public static HandleCategory getHandleCategory(String keyword) {
+        for (HandleCategory p : HandleCategory.values()) {
+            if(p.getName().contains(keyword)){
+                return p;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }
