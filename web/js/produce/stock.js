@@ -667,6 +667,11 @@ function adjustStock(item){
 //修改页面的初始
 function loadAdjustStock() {
     //获取申报编号
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        style: 'btn-info',
+        size: 4
+    });//下拉框样式
    var stockId =localStorage['stockId'];
    $('#stockId').prop("value",stockId);
   //通过ajax 根据id获取信息
@@ -679,7 +684,6 @@ function loadAdjustStock() {
       if(result!=undefined&&result.status=='success'){
           var obj=eval(result.stock);
           var data=eval(result.data);
-          console.log(obj);
           //1开始赋值
           //产废单位联系人
           $('#proContactName').prop('value',obj.proContactName);
@@ -699,8 +703,8 @@ function loadAdjustStock() {
           if(obj.selfEmployed==false){
               $('#transport1').show();//不是自运公司 显示
           }
-          //各下拉框数据填充
-          var wastesInfoList = $(".code");
+          // 各下拉框数据填充
+          var wastesInfoList = $("#code");
           // 清空遗留元素
           wastesInfoList.children().remove();
           $.each(data, function (index, item) {
@@ -709,8 +713,10 @@ function loadAdjustStock() {
               option.text(item.code);
               wastesInfoList.append(option);
           });
-          wastesInfoList.removeAttr('class');
+          wastesInfoList.removeAttr('id');
           $('.selectpicker').selectpicker('refresh');
+
+
 
 
           for(var i=0;i<obj.wastesList.length;i++){

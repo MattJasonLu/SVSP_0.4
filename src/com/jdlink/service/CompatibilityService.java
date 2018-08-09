@@ -17,4 +17,5 @@ public interface CompatibilityService {
     void  back(String pwId,String opinion);
     void  cancel(String pwId);
     List<Compatibility> search(Compatibility compatibility);
+    void add(Compatibility compatibility);
 }

@@ -11,11 +11,12 @@
         <result property="transportTelephone" column="transportTelephone" javaType="String"></result>
         <result property="plateNumber" column="plateNumber" javaType="String"></result>
         <result property="checkState" column="checkState" javaType="CheckState"></result>
+        <result property="proWasteCompany" column="proWasteCompany" javaType="String"></result>
         <collection property="wastesList" select="getWastes" column="stockId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
-<insert id="add" parameterType="Stock">
-insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState)
-values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),#{checkState});
+    <insert id="add" parameterType="Stock">
+insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany)
+values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),#{checkState},#{proWasteCompany});
         <foreach collection="wastesList"  item="wastes" index="index">
        insert into t_wastes(id,name,code,wasteAmount,component,remarks,stockId) values (#{wastes.id},#{wastes.name},#{wastes.code},#{wastes.wasteAmount},#{wastes.component},#{wastes.remarks},#{stockId});
         </foreach>
@@ -23,7 +24,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
     <select id="getStockIdList" resultType="String">
         select  stockId from  t_pr_stock;
     </select>
-<select id="list" resultMap="StockRM">
+    <select id="list" resultMap="StockRM">
     select * from t_pr_stock order by nowTime desc
     <if test="start != null and count != null">
         limit #{start}, #{count}
@@ -47,7 +48,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         update t_pr_stock set proContactName=#{proContactName},proTelephone=#{proTelephone},
         transport=#{transport},transportTelephone=#{transportTelephone},
         plateNumber=#{plateNumber},selfEmployed=#{selfEmployed},
-        nowTime=NOW() where stockId=#{stockId};
+        nowTime=NOW() ,proWasteCompany=#{proWasteCompany} where stockId=#{stockId};
         <!--<if test="wastesList.size()> 0" >-->
         <!--<foreach collection="wastesList"  item="wastes" index="index">-->
             <!--update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{stockId};-->

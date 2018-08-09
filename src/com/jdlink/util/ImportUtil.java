@@ -126,6 +126,7 @@ public class ImportUtil {
                     obj = new Object[col];
                     for (int j = 0; j < col; j++) {
                         XSSFCell cellStyle = row1.getCell(j);
+                      //System.out.println(cellStyle+"==>");
                         if (cellStyle != null) {
                             String cat = cellStyle.getCellTypeEnum().toString();
                             if (cat.equals("NUMERIC")) {
@@ -189,4 +190,3 @@ public class ImportUtil {
     //        }
     //    }
 }
-
