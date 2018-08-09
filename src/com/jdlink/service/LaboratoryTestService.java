@@ -26,4 +26,6 @@ public interface LaboratoryTestService {
     void submit(String laboratoryTestNumber);
 
     void confirm(String laboratoryTestNumber);
+
+    String getCurrentId();
 }

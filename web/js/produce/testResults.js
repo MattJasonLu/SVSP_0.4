@@ -356,7 +356,7 @@ function setDataList(result) {
                     break;
                 // 化验公司
                 case (7):
-                    $(this).html(obj.laboratorycompany);
+                    $(this).html(obj.laboratoryCompany);
                     break;
                 // 审核状态
                 case (8):
@@ -463,6 +463,9 @@ function view(e) {
                 }
                 $('#modal1_record').text(data.record);
                 $('#modal1_recordDate').text(getDateStr(data.recordDate));
+                $('#modal1_laboratory').text(data.laboratory);
+                $('#modal1_laboratoryDate').text(getDateStr(data.laboratoryDate));
+                $('#modal1_laboratoryCompany').text(data.laboratoryCompany);
                 // 设置危废列表
                 if (data.sampleInformationList.length > 0) {
                     for (var i = 0; i < data.sampleInformationList.length; i++) {

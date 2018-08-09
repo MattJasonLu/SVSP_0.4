@@ -72,6 +72,7 @@ public class SampleInformation {
     /**
      * 检测日期
      */
+    private Date testDate;
 
     private boolean isPH; // PH值
 
@@ -292,6 +293,15 @@ public class SampleInformation {
     public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
         this.heavyMetalList = heavyMetalList;
     }
+
+    public Date getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
+    }
+
     @Override
     public String toString() {
         return "SampleInformation{" +
