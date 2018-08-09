@@ -5,8 +5,8 @@
 <mapper namespace="com.jdlink.mapper.CompatibilityMapper"  >
     <resultMap id="CompatibilityRM" type="Compatibility" autoMapping="true">
         <result property="pwId" column="pwId"  ></result>
-        <result property="handleCategory" column="handleCategory"></result>
-        <result property="formType" column="formType"></result>
+        <result property="handleCategory" column="handleCategory" javaType="HandleCategory"></result>
+        <result property="formType" column="formType" javaType="FormType"></result>
         <result property="calorific" column="calorific" ></result>
         <result property="ash" column="ash" ></result>
         <result property="water" column="water" ></result>
@@ -21,6 +21,7 @@
         <result property="proportion" column="proportion"></result>
         <result property="checkState" column="checkState" javaType="CheckState"></result>
         <result property="weeklyDemand" column="weeklyDemand" ></result>
+        <result property="checkState" column="checkState" javaType="CheckState"></result>
     </resultMap>
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM t_pr_pw;
@@ -58,4 +59,65 @@
     <update id="cancel" parameterType="String">
         update t_pr_pw set checkState='Invalid',nowTime=NOW() where pwId=#{pwId}
     </update>
+    <select id="search" parameterType="Compatibility" resultMap="CompatibilityRM">
+        select * from t_pr_pw
+        <where>
+            <if test="keyword != null and keyword != '' or keyword == ''">
+                and  (pwId like "%"#{keyword}"%"
+                or dailyProportions like "%"#{keyword}"%" or weeklyDemand like "%"#{keyword}"%"
+                or calorific like "%"#{keyword}"%" or ash like "%"#{keyword}"%"  or water like "%"#{keyword}"%"
+                or cl like "%"#{keyword}"%"  or s like "%"#{keyword}"%"  or p like "%"#{keyword}"%"
+                or f like "%"#{keyword}"%"  or ph like "%"#{keyword}"%") and compatibilityId=#{compatibilityId}
+            </if >
+            <if test="pwId != null and pwId != ''">
+                and pwId LIKE "%"#{pwId}"%"
+            </if>
+
+            <if test="dailyProportions != null and dailyProportions != ''">
+                and dailyProportions LIKE "%"#{dailyProportions}"%"
+            </if>
+            <if test="weeklyDemand != null and weeklyDemand != ''">
+                and weeklyDemand LIKE "%"#{weeklyDemand}"%"
+            </if>
+            <if test="calorific != null and calorific != ''">
+                and calorific LIKE "%"#{calorific}"%"
+            </if>
+            <if test="ash != null and ash != ''">
+                and pwId LIKE "%"#{pwId}"%"
+            </if>
+            <if test="ash != null and ash != ''">
+                and ash LIKE "%"#{ash}"%"
+            </if>
+            <if test="water != null and water != ''">
+                and water LIKE "%"#{water}"%"
+            </if>
+            <if test="CL != null and CL != ''">
+                and cl LIKE "%"#{CL}"%"
+            </if>
+            <if test="S != null and S != ''">
+                and s LIKE "%"#{S}"%"
+            </if>
+            <if test="P != null and P != ''">
+                and p LIKE "%"#{P}"%"
+            </if>
+            <if test="F != null and F != ''">
+                and f LIKE "%"#{F}"%"
+            </if>
+            <if test="P != null and P != ''">
+                and p LIKE "%"#{P}"%"
+            </if>
+            <if test="PH != null and PH != ''">
+                and ph LIKE "%"#{PH}"%"
+            </if>
+            <if test="handleCategory != null and handleCategory != ''">
+                and handleCategory=#{handleCategory}
+            </if>
+            <if test="formType != null and formType != ''">
+                and formType=#{formType}
+            </if>
+            <if test="compatibilityId != null and compatibilityId != ''">
+                and compatibilityId=#{compatibilityId}
+            </if>
+        </where>
+    </select>
 </mapper>

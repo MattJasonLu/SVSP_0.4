@@ -66,4 +66,9 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     public void cancel(String pwId) {
         compatibilityMapper.cancel(pwId);
     }
+
+    @Override
+    public List<Compatibility> search(Compatibility compatibility) {
+        return compatibilityMapper.search(compatibility);
+    }
 }

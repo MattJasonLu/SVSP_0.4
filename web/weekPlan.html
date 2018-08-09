@@ -207,12 +207,6 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-proportion" class="col-sm-4 control-label">比例</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-proportion" name="search-proportion" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="search-F" class="col-sm-4 control-label">F</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-F" name="search-F" placeholder="">
@@ -235,8 +229,7 @@
                         <tr>
                             <th class="text-center" colspan="15">配伍计划表(<span class="year"></span>年<span class="month"></span>月第<span class="week"></span>周)</th>
                         </tr>
-                        <tbody>
-                        <tr>
+                        <tr id="re">
                             <th class="text-center">序号</th>
                             <th class="text-center">处理类别</th>
                             <th class="text-center">形态</th>
@@ -254,6 +247,7 @@
                             <th class="text-center">状态</th>
                         </tr>
                         </thead>
+                        <tbody>
                         <tr id="cloneTr1" onclick="selected1(this)">
                             <td class="text-center"></td><!--序号-->
                             <td class="text-center"></td>
@@ -271,6 +265,7 @@
                             <td class="text-right"></td>
                             <td class="text-center"></td>
                         </tr>
+                        </tbody>
                         <tr>
                             <th >合计</th>
                             <td colspan="3"></td>
@@ -291,7 +286,6 @@
                             <td class="text-right"></td>
                             <td class="text-right"></td>
                         </tr>
-                        </tbody>
                     </table>
                 </div>
             </div>

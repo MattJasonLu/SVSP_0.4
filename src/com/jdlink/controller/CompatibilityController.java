@@ -104,6 +104,7 @@ public class CompatibilityController {
             res.put("compatibilityIdList",array);
             //最新的一个配伍编号
             String compatibilityId=compatibilityIdList.get(0);
+            res.put("theNewestId",compatibilityIdList.get(0));
             List<Compatibility> compatibilityList=compatibilityService.list(compatibilityId);
             JSONArray array1=JSONArray.fromArray(compatibilityList.toArray(new Compatibility[compatibilityList.size()]));
             res.put("compatibilityList",array1);
@@ -205,6 +206,26 @@ public class CompatibilityController {
         JSONArray handleCategoryList=JSONArray.fromArray(HandleCategory.values());
         res.put("handleCategoryList", handleCategoryList);
         return res.toString();
+    }
+ //高级查询
+    @RequestMapping("searchPw")
+    @ResponseBody
+    public String searchPw(@RequestBody Compatibility compatibility){
+        System.out.println(compatibility.getKeyword()+"YH");
+        JSONObject res = new JSONObject();
+        try {
+            List<Compatibility> compatibilityList = compatibilityService.search(compatibility);
+            JSONArray data = JSONArray.fromArray(compatibilityList.toArray(new Compatibility[compatibilityList.size()]));
+            res.put("length",compatibilityList.size());
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return  res.toString();
     }
 
 

@@ -96,6 +96,7 @@ function setCompatibility(obj,n) {
     var tr = $("#cloneTr1");//克隆一行
     //tr.siblings().remove();
     //每日配比量合计
+    tr.siblings().remove();
     dailyProportionsTotal=0;
     //每周需求总量
     weeklyDemandTotal=0;
@@ -104,7 +105,6 @@ function setCompatibility(obj,n) {
     $.each(obj,function (index,item) {
         var data=eval(item);
         var clonedTr = tr.clone();
-        clonedTr.show();
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
             switch (inner_index) {
@@ -194,6 +194,7 @@ function setCompatibility(obj,n) {
         });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
+        clonedTr.removeAttr("style");
         clonedTr.insertBefore(tr);
     });
     // 隐藏无数据的tr
@@ -635,28 +636,58 @@ function setPwList() {
  * 查询配伍信息
  */
 function searchPw() {
+    //找到最新的配伍编号
+    compatibilityId="";
+$.ajax({
+    type:"POST",
+    url:"getList1",
+    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    success:function (result) {
+   if(result != undefined && result.status == "success"){
+       compatibilityId=result.theNewestId;
+   }
+    },
+    error:function (result) {
+
+    }
+
+
+});
+
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
             pwId: $("#search-pwId").val(),//序号
             handleCategory: $("#search-handleCategory").val(),//处理类别
             formType: $("#search-formType").val(),//形态
-            proportion: $("#search-proportion").val(),//比例
+           // proportion: $("#search-proportion").val(),//比例
             dailyProportions: $("#search-dailyProportions").val(),//每日配比量
-            plateNumber: $("#search-plateNumber").val(),//车牌号
-            checkState: $("#search-checkState").val(),//审核状态
+            weeklyDemand: $("#search-weeklyDemand").val(),//每周需求总量
+            calorific: $("#search-calorific").val(),//热值
+            ash: $("#search-ash").val(),//灰分
+            water: $("#search-water").val(),//水分
+            cl: $("#search-CL").val(),//氯
+            s: $("#search-S").val(),//硫
+            p: $("#search-P").val(),//磷
+            f: $("#search-F").val(),//弗
+            ph: $("#search-PH").val(),//PH
+            checkState:$("#search-checkState").val(),//状态
+            compatibilityId:compatibilityId,//配伍编号
         };
         console.log(data);
         // 模糊查询
     } else {
-        data = {
-            keyword: $("#searchContent").val(),
-        };
+            data = {
+                keyword: $("#searchContent").val(),
+                compatibilityId:compatibilityId,//配伍编号
+            };
         console.log(data);
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchStock",                  // url
+        url: "searchPw",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -664,7 +695,9 @@ function searchPw() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                setPageClone(result.data);
+                var obj=result.data;
+                var n=result.length;
+                setCompatibility(obj,n);
             } else {
                 alert(result.message);
             }
