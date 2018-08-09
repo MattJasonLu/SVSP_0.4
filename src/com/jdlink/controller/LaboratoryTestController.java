@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.MixingElement;
 import com.jdlink.domain.Page;
@@ -152,18 +153,22 @@ public class LaboratoryTestController {
                     laboratoryTest.setClient(client);
                     laboratoryTest.setRecord(data[i][6].toString());
                     laboratoryTest.setRecordDate(DateUtil.getDateFromStr(data[i][7].toString()));
+                    laboratoryTest.setLaboratory(data[i][8].toString());
+                    laboratoryTest.setLaboratoryDate(DateUtil.getDateFromStr(data[i][9].toString()));
+                    laboratoryTest.setLaboratoryCompany(data[i][10].toString());
                 }
                 if (i >= 2) {
                     SampleInformation sampleInformation = new SampleInformation();
                     sampleInformation.setId(RandomUtil.getRandomEightNumber());
-                    sampleInformation.setSamplingDate(DateUtil.getDateFromStr(data[i][8].toString()));
-                    sampleInformation.setWastesName(data[i][9].toString());
-                    sampleInformation.setSamplingNumber(data[i][10].toString());
-                    sampleInformation.setIsProductionLine(data[i][11] != null && data[i][11].toString().equals("√"));
-                    sampleInformation.setIsStorageArea(data[i][12] != null && data[i][12].toString().equals("√"));
+                    sampleInformation.setSamplingDate(DateUtil.getDateFromStr(data[i][11].toString()));
+                    sampleInformation.setWastesName(data[i][12].toString());
+                    sampleInformation.setSamplingNumber(data[i][13].toString());
+                    sampleInformation.setTestDate(DateUtil.getDateFromStr(data[i][14].toString()));
+                    sampleInformation.setIsProductionLine(data[i][15] != null && data[i][15].toString().equals("√"));
+                    sampleInformation.setIsStorageArea(data[i][16] != null && data[i][16].toString().equals("√"));
                     // 参数列表
                     List<MixingElement> parameterList = new ArrayList<>();
-                    for (int j = 0, k = 13; j < Parameter.values().length; j++, k+=3) {
+                    for (int j = 0, k = 17; j < Parameter.values().length; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement parameter = new MixingElement();
                             parameter.setId(RandomUtil.getRandomEightNumber());
@@ -174,7 +179,7 @@ public class LaboratoryTestController {
                             parameterList.add(parameter);
                         }
                     }
-                    for (int j = 0, k = 52; j < 3; j++, k+=3) {
+                    for (int j = 0, k = 56; j < 3; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement parameter = new MixingElement();
                             parameter.setId(RandomUtil.getRandomEightNumber());
@@ -187,7 +192,7 @@ public class LaboratoryTestController {
                     }
                     // 重金属列表
                     List<MixingElement> heavyMetalList = new ArrayList<>();
-                    for (int j = 0, k = 61; j < HeavyMetal.values().length; j++, k+=3) {
+                    for (int j = 0, k = 65; j < HeavyMetal.values().length; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement heavyMetal = new MixingElement();
                             heavyMetal.setId(RandomUtil.getRandomEightNumber());
@@ -198,7 +203,7 @@ public class LaboratoryTestController {
                             heavyMetalList.add(heavyMetal);
                         }
                     }
-                    for (int j = 0, k = 139; j < 3; j++, k+=3) {
+                    for (int j = 0, k = 143; j < 4; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement heavyMetal = new MixingElement();
                             heavyMetal.setId(RandomUtil.getRandomEightNumber());
@@ -216,13 +221,18 @@ public class LaboratoryTestController {
                 }
             }
             laboratoryTest.setSampleInformationList(sampleInformationList);
+            // 设置状态为待提交
+            laboratoryTest.setCheckState(CheckState.ToSubmit);
+            // 设置编号
+            laboratoryTest.setLaboratoryTestNumber(laboratoryTestService.getCurrentId());
+            laboratoryTest.setQueryNumber(RandomUtil.getRandomEightNumber());
             laboratoryTestService.add(laboratoryTest);
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "导入失败，请重试！");
+            res.put("message", "导入失败，请检查文件！");
             res.put("exception", e.getMessage());
         }
         return res.toString();
