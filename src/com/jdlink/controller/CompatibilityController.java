@@ -86,74 +86,160 @@ public class CompatibilityController {
                 String id1= getId(String.valueOf(Integer.parseInt(id)+(i-1))) ;
                 compatibility.setPwId(id1);
                 //第二列是一个枚举进行进行判断，首先是遍历第二列 处理方式
-                HandleCategory handleCategory =(HandleCategory.getHandleCategory(data[i][1].toString()));
-                compatibility.setHandleCategory(handleCategory);//射入
+                if(data[i][1].toString()!=null){
+                    HandleCategory handleCategory =(HandleCategory.getHandleCategory(data[i][1].toString()));
+                    compatibility.setHandleCategory(handleCategory);//射入
+                }
+                if(data[i][1].toString()==null)
+                    compatibility.setHandleCategory(null);//射入
                 //第三列是一个枚举进行进行判断，首先是遍历第二列 物质形态
-                FormType formType=FormType.getFormType(data[i][2].toString());
-                compatibility.setFormType(formType);
+                if(data[i][2].toString()!=null){
+                    FormType formType=FormType.getFormType(data[i][2].toString());
+                    compatibility.setFormType(formType);
+                }
+                if(data[i][2]==null){
+                    System.out.println("yang");
+                }
                 //第四列是比例
-                compatibility.setProportion(Float.parseFloat(data[i][3].toString()));
+                if(data[i][3].toString()!=null){
+                    compatibility.setProportion(Float.parseFloat(data[i][3].toString()));
+                }
+               else
+                    compatibility.setProportion(0);
                 //第五列是每日配置量
-                compatibility.setDailyProportions(Float.parseFloat(data[i][4].toString()));
+                if(data[i][4].toString()!=null){
+                    compatibility.setDailyProportions(Float.parseFloat(data[i][4].toString()));
+                }
+                else
+                    compatibility.setDailyProportions(0);
                 //第六列是周需求总量
-                compatibility.setWeeklyDemand(Float.parseFloat(data[i][5].toString()));
+                if(data[i][5].toString()!=null){
+                    compatibility.setWeeklyDemand(Float.parseFloat(data[i][5].toString()));
+                }
+                else
+                    compatibility.setWeeklyDemand(0);
                 //第七列是热值
-                compatibility.setCalorific(Float.parseFloat(data[i][6].toString()));
+                if(data[i][6].toString()!=null){
+                    compatibility.setCalorific(Float.parseFloat(data[i][6].toString()));
+                }
+                else
+                    compatibility.setCalorific(0);
                 //第八列是灰分
                 if(data[i][7]!=null){
                     compatibility.setAsh(Float.parseFloat(data[i][7].toString()));
                 }
+                else
+                    compatibility.setAsh(0);
                 //第九列是水分
                 if(data[i][8]!=null){
                     compatibility.setAsh(Float.parseFloat(data[i][8].toString()));
                 }
+                else
+                    compatibility.setAsh(0);
                 //第十列是氯
-                compatibility.setCL(Float.parseFloat(data[i][9].toString()));
+                if(data[i][9].toString()!=null){
+                    compatibility.setCL(Float.parseFloat(data[i][9].toString()));
+                }
+                else
+                    compatibility.setCL(0);
                 //硫 11
-                compatibility.setS(Float.parseFloat(data[i][10].toString()));
+                if(data[i][10].toString()!=null){
+                    compatibility.setS(Float.parseFloat(data[i][10].toString()));
+                }
+                else
+                    compatibility.setS(0);
                 //磷 12
-                compatibility.setP(Float.parseFloat(data[i][11].toString()));
+                if(data[i][11].toString()!=null){
+                    compatibility.setP(Float.parseFloat(data[i][11].toString()));
+                }
+                else
+                    compatibility.setP(0);
                 //弗 13
-                compatibility.setF(Float.parseFloat(data[i][12].toString()));
+                if(data[i][12].toString()!=null){
+                    compatibility.setF(Float.parseFloat(data[i][12].toString()));
+                }
+                else
+                    compatibility.setF(0);
                 //PH 14
-                compatibility.setPH(Float.parseFloat(data[i][13].toString()));
+                if(data[i][13].toString()!=null){
+                    compatibility.setPH(Float.parseFloat(data[i][13].toString()));
+                }
+                else
+                    compatibility.setPH(0);
                 //开始时间 15
                 if(fileName.endsWith("xlsx")){//2007
-                    compatibility.setBeginTime(DateUtil.getDateFromStr(data[i][14].toString()));
+                    if(data[i][14].toString()!=null){
+                        compatibility.setBeginTime(DateUtil.getDateFromStr(data[i][14].toString()));
+                    }
+                   else
+                        compatibility.setBeginTime(null);
                 }
                 else if(fileName.endsWith("xls")){
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Date beginTime= sdf.parse("20"+data[i][14].toString());
-                    compatibility.setBeginTime(beginTime);
+                    if(data[i][14].toString()!=null){
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date beginTime= sdf.parse("20"+data[i][14].toString());
+                        compatibility.setBeginTime(beginTime);
+                    }
+                    else
+                        compatibility.setBeginTime(null);
                 }
-
-
                 //结束时间 16
                 if(fileName.endsWith("xlsx")){//2007
-                    compatibility.setEndTime(DateUtil.getDateFromStr(data[i][15].toString()));
+                    if(data[i][15].toString()!=null){
+                        compatibility.setEndTime(DateUtil.getDateFromStr(data[i][15].toString()));
+                    }
+                 else
+                        compatibility.setEndTime(null);
                 }
                 else if(fileName.endsWith("xls")){
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                   Date endTime= sdf.parse("20"+data[i][15].toString());
-                    compatibility.setEndTime(endTime);
+                    if(data[i][15].toString()!=null){
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date endTime= sdf.parse("20"+data[i][15].toString());
+                        compatibility.setEndTime(endTime);
+                    }
+                else
+                        compatibility.setEndTime(null);
                 }
-
                 //每日配比量合计 17
-                compatibility.setDailyProportionsTotal(Float.parseFloat(data[i][16].toString()));
+                if(data[i][16].toString()!=null){
+                    compatibility.setDailyProportionsTotal(Float.parseFloat(data[i][16].toString()));
+                }
+                else
+                    compatibility.setDailyProportionsTotal(0);
                 //周需求总和 18
-                compatibility.setWeeklyDemandTotal(Float.parseFloat(data[i][17].toString()));
+                if(data[i][17].toString()!=null){
+                    compatibility.setWeeklyDemandTotal(Float.parseFloat(data[i][17].toString()));
+                }
+                else
+                    compatibility.setWeeklyDemandTotal(0);
                 //热量总和 19
-                compatibility.setCalorificTotal(Float.parseFloat(data[i][18].toString()));
+                if(data[i][18].toString()!=null){
+                    compatibility.setCalorificTotal(Float.parseFloat(data[i][18].toString()));
+                }
+                else
+                    compatibility.setCalorificTotal(0);
                 //状态 20
-                compatibility.setCheckState(CheckState.getCheckState(data[i][19].toString()));
+                if(data[i][19].toString()!=null){
+                    compatibility.setCheckState(CheckState.getCheckState(data[i][19].toString()));
+                }
+                else
+                    compatibility.setCheckState(null);
                 //当前时间 21
                 //compatibility.setNowTime(DateUtil.getDateFromStr(data[i][20].toString()));
                 //配伍编号 22
                 compatibility.setCompatibilityId(compatibilityId);
                 //审批内容 23
-                compatibility.setApprovalContent(data[i][22].toString());
+                if(data[i][22].toString()!=null){
+                    compatibility.setApprovalContent(data[i][22].toString());
+                }
+                else
+                    compatibility.setApprovalContent(null);
                 //驳回内容 24
-                compatibility.setBackContent(data[i][23].toString());
+                if(data[i][23].toString()!=null){
+                    compatibility.setBackContent(data[i][23].toString());
+                }
+                else
+                    compatibility.setBackContent(null);
                 //数据绑定完成
                 //进行数据添加
                 compatibilityService.add(compatibility);
