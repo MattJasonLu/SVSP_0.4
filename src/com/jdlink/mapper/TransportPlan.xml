@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.TransportPlanMapper">
+    <resultMap id="TransportPlanRM" type="TransportPlan" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="transportPlanItemList" select="getTransportPlanItemList" column="id"
+                    ofType="com.jdlink.domain.Produce.TransportPlanItem" javaType="ArrayList"/>
+    </resultMap>
+    <resultMap id="TransportPlanItemRM" type="TransportPlanItem">
+        <id property="id" column="id"/>
+        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+        <association property="wastes" column="wastesId" select="getWastes"/>
+    </resultMap>
+    <insert id="add" parameterType="TransportPlan">
+        INSERT INTO t_pr_transportplan (id, author, departmentDirector,
+        productionDirector, "group") VALUES (#{id}, #{author}, #{departmentDirector},
+        #{productionDirector}, #{group});
+        <if test="transportPlanItemList.size() > 0">
+            <foreach collection="transportPlanItemList" item="transportPlanItem" index="index">
+                INSERT INTO t_pr_transportplanitem (id, produceCompanyId, handleCategory,
+                approachTime, wastesId, transportPlanId) VALUES (#{transportPlanItem.id},
+                #{transportPlanItem.produceCompany.clientId}, #{transportPlanItem.handleCategory},
+                #{transportPlanItem.approachTime}, #{transportPlanItem.wastes.id}, #{id});
+                INSERT INTO t_wastes (id, name, formType, wastesId, ph, ashPercentage, wetPercentage,
+                calorific, halogenPercentage, sulfurPercentage, nowTime, packageType, wasteAmount, unit,
+                processWay, transportPlanItemId) VALUES (#{transportPlanItem.wastes.id},
+                #{transportPlanItem.wastes.name}, #{transportPlanItem.wastes.formType},
+                #{transportPlanItem.wastes.wastesId}, #{transportPlanItem.wastes.ph},
+                #{transportPlanItem.wastes.ashPercentage}, #{transportPlanItem.wastes.wetPercentage},
+                #{transportPlanItem.wastes.calorific}, #{transportPlanItem.wastes.halogenPercentage},
+                #{transportPlanItem.wastes.sulfurPercentage, NOW(), #{transportPlanItem.wastes.packageType},
+                #{transportPlanItem.wastes.wasteAmount}, #{transportPlanItem.wastes.wasteAmount},
+                #{transportPlanItem.wastes.unit}, #{transportPlanItem.wastes.processWay},
+                #{transportPlanItem.id});
+            </foreach>
+        </if>
+    </insert>
+
+    <select id="getById" parameterType="String" resultMap="TransportPlanRM">
+        SELECT * FROM t_pr_transportplan WHERE id=#{id};
+    </select>
+
+    <select id="getTransportPlanItemList" parameterType="String" resultMap="TransportPlanItemRM">
+        SELECT * FROM t_pr_transportplanitem WHERE transportPlanId=#{id};
+    </select>
+
+    <select id="getProduceCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{produceCompanyId};
+    </select>
+
+    <select id="getWastes" parameterType="String" resultType="Wastes">
+        SELECT * FROM t_wastes WHERE id={wastesId};
+    </select>
+
+    <select id="getTransportPlanWastesList" resultType="Wastes">
+
+    </select>
+</mapper>
