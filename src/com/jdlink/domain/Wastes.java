@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Produce.ProcessWay;
+
 /**
  * Created by matt on 2018/7/4.
  * 危废信息
@@ -119,6 +121,18 @@ public class Wastes {
      * 运费
      */
     private Float freight;
+    /**
+     * 重量
+     */
+    private float weight;
+    /**
+     * 计量单位
+     */
+    private String unit;
+    /**
+     * 处理方式
+     */
+    private ProcessWay processWay;
 
     private boolean isPH; // PH值
 
@@ -453,6 +467,30 @@ public class Wastes {
         isViscosity = viscosity;
     }
 
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public ProcessWay getProcessWay() {
+        return processWay;
+    }
+
+    public void setProcessWay(ProcessWay processWay) {
+        this.processWay = processWay;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     @Override
     public String toString() {
         return "Wastes{" +
@@ -473,7 +511,6 @@ public class Wastes {
                 ", halogenPercentage=" + halogenPercentage +
                 ", sulfurPercentage=" + sulfurPercentage +
                 ", flashPoint=" + flashPoint +
-                ", wasteAmount=" + wasteAmount +
                 ", component='" + component + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", stockId='" + stockId + '\'' +
@@ -483,11 +520,12 @@ public class Wastes {
                 ", signCount=" + signCount +
                 ", wastesCharacter='" + wastesCharacter + '\'' +
                 ", category='" + category + '\'' +
-                ", quantity=" +
+                ", wasteAmount=" + wasteAmount +
                 ", wastesTotal=" + wastesTotal +
-                ", unitWastesPrice=" +
                 ", freight=" + freight +
-                ", wastesCode='" + '\'' +
+                ", weight=" + weight +
+                ", unit='" + unit + '\'' +
+                ", processWay=" + processWay +
                 ", isPH=" + isPH +
                 ", isAsh=" + isAsh +
                 ", isWater=" + isWater +

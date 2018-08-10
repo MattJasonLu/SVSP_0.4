@@ -224,10 +224,23 @@ function inputSwitchPage() {
 
     }
 }
+function getWeekDate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth()+1;
+    var day = obj.getDate();
+    if(day % 7 > 0)  var a = 1; else a = 0;
+    var week = parseInt(day / 7) + a;
+    return "第" + week + "周";
 
+}
 /**
  * 分页 获取首页内容
  * */
+function loadPageMaterialList() {
+    $("#week").text(getWeekDate());
+}
 function loadPageClientList() {
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
@@ -408,19 +421,4 @@ function loadClientList() {
         }
     });
 }
-var m = new Date();
-var month = m.getMonth();
-var y = new Date();
-var year = y.getFullYear();
-//当月的第几周
-var getMonthWeek = function (a, b, c) {
-    //a = d = 当前日期
-    //b = 6 - w = 当前周的还有几天过完(不算今天)
-    //a + b 的和在除以7 就是当天是当前月份的第几周
-    var date = new Date(a, parseInt(b) - 1, c), w = date.getDay(), d = date.getDate();
-    return Math.ceil((d + 6 - w) / 7);
-};
-$(".week").text(getMonthWeek());
-$(".month").text(month);
-$(".year").text(year);
-console.log(getMonthWeek()+month+year);
+

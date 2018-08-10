@@ -57,7 +57,17 @@ function importExcel() {
     });
 
 }
+function getWeekDate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth()+1;
+    var day = obj.getDate();
+    if(day % 7 > 0)  var a = 1; else a = 0;
+    var week = parseInt(day / 7) + a;
+    return year + "年" + month + "月第" + week + "周";
 
+}
 /**
  * 加载配伍周计划数据
  */
@@ -69,7 +79,7 @@ function getList1() {
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
-            if (result != undefined && result.status == "success"){
+            if (result !== undefined && result.status === "success"){
                 console.log(result);
                 var obj=result.compatibilityList;
                 var n=result.length;
@@ -87,6 +97,7 @@ function getList1() {
     // 设置高级检索的下拉框数据
     setPwList();
     isSearch = false;
+   $("#week").text(getWeekDate());
 }
 /*加载表格数据
 * 
