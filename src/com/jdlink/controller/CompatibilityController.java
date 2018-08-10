@@ -211,56 +211,56 @@ public class CompatibilityController {
                         compatibility.setEndTime(null);
                 }
                 //每日配比量合计 17
-                if(data[i][16].toString()!="null"){
-                    compatibility.setDailyProportionsTotal(Float.parseFloat(data[i][16].toString()));
-                }
-                if(data[i][16].toString()=="null")
-                    compatibility.setDailyProportionsTotal(0);
+//                if(data[i][16].toString()!="null"){
+//                    compatibility.setDailyProportionsTotal(Float.parseFloat(data[i][16].toString()));
+//                }
+//                if(data[i][16].toString()=="null")
+//                    compatibility.setDailyProportionsTotal(0);
                 //周需求总和 18
-                if(data[i][17].toString()!="null"){
-                    compatibility.setWeeklyDemandTotal(Float.parseFloat(data[i][17].toString()));
-                }
-                if(data[i][17].toString()=="null")
-                    compatibility.setWeeklyDemandTotal(0);
+//                if(data[i][17].toString()!="null"){
+//                    compatibility.setWeeklyDemandTotal(Float.parseFloat(data[i][17].toString()));
+//                }
+//                if(data[i][17].toString()=="null")
+//                    compatibility.setWeeklyDemandTotal(0);
                 //热量总和 19
-                if(data[i][18].toString()!="null"){
-                    compatibility.setCalorificTotal(Float.parseFloat(data[i][18].toString()));
-                }
-                if(data[i][18].toString()=="null")
-                    compatibility.setCalorificTotal(0);
+//                if(data[i][18].toString()!="null"){
+//                    compatibility.setCalorificTotal(Float.parseFloat(data[i][18].toString()));
+//                }
+//                if(data[i][18].toString()=="null")
+//                    compatibility.setCalorificTotal(0);
                 //状态 20
-                if(data[i][19].toString()!="null"){
-                    compatibility.setCheckState(CheckState.getCheckState(data[i][19].toString()));
-                }
-                if(data[i][19].toString()=="null")
-                    compatibility.setCheckState(ToExamine);
+//                if(data[i][19].toString()!="null"){
+//                    compatibility.setCheckState(CheckState.getCheckState(data[i][19].toString()));
+//                }
+//                if(data[i][19].toString()=="null")
+//                    compatibility.setCheckState(ToExamine);
                 //当前时间 21
                 //compatibility.setNowTime(DateUtil.getDateFromStr(data[i][20].toString()));
                 //配伍编号 22
                 compatibility.setCompatibilityId(compatibilityId);
                 //审批内容 23
-                if(data[i][22].toString()!="null"){
-                    compatibility.setApprovalContent(data[i][22].toString());
-                }
-                if(data[i][22].toString()=="null")
-                    compatibility.setApprovalContent(null);
+//                if(data[i][22].toString()!="null"){
+//                    compatibility.setApprovalContent(data[i][22].toString());
+//                }
+//                if(data[i][22].toString()=="null")
+//                    compatibility.setApprovalContent(null);
                 //驳回内容 24
-                if(data[i][23].toString()!="null"){
-                    compatibility.setBackContent(data[i][23].toString());
-                }
-                if(data[i][23].toString()=="null")
-                    compatibility.setBackContent(null);
+//                if(data[i][23].toString()!="null"){
+//                    compatibility.setBackContent(data[i][23].toString());
+//                }
+//                if(data[i][23].toString()=="null")
+//                    compatibility.setBackContent(null);
                 //数据绑定完成
                 //进行数据添加
                 compatibilityService.add(compatibility);
             }
             res.put("status", "success");
-            res.put("message", "添加成功");
+            res.put("message", "导入成功");
         }
         catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "添加失败！");
+            res.put("message", "导入失败！");
         }
 
 //        try {
