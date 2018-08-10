@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.WayBillMapper">
+    <resultMap id="WayBillRM" type="WayBill" autoMapping="true">
+        <id column="id" property="id"/>
+        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+        <association property="receiveCompany" column="receiveCompanyId" select="getReceiveCompany"/>
+        <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
+                    javaType="ArrayList"/>
+    </resultMap>
+    <resultMap id="WastesRM" type="Wastes" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="formType" column="formType" javaType="com.jdlink.domain.FormType"/>
+        <result property="packageType" column="packageType" javaType="com.jdlink.domain.PackageType"/>
+    </resultMap>
+
+    <select id="getProduceCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{produceCompanyId};
+    </select>
+
+    <select id="getReceiveCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{receiveCompanyId};
+    </select>
+
+    <select id="getWastes" parameterType="String" resultType="Wastes">
+        select * from t_wastes where wastesId = #{id};
+    </select>
+
+    <select id="count" resultType="int">
+          select count(*) from t_pr_waybill;
+     </select>
+
+    <select id="countById" resultType="int">
+        select count(*) from t_pr_waybill where id like "%"#{id}"%"
+    </select>
+
+    <select id="getById" parameterType="String" resultMap="WayBillRM">
+          select * from t_pr_waybill where id = #{id};
+     </select>
+
+    <select id="listPage" resultMap="WayBillRM">
+        select * from t_pr_waybill order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="search" parameterType="WayBill" resultMap="WayBillRM">
+        select * from t_pr_waybill
+        <where>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="produceCompany != null and produceCompany !=''">
+                and produceCompanyName like "%"#{produceCompany.companyName}"%"
+                and receiveCompanyName like "%"#{receiveCompany.companyName}"%"
+            </if>
+            <if test="total != null and total !=''">
+                and total = #{total}
+            </if>
+            <if test="founder !=null and founder !=''">
+                and founder like "%"#{founder}"%"
+            </if>
+            <if test="wayBillDate !=null and wayBillDate !=''">
+                and wayBillDate like "%"#{wayBillDate}"%"
+            </if>
+            <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
+                and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
+                and receiveCompanyOperator like "%"#{receiveCompanyOperator}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and t_pr_waybill.state like "%"#{state}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="WayBill" resultType="int">
+        select count(*) from t_pr_waybill
+        <where>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="produceCompany.companyName != null and produceCompany.companyName !=''">
+                and produceCompanyName like "%"#{produceCompany.companyName}"%"
+                and receiveCompanyName like "%"#{receiveCompany.companyName}"%"
+            </if>
+            <if test="total != null and total !=''">
+                and total = #{total}
+            </if>
+            <if test="founder !=null and founder !=''">
+                and founder like "%"#{founder}"%"
+            </if>
+            <if test="wayBillDate !=null and wayBillDate !=''">
+                and wayBillDate like "%"#{wayBillDate}"%"
+            </if>
+            <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
+                and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
+                and receiveCompanyOperator like "%"#{receiveCompanyOperator}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and t_pr_waybill.state like "%"#{state}"%"
+            </if>
+        </where>
+    </select>
+</mapper>

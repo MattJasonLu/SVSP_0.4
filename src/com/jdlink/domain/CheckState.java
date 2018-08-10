@@ -18,7 +18,8 @@ public enum CheckState implements CodeBaseEnum{
     Tested("已化验",10),
     Submitted("已提交",11),
     Confirm("已确认",12),
-    NewBuild("新建",13)
+    NewBuild("新建",13),
+    Approval("审批通过",14)
     ;
 
     private String name;
