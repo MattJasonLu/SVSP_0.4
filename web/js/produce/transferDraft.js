@@ -70,11 +70,11 @@ function totalPage() {
  * @returns {number}
  */
 function loadPages(totalRecord, count) {
-    if (totalRecord == 0) {
+    if (totalRecord === 0) {
         window.alert("总记录数为0，请检查！");
         return 0;
     }
-    else if (totalRecord % count == 0)
+    else if (totalRecord % count === 0)
         return totalRecord / count;
     else
         return parseInt(totalRecord / count) + 1;
@@ -113,24 +113,24 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
-    if (pageNumber == 0) {                 //首页
+    if (pageNumber === 0) {                 //首页
         pageNumber = 1;
     }
-    if (pageNumber == -2) {
+    if (pageNumber === -2) {
         pageNumber = totalPage();        //尾页
     }
-    if (pageNumber == null || pageNumber == undefined) {
+    if (pageNumber == null || pageNumber === undefined) {
         console.log("参数为空,返回首页!");
         pageNumber = 1;
     }
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == 1) {
+    if (pageNumber === 1) {
         $("#previous").addClass("disabled");
         $("#firstPage").addClass("disabled");
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
-    if (pageNumber == totalPage()) {
+    if (pageNumber === totalPage()) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
         $("#previous").removeClass("disabled");
@@ -159,7 +159,7 @@ function switchPage(pageNumber) {
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
-                if (result != undefined && result.status == "success") {
+                if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
                 } else {
                     console.log(result);
@@ -179,7 +179,7 @@ function switchPage(pageNumber) {
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
-                if (result != undefined && result.status == "success") {
+                if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
                 } else {
                     console.log("fail: " + result);
@@ -198,16 +198,16 @@ function switchPage(pageNumber) {
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == null || pageNumber == undefined) {
+    if (pageNumber == null || pageNumber === undefined) {
         window.alert("跳转页数不能为空！")
     } else {
-        if (pageNumber == 1) {
+        if (pageNumber === 1) {
             $("#previous").addClass("disabled");
             $("#firstPage").addClass("disabled");
             $("#next").removeClass("disabled");
             $("#endPage").removeClass("disabled");
         }
-        if (pageNumber == totalPage()) {
+        if (pageNumber === totalPage()) {
             $("#next").addClass("disabled");
             $("#endPage").addClass("disabled");
             $("#previous").removeClass("disabled");
@@ -235,7 +235,7 @@ function inputSwitchPage() {
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
-                    if (result != undefined && result.status == "success") {
+                    if (result !== undefined && result.status === "success") {
                         console.log(result);
                         setDataList(result.data);
                     } else {
@@ -256,7 +256,7 @@ function inputSwitchPage() {
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
-                    if (result != undefined && result.status == "success") {
+                    if (result !== undefined && result.status === "success") {
                         // console.log(result);
                         setDataList(result.data);
                     } else {
@@ -291,7 +291,7 @@ function loadPageList() {
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
-            if (result != undefined && result.status == "success") {
+            if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
             } else {
@@ -406,7 +406,7 @@ function searchData() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            if (result != undefined && result.status == "success") {
+            if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
             } else {
@@ -432,7 +432,7 @@ function addData(state) {
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
-                if (result != undefined) {
+                if (result !== undefined) {
                     transferId = result.transferDraftId;
                 } else {
                     console.log("fail: " + result);
@@ -516,7 +516,7 @@ function addData(state) {
         disposeIsOther: $("#disposeIsOther").prop("checked"),
         headSign: $("#headSign").val(),
         signDate: $("#signDate").val(),
-        checkState: state == 'save' ? 'ToSubmit' : 'ToExamine'
+        checkState: state === 'save' ? 'ToSubmit' : 'ToExamine'
     };
     // 上传用户数据
     $.ajax({
@@ -527,8 +527,8 @@ function addData(state) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            if (result != undefined) {
-                if (result.status == "success") {
+            if (result !== undefined) {
+                if (result.status === "success") {
                     alert(result.message);
                     // if (addType == "continue") window.location.reload();
                     // else $(location).attr('href', 'transferDraft.html');//跳转
@@ -557,7 +557,7 @@ function getSelectedInfo() {
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if (result != undefined) {
+            if (result !== undefined) {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
                 var wastesFormType = $("#wastesFormType");
@@ -598,7 +598,7 @@ function getCheckState() {
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
-            if (result != undefined) {
+            if (result !== undefined) {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
                 var checkState = $("#search-checkState");
@@ -636,7 +636,7 @@ function setInvalid(e) {    //已作废
                 id: id
             },
             success: function (result) {
-                if (result != undefined && result.status == "success") {
+                if (result !== undefined && result.status === "success") {
                     console.log(result);
                     alert(result.message);
                     window.location.reload();
@@ -668,7 +668,7 @@ function setSubmit(e) {    //已作废
                 id: id
             },
             success: function (result) {
-                if (result != undefined && result.status == "success") {
+                if (result !== undefined && result.status === "success") {
                     console.log(result);
                     alert(result.message);
                     window.location.reload();
@@ -709,7 +709,7 @@ function loadData() {
                 id: id
             },
             success: function (result) {
-                if (result != undefined && result.status == "success") {
+                if (result !== undefined && result.status === "success") {
                     console.log(result);
                     var data = eval(result.data);
                     if (data.produceCompany != null) {
@@ -802,18 +802,138 @@ function viewData(e) {
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "",
+        url: "getTransferDraftById",
         async: false,
         dataType: "json",
         data: {
             id: id
         },
         success: function (result) {
-            if (result != undefined && result.status == "success") {
+            if (result !== undefined && result.status === "success") {
                 console.log(result);
-
+                var date = eval(result);
+                $("#produceCompanyName").text(date.produceCompanyName);
+                $("#produceCompanyPhone").text(date.produceCompanyPhone);
+                $("#produceCompanyLocation").text(date.produceCompanyLocation);
+                $("#transportCompanyName").text(date.transportCompanyName);
+                $("#transportCompanyLocation").text(date.transportCompanyLocation);
+                $("#acceptCompanyName").text(date.acceptCompanyName);
+                $("#acceptCompanyLocation").text(date.acceptCompanyLocation);
+                $("#produceCompanyPostcode").text(date.produceCompanyPostcode);
+                $("#transportCompanyPhone").text(date.transportCompanyPhone);
+                $("#transportCompanyPostcode").text(date.transportCompanyPostcode);
+                $("#acceptCompanyPhone").text(date.acceptCompanyPhone);
+                $("#acceptCompanyPostcode").text(date.acceptCompanyPostcode);
+                $("#wastesName").text(date.wastesName);
+                $("#wastesPrepareTransferCount").text(date.wastesPrepareTransferCount);
+                $("#wastesCharacter").text(date.wastesCharacter);
+                $("#wastesCategory").text(date.wastesCategory);
+                $("#wastesTransferCount").text(date.wastesTransferCount);
+                if(date.wastesFormType !== null) $("#wastesFormType").text(date.wastesFormType);
+                $("#wastesCode").text(date.wastesCode);
+                $("#wastesSignCount").text(date.wastesSignCount);
+                if(date.wastesPackageType !== null) $("#wastesPackageType").text(date.wastesPackageType);
+                $("#outwardIsTransit").text(date.outwardIsTransit);
+                $("#outwardIsUse").text(date.outwardIsUse);
+                $("#outwardIsDeal").text(date.outwardIsDeal);
+                $("#outwardIsDispose").text(date.outwardIsDispose);
+                $("#mainDangerComponent").text(date.mainDangerComponent);
+                $("#dangerCharacter").text(date.dangerCharacter);
+                $("#emergencyMeasure").text(date.emergencyMeasure);
+                $("#emergencyEquipment").text(date.emergencyEquipment);
+                $("#dispatcher").text(date.dispatcher);
+                $("#destination").text(date.destination);
+                $("#transferTime").text(date.transferTime);
+                $("#firstCarrier").text(date.firstCarrier);
+                $("#firstCarryTime").text(date.firstCarryTime);
+                $("#firstModel").text(date.firstModel);
+                $("#firstBrand").text(date.firstBrand);
+                $("#firstTransportNumber").text(date.firstTransportNumber);
+                $("#firstOrigin").text(date.firstOrigin);
+                $("#firstStation").text(date.firstStation);
+                $("#firstDestination").text(date.firstDestination);
+                $("#firstCarrierSign").text(date.firstCarrierSign);
+                $("#secondCarrier").text(date.secondCarrier);
+                $("#secondCarryTime").text(date.secondCarryTime);
+                $("#secondModel").text(date.secondModel);
+                $("#secondBrand").text(date.secondBrand);
+                $("#secondTransportNumber").text(date.secondTransportNumber);
+                $("#secondOrigin").text(date.secondOrigin);
+                $("#secondStation").text(date.secondStation);
+                $("#secondDestination").text(date.secondDestination);
+                $("#secondCarrierSign").text(date.secondCarrierSign);
+                $("#acceptCompanyLicense").text(date.acceptCompanyLicense);
+                $("#recipient").text(date.recipient);
+                $("#acceptDate").text(date.acceptDate);
+                $("#disposeIsUse").text(date.disposeIsUse);
+                $("#disposeIsStore").text(date.disposeIsStore);
+                $("#disposeIsBurn").text(date.disposeIsBurn);
+                $("#disposeIsLandFill").text(date.disposeIsLandFill);
+                $("#disposeIsOther").text(date.disposeIsOther);
+                $("#headSign").text(date.headSign);
+                $("#signDate").text(date.signDate);
             } else {
                 alert(result.message);
+                $("#produceCompanyName").text("");
+                $("#produceCompanyPhone").text("");
+                $("#produceCompanyLocation").text("");
+                $("#transportCompanyName").text("");
+                $("#transportCompanyLocation").text("");
+                $("#acceptCompanyName").text("");
+                $("#acceptCompanyLocation").text("");
+                $("#produceCompanyPostcode").text("");
+                $("#transportCompanyPhone").text("");
+                $("#transportCompanyPostcode").text("");
+                $("#acceptCompanyPhone").text("");
+                $("#acceptCompanyPostcode").text("");
+                $("#wastesName").text("");
+                $("#wastesPrepareTransferCount").text("");
+                $("#wastesCharacter").text("");
+                $("#wastesCategory").text("");
+                $("#wastesTransferCount").text("");
+                $("#wastesFormType").text("");
+                $("#wastesCode").text("");
+                $("#wastesSignCount").text("");
+                $("#wastesPackageType").text("");
+                $("#outwardIsTransit").text("");
+                $("#outwardIsUse").text("");
+                $("#outwardIsDeal").text("");
+                $("#outwardIsDispose").text("");
+                $("#mainDangerComponent").text("");
+                $("#dangerCharacter").text("");
+                $("#emergencyMeasure").text("");
+                $("#emergencyEquipment").text("");
+                $("#dispatcher").text("");
+                $("#destination").text("");
+                $("#transferTime").text("");
+                $("#firstCarrier").text("");
+                $("#firstCarryTime").text("");
+                $("#firstModel").text("");
+                $("#firstBrand").text("");
+                $("#firstTransportNumber").text("");
+                $("#firstOrigin").text("");
+                $("#firstStation").text("");
+                $("#firstDestination").text("");
+                $("#firstCarrierSign").text("");
+                $("#secondCarrier").text("");
+                $("#secondCarryTime").text("");
+                $("#secondModel").text("");
+                $("#secondBrand").text("");
+                $("#secondTransportNumber").text("");
+                $("#secondOrigin").text("");
+                $("#secondStation").text("");
+                $("#secondDestination").text("");
+                $("#secondCarrierSign").text("");
+                $("#acceptCompanyLicense").text("");
+                $("#recipient").text("");
+                $("#acceptDate").text("");
+                $("#disposeIsUse").text("");
+                $("#disposeIsStore").text("");
+                $("#disposeIsBurn").text("");
+                $("#disposeIsLandFill").text("");
+                $("#disposeIsOther").text("");
+                $("#headSign").text("");
+                $("#signDate").text("");
             }
         },
         error: function (result) {
@@ -821,6 +941,7 @@ function viewData(e) {
             alert("服务器异常");
         }
     });
+    $("#appointModal2").modal("show");
 }
 
 /**

@@ -2,19 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>接收管理</title>
+    <title>领料单</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/data-format.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
+    <script src="js/produce/materialRequisition.js"></script>
 </head>
-<body onload="loadPageLaboratoryList()" class="" >
+<script type="text/javascript">
+    $('#embed').load('embed/loginLogModal.html');
+</script>
+<body onload="loadThresholdList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -111,147 +115,145 @@
             </div>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
             <div class="row">
-                <ol class="breadcrumb">
-                    <li><a href="businessModel.html">接收管理</a></li>
-                    <li><a href="#">入库管理</a></li>
-                    <li class="active"><a href="#">危废入库</a></li>
-                </ol>
+                <div>
+                    <ol class="breadcrumb">
+                        <li><a href="businessModel.html">接收管理</a></li>
+                        <li>库存管理</li>
+                        <li>入库管理</li>
+                        <li class="active">领料单</li>
+                    </ol>
+                    <p class="text-right"><b>领料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>
+                </div>
+                <h4 class="sub-header">领料单</h4>
             </div>
-            <h4 class="sub-header">化验单新增</h4>
-            <form method="post" id="clientInfoForm" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label for="warehouseId" class="col-sm-4 control-label">仓库号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="warehouseId" name="warehouseId" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="wareDate" class="col-sm-4 control-label">出库日期 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wareDate" name="wareDate" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="warehouseNumber" class="col-sm-4 control-label">出库单号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="warehouseNumber" name="warehouseNumber" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="warehouseType" class="col-sm-4 control-label">出库类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="warehouseType" name="warehouseType" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="wasteCompany" class="col-sm-4 control-label">产废单位 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wasteCompany" name="wasteCompany" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="wasteName" class="col-sm-4 control-label">危废名称 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wasteName" name="wasteName" placeholder="" required>
-                            </div>
-                        </div>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 领用</a>
                     </div>
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label for="wasteCode" class="col-sm-4 control-label">危废代码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wasteCode" name="wasteCode" placeholder="" required>
+                    <!--查询框-->
+                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-Id" class="col-sm-4 control-label">编号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="singlePerson" class="col-sm-4 control-label">制单人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="singlePerson" name="singlePerson" placeholder="" required>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-wastesCode" name="search-wastesCode" placeholder="">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="auditor" class="col-sm-4 control-label">审核人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="auditor" name="auditor" placeholder="" required>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-wastesType" class="col-sm-4 control-label">危废列别</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-wastesType" name="search-wastesType" placeholder="">
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="wareNumber" class="col-sm-4 control-label">出库数量 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="number" class="form-control" id="wareNumber" name="wareNumber" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="formType" class="col-sm-4 control-label">物质形态 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <select class="form-control" id="formType" name="formType" required>
-                                    <option value="0" class="formType"> </option>
-                                    <option value="1" class="formType">固态</option>
-                                    <option value="2" class="formType">半固态</option>
-                                    <option value="3" class="formType">液态</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="packingType" class="col-sm-4 control-label">包装类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <select class="form-control" id="packingType" name="packingType" required>
-                                    <option value="0" class="packingType"> </option>
-                                    <option value="1" class="packingType">罐装</option>
-                                    <option value="2" class="packingType">桶装</option>
-                                    <option value="3" class="packingType">袋装</option>
-                                </select>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-company" class="col-sm-4 control-label">单位</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-company" name="search-company" placeholder="">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <div class="row text-center">
-                    <a class="btn btn-success" onclick="clientSave()">保存</a>
-                    <a class="btn btn-primary" onclick="clientSubmit()">提交</a>
-                    <a class="btn btn-warning" onclick="clientReset()">重置</a>
-                    <a class="btn btn-danger" href="warehouseManageOut.html">返回</a>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-left" id="department" colspan="4">部门:<input class="focus" type="text" title="部门" maxlength="6"></th>
+                            <th class="text-left" id="date" colspan="4"><span id="weekDate"></span></th>
+                            <th class="text-left" id="serialNumber">文件编号:M-TD-107-R04<input class="focus" type="text" title="文件编号" maxlength="15"></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">编号</th>
+                            <th class="text-center">厂家</th>
+                            <th class="text-center">危废名称</th>
+                            <th class="text-center">危废代码</th>
+                            <th class="text-center">危废类别</th>
+                            <th class="text-center">单位</th>
+                            <th class="text-center">配料数量</th>
+                            <th class="text-center">领用数量</th>
+                            <th class="text-center">附注</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">12312</td>
+                            <td class="text-center">123</td>
+                            <td class="text-center">12312</td>
+                            <td class="text-center">123</td>
+                            <td class="text-center">132123</td>
+                            <td class="text-center">123</td>
+                            <td class="text-center">123</td>
+                            <td class="text-center">123</td>
+                            <td class="text-center">1123123</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="row">
+                        <table style="width: 100%;border: 0;">
+                            <tr>
+                                <td>
+                                    <b>主管副总经理:</b><input class="focus" type="text" title="主管副总经理" maxlength="6">
+                                </td>
+                                <td>
+                                    <b>部门仓库主管:</b><input class="focus" type="text" title="部门仓库主管" maxlength="6">
+                                </td>
+                                <td>
+                                    <b>保管员:</b><input class="focus" type="text" title="保管员" maxlength="6">
+                                </td>
+                                <td>
+                                    <b>领料部门主管:</b><input class="focus" type="text" title="领料部门主管" maxlength="6">
+                                </td>
+                                <td>
+                                    <b>领料人:</b><input class="focus" type="text" title="领料人" maxlength="6">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-            </form>
+            </div>
+            <!--分页-->
         </div>
     </div>
     <div id="embed"></div>
 </body>
-<style>
-    th {
-        text-align:center;
-        vertical-align: middle;
-    }
-    .pagination > li {
-        display: inline;
-    }
-    .inputText { float:left;
-    }
-    .showLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-    .selectLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-</style>
-<script>
-    //全选复选框
-    function allSelect() {
-        var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
-    }
-    $('#embed').load('embed/loginLogModal.html');
-</script>
 </html>

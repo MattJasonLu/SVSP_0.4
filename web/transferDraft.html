@@ -32,7 +32,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
-                <li><a href="#">首页</a></li>
+                <li><a href="receiveManagement.html">首页</a></li>
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -55,13 +55,15 @@
                         <li class="dropdown-submenu">
                             <a href="#">入库管理</a>
                             <ul class="dropdown-menu">
+                                <li><a href="materialRequisition.html">领料单</a></li>
+                                <li role="separator" class="divider"></li>
                                 <li><a href="warehouseManage.html">危废入库</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#">次生入库</a></li>
                             </ul>
                         </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">磅单管理</a></li>
+                        <li><a href="singlePoundsManage.html">磅单管理</a></li>
                     </ul>
                 </li>
             </ul>
@@ -296,6 +298,499 @@
                 </li>
             </ol>
         </nav>
+    </div>
+</div>
+<!--查看模态框-->
+<div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print1"  style="width: 90%">
+        <div class="modal-content" >
+            <div style="margin: 5%;">
+                <div class="modal-header">
+                    <h2 class="text-center">转移联单</h2>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="produceForm">
+                        <div class="row">
+                            <div class="form-horizontal col-md-2">
+                                <h4 class="text-info text-oneLine">危险产生单位填写</h4>
+                            </div>
+                            <div class="form-horizontal col-md-10">
+                                <img src="image/line.png" style="margin-top: 1px">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-8">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">产生单位</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control" placeholder="" name="produceCompanyName" id="produceCompanyName" value="测试生产单位">
+                                    </div>
+                                    <label class="col-sm-3 control-label">单位盖章</label>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">电话</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="produceCompanyPhone" id="produceCompanyPhone">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-8">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">通讯地址</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="produceCompanyLocation" id="produceCompanyLocation">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">运输单位</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="transportCompanyName" id="transportCompanyName" value="测试运输单位">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">通讯地址</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="transportCompanyLocation" id="transportCompanyLocation">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">接收单位</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="acceptCompanyName" id="acceptCompanyName" value="常州北控安耐得有限公司">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">通讯地址</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="acceptCompanyLocation" id="acceptCompanyLocation">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">邮编</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="produceCompanyPostcode" id="produceCompanyPostcode">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">电话</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="transportCompanyPhone" id="transportCompanyPhone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">邮编</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="transportCompanyPostcode" id="transportCompanyPostcode">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">电话</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="acceptCompanyPhone" id="acceptCompanyPhone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">邮编</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="acceptCompanyPostcode" id="acceptCompanyPostcode">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">废物名称</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="wastesName" id="wastesName">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">拟转移量</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="wastesPrepareTransferCount" id="wastesPrepareTransferCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">危废特性</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="wastesCharacter" id="wastesCharacter">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">废物类别</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="wastesCategory" id="wastesCategory">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">转&nbsp;&nbsp;移&nbsp;&nbsp;量</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="wastesTransferCount" id="wastesTransferCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">形&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
+                                    <div class="col-xs-5">
+                                        <select class="form-control" name="wastesFormType" id="wastesFormType"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">八&nbsp;&nbsp;位&nbsp;&nbsp;码</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="wastesCode" id="wastesCode">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">签&nbsp;&nbsp;收&nbsp;&nbsp;量</label>
+                                    <div class="col-xs-5">
+                                        <input type="text" class="form-control" placeholder="" name="wastesSignCount" id="wastesSignCount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">包装方式</label>
+                                    <div class="col-xs-5">
+                                        <select class="form-control" name="wastesPackageType" id="wastesPackageType"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-8">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">外运目的</label>
+                                    <div class="checkbox col-xs-10">
+                                        <label>
+                                            <input type="checkbox" name="outwardIsTransit" id="outwardIsTransit" value="true">中转储存
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="outwardIsUse" id="outwardIsUse" value="true">利用
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="outwardIsDeal" id="outwardIsDeal" value="true">处理
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="outwardIsDispose" id="outwardIsDispose" value="true">处置
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">主要危险成分</label>
+                                    <div class="col-xs-10">
+                                        <input type="text" class="form-control" placeholder="" name="mainDangerComponent" id="mainDangerComponent">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">危险特性与禁忌</label>
+                                    <div class="col-xs-10">
+                                        <input type="text" class="form-control" placeholder="" name="dangerCharacter" id="dangerCharacter">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">应急措施</label>
+                                    <div class="col-xs-10">
+                                        <input type="text" class="form-control" placeholder="" name="emergencyMeasure" id="emergencyMeasure">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">应急设备</label>
+                                    <div class="col-xs-10">
+                                        <input type="text" class="form-control" placeholder="" name="emergencyEquipment" id="emergencyEquipment">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">发运人</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="dispatcher" id="dispatcher">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">运达地</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="destination" id="destination">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">转移时间</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="transferTime" id="transferTime">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form method="post" id="transportForm">
+                        <div class="row">
+                            <div class="form-horizontal col-md-2">
+                                <h4 class="text-info text-oneLine">废物运输单位填写</h4>
+                            </div>
+                            <div class="form-horizontal col-md-10">
+                                <img src="image/line.png" style="margin-top: 1px">
+                            </div>
+                        </div>
+                        <p class="text-center">运输者须知：必须核对以上栏目事项，当与实际情况不符时，有权拒绝接收</p>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">第一承运人</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="firstCarrier" id="firstCarrier">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">运输时间</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="firstCarryTime" id="firstCarryTime">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">车（船）型</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="firstModel" id="firstModel">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">牌号</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="firstBrand" id="firstBrand">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">道路运输证号</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="firstTransportNumber" id="firstTransportNumber">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">运输起点</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="firstOrigin" id="firstOrigin">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">经由地</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="firstStation" id="firstStation">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">运输终点</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="firstDestination" id="firstDestination">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">运输人签字</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="firstCarrierSign" id="firstCarrierSign">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">第二承运人</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="secondCarrier" id="secondCarrier">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">运输时间</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="secondCarryTime" id="secondCarryTime">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">车（船）型</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="secondModel" id="secondModel">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">牌号</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="secondBrand" id="secondBrand">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">道路运输证号</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="secondTransportNumber" id="secondTransportNumber">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">运输起点</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="secondOrigin" id="secondOrigin">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">经由地</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="secondStation" id="secondStation">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">运输终点</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="secondDestination" id="secondDestination">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">运输人签字</label>
+                                    <div class="col-xs-6">
+                                        <input type="text" class="form-control" placeholder="" name="secondCarrierSign" id="secondCarrierSign">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <form method="post" id="acceptForm">
+                        <div class="row">
+                            <div class="form-horizontal col-md-2">
+                                <h4 class="text-info text-oneLine">废物接收单位填写</h4>
+                            </div>
+                            <div class="form-horizontal col-md-10">
+                                <img src="image/line.png" style="margin-top: 1px">
+                            </div>
+                        </div>
+                        <p class="text-center">接收者须知：必须核对以上栏目事项，当与实际情况不符时，有权拒绝接收</p>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">经营许可证号</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="acceptCompanyLicense" id="acceptCompanyLicense" value="JS1284OOD143-3">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-5 control-label">接收人</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control" placeholder="" name="recipient" id="recipient">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-5 control-label">接收日期</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control" placeholder="" name="acceptDate" id="acceptDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">废物处置方式</label>
+                                    <div class="checkbox col-xs-10">
+                                        <label>
+                                            <input type="checkbox" name="disposeIsUse" id="disposeIsUse" value="true">利用
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="disposeIsStore" id="disposeIsStore" value="true">贮存
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="disposeIsBurn" id="disposeIsBurn" value="true">焚烧
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="disposeIsLandFill" id="disposeIsLandFill" value="true">安全填埋
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" name="disposeIsOther" id="disposeIsOther" value="true">其他
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-horizontal col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">单位负责人签字</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" placeholder="" name="headSign" id="headSign">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-5 control-label">单位盖章</label>
+                                </div>
+                            </div>
+                            <div class="form-horizontal col-md-3">
+                                <div class="form-group">
+                                    <label class="col-sm-5 control-label">日期</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control" placeholder="" name="signDate" id="signDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="embed"></div>
