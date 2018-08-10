@@ -103,7 +103,7 @@ public class ImportUtil {
                         System.out.println(obj[j]+"==>");
                         if (obj[j]==""||obj[j]==null)
                             obj[j] = "null";
-                        param[i][j] = obj[j];
+                         param[i][j] = obj[j];
                     }
                 }
             } catch (Exception e) {

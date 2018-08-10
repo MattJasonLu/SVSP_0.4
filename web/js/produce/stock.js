@@ -697,6 +697,8 @@ function loadAdjustStock() {
           $('#plateNumber').prop('value',obj.plateNumber);
           //赋值是否自运单位
           $('#selfEmployed').prop('checked',obj.selfEmployed);
+          //产废公司
+          $('#proWasteCompany').prop("value",obj.proWasteCompany);
           if(obj.selfEmployed==true){
               $('#transport1').hide();//是自运公司 隐藏
           }
@@ -749,6 +751,7 @@ function adjustStock1() {
         'plateNumber':$("#plateNumber").val(),//车牌号
         'stockId':$("#stockId").val(),//库存编号
        'selfEmployed':$('#selfEmployed').prop('checked'),
+        'proWasteCompany':$('#proWasteCompany').val(),
     };
     data['wastesList']=[];
     var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
@@ -902,6 +905,8 @@ function viewStock(item) {
                 $('#proTelephone').text(obj.proTelephone);
                 //赋值是否自运单位
                 $('#selfEmployed').prop('checked',obj.selfEmployed);
+                //产废公司
+                $('#proWasteCompany').text(obj.proWasteCompany);
                 for(var i=0;i<obj.wastesList.length;i++){
                     if (i > 0) addWastesNewLine();
                     var $i = i;
