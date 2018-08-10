@@ -5,10 +5,12 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Wastes;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +91,8 @@ public class CompatibilityController {
         //进行数据绑定
         try {
             for(int i=1;i<data.length;i++){
+                Wastes wastes=new Wastes();//危废信息
+                List<Wastes> wastesList=new ArrayList<>();
                 Compatibility compatibility=new Compatibility();
                 //序号绑定
                 String id1= getId(String.valueOf(Integer.parseInt(id)+(i-1))) ;
@@ -130,52 +135,68 @@ public class CompatibilityController {
                     compatibility.setWeeklyDemand(0);
                 //第七列是热值
                 if(data[i][6].toString()!="null"){
-                    compatibility.setCalorific(Float.parseFloat(data[i][6].toString()));
+                    wastes.setCalorific(Float.parseFloat(data[i][6].toString()));
+                    //compatibility.setCalorific(Float.parseFloat(data[i][6].toString()));
                 }
                 if(data[i][6].toString()=="null")
-                    compatibility.setCalorific(0);
+                    //compatibility.setCalorific(0);
+                    wastes.setCalorific(0);
                 //第八列是灰分
                 if(data[i][7]!="null"){
-                    compatibility.setAsh(Float.parseFloat(data[i][7].toString()));
+                    //compatibility.setAsh(Float.parseFloat(data[i][7].toString()));
+                    wastes.setAshPercentage(Float.parseFloat(data[i][7].toString()));
                 }
                 if(data[i][7]=="null")
-                    compatibility.setAsh(0);
+                    wastes.setAshPercentage(0);
+                   // compatibility.setAsh(0);
                 //第九列是水分
                 if(data[i][8]!="null"){
-                    compatibility.setAsh(Float.parseFloat(data[i][8].toString()));
+                    wastes.setWetPercentage(Float.parseFloat(data[i][8].toString()));
+                    //compatibility.setAsh(Float.parseFloat(data[i][8].toString()));
                 }
                 if(data[i][8]=="null")
-                    compatibility.setAsh(0);
+                    wastes.setWetPercentage(0);
+                    //compatibility.setAsh(0);
                 //第十列是氯
                 if(data[i][9].toString()!="null"){
-                    compatibility.setCL(Float.parseFloat(data[i][9].toString()));
+                    wastes.setChlorine(Float.parseFloat(data[i][9].toString()));
+                    //compatibility.setCL(Float.parseFloat(data[i][9].toString()));
                 }
                 if(data[i][9].toString()=="null")
-                    compatibility.setCL(0);
+                    wastes.setChlorine(0);
+                    //compatibility.setCL(0);
                 //硫 11
                 if(data[i][10].toString()!="null"){
-                    compatibility.setS(Float.parseFloat(data[i][10].toString()));
+                    wastes.setSulfurPercentage(Float.parseFloat(data[i][10].toString()));
+                    //compatibility.setS(Float.parseFloat(data[i][10].toString()));
                 }
                 if(data[i][10].toString()=="null")
-                    compatibility.setS(0);
+                    wastes.setSulfurPercentage(0);
+                    //compatibility.setS(0);
                 //磷 12
                 if(data[i][11].toString()!="null"){
-                    compatibility.setP(Float.parseFloat(data[i][11].toString()));
+                    wastes.setPhosphorus(Float.parseFloat(data[i][11].toString()));
+                    //compatibility.setP(Float.parseFloat(data[i][11].toString()));
                 }
                 if(data[i][11].toString()=="null")
-                    compatibility.setP(0);
+                    wastes.setPhosphorus(0);
+                   // compatibility.setP(0);
                 //弗 13
                 if(data[i][12].toString()!="null"){
-                    compatibility.setF(Float.parseFloat(data[i][12].toString()));
+                    wastes.setFluorine(Float.parseFloat(data[i][12].toString()));
+                    //compatibility.setF(Float.parseFloat(data[i][12].toString()));
                 }
                 if(data[i][12].toString()=="null")
-                    compatibility.setF(0);
+                    wastes.setFluorine(0);
+                   // compatibility.setF(0);
                 //PH 14
                 if(data[i][13].toString()!="null"){
-                    compatibility.setPH(Float.parseFloat(data[i][13].toString()));
+                    wastes.setPh(Float.parseFloat(data[i][13].toString()));
+                   //compatibility.setPH(Float.parseFloat(data[i][13].toString()));
                 }
                 if(data[i][13].toString()=="null")
-                    compatibility.setPH(0);
+                    wastes.setPh(0);
+                    //compatibility.setPH(0);
                 //开始时间 15
                 if(fileName.endsWith("xlsx")){//2007
                     if(data[i][14].toString()!="null"){
@@ -238,6 +259,7 @@ public class CompatibilityController {
                 //compatibility.setNowTime(DateUtil.getDateFromStr(data[i][20].toString()));
                 //配伍编号 22
                 compatibility.setCompatibilityId(compatibilityId);
+                wastes.setCompatibilityId(compatibilityId);
                 //审批内容 23
 //                if(data[i][22].toString()!="null"){
 //                    compatibility.setApprovalContent(data[i][22].toString());
@@ -252,6 +274,9 @@ public class CompatibilityController {
 //                    compatibility.setBackContent(null);
                 //数据绑定完成
                 //进行数据添加
+                wastes.setId(RandomUtil.getRandomEightNumber());
+                wastesList.add(wastes);
+                compatibility.setWastesList(wastesList);
                 compatibilityService.add(compatibility);
             }
             res.put("status", "success");

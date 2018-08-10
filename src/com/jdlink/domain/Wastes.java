@@ -74,6 +74,44 @@ public class Wastes {
      */
     private float sulfurPercentage;
     /**
+     * 氯
+     */
+    private float  chlorine;
+
+    public float getChlorine() {
+        return chlorine;
+    }
+
+    public void setChlorine(float chlorine) {
+        this.chlorine = chlorine;
+    }
+    /**
+     * 磷
+     */
+    private float phosphorus;
+
+    public float getPhosphorus() {
+        return phosphorus;
+    }
+
+    public void setPhosphorus(float phosphorus) {
+        this.phosphorus = phosphorus;
+    }
+    /**
+ * 氟
+ *
+ */
+private float fluorine;
+
+    public float getFluorine() {
+        return fluorine;
+    }
+
+    public void setFluorine(float fluorine) {
+        this.fluorine = fluorine;
+    }
+
+    /**
      * 闪点
      */
     private float flashPoint;
@@ -137,6 +175,18 @@ public class Wastes {
      * 处理方式
      */
     private ProcessWay processWay;
+    /**
+     * 配伍编号
+     */
+    private  String compatibilityId;
+
+    public String getCompatibilityId() {
+        return compatibilityId;
+    }
+
+    public void setCompatibilityId(String compatibilityId) {
+        this.compatibilityId = compatibilityId;
+    }
 
     private boolean isPH; // PH值
 
