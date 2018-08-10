@@ -1,13 +1,9 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
-import com.jdlink.domain.MixingElement;
-import com.jdlink.domain.Page;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HeavyMetal;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.Parameter;
-import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.LaboratoryTestService;
 import com.jdlink.util.DateUtil;
@@ -130,7 +126,7 @@ public class LaboratoryTestController {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
             // 化验单对象
             LaboratoryTest laboratoryTest = new LaboratoryTest();
-            List<SampleInformation> sampleInformationList = new ArrayList<>();
+            List<Wastes> wastesList = new ArrayList<>();
             for (int i = 0; i < data.length; i++) {
                 if (i == 2) {
                     // 创建客户对象
@@ -158,14 +154,14 @@ public class LaboratoryTestController {
                     laboratoryTest.setLaboratoryCompany(data[i][10].toString());
                 }
                 if (i >= 2) {
-                    SampleInformation sampleInformation = new SampleInformation();
-                    sampleInformation.setId(RandomUtil.getRandomEightNumber());
-                    sampleInformation.setSamplingDate(DateUtil.getDateFromStr(data[i][11].toString()));
-                    sampleInformation.setWastesName(data[i][12].toString());
-                    sampleInformation.setSamplingNumber(data[i][13].toString());
-                    sampleInformation.setTestDate(DateUtil.getDateFromStr(data[i][14].toString()));
-                    sampleInformation.setIsProductionLine(data[i][15] != null && data[i][15].toString().equals("√"));
-                    sampleInformation.setIsStorageArea(data[i][16] != null && data[i][16].toString().equals("√"));
+                    Wastes wastes = new Wastes();
+                    wastes.setId(RandomUtil.getRandomEightNumber());
+                    wastes.setSamplingDate(DateUtil.getDateFromStr(data[i][11].toString()));
+                    wastes.setName(data[i][12].toString());
+                    wastes.setSamplingNumber(data[i][13].toString());
+                    wastes.setTestDate(DateUtil.getDateFromStr(data[i][14].toString()));
+                    wastes.setIsProductionLine(data[i][15] != null && data[i][15].toString().equals("√"));
+                    wastes.setIsStorageArea(data[i][16] != null && data[i][16].toString().equals("√"));
                     // 参数列表
                     List<MixingElement> parameterList = new ArrayList<>();
                     for (int j = 0, k = 17; j < Parameter.values().length; j++, k+=3) {
@@ -215,12 +211,12 @@ public class LaboratoryTestController {
                         }
                     }
                     // 设置列表
-                    sampleInformation.setParameterList(parameterList);
-                    sampleInformation.setHeavyMetalList(heavyMetalList);
-                    sampleInformationList.add(sampleInformation);
+                    wastes.setParameterList(parameterList);
+                    wastes.setHeavyMetalList(heavyMetalList);
+                    wastesList.add(wastes);
                 }
             }
-            laboratoryTest.setSampleInformationList(sampleInformationList);
+            laboratoryTest.setWastesList(wastesList);
             // 设置状态为待提交
             laboratoryTest.setCheckState(CheckState.ToSubmit);
             // 设置编号

@@ -1,12 +1,9 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.ApplyState;
-import com.jdlink.domain.MixingElement;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SampleInformation {
@@ -38,41 +35,12 @@ public class SampleInformation {
      * 危废名称
      */
     private String wastesName;
-    /**
-     * 取样日期
-     */
-    private Date samplingDate;
-    /**
-     * 取样号
-     */
-    private String samplingNumber;
+
 
     /**
      * 危废列表
      */
     private  List<Wastes> wastesList;
-
-    /**
-     * 参数列表
-     */
-    private List<MixingElement> parameterList = new ArrayList<>();
-    /**
-     * 重金属列表
-     */
-    private  List<MixingElement> heavyMetalList = new ArrayList<>();
-
-    /**
-     * 生产线上取样
-     */
-    private boolean isProductionLine;
-    /**
-     * 储存区取样
-     */
-    private boolean isStorageArea;
-    /**
-     * 检测日期
-     */
-    private Date testDate;
 
     private boolean isPH; // PH值
 
@@ -120,37 +88,6 @@ public class SampleInformation {
         this.wastesName = wastesName;
     }
 
-    public Date getSamplingDate() {
-        return samplingDate;
-    }
-
-    public void setSamplingDate(Date samplingDate) {
-        this.samplingDate = samplingDate;
-    }
-
-    public String getSamplingNumber() {
-        return samplingNumber;
-    }
-
-    public void setSamplingNumber(String samplingNumber) {
-        this.samplingNumber = samplingNumber;
-    }
-
-    public boolean getIsProductionLine() {
-        return isProductionLine;
-    }
-
-    public void setIsProductionLine(boolean productionLine) {
-        isProductionLine = productionLine;
-    }
-
-    public boolean getIsStorageArea() {
-        return isStorageArea;
-    }
-
-    public void setIsStorageArea(boolean storageArea) {
-        isStorageArea = storageArea;
-    }
 
     public String getCompanyCode() {
         return companyCode;
@@ -278,42 +215,18 @@ public class SampleInformation {
         this.keyword = keyword;
     }
 
-    public List<MixingElement> getParameterList() {
-        return parameterList;
-    }
-
-    public void setParameterList(List<MixingElement> parameterList) {
-        this.parameterList = parameterList;
-    }
-
-    public List<MixingElement> getHeavyMetalList() {
-        return heavyMetalList;
-    }
-
-    public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
-        this.heavyMetalList = heavyMetalList;
-    }
-
-    public Date getTestDate() {
-        return testDate;
-    }
-
-    public void setTestDate(Date testDate) {
-        this.testDate = testDate;
-    }
 
     @Override
     public String toString() {
         return "SampleInformation{" +
-                "companyCode='" + companyCode + '\'' +
+                "id='" + id + '\'' +
+                ", companyCode='" + companyCode + '\'' +
                 ", wastesCode='" + wastesCode + '\'' +
                 ", laboratorySigner='" + laboratorySigner + '\'' +
                 ", applyState=" + applyState +
+                ", keyword='" + keyword + '\'' +
                 ", wastesName='" + wastesName + '\'' +
-                ", samplingDate=" + samplingDate +
-                ", samplingNumber='" + samplingNumber + '\'' +
-                ", isProductionLine=" + isProductionLine +
-                ", isStorageArea=" + isStorageArea +
+                ", wastesList=" + wastesList +
                 ", isPH=" + isPH +
                 ", isAsh=" + isAsh +
                 ", isWater=" + isWater +
@@ -324,6 +237,7 @@ public class SampleInformation {
                 ", isPhosphorus=" + isPhosphorus +
                 ", isFlashPoint=" + isFlashPoint +
                 ", isViscosity=" + isViscosity +
+                ", page=" + page +
                 '}';
     }
 }

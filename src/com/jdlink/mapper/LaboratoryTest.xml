@@ -6,10 +6,10 @@
     <resultMap id="LaboratoryTestRM" type="LaboratoryTest" autoMapping="true">
         <id property="laboratoryTestNumber" column="laboratoryTestNumber"/>
         <association property="client" column="clientId" select="getClient"/>
-        <collection property="sampleInformationList" select="getSampleInformationList" column="laboratoryTestNumber"
-                    ofType="com.jdlink.domain.Produce.SampleInformation" javaType="ArrayList"/>
+        <collection property="wastesList" select="getWastesList" column="laboratoryTestNumber"
+                    ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
-    <resultMap id="SampleInformationRM" type="SampleInformation" autoMapping="true">
+    <resultMap id="WastesRM" type="Wastes" autoMapping="true">
         <id property="id" column="id"/>
         <collection property="parameterList" select="getParameterList" column="id"
                     ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
@@ -26,25 +26,24 @@
         laboratory, laboratorycompany, laboratorydate, checkState, nowTime) VALUES (#{laboratoryTestNumber},
         #{queryNumber}, #{client.clientId}, #{client.companyName}, #{record}, #{recordDate}, #{laboratory}, #{laboratoryCompany},
         #{laboratoryDate}, #{checkState}, NOW());
-        <if test="sampleInformationList.size() > 0">
-            <foreach collection="sampleInformationList" item="sampleInformation" index="index">
-                INSERT INTO t_pr_sampleinformation (id, companyCode, wastesName, samplingDate,
-                samplingNumber, isProductionLine, isStorageArea, laboratoryTestNumber, testDate,
-                nowTime) VALUES (#{sampleInformation.id}, #{client.clientId}, #{sampleInformation.wastesName},
-                #{sampleInformation.samplingDate}, #{sampleInformation.samplingNumber}, #{sampleInformation.isProductionLine},
-                #{sampleInformation.isStorageArea}, #{laboratoryTestNumber}, #{sampleInformation.testDate}, NOW());
-                <if test="sampleInformation.parameterList.size() > 0">
-                    <foreach collection="sampleInformation.parameterList" item="parameter" index="index">
+        <if test="wastesList.size() > 0">
+            <foreach collection="wastesList" item="wastes" index="index">
+                INSERT INTO t_wastes (id, name, wastesId, isProductionLine, isStorageArea, samplingDate,
+                samplingNumber, testDate, laboratoryTestNumber) VALUES (#{wastes.id}, #{wastes.name}, #{wastes.wastesId},
+                #{wastes.isProductionLine}, #{wastes.isStorageArea}, #{wastes.samplingDate}, #{wastes.samplingNumber},
+                #{wastes.testDate}, #{laboratoryTestNumber});
+                <if test="wastes.parameterList.size() > 0">
+                    <foreach collection="wastes.parameterList" item="parameter" index="index">
                         INSERT INTO t_mixingelement (id, name, minimum, average, maximum, nowTime, parameter,
-                        sampleInfoId) VALUES (#{parameter.id}, #{parameter.name}, #{parameter.minimum}, #{parameter.average},
-                        #{parameter.maximum}, NOW(), #{parameter.parameter}, #{sampleInformation.id});
+                        wastesId) VALUES (#{parameter.id}, #{parameter.name}, #{parameter.minimum}, #{parameter.average},
+                        #{parameter.maximum}, NOW(), #{parameter.parameter}, #{wastes.id});
                     </foreach>
                 </if>
-                <if test="sampleInformation.heavyMetalList.size() > 0">
-                    <foreach collection="sampleInformation.heavyMetalList" item="heavyMetal" index="index">
+                <if test="wastes.heavyMetalList.size() > 0">
+                    <foreach collection="wastes.heavyMetalList" item="heavyMetal" index="index">
                         INSERT INTO t_mixingelement (id, name, minimum, average, maximum, nowTime, heavyMetal,
-                        sampleInfoId) VALUES (#{heavyMetal.id}, #{heavyMetal.name}, #{heavyMetal.minimum}, #{heavyMetal.average},
-                        #{heavyMetal.maximum}, NOW(), #{heavyMetal.heavyMetal}, #{sampleInformation.id});
+                        wastesId) VALUES (#{heavyMetal.id}, #{heavyMetal.name}, #{heavyMetal.minimum}, #{heavyMetal.average},
+                        #{heavyMetal.maximum}, NOW(), #{heavyMetal.heavyMetal}, #{wastes.id});
                     </foreach>
                 </if>
             </foreach>
@@ -142,8 +141,8 @@
         SELECT * FROM t_pr_laboratorytest WHERE laboratoryTestNumber= #{laboratoryTestNumber};
     </select>
 
-    <select id="getSampleInformationList" parameterType="String" resultMap="SampleInformationRM">
-        select * from t_pr_sampleinformation where laboratoryTestNumber=#{laboratoryTestNumber};
+    <select id="getWastesList" parameterType="String" resultMap="WastesRM">
+        select * from t_wastes where laboratoryTestNumber=#{laboratoryTestNumber};
     </select>
 
     <update id="setInvalid" parameterType="String">
@@ -163,10 +162,10 @@
     </update>
 
     <select id="getParameterList" parameterType="String" resultType="MixingElement">
-        select * from t_mixingelement where sampleInfoId=#{id};
+        select * from t_mixingelement where wastesId=#{id};
     </select>
 
     <select id="getHeavyMetalList" parameterType="String" resultType="MixingElement">
-        select * from t_mixingelement where sampleInfoId=#{id};
+        select * from t_mixingelement where wastesId=#{id};
     </select>
 </mapper>
