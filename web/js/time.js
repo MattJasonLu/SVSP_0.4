@@ -67,3 +67,18 @@ function getStdTimeStr(time) {
     time = timeArr[0]+'T'+timeArr[1]+'.000Z';
     return time;
 }
+
+/**
+ * 获取年月周 返回格式：2018年8月第1周
+ */
+function getWeekDate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth()+1;
+    var day = obj.getDate();
+    if(day % 7 > 0)  var a = 1; else a = 0;
+    var week = parseInt(day / 7) + a;
+    return year + "年" + month + "月第" + week + "周";
+
+}

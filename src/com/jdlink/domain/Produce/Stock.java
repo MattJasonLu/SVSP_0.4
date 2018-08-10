@@ -17,6 +17,19 @@ public class Stock {
      */
     private  String stockId;
     /**
+     *产废公司名称
+     */
+    private String proWasteCompany;
+
+    public String getProWasteCompany() {
+        return proWasteCompany;
+    }
+
+    public void setProWasteCompany(String proWasteCompany) {
+        this.proWasteCompany = proWasteCompany;
+    }
+
+    /**
      *产废联系人
      */
      private String proContactName;

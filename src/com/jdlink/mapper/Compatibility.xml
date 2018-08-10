@@ -122,4 +122,8 @@
             </if>
         </where>
     </select>
+    <insert id="add" parameterType="Compatibility">
+    insert into  t_pr_pw(pwId, handleCategory, formType, proportion, dailyProportions, weeklyDemand, calorific, CL, P, F, PH, water, endTime, dailyProportionsTotal, beginTime, calorificTotal, checkState, ash, weeklyDemandTotal, S, nowTime, compatibilityId, approvalContent, backContent)
+     values (#{pwId},#{handleCategory},#{formType},#{proportion},#{dailyProportions},#{weeklyDemand},#{calorific},#{CL},#{P},#{F},#{PH},#{water},#{endTime},#{dailyProportionsTotal},#{beginTime},#{calorificTotal},'ToExamine',#{ash},#{weeklyDemandTotal},#{S},NOW(),#{compatibilityId},#{approvalContent},#{backContent})
+    </insert>
 </mapper>

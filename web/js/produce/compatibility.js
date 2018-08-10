@@ -113,6 +113,20 @@ function setCompatibility(obj,n) {
     weeklyDemandTotal=0;
     //热值总量
     calorificTotal=0;
+    //灰分总量
+    ashTotal=0;
+    //水分总量
+    waterTotal=0;
+    //氯总量
+    clTotal=0;
+    //硫总量
+    sTotal=0;
+    //磷总量
+    pTotal=0;
+    //弗总量
+    fTotal=0;
+    //PH总量
+    phTotal=0;
     $.each(obj,function (index,item) {
         var data=eval(item);
         var clonedTr = tr.clone();
@@ -147,7 +161,7 @@ function setCompatibility(obj,n) {
                 case (3):
                     //num = num.toFixed(2); // 输出结果为 2.45
                     //$(this).html(data.proportion.toFixed(1));
-                    $(this).html((data.dailyProportions/data.weeklyDemand).toFixed(3)*100);
+                    $(this).html(((data.dailyProportions/data.weeklyDemand)*100).toFixed(1));
                     break;
                 // 每日配比量
                 case (4):
@@ -167,30 +181,37 @@ function setCompatibility(obj,n) {
                    // 灰分
                 case (7):
                         $(this).html(data.ash.toFixed(1));
+                        ashTotal+=data.ash;
                     break;
                     //水分
                 case (8):
                     $(this).html(data.water.toFixed(1));
+                    waterTotal+=data.water;
                     break;
                 //CL
                 case (9):
                     $(this).html(data.CL.toFixed(1));
+                    clTotal+=data.CL;
                     break;
                 //S
                 case (10):
                     $(this).html(data.s.toFixed(1));
+                    sTotal+=data.s;
                     break;
                 //P
                 case (11):
                     $(this).html(data.p.toFixed(1));
+                    pTotal+=data.p;
                     break;
                 //F
                 case (12):
                     $(this).html(data.f.toFixed(1));
+                    fTotal+=data.f;
                     break;
                 //PH
                 case (13):
                     $(this).html(data.PH.toFixed(1));
+                    phTotal+=data.PH;
                     break;
                 //状态
                 case (14):
@@ -217,6 +238,20 @@ function setCompatibility(obj,n) {
     $("#weeklyDemandTotal").text(weeklyDemandTotal.toFixed(1));
     //计算热值平均
     $("#calorific").text((calorificTotal/n).toFixed(1));
+    //灰分平均
+    $('#ash1').text((ashTotal/n).toFixed(1));
+    //水分平均
+    $('#water1').text((waterTotal/n).toFixed(1));
+    //氯平均
+    $('#Cl1').text((clTotal/n).toFixed(1));
+    //硫平均
+    $('#S1').text((sTotal/n).toFixed(1));
+    //磷平均
+    $('#P1').text((pTotal/n).toFixed(1));
+    //弗平均
+    $('#F1').text((fTotal/n).toFixed(1));
+    //PH平均
+    $('#PH1').text((phTotal/n).toFixed(1));
 }
 /*
 * 每日配比量之和*/
@@ -519,19 +554,17 @@ function  viewPw(){
                     //配伍编号
                     $("#compatibilityId").text(obj.compatibilityId);
                     //处理类别
-                    if(obj.handleCategory!=null){
-                        $("#handleCategory").text(obj.handleCategory.name);
+                    if(obj.handleCategory==null){
+                        $("#handleCategory").text(" ");
                     }
-                    else {
-                        $("#compatibilityId").text("");
-                    }
+                    else
+                    $("#handleCategory").text(obj.handleCategory.name);
                     //形态
-                    if(obj.formType!=null){
-                        $("#formType").text(obj.formType.name);
+                    if(obj.formType==null){
+                        $("#formType").text(" ");
                     }
-                    else {
-                        ("#formType").text("");
-                    }
+                    else
+                    $("#formType").text(obj.formType.name);
                     //每日配比量
                     $("#dailyProportions").text(obj.dailyProportions);
                     //周需求总量
@@ -541,9 +574,6 @@ function  viewPw(){
                     //状态
                     if(obj.checkState!=null){
                         $("#checkState").text(obj.checkState.name);
-                    }
-                    else {
-                        $("#checkState").text("");
                     }
                     //序号
                     $("#pwId").text(obj.pwId);

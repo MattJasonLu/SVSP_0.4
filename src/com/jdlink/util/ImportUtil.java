@@ -5,6 +5,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -99,9 +100,10 @@ public class ImportUtil {
                     for (int j = 0; j < col; j++) {
                         c1 = sht.getCell(j, i);
                         obj[j] = c1.getContents();
-                        if (obj[j] == "")
-                            obj[j] = null;
-                        param[i][j] = obj[j];
+                        System.out.println(obj[j]+"==>");
+                        if (obj[j]==""||obj[j]==null)
+                            obj[j] = "null";
+                         param[i][j] = obj[j];
                     }
                 }
             } catch (Exception e) {
@@ -126,6 +128,8 @@ public class ImportUtil {
                     obj = new Object[col];
                     for (int j = 0; j < col; j++) {
                         XSSFCell cellStyle = row1.getCell(j);
+                        System.out.println(cellStyle+"====>");
+                      //System.out.println(cellStyle+"==>");
                         if (cellStyle != null) {
                             String cat = cellStyle.getCellTypeEnum().toString();
                             if (cat.equals("NUMERIC")) {
@@ -158,12 +162,13 @@ public class ImportUtil {
                             if (cat.equals("STRING")) {
                                 obj[j] = cellStyle.getStringCellValue();
                             }
-                        } else {
+                        }    else  {
                             obj[j] = "";
                         }
-                        //在此转换中英文
-                        if (obj[j] == "")
-                            obj[j] = null;
+                        //在此转换中英文===>不是这个意思
+                        //如果单元格为空时的操作
+                        if (cellStyle==null||cellStyle.equals("")||cellStyle.getCellTypeEnum()==CellType.BLANK)
+                            obj[j] ="null";
                         param[i][j] = obj[j];
                     }
                 }
@@ -189,4 +194,3 @@ public class ImportUtil {
     //        }
     //    }
 }
-

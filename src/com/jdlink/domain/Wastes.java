@@ -1,12 +1,24 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Produce.ProcessWay;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by matt on 2018/7/4.
  * 危废信息
  */
 public class Wastes {
-
+    /**
+     * 编号
+     */
     private String id;
+    /**
+     * 客户
+     */
+    private Client client;
     /**
      * 危废名称
      */
@@ -119,6 +131,18 @@ public class Wastes {
      * 运费
      */
     private Float freight;
+    /**
+     * 重量
+     */
+    private float weight;
+    /**
+     * 计量单位
+     */
+    private String unit;
+    /**
+     * 处理方式
+     */
+    private ProcessWay processWay;
 
     private boolean isPH; // PH值
 
@@ -139,6 +163,36 @@ public class Wastes {
     private boolean isFlashPoint;  // 闪点
 
     private boolean isViscosity;  // 黏度
+
+    /**
+     * 取样日期
+     */
+    private Date samplingDate;
+    /**
+     * 取样号
+     */
+    private String samplingNumber;
+    /**
+     * 参数列表
+     */
+    private List<MixingElement> parameterList = new ArrayList<>();
+    /**
+     * 重金属列表
+     */
+    private  List<MixingElement> heavyMetalList = new ArrayList<>();
+
+    /**
+     * 生产线上取样
+     */
+    private boolean isProductionLine;
+    /**
+     * 储存区取样
+     */
+    private boolean isStorageArea;
+    /**
+     * 检测日期
+     */
+    private Date testDate;
 
 
     public Float getWastesTotal() {
@@ -453,6 +507,94 @@ public class Wastes {
         isViscosity = viscosity;
     }
 
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public ProcessWay getProcessWay() {
+        return processWay;
+    }
+
+    public void setProcessWay(ProcessWay processWay) {
+        this.processWay = processWay;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public Date getSamplingDate() {
+        return samplingDate;
+    }
+
+    public void setSamplingDate(Date samplingDate) {
+        this.samplingDate = samplingDate;
+    }
+
+    public String getSamplingNumber() {
+        return samplingNumber;
+    }
+
+    public void setSamplingNumber(String samplingNumber) {
+        this.samplingNumber = samplingNumber;
+    }
+
+    public List<MixingElement> getParameterList() {
+        return parameterList;
+    }
+
+    public void setParameterList(List<MixingElement> parameterList) {
+        this.parameterList = parameterList;
+    }
+
+    public List<MixingElement> getHeavyMetalList() {
+        return heavyMetalList;
+    }
+
+    public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
+        this.heavyMetalList = heavyMetalList;
+    }
+
+    public boolean getIsProductionLine() {
+        return isProductionLine;
+    }
+
+    public void setIsProductionLine(boolean productionLine) {
+        isProductionLine = productionLine;
+    }
+
+    public boolean getIsStorageArea() {
+        return isStorageArea;
+    }
+
+    public void setIsStorageArea(boolean storageArea) {
+        isStorageArea = storageArea;
+    }
+
+    public Date getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     @Override
     public String toString() {
         return "Wastes{" +
@@ -473,7 +615,6 @@ public class Wastes {
                 ", halogenPercentage=" + halogenPercentage +
                 ", sulfurPercentage=" + sulfurPercentage +
                 ", flashPoint=" + flashPoint +
-                ", wasteAmount=" + wasteAmount +
                 ", component='" + component + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", stockId='" + stockId + '\'' +
@@ -483,11 +624,12 @@ public class Wastes {
                 ", signCount=" + signCount +
                 ", wastesCharacter='" + wastesCharacter + '\'' +
                 ", category='" + category + '\'' +
-                ", quantity=" +
+                ", wasteAmount=" + wasteAmount +
                 ", wastesTotal=" + wastesTotal +
-                ", unitWastesPrice=" +
                 ", freight=" + freight +
-                ", wastesCode='" + '\'' +
+                ", weight=" + weight +
+                ", unit='" + unit + '\'' +
+                ", processWay=" + processWay +
                 ", isPH=" + isPH +
                 ", isAsh=" + isAsh +
                 ", isWater=" + isWater +
