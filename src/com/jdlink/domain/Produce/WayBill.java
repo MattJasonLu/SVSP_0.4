@@ -1,9 +1,6 @@
 package com.jdlink.domain.Produce;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Salesman;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.*;
 
 import java.util.Date;
 import java.util.List;
@@ -66,9 +63,11 @@ public class WayBill {
      */
     private String receiveCompanyOperator;
     /**
-     * 结运单状态
+     * 接运单状态
      */
     private CheckState state;
+
+    private Page page;
 
     public String getId() {
         return id;
@@ -142,22 +141,6 @@ public class WayBill {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public Client getProduceCompany() {
-        return produceCompany;
-    }
-
-    public void setProduceCompany(Client produceCompany) {
-        this.produceCompany = produceCompany;
-    }
-
-    public Client getReceiveCompany() {
-        return receiveCompany;
-    }
-
-    public void setReceiveCompany(Client receiveCompany) {
-        this.receiveCompany = receiveCompany;
-    }
-
     public Salesman getSalesman() {
         return salesman;
     }
@@ -182,12 +165,36 @@ public class WayBill {
         this.receiveCompanyOperator = receiveCompanyOperator;
     }
 
+    public Client getProduceCompany() {
+        return produceCompany;
+    }
+
+    public void setProduceCompany(Client produceCompany) {
+        this.produceCompany = produceCompany;
+    }
+
+    public Client getReceiveCompany() {
+        return receiveCompany;
+    }
+
+    public void setReceiveCompany(Client receiveCompany) {
+        this.receiveCompany = receiveCompany;
+    }
+
     public CheckState getState() {
         return state;
     }
 
     public void setState(CheckState state) {
         this.state = state;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     @Override
@@ -208,6 +215,7 @@ public class WayBill {
                 ", produceCompanyOperator='" + produceCompanyOperator + '\'' +
                 ", receiveCompanyOperator='" + receiveCompanyOperator + '\'' +
                 ", state=" + state +
+                ", page=" + page +
                 '}';
     }
 }

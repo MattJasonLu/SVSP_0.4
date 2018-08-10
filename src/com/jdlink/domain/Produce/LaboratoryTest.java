@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Wastes;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,9 +52,9 @@ public class LaboratoryTest {
      */
     private CheckState checkState;
     /**
-     * 样品列表
+     * 危废列表
      */
-    private List<SampleInformation> sampleInformationList = new ArrayList<>();
+    private List<Wastes> wastesList = new ArrayList<>();
     /**
      * 记录最后操作时间，用于排序
      */
@@ -139,12 +140,12 @@ public class LaboratoryTest {
         this.checkState = checkState;
     }
 
-    public List<SampleInformation> getSampleInformationList() {
-        return sampleInformationList;
+    public List<Wastes> getWastesList() {
+        return wastesList;
     }
 
-    public void setSampleInformationList(List<SampleInformation> sampleInformationList) {
-        this.sampleInformationList = sampleInformationList;
+    public void setWastesList(List<Wastes> wastesList) {
+        this.wastesList = wastesList;
     }
 
     public Date getNowTime() {
@@ -183,7 +184,10 @@ public class LaboratoryTest {
                 ", laboratoryCompany='" + laboratoryCompany + '\'' +
                 ", laboratoryDate=" + laboratoryDate +
                 ", checkState=" + checkState +
-                ", sampleInformationList=" + sampleInformationList +
+                ", wastesList=" + wastesList +
+                ", nowTime=" + nowTime +
+                ", keyword='" + keyword + '\'' +
+                ", page=" + page +
                 '}';
     }
 }

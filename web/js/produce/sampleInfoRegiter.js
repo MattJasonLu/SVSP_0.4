@@ -1,8 +1,6 @@
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data;
-var id = 10;                                   //sampleInformation id
-var wastesId = 1;
 $('#embed').load('embed/loginLogModal.html');
 
 /**
