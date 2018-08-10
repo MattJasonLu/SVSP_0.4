@@ -2,6 +2,10 @@ package com.jdlink.domain;
 
 import com.jdlink.domain.Produce.ProcessWay;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by matt on 2018/7/4.
  * 危废信息
@@ -153,6 +157,36 @@ public class Wastes {
     private boolean isFlashPoint;  // 闪点
 
     private boolean isViscosity;  // 黏度
+
+    /**
+     * 取样日期
+     */
+    private Date samplingDate;
+    /**
+     * 取样号
+     */
+    private String samplingNumber;
+    /**
+     * 参数列表
+     */
+    private List<MixingElement> parameterList = new ArrayList<>();
+    /**
+     * 重金属列表
+     */
+    private  List<MixingElement> heavyMetalList = new ArrayList<>();
+
+    /**
+     * 生产线上取样
+     */
+    private boolean isProductionLine;
+    /**
+     * 储存区取样
+     */
+    private boolean isStorageArea;
+    /**
+     * 检测日期
+     */
+    private Date testDate;
 
 
     public Float getWastesTotal() {
@@ -489,6 +523,62 @@ public class Wastes {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public Date getSamplingDate() {
+        return samplingDate;
+    }
+
+    public void setSamplingDate(Date samplingDate) {
+        this.samplingDate = samplingDate;
+    }
+
+    public String getSamplingNumber() {
+        return samplingNumber;
+    }
+
+    public void setSamplingNumber(String samplingNumber) {
+        this.samplingNumber = samplingNumber;
+    }
+
+    public List<MixingElement> getParameterList() {
+        return parameterList;
+    }
+
+    public void setParameterList(List<MixingElement> parameterList) {
+        this.parameterList = parameterList;
+    }
+
+    public List<MixingElement> getHeavyMetalList() {
+        return heavyMetalList;
+    }
+
+    public void setHeavyMetalList(List<MixingElement> heavyMetalList) {
+        this.heavyMetalList = heavyMetalList;
+    }
+
+    public boolean getIsProductionLine() {
+        return isProductionLine;
+    }
+
+    public void setIsProductionLine(boolean productionLine) {
+        isProductionLine = productionLine;
+    }
+
+    public boolean getIsStorageArea() {
+        return isStorageArea;
+    }
+
+    public void setIsStorageArea(boolean storageArea) {
+        isStorageArea = storageArea;
+    }
+
+    public Date getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(Date testDate) {
+        this.testDate = testDate;
     }
 
     @Override

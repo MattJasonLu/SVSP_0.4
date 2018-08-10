@@ -467,36 +467,36 @@ function view(e) {
                 $('#modal1_laboratoryDate').text(getDateStr(data.laboratoryDate));
                 $('#modal1_laboratoryCompany').text(data.laboratoryCompany);
                 // 设置危废列表
-                if (data.sampleInformationList.length > 0) {
-                    for (var i = 0; i < data.sampleInformationList.length; i++) {
+                if (data.wastesList.length > 0) {
+                    for (var i = 0; i < data.wastesList.length; i++) {
                         var $i = i;
                         if (i > 0) addNewLine();
-                        $("span[id='sampleInformationList[" + $i + "].samplingDate']").text(getDateStr(data.sampleInformationList[i].samplingDate));
-                        $("span[id='sampleInformationList[" + $i + "].wastesName']").text(data.sampleInformationList[i].wastesName);
-                        $("span[id='sampleInformationList[" + $i + "].samplingNumber_1']").text(data.sampleInformationList[i].samplingNumber);
-                        $("input[id='sampleInformationList[" + $i + "].isProductionLine']").prop("checked", data.sampleInformationList[i].isProductionLine);
-                        $("input[id='sampleInformationList[" + $i + "].isStorageArea']").prop("checked", data.sampleInformationList[i].isStorageArea);
-                        $("span[id='sampleInformationList[" + $i + "].samplingNumber_2']").text(data.sampleInformationList[i].samplingNumber);
-                        $("span[id='sampleInformationList[" + $i + "].testDate']").text(getDateStr(data.sampleInformationList[i].testDate));
-                        if (data.sampleInformationList[i].parameterList.length > 0) {
-                            for (var j = 0; j < data.sampleInformationList[i].parameterList.length; j++) {
-                                if (data.sampleInformationList[i].parameterList[j].parameter != null) {
-                                    var $j = data.sampleInformationList[i].parameterList[j].parameter.index-1;
-                                    $("input[id='sampleInformationList[" + $i + "].parameterList[" + $j + "].parameter']").prop("checked", true);
-                                    $("span[id='sampleInformationList[" + $i + "].parameterList[" + $j + "].minimum']").text(data.sampleInformationList[i].parameterList[j].minimum);
-                                    $("span[id='sampleInformationList[" + $i + "].parameterList[" + $j + "].average']").text(data.sampleInformationList[i].parameterList[j].average);
-                                    $("span[id='sampleInformationList[" + $i + "].parameterList[" + $j + "].maximum']").text(data.sampleInformationList[i].parameterList[j].maximum);
+                        $("span[id='wastesList[" + $i + "].samplingDate']").text(getDateStr(data.wastesList[i].samplingDate));
+                        $("span[id='wastesList[" + $i + "].wastesName']").text(data.wastesList[i].name);
+                        $("span[id='wastesList[" + $i + "].samplingNumber_1']").text(data.wastesList[i].samplingNumber);
+                        $("input[id='wastesList[" + $i + "].isProductionLine']").prop("checked", data.wastesList[i].isProductionLine);
+                        $("input[id='wastesList[" + $i + "].isStorageArea']").prop("checked", data.wastesList[i].isStorageArea);
+                        $("span[id='wastesList[" + $i + "].samplingNumber_2']").text(data.wastesList[i].samplingNumber);
+                        $("span[id='wastesList[" + $i + "].testDate']").text(getDateStr(data.wastesList[i].testDate));
+                        if (data.wastesList[i].parameterList.length > 0) {
+                            for (var j = 0; j < data.wastesList[i].parameterList.length; j++) {
+                                if (data.wastesList[i].parameterList[j].parameter != null) {
+                                    var $j = data.wastesList[i].parameterList[j].parameter.index-1;
+                                    $("input[id='wastesList[" + $i + "].parameterList[" + $j + "].parameter']").prop("checked", true);
+                                    $("span[id='wastesList[" + $i + "].parameterList[" + $j + "].minimum']").text(data.wastesList[i].parameterList[j].minimum);
+                                    $("span[id='wastesList[" + $i + "].parameterList[" + $j + "].average']").text(data.wastesList[i].parameterList[j].average);
+                                    $("span[id='wastesList[" + $i + "].parameterList[" + $j + "].maximum']").text(data.wastesList[i].parameterList[j].maximum);
                                 }
                             }
                         }
-                        if (data.sampleInformationList[i].heavyMetalList.length > 0) {
-                            for (var j = 0; j < data.sampleInformationList[i].heavyMetalList.length; j++) {
-                                if (data.sampleInformationList[i].heavyMetalList[j].heavyMetal != null) {
-                                    var $j = data.sampleInformationList[i].heavyMetalList[j].heavyMetal.index-1;
-                                    $("input[id='sampleInformationList[" + $i + "].heavyMetalList[" + $j + "].heavyMetal']").prop("checked", true);
-                                    $("span[id='sampleInformationList[" + $i + "].heavyMetalList[" + $j + "].minimum']").text(data.sampleInformationList[i].heavyMetalList[j].minimum);
-                                    $("span[id='sampleInformationList[" + $i + "].heavyMetalList[" + $j + "].average']").text(data.sampleInformationList[i].heavyMetalList[j].average);
-                                    $("span[id='sampleInformationList[" + $i + "].heavyMetalList[" + $j + "].maximum']").text(data.sampleInformationList[i].heavyMetalList[j].maximum);
+                        if (data.wastesList[i].heavyMetalList.length > 0) {
+                            for (var j = 0; j < data.wastesList[i].heavyMetalList.length; j++) {
+                                if (data.wastesList[i].heavyMetalList[j].heavyMetal != null) {
+                                    var $j = data.wastesList[i].heavyMetalList[j].heavyMetal.index-1;
+                                    $("input[id='wastesList[" + $i + "].heavyMetalList[" + $j + "].heavyMetal']").prop("checked", true);
+                                    $("span[id='wastesList[" + $i + "].heavyMetalList[" + $j + "].minimum']").text(data.wastesList[i].heavyMetalList[j].minimum);
+                                    $("span[id='wastesList[" + $i + "].heavyMetalList[" + $j + "].average']").text(data.wastesList[i].heavyMetalList[j].average);
+                                    $("span[id='wastesList[" + $i + "].heavyMetalList[" + $j + "].maximum']").text(data.wastesList[i].heavyMetalList[j].maximum);
                                 }
                             }
                         }
@@ -830,7 +830,7 @@ function addNewLine() {
      * @param element
      */
     function changeId(element) {
-        element.find("span[id*='sampleInformationList'],input[id*='sampleInformationList']").each(function () {
+        element.find("span[id*='wastesList'],input[id*='wastesList']").each(function () {
             var oldId = $(this).prop("id");
             var newId = oldId.replace(/[0-9]\d*/, id);
             $(this).prop('id', newId);

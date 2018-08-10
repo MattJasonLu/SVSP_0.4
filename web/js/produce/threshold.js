@@ -155,16 +155,16 @@ function setThresholdList(result) {
 
 // var day = obj.day
 function gettime(obj) {
+    var month=obj.month;
     if (month.length !== 2) {
-        month = 0 + month;
+        month = "0" + month;
     }
-    //  dataLeftCompleting(2, "0", mouth.toString()).toString();
     var day = parseInt((obj.date)).toString();
-    //ataLeftCompleting(2, "0", day.toString()).toString();
     if (day.length !== 2) {
-        day = 0 + day;
+        day = "0"+ day;
     }
-    return day;
+    var year=obj.year+1900;
+    return year+"--"+month+"--"+day;
 }
 
 console.log(getWeekDate());
