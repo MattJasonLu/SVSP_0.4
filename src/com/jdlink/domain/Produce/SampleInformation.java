@@ -4,6 +4,7 @@ import com.jdlink.domain.ApplyState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
+import java.util.Date;
 import java.util.List;
 
 public class SampleInformation {
@@ -36,7 +37,10 @@ public class SampleInformation {
      */
     private String wastesName;
 
-
+    /**
+     * 取样日期
+     */
+    private Date samplingDate;
     /**
      * 危废列表
      */
@@ -215,6 +219,13 @@ public class SampleInformation {
         this.keyword = keyword;
     }
 
+    public Date getSamplingDate() {
+        return samplingDate;
+    }
+
+    public void setSamplingDate(Date samplingDate) {
+        this.samplingDate = samplingDate;
+    }
 
     @Override
     public String toString() {
