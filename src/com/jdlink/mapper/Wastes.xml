@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.WastesMapper">
+    <resultMap id="WastesRM" type="Wastes" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="client" column="laboratoryTestNumber" select="getClient"/>
+        <collection property="parameterList" select="getParameterList" column="id"
+                    ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
+        <collection property="heavyMetalList" select="getHeavyMetalList" column="id"
+                    ofType="com.jdlink.domain.Produce.HeavyMetal" javaType="ArrayList"/>
+    </resultMap>
+
+    <select id="list" resultMap="WastesRM">
+        SELECT * FROM t_wastes;
+    </select>
+
+    <select id="getClient" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId IN
+        (SELECT t_pr_laboratorytest.clientId FROM t_pr_laboratorytest
+        WHERE laboratorytestnumber=#{laboratorytestnumber});
+    </select>
+
+    <select id="getParameterList" parameterType="String" resultType="MixingElement">
+        select * from t_mixingelement where wastesId=#{id};
+    </select>
+
+    <select id="getHeavyMetalList" parameterType="String" resultType="MixingElement">
+        select * from t_mixingelement where wastesId=#{id};
+    </select>
+</mapper>

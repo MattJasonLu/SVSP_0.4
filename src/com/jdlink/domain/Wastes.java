@@ -11,8 +11,14 @@ import java.util.List;
  * 危废信息
  */
 public class Wastes {
-
+    /**
+     * 编号
+     */
     private String id;
+    /**
+     * 客户
+     */
+    private Client client;
     /**
      * 危废名称
      */
@@ -629,6 +635,14 @@ private float fluorine;
 
     public void setTestDate(Date testDate) {
         this.testDate = testDate;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Override

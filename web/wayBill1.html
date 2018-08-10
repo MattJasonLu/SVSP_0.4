@@ -306,16 +306,16 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="wayBill.html" title="查看" onclick="view();"><span class="glyphicon glyphicon-search"
+                            <a href="#" title="查看" onclick="toView(this);"><span class="glyphicon glyphicon-search"
                                                                     aria-hidden="true"></span></a>
-                            <a href="#" title="编辑" onclick="edit();"><span class="glyphicon glyphicon-pencil"
+                            <a href="#" title="编辑" onclick="edit(this);"><span class="glyphicon glyphicon-pencil"
                                                                            aria-hidden="true"></span></a>
-                            <a href="#" title="提交"><span class="glyphicon glyphicon-pencil"
+                            <a href="#" title="提交" onclick="submit(this);"><span class="glyphicon glyphicon-pencil"
                                                          aria-hidden="true"></span></a>
-                            <a href="#" title="审批通过"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                            <a href="#" title="驳回"><span class="glyphicon glyphicon-pencil"
+                            <a href="#" title="审批通过" onclick="approval(this);"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" title="驳回" onclick="reject();"><span class="glyphicon glyphicon-pencil"
                                                          aria-hidden="true"></span></a>
-                            <a href="#" title="作废"><span class="glyphicon glyphicon-pencil"
+                            <a href="#" title="作废" onclick="invalidWayBill(this);"><span class="glyphicon glyphicon-pencil"
                                                          aria-hidden="true"></span></a>
                         </td>
                     </tr>
