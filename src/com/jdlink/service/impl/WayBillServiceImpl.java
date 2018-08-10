@@ -7,6 +7,7 @@ import com.jdlink.mapper.WayBillMapper;
 import com.jdlink.service.WayBillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 @Service
@@ -31,4 +32,16 @@ public class WayBillServiceImpl implements WayBillService {
 
     @Override
     public int countById(String id){ return wayBillMapper.countById(id); }
+
+    @Override
+    public void approval(WayBill wayBill){  wayBillMapper.approval(wayBill); }
+
+    @Override
+    public void reject(WayBill wayBill){  wayBillMapper.reject(wayBill); }
+
+    @Override
+    public void submit(String id){ wayBillMapper.submit(id);}
+
+    @Override
+    public void invalid(String id){ wayBillMapper.invalid(id);}
 }

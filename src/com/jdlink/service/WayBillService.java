@@ -12,4 +12,8 @@ public interface WayBillService  {
     List<WayBill> search(WayBill wayBill);
     int searchCount(WayBill wayBill);
     int countById(String id);
+    void approval(WayBill wayBill);
+    void reject(WayBill wayBill);
+    void submit(String id);
+    void invalid(String id);
 }
