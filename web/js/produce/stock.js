@@ -715,10 +715,6 @@ function loadAdjustStock() {
           });
           wastesInfoList.removeAttr('id');
           $('.selectpicker').selectpicker('refresh');
-
-
-
-
           for(var i=0;i<obj.wastesList.length;i++){
               if (i > 0)
                   addNewLine();
