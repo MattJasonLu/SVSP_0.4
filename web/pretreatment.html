@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>合同提成比例计算</title>
+    <title>预处理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -13,7 +13,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/threshold.js"></script>
+    <script src="js/produce/pretreatment.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
@@ -30,18 +30,15 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 920px;">
+        <div class="container navbar-left" style="width: 800px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="compatibilityPlan.html">首页</a></li>
-                    <li><a href="weekPlan.html">配伍周计划</a></li>
-                    <li><a href="materialDemand.html">物料需求单</a></li>
-                    <li><a href="productionPlan.html">产量计划单</a></li>
-                    <li><a href="thresholdTable.html">处置类别阈值表</a></li>
-                    <li class="active"><a href="contractCommission.html">合同提成比例计算</a></li>
+                    <li><a href="preprocessingManagement.html">首页</a></li>
+                    <li class="active"><a href="pretreatment.html">预处理</a></li>
+                    <li><a href="#">属性调整</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -53,6 +50,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="#">个人信息</a></li>
                     <li><a href="#">待办事项</a></li>
+                    <li><a href="#" onclick="showLog();">登录日志</a></li>
                     <li><a href="index.html">注销</a></li>
                 </ul>
             </li>
@@ -90,31 +88,95 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="businessModel.html">基础数据</a></li>
-                        <li class="active">合同提成比例计算</li>
+                        <li><a href="businessModel.html">预备管理</a></li>
+                        <li class="active">预处理</li>
                     </ol>
+                    <p class="text-right"><b>编号&nbsp;&nbsp;</b><span id="id"></span></p>
                 </div>
-                <h4 class="sub-header">合同提成比例计算</h4>
+                <h4 class="sub-header">日预处理单</h4>
             </div>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 编辑</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 查看</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 属性调整</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
+                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
                     </div>
                 </div>
             </div>
             <br>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-id" class="col-sm-4 control-label">序号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-id" name="search-id" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-proportion" class="col-sm-4 control-label">比例</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-proportion" name="search-proportion" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-disposalWay" class="col-sm-4 control-label">处置方式</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-disposalWay" name="search-disposalWay" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center"><span id="week"></span>日预处理单</div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th class="text-center">签约量划分</th>
-                            <th class="text-center">合约量</th>
-                            <th class="text-center">符合条件量</th>
-                            <th class="text-center">提成比例</th>
-                            <th class="text-center">加权平均提成比例</th>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">产废单位</th>
+                            <th class="text-center">指标要求及来源</th>
+                            <th class="text-center">比例</th>
+                            <th class="text-center">重量(吨)</th>
+                            <th class="text-center">危废热值(cal/g)</th>
+                            <th class="text-center">灰分(%)</th>
+                            <th class="text-center">水分(%)</th>
+                            <th class="text-center">挥发分(%)</th>
+                            <th class="text-center">氯(%)</th>
+                            <th class="text-center">硫(%)</th>
+                            <th class="text-center">PH</th>
+                            <th class="text-center">P</th>
+                            <th class="text-center">F</th>
+                            <th class="text-center">备注</th>
+                            <th class="text-center">处置方式</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -124,55 +186,60 @@
                             <td class="text-center">0</td>
                             <td class="text-center">0.000</td>
                             <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">10≤签约量≤50</td>
+                            <td class="text-center"><10</td>
                             <td class="text-center">10kg</td>
                             <td class="text-center">0</td>
-                            <td class="text-center">0.004</td>
+                            <td class="text-center">0.000</td>
                             <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">50≤签约量≤200</td>
+                            <td class="text-center"><10</td>
                             <td class="text-center">10kg</td>
                             <td class="text-center">0</td>
-                            <td class="text-center">0.010</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center"></td>
                             <td class="text-center"></td>
                         </tr>
                         <tr>
-                            <td class="text-center">200≤签约量≤500</td>
-                            <td class="text-center">20kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.13</td>
-                            <td class="text-center"></td>
+                            <td class="text-center">备注</td>
+                            <td class="text-center" colspan="15">0</td>
                         </tr>
                         <tr>
-                            <td class="text-center">500≤签约量≤2000</td>
-                            <td class="text-center">30kg</td>
+                            <td class="text-center" colspan="2">合计</td>
                             <td class="text-center">0</td>
-                            <td class="text-center">0.020</td>
-                            <td class="text-center"></td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
                         </tr>
                         <tr>
-                            <td class="text-center">2000≤签约量≤5000</td>
-                            <td class="text-center">30kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.025</td>
+                            <td class="text-center">残渣比例</td>
                             <td class="text-center"></td>
+                            <td class="text-center">废液比例</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">污泥</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">散料</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">破碎</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
                         </tr>
                         <tr>
-                            <td class="text-center">5000≤签约量</td>
-                            <td class="text-center">40kg</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0.035</td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">合计</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">提成比例</td>
-                            <td class="text-center"></td>
+                            <td class="text-left">注意事项</td>
+                            <td colspan="15" class="text-left">作业人员需穿戴防护用品，口罩(防毒面具)，胶皮手套，避免吸入毒气和与人体直接接触，物料转移后及时清理现场环境。</td>
                         </tr>
                         </tbody>
                     </table>

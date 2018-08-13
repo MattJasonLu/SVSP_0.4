@@ -39,7 +39,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
-                <li><a href="#">首页</a></li>
+                <li><a href="receiveManagement.html">首页</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">转移管理<span class="caret"></span></a>
@@ -65,13 +65,15 @@
                         <li class="dropdown-submenu">
                             <a href="#">入库管理</a>
                             <ul class="dropdown-menu">
+                                <li><a href="materialRequisition.html">领料单</a></li>
+                                <li role="separator" class="divider"></li>
                                 <li><a href="warehouseManage.html">危废入库</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#">次生入库</a></li>
                             </ul>
                         </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">磅单管理</a></li>
+                        <li><a href="singlePoundsManage.html">磅单管理</a></li>
                     </ul>
                 </li>
             </ul>
@@ -349,10 +351,10 @@
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber"></li>
+                           id="pageNumber" title=""></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
-                    <select id="count" onchange="loadPageSampleInformationList()">
+                    <select id="count" onchange="loadPageSampleInformationList()" title="">
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>
@@ -375,88 +377,60 @@
                 <div class="form-group form-horizontal col-md-12 row">
                     <label for="model-companyCode" class="col-sm-2 control-label">公司代码</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control focus" id="model-companyCode"
-                               name="model-companyCode"
-                               required>
+                        <input type="text" class="form-control focus" id="model-companyCode" name="model-companyCode" required>
+                    </div>
+                    <label class="col-sm-2 control-label">危废代码</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control focus" name="wastesList[0].wastesCode" required title="">
                     </div>
                 </div>
                 <form class="form-horizontal" id="model-appoint" method="post">
-                    <div>
-                        <div class="form-group form-horizontal col-md-12 ">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">危废代码</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control focus"
-                                           name="wastesList[0].wastesCode"
-                                           required>
-                                </div>
-                            </div>
+                    <div class="form-group form-horizontal col-md-12 ">
+                        <label class="col-sm-2 control-label">基础项目</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isPH"
+                                       value="true">PH
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isAsh"
+                                       value="true">灰分
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isWater"
+                                       id="wastesList[0].isWater" value="true">水分
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isHeat"
+                                       value="true">热值
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isS"
+                                       value="true">硫
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isCl"
+                                       value="true">氯
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isF"
+                                       value="true">氟
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isP"
+                                       value="true">磷
+                            </label>
                         </div>
-                        <div class="form-group form-horizontal col-md-12 ">
-                            <label class="col-sm-2 control-label">基础项目</label>
-                            <div class="col-sm-10">
-                                <form method="post">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isPH"
-                                                           value="true">PH
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isAsh"
-                                                           value="true">灰分
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isWater"
-                                                           id="wastesList[0].isWater" value="true">水分
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isHeat"
-                                                           value="true">热值
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isS"
-                                                           value="true">硫
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isCl"
-                                                           value="true">氯
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isF"
-                                                           value="true">氟
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isP"
-                                                           value="true">磷
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12 ">
-                            <label class="col-sm-2 control-label">增加项目</label>
-                            <div class="col-sm-10">
-                                <form method="post">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                                           value="true">闪点
-                                                </label>
-                                                <label>
-                                                    <input type="checkbox" name="wastesList[0].isViscosity"
-                                                           value="true">黏度
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                        <label class="col-sm-2 control-label">增加项目</label>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isFlashPoint"
+                                       value="true">闪点
+                            </label>
+                            <label>
+                                <input type="checkbox" name="wastesList[0].isViscosity"
+                                       value="true">黏度
+                            </label>
                         </div>
                     </div>
                     <div class="row" id="addBtn">
@@ -465,13 +439,13 @@
                                     class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                         </div>
                     </div>
-                    <div class="form-group col-md-12 row">
-                        <label for="model-signer" class="col-sm-3 control-label">化验室签收人</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control focus" id="model-signer" name="signer" required>
-                        </div>
-                    </div>
                 </form>
+            </div>
+            <div class="form-group col-md-12 row">
+                <label for="model-signer" class="col-sm-3 control-label">化验室签收人</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control focus" id="model-signer" name="signer" required>
+                </div>
             </div>
             <div class="modal-footer" id="appoint">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

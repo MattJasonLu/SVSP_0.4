@@ -8,6 +8,7 @@
         <id column="id" property="id"/>
         <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
         <association property="receiveCompany" column="receiveCompanyId" select="getReceiveCompany"/>
+        <association property="salesman" column="salesmanId" select="getSalesman"/>
         <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
                     javaType="ArrayList"/>
     </resultMap>
@@ -26,7 +27,11 @@
     </select>
 
     <select id="getWastes" parameterType="String" resultType="Wastes">
-        select * from t_wastes where wastesId = #{id};
+        select * from t_wastes where wayBillId = #{id};
+    </select>
+
+    <select id="getSalesman" parameterType="String" resultType="Salesman">
+        select * from salesman where salesmanId = #{salesmanId};
     </select>
 
     <select id="count" resultType="int">
@@ -109,4 +114,20 @@
             </if>
         </where>
     </select>
+
+    <update id="approval" parameterType="WayBill">
+        update t_pr_waybill set state = 'Approval',advice = #{advice} where id = #{id}
+    </update>
+
+    <update id="reject" parameterType="WayBill">
+        update t_pr_waybill set state = 'Backed',advice = #{advice} where id = #{id}
+    </update>
+
+    <update id="submit" parameterType="String">
+        update t_pr_waybill set state = 'Examining' where id = #{id}
+    </update>
+
+    <update id="invalid" parameterType="String">
+        update t_pr_waybill set state = 'Invalid' where id = #{id}
+    </update>
 </mapper>
