@@ -178,6 +178,7 @@ function setWastesData() {
         });
         // 隐藏无数据的tr
         tr.hide();
+        tr.first().remove();
     }
 }
 
@@ -664,112 +665,17 @@ function view2(e) {
     var handleType = getHandleType(e);
     // 设置危废明细数据
     setWastesData();
+    $("input[type='checkbox']:checked").prop('checked', false);
     // 显示
     $('#appointModal1').modal('show');
+    // 取消绑定
+    $("#saveBtn2").unbind('click');
+    // 重新绑定
     $("#saveBtn2").click(function () {
-        // 获取选中的复选框
-        var items = $("input[name='select']:checked");
-        var count = items.length;
-        // 获取选中的危废列表信息
-        var wastesList = [];
-        $.each(items, function (index) {
-            if (index < count-1) {
-                var wastes = {};
-                var params = [];
-                var param_0 = $(this).parent().parent();
-                params.push(param_0);
-                for (var i = 0; i < 13; i++) {
-                    var param = param_0.next();
-                    param_0 = param;
-                    params.push(param.text());
-                }
-                wastes.companyName = params[1];
-                wastes.name = params[2];
-                wastes.wastesId = params[3];
-                wastes.formType = params[4];
-                wastes.packageType = params[5];
-                wastes.heat = params[6];
-                wastes.ph = params[7];
-                wastes.ash = params[8];
-                wastes.water = params[9];
-                wastes.chlorine = params[10];
-                wastes.sulfur = params[11];
-                wastes.phosphorus = params[12];
-                wastes.fluorine = params[13];
-                wastes.handleType = handleType;
-                wastesList.push(wastes);
-            }
-        });
-        // 将捕获到的信息载入到计划中
-        setWastesData2(wastesList);
-        $('#appointModal1').modal('hide');
-        $('#appointModal2').prop('tabindex', 100);
+        saveData(handleType);
     });
 
-    function setWastesData2(wastesList) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#wastesClonedTr2");
-        for (var i = 0; i < wastesList.length; i++) {
-            var obj = wastesList[i];
-            console.log(obj);
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    case (0):
-                        $(this).html(i+1);
-                        break;
-                    case (1):
-                        $(this).html(obj.companyName);
-                        break;
-                    case (2):
-                        $(this).html(obj.handleType);
-                        break;
-                    case (4):
-                        $(this).html(obj.name);
-                        break;
-                    case (5):
-                        $(this).html(obj.wastesId);
-                        break;
-                    case (8):
-                        $(this).html(obj.formType);
-                        break;
-                    case (9):
-                        $(this).html(obj.packageType);
-                        break;
-                    case (10):
-                        $(this).html(obj.heat);
-                        break;
-                    case (11):
-                        $(this).html(obj.ash);
-                        break;
-                    case (12):
-                        $(this).html(obj.water);
-                        break;
-                    case (13):
-                        $(this).html(obj.chlorine);
-                        break;
-                    case (14):
-                        $(this).html(obj.sulfur);
-                        break;
-                    case (15):
-                        $(this).html(obj.phosphorus);
-                        break;
-                    case (16):
-                        $(this).html(obj.fluorine);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        }
-        // 隐藏无数据的tr
-        tr.hide();
-    }
+
 }
 function getWeekDate() {
     //获取时间
@@ -788,4 +694,144 @@ function loadPageTransportPlan() {
 
 function getHandleType(e) {
     return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+}
+
+function saveData(handleType) {
+    // 获取选中的复选框
+    var items = $("input[name='select']:checked");
+    var count = items.length;
+    // 获取选中的危废列表信息
+    var wastesList = [];
+    $.each(items, function (index) {
+        if (index < count) {
+            console.log(index);
+            var wastes = {};
+            var params = [];
+            var param_0 = $(this).parent().parent();
+            params.push(param_0);
+            for (var i = 0; i < 13; i++) {
+                var param = param_0.next();
+                param_0 = param;
+                params.push(param.text());
+            }
+            wastes.companyName = params[1];
+            wastes.name = params[2];
+            wastes.wastesId = params[3];
+            wastes.formType = params[4];
+            wastes.packageType = params[5];
+            wastes.heat = params[6];
+            wastes.ph = params[7];
+            wastes.ash = params[8];
+            wastes.water = params[9];
+            wastes.chlorine = params[10];
+            wastes.sulfur = params[11];
+            wastes.phosphorus = params[12];
+            wastes.fluorine = params[13];
+            wastes.handleType = handleType;
+            wastesList.push(wastes);
+        }
+    });
+    // 将捕获到的信息载入到计划中
+    setWastesData2(wastesList);
+    $('#appointModal1').modal('hide');
+    $('#appointModal2').modal('show');
+}
+
+function setWastesData2(wastesList) {
+    // console.log(wastesList.length);
+    // 获取id为cloneTr的tr元素
+    var tr = $("#wastesClonedTr2");
+    var id = tr.siblings().length;
+    for (var i = 0; i < wastesList.length; i++) {
+        var obj = wastesList[i];
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                case (0):
+                    $(this).html(id++);
+                    break;
+                case (1):
+                    $(this).html(obj.companyName);
+                    break;
+                case (2):
+                    $(this).html(obj.handleType);
+                    break;
+                case (4):
+                    $(this).html(obj.name);
+                    break;
+                case (5):
+                    $(this).html(obj.wastesId);
+                    break;
+                case (8):
+                    $(this).html(obj.formType);
+                    break;
+                case (9):
+                    $(this).html(obj.packageType);
+                    break;
+                case (10):
+                    $(this).html(obj.heat);
+                    break;
+                case (11):
+                    $(this).html(obj.ash);
+                    break;
+                case (12):
+                    $(this).html(obj.water);
+                    break;
+                case (13):
+                    $(this).html(obj.chlorine);
+                    break;
+                case (14):
+                    $(this).html(obj.sulfur);
+                    break;
+                case (15):
+                    $(this).html(obj.phosphorus);
+                    break;
+                case (16):
+                    $(this).html(obj.fluorine);
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    }
+    // 隐藏无数据的tr
+    tr.hide();
+}
+
+// 覆盖Modal.prototype的hideModal方法
+$.fn.modal.Constructor.prototype.hideModal = function () {
+    var that = this
+    this.$element.hide()
+    this.backdrop(function () {
+        //判断当前页面所有的模态框都已经隐藏了之后body移除.modal-open，即body出现滚动条。
+        $('.modal.fade.in').length === 0 && that.$body.removeClass('modal-open');
+        that.resetAdjustments();
+        that.resetScrollbar();
+        that.$element.trigger('hidden.bs.modal')
+    })
+};
+
+// 页面变黑
+$(document).on('show.bs.modal', '.modal', function(event) {
+    $(this).appendTo($('body'));
+}).on('shown.bs.modal', '.modal.in', function(event) {
+    setModalsAndBackdropsOrder();
+}).on('hidden.bs.modal', '.modal', function(event) {
+    setModalsAndBackdropsOrder();
+});
+
+function setModalsAndBackdropsOrder() {
+    var modalZIndex = 1040;
+    $('.modal.in').each(function(index) {
+        var $modal = $(this);
+        modalZIndex++;
+        $modal.css('zIndex', modalZIndex);
+        $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+    });
+    $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
 }

@@ -16,7 +16,7 @@ public class MaterialRequire {
      */
     private  HandleCategory handleCategory;
     /**
-     * 目前库存量
+     * 目前库存量=====>
      */
     private  float currentInventory;
     /**
@@ -31,7 +31,73 @@ public class MaterialRequire {
      * 市场采购量
      */
     private float marketPurchases;
-/**
+    /**
+     * 基础数据阈值表
+     *
+     */
+    private Threshold threshold;
+
+    public Threshold getThreshold() {
+        return threshold;
+    }
+    /**
+     * 物料需求
+     *
+     */
+    private Compatibility compatibility;
+    /**
+     * 包装方式
+     *
+     */
+    private PackageType packageType;
+
+    public PackageType getPackageType() {
+        return packageType;
+    }
+    /**
+     * 备注
+     *
+     */
+    private String remarks;
+    /**
+     * 配伍编号
+     *
+     */
+    private String compatibilityId;
+
+    public String getCompatibilityId() {
+        return compatibilityId;
+    }
+
+    public void setCompatibilityId(String compatibilityId) {
+        this.compatibilityId = compatibilityId;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
+    }
+
+    public Compatibility getCompatibility() {
+        return compatibility;
+    }
+
+    public void setCompatibility(Compatibility compatibility) {
+        this.compatibility = compatibility;
+    }
+
+    public void setThreshold(Threshold threshold) {
+        this.threshold = threshold;
+    }
+
+    /**
  * 危废信息(形态、包装方式、一些物质的最大值最小值)
  */
   List<Wastes> wastesList=new ArrayList<>();

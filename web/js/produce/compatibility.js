@@ -191,8 +191,8 @@ function setCompatibility(obj,n) {
                     break;
                 //CL
                 case (9):
-                    $(this).html(data.wastesList[index].chlorine.toFixed(1));
-                    clTotal+=data.wastesList[index].chlorine;
+                    $(this).html(data.wastesList[index].chlorinePercentage.toFixed(1));
+                    clTotal+=data.wastesList[index].chlorinePercentage;
                     break;
                 //S
                 case (10):
@@ -201,13 +201,13 @@ function setCompatibility(obj,n) {
                     break;
                 //P
                 case (11):
-                    $(this).html(data.wastesList[index].phosphorus.toFixed(1));
-                    pTotal+=data.wastesList[index].phosphorus;
+                    $(this).html(data.wastesList[index].phosphorusPercentage.toFixed(1));
+                    pTotal+=data.wastesList[index].phosphorusPercentage;
                     break;
                 //F
                 case (12):
-                    $(this).html(data.wastesList[index].fluorine.toFixed(1));
-                    fTotal+=data.wastesList[index].fluorine;
+                    $(this).html(data.wastesList[index].fluorinePercentage.toFixed(1));
+                    fTotal+=data.wastesList[index].fluorinePercentage;
                     break;
                 //PH
                 case (13):
@@ -749,4 +749,23 @@ $.ajax({
         }
     });
     isSearch = true;
+}
+/**
+ * 生成物料需求单
+ */
+function generate() {
+$.ajax({
+    type:"POST",
+    url: "generateSheet",                  // url
+    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    dataType: "json",
+    success:function (result) {
+        
+    },
+    error:function (result) {
+        
+    }
+
+
+});
 }
