@@ -14,7 +14,7 @@
     </resultMap>
 
     <select id="list" resultMap="WastesRM">
-        SELECT * FROM t_wastes;
+        SELECT * FROM t_wastes WHERE laboratoryTestNumber IS NOT null;
     </select>
 
     <select id="getClient" parameterType="String" resultType="Client">
