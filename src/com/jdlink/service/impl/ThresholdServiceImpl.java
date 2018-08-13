@@ -16,4 +16,9 @@ public class ThresholdServiceImpl implements ThresholdService {
     public List<Threshold> list() {
         return thresholdMapper.list();
     }
+
+    @Override
+    public Threshold getByHandleCategory(String handleCategory) {
+        return thresholdMapper.getByHandleCategory(handleCategory);
+    }
 }
