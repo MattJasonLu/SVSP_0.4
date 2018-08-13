@@ -40,7 +40,6 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
             wasteAmount=#{wastes.wasteAmount},component=#{wastes.component},
             remarks=#{wastes.remarks} where stockId=#{stockId}
     </update>
-
     <select id="getById" parameterType="String" resultMap="StockRM">
         select * from  t_pr_stock where stockId=#{stockId}
     </select>

@@ -130,6 +130,7 @@ function setCompatibility(obj,n) {
     $.each(obj,function (index,item) {
         var data=eval(item);
         var clonedTr = tr.clone();
+        var wastes=eval(item.wastesList);
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
             switch (inner_index) {
@@ -175,43 +176,43 @@ function setCompatibility(obj,n) {
                     break;
                 // 热值
                 case (6):
-                        $(this).html(data.calorific.toFixed(1));
-                    calorificTotal+=data.calorific;
+                        $(this).html(data.wastesList[index].calorific.toFixed(1));
+                    calorificTotal+=data.wastesList[index].calorific;
                     break;
                    // 灰分
                 case (7):
-                        $(this).html(data.ash.toFixed(1));
-                        ashTotal+=data.ash;
+                        $(this).html(data.wastesList[index].ashPercentage.toFixed(1));
+                        ashTotal+=data.wastesList[index].ashPercentage;
                     break;
                     //水分
                 case (8):
-                    $(this).html(data.water.toFixed(1));
-                    waterTotal+=data.water;
+                    $(this).html(data.wastesList[index].wetPercentage.toFixed(1));
+                    waterTotal+=data.wastesList[index].wetPercentage;
                     break;
                 //CL
                 case (9):
-                    $(this).html(data.CL.toFixed(1));
-                    clTotal+=data.CL;
+                    $(this).html(data.wastesList[index].chlorine.toFixed(1));
+                    clTotal+=data.wastesList[index].chlorine;
                     break;
                 //S
                 case (10):
-                    $(this).html(data.s.toFixed(1));
-                    sTotal+=data.s;
+                    $(this).html(data.wastesList[index].sulfurPercentage.toFixed(1));
+                    sTotal+=data.wastesList[index].sulfurPercentage;
                     break;
                 //P
                 case (11):
-                    $(this).html(data.p.toFixed(1));
-                    pTotal+=data.p;
+                    $(this).html(data.wastesList[index].phosphorus.toFixed(1));
+                    pTotal+=data.wastesList[index].phosphorus;
                     break;
                 //F
                 case (12):
-                    $(this).html(data.f.toFixed(1));
-                    fTotal+=data.f;
+                    $(this).html(data.wastesList[index].fluorine.toFixed(1));
+                    fTotal+=data.wastesList[index].fluorine;
                     break;
                 //PH
                 case (13):
-                    $(this).html(data.PH.toFixed(1));
-                    phTotal+=data.PH;
+                    $(this).html(data.wastesList[index].ph.toFixed(1));
+                    phTotal+=data.wastesList[index].ph;
                     break;
                 //状态
                 case (14):
