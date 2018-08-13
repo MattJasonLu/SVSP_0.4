@@ -30,4 +30,8 @@
     <select id="list" resultMap="ThresholdRM">
     select  * from t_pr_threshold;
 </select>
+    <select id="getByHandleCategory" parameterType="String" resultMap="ThresholdRM">
+        select * from t_pr_threshold where handleCategory=#{handleCategory};
+
+    </select>
 </mapper>

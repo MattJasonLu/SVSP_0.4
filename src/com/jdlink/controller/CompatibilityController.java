@@ -159,11 +159,11 @@ public class CompatibilityController {
                     //compatibility.setAsh(0);
                 //第十列是氯
                 if(data[i][9].toString()!="null"){
-                    wastes.setChlorine(Float.parseFloat(data[i][9].toString()));
+                    wastes.setChlorinePercentage(Float.parseFloat(data[i][9].toString()));
                     //compatibility.setCL(Float.parseFloat(data[i][9].toString()));
                 }
                 if(data[i][9].toString()=="null")
-                    wastes.setChlorine(0);
+                    wastes.setChlorinePercentage(0);
                     //compatibility.setCL(0);
                 //硫 11
                 if(data[i][10].toString()!="null"){
@@ -175,19 +175,19 @@ public class CompatibilityController {
                     //compatibility.setS(0);
                 //磷 12
                 if(data[i][11].toString()!="null"){
-                    wastes.setPhosphorus(Float.parseFloat(data[i][11].toString()));
+                    wastes.setPhosphorusPercentage(Float.parseFloat(data[i][11].toString()));
                     //compatibility.setP(Float.parseFloat(data[i][11].toString()));
                 }
                 if(data[i][11].toString()=="null")
-                    wastes.setPhosphorus(0);
+                    wastes.setPhosphorusPercentage(0);
                    // compatibility.setP(0);
                 //弗 13
                 if(data[i][12].toString()!="null"){
-                    wastes.setFluorine(Float.parseFloat(data[i][12].toString()));
+                    wastes.setFluorinePercentage(Float.parseFloat(data[i][12].toString()));
                     //compatibility.setF(Float.parseFloat(data[i][12].toString()));
                 }
                 if(data[i][12].toString()=="null")
-                    wastes.setFluorine(0);
+                    wastes.setFluorinePercentage(0);
                    // compatibility.setF(0);
                 //PH 14
                 if(data[i][13].toString()!="null"){
@@ -404,7 +404,6 @@ public class CompatibilityController {
         }
         return res.toString();
     }
-
     //通过序号获得信息
     @RequestMapping("getByPwId2")
     @ResponseBody
@@ -461,10 +460,6 @@ public class CompatibilityController {
         }
         return  res.toString();
     }
-
-
-
-
     //获取最后一位四位编号
      public static String getId(String id){
         while (id.length()!=4){
