@@ -66,6 +66,10 @@ public class WayBill {
      * 接运单状态
      */
     private CheckState state;
+    /**
+     *审批意见
+     */
+    private String advice;
 
     private Page page;
 
@@ -189,6 +193,14 @@ public class WayBill {
         this.state = state;
     }
 
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
+
     public Page getPage() {
         return page;
     }
@@ -215,6 +227,7 @@ public class WayBill {
                 ", produceCompanyOperator='" + produceCompanyOperator + '\'' +
                 ", receiveCompanyOperator='" + receiveCompanyOperator + '\'' +
                 ", state=" + state +
+                ", advice='" + advice + '\'' +
                 ", page=" + page +
                 '}';
     }

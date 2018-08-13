@@ -17,6 +17,7 @@ public enum Parameter {
     SulfurContent("硫含量",11),
     ChlorineContent("氯含量",12),
     FluorineContent("氟含量",13),
+    PhosphorusContent("磷含量", 14)
     ;
 
     private String name;

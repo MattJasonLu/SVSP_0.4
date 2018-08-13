@@ -2,8 +2,11 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
+import com.jdlink.domain.Wastes;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Compatibility {
     //序号
@@ -55,6 +58,16 @@ public class Compatibility {
     private  Date endTime;
 //当前时间
     private  Date nowTime;
+//危废信息
+    private List<Wastes> wastesList=new ArrayList<>();
+
+    public List<Wastes> getWastesList() {
+        return wastesList;
+    }
+
+    public void setWastesList(List<Wastes> wastesList) {
+        this.wastesList = wastesList;
+    }
 
     public Date getNowTime() {
         return nowTime;

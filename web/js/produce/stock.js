@@ -631,6 +631,11 @@ function save() {
 }
 //克隆行方法
 function addNewLine() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        style: 'btn-info',
+        size: 4
+    });//下拉框样式
     // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -653,7 +658,55 @@ function addNewLine() {
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
 
+}
+//克隆行方法(修改页面)
+function addNewLine1(data,i,obj) {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        style: 'btn-info',
+        size: 4
+    });//下拉框样式
+    // var wastesInfoList = $("#code");
+    // // 清空遗留元素
+    // wastesInfoList.children().remove();
+    // $.each(data, function (index, item) {
+    //     var option = $('<option />');
+    //     option.val(item.code);
+    //     option.text(item.code);
+    //     wastesInfoList.append(option);
+    // });
+    //wastesInfoList.removeAttr('id');
+    //$('.selectpicker').selectpicker('val',obj.wastesList[i].code+"" );//默认选中
+    //$('.selectpicker').selectpicker('refresh');
+    // 获取id为cloneTr的tr元素
+    var tr = $("#plusBtn").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    clonedTr.children("td:eq(1),td:eq(3),td:eq(4),td:eq(5)").find("input").val("");
+    // 获取编号
+    var id = $("#plusBtn").prev().children().get(0).innerHTML;
+    //console.log(id);
+    var id1=(id.replace(/[^0-9]/ig,""));
+    var num = parseInt(id1);
+    num++;
+    clonedTr.children().get(0).innerHTML = num;
+    clonedTr.children("td:not(0)").find("input,select").each(function () {
+        var name = $(this).prop('name');
+        var newName = name.replace(/[0-9]\d*/, num-1);
+        //console.log(newName);
+        $(this).prop('name', newName);
+    });
+    clonedTr.insertAfter(tr);
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+    clonedTr.children("td:eq(0)").prepend(delBtn);
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+     $('.selectpicker').selectpicker();
 
 }
 //修改库存信息页面跳转
@@ -682,6 +735,7 @@ function loadAdjustStock() {
         data:{'stockId':stockId},
         success:function (result) {
       if(result!=undefined&&result.status=='success'){
+          console.log(result);
           var obj=eval(result.stock);
           var data=eval(result.data);
           //1开始赋值
@@ -706,26 +760,47 @@ function loadAdjustStock() {
               $('#transport1').show();//不是自运公司 显示
           }
           // 各下拉框数据填充
-          var wastesInfoList = $("#code");
-          // 清空遗留元素
-          wastesInfoList.children().remove();
-          $.each(data, function (index, item) {
-              var option = $('<option />');
-              option.val(item.code);
-              option.text(item.code);
-              wastesInfoList.append(option);
-          });
-          wastesInfoList.removeAttr('id');
-          $('.selectpicker').selectpicker('refresh');
+          // var wastesInfoList = $("#code");
+          // // 清空遗留元素
+          // wastesInfoList.children().remove();
+          // $.each(data, function (index, item) {
+          //     var option = $('<option />');
+          //     option.val(item.code);
+          //     option.text(item.code);
+          //     wastesInfoList.append(option);
+          // });
+          // wastesInfoList.removeAttr('id');
+          // $('.selectpicker').selectpicker('refresh');
           for(var i=0;i<obj.wastesList.length;i++){
+              console.log(obj.wastesList[i].code);
+              if(i==0){
+                  var wastesInfoList = $("#code");
+                  // 清空遗留元素
+                  index3="";
+                  wastesInfoList.children().remove();
+                  $.each(data, function (index, item) {
+                      var option = $('<option />');
+                      option.val(index);
+                      option.text(item.code);
+                      if(obj.wastesList[0].code==item.code){
+                          index3=index;
+                          console.log("index3:"+index3);
+                      }
+                      wastesInfoList.append(option);
+                  });
+                 // wastesInfoList.removeAttr('id');
+
+              }
               if (i > 0)
-                  addNewLine();
+                  addNewLine1(data,i,obj);
               var $i = i;
               $("input[name='wastesList[" + $i + "].name']").val(obj.wastesList[i].name);//危险废物的名称
               $("input[name='wastesList[" + $i + "].wasteAmount']").val(obj.wastesList[i].wasteAmount);//危废数量
               $("input[name='wastesList[" + $i + "].component']").val(obj.wastesList[i].component);//成分
               $("input[name='wastesList[" + $i + "].remarks']").val(obj.wastesList[i].remarks);//备注
-
+              $(".selectpicker[name='wastesList[" + $i + "].code']").selectpicker('val',obj.wastesList[i].code);//默认选中
+              //$('.selectpicker').selectpicker('refresh');
+              $(".selectpicker[name='wastesList[" + $i + "].code']").selectpicker('refresh');
           }
       }
       else
