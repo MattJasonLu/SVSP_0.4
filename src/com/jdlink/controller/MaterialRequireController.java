@@ -50,7 +50,17 @@ public class MaterialRequireController {
         String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
         //序列号
         String number = "001";
-        //物料编号
+        //物料编号设置
+        List<String> materialRequireList= materialRequireService.check();
+        int total1=materialRequireService.total();
+        if(total1==0){
+            number="001";
+        }
+        if (total1!=0){
+            String s= materialRequireList.get(0);//原字符串
+            String s2=s.substring(s.length()-3,s.length());//最后一个3字符
+            number=getString3(String.valueOf( Integer.parseInt(s2)+1));
+        }
         String materialRequireId=year+mouth+number;
         //3获得之后在后台进行拼接
         // 参数列表
@@ -59,14 +69,14 @@ public class MaterialRequireController {
             List<Wastes> wastesList=new ArrayList<>();
             List<MixingElement> parameterList = new ArrayList<>();
             Wastes wastes=new Wastes();//危废信息
-            materialRequire.setMaterialRequireId(materialRequireId);
+            materialRequire.setMaterialRequireId(materialRequireId);//设置物料编号
             //1查找最大序号，如果为空就为"1"
             int total=materialRequireService.total();
             //设置序号
             if(total==0){
-                materialRequire.setMaterialRequireId("1");
+                materialRequire.setId("1");
             }else {
-                materialRequire.setMaterialRequireId(String.valueOf(total+1));
+                materialRequire.setId(String.valueOf(total+1));
             }
             //对包装方式进行判断
             //污泥+半固态==>标准箱
@@ -194,7 +204,13 @@ public class MaterialRequireController {
             materialRequire.setWastesList(wastesList);
             materialRequire.setThreshold(threshold);
             materialRequire.setCompatibility(compatibilityList.get(i));
-          materialRequireService.addMix(materialRequire);
+            //设置包装类别
+            materialRequire.setPackageType(wastes.getPackageType());
+            //设置进料方式
+            materialRequire.setHandleCategory(compatibilityList.get(i).getHandleCategory());
+            //设置物质形态
+            materialRequire.setFormType(compatibilityList.get(i).getFormType());
+            materialRequireService.addMix(materialRequire);
         }
 
 
@@ -206,7 +222,14 @@ public class MaterialRequireController {
     }
 
 
-
+    //获取三位序列号
+    public static String getString3(String id){
+        while (id.length()!=3){
+            System.out.println(id.length());
+            id="0"+id;
+        }
+        return id;
+    }
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){

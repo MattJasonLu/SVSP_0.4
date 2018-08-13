@@ -8,6 +8,8 @@ import com.jdlink.service.MaterialRequireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MaterialRequireServiceImpl implements MaterialRequireService {
     @Autowired
@@ -20,5 +22,10 @@ public class MaterialRequireServiceImpl implements MaterialRequireService {
     @Override
     public void addMix(MaterialRequire materialRequire) {
         materialRequireMapper.addMix(materialRequire);
+    }
+
+    @Override
+    public List<String> check() {
+        return materialRequireMapper.check();
     }
 }
