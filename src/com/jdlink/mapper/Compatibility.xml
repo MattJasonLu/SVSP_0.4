@@ -21,7 +21,14 @@
         <result property="proportion" column="proportion"></result>
         <result property="checkState" column="checkState" javaType="CheckState"></result>
         <result property="weeklyDemand" column="weeklyDemand" ></result>
+        <collection property="wastesList" select="getWastes" column="compatibilityId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
+    <select id="getWastes" resultType="Wastes">
+        SELECT * FROM t_wastes WHERE compatibilityId in (
+          SELECT t_pr_pw.compatibilityId FROM t_pr_pw
+          WHERE t_wastes.compatibilityId=#{compatibilityId});
+    </select>
+
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM t_pr_pw;
     </select>
@@ -43,7 +50,7 @@
     <select id="check1" resultType="String">
         select compatibilityId from  t_pr_pw  where nowTime!="" order by nowTime desc ;
     </select>
-    <select id="list" parameterType="String" resultType="Compatibility">
+    <select id="list" parameterType="String" resultMap="CompatibilityRM">
         select * from t_pr_pw where compatibilityId=#{compatibilityId} order by nowTime desc ;
     </select>
     <update id="approval" >
@@ -122,8 +129,16 @@
             </if>
         </where>
     </select>
+    <!--<insert id="add" parameterType="Compatibility">-->
+    <!--insert into  t_pr_pw(pwId, handleCategory, formType, proportion, dailyProportions, weeklyDemand, calorific, CL, P, F, PH, water, endTime, dailyProportionsTotal, beginTime, calorificTotal, checkState, ash, weeklyDemandTotal, S, nowTime, compatibilityId, approvalContent, backContent)-->
+     <!--values (#{pwId},#{handleCategory},#{formType},#{proportion},#{dailyProportions},#{weeklyDemand},#{calorific},#{CL},#{P},#{F},#{PH},#{water},#{endTime},#{dailyProportionsTotal},#{beginTime},#{calorificTotal},'ToExamine',#{ash},#{weeklyDemandTotal},#{S},NOW(),#{compatibilityId},#{approvalContent},#{backContent})-->
+    <!--</insert>-->
     <insert id="add" parameterType="Compatibility">
-    insert into  t_pr_pw(pwId, handleCategory, formType, proportion, dailyProportions, weeklyDemand, calorific, CL, P, F, PH, water, endTime, dailyProportionsTotal, beginTime, calorificTotal, checkState, ash, weeklyDemandTotal, S, nowTime, compatibilityId, approvalContent, backContent)
-     values (#{pwId},#{handleCategory},#{formType},#{proportion},#{dailyProportions},#{weeklyDemand},#{calorific},#{CL},#{P},#{F},#{PH},#{water},#{endTime},#{dailyProportionsTotal},#{beginTime},#{calorificTotal},'ToExamine',#{ash},#{weeklyDemandTotal},#{S},NOW(),#{compatibilityId},#{approvalContent},#{backContent})
+    insert into  t_pr_pw(pwId,handleCategory,formType,proportion,dailyProportions,weeklyDemand,beginTime,endTime,compatibilityId,nowTime,checkState)
+        values (#{pwId},#{handleCategory},#{formType},#{proportion},#{dailyProportions},#{weeklyDemand},#{beginTime},#{endTime},#{compatibilityId},Now(),'ToExamine');
+        <foreach collection="wastesList"  item="wastes" index="index">
+            insert into t_wastes(id,calorific,ashPercentage,wetPercentage,chlorine,sulfurPercentage,phosphorus,fluorine,ph,compatibilityId) values
+            (#{wastes.id},#{wastes.calorific},#{wastes.ashPercentage},#{wastes.wetPercentage},#{wastes.chlorine},#{wastes.sulfurPercentage},#{wastes.phosphorus},#{wastes.fluorine},#{wastes.ph},#{compatibilityId});
+        </foreach>
     </insert>
 </mapper>
