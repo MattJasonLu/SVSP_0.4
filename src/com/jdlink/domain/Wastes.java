@@ -196,17 +196,71 @@ public class Wastes {
      * 取样号
      */
     private String samplingNumber;
-    /**
-     * 参数列表
-     */
-    private List<MixingElement> parameterList = new ArrayList<>();
 
     @Override
     public String toString() {
         return "Wastes{" +
-                "parameterList=" + parameterList +
+                "id='" + id + '\'' +
+                ", client=" + client +
+                ", name='" + name + '\'' +
+                ", formType=" + formType +
+                ", packageType=" + packageType +
+                ", wastesId='" + wastesId + '\'' +
+                ", contractAmount=" + contractAmount +
+                ", unitPriceTax=" + unitPriceTax +
+                ", unitPrice=" + unitPrice +
+                ", taxRate=" + taxRate +
+                ", tax=" + tax +
+                ", ph=" + ph +
+                ", ashPercentage=" + ashPercentage +
+                ", wetPercentage=" + wetPercentage +
+                ", calorific=" + calorific +
+                ", halogenPercentage=" + halogenPercentage +
+                ", sulfurPercentage=" + sulfurPercentage +
+                ", chlorinePercentage=" + chlorinePercentage +
+                ", phosphorusPercentage=" + phosphorusPercentage +
+                ", fluorinePercentage=" + fluorinePercentage +
+                ", flashPoint=" + flashPoint +
+                ", component='" + component + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", stockId='" + stockId + '\'' +
+                ", code='" + code + '\'' +
+                ", prepareTransferCount=" + prepareTransferCount +
+                ", transferCount=" + transferCount +
+                ", signCount=" + signCount +
+                ", wastesCharacter='" + wastesCharacter + '\'' +
+                ", category='" + category + '\'' +
+                ", wasteAmount=" + wasteAmount +
+                ", wastesTotal=" + wastesTotal +
+                ", freight=" + freight +
+                ", weight=" + weight +
+                ", unit='" + unit + '\'' +
+                ", processWay=" + processWay +
+                ", compatibilityId='" + compatibilityId + '\'' +
+                ", isPH=" + isPH +
+                ", isAsh=" + isAsh +
+                ", isWater=" + isWater +
+                ", isHeat=" + isHeat +
+                ", isSulfur=" + isSulfur +
+                ", isChlorine=" + isChlorine +
+                ", isFluorine=" + isFluorine +
+                ", isPhosphorus=" + isPhosphorus +
+                ", isFlashPoint=" + isFlashPoint +
+                ", isViscosity=" + isViscosity +
+                ", samplingDate=" + samplingDate +
+                ", samplingNumber='" + samplingNumber + '\'' +
+                ", parameterList=" + parameterList +
+                ", heavyMetalList=" + heavyMetalList +
+                ", isProductionLine=" + isProductionLine +
+                ", isStorageArea=" + isStorageArea +
+                ", testDate=" + testDate +
                 '}';
     }
+
+    /**
+     * 参数列表
+     */
+    private List<MixingElement> parameterList = new ArrayList<>();
 
     /**
      * 重金属列表

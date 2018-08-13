@@ -68,13 +68,6 @@ public class MaterialRequire {
         return threshold;
     }
 
-    @Override
-    public String toString() {
-        return "MaterialRequire{" +
-                "wastesList=" + wastesList +
-                '}';
-    }
-
     /**
      * 物料需求
      *
@@ -99,6 +92,26 @@ public class MaterialRequire {
      *
      */
     private String compatibilityId;
+
+    @Override
+    public String toString() {
+        return "MaterialRequire{" +
+                "materialRequireId='" + materialRequireId + '\'' +
+                ", handleCategory=" + handleCategory +
+                ", currentInventory=" + currentInventory +
+                ", weeklyDemand=" + weeklyDemand +
+                ", safety=" + safety +
+                ", marketPurchases=" + marketPurchases +
+                ", threshold=" + threshold +
+                ", id='" + id + '\'' +
+                ", formType=" + formType +
+                ", compatibility=" + compatibility +
+                ", packageType=" + packageType +
+                ", remarks='" + remarks + '\'' +
+                ", compatibilityId='" + compatibilityId + '\'' +
+                ", wastesList=" + wastesList +
+                '}';
+    }
 
     public String getCompatibilityId() {
         return compatibilityId;
