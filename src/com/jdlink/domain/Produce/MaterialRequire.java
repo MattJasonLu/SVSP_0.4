@@ -40,6 +40,14 @@ public class MaterialRequire {
     public Threshold getThreshold() {
         return threshold;
     }
+
+    @Override
+    public String toString() {
+        return "MaterialRequire{" +
+                "wastesList=" + wastesList +
+                '}';
+    }
+
     /**
      * 物料需求
      *
@@ -158,16 +166,4 @@ public class MaterialRequire {
         this.wastesList = wastesList;
     }
 
-    @Override
-    public String toString() {
-        return "MaterialRequire{" +
-                "materialRequireId='" + materialRequireId + '\'' +
-                ", handleCategory=" + handleCategory +
-                ", currentInventory=" + currentInventory +
-                ", weeklyDemand=" + weeklyDemand +
-                ", safety=" + safety +
-                ", marketPurchases=" + marketPurchases +
-                ", wastesList=" + wastesList +
-                '}';
-    }
 }

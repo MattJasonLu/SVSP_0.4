@@ -1,5 +1,8 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.MixingElement;
+import com.jdlink.domain.Produce.MaterialRequire;
+import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.MaterialRequireMapper;
 import com.jdlink.service.MaterialRequireService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,5 +15,10 @@ public class MaterialRequireServiceImpl implements MaterialRequireService {
     @Override
     public int total() {
         return materialRequireMapper.total();
+    }
+
+    @Override
+    public void addMix(MaterialRequire materialRequire) {
+        materialRequireMapper.addMix(materialRequire);
     }
 }
