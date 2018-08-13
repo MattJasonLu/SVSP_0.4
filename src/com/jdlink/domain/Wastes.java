@@ -82,41 +82,15 @@ public class Wastes {
     /**
      * 氯
      */
-    private float  chlorine;
-
-    public float getChlorine() {
-        return chlorine;
-    }
-
-    public void setChlorine(float chlorine) {
-        this.chlorine = chlorine;
-    }
+    private float chlorinePercentage;
     /**
      * 磷
      */
-    private float phosphorus;
-
-    public float getPhosphorus() {
-        return phosphorus;
-    }
-
-    public void setPhosphorus(float phosphorus) {
-        this.phosphorus = phosphorus;
-    }
+    private float phosphorusPercentage;
     /**
- * 氟
- *
- */
-private float fluorine;
-
-    public float getFluorine() {
-        return fluorine;
-    }
-
-    public void setFluorine(float fluorine) {
-        this.fluorine = fluorine;
-    }
-
+     * 氟
+     */
+    private float fluorinePercentage;
     /**
      * 闪点
      */
@@ -643,6 +617,30 @@ private float fluorine;
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public float getChlorinePercentage() {
+        return chlorinePercentage;
+    }
+
+    public void setChlorinePercentage(float chlorinePercentage) {
+        this.chlorinePercentage = chlorinePercentage;
+    }
+
+    public float getPhosphorusPercentage() {
+        return phosphorusPercentage;
+    }
+
+    public void setPhosphorusPercentage(float phosphorusPercentage) {
+        this.phosphorusPercentage = phosphorusPercentage;
+    }
+
+    public float getFluorinePercentage() {
+        return fluorinePercentage;
+    }
+
+    public void setFluorinePercentage(float fluorinePercentage) {
+        this.fluorinePercentage = fluorinePercentage;
     }
 
     @Override
