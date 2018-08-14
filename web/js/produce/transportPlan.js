@@ -663,17 +663,11 @@ function view2(e) {
  * 获取年月周 返回格式：2018年8月第1周
  */
 function getWeekDate() {
-    var getMonthWeek = function(a, b, c)
-    {
-        /*
-        a = d = 当前日期
-        b = 6 - w = 当前周的还有几天过完(不算今天)
-        a + b 的和在除以7 就是当天是当前月份的第几周
-        */
-        var date = new Date(a, parseInt(b) - 1, c),
-            w = date.getDay(),
-            d = date.getDate();
-        return Math.ceil((d + 6 - w) / 7);
+    var getMonthWeek = function getMonthWeek(a, b, c) {
+        var date = new Date(a, parseInt(b) - 1, c), w = date.getDay(), d = date.getDate();
+        return Math.ceil(
+            (d + 6 - w) / 7
+        );
     };
     var d;
     var getYearWeek = function(a, b, c)
