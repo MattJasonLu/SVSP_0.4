@@ -1,18 +1,19 @@
 /**
  * 分页 获取首页内容
  * */
-function loadPageList() {
+function loadData() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getTransportPlanById",   // url
+        url: "getRecentTransportPlan",   // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
+                setDataList(result.data);
             } else {
-                console.log("fail: " + result);
+                console.log(result);
             }
         },
         error: function (result) {
@@ -30,7 +31,7 @@ function setDataList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
-    $.each(result, function (index, item) {
+    $.each(result.transportPlanItemList, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
@@ -39,47 +40,67 @@ function setDataList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
+                case (0):
+                    $(this).html(inner_index+1);
+                    break;
                 case (1):
-                    if (obj.client != null)
-                        $(this).html(obj.client.companyName);
+                    if (obj.produceCompany != null)
+                        $(this).html(obj.produceCompany.companyName);
                     break;
                 case (2):
-                    $(this).html(obj.name);
+                    if (obj.handleCategory != null)
+                        $(this).html(obj.handleCategory.name);
                     break;
                 case (3):
-                    $(this).html(obj.wastesId);
+                    $(this).html(getDateStr(obj.approachTime));
                     break;
                 case (4):
-                    if (obj.formType != null)
-                        $(this).html(obj.formType.name);
+                    $(this).html(obj.wastes.name);
                     break;
                 case (5):
-                    if (obj.packageType != null)
-                        $(this).html(obj.packageType.name);
+                    $(this).html(obj.wastes.wastesId);
                     break;
                 case (6):
-                    $(this).html(obj.calorific);
+                    $(this).html(obj.wastes.wasteAmount);
                     break;
                 case (7):
-                    $(this).html(obj.ph);
+                    $(this).html(obj.wastes.unit);
                     break;
                 case (8):
-                    $(this).html(obj.ashPercentage);
+                    if (obj.wastes.formType != null)
+                        $(this).html(obj.wastes.formType.name);
                     break;
                 case (9):
-                    $(this).html(obj.wetPercentage);
+                    if (obj.wastes.packageType != null)
+                        $(this).html(obj.wastes.packageType.name);
                     break;
                 case (10):
-                    $(this).html(obj.chlorinePercentage);
+                    $(this).html(obj.wastes.calorific);
                     break;
                 case (11):
-                    $(this).html(obj.sulfurPercentage);
+                    $(this).html(obj.wastes.ph);
                     break;
                 case (12):
-                    $(this).html(obj.phosphorusPercentage);
+                    $(this).html(obj.wastes.ashPercentage);
                     break;
                 case (13):
-                    $(this).html(obj.fluorinePercentage);
+                    $(this).html(obj.wastes.wetPercentage);
+                    break;
+                case (14):
+                    $(this).html(obj.wastes.chlorinePercentage);
+                    break;
+                case (15):
+                    $(this).html(obj.wastes.sulfurPercentage);
+                    break;
+                case (16):
+                    $(this).html(obj.wastes.phosphorusPercentage);
+                    break;
+                case (17):
+                    $(this).html(obj.wastes.fluorinePercentage);
+                    break;
+                case (18):
+                    if (obj.wastes.processWay != null)
+                        $(this).html(obj.wastes.processWay.name);
                     break;
             }
         });
@@ -89,6 +110,10 @@ function setDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+    $("#author").val(result.author);
+    $("#departmentDirector").val(result.departmentDirector);
+    $("#group").val(result.group);
+    $("#productionDirector").val(result.productionDirector);
 }
 
 function setWastesData() {
@@ -178,6 +203,7 @@ function setWastesData() {
         });
         // 隐藏无数据的tr
         tr.hide();
+        tr.first().remove();
     }
 }
 
@@ -514,106 +540,6 @@ function adjustData(e) {
 }
 
 /**
- * 根据编号来获取对应的联单信息
- */
-function loadData() {
-    var id = localStorage.transferDraftId;
-    if (id != null) {
-        $.ajax({
-            type: "POST",
-            url: "getTransferDraftById",
-            async: false,
-            dataType: "json",
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    console.log(result);
-                    var data = eval(result.data);
-                    if (data.produceCompany != null) {
-                        $("#produceCompanyName").val(data.produceCompany.companyName);
-                        $("#produceCompanyPhone").val(data.produceCompany.phone);
-                        $("#produceCompanyLocation").val(data.produceCompany.location);
-                        $("#produceCompanyPostcode").val(data.produceCompany.postCode);
-                    }
-                    if (data.transportCompany != null) {
-                        $("#transportCompanyName").val(data.transportCompany.companyName);
-                        $("#transportCompanyPhone").val(data.transportCompany.phone);
-                        $("#transportCompanyLocation").val(data.transportCompany.location);
-                        $("#transportCompanyPostcode").val(data.transportCompany.postCode);
-                    }
-                    if (data.acceptCompany != null) {
-                        $("#acceptCompanyName").val(data.acceptCompany.companyName);
-                        $("#acceptCompanyPhone").val(data.acceptCompany.phone);
-                        $("#acceptCompanyLocation").val(data.acceptCompany.location);
-                        $("#acceptCompanyPostcode").val(data.acceptCompany.postCode);
-                    }
-                    if (data.wastes != null) {
-                        $("#wastesName").val(data.wastes.name);
-                        $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount);
-                        $("#wastesCharacter").val(data.wastes.wastesCharacter);
-                        $("#wastesCategory").val(data.wastes.category);
-                        $("#wastesTransferCount").val(data.wastes.transferCount);
-                        $("#wastesCode").val(data.wastes.code);
-                        $("#wastesSignCount").val(data.wastes.signCount);
-                        if (data.wastes.formType != null)
-                            $("#wastesFormType").val(data.wastes.formType.index-1);
-                        if (data.wastes.packageType != null)
-                            $("#wastesPackageType").val(data.wastes.packageType.index-1);
-                    }
-                    $("#outwardIsTransit").prop('checked', data.outwardIsTransit);
-                    $("#outwardIsUse").prop('checked', data.outwardIsUse);
-                    $("#outwardIsDeal").prop('checked', data.outwardIsDeal);
-                    $("#outwardIsDispose").prop('checked', data.outwardIsDispose);
-                    $("#mainDangerComponent").val(data.mainDangerComponent);
-                    $("#dangerCharacter").val(data.dangerCharacter);
-                    $("#emergencyMeasure").val(data.emergencyMeasure);
-                    $("#emergencyEquipment").val(data.emergencyEquipment);
-                    $("#dispatcher").val(data.dispatcher);
-                    $("#destination").val(data.destination);
-                    $("#transferTime").val(getTimeStr(data.transferTime));
-                    $("#firstCarrier").val(data.firstCarrier);
-                    $("#firstCarryTime").val(getTimeStr(data.firstCarryTime));
-                    $("#firstModel").val(data.firstModel);
-                    $("#firstBrand").val(data.firstBrand);
-                    $("#firstTransportNumber").val(data.firstTransportNumber);
-                    $("#firstOrigin").val(data.firstOrigin);
-                    $("#firstStation").val(data.firstStation);
-                    $("#firstDestination").val(data.firstDestination);
-                    $("#firstCarrierSign").val(data.firstCarrierSign);
-                    $("#secondCarrier").val(data.firstCarrier);
-                    $("#secondCarryTime").val(getTimeStr(data.firstCarryTime));
-                    $("#secondModel").val(data.secondModel);
-                    $("#secondBrand").val(data.secondBrand);
-                    $("#secondTransportNumber").val(data.secondTransportNumber);
-                    $("#secondOrigin").val(data.secondOrigin);
-                    $("#secondStation").val(data.secondStation);
-                    $("#secondDestination").val(data.secondDestination);
-                    $("#secondCarrierSign").val(data.secondCarrierSign);
-                    $("#acceptCompanyLicense").val(data.acceptCompanyLicense);
-                    $("#recipient").val(data.recipient);
-                    $("#acceptDate").val(getDateStr(data.acceptDate));
-                    $("#disposeIsUse").prop('checked', data.disposeIsUse);
-                    $("#disposeIsStore").prop('checked', data.disposeIsStore);
-                    $("#disposeIsBurn").prop('checked', data.disposeIsBurn);
-                    $("#disposeIsLandFill").prop('checked', data.disposeIsLandFill);
-                    $("#disposeIsOther").prop('checked', data.disposeIsOther);
-                    $("#headSign").val(data.headSign);
-                    $("#signDate").val(getDateStr(data.signDate));
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-}
-
-/**
  * 查看数据
  * @param e
  */
@@ -658,118 +584,79 @@ function allSelect() {
 }
 function view1() {
     $('#appointModal2').modal('show');
+    $("#saveBtn1").unbind('click');
+    $("#saveBtn1").click(function () {
+        // 制作上传数据
+        var data = {};
+        data['transportPlanItemList'] = [];
+        var count = $("td[id$='handleCategory']").length;
+        for (var i = 1; i < count; i++) {
+            var $i = i;
+            var transportPlanItem = {};
+            var produceCompany = {};
+            var wastes = {};
+            produceCompany.companyName = $("td[id='transportPlanItemList[" + $i + "].produceCompany.companyName']").text();
+            wastes.name = $("td[id='transportPlanItemList[" + $i + "].wastes.name']").text();
+            wastes.wastesId = $("td[id='transportPlanItemList[" + $i + "].wastes.wastesId']").text();
+            wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount']").val();
+            wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit']").val();
+            wastes.formType = getFormTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.formType']").text());
+            wastes.packageType = getPackageTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.packageType']").text());
+            wastes.calorific = $("td[id='transportPlanItemList[" + $i + "].wastes.calorific']").text();
+            wastes.ph = $("td[id='transportPlanItemList[" + $i + "].wastes.ph']").text();
+            wastes.ashPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.ashPercentage']").text();
+            wastes.wetPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.wetPercentage']").text();
+            wastes.chlorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.chlorinePercentage']").text();
+            wastes.sulfurPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.sulfurPercentage']").text();
+            wastes.phosphorusPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.phosphorusPercentage']").text();
+            wastes.fluorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.fluorinePercentage']").text();
+            wastes.processWay = parseInt($("select[id='transportPlanItemList[" + $i + "].wastes.processWay']").val())-1;
+            transportPlanItem.handleCategory = getHandleCategoryFromStr($("td[id='transportPlanItemList[" + $i + "].handleCategory']").text());
+            transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime']").val();
+            transportPlanItem.wastes = wastes;
+            transportPlanItem.produceCompany = produceCompany;
+            data.transportPlanItemList.push(transportPlanItem);
+        }
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "addTransportPlan",
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    });
 }
 function view2(e) {
     // 获取处置类别
     var handleType = getHandleType(e);
     // 设置危废明细数据
     setWastesData();
+    $("input[type='checkbox']:checked").prop('checked', false);
     // 显示
     $('#appointModal1').modal('show');
+    // 取消绑定
+    $("#saveBtn2").unbind('click');
+    // 重新绑定
     $("#saveBtn2").click(function () {
-        // 获取选中的复选框
-        var items = $("input[name='select']:checked");
-        var count = items.length;
-        // 获取选中的危废列表信息
-        var wastesList = [];
-        $.each(items, function (index) {
-            if (index < count-1) {
-                var wastes = {};
-                var params = [];
-                var param_0 = $(this).parent().parent();
-                params.push(param_0);
-                for (var i = 0; i < 13; i++) {
-                    var param = param_0.next();
-                    param_0 = param;
-                    params.push(param.text());
-                }
-                wastes.companyName = params[1];
-                wastes.name = params[2];
-                wastes.wastesId = params[3];
-                wastes.formType = params[4];
-                wastes.packageType = params[5];
-                wastes.heat = params[6];
-                wastes.ph = params[7];
-                wastes.ash = params[8];
-                wastes.water = params[9];
-                wastes.chlorine = params[10];
-                wastes.sulfur = params[11];
-                wastes.phosphorus = params[12];
-                wastes.fluorine = params[13];
-                wastes.handleType = handleType;
-                wastesList.push(wastes);
-            }
-        });
-        // 将捕获到的信息载入到计划中
-        setWastesData2(wastesList);
-        $('#appointModal1').modal('hide');
-        $('#appointModal2').prop('tabindex', 100);
+        saveData(handleType);
     });
 
-    function setWastesData2(wastesList) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#wastesClonedTr2");
-        for (var i = 0; i < wastesList.length; i++) {
-            var obj = wastesList[i];
-            console.log(obj);
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    case (0):
-                        $(this).html(i+1);
-                        break;
-                    case (1):
-                        $(this).html(obj.companyName);
-                        break;
-                    case (2):
-                        $(this).html(obj.handleType);
-                        break;
-                    case (4):
-                        $(this).html(obj.name);
-                        break;
-                    case (5):
-                        $(this).html(obj.wastesId);
-                        break;
-                    case (8):
-                        $(this).html(obj.formType);
-                        break;
-                    case (9):
-                        $(this).html(obj.packageType);
-                        break;
-                    case (10):
-                        $(this).html(obj.heat);
-                        break;
-                    case (11):
-                        $(this).html(obj.ash);
-                        break;
-                    case (12):
-                        $(this).html(obj.water);
-                        break;
-                    case (13):
-                        $(this).html(obj.chlorine);
-                        break;
-                    case (14):
-                        $(this).html(obj.sulfur);
-                        break;
-                    case (15):
-                        $(this).html(obj.phosphorus);
-                        break;
-                    case (16):
-                        $(this).html(obj.fluorine);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        }
-        // 隐藏无数据的tr
-        tr.hide();
-    }
+
 }
 function getWeekDate() {
     //获取时间
@@ -788,4 +675,169 @@ function loadPageTransportPlan() {
 
 function getHandleType(e) {
     return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+}
+
+function saveData(handleType) {
+    // 获取选中的复选框
+    var items = $("input[name='select']:checked");
+    var count = items.length;
+    // 获取选中的危废列表信息
+    var wastesList = [];
+    $.each(items, function (index) {
+        if (index < count) {
+            // console.log(index);
+            var wastes = {};
+            var params = [];
+            var param_0 = $(this).parent().parent();
+            params.push(param_0);
+            for (var i = 0; i < 13; i++) {
+                var param = param_0.next();
+                param_0 = param;
+                params.push(param.text());
+            }
+            wastes.companyName = params[1];
+            wastes.name = params[2];
+            wastes.wastesId = params[3];
+            wastes.formType = params[4];
+            wastes.packageType = params[5];
+            wastes.heat = params[6];
+            wastes.ph = params[7];
+            wastes.ash = params[8];
+            wastes.water = params[9];
+            wastes.chlorine = params[10];
+            wastes.sulfur = params[11];
+            wastes.phosphorus = params[12];
+            wastes.fluorine = params[13];
+            wastes.handleType = handleType;
+            wastesList.push(wastes);
+        }
+    });
+    // 将捕获到的信息载入到计划中
+    setWastesData2(wastesList);
+    $('#appointModal1').modal('hide');
+    $('#appointModal2').modal('show');
+}
+
+function setWastesData2(wastesList) {
+    // console.log(wastesList.length);
+    // 获取id为cloneTr的tr元素
+    var tr = $("#wastesClonedTr2");
+    var id = tr.siblings().length;
+    for (var i = 0; i < wastesList.length; i++) {
+        var obj = wastesList[i];
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        changeId(clonedTr, id);
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                case (0):
+                    $(this).html(id++);
+                    break;
+                case (1):
+                    $(this).html(obj.companyName);
+                    break;
+                case (2):
+                    $(this).html(obj.handleType);
+                    break;
+                case (4):
+                    $(this).html(obj.name);
+                    break;
+                case (5):
+                    $(this).html(obj.wastesId);
+                    break;
+                case (8):
+                    $(this).html(obj.formType);
+                    break;
+                case (9):
+                    $(this).html(obj.packageType);
+                    break;
+                case (10):
+                    $(this).html(obj.heat);
+                    break;
+                case (11):
+                    $(this).html(obj.ash);
+                    break;
+                case (12):
+                    $(this).html(obj.water);
+                    break;
+                case (13):
+                    $(this).html(obj.chlorine);
+                    break;
+                case (14):
+                    $(this).html(obj.sulfur);
+                    break;
+                case (15):
+                    $(this).html(obj.phosphorus);
+                    break;
+                case (16):
+                    $(this).html(obj.fluorine);
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    }
+    // 隐藏无数据的tr
+    tr.hide();
+    // 设置时间格式
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        endDate:new Date()
+    });
+    /**
+     * 改变id
+     * @param element
+     */
+    function changeId(element, index) {
+        element.find("td[id*='transportPlanItemList'],input[id*='transportPlanItemList'],select[id*='transportPlanItemList']").each(function () {
+            var oldId = $(this).prop("id");
+            var newId = oldId.replace(/[0-9]\d*/, index);
+            $(this).prop('id', newId);
+        });
+    }
+}
+
+// 覆盖Modal.prototype的hideModal方法
+$.fn.modal.Constructor.prototype.hideModal = function () {
+    var that = this;
+    this.$element.hide();
+    this.backdrop(function () {
+        //判断当前页面所有的模态框都已经隐藏了之后body移除.modal-open，即body出现滚动条。
+        $('.modal.fade.in').length === 0 && that.$body.removeClass('modal-open');
+        that.resetAdjustments();
+        that.resetScrollbar();
+        that.$element.trigger('hidden.bs.modal');
+    })
+};
+
+// 页面变黑
+$(document).on('show.bs.modal', '.modal', function(event) {
+    $(this).appendTo($('body'));
+}).on('shown.bs.modal', '.modal.in', function(event) {
+    setModalsAndBackdropsOrder();
+}).on('hidden.bs.modal', '.modal', function(event) {
+    setModalsAndBackdropsOrder();
+});
+
+function setModalsAndBackdropsOrder() {
+    var modalZIndex = 1040;
+    $('.modal.in').each(function(index) {
+        var $modal = $(this);
+        modalZIndex++;
+        $modal.css('zIndex', modalZIndex);
+        $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+    });
+    $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
 }
