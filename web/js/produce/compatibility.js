@@ -759,11 +759,18 @@ $.ajax({
     url: "generateSheet",                  // url
     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
     dataType: "json",
+    contentType: "application/json; charset=utf-8",
     success:function (result) {
-        
+        if (result != undefined && result.status == "success"){
+            console.log(result)
+            window.location.href="materialDemand.html";
+        }
+        else {
+            alert(result.message);
+        }
     },
     error:function (result) {
-        
+        alert("服务器异常！")
     }
 
 

@@ -7,4 +7,5 @@ import java.util.List;
 public interface ThresholdService {
     List<Threshold> list();
     Threshold getByHandleCategory(String handleCategory);
+    float getSafety(String handleCategory);
 }
