@@ -659,6 +659,62 @@ function allSelect() {
 }
 function view1() {
     $('#appointModal2').modal('show');
+    $("#saveBtn1").unbind('click');
+    $("#saveBtn1").click(function () {
+        // 制作上传数据
+        var data = {};
+        data['transportPlanItemList'] = [];
+        var count = $("td[id$='handleCategory']").length;
+        for (var i = 1; i < count; i++) {
+            var $i = i;
+            var transportPlanItem = {};
+            var produceCompany = {};
+            var wastes = {};
+            produceCompany.companyName = $("td[id='transportPlanItemList[" + $i + "].produceCompany.companyName']").text();
+            wastes.name = $("td[id='transportPlanItemList[" + $i + "].wastes.name']").text();
+            wastes.wastesId = $("td[id='transportPlanItemList[" + $i + "].wastes.wastesId']").text();
+            wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount']").val();
+            wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit']").val();
+            wastes.formType = getFormTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.formType']").text());
+            wastes.packageType = getPackageTypeFromStr($("td[id='transportPlanItemList[" + $i + "].wastes.packageType']").text());
+            wastes.calorific = $("td[id='transportPlanItemList[" + $i + "].wastes.calorific']").text();
+            wastes.ph = $("td[id='transportPlanItemList[" + $i + "].wastes.ph']").text();
+            wastes.ashPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.ashPercentage']").text();
+            wastes.wetPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.wetPercentage']").text();
+            wastes.chlorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.chlorinePercentage']").text();
+            wastes.sulfurPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.sulfurPercentage']").text();
+            wastes.phosphorusPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.phosphorusPercentage']").text();
+            wastes.fluorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.fluorinePercentage']").text();
+            wastes.processWay = parseInt($("select[id='transportPlanItemList[" + $i + "].wastes.processWay']").val())-1;
+            transportPlanItem.handleCategory = getHandleCategoryFromStr($("td[id='transportPlanItemList[" + $i + "].handleCategory']").text());
+            transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime']").val();
+            transportPlanItem.wastes = wastes;
+            transportPlanItem.produceCompany = produceCompany;
+            data.transportPlanItemList.push(transportPlanItem);
+        }
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "addTransportPlan",
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    });
 }
 function view2(e) {
     // 获取处置类别
@@ -704,7 +760,7 @@ function saveData(handleType) {
     var wastesList = [];
     $.each(items, function (index) {
         if (index < count) {
-            console.log(index);
+            // console.log(index);
             var wastes = {};
             var params = [];
             var param_0 = $(this).parent().parent();
@@ -747,6 +803,7 @@ function setWastesData2(wastesList) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
+        changeId(clonedTr, id);
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
@@ -801,18 +858,42 @@ function setWastesData2(wastesList) {
     }
     // 隐藏无数据的tr
     tr.hide();
+    // 设置时间格式
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        endDate:new Date()
+    });
+    /**
+     * 改变id
+     * @param element
+     */
+    function changeId(element, index) {
+        element.find("td[id*='transportPlanItemList'],input[id*='transportPlanItemList'],select[id*='transportPlanItemList']").each(function () {
+            var oldId = $(this).prop("id");
+            var newId = oldId.replace(/[0-9]\d*/, index);
+            $(this).prop('id', newId);
+        });
+    }
 }
 
 // 覆盖Modal.prototype的hideModal方法
 $.fn.modal.Constructor.prototype.hideModal = function () {
-    var that = this
-    this.$element.hide()
+    var that = this;
+    this.$element.hide();
     this.backdrop(function () {
         //判断当前页面所有的模态框都已经隐藏了之后body移除.modal-open，即body出现滚动条。
         $('.modal.fade.in').length === 0 && that.$body.removeClass('modal-open');
         that.resetAdjustments();
         that.resetScrollbar();
-        that.$element.trigger('hidden.bs.modal')
+        that.$element.trigger('hidden.bs.modal');
     })
 };
 

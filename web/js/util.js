@@ -78,3 +78,90 @@ function showLog() {
         tr.hide();
     }
 }
+/**
+ * 通过字符串获取处置类别
+ * @param handleCategory
+ * @returns {*}
+ */
+function getHandleCategoryFromStr(handleCategory) {
+    var res;
+    switch (handleCategory) {
+        case "污泥":
+            res = "Sludge";
+            break;
+        case "废液":
+            res = "WasteLiquid";
+            break;
+        case "散装料":
+            res = "Bulk";
+            break;
+        case "破碎料":
+            res = "Crushing";
+            break;
+        case "精馏残渣":
+            res = "Distillation";
+            break;
+        case "悬挂连":
+            res = "Suspension";
+            break;
+        default:
+            res = "";
+            break;
+    }
+    return res;
+}
+/**
+ * 通过字符串获取物质形态
+ * @param formType
+ * @returns {*}
+ */
+function getFormTypeFromStr(formType) {
+    var res;
+    switch (formType) {
+        case "气体":
+            res = "Gas";
+            break;
+        case "液体":
+            res = "Liquid";
+            break;
+        case "固体":
+            res = "Solid";
+            break;
+        case "半固态":
+            res = "HalfSolid";
+            break;
+        default:
+            res = "";
+            break;
+    }
+    return res;
+}
+/**
+ * 通过字符串获取包装方式
+ * @param packageType
+ * @returns {*}
+ */
+function getPackageTypeFromStr(packageType) {
+    var res;
+    switch (packageType) {
+        case "吨袋":
+            res = "Bag";
+            break;
+        case "标准箱":
+            res = "Box";
+            break;
+        case "吨箱":
+            res = "Ton";
+            break;
+        case "小袋":
+            res = "Pouch";
+            break;
+        case "铁桶":
+            res = "Iron";
+            break;
+        default:
+            res = "";
+            break;
+    }
+    return res;
+}

@@ -7,17 +7,17 @@
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/data-format.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
-    <script src="js/util.js"></script>
     <script src="js/produce/transportPlan.js"></script>
+    <script src="js/util.js"></script>
 </head>
-<script type="text/javascript">
-    $('#embed').load('embed/loginLogModal.html');     //当前页数
-</script>
 <style>
     textarea {
         resize: none;
@@ -234,8 +234,8 @@
                             <td class="text-center">QW10001</td>
                             <td class="text-right">100</td>
                             <td class="text-right">吨</td>
-                            <td class="text-right">液态</td>
-                            <td class="text-right">标准装</td>
+                            <td class="text-right">液体</td>
+                            <td class="text-right">标准箱</td>
                             <td class="text-right">20</td>
                             <td class="text-right">10</td>
                             <td class="text-right">20</td>
@@ -541,11 +541,11 @@
                             <tbody>
                             <tr>
                                 <th class="text-center">序号</th>
-                                <th class="text-center">产废单位</th>
+                                <th class="text-center" style="width:100px;">产废单位</th>
                                 <th class="text-center">处置类别</th>
-                                <th class="text-center">入场时间</th>
+                                <th class="text-center" style="width:100px;">入场时间</th>
                                 <th class="text-center">废物名称</th>
-                                <th class="text-center">废物代码</th>
+                                <th class="text-center" style="width:100px;">废物代码</th>
                                 <th class="text-center">数量</th>
                                 <th class="text-center">计量单位</th>
                                 <th class="text-center">物质形态</th>
@@ -560,31 +560,41 @@
                                 <th class="text-center">氟含量/%</th>
                                 <th class="text-center">处理方式</th>
                             </tr>
-                            <tr id="wastesClonedTr2">
-                                <td class="text-center">1</td>
-                                <td class="text-center">测试产废单位</td>
-                                <td class="text-center">污泥</td>
-                                <td class="text-center"><input type="datetime" name="approachTime" size="3"></td>
-                                <td class="text-left">废液</td>
-                                <td class="text-center">QW10001</td>
-                                <td class="text-right"><input type="text" size="3"></td>
-                                <td class="text-right"><input type="text" size="3"></td>
-                                <td class="text-right">液态</td>
-                                <td class="text-right">标准装</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">20</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right">10</td>
-                                <td class="text-right"><input type="text" size="3" name="handleCategory"></td>
+                            <tr id="wastesClonedTr2" style="display: none;">
+                                <td class="text-center" id="transportPlanItemList[0].id">0</td>
+                                <td class="text-center" id="transportPlanItemList[0].produceCompany.companyName">测试产废单位</td>
+                                <td class="text-center" id="transportPlanItemList[0].handleCategory">污泥</td>
+                                <td class="text-center">
+                                    <div class="input-group date form_datetime">
+                                        <input class="form-control focus" type="text" value="" id="transportPlanItemList[0].approachTime" readonly>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                                    </div>
+                                </td>
+                                <td class="text-left" id="transportPlanItemList[0].wastes.name">废液</td>
+                                <td class="text-center" id="transportPlanItemList[0].wastes.wastesId">823-898-09</td>
+                                <td class="text-right"><input type="number" size="3" id="transportPlanItemList[0].wastes.wasteAmount" style="width: 50px;" value="1"></td>
+                                <td class="text-right"><input type="text" size="3" id="transportPlanItemList[0].wastes.unit" value="T"></td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.formType">液体</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.packageType">标准箱</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.calorific">20</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.ph">10</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.ashPercentage">20</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.wetPercentage">10</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.chlorinePercentage">20</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.sulfurPercentage">10</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.phosphorusPercentage">10</td>
+                                <td class="text-right" id="transportPlanItemList[0].wastes.fluorinePercentage">10</td>
+                                <td class="text-right">
+                                    <select id="transportPlanItemList[0].wastes.processWay">
+                                        <option value="1">焚烧</option>
+                                        <option value="2">填埋</option>
+                                    </select>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
                         <div class="row text-center">
-                            <a class="btn btn-primary" onclick="" id="btn1">保存</a>
+                            <a class="btn btn-primary" onclick="" id="saveBtn1">保存</a>
                             <a class="btn btn-danger" data-dismiss="modal">关闭</a>
                         </div>
                     </div>
@@ -635,8 +645,8 @@
                                     <td class="text-center">测试产废单位</td>
                                     <td class="text-left">废液</td>
                                     <td class="text-center">QW10001</td>
-                                    <td class="text-right">液态</td>
-                                    <td class="text-right">标准装</td>
+                                    <td class="text-right">液体</td>
+                                    <td class="text-right">标准箱</td>
                                     <td class="text-right">20</td>
                                     <td class="text-right">10</td>
                                     <td class="text-right">20</td>
@@ -659,4 +669,19 @@
     </div>
     <div id="embed"></div>
 </body>
+<script type="text/javascript">
+    $('#embed').load('embed/loginLogModal.html');
+    // 设置时间格式
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
 </html>
