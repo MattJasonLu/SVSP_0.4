@@ -7,17 +7,21 @@
     <resultMap id="WayBillRM" type="WayBill" autoMapping="true">
         <id column="id" property="id"/>
         <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
-        <association property="receiveCompany" column="receiveCompanyId" select="getReceiveCompany"/>
-        <association property="salesman" column="salesmanId" select="getSalesman"/>
-        <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
+        <collection property="wayBillItemList" select="getItems" column="id"
+                    ofType="com.jdlink.domain.Produce.WayBillItem"
                     javaType="ArrayList"/>
     </resultMap>
-    <resultMap id="WastesRM" type="Wastes" autoMapping="true">
-        <id property="id" column="id"/>
-        <result property="formType" column="formType" javaType="com.jdlink.domain.FormType"/>
-        <result property="packageType" column="packageType" javaType="com.jdlink.domain.PackageType"/>
+
+    <resultMap id="WayBillItemRM" type="WayBillItem" autoMapping="true">
+        <id property="itemId" column="itemId"/>
+        <association property="wastes" column="wastesId" select="getWastes"/>
+        <association property="receiveCompany" column="receiveCompanyId" select="getReceiveCompany"/>
+        <association property="salesman" column="salesmanId" select="getSalesman"/>
     </resultMap>
 
+    <select id="getItems" parameterType="String" resultMap="WayBillItemRM">
+        select  * from t_pr_waybillitem where wayBillId = #{id};
+    </select>
     <select id="getProduceCompany" parameterType="String" resultType="Client">
         SELECT * FROM client WHERE clientId=#{produceCompanyId};
     </select>
@@ -27,7 +31,7 @@
     </select>
 
     <select id="getWastes" parameterType="String" resultType="Wastes">
-        select * from t_wastes where wayBillId = #{id};
+        select * from t_wastes where id = #{wastesId};
     </select>
 
     <select id="getSalesman" parameterType="String" resultType="Salesman">
@@ -39,12 +43,40 @@
      </select>
 
     <select id="countById" resultType="int">
-        select count(*) from t_pr_waybill where id like "%"#{id}"%"
+        select count(*) from t_pr_waybill where id like "%"#{id}"%";
+    </select>
+
+    <select id="countItem" resultType="int">
+        select count(*) from t_pr_waybillitem;
+    </select>
+
+    <select id="countWastes" resultType="int">
+        select count(*) from t_wastes;
     </select>
 
     <select id="getById" parameterType="String" resultMap="WayBillRM">
           select * from t_pr_waybill where id = #{id};
      </select>
+
+    <select id="getItemById" parameterType="String" resultMap="WayBillItemRM">
+        select * from t_pr_waybillitem where itemId = #{id};
+    </select>
+
+    <select id="getSalesmanIdByName" parameterType="String" resultType="String">
+        select salesmanId from salesman where name = #{name};
+    </select>
+
+    <select id="getClientIdByName" parameterType="String" resultType="String">
+        select clientId from client where companyName = #{name};
+    </select>
+
+    <select id="getWastesIdByName" parameterType="String" resultType="String">
+        select t_wastes.id from t_wastes where name = #{name};
+    </select>
+
+    <select id="getWastesById" parameterType="String" resultType="String">
+        select t_wastes.id from t_wastes where id = #{id};
+    </select>
 
     <select id="listPage" resultMap="WayBillRM">
         select * from t_pr_waybill order by nowTime desc
@@ -61,7 +93,6 @@
             </if>
             <if test="produceCompany != null and produceCompany !=''">
                 and produceCompanyName like "%"#{produceCompany.companyName}"%"
-                and receiveCompanyName like "%"#{receiveCompany.companyName}"%"
             </if>
             <if test="total != null and total !=''">
                 and total = #{total}
@@ -74,7 +105,6 @@
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
-                and receiveCompanyOperator like "%"#{receiveCompanyOperator}"%"
             </if>
             <if test="state != null and state != ''">
                 and t_pr_waybill.state like "%"#{state}"%"
@@ -94,7 +124,6 @@
             </if>
             <if test="produceCompany.companyName != null and produceCompany.companyName !=''">
                 and produceCompanyName like "%"#{produceCompany.companyName}"%"
-                and receiveCompanyName like "%"#{receiveCompany.companyName}"%"
             </if>
             <if test="total != null and total !=''">
                 and total = #{total}
@@ -107,7 +136,6 @@
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
-                and receiveCompanyOperator like "%"#{receiveCompanyOperator}"%"
             </if>
             <if test="state != null and state != ''">
                 and t_pr_waybill.state like "%"#{state}"%"
@@ -130,4 +158,18 @@
     <update id="invalid" parameterType="String">
         update t_pr_waybill set state = 'Invalid' where id = #{id}
     </update>
+
+    <insert id="addItem" parameterType="WayBill">
+        <foreach collection="wayBillItemList" index="index" item="wayBillItem">
+            insert into t_pr_waybillitem
+            (itemId,wayBillId,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
+            values
+            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
+
+            insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount,freight)
+            values
+            (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wastesTotal},#{wayBillItem.wastes.wasteAmount},#{wayBillItem.wastes.freight});
+        </foreach>
+    </insert>
+
 </mapper>
