@@ -36,22 +36,44 @@ function setMaterialList(obj,n) {
     dailyProportionsTotal=0;
     //每周需求总量
     weeklyDemandTotal=0;
-    //热值总量
-    calorificTotal=0;
-    //灰分总量
-    ashTotal=0;
-    //水分总量
-    waterTotal=0;
-    //氯总量
-    clTotal=0;
-    //硫总量
-    sTotal=0;
-    //磷总量
-    pTotal=0;
-    //弗总量
-    fTotal=0;
-    //PH总量
-    phTotal=0;
+    //热值最大总量
+    calorificmaxTotal=0;
+    //热值最小总量
+    calorificminTotal=0;
+    //灰分最大总量
+    ashmaxTotal=0;
+    //灰分最小总量
+    ashminTotal=0;
+    //水分最大总量
+    watermaxTotal=0;
+    //水分最小总量
+    waterminTotal=0;
+    //氯最大总量
+    clmaxTotal=0;
+    //氯最大总量
+    clminTotal=0;
+    //硫最大总量
+    smaxTotal=0;
+    //硫最小总量
+    sminTotal=0;
+    //磷最大总量
+    pmaxTotal=0;
+    //磷最小总量
+    pminTotal=0;
+    //弗最大总量
+    fmaxTotal=0;
+    //弗最小总量
+    fminTotal=0;
+    //PH最大总量
+    phmaxTotal=0;
+    //PH最小总量
+    phminTotal=0;
+    //目前库存总量
+    currentInventoryTotal=0;
+    //安全库存总和
+    safetyTotal=0;
+    //市场采购量总和
+    marketPurchasesTotal=0;
     $.each(obj, function (index, item) {
         var data = eval(item);
         var clonedTr = tr.clone();
@@ -93,18 +115,22 @@ function setMaterialList(obj,n) {
                 // 周生产计划量(T)
                 case (4):
                     $(this).html(data.weeklyDemand);
+                    dailyProportionsTotal+=data.weeklyDemand;
                     break;
                 //目前库存量(T)
                 case (5):
                     $(this).html(data.currentInventory);
+                    currentInventoryTotal+=data.currentInventory;
                     break;
                 // 安全库存量(T)
                 case (6):
                     $(this).html(data.safety);
+                    safetyTotal+=data.safety;
                     break;
                 // 市场采购量
                 case (7):
                     $(this).html(data.marketPurchases);
+                    marketPurchasesTotal+=data.marketPurchases;
                     break;
                 //热值max
                 case (8):
@@ -112,6 +138,7 @@ function setMaterialList(obj,n) {
                        var obj1=eval(item);
                         if (obj1.parameter.name =="热值") {
                             calorificmax=obj1.maximum;
+                           calorificmaxTotal+=obj1.maximum;
                         }
                     });
                     $(this).html(calorificmax);
@@ -122,6 +149,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="热值") {
                             calorificmix= obj1.minimum;
+                            calorificminTotal+=obj1.minimum;;
                         }
                     });
                     $(this).html(calorificmix);
@@ -132,6 +160,8 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="灰分") {
                             ascmax= obj1.maximum;
+                            ashmaxTotal+=obj1.maximum;
+
                         }
                     });
                     $(this).html(ascmax);
@@ -142,6 +172,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="灰分") {
                             ascmix= obj1.minimum;
+                            ashminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(ascmix);
@@ -152,6 +183,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="含水率") {
                             watermax= obj1.maximum;
+                            watermaxTotal+=obj1.maximum;
                         }
                     });
                     $(this).html(watermax);
@@ -162,6 +194,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="含水率") {
                             watermin= obj1.minimum;
+                            waterminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(watermin);
@@ -172,6 +205,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="硫含量") {
                             smax= obj1.maximum;
+                            smaxTotal+=obj1.maximum;
                         }
                     });
                     $(this).html(smax);
@@ -182,6 +216,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="硫含量") {
                             smin= obj1.minimum;
+                            sminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(smin);
@@ -192,6 +227,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="氯含量") {
                             clmax= obj1.maximum;
+                            clmaxTotal+=obj1.maximum;
                         }
                     });
                     $(this).html(clmax);
@@ -202,6 +238,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="氯含量") {
                             clmin= obj1.minimum;
+                            clminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(clmin);
@@ -212,6 +249,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="磷含量") {
                             pmax= obj1.maximum;
+                            pmaxTotal+=obj1.maximum;
                         }
                     });
                     $(this).html(pmax);
@@ -222,6 +260,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="磷含量") {
                             pmin= obj1.minimum;
+                            pminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(pmin);
@@ -232,6 +271,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="氟含量") {
                             fmax= obj1.maximum;
+                            fmaxTotal+=obj1.maximum;
                         }
                     });
                     $(this).html(fmax);
@@ -242,6 +282,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="氟含量") {
                             fmin= obj1.minimum;
+                            fminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(fmin);
@@ -252,6 +293,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="酸碱度") {
                             phmax= obj1.maximum;
+                            phmaxTotal+=obj1.maximum;
                         }
                     });
                     $(this).html(phmax);
@@ -262,6 +304,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="酸碱度") {
                             phmin= obj1.minimum;
+                            phminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(phmin);
@@ -285,7 +328,61 @@ function setMaterialList(obj,n) {
         clonedTr.removeAttr("id");
         clonedTr.removeAttr("style");
         clonedTr.insertBefore(tr);
+
     });
     // 隐藏无数据的tr
     tr.hide();
+    //赋值
+    $("#dailyProportionsTotal").text(dailyProportionsTotal);
+    $("#currentInventoryTotal").text(currentInventoryTotal);
+    $("#safetyTotal").text(safetyTotal);
+    $("#marketPurchasesTotal").text(marketPurchasesTotal);
+    $("#calorificmaxTotal").text(calorificmaxTotal);
+    $("#calorificminTotal").text(calorificminTotal);
+    $("#ashmaxTotal").text(ashmaxTotal);
+    $("#ashminTotal").text(ashminTotal);
+    $("#watermaxTotal").text(watermaxTotal);
+    $("#waterminTotal").text(waterminTotal);
+    $("#smaxTotal").text(smaxTotal);
+    $("#sminTotal").text(sminTotal);
+    $("#clmaxTotal").text(clmaxTotal);
+    $("#clminTotal").text(clminTotal);
+    $("#pmaxTotal").text(pmaxTotal);
+    $("#pminTotal").text(pminTotal);
+    $("#fmaxTotal").text(fmaxTotal);
+    $("#fminTotal").text(fminTotal);
+    $("#phmaxTotal").text(phmaxTotal);
+    $("#phminTotal").text(clminTotal);
+}
+/*导入物料需求*/
+function importMaExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importMaterialRequireIdExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
 }
