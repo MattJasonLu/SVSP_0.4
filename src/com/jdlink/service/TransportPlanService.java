@@ -9,5 +9,5 @@ import com.jdlink.domain.Produce.TransportPlan;
 public interface TransportPlanService {
     void add(TransportPlan transportPlan);
 
-    TransportPlan getById(String id);
+    TransportPlan getRecent();
 }

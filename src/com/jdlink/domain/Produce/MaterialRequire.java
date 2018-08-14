@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.FormType;
 import com.jdlink.domain.PackageType;
 import com.jdlink.domain.Wastes;
 
@@ -36,10 +37,37 @@ public class MaterialRequire {
      *
      */
     private Threshold threshold;
+    /**
+     * 序号
+     *
+     */
+    private  String id;
+    /**
+     * 物质形态
+     *
+     */
+    private FormType formType;
+
+    public FormType getFormType() {
+        return formType;
+    }
+
+    public void setFormType(FormType formType) {
+        this.formType = formType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Threshold getThreshold() {
         return threshold;
     }
+
     /**
      * 物料需求
      *
@@ -64,6 +92,26 @@ public class MaterialRequire {
      *
      */
     private String compatibilityId;
+
+    @Override
+    public String toString() {
+        return "MaterialRequire{" +
+                "materialRequireId='" + materialRequireId + '\'' +
+                ", handleCategory=" + handleCategory +
+                ", currentInventory=" + currentInventory +
+                ", weeklyDemand=" + weeklyDemand +
+                ", safety=" + safety +
+                ", marketPurchases=" + marketPurchases +
+                ", threshold=" + threshold +
+                ", id='" + id + '\'' +
+                ", formType=" + formType +
+                ", compatibility=" + compatibility +
+                ", packageType=" + packageType +
+                ", remarks='" + remarks + '\'' +
+                ", compatibilityId='" + compatibilityId + '\'' +
+                ", wastesList=" + wastesList +
+                '}';
+    }
 
     public String getCompatibilityId() {
         return compatibilityId;
@@ -158,16 +206,4 @@ public class MaterialRequire {
         this.wastesList = wastesList;
     }
 
-    @Override
-    public String toString() {
-        return "MaterialRequire{" +
-                "materialRequireId='" + materialRequireId + '\'' +
-                ", handleCategory=" + handleCategory +
-                ", currentInventory=" + currentInventory +
-                ", weeklyDemand=" + weeklyDemand +
-                ", safety=" + safety +
-                ", marketPurchases=" + marketPurchases +
-                ", wastesList=" + wastesList +
-                '}';
-    }
 }
