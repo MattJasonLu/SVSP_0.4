@@ -231,7 +231,15 @@ function getWeekDate() {
     var month = obj.getMonth()+1;
     var day = obj.getDate();
     if(day % 7 > 0)  var a = 1; else a = 0;
-    var week = parseInt(day / 7) + a;
+    var days = new Date();
+    days.setFullYear(year);
+    days.setMonth(month);
+    days.setDate(1);
+    if(day.getDay() <= days.getDay()){
+        var week = parseInt(day / 7) + a + 1;
+    }else {
+        week = parseInt(day / 7) + a;
+    }
     return "第" + week + "周";
 
 }
