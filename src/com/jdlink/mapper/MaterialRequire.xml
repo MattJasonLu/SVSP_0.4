@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.MaterialRequireMapper" >
+    <resultMap id="MaterialRequireMapperRM" type="MaterialRequire" autoMapping="true">
+        <result property="materialRequireId" column="materialRequireId" javaType="String"></result>
+        <result property="currentInventory" column="currentInventory" javaType="float"></result>
+        <result property="marketPurchases" column="marketPurchases" javaType="float"></result>
+        <result property="compatibilityId" column="compatibilityId" javaType="String"></result>
+        <result property="remarks" column="remarks" javaType="String"></result>
+    </resultMap>
+<select id="total" resultType="int">
+    select count(*) from t_pr_materialrequire;
+</select>
+<insert id="addMix" parameterType="MaterialRequire">
+    insert into t_pr_materialrequire(materialRequireId,id,currentInventory,marketPurchases,remarks,compatibilityId,nowTime,safety,weeklyDemand,formType,handleCategory,packageType)
+    values (#{materialRequireId},#{id},#{currentInventory},#{marketPurchases},#{remarks},#{compatibilityId},nowTime,#{safety},#{weeklyDemand},#{formType},#{handleCategory},#{packageType});
+<if test="wastesList.size()>0" >
+<foreach collection="wastesList" item="wastes" index="index">
+    <if test="wastes.parameterList.size()>0" >
+        <foreach collection="wastes.parameterList" index="index" item="parameter">
+            insert  into t_mixingelement(id,wastesId,minimum,maximum,parameter,materialRequireId,nowTime)
+            values (#{parameter.id},#{wastes.id},#{parameter.minimum},#{parameter.maximum},#{parameter.parameter},#{materialRequireId},NOW());
+        </foreach>
+
+    </if>
+</foreach>
+</if>
+</insert>
+    <!--查找编号-->
+    <select id="check" resultType="String">
+        select materialRequireId from  t_pr_materialrequire order by nowTime desc ;
+    </select>
+</mapper>

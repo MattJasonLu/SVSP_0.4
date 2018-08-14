@@ -7,8 +7,12 @@ import com.jdlink.util.CodeBaseEnum;
  */
 public enum PackageType implements CodeBaseEnum {
     Bag("吨袋", 1),
-    Box("箱装", 2),
+    Box("标准箱", 2),
+    Ton("吨箱",3),
+    Pouch("小袋",4),
+    Iron("铁桶",5)
     ;
+
 
     @Override
     public int code() {

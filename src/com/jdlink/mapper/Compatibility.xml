@@ -59,7 +59,7 @@
     <update id="back" >
         update t_pr_pw set checkState='Backed',backContent=#{1},nowTime=NOW() where pwId=#{0};
     </update>
-    <select id="getByPwId1" resultType="Compatibility" parameterType="String">
+    <select id="getByPwId1" resultMap="CompatibilityRM" parameterType="String">
         select * from t_pr_pw where pwId=#{pwId};
     </select>
     <update id="cancel" parameterType="String">
@@ -137,8 +137,8 @@
     insert into  t_pr_pw(pwId,handleCategory,formType,proportion,dailyProportions,weeklyDemand,beginTime,endTime,compatibilityId,nowTime,checkState)
         values (#{pwId},#{handleCategory},#{formType},#{proportion},#{dailyProportions},#{weeklyDemand},#{beginTime},#{endTime},#{compatibilityId},Now(),'ToExamine');
         <foreach collection="wastesList"  item="wastes" index="index">
-            insert into t_wastes(id,calorific,ashPercentage,wetPercentage,chlorine,sulfurPercentage,phosphorus,fluorine,ph,compatibilityId) values
-            (#{wastes.id},#{wastes.calorific},#{wastes.ashPercentage},#{wastes.wetPercentage},#{wastes.chlorine},#{wastes.sulfurPercentage},#{wastes.phosphorus},#{wastes.fluorine},#{wastes.ph},#{compatibilityId});
+            insert into t_wastes(id,calorific,ashPercentage,wetPercentage,chlorinePercentage,sulfurPercentage,phosphorusPercentage,fluorinePercentage,ph,compatibilityId) values
+            (#{wastes.id},#{wastes.calorific},#{wastes.ashPercentage},#{wastes.wetPercentage},#{wastes.chlorinePercentage},#{wastes.sulfurPercentage},#{wastes.phosphorusPercentage},#{wastes.fluorinePercentage},#{wastes.ph},#{compatibilityId});
         </foreach>
     </insert>
 </mapper>

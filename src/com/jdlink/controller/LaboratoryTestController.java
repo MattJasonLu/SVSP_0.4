@@ -158,13 +158,14 @@ public class LaboratoryTestController {
                     wastes.setId(RandomUtil.getRandomEightNumber());
                     wastes.setSamplingDate(DateUtil.getDateFromStr(data[i][11].toString()));
                     wastes.setName(data[i][12].toString());
-                    wastes.setSamplingNumber(data[i][13].toString());
-                    wastes.setTestDate(DateUtil.getDateFromStr(data[i][14].toString()));
-                    wastes.setIsProductionLine(data[i][15] != null && data[i][15].toString().equals("√"));
-                    wastes.setIsStorageArea(data[i][16] != null && data[i][16].toString().equals("√"));
+                    wastes.setWastesId(data[i][13].toString());
+                    wastes.setSamplingNumber(data[i][14].toString());
+                    wastes.setTestDate(DateUtil.getDateFromStr(data[i][15].toString()));
+                    wastes.setIsProductionLine(data[i][16] != null && data[i][16].toString().equals("√"));
+                    wastes.setIsStorageArea(data[i][17] != null && data[i][17].toString().equals("√"));
                     // 参数列表
                     List<MixingElement> parameterList = new ArrayList<>();
-                    for (int j = 0, k = 17; j < Parameter.values().length; j++, k+=3) {
+                    for (int j = 0, k = 18; j < Parameter.values().length; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement parameter = new MixingElement();
                             parameter.setId(RandomUtil.getRandomEightNumber());
@@ -175,7 +176,7 @@ public class LaboratoryTestController {
                             parameterList.add(parameter);
                         }
                     }
-                    for (int j = 0, k = 56; j < 3; j++, k+=3) {
+                    for (int j = 0, k = 57; j < 3; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement parameter = new MixingElement();
                             parameter.setId(RandomUtil.getRandomEightNumber());
@@ -188,7 +189,7 @@ public class LaboratoryTestController {
                     }
                     // 重金属列表
                     List<MixingElement> heavyMetalList = new ArrayList<>();
-                    for (int j = 0, k = 65; j < HeavyMetal.values().length; j++, k+=3) {
+                    for (int j = 0, k = 66; j < HeavyMetal.values().length; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement heavyMetal = new MixingElement();
                             heavyMetal.setId(RandomUtil.getRandomEightNumber());
@@ -199,7 +200,7 @@ public class LaboratoryTestController {
                             heavyMetalList.add(heavyMetal);
                         }
                     }
-                    for (int j = 0, k = 143; j < 4; j++, k+=3) {
+                    for (int j = 0, k = 144; j < 4; j++, k+=3) {
                         if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
                             MixingElement heavyMetal = new MixingElement();
                             heavyMetal.setId(RandomUtil.getRandomEightNumber());
