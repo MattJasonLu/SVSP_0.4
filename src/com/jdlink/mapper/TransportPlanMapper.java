@@ -9,6 +9,6 @@ public interface TransportPlanMapper {
 
     void add(TransportPlan transportPlan);
 
-    TransportPlan getById(String id);
+    TransportPlan getRecent();
 
 }

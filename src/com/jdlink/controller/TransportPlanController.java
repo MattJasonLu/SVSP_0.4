@@ -1,9 +1,13 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Produce.TransportPlan;
+import com.jdlink.domain.Produce.TransportPlanItem;
 import com.jdlink.domain.Wastes;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.TransportPlanService;
 import com.jdlink.service.WastesService;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +27,10 @@ public class TransportPlanController {
 
     @Autowired
     TransportPlanService transportPlanService;
-
     @Autowired
     WastesService wastesService;
+    @Autowired
+    ClientService clientService;
 
     /**
      * 增加运输计划
@@ -37,6 +42,19 @@ public class TransportPlanController {
     public String addTransportPlan(@RequestBody TransportPlan transportPlan) {
         JSONObject res = new JSONObject();
         try {
+            // 设置运输计划编号
+            transportPlan.setId(RandomUtil.getRandomEightNumber());
+            transportPlan.setAuthor("测试用户");
+            transportPlan.setDepartmentDirector("测试用户");
+            transportPlan.setProductionDirector("测试用户");
+            transportPlan.setGroup("测试组别");
+            for (TransportPlanItem transportPlanItem : transportPlan.getTransportPlanItemList()) {
+                // 设置运输计划条目的编号
+                transportPlanItem.setId(RandomUtil.getRandomEightNumber());
+                Client produceCompany = clientService.getByName(transportPlanItem.getProduceCompany().getCompanyName());
+                transportPlanItem.setProduceCompany(produceCompany);
+                transportPlanItem.getWastes().setId(RandomUtil.getRandomEightNumber());
+            }
             transportPlanService.add(transportPlan);
             res.put("status", "success");
             res.put("message", "增加成功");
@@ -49,16 +67,15 @@ public class TransportPlanController {
     }
 
     /**
-     * 通过编号来获取运输计划
-     * @param id 运输计划编号
+     * 获取最新的运输计划
      * @return 运输计划对象
      */
-    @RequestMapping("getTransportPlanById")
+    @RequestMapping("getRecentTransportPlan")
     @ResponseBody
-    public String getTransportPlanById(String id) {
+    public String getRecentTransportPlan() {
         JSONObject res = new JSONObject();
         try {
-            TransportPlan transportPlan =  transportPlanService.getById(id);
+            TransportPlan transportPlan =  transportPlanService.getRecent();
             JSONObject data = JSONObject.fromBean(transportPlan);
             res.put("status", "success");
             res.put("message", "获取成功");
