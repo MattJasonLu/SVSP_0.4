@@ -13,6 +13,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
+    <script src="js/produce/warehouseManage.js"></script>
 </head>
 <body onload="loadPageLaboratoryList()" class="" >
     <!--导航条-->
@@ -120,103 +121,147 @@
                 </ol>
             </div>
             <h4 class="sub-header">化验单新增</h4>
-            <form method="post" id="clientInfoForm" enctype="multipart/form-data">
+            <form method="post" id="infoForm" enctype="multipart/form-data">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                            </label>
+                        </th>
+                        <td class="text-center">计划单号</td>
+                        <td class="text-center">计划日期</td>
+                        <td class="text-center">产废单位</td>
+                        <td class="text-center">接收单位</td>
+                        <td class="text-center">转移时间</td>
+                        <td class="text-center">联单号</td>
+                        <td class="text-center">转移数量</td>
+                        <td class="text-center">磅单数量</td>
+                        <td class="text-center">已入库数量</td>
+                        <td class="text-center">剩余数量</td>
+                        <td class="text-center">拟转数量</td>
+                        <td class="text-center">危废名称</td>
+                        <td class="text-center">危废代码</td>
+                        <td class="text-center">危废列别</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <label>
+                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="..." >
+                            </label>
+                        </td>
+                        <td class="text-center modal-companyName">1</td>
+                        <td class="text-center modal-einlass">2018-08-07</td>
+                        <td class="text-left model-wastesName">废液</td>
+                        <td class="text-center model-wastesCode">QW10001</td>
+                        <td class="text-right modal-weight">5</td>
+                        <td class="text-right modal-materialForm">液态</td>
+                        <td class="text-right modal-packingType">标准装</td>
+                        <td class="text-right modal-KCal">20</td>
+                        <td class="text-right modal-PH">10</td>
+                        <td class="text-right modal-ashContent">20</td>
+                        <td class="text-right modal-waterContent">10</td>
+                        <td class="text-right modal-CLContent">20</td>
+                        <td class="text-right modal-SContent">10</td>
+                        <td class="text-right modal-PContent">10</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row text-center">
+                    <a class="btn btn-primary" onclick="comfirm();">确认</a>
+                </div>
+                <br>
+                <hr class="simple" color="#6f5499" />
+                <br>
                 <div class="row">
-                    <div class="form-horizontal col-md-6">
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="warehouseId" class="col-sm-4 control-label">仓库号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="warehouseId" name="warehouseId" placeholder="" required>
+                            <label for="modal-Id" class="col-sm-4 control-label">入库单号</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="modal-Id" name="modal-Id" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="wareDate" class="col-sm-4 control-label">入库日期 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wareDate" name="wareDate" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="warehouseNumber" class="col-sm-4 control-label">入库单号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="warehouseNumber" name="warehouseNumber" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="warehouseType" class="col-sm-4 control-label">入库类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="warehouseType" name="warehouseType" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="wasteCompany" class="col-sm-4 control-label">产废单位 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wasteCompany" name="wasteCompany" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="wasteName" class="col-sm-4 control-label">危废名称 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wasteName" name="wasteName" placeholder="" required>
+                            <label for="modal-date" class="col-sm-4 control-label">入库日期</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="modal-date" name="modal-date" placeholder="">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-6">
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="wasteCode" class="col-sm-4 control-label">危废代码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="wasteCode" name="wasteCode" placeholder="" required>
+                            <label for="modal-warehouseId" class="col-sm-4 control-label">仓库</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="modal-warehouseId" name="modal-warehouseId" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="singlePerson" class="col-sm-4 control-label">制单人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="singlePerson" name="singlePerson" placeholder="" required>
+                            <label for="modal-department" class="col-sm-4 control-label">部门</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="modal-department" name="modal-department" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="modal-salesman" class="col-sm-4 control-label">业务员</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="modal-salesman" name="modal-salesman" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="auditor" class="col-sm-4 control-label">审核人 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="auditor" name="auditor" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="wareNumber" class="col-sm-4 control-label">入库数量 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="number" class="form-control" id="wareNumber" name="wareNumber" placeholder="" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="formType" class="col-sm-4 control-label">物质形态 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <select class="form-control" id="formType" name="formType" required>
-                                    <option value="0" class="formType"> </option>
-                                    <option value="1" class="formType">固态</option>
-                                    <option value="2" class="formType">半固态</option>
-                                    <option value="3" class="formType">液态</option>
+                            <label for="modal-type" class="col-sm-4 control-label">入库类别</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" id="modal-type" name="modal-type">
+                                    <option value="0">正常</option>
+                                    <option value="1">预处理退回</option>
+                                    <option value="2">其他</option>
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="packingType" class="col-sm-4 control-label">包装类型 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <select class="form-control" id="packingType" name="packingType" required>
-                                    <option value="0" class="packingType"> </option>
-                                    <option value="1" class="packingType">罐装</option>
-                                    <option value="2" class="packingType">桶装</option>
-                                    <option value="3" class="packingType">袋装</option>
-                                </select>
+                            <label for="modal-note" class="col-sm-4 control-label">备注</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="modal-note" name="modal-note" placeholder="">
                             </div>
                         </div>
                     </div>
                 </div>
                 <br>
-                <br>
-                <br>
-                <br>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="text-center">序号</td>
+                        <td class="text-center">产废单位</td>
+                        <td class="text-center">危废名称</td>
+                        <td class="text-center">危废代码</td>
+                        <td class="text-center">危废数量</td>
+                        <td class="text-center">单价</td>
+                        <td class="text-center">金额</td>
+                        <td class="text-center">处置方式</td>
+                        <td class="text-center">备注</td>
+                        <td class="text-center">库区</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center modal-companyName">1</td>
+                        <td class="text-center modal-einlass">2018-08-07</td>
+                        <td class="text-left model-wastesName">废液</td>
+                        <td class="text-center model-wastesCode">QW10001</td>
+                        <td class="text-right modal-weight">5</td>
+                        <td class="text-right modal-materialForm">液态</td>
+                        <td class="text-right modal-packingType">标准装</td>
+                        <td class="text-right modal-KCal">20</td>
+                        <td class="text-right modal-PH">10</td>
+                        <td class="text-right modal-ashContent">20</td>
+                    </tr>
+                    </tbody>
+                </table>
                 <div class="row text-center">
-                    <a class="btn btn-success" onclick="clientSave()">保存</a>
-                    <a class="btn btn-primary" onclick="clientSubmit()">提交</a>
-                    <a class="btn btn-warning" onclick="clientReset()">重置</a>
+                    <a class="btn btn-success" onclick="save();">保存</a>
+                    <a class="btn btn-primary" onclick="submit();">提交</a>
                     <a class="btn btn-danger" href="warehouseManage.html">返回</a>
                 </div>
             </form>
@@ -245,13 +290,4 @@
         line-height: 38px;
     }
 </style>
-<script>
-    //全选复选框
-    function allSelect() {
-        var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
-    }
-    $('#embed').load('embed/loginLogModal.html');
-</script>
 </html>
