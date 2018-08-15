@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface MaterialRequireMapper {
     int total();
-   void  addMix(MaterialRequire materialRequire);
-    List<String> check();
+     void  addMix(MaterialRequire materialRequire);
+      List<String> check();//ch查找最新的配伍编号
+     List<MaterialRequire> list(String materialRequireId);
+
 }

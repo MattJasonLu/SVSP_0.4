@@ -107,7 +107,7 @@
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 驳回</a>
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 保存</a>
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" onclick="importMaExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
@@ -188,7 +188,8 @@
                             <td class="text-center" colspan="2">P</td>
                             <td class="text-center" colspan="2">F</td>
                             <td class="text-center" colspan="2">PH</td>
-                            <td class="text-center" rowspan="2" style="width: 180px;">备注</td>
+                            <td class="text-center" rowspan="2" style="width: 60px;">状态</td>
+                            <td class="text-center" rowspan="2"style="width:60px;">备注</td>
                         </tr>
                         <tr>
                             <td class="text-center">序号</td>
@@ -212,31 +213,32 @@
                             <td class="text-center">max</td>
                             <td class="text-center">min</td>
                         </tr>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td class="text-center">污泥</td>
-                            <td class="text-center">标准箱</td>
-                            <td class="text-center">半固态</td>
-                            <td class="text-center">200</td>
-                            <td class="text-center">100</td>
-                            <td class="text-center">150</td>
-                            <td class="text-center"><textarea style="max-width: 100%;min-width: 80%;min-height: 100%;max-height: 100%;" class="focus" maxlength="18" title="备注"></textarea></td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
-                            <td class="text-center">50</td>
-                            <td class="text-center">20</td>
+                        <tr id="cloneTr1">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><textarea style="max-width: 100%;min-width: 80%;min-height: 100%;max-height: 100%;" class="focus" maxlength="18" title="市场采购"></textarea></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                             <td class="text-center"><textarea style="max-width: 100%;min-width: 100%;min-height: 100%;max-height: 100%;" class="focus" maxlength="22" title="备注"></textarea></td>
                         </tr>
                         <tr>
@@ -244,25 +246,26 @@
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            <td class="text-center" id="dailyProportionsTotal"></td><!--周生产计划量(T)总量-->
+                            <td class="text-center" id="currentInventoryTotal"></td><!--目前库存量(T)总和-->
+                            <td class="text-center" id="safetyTotal"></td><!--安全库存量总和-->
+                            <td class="text-center" id="marketPurchasesTotal"></td><!--市场采购量总和-->
+                            <td class="text-center" id="calorificmaxTotal"></td><!--热值max总和-->
+                            <td class="text-center" id="calorificminTotal"></td><!--热值min总和-->
+                            <td class="text-center" id="ashmaxTotal"></td><!--灰分最大总量-->
+                            <td class="text-center" id="ashminTotal"></td><!--灰分最小总量-->
+                            <td class="text-center" id="watermaxTotal"></td><!--水分最大总量-->
+                            <td class="text-center" id="waterminTotal"></td><!--水分最小总量-->
+                            <td class="text-center" id="smaxTotal"></td><!--硫最大总量-->
+                            <td class="text-center" id="sminTotal"></td><!--硫最小总量-->
+                            <td class="text-center" id="clmaxTotal"></td><!--氯最大总量-->
+                            <td class="text-center" id="clminTotal"></td><!--氯最小总量-->
+                            <td class="text-center" id="pmaxTotal"></td><!--磷最大总量-->
+                            <td class="text-center" id="pminTotal"></td><!--磷最小总量-->
+                            <td class="text-center" id="fmaxTotal"></td><!--弗最大总量-->
+                            <td class="text-center" id="fminTotal"></td><!--弗最小总量-->
+                            <td class="text-center" id="phmaxTotal"></td><!--PH最大总量-->
+                            <td class="text-center" id="phminTotal"></td><!--PH最小总量-->
                             <td class="text-center"></td>
                             <td class="text-center"><textarea style="max-width: 100%;min-width: 100%;min-height: 100%;max-height: 100%;" class="focus" maxlength="22" title="备注"></textarea></td>
                         </tr>
@@ -274,6 +277,8 @@
         </div>
     </div>
     <div id="embed"></div>
+    <!--导入-->
+    <input type="file" name="excelPath" id="idExcel" style="display:none">
 </body>
 <style>
     textarea{
