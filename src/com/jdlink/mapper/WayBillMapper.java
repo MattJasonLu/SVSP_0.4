@@ -2,6 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.WayBill;
+import com.jdlink.domain.Produce.WayBillItem;
 
 import java.util.List;
 
@@ -16,5 +17,13 @@ public interface WayBillMapper {
     void reject(WayBill wayBill);
     void submit(String id);
     void invalid(String id);
+    void addItem(WayBill wayBill);
+    int countItem();
+    WayBillItem getItemById(String id);
+    String getSalesmanIdByName(String name);
+    String getClientIdByName(String name);
+    String getWastesIdByName(String name);
+    int countWastes();
+    String getWastesById(String id);
 }
 
