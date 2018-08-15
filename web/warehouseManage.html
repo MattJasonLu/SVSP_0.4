@@ -130,16 +130,16 @@
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                         <a class="btn btn-primary btn-xs" href="warehouseManageOut.html"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 危废出库</a>
                     </div>
+                    <div class="input-group col-md-3"></div>
                     <!--查询框-->
-                    <div class="input-group col-xs-3 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                    <div class="input-group col-md-3 pull-right" style="margin-right: -300px;">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级搜索</a>
                         </span>
                     </div>
                 </div>
             </div>
+            <br>
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
@@ -196,6 +196,10 @@
                                     <input type="text" class="form-control" id="search-packingType" name="search-packingType" placeholder="">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <input type="button" value="重置" title="">
+                                <input type="button" value="搜索" title="">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -221,6 +225,7 @@
                         <th class="text-center">审批人</th>
                         <th class="text-center">计划数量</th>
                         <th class="text-center">危废数量</th>
+                        <th class="text-center">进料方式</th>
                         <th class="text-center">单据状态</th>
                         <th class="text-center">审批状态</th>
                         <th class="text-center">备注</th>
@@ -243,6 +248,7 @@
                         <td class="text-center">安耐得环保常州分公司</td>
                         <td class="text-center">废铁</td>
                         <td class="text-center">AS10001</td>
+                        <td class="text-center">张三</td>
                         <td class="text-center">张三</td>
                         <td class="text-center">李四</td>
                         <td class="text-center">8000</td>
@@ -326,6 +332,7 @@
                                     <td class="text-center">磷含量/%</td>
                                     <td class="text-center">氟含量/%</td>
                                     <td class="text-center">处理方式</td>
+                                    <td class="text-center">进料方式</td>
                                 </tr>
                                 <tr>
                                     <td class="text-center modal-companyName">1</td>
@@ -347,6 +354,28 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--属性调整模态框-->
+            <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">属性调整</div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="search-warehouseId" class="col-sm-4 control-label">进料方式</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control" id="modal-type" name="search-warehouseId" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="comfirm();">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </div>
                 </div>

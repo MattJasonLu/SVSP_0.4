@@ -221,6 +221,7 @@
                         <th class="text-center">审批人</th>
                         <th class="text-center">计划数量</th>
                         <th class="text-center">危废数量</th>
+                        <th class="text-center">进料方式</th>
                         <th class="text-center">单据状态</th>
                         <th class="text-center">审批状态</th>
                         <th class="text-center">备注</th>
@@ -245,6 +246,7 @@
                         <td class="text-center">AS10001</td>
                         <td class="text-center">张三</td>
                         <td class="text-center">李四</td>
+                        <td class="text-center">8000</td>
                         <td class="text-center">8000</td>
                         <td class="text-center">345</td>
                         <td class="text-center">待审批</td>
@@ -347,6 +349,28 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--属性调整模态框-->
+            <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">属性调整</div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="search-warehouseId" class="col-sm-4 control-label">进料方式</label>
+                                    <div class="col-xs-7">
+                                        <input type="text" class="form-control" id="modal-type" name="search-warehouseId" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="comfirm();">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </div>
                 </div>

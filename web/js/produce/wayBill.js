@@ -1,11 +1,3 @@
-function edit() {
-    var input = document.createElement('input');  //创建input节点
-    input.setAttribute('type', 'text');  //定义类型是文本输入
-    document.getElementsByClassName('billDate').appendChild(input); //添加到form中显示
-    document.getElementsByClassName('billNumber').appendChild(input); //添加到form中显示
-}
-
-var add1 = false;
 
 /**
  * 获取首页内容
@@ -13,8 +5,15 @@ var add1 = false;
 function loadPageWayBillDetailList() {
     $('.selectpicker').selectpicker('val', '');
     //编辑显示按钮，查看隐藏按钮
-    if (localStorage.add == false) $("#addBtn").hide();
-    else $("#addBtn").show();
+    if (localStorage.add == 0) {
+        $("#addBtn").addClass('hidden');
+        if($("#addBtn").hasClass('show')) $("#addBtn").removeClass('show');
+    }
+    else {
+        $("#addBtn").addClass('show');
+        if($("#addBtn").hasClass('hidden')) $("#addBtn").removeClass('hidden');
+
+    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWayBill",          // url
@@ -26,7 +25,7 @@ function loadPageWayBillDetailList() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                setWayBillList(result.data);
+                setWayBillItemList(result.data);
             } else {
                 console.log(result.message);
             }
@@ -42,7 +41,7 @@ function loadPageWayBillDetailList() {
  * 克隆数据
  * @param result
  */
-function setWayBillList(result) {
+function setWayBillItemList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#clone");
     tr.siblings().remove();
@@ -156,12 +155,7 @@ function showAddModal() {
 /**
  * 新增行
  */
-function addNewLine() {
-    add1 = true;
-    if (add1 = true) {
-        $("#close").show;
-        $("#confirm").show;
-    }
+function addNewItemLine() {
     // 获取id为plusBtn的tr元素
     var tr = $("#addBtn1").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -169,10 +163,11 @@ function addNewLine() {
     // 克隆后清空新克隆出的行数据
     var num = clonedTr.children().find("span:first").prop('id').charAt(6);
     clonedTr.children().find("input").val("");
-    clonedTr.children().find("select").selectpicker('val','');
+    clonedTr.children().find("select").selectpicker('val', '');
     clonedTr.children().find("button:eq(0)").remove();
     clonedTr.children().find("button:eq(1)").remove();
     $('.selectpicker').selectpicker();
+    $()
     clonedTr.children().find("input,select,span").each(function () {
         var id = $(this).prop('id');
         var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
@@ -246,14 +241,14 @@ function getCurrentWastesId() {
     return id;
 }
 
-function conversionIdFormat(id){
+function conversionIdFormat(id) {
     var aid = "";
     $.ajax({
         type: "POST",                            // 方法类型
         url: "changeWastesIdFormat",             // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{
-            id : id
+        data: {
+            id: id
         },
         dataType: "json",
         success: function (result) {
@@ -268,7 +263,7 @@ function conversionIdFormat(id){
     return aid;
 }
 
-function getCurrentItemId(){
+function getCurrentItemId() {
     //获取详细项目序列号
     var ItemId = 0;
     $.ajax({
@@ -278,7 +273,7 @@ function getCurrentItemId(){
         dataType: "json",
         success: function (result) {
             //alert("数据获取成功！");
-            ItemId = parseInt(result.id) ;
+            ItemId = parseInt(result.id);
         },
         error: function (result) {
             alert("服务器异常!");
@@ -300,7 +295,7 @@ function addWastes() {
     var wastesId = parseInt(getCurrentWastesId());
     for (var i = 0; i < lineCount; i++) {
         var ItemId1 = ItemId++;
-        var wastesId1 = wastesId ++;
+        var wastesId1 = wastesId++;
         var wayBillItem = {};
         var wastes = {};
         var salesman = {};
@@ -386,7 +381,7 @@ $(document).ready(function () {
                         option.text(item.companyName);
                         clientList.append(option);
                     });
-                   $('.selectpicker').selectpicker('refresh');
+                    $('.selectpicker').selectpicker('refresh');
                 } else {
 //                    console.log(result);
                 }
@@ -416,7 +411,7 @@ $(document).ready(function () {
                         option.text(item.name);
                         clientList.append(option);
                     });
-                   $('.selectpicker').selectpicker('refresh');
+                    $('.selectpicker').selectpicker('refresh');
                 } else {
 //                    console.log(result);
                 }

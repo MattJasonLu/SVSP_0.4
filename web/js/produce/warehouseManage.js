@@ -20,7 +20,7 @@ function getId(item) {
  * @param item 用户
  */
 function changeAttribute(item) {
-
+    $("#examineModal").modal("show");
 }
 /**
  * 作废计划单

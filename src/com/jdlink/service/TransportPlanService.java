@@ -7,9 +7,14 @@ import com.jdlink.domain.Produce.TransportPlan;
  * DoubleClickTo 666
  */
 public interface TransportPlanService {
+
     void add(TransportPlan transportPlan);
 
+    void update(TransportPlan transportPlan);
+
     TransportPlan getRecent();
+
+    TransportPlan getById(String id);
 
     void setStateConfirm(String id);
 
