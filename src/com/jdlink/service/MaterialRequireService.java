@@ -10,4 +10,5 @@ public interface MaterialRequireService {
     int total();
     void  addMix(MaterialRequire materialRequire);
     List<String> check();
+    List<MaterialRequire> list(String materialRequireId);
 }
