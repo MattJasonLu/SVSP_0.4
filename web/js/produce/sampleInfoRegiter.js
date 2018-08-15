@@ -265,6 +265,10 @@ function loadPageSampleInformationList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    if(totalPage() == 1){
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
     var page = {};
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
