@@ -517,6 +517,38 @@ function editData() {
     });
 }
 
+/**
+ * 生成接运单
+ */
+function generateWayBill() {
+    var r = confirm("确认生成接运单吗？");
+    if (r) {
+        // 获取运输计划编号
+        var id = $("#id").val();
+        $.ajax({
+            type: "POST",
+            url: "generateWayBill",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
+}
+
 function allSelect() {
     var isChecked = $('#allSel').prop('checked');
     if (isChecked) $("input[name='select']").prop('checked', true);
