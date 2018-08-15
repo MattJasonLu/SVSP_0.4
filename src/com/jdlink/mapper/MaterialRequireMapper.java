@@ -16,4 +16,5 @@ public interface MaterialRequireMapper {
     void submit(String id);
     void cancel(String id);
     void  back(String id,String remarks);
+    void updatemarketPurchases(String id,float marketPurchases);
 }

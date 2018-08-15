@@ -33,7 +33,7 @@ function loadPageMaterialList() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result !== undefined && result.status === "success"){
-                console.log(result);
+                //console.log(result);
                 var obj=result.array;
                 var n=result.length;
                 //设置下拉框数据
@@ -97,10 +97,10 @@ function setMaterialList(obj,n) {
     safetyTotal=0;
     //市场采购量总和
     marketPurchasesTotal=0;
-    console.log(obj);
+   // console.log(obj);
     $.each(obj, function (index, item) {
         var data = eval(item);
-        console.log(data);
+       // console.log(data);
         //console.log(index);
         var clonedTr = tr.clone();
         clonedTr.children("td").each(function (inner_index) {
@@ -358,6 +358,7 @@ function setMaterialList(obj,n) {
     });
     // 隐藏无数据的tr
     tr.hide();
+    tr.removeClass("myclass")
     //赋值
     $("#dailyProportionsTotal").text(dailyProportionsTotal);
     $("#currentInventoryTotal").text(currentInventoryTotal);
@@ -659,52 +660,62 @@ function cancelMa() {
 }
 /*修改页面*/
 function adjustMa() {
+    $("#editBtnGrp").removeClass("hidden");
+    $("#editBtnGrp").addClass("show");
     $("#td1").hide();
     $("#td2").show();
     var td=$("td[name='123']");//找到指定的单元格
-    console.log(td.length);
-    if(td.children("input").length>0){
-        return false;
-    }
-    // 当前td中的内容
-    var text = td.html();
-    // 清空td
-    td.html("");
-    // 插入一个文本框,并选中里面内容
-    var inputObj  = $("<input type='text' />").css("border-width", "0")
-        .css("font-size", "16px").width(td.width())
-        .css("background-color", td.css("background-color"))
-        .val(text).appendTo(text).select();
-    //处理文本框上回车和esc按键的操作
-    inputObj.keyup(function (event) {
-        var keycode = event.which;
-        //处理回车的情况
-        if (keycode == 13) {
-            //获取当当前文本框中的内容
-            var inputtext = $(this).val();
-            //将td的内容修改成文本框中的内容
-            td.html(inputtext);
-        }
-        //处理esc的情况
-        if (keycode == 27) {
-            //将td中的内容还原成text
-            td.html(text);
+    td.each(function () {
+        var content = $(this).html();//获得内容
+        var name = $(this).attr('name');
+        if (name.search("123") != -1) {
+            $(this).attr('name', '');
+            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' name='count'>");
         }
     });
-    console.log(text);
-    $("#editBtnGrp").removeClass("hidden");
-    $("#editBtnGrp").addClass("show");
-
-
-
-
-
     //取消按钮点击是刷新
     $("#editBtnCancel").click(function () {
         window.location.reload();
     });
+    $("#editBtnSave").click(function () {
+     //1遍历指定的行
+        $(".myclass").each(function(){
+           var id=this.firstElementChild.innerHTML;//获得编号
+            var marketPurchases=$(this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
+                .nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild).val();
+            //当前采购量
+          //进行批量更新
+            console.log(id+"==>"+marketPurchases);
+            updatemarketPur(id,marketPurchases);
+        });
+        alert("更新成功！");
+        window.location.reload();
+    });
 }
+//更新采购量
+function updatemarketPur(id,marketPurchases) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updatemarketPurchases",   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id,"marketPurchases":marketPurchases},
+        //contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
 
+
+}
 
 /*确认修改*/
 function modify() {

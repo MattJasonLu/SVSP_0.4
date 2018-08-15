@@ -576,8 +576,23 @@ try{
         System.out.println(data+"123213");
         return res.toString();
     }
-
-
+//更新
+    @RequestMapping("updatemarketPurchases")
+    @ResponseBody
+    public  String updatemarketPurchases(String id,String marketPurchases){
+     JSONObject res=new JSONObject();
+     try{
+         materialRequireService.updatemarketPurchases(id,Float.parseFloat(marketPurchases));
+         res.put("status", "success");
+         res.put("message", "更新成功");
+     }
+     catch (Exception e){
+         e.printStackTrace();
+         res.put("status", "fail");
+         res.put("message", "更新失败");
+     }
+        return  res.toString();
+    }
     //获取三位序列号
     public static String getString3(String id){
         while (id.length()!=3){
