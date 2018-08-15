@@ -197,6 +197,7 @@ function inputSwitchPage() {
         if (pageNumber == totalPage()) {
             $("#next").addClass("disabled");
             $("#endPage").addClass("disabled");
+
             $("#previous").removeClass("disabled");
             $("#firstPage").removeClass("disabled");
         }
@@ -768,4 +769,32 @@ function invalidWayBill(item) {
     });
 }
 
+function addWayBillModal(){
+    $("#wayBillModal").modal('show');
+}
 
+/**
+ * 新增详细项数据
+ */
+function addNewItemLine() {
+    // 获取id为plusBtn的tr元素
+    var tr = $("#addBtn1").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    var num = clonedTr.children().find("span:first").prop('id').charAt(6);
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("select").selectpicker('val', '');
+    clonedTr.children().find("button:eq(0)").remove();
+    clonedTr.children().find("button:eq(1)").remove();
+    $('.selectpicker').selectpicker();
+    $()
+    clonedTr.children().find("input,select,span").each(function () {
+        var id = $(this).prop('id');
+        var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
+        $(this).prop('id', newId);
+    });
+    clonedTr.addClass("newLine");
+    clonedTr.insertAfter(tr);
+
+}

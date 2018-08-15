@@ -25,5 +25,6 @@ public interface WayBillMapper {
     String getWastesIdByName(String name);
     int countWastes();
     String getWastesById(String id);
+    void addWayBill(WayBill wayBill);
 }
 

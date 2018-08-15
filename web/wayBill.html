@@ -26,23 +26,7 @@
     <script src="js/produce/transportPlan.js"></script>
     <script src="js/produce/wayBill.js"></script>
 </head>
-<script type="text/javascript">
-    $('#embed').load('embed/loginLogModal.html');     //当前页数
-    /**
-     * 日期格式
-     */
-    $('.form_datetime').datetimepicker({
-        format: 'yyyy-mm-dd',
-        language:  'zh-CN',
-        weekStart: 1,
-        todayBtn:  1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    });
-</script>
+
 <style>
     textarea {
         resize: none;
@@ -212,8 +196,7 @@
                         <td class="text-center">委托单位</td>
                         <td class="text-center">接收单位</td>
                         <td class="text-center">接收单位经手人</td>
-                        <td class="text-center">创建人</td>
-                        <td class="text-center">创建日期</td>
+                        <td class="text-center">接运单日期</td>
                         <td class="text-center">业务员</td>
                         <td class="text-center">废物名称</td>
                         <td class="text-center">数量</td>
@@ -226,7 +209,6 @@
                     </thead>
                     <tbody>
                     <tr id="clone">
-                        <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -268,20 +250,6 @@
                                     <label for="wastes0-produceCompany" class="col-sm-5 control-label">委托单位</label>
                                     <div class="col-sm-7">
                                         <span id="wastes0-produceCompany"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group form-horizontal col-md-6 ">
-                                    <label for="wastes0-wayBillDate" class="col-sm-5 control-label">创建日期</label>
-                                    <div class="col-sm-7">
-                                        <span id="wastes0-wayBillDate"/>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal col-md-6 ">
-                                    <label for="wastes0-founder" class="col-sm-5 control-label">创建人</label>
-                                    <div class="col-sm-7">
-                                        <span id="wastes0-founder"/>
                                     </div>
                                 </div>
                             </div>
@@ -339,16 +307,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group form-horizontal col-md-6 ">
-                                    <label for="wastes0-invoiceDate" class="col-sm-5 control-label">开票时间</label>
-                                    <div class="col-sm-7 input-group date form_datetime" style="padding: 0 3% 0 2%;">
-                                        <input class="form-control focus" type="text" value="" name="wastes0-invoiceDate" id="wastes0-invoiceDate" readonly>
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group form-horizontal col-md-6">
                                     <label for="wastes0-receiveCompanyOpterator"
                                            class="col-sm-5 control-label">接收单位经手人</label>
                                     <div class="col-sm-7">
@@ -356,7 +314,35 @@
                                     </div>
                                 </div>
                             </div>
-                            <br>
+                            <div class="row">
+                                <div class="form-group form-horizontal col-md-8">
+                                    <label for="wastes0-invoiceDate" class="col-sm-5 control-label">开票时间</label>
+                                    <div class="col-sm-7 input-group date form_datetime" style="padding: 0 3% 0 2%;">
+                                        <input class="form-control focus" type="text" value=""
+                                               name="wastes0-invoiceDate"
+                                               id="wastes0-invoiceDate" readonly>
+                                        <span class="input-group-addon"><span
+                                                class="glyphicon glyphicon-remove"></span></span>
+                                        <span class="input-group-addon"><span
+                                                class="glyphicon glyphicon-th"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group form-horizontal col-md-8">
+                                    <label for="wastes0-receiveDate" class="col-sm-5 control-label">接运单日期</label>
+                                    <div class="col-sm-7 input-group date form_datetime" style="padding: 0 3% 0 2%;">
+                                        <input class="form-control focus" type="text" value=""
+                                               name="wastes0-receiveDate"
+                                               id="wastes0-receiveDate" readonly>
+                                        <span class="input-group-addon"><span
+                                                class="glyphicon glyphicon-remove"></span></span>
+                                        <span class="input-group-addon"><span
+                                                class="glyphicon glyphicon-th"></span></span>
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
                         </div>
                         <div class="row" id="addBtn1">
                             <div class="col-md-12">
@@ -364,12 +350,12 @@
                                         class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer center">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal"
-                                onclick="addWastes();">确定
-                        </button>
+                        <div class="modal-footer center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal"
+                                    onclick="addWastes();">确定
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -377,4 +363,21 @@
     </div>
 </div>
 </body>
+<script type="text/javascript">
+    $('#embed').load('embed/loginLogModal.html');     //当前页数
+    /**
+     * 日期格式
+     */
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
 </html>
