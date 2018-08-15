@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -564,6 +566,18 @@ try{
 
         return res.toString();
     }
+    @RequestMapping("getForm")
+    @ResponseBody
+    public String getForm(HttpServletRequest request, HttpServletResponse response){
+        JSONObject res=new JSONObject();
+        res.put("status", "success");
+        res.put("message", "更新成功");
+       String data=request.getParameter("data");
+        System.out.println(data+"123213");
+        return res.toString();
+    }
+
+
     //获取三位序列号
     public static String getString3(String id){
         while (id.length()!=3){

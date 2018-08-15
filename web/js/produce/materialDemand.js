@@ -1,8 +1,30 @@
 /*********************
  * jackYang
  */
+/*获得最新一期的物料需求*/
+function getNewest() {
+    $.ajax({
+        type:"POST",
+        url:"getMaterialList",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result !== undefined && result.status === "success"){
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
 /*加载物料需求列表*/
 function loadPageMaterialList() {
+    $("#td2").hide();
     $.ajax({
         type:"POST",
         url:"getMaterialList",
@@ -75,8 +97,11 @@ function setMaterialList(obj,n) {
     safetyTotal=0;
     //市场采购量总和
     marketPurchasesTotal=0;
+    console.log(obj);
     $.each(obj, function (index, item) {
         var data = eval(item);
+        console.log(data);
+        //console.log(index);
         var clonedTr = tr.clone();
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
@@ -135,7 +160,7 @@ function setMaterialList(obj,n) {
                     break;
                 //热值max
                 case (8):
-                    $.each(obj[index].wastesList[index].parameterList, function (index,item) {
+                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
                        var obj1=eval(item);
                         if (obj1.parameter.name =="热值") {
                             calorificmax=obj1.maximum;
@@ -632,3 +657,78 @@ function cancelMa() {
         alert("请选择数据！")
     }
 }
+/*修改页面*/
+function adjustMa() {
+    $("#td1").hide();
+    $("#td2").show();
+    var td=$("td[name='123']");//找到指定的单元格
+    console.log(td.length);
+    if(td.children("input").length>0){
+        return false;
+    }
+    // 当前td中的内容
+    var text = td.html();
+    // 清空td
+    td.html("");
+    // 插入一个文本框,并选中里面内容
+    var inputObj  = $("<input type='text' />").css("border-width", "0")
+        .css("font-size", "16px").width(td.width())
+        .css("background-color", td.css("background-color"))
+        .val(text).appendTo(text).select();
+    //处理文本框上回车和esc按键的操作
+    inputObj.keyup(function (event) {
+        var keycode = event.which;
+        //处理回车的情况
+        if (keycode == 13) {
+            //获取当当前文本框中的内容
+            var inputtext = $(this).val();
+            //将td的内容修改成文本框中的内容
+            td.html(inputtext);
+        }
+        //处理esc的情况
+        if (keycode == 27) {
+            //将td中的内容还原成text
+            td.html(text);
+        }
+    });
+    console.log(text);
+    $("#editBtnGrp").removeClass("hidden");
+    $("#editBtnGrp").addClass("show");
+
+
+
+
+
+    //取消按钮点击是刷新
+    $("#editBtnCancel").click(function () {
+        window.location.reload();
+    });
+}
+
+
+/*确认修改*/
+function modify() {
+    var data=$("#materialInfoForm").serialize();
+    console.log(data);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getForm",         // url
+        // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"data":data},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message);
+            }
+
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+
