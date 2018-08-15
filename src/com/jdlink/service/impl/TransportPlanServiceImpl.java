@@ -24,4 +24,24 @@ public class TransportPlanServiceImpl implements TransportPlanService {
     public TransportPlan getRecent() {
         return transportPlanMapper.getRecent();
     }
+
+    @Override
+    public void setStateConfirm(String id) {
+        transportPlanMapper.setStateConfirm(id);
+    }
+
+    @Override
+    public void setStateSubmit(String id) {
+        transportPlanMapper.setStateSubmit(id);
+    }
+
+    @Override
+    public void setStateExamined(String id) {
+        transportPlanMapper.setStateExamined(id);
+    }
+
+    @Override
+    public void setStateInvalid(String id) {
+        transportPlanMapper.setStateInvalid(id);
+    }
 }

@@ -7,17 +7,13 @@ import java.util.List;
 
 public class WayBill {
     /**
-     * 接运单序列号
+     * 接运单序列号/接运单号
      */
     private String id;
     /**
      * 产生单位/委托单位
      */
     private Client produceCompany;
-    /**
-     * 接收单位
-     */
-    private Client receiveCompany;
     /**
      * 总额
      */
@@ -35,33 +31,9 @@ public class WayBill {
      */
     private String remarks;
     /**
-     * 业务员
-     */
-    private Salesman salesman;
-    /**
-     * 接运单号
-     */
-    private String wayBillNumber;
-    /**
-    * 危废列表
-    */
-    private List<Wastes> wastesList;
-    /**
-     * 开票日期
-     */
-    private Date invoiceDate;
-    /**
-     * 发票号码
-     */
-    private String invoiceNumber;
-    /**
      * 危废产生单位经手人
      */
     private String produceCompanyOperator;
-    /**
-     * 处置单位经手人
-     */
-    private String receiveCompanyOperator;
     /**
      * 接运单状态
      */
@@ -70,8 +42,14 @@ public class WayBill {
      *审批意见
      */
     private String advice;
-
+    /**
+     * 分页
+     */
     private Page page;
+    /**
+     * 单个接运单详细
+     */
+    private List<WayBillItem> wayBillItemList;
 
     public String getId() {
         return id;
@@ -113,46 +91,6 @@ public class WayBill {
         this.remarks = remarks;
     }
 
-    public String getWayBillNumber() {
-        return wayBillNumber;
-    }
-
-    public void setWayBillNumber(String wayBillNumber) {
-        this.wayBillNumber = wayBillNumber;
-    }
-
-    public List<Wastes> getWastesList() {
-        return wastesList;
-    }
-
-    public void setWastesList(List<Wastes> wastesList) {
-        this.wastesList = wastesList;
-    }
-
-    public Date getInvoiceDate() {
-        return invoiceDate;
-    }
-
-    public void setInvoiceDate(Date invoiceDate) {
-        this.invoiceDate = invoiceDate;
-    }
-
-    public String getInvoiceNumber() {
-        return invoiceNumber;
-    }
-
-    public void setInvoiceNumber(String invoiceNumber) {
-        this.invoiceNumber = invoiceNumber;
-    }
-
-    public Salesman getSalesman() {
-        return salesman;
-    }
-
-    public void setSalesman(Salesman salesman) {
-        this.salesman = salesman;
-    }
-
     public String getProduceCompanyOperator() {
         return produceCompanyOperator;
     }
@@ -161,28 +99,12 @@ public class WayBill {
         this.produceCompanyOperator = produceCompanyOperator;
     }
 
-    public String getReceiveCompanyOperator() {
-        return receiveCompanyOperator;
-    }
-
-    public void setReceiveCompanyOperator(String receiveCompanyOperator) {
-        this.receiveCompanyOperator = receiveCompanyOperator;
-    }
-
     public Client getProduceCompany() {
         return produceCompany;
     }
 
     public void setProduceCompany(Client produceCompany) {
         this.produceCompany = produceCompany;
-    }
-
-    public Client getReceiveCompany() {
-        return receiveCompany;
-    }
-
-    public void setReceiveCompany(Client receiveCompany) {
-        this.receiveCompany = receiveCompany;
     }
 
     public CheckState getState() {
@@ -209,26 +131,31 @@ public class WayBill {
         this.page = page;
     }
 
+    public List<WayBillItem> getWayBillItemList() {
+        return wayBillItemList;
+    }
+
+    public void setWayBillItemList(List<WayBillItem> wayBillItemList) {
+        this.wayBillItemList = wayBillItemList;
+    }
+
     @Override
     public String toString() {
         return "WayBill{" +
                 "id='" + id + '\'' +
                 ", produceCompany=" + produceCompany +
-                ", receiveCompany=" + receiveCompany +
                 ", total=" + total +
                 ", founder='" + founder + '\'' +
                 ", wayBillDate=" + wayBillDate +
                 ", remarks='" + remarks + '\'' +
-                ", salesman=" + salesman +
-                ", wayBillNumber='" + wayBillNumber + '\'' +
-                ", wastesList=" + wastesList +
-                ", invoiceDate=" + invoiceDate +
-                ", invoiceNumber='" + invoiceNumber + '\'' +
+                ", wayBillNumber='" +  '\'' +
                 ", produceCompanyOperator='" + produceCompanyOperator + '\'' +
-                ", receiveCompanyOperator='" + receiveCompanyOperator + '\'' +
+                ", receiveCompanyOperator='" + '\'' +
                 ", state=" + state +
                 ", advice='" + advice + '\'' +
                 ", page=" + page +
+                ", wayBillItemList=" + wayBillItemList +
                 '}';
     }
 }
+

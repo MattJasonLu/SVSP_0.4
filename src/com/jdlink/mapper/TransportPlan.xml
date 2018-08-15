@@ -16,8 +16,8 @@
         <association property="wastes" column="id" select="getWastes"/>
     </resultMap>
     <insert id="add" parameterType="TransportPlan">
-        INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime)
-        VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW());
+        INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime, checkState)
+        VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW(), #{checkState});
         <if test="transportPlanItemList.size() > 0">
             <foreach collection="transportPlanItemList" item="transportPlanItem" index="index">
                 INSERT INTO t_pr_transportplanitem (id, produceCompanyId, handleCategory,
@@ -40,7 +40,7 @@
     </insert>
 
     <select id="getRecent" resultMap="TransportPlanRM">
-        SELECT * FROM t_pr_transportplan ORDER BY nowTime DESC LIMIT 1;
+        SELECT * FROM t_pr_transportplan WHERE checkState != 'Invalid' ORDER BY nowTime DESC LIMIT 1;
     </select>
 
     <select id="getTransportPlanItemList" parameterType="String" resultMap="TransportPlanItemRM">
@@ -55,7 +55,16 @@
         SELECT * FROM t_wastes WHERE transportPlanItemId=#{id};
     </select>
 
-    <select id="getTransportPlanWastesList" resultType="Wastes">
-
-    </select>
+    <update id="setStateConfirm" parameterType="String">
+        UPDATE t_pr_transportplan SET checkState='Confirm' WHERE id = #{id};
+    </update>
+    <update id="setStateSubmit" parameterType="String">
+        UPDATE t_pr_transportplan SET checkState='Submitted' WHERE id = #{id};
+    </update>
+    <update id="setStateExamined" parameterType="String">
+        UPDATE t_pr_transportplan SET checkState='Approval' WHERE id = #{id};
+    </update>
+    <update id="setStateInvalid" parameterType="String">
+        UPDATE t_pr_transportplan SET checkState='Invalid' WHERE id = #{id};
+    </update>
 </mapper>

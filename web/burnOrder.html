@@ -12,7 +12,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
 </head>
-<body>
+<body onload="loadThresholdList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -63,12 +63,12 @@
                 <ul class="sidenav animated fadeInUp">
                     <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                     <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
-                    <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li class="active"><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
@@ -78,76 +78,172 @@
             </div>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">流程节点</h1>
-
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="businessModel.html"><img src="image/Business.png" width="80" height="80" class="img-circle"></a>
-                    <h4>商务</h4>
-                    <!--<span class="text-muted">系统节点1</span>-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
+            <div class="row">
+                <div>
+                    <ol class="breadcrumb">
+                        <li><a href="businessModel.html">处置管理</a></li>
+                        <li class="active">焚烧工单</li>
+                    </ol>
+                    <p class="text-right"><b>编号&nbsp;&nbsp;</b><span id="id"></span></p>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/LR.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Receive.png" width="80" height="80" class="img-circle"></a>
-                    <h4>接收</h4>
-                    <!--<span class="text-muted">系统节点2</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
+                <h4 class="sub-header">日焚烧工单</h4>
             </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RB.png" width="80" height="80">
-                </div>
-            </div>
-            <div class="row placeholders">
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Storage.png" width="80" height="80" class="img-circle"></a>
-                    <h4>贮存</h4>
-                    <!--<span class="text-muted">系统节点3</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <h1>产废平台</h1>
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Preprocessing.png" width="80" height="80" class="img-circle"></a>
-                    <h4>预处理</h4>
-                    <!--<span class="text-muted">系统节点4</span>-->
-                </div>
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LB.png" width="80" height="80">
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 查看</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 属性调整</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
+                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Management.png" width="80" height="80" class="img-circle"></a>
-                    <h4>处置</h4>
-                    <!--<span class="text-muted">系统节点5</span>-->
+            <br>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-id" class="col-sm-4 control-label">序号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-id" name="search-id" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-proportion" class="col-sm-4 control-label">比例</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-proportion" name="search-proportion" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-disposalWay" class="col-sm-4 control-label">处置方式</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-disposalWay" name="search-disposalWay" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/RL.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Secondary.png" width="80" height="80" class="img-circle"></a>
-                    <h4>次生</h4>
-                    <!--<span class="text-muted">系统节点6</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
             </div>
+            <div class="text-center"><span id="week"></span>&nbsp;&nbsp;&nbsp;&nbsp;日焚烧工单</div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">产废单位</th>
+                            <th class="text-center">指标要求及来源</th>
+                            <th class="text-center">比例</th>
+                            <th class="text-center">重量(吨)</th>
+                            <th class="text-center">危废热值(cal/g)</th>
+                            <th class="text-center">灰分(%)</th>
+                            <th class="text-center">水分(%)</th>
+                            <th class="text-center">挥发分(%)</th>
+                            <th class="text-center">氯(%)</th>
+                            <th class="text-center">硫(%)</th>
+                            <th class="text-center">PH</th>
+                            <th class="text-center">P</th>
+                            <th class="text-center">F</th>
+                            <th class="text-center">备注</th>
+                            <th class="text-center">处置方式</th>
+                            <th class="text-center">预处理暂存点</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center"><10</td>
+                            <td class="text-center">10kg</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><10</td>
+                            <td class="text-center">10kg</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><10</td>
+                            <td class="text-center">10kg</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">备注</td>
+                            <td class="text-center" colspan="16">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="2">合计</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">残渣比例</td>
+                            <td class="text-center"></td>
+                            <td class="text-center">废液比例</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">污泥</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">散料</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">破碎</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">注意事项</td>
+                            <td colspan="16" class="text-left">作业人员需穿戴防护用品，口罩(防毒面具)，胶皮手套，避免吸入毒气和与人体直接接触，物料转移后及时清理现场环境。</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--分页-->
         </div>
     </div>
     <div id="embed"></div>
