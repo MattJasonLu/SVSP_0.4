@@ -10,4 +10,12 @@ public interface TransportPlanService {
     void add(TransportPlan transportPlan);
 
     TransportPlan getRecent();
+
+    void setStateConfirm(String id);
+
+    void setStateSubmit(String id);
+
+    void setStateExamined(String id);
+
+    void setStateInvalid(String id);
 }

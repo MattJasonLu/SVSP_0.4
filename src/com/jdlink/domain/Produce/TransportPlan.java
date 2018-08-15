@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,10 @@ public class TransportPlan {
      * 组别
      */
     private String group;
+    /**
+     * 审核状态
+     */
+    private CheckState checkState;
 
     public String getId() {
         return id;
@@ -81,6 +87,27 @@ public class TransportPlan {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
+    @Override
+    public String toString() {
+        return "TransportPlan{" +
+                "id='" + id + '\'' +
+                ", transportPlanItemList=" + transportPlanItemList +
+                ", author='" + author + '\'' +
+                ", departmentDirector='" + departmentDirector + '\'' +
+                ", productionDirector='" + productionDirector + '\'' +
+                ", group='" + group + '\'' +
+                ", checkState=" + checkState +
+                '}';
     }
 }
 
