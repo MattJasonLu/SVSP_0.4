@@ -235,4 +235,18 @@ public class SalesmanController {
         }
     }
 
+    @RequestMapping("getAllSalesman")
+    @ResponseBody
+    public String getAllSalesman() {
+        try {
+            List<Salesman> salesmenList = salesmanService.list();
+            JSONArray array = JSONArray.fromArray(salesmenList.toArray(new Salesman[salesmenList.size()]));
+            return array.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 }

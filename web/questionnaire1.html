@@ -279,7 +279,7 @@
     var url=location.search;
     var Request = {};
     if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
+        var str = url.substr(1);//去掉?号
         strs = str.split("&");
         for(var i=0;i<strs.length;i++) {
             Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
@@ -298,7 +298,6 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-//                    console.log("success: " + result);
                     var data = eval(result);
                     // 各下拉框数据填充
                     var clientList = $("#companyName");

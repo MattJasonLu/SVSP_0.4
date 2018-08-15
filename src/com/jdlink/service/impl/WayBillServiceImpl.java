@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.WayBill;
+import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.mapper.WastesInfoMapper;
 import com.jdlink.mapper.WayBillMapper;
 import com.jdlink.service.WayBillService;
@@ -44,4 +45,28 @@ public class WayBillServiceImpl implements WayBillService {
 
     @Override
     public void invalid(String id){ wayBillMapper.invalid(id);}
+
+    @Override
+    public void addItem(WayBill wayBill){ wayBillMapper.addItem(wayBill); }
+
+    @Override
+    public int countItem(){ return wayBillMapper.countItem(); }
+
+    @Override
+    public WayBillItem getItemById(String id){ return wayBillMapper.getItemById(id); }
+
+    @Override
+    public String getSalesmanIdByName(String name){ return wayBillMapper.getSalesmanIdByName(name); }
+
+    @Override
+    public String getClientIdByName(String name){ return wayBillMapper.getClientIdByName(name); }
+
+    @Override
+    public String getWastesIdByName(String name){ return wayBillMapper.getWastesIdByName(name); }
+
+    @Override
+    public int countWastes(){ return wayBillMapper.countWastes();}
+
+    @Override
+    public String getWastesById(String id){ return wayBillMapper.getWastesById(id); }
 }
