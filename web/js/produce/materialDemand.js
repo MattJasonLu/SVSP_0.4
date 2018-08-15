@@ -1,219 +1,6 @@
 /*********************
  * jackYang
  */
-function showClientFiles(e) {
-    var clientId = getClientId(e);
-    window.location.href = "archives.html?clientId=" + clientId;
-}
-
-var currentPage = 1;                          //当前页数
-
-/**
- * 返回count值
- * */
-function countValue(){
-    var mySelect=document.getElementById("count");
-    var index=mySelect.selectedIndex;
-    return mySelect.options[index].text;
-}
-/**
- * 计算总页数
- * */
-function totalPage() {
-    var totalRecord = 0;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "totalRecord",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result > 0) {
-                totalRecord = result;
-            } else {
-                console.log("fail: " + result);
-                totalRecord = 0;
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            totalRecord = 0;
-        }
-    });
-    var count = countValue();                         // 可选
-    var total = loadPages(totalRecord, count);
-    return total;
-}
-
-/**
- * 设置克隆页码
- * */
-function setPageClone(result) {
-    $(".beforeClone").remove();
-    setClientList(result);
-    var total = totalPage();
-    $("#next").prev().hide();
-    var st = "共" + total + "页";
-    $("#totalPage").text(st);
-    var myArray = new Array();
-    for (var i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i + 1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-
-}
-
-/**
- * 点击页数跳转页面
- * @param pageNumber 跳转页数
- * */
-function switchPage(pageNumber) {
-    console.log("当前页：" + pageNumber);
-    if (pageNumber === 0) {                 //首页
-        pageNumber = 1;
-    }
-    if (pageNumber === -2) {
-        pageNumber = totalPage();        //尾页
-    }
-    if (pageNumber == null || pageNumber === undefined) {
-        console.log("参数为空,返回首页!");
-        pageNumber = 1;
-    }
-    $("#current").find("a").text("当前页："+pageNumber);
-    if (pageNumber === 1) {
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        $("#next").removeClass("disabled");
-        $("#endPage").removeClass("disabled");
-    }
-    if (pageNumber === totalPage()) {
-        $("#next").addClass("disabled");
-        $("#endPage").addClass("disabled");
-        $("#previous").removeClass("disabled");
-        $("#firstPage").removeClass("disabled");
-    }
-    if(pageNumber > 1){
-        $("#previous").removeClass("disabled");
-        $("#firstPage").removeClass("disabled");
-    }
-    if(pageNumber < totalPage()){
-        $("#next").removeClass("disabled");
-        $("#endPage").removeClass("disabled");
-    }
-    var page = {};
-    page.count = countValue();                        //可选
-    page.pageNumber = pageNumber;
-    currentPage = pageNumber;          //当前页面
-    //addClass("active");
-    page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageClientList",         // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined) {
-                setClientList(result);
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-}
-
-/**
- * 输入页数跳转页面
- * */
-function inputSwitchPage() {
-    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    $("#current").find("a").text("当前页："+pageNumber);
-    if (pageNumber === null || pageNumber === undefined) {
-        window.alert("跳转页数不能为空！")
-    } else {
-        if (pageNumber === 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        if (pageNumber === totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber > 1){
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber < totalPage()){
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        currentPage = pageNumber;
-        var page = {};
-        page.count = countValue();//可选
-        page.pageNumber = pageNumber;
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result !== undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-
-
-    }
-}
-function getWeekDate() {
-    //获取时间
-    var obj = new Date();
-    var year = obj.getFullYear();
-    var month = obj.getMonth()+1;
-    var day = obj.getDate();
-    if(day % 7 > 0)  var a = 1; else a = 0;
-    var days = new Date();
-    days.setFullYear(year);
-    days.setMonth(month);
-    days.setDate(1);
-    if(day.getDay() <= days.getDay()){
-        var week = parseInt(day / 7) + a + 1;
-    }else {
-        week = parseInt(day / 7) + a;
-    }
-    return "第" + week + "周";
-
-}
-/**
- * 分页 获取首页内容
- * */
 /*加载物料需求列表*/
 function loadPageMaterialList() {
     $.ajax({
@@ -238,6 +25,7 @@ function loadPageMaterialList() {
             alert("服务器异常！")
         }
     });
+    $("#week").text(getWeekDate());
 }
 /*加载表格数据*/
 function setMaterialList(obj,n) {
@@ -362,7 +150,7 @@ function setMaterialList(obj,n) {
                         var obj1 = eval(item);
                         if (obj1.parameter.name =="热值") {
                             calorificmix= obj1.minimum;
-                            calorificminTotal+=obj1.minimum;;
+                            calorificminTotal+=obj1.minimum;
                         }
                     });
                     $(this).html(calorificmix);
@@ -565,7 +353,7 @@ function setMaterialList(obj,n) {
     $("#fmaxTotal").text(fmaxTotal);
     $("#fminTotal").text(fminTotal);
     $("#phmaxTotal").text(phmaxTotal);
-    $("#phminTotal").text(clminTotal);
+    $("#phminTotal").text(phminTotal);
 }
 /*导入物料需求*/
 function importMaExcel() {
@@ -598,4 +386,108 @@ function importMaExcel() {
             }
         });
     });
+}
+/*
+* 操作行选定*/
+function selected2(item) {
+    //1获得表单编号
+    var id = item.firstElementChild.innerHTML;
+    if ($(item).css('background-color') == 'rgb(127, 255, 212)') {
+        $(item).css('background-color', "");
+        //删除所选Id
+        arrayId.pop(id);
+    }
+    else {
+        if (arrayId.length == 0) {
+            arrayId.push(id);
+        }
+        if (arrayId.length == 1) {
+            $(item).css("background", 'Aquamarine').siblings().css("background", "");
+            arrayId.length = 0;
+            arrayId.push(id);
+        }
+    }
+}
+/*
+* 审批*/
+function approvalMa(){
+id=arrayId[0];
+console.log(id);
+    if(arrayId.length==1){
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getByMrId",         // url
+            // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {"id":id.toString()},
+            dataType: "json",
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    var obj=result.data;
+                    console.log(obj);
+                    //赋值
+                    //物料编号
+                    $("#materialRequireId").text(obj.materialRequireId);
+                    //序号
+                    $("#id").text(obj.id);
+                    $('#advice').text(obj.approvalContent);
+                    //驳回意见
+                    $("#remarks").text(obj.remarks);
+                    $("#contractInfoForm2").modal('show');
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+    else {
+        alert("请选择数据！")
+    }
+}
+//把按钮功能分出来做这个是审批
+function confirm2() {
+    remarks = $('#remarks').val();
+    $.ajax({
+        type: "POST",
+        url: "approvalMa",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id, 'remarks': remarks,},
+        success: function (result) {
+            if(result != undefined && result.status == "success"){
+                alert(result.message);
+                console.log(result);
+                window.location.reload();
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+function getWeekDate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth()+1;
+    var day = obj.getDate();
+    if(day % 7 > 0)  var a = 1; else a = 0;
+    var days = new Date();
+    days.setFullYear(year);
+    days.setMonth(month);
+    days.setDate(1);
+    if(obj.getDay() <= days.getDay()){
+        var week = parseInt(day / 7) + a + 1;
+    }else {
+        week = parseInt(day / 7) + a;
+    }
+    return "第" + week + "周";
 }
