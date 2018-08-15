@@ -59,5 +59,10 @@ public class MaterialRequireServiceImpl implements MaterialRequireService  {
         materialRequireMapper.back(id,remarks);
     }
 
+    @Override
+    public void updatemarketPurchases(String id, float marketPurchases) {
+        materialRequireMapper.updatemarketPurchases(id,marketPurchases);
+    }
+
 
 }

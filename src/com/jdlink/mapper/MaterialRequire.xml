@@ -10,15 +10,27 @@
         <result property="compatibilityId" column="compatibilityId" javaType="String"></result>
         <result property="remarks" column="remarks" javaType="String"></result>
         <result property="handleCategory" column="handleCategory" javaType="HandleCategory"></result>
+        <result property="id" column="id"></result>
         <collection property="wastesList" select="getWastes" column="materialRequireId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+    </resultMap>
+    <resultMap id="MaterialRequireMapperRM1" type="MaterialRequire" autoMapping="true">
+        <result property="id" column="id"></result>
+        <collection property="wastesList" select="getWastes1" column="id" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
     <resultMap id="WastesRM" type="Wastes" autoMapping="true">
         <id property="id" column="id"></id>
-        <collection property="parameterList" select="getParameterList" column="id"
+        <result property="id1" column="id1"></result>
+        <collection property="parameterList" select="getParameterList" column="id1"
                     ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
     </resultMap>
+    <select id="getWastes" resultMap="WastesRM" parameterType="String">
+        SELECT * FROM t_wastes WHERE materialRequireId=#{materialRequireId}  order by nowTime desc;
+    </select>
+    <select id="getWastes1" resultMap="WastesRM" parameterType="String">
+        SELECT * FROM t_wastes WHERE id1=#{id}  order by nowTime desc;
+    </select>
     <select id="getParameterList" parameterType="String" resultType="MixingElement">
-   select * from t_mixingelement where wastesId=#{wastes.id} order  by nowTime ;
+     select * from t_mixingelement where  id1=#{wastes.id1} order by nowTime desc ;
     </select>
     <select id="total" resultType="int">
     select count(*) from t_pr_materialrequire;
@@ -28,11 +40,11 @@
     values (#{materialRequireId},#{id},#{currentInventory},#{marketPurchases},#{remarks},#{compatibilityId},NOW(),#{safety},#{weeklyDemand},#{formType},#{handleCategory},#{packageType},'ToSubmit');
 <if test="wastesList.size()>0" >
 <foreach collection="wastesList" item="wastes" index="index">
-    insert into t_wastes (id,materialRequireId) values (#{wastes.id},#{materialRequireId});
+    insert into t_wastes (id,materialRequireId,id1) values (#{wastes.id},#{materialRequireId},#{id});
     <if test="wastes.parameterList.size()>0" >
         <foreach collection="wastes.parameterList" index="index" item="parameter">
-            insert  into t_mixingelement(id,wastesId,minimum,maximum,parameter,materialRequireId)
-            values (#{parameter.id},#{wastes.id},#{parameter.minimum},#{parameter.maximum},#{parameter.parameter},#{materialRequireId});
+            insert  into t_mixingelement(id,wastesId,minimum,maximum,parameter,materialRequireId,id1)
+            values (#{parameter.id},#{wastes.id},#{parameter.minimum},#{parameter.maximum},#{parameter.parameter},#{materialRequireId},#{id});
         </foreach>
     </if>
 </foreach>
@@ -42,13 +54,11 @@
     <select id="check" resultType="String">
         select materialRequireId from  t_pr_materialrequire order by nowTime desc ;
     </select>
-    <select id="getWastes" resultMap="WastesRM" parameterType="String">
-        SELECT * FROM t_wastes WHERE materialRequireId =#{materialRequireId} order by nowTime desc  ;
-    </select>
+
     <select id="list" resultMap="MaterialRequireMapperRM" parameterType="String">
-   select * from t_pr_materialrequire where materialRequireId=#{materialRequireId} order by nowTime desc ;
+   select * from t_pr_materialrequire where materialRequireId=#{materialRequireId}  order by nowTime desc ;
     </select>
-    <select id="getByMrId" resultMap="MaterialRequireMapperRM" parameterType="String">
+    <select id="getByMrId" resultMap="MaterialRequireMapperRM1" parameterType="String">
         select * from t_pr_materialrequire where id=#{id};
     </select>
     <update id="approval" >
@@ -62,5 +72,9 @@
     </update>
     <update id="back" parameterType="String">
         update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where id=#{0};
+    </update>
+    <update id="updatemarketPurchases" >
+        update  t_pr_materialrequire set marketPurchases=#{1},nowTime=NOW() where
+        id=#{0};
     </update>
     </mapper>
