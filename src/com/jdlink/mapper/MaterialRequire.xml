@@ -54,4 +54,13 @@
     <update id="approval" >
         update t_pr_materialrequire set checkState='Approval',remarks=#{1},nowTime=NOW() where id=#{0};
     </update>
+    <update id="submit" parameterType="String">
+        update t_pr_materialrequire set checkState='ToExamine',nowTime=NOW() where id=#{id};
+    </update>
+    <update id="cancel" parameterType="String">
+        update t_pr_materialrequire set checkState='Invalid',nowTime=NOW() where id=#{id};
+    </update>
+    <update id="back" parameterType="String">
+        update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where id=#{0};
+    </update>
     </mapper>

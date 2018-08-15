@@ -493,6 +493,23 @@ try{
         return res.toString();
     }
     //审批物料
+    @RequestMapping("backMa")
+    @ResponseBody
+    public String backMa(String id,String remarks){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.back(id,remarks);
+            res.put("status", "success");
+            res.put("message", "驳回通过!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败!");
+        }
+        return res.toString();
+    }
+    //驳回物料
     @RequestMapping("approvalMa")
     @ResponseBody
     public String approvalMa(String id,String remarks){
@@ -507,6 +524,44 @@ try{
             res.put("status", "fail");
             res.put("message", "审批失败!");
         }
+        return res.toString();
+    }
+    //提交至审批
+    @RequestMapping("submitByMrId")
+    @ResponseBody
+    public  String submitByMrId(String id){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.submit(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+
+        return res.toString();
+    }
+    //作废
+    @RequestMapping("cancelByMrId")
+    @ResponseBody
+    public  String cancelByMrId(String id){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.cancel(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+
         return res.toString();
     }
     //获取三位序列号
