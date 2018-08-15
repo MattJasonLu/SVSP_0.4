@@ -39,10 +39,24 @@
         </if>
     </insert>
 
+    <update id="update" parameterType="TransportPlan">
+        <if test="transportPlanItemList.size() > 0">
+            <foreach collection="transportPlanItemList" item="transportPlanItem" index="index">
+                UPDATE t_pr_transportplanitem SET approachTime=#{transportPlanItem.approachTime} WHERE t_pr_transportplanitem.id=#{transportPlanItem.id};
+
+                UPDATE t_wastes SET wasteAmount=#{transportPlanItem.wastes.wasteAmount}, unit=#{transportPlanItem.wastes.unit},
+                processWay=#{transportPlanItem.wastes.processWay} WHERE t_wastes.id=#{transportPlanItem.wastes.id};
+            </foreach>
+        </if>
+    </update>
+
     <select id="getRecent" resultMap="TransportPlanRM">
         SELECT * FROM t_pr_transportplan WHERE checkState != 'Invalid' ORDER BY nowTime DESC LIMIT 1;
     </select>
 
+    <select id="getById" parameterType="String" resultMap="TransportPlanRM">
+        SELECT * FROM t_pr_transportplan WHERE id=#{id};
+    </select>
     <select id="getTransportPlanItemList" parameterType="String" resultMap="TransportPlanItemRM">
         SELECT * FROM t_pr_transportplanitem WHERE transportPlanId=#{id};
     </select>

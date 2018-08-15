@@ -40,6 +40,16 @@ public class WayBillItem{
      */
     private String receiveCompanyOperator;
 
+    private Date receiveDate;
+
+    public Date getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Date receiveDate) {
+        this.receiveDate = receiveDate;
+    }
+
     public String getItemId() {
         return itemId;
     }

@@ -1,11 +1,3 @@
-function edit() {
-    var input = document.createElement('input');  //创建input节点
-    input.setAttribute('type', 'text');  //定义类型是文本输入
-    document.getElementsByClassName('billDate').appendChild(input); //添加到form中显示
-    document.getElementsByClassName('billNumber').appendChild(input); //添加到form中显示
-}
-
-var add1 = false;
 
 /**
  * 获取首页内容
@@ -13,8 +5,15 @@ var add1 = false;
 function loadPageWayBillDetailList() {
     $('.selectpicker').selectpicker('val', '');
     //编辑显示按钮，查看隐藏按钮
-    if (localStorage.add == false) $("#addBtn").hide();
-    else $("#addBtn").show();
+    if (localStorage.add == 0) {
+        $("#addBtn").addClass('hidden');
+        if($("#addBtn").hasClass('show')) $("#addBtn").removeClass('show');
+    }
+    else {
+        $("#addBtn").addClass('show');
+        if($("#addBtn").hasClass('hidden')) $("#addBtn").removeClass('hidden');
+
+    }
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWayBill",          // url
@@ -26,7 +25,7 @@ function loadPageWayBillDetailList() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                setWayBillList(result.data);
+                setWayBillItemList(result.data);
             } else {
                 console.log(result.message);
             }
@@ -42,7 +41,7 @@ function loadPageWayBillDetailList() {
  * 克隆数据
  * @param result
  */
-function setWayBillList(result) {
+function setWayBillItemList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#clone");
     tr.siblings().remove();
@@ -61,10 +60,12 @@ function setWayBillList(result) {
                     break;
                 case (1):
                     // 委托单位/危废生产单位
+                    if (result.produceCompany != null)
                     $(this).html(result.produceCompany.companyName);
                     break;
                 case (2):
                     //接收单位
+                    if (obj.receiveCompany != null)
                     $(this).html(obj.receiveCompany.companyName);
                     break;
                 case (3):
@@ -72,43 +73,45 @@ function setWayBillList(result) {
                     $(this).html(obj.receiveCompanyOperator);
                     break;
                 case (4):
-                    //创建人
-                    $(this).html(result.founder);
+                    // 接运单日期
+                    $(this).html(getDateStr(obj.receiveDate));
                     break;
                 case (5):
-                    // 接运单创建日期
-                    $(this).html(getDateStr(result.wayBillDate));
-                    break;
-                case (6):
                     //业务员
+                    if (obj.salesman != null)
                     $(this).html(obj.salesman.name);
                     break;
-                case (7):
+                case (6):
                     //危废名称
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.name);
                     break;
-                case (8):
+                case (7):
                     //危废数量
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.wasteAmount);
                     break;
-                case(9):
+                case (8):
                     //危废含税单价
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.unitPriceTax);
                     break;
-                case(10):
+                case(9):
                     //危废运费
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.freight);
                     break;
-                case(11):
+                case(10):
                     //危废单个合计
+                    if (obj.wastes != null)
                     var total = obj.wastes.unitPriceTax * obj.wastes.wasteAmount - obj.wastes.freight;
                     $(this).html(total);
                     break;
-                case(12):
+                case(11):
                     //开票日期
                     $(this).html(getDateStr(obj.invoiceDate));
                     break;
-                case(13):
+                case(12):
                     //发票号码
                     $(this).html(obj.invoiceNumber);
                     break;
@@ -156,12 +159,7 @@ function showAddModal() {
 /**
  * 新增行
  */
-function addNewLine() {
-    add1 = true;
-    if (add1 = true) {
-        $("#close").show;
-        $("#confirm").show;
-    }
+function addNewItemLine() {
     // 获取id为plusBtn的tr元素
     var tr = $("#addBtn1").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -169,7 +167,7 @@ function addNewLine() {
     // 克隆后清空新克隆出的行数据
     var num = clonedTr.children().find("span:first").prop('id').charAt(6);
     clonedTr.children().find("input").val("");
-    clonedTr.children().find("select").selectpicker('val','');
+    clonedTr.children().find("select").selectpicker('val', '');
     clonedTr.children().find("button:eq(0)").remove();
     clonedTr.children().find("button:eq(1)").remove();
     $('.selectpicker').selectpicker();
@@ -180,7 +178,17 @@ function addNewLine() {
     });
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
-
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
 }
 
 function getSalesmanIdByName(name) {
@@ -246,14 +254,14 @@ function getCurrentWastesId() {
     return id;
 }
 
-function conversionIdFormat(id){
+function conversionIdFormat(id) {
     var aid = "";
     $.ajax({
         type: "POST",                            // 方法类型
         url: "changeWastesIdFormat",             // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:{
-            id : id
+        data: {
+            id: id
         },
         dataType: "json",
         success: function (result) {
@@ -268,7 +276,7 @@ function conversionIdFormat(id){
     return aid;
 }
 
-function getCurrentItemId(){
+function getCurrentItemId() {
     //获取详细项目序列号
     var ItemId = 0;
     $.ajax({
@@ -278,7 +286,7 @@ function getCurrentItemId(){
         dataType: "json",
         success: function (result) {
             //alert("数据获取成功！");
-            ItemId = parseInt(result.id) ;
+            ItemId = parseInt(result.id);
         },
         error: function (result) {
             alert("服务器异常!");
@@ -300,7 +308,7 @@ function addWastes() {
     var wastesId = parseInt(getCurrentWastesId());
     for (var i = 0; i < lineCount; i++) {
         var ItemId1 = ItemId++;
-        var wastesId1 = wastesId ++;
+        var wastesId1 = wastesId++;
         var wayBillItem = {};
         var wastes = {};
         var salesman = {};
@@ -313,6 +321,7 @@ function addWastes() {
         // receiveCompany.clientId = getClientIdByName(companyName);
         receiveCompany.clientId = $("#wastes" + $i + "-receiveCompany option:selected").val();
         wastes.id = conversionIdFormat(wastesId1);
+        wastes.name = $("#wastes" + $i + "-name").val();
         wastes.wasteAmount = $("#wastes" + $i + "-wasteAmount").val();
         wastes.unitPriceTax = $("#wastes" + $i + "-unitPriceTax").val();
         wastes.freight = $("#wastes" + $i + "-freight").val();
@@ -323,6 +332,7 @@ function addWastes() {
         wayBillItem.invoiceNumber = $("#wastes" + $i + "-invoiceNumber").val();
         wayBillItem.receiveCompanyOperator = $("#wastes" + $i + "-receiveCompanyOpterator").val();
         wayBillItem.receiveCompany = receiveCompany;
+        wayBillItem.receiveDate = $("#wastes" + $i + "-receiveDate").val();
         wayBillItem.salesman = salesman;
         wayBillItem.wayBillId = localStorage.id;
         wayBill.wayBillItemList.push(wayBillItem);
@@ -386,7 +396,7 @@ $(document).ready(function () {
                         option.text(item.companyName);
                         clientList.append(option);
                     });
-                   $('.selectpicker').selectpicker('refresh');
+                    $('.selectpicker').selectpicker('refresh');
                 } else {
 //                    console.log(result);
                 }
@@ -416,7 +426,7 @@ $(document).ready(function () {
                         option.text(item.name);
                         clientList.append(option);
                     });
-                   $('.selectpicker').selectpicker('refresh');
+                    $('.selectpicker').selectpicker('refresh');
                 } else {
 //                    console.log(result);
                 }

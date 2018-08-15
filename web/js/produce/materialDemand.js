@@ -1,8 +1,8 @@
 /*********************
  * jackYang
  */
-/*加载物料需求列表*/
-function loadPageMaterialList() {
+/*获得最新一期的物料需求*/
+function getNewest() {
     $.ajax({
         type:"POST",
         url:"getMaterialList",
@@ -12,6 +12,28 @@ function loadPageMaterialList() {
         success:function (result) {
             if (result !== undefined && result.status === "success"){
                 console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+/*加载物料需求列表*/
+function loadPageMaterialList() {
+    $("#td2").hide();
+    $.ajax({
+        type:"POST",
+        url:"getMaterialList",
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result !== undefined && result.status === "success"){
+                //console.log(result);
                 var obj=result.array;
                 var n=result.length;
                 //设置下拉框数据
@@ -75,8 +97,11 @@ function setMaterialList(obj,n) {
     safetyTotal=0;
     //市场采购量总和
     marketPurchasesTotal=0;
+   // console.log(obj);
     $.each(obj, function (index, item) {
         var data = eval(item);
+       // console.log(data);
+        //console.log(index);
         var clonedTr = tr.clone();
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
@@ -135,7 +160,7 @@ function setMaterialList(obj,n) {
                     break;
                 //热值max
                 case (8):
-                    $.each(obj[index].wastesList[index].parameterList, function (index,item) {
+                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
                        var obj1=eval(item);
                         if (obj1.parameter.name =="热值") {
                             calorificmax=obj1.maximum;
@@ -333,6 +358,7 @@ function setMaterialList(obj,n) {
     });
     // 隐藏无数据的tr
     tr.hide();
+    tr.removeClass("myclass")
     //赋值
     $("#dailyProportionsTotal").text(dailyProportionsTotal);
     $("#currentInventoryTotal").text(currentInventoryTotal);
@@ -412,7 +438,50 @@ function selected2(item) {
 * 审批*/
 function approvalMa(){
 id=arrayId[0];
+$("#back1").hide();
+$("#confirm").show();
 console.log(id);
+    if(arrayId.length==1){
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getByMrId",         // url
+            // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {"id":id.toString()},
+            dataType: "json",
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    var obj=result.data;
+                    console.log(obj);
+                    //赋值
+                    //物料编号
+                    $("#materialRequireId").text(obj.materialRequireId);
+                    //序号
+                    $("#id").text(obj.id);
+                    $('#advice').text(obj.approvalContent);
+                    //驳回意见
+                    $("#remarks").text(obj.remarks);
+                    $("#contractInfoForm2").modal('show');
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+    else {
+        alert("请选择数据！")
+    }
+}
+/*驳回*/
+function backMa() {
+    id=arrayId[0];
+    $("#back1").show();
+    $("#confirm").hide();
     if(arrayId.length==1){
         $.ajax({
             type: "POST",                       // 方法类型
@@ -473,6 +542,32 @@ function confirm2() {
         }
     });
 }
+//把按钮功能分出来做这个是驳回
+function back2() {
+    remarks = $('#remarks').val();
+    $.ajax({
+        type: "POST",
+        url: "backMa",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id, 'remarks': remarks,},
+        success: function (result) {
+            if(result != undefined && result.status == "success"){
+                alert(result.message);
+                console.log(result);
+                window.location.reload();
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+
+}
+/*时间显示*/
 function getWeekDate() {
     //获取时间
     var obj = new Date();
@@ -491,3 +586,160 @@ function getWeekDate() {
     }
     return "第" + week + "周";
 }
+
+/*提交功能*/
+function submitMa() {
+    //1获得id
+    id=arrayId[0];
+    if(arrayId.length==1){
+        //2ajax后台操作
+        //3判断框是否提交
+        if(confirm("确定提交?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "submitByMrId",         // url
+                // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {"id":id},
+                dataType: "json",
+                //contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
+                }
+            });
+        }
+    }
+    else {
+        alert("请选择数据！")
+    }
+
+}
+/*作废*/
+function cancelMa() {
+    //1获得id
+    id=arrayId[0];
+    if(arrayId.length==1){
+        //2ajax后台操作
+        //3判断框是否提交
+        if(confirm("是否作废该数据?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "cancelByMrId",         // url
+                // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {"id":id},
+                dataType: "json",
+                //contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
+                }
+            });
+        }
+    }
+    else {
+        alert("请选择数据！")
+    }
+}
+/*修改页面*/
+function adjustMa() {
+    $("#editBtnGrp").removeClass("hidden");
+    $("#editBtnGrp").addClass("show");
+    $("#td1").hide();
+    $("#td2").show();
+    var td=$("td[name='123']");//找到指定的单元格
+    td.each(function () {
+        var content = $(this).html();//获得内容
+        var name = $(this).attr('name');
+        if (name.search("123") != -1) {
+            $(this).attr('name', '');
+            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' name='count'>");
+        }
+    });
+    //取消按钮点击是刷新
+    $("#editBtnCancel").click(function () {
+        window.location.reload();
+    });
+    $("#editBtnSave").click(function () {
+     //1遍历指定的行
+        $(".myclass").each(function(){
+           var id=this.firstElementChild.innerHTML;//获得编号
+            var marketPurchases=$(this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling
+                .nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild).val();
+            //当前采购量
+          //进行批量更新
+            console.log(id+"==>"+marketPurchases);
+            updatemarketPur(id,marketPurchases);
+        });
+        alert("更新成功！");
+        window.location.reload();
+    });
+}
+//更新采购量
+function updatemarketPur(id,marketPurchases) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updatemarketPurchases",   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{"id":id,"marketPurchases":marketPurchases},
+        //contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
+
+
+}
+
+/*确认修改*/
+function modify() {
+    var data=$("#materialInfoForm").serialize();
+    console.log(data);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getForm",         // url
+        // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{"data":data},
+        dataType: "json",
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message);
+            }
+
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+

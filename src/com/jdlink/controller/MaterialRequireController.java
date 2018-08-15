@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -493,6 +495,23 @@ try{
         return res.toString();
     }
     //审批物料
+    @RequestMapping("backMa")
+    @ResponseBody
+    public String backMa(String id,String remarks){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.back(id,remarks);
+            res.put("status", "success");
+            res.put("message", "驳回通过!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败!");
+        }
+        return res.toString();
+    }
+    //驳回物料
     @RequestMapping("approvalMa")
     @ResponseBody
     public String approvalMa(String id,String remarks){
@@ -508,6 +527,71 @@ try{
             res.put("message", "审批失败!");
         }
         return res.toString();
+    }
+    //提交至审批
+    @RequestMapping("submitByMrId")
+    @ResponseBody
+    public  String submitByMrId(String id){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.submit(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+
+        return res.toString();
+    }
+    //作废
+    @RequestMapping("cancelByMrId")
+    @ResponseBody
+    public  String cancelByMrId(String id){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.cancel(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+
+        return res.toString();
+    }
+    @RequestMapping("getForm")
+    @ResponseBody
+    public String getForm(HttpServletRequest request, HttpServletResponse response){
+        JSONObject res=new JSONObject();
+        res.put("status", "success");
+        res.put("message", "更新成功");
+       String data=request.getParameter("data");
+        System.out.println(data+"123213");
+        return res.toString();
+    }
+//更新
+    @RequestMapping("updatemarketPurchases")
+    @ResponseBody
+    public  String updatemarketPurchases(String id,String marketPurchases){
+     JSONObject res=new JSONObject();
+     try{
+         materialRequireService.updatemarketPurchases(id,Float.parseFloat(marketPurchases));
+         res.put("status", "success");
+         res.put("message", "更新成功");
+     }
+     catch (Exception e){
+         e.printStackTrace();
+         res.put("status", "fail");
+         res.put("message", "更新失败");
+     }
+        return  res.toString();
     }
     //获取三位序列号
     public static String getString3(String id){

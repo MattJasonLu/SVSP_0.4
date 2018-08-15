@@ -162,13 +162,27 @@
     <insert id="addItem" parameterType="WayBill">
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
-            (itemId,wayBillId,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
+            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
             values
-            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
+            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
 
             insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount,freight)
             values
             (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wastesTotal},#{wayBillItem.wastes.wasteAmount},#{wayBillItem.wastes.freight});
+        </foreach>
+    </insert>
+
+    <insert id="addWayBill" parameterType="WayBill">
+        insert into t_pr_waybill
+        (id,total,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder)
+        values
+        (#{id},#{total},#{remarks},NOW(),#{produceCompany.clientId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompany.companyName},#{founder});
+        <foreach collection="wayBillItemList" index="index" item="wayBillItem">
+            insert into t_pr_waybillitem
+            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
+            values
+            (#{wayBillItem.itemId},#{id},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
+
         </foreach>
     </insert>
 

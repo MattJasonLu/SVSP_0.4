@@ -21,8 +21,18 @@ public class TransportPlanServiceImpl implements TransportPlanService {
     }
 
     @Override
+    public void update(TransportPlan transportPlan) {
+        transportPlanMapper.update(transportPlan);
+    }
+
+    @Override
     public TransportPlan getRecent() {
         return transportPlanMapper.getRecent();
+    }
+
+    @Override
+    public TransportPlan getById(String id) {
+        return transportPlanMapper.getById(id);
     }
 
     @Override

@@ -4,10 +4,14 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Produce.TransportPlan;
 import com.jdlink.domain.Produce.TransportPlanItem;
+import com.jdlink.domain.Produce.WayBill;
+import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.domain.Salesman;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.TransportPlanService;
 import com.jdlink.service.WastesService;
+import com.jdlink.service.WayBillService;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -17,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by matt on 2018/8/9.
@@ -33,6 +37,8 @@ public class TransportPlanController {
     WastesService wastesService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    WayBillService wayBillService;
 
     /**
      * 增加运输计划
@@ -74,13 +80,19 @@ public class TransportPlanController {
     public String updateTransportPlan(@RequestBody TransportPlan transportPlan) {
         JSONObject res = new JSONObject();
         try {
-
+            // 为危废设置编号
+            TransportPlan oldTransportPlan = transportPlanService.getById(transportPlan.getId());
+            for (int i = 0; i < oldTransportPlan.getTransportPlanItemList().size(); i++) {
+                transportPlan.getTransportPlanItemList().get(i).getWastes().setId(oldTransportPlan.getTransportPlanItemList().get(i).getWastes().getId());
+            }
+            // 更新运输计划
+            transportPlanService.update(transportPlan);
             res.put("status", "success");
-            res.put("message", "审核成功");
+            res.put("message", "更新成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "审核失败");
+            res.put("message", "更新失败");
         }
         return res.toString();
     }
@@ -209,6 +221,79 @@ public class TransportPlanController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("generateWayBill")
+    @ResponseBody
+    public String generateWayBill(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            TransportPlan transportPlan = transportPlanService.getById(id);
+            Map<String, ArrayList<TransportPlanItem>> map = new HashMap<>();
+            // 按公司进行划分为多个列表
+            for (TransportPlanItem transportPlanItem : transportPlan.getTransportPlanItemList()) {
+                // 获取客户编号
+                String clientId = transportPlanItem.getProduceCompany().getClientId();
+                // 判断编号是否存在于数组中，若不存在则初始化列表
+                if (!map.keySet().contains(clientId)) {
+                    map.put(clientId, new ArrayList<TransportPlanItem>());
+                }
+                map.get(clientId).add(transportPlanItem);
+            }
+            // 根据不同公司的列表生成接运单，一个公司一个接运单
+            Iterator<Map.Entry<String, ArrayList<TransportPlanItem>>> entries = map.entrySet().iterator();
+            while (entries.hasNext()) {
+                Map.Entry<String, ArrayList<TransportPlanItem>> entry = entries.next();
+                ArrayList<TransportPlanItem> itemList = entry.getValue();
+                // 创建接运单
+                WayBill wayBill = new WayBill();
+                // 设置接运单的编号
+                wayBill.setId(wayBillService.getCurrentWayBillId());
+                // 设置接运单中的生产公司
+                wayBill.setProduceCompany(itemList.get(0).getProduceCompany());
+                wayBill.setWayBillDate(new Date());
+                wayBill.setFounder("管理员");
+                wayBill.setProduceCompanyOperator("管理员");
+                // 获取当前公司的业务员
+                Salesman salesman = null;
+                Client client = clientService.getByClientId(itemList.get(0).getProduceCompany().getClientId());
+                Client reveiveClient = clientService.getByClientId("0038");
+                if (client != null) {
+                    if (client.getSalesman() != null) salesman = client.getSalesman();
+                }
+                List<WayBillItem> wayBillItemList = new ArrayList<>();
+                int itemId = Integer.parseInt(wayBillService.getItemId());
+                // 创建接运单中的接运单条目
+                for (TransportPlanItem transportPlanItem : itemList) {
+                    WayBillItem wayBillItem = new WayBillItem();
+                    // 设置接运单条目的编号
+                    wayBillItem.setItemId(String.valueOf(itemId));
+                    // 设置接运单条目的危废
+                    wayBillItem.setWastes(transportPlanItem.getWastes());
+                    // 设置接运单条目的业务员
+                    wayBillItem.setSalesman(salesman);
+                    // 设置接运单条目的接运单日期
+                    wayBillItem.setReceiveDate(transportPlanItem.getApproachTime());
+                    // 设置接收单位
+                    wayBillItem.setReceiveCompany(reveiveClient);
+                    wayBillItem.setReceiveCompanyOperator("管理员");
+                    // 增加接运单条目
+                    wayBillItemList.add(wayBillItem);
+                    itemId++;
+                }
+                // 设置接运单条目列表
+                wayBill.setWayBillItemList(wayBillItemList);
+                // 增加接运单
+                wayBillService.addWayBill(wayBill);
+            }
+            res.put("status", "success");
+            res.put("message", "生成成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "生成失败");
         }
         return res.toString();
     }

@@ -43,4 +43,26 @@ public class MaterialRequireServiceImpl implements MaterialRequireService  {
     public void approval(String id, String remarks) {
         materialRequireMapper.approval(id,remarks);
     }
+
+    @Override
+    public void submit(String id) {
+        materialRequireMapper.submit(id);
+    }
+
+    @Override
+    public void cancel(String id) {
+        materialRequireMapper.cancel(id);
+    }
+
+    @Override
+    public void back(String id, String remarks) {
+        materialRequireMapper.back(id,remarks);
+    }
+
+    @Override
+    public void updatemarketPurchases(String id, float marketPurchases) {
+        materialRequireMapper.updatemarketPurchases(id,marketPurchases);
+    }
+
+
 }
