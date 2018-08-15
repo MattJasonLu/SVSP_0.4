@@ -120,7 +120,62 @@
                     <li class="active"><a href="#">危废入库</a></li>
                 </ol>
             </div>
-            <h4 class="sub-header">化验单新增</h4>
+            <h4 class="sub-header">计划单列表</h4>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6"></div>
+                    <!--查询框-->
+                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchPw();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-Id" class="col-sm-4 control-label">计划单号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-company" class="col-sm-4 control-label">产废单位</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-company" id="search-company">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-wastesName" id="search-wastesName">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-wastesCode" id="search-wastesCode">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <form method="post" id="infoForm" enctype="multipart/form-data">
                 <table class="table table-bordered">
                     <tbody>
@@ -172,6 +227,7 @@
                     <a class="btn btn-primary" onclick="comfirm();">确认</a>
                 </div>
                 <br>
+                <h4>入库表</h4>
                 <hr class="simple" color="#6f5499" />
                 <br>
                 <div class="row">
