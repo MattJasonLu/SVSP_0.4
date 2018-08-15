@@ -165,3 +165,23 @@ function getPackageTypeFromStr(packageType) {
     }
     return res;
 }
+/**
+ * 通过字符串获取处理方式
+ * @param formType
+ * @returns {*}
+ */
+function getProcessWayFromStr(formType) {
+    var res;
+    switch (formType) {
+        case "焚烧":
+            res = "Burning";
+            break;
+        case "填埋":
+            res = "Landfill";
+            break;
+        default:
+            res = "";
+            break;
+    }
+    return res;
+}

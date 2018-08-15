@@ -28,4 +28,9 @@ public class MaterialRequireServiceImpl implements MaterialRequireService {
     public List<String> check() {
         return materialRequireMapper.check();
     }
+
+    @Override
+    public List<MaterialRequire> list(String materialRequireId) {
+        return materialRequireMapper.list(materialRequireId);
+    }
 }

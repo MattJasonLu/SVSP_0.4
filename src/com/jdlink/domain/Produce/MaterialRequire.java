@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.PackageType;
 import com.jdlink.domain.Wastes;
@@ -47,6 +48,19 @@ public class MaterialRequire {
      *
      */
     private FormType formType;
+    /**
+     * 状态
+     *
+     */
+    private CheckState checkState;
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public FormType getFormType() {
         return formType;

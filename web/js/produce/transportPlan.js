@@ -39,10 +39,11 @@ function setDataList(result) {
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
+            changeId(clonedTr, index+1);
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (0):
-                    $(this).html(inner_index+1);
+                    $(this).html(index+1);
                     break;
                 case (1):
                     if (obj.produceCompany != null)
@@ -103,6 +104,9 @@ function setDataList(result) {
                     if (obj.wastes.processWay != null)
                         $(this).html(obj.wastes.processWay.name);
                     break;
+                case (19):
+                    $(this).html(obj.id);
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -111,10 +115,23 @@ function setDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+    $("#id").val(result.id);
     $("#author").val(result.author);
     $("#departmentDirector").val(result.departmentDirector);
     $("#group").val(result.group);
     $("#productionDirector").val(result.productionDirector);
+
+    /**
+     * 改变id
+     * @param element
+     */
+    function changeId(element, index) {
+        element.find("td[id*='transportPlanItemList']").each(function () {
+            var oldId = $(this).prop("id");
+            var newId = oldId.replace(/[0-9]\d*/, index);
+            $(this).prop('id', newId);
+        });
+    }
 }
 
 function setWastesData() {
@@ -267,174 +284,6 @@ function searchData() {
 }
 
 /**
- * 增加数据
- */
-function addData(state) {
-    var transferId;
-    if (localStorage.transferDraftId == null) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getCurrentTransferDraftId",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    transferId = result.transferDraftId;
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    } else {
-        transferId = localStorage.transferDraftId;
-    }
-    var data = {
-        id: transferId,
-        produceCompany: {
-            companyName: $("#produceCompanyName").val(),
-            phone: $("#produceCompanyPhone").val(),
-            location: $("#produceCompanyLocation").val(),
-            postCode: $("#produceCompanyPostcode").val()
-        },
-        transportCompany: {
-            companyName: $("#transportCompanyName").val(),
-            phone: $("#transportCompanyPhone").val(),
-            location: $("#transportCompanyLocation").val(),
-            postCode: $("#transportCompanyPostcode").val()
-        },
-        acceptCompany: {
-            companyName: $("#acceptCompanyName").val(),
-            phone: $("#acceptCompanyPhone").val(),
-            location: $("#acceptCompanyLocation").val(),
-            postCode: $("#acceptCompanyPostcode").val()
-        },
-        wastes: {
-            name: $("#wastesName").val(),
-            prepareTransferCount: $("#wastesPrepareTransferCount").val(),
-            wastesCharacter: $("#wastesCharacter").val(),
-            category: $("#wastesCategory").val(),
-            transferCount: $("#wastesTransferCount").val(),
-            formType: $("#wastesFormType").val(),
-            code: $("#wastesCode").val(),
-            signCount: $("#wastesSignCount").val(),
-            packageType: $("#wastesPackageType").val()
-        },
-        outwardIsTransit: $("#outwardIsTransit").prop("checked"),
-        outwardIsUse: $("#outwardIsUse").prop("checked"),
-        outwardIsDeal: $("#outwardIsDeal").prop("checked"),
-        outwardIsDispose: $("#outwardIsDispose").prop("checked"),
-        mainDangerComponent: $("#mainDangerComponent").val(),
-        dangerCharacter: $("#dangerCharacter").val(),
-        emergencyMeasure: $("#emergencyMeasure").val(),
-        emergencyEquipment: $("#emergencyEquipment").val(),
-        dispatcher: $("#dispatcher").val(),
-        destination: $("#destination").val(),
-        transferTime: getStdTimeStr($("#transferTime").val()),
-        // 运输单位填写
-        firstCarrier: $("#firstCarrier").val(),
-        firstCarryTime: getStdTimeStr($("#firstCarryTime").val()),
-        firstModel: $("#firstModel").val(),
-        firstBrand: $("#firstBrand").val(),
-        firstTransportNumber: $("#firstTransportNumber").val(),
-        firstOrigin: $("#firstOrigin").val(),
-        firstStation: $("#firstStation").val(),
-        firstDestination: $("#firstDestination").val(),
-        firstCarrierSign: $("#firstCarrierSign").val(),
-        secondCarrier: $("#secondCarrier").val(),
-        secondCarryTime: getStdTimeStr($("#secondCarryTime").val()),
-        secondModel: $("#secondModel").val(),
-        secondBrand: $("#secondBrand").val(),
-        secondTransportNumber: $("#secondTransportNumber").val(),
-        secondOrigin: $("#secondOrigin").val(),
-        secondStation: $("#secondStation").val(),
-        secondDestination: $("#secondDestination").val(),
-        secondCarrierSign: $("#secondCarrierSign").val(),
-        acceptCompanyLicense: $("#acceptCompanyLicense").val(),
-        recipient: $("#recipient").val(),
-        acceptDate: $("#acceptDate").val(),
-        disposeIsUse: $("#disposeIsUse").prop("checked"),
-        disposeIsStore: $("#disposeIsStore").prop("checked"),
-        disposeIsBurn: $("#disposeIsBurn").prop("checked"),
-        disposeIsLandFill: $("#disposeIsLandFill").prop("checked"),
-        disposeIsOther: $("#disposeIsOther").prop("checked"),
-        headSign: $("#headSign").val(),
-        signDate: $("#signDate").val(),
-        checkState: state == 'save' ? 'ToSubmit' : 'ToExamine'
-    };
-    // 上传用户数据
-    $.ajax({
-        type: "POST",                           // 方法类型
-        url: "addTransferDraft",                // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined) {
-                if (result.status == "success") {
-                    alert(result.message);
-                    // if (addType == "continue") window.location.reload();
-                    // else $(location).attr('href', 'transferDraft.html');//跳转
-
-                    $(location).attr('href', 'transferDraft.html');
-                } else {
-                    console.log(result);
-                    alert(result.message);
-                }
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
-}
-
-/**
- * 设置物质形态和包装方式的枚举信息
- */
-function getSelectedInfo() {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var wastesFormType = $("#wastesFormType");
-                wastesFormType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastesFormType.append(option);
-                });
-                wastesFormType.get(0).selectedIndex = -1;
-                var wastespackagetype = $("#wastesPackageType");
-                wastespackagetype.children().remove();
-                $.each(data.packageTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastespackagetype.append(option);
-                });
-                wastespackagetype.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-}
-
-/**
  * 设置高级查询的审核状态数据
  */
 function getCheckState() {
@@ -467,15 +316,15 @@ function getCheckState() {
 }
 
 /**
- * 作废转移联单
+ * 确认
  */
-function setInvalid(e) {    //已作废
-    var r = confirm("确认作废该联单吗？");
+function setConfirm() {
+    var r = confirm("确认该运输计划单吗？");
     if (r) {
-        var id = getIdByMenu(e);
+        var id = $("#id").val();
         $.ajax({
             type: "POST",
-            url: "setTransferDraftInvalid",
+            url: "setTransportPlanConfirm",
             async: false,
             dataType: "json",
             data: {
@@ -499,15 +348,15 @@ function setInvalid(e) {    //已作废
 }
 
 /**
- * 作废转移联单
+ * 作废
  */
-function setSubmit(e) {    //已作废
-    var r = confirm("确认提交该联单吗？");
+function setInvalid() {    //已作废
+    var r = confirm("确认作废该运输计划单吗？");
     if (r) {
-        var id = getIdByMenu(e);
+        var id = $("#id").val();
         $.ajax({
             type: "POST",
-            url: "setTransferDraftToExamine",
+            url: "setTransportPlanInvalid",
             async: false,
             dataType: "json",
             data: {
@@ -531,51 +380,133 @@ function setSubmit(e) {    //已作废
 }
 
 /**
- * 修改数据
- * @param e
+ * 提交
  */
-function adjustData(e) {
-    var id = getIdByMenu(e);
-    localStorage.transferDraftId = id;
-    location.href = "transferDraftInfo.html";
+function setSubmit() {    //已作废
+    var r = confirm("确认提交该运输计划单吗？");
+    if (r) {
+        var id = $("#id").val();
+        $.ajax({
+            type: "POST",
+            url: "setTransportPlanSubmit",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
 }
 
 /**
- * 查看数据
- * @param e
+ * 审批
  */
-function viewData(e) {
-    var id = getIdByMenu(e);
-    $.ajax({
-        type: "POST",
-        url: "",
-        async: false,
-        dataType: "json",
-        data: {
-            id: id
-        },
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
+function setExamined() {    //已作废
+    var r = confirm("确认审批该运输计划单吗？");
+    if (r) {
+        var id = $("#id").val();
+        $.ajax({
+            type: "POST",
+            url: "setTransportPlanExamined",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
                 console.log(result);
-
-            } else {
-                alert(result.message);
+                alert("服务器异常");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常");
+        });
+    }
+}
+
+/**
+ * 编辑数据
+ */
+function editData() {
+    $("#editBtnGrp").removeClass("hidden");
+    $("#editBtnGrp").addClass("show");
+    $("#mainData").find("[id^='transportPlanItemList']").each(function () {
+        var id = $(this).prop('id');
+        $(this).prop('id','');
+        var content = $(this).text();
+        if (id.search("id2") != -1) {
+            // 编号不要修改
+        } else if (id.search("approachTime2") != -1) {
+            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' id='" + id + "'>");
+        } else {
+            $(this).html("<input type='text' style='width: 50px;' value='" + content + "' id='" + id + "'>");
         }
     });
-}
 
-/**
- * 通过操作菜单来获取编号
- * @param e 点击的按钮
- * @returns {string} 联单编号
- */
-function getIdByMenu(e) {
-    return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    $("#editBtnCancel").unbind();
+    $("#editBtnCancel").click(function () {
+        window.location.reload();
+    });
+
+    $("#editBtnSave").unbind();
+    $("#editBtnSave").click(function () {
+        var data = {};
+        data['transportPlanItemList'] = [];
+        var count = $("input[id$='approachTime2']").length;
+        for (var i = 1; i < count; i++) {
+            var $i = i;
+            var transportPlanItem = {};
+            transportPlanItem.id = $("td[id='transportPlanItemList[" + $i + "].id2']").text();
+            transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime2']").val();
+            var wastes = {};
+            wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount2']").val();
+            wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit2']").val();
+            wastes.processWay = getProcessWayFromStr($("input[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val());
+            transportPlanItem.wastes = wastes;
+            data.transportPlanItemList.push(transportPlanItem);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "updateTransportPlan",
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    });
 }
 
 function allSelect() {

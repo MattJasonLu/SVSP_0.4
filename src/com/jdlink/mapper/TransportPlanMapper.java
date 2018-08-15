@@ -11,4 +11,12 @@ public interface TransportPlanMapper {
 
     TransportPlan getRecent();
 
+    void setStateConfirm(String id);
+
+    void setStateSubmit(String id);
+
+    void setStateExamined(String id);
+
+    void setStateInvalid(String id);
+
 }
