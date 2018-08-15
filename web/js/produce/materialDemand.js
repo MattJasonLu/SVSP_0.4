@@ -412,7 +412,50 @@ function selected2(item) {
 * 审批*/
 function approvalMa(){
 id=arrayId[0];
+$("#back1").hide();
+$("#confirm").show();
 console.log(id);
+    if(arrayId.length==1){
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getByMrId",         // url
+            // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {"id":id.toString()},
+            dataType: "json",
+            //contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    var obj=result.data;
+                    console.log(obj);
+                    //赋值
+                    //物料编号
+                    $("#materialRequireId").text(obj.materialRequireId);
+                    //序号
+                    $("#id").text(obj.id);
+                    $('#advice').text(obj.approvalContent);
+                    //驳回意见
+                    $("#remarks").text(obj.remarks);
+                    $("#contractInfoForm2").modal('show');
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+    else {
+        alert("请选择数据！")
+    }
+}
+/*驳回*/
+function backMa() {
+    id=arrayId[0];
+    $("#back1").show();
+    $("#confirm").hide();
     if(arrayId.length==1){
         $.ajax({
             type: "POST",                       // 方法类型
@@ -473,6 +516,32 @@ function confirm2() {
         }
     });
 }
+//把按钮功能分出来做这个是驳回
+function back2() {
+    remarks = $('#remarks').val();
+    $.ajax({
+        type: "POST",
+        url: "backMa",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id, 'remarks': remarks,},
+        success: function (result) {
+            if(result != undefined && result.status == "success"){
+                alert(result.message);
+                console.log(result);
+                window.location.reload();
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+
+}
+/*时间显示*/
 function getWeekDate() {
     //获取时间
     var obj = new Date();
@@ -490,4 +559,76 @@ function getWeekDate() {
         week = parseInt(day / 7) + a;
     }
     return "第" + week + "周";
+}
+
+/*提交功能*/
+function submitMa() {
+    //1获得id
+    id=arrayId[0];
+    if(arrayId.length==1){
+        //2ajax后台操作
+        //3判断框是否提交
+        if(confirm("确定提交?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "submitByMrId",         // url
+                // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {"id":id},
+                dataType: "json",
+                //contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
+                }
+            });
+        }
+    }
+    else {
+        alert("请选择数据！")
+    }
+
+}
+/*作废*/
+function cancelMa() {
+    //1获得id
+    id=arrayId[0];
+    if(arrayId.length==1){
+        //2ajax后台操作
+        //3判断框是否提交
+        if(confirm("是否作废该数据?")){
+            //点击确定后操作
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "cancelByMrId",         // url
+                // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {"id":id},
+                dataType: "json",
+                //contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        alert(result.message);
+                        window.location.reload();
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert("服务器异常！")
+                }
+            });
+        }
+    }
+    else {
+        alert("请选择数据！")
+    }
 }

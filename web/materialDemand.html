@@ -102,11 +102,11 @@
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查询</a>-->
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>-->
-                    <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
+                    <a class="btn btn-primary btn-xs" onclick="submitMa();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
                     <a class="btn btn-primary btn-xs" onclick="approvalMa()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
-                    <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 驳回</a>
+                    <a class="btn btn-primary btn-xs" onclick="backMa()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 驳回</a>
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 保存</a>
-                    <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
+                    <a class="btn btn-primary btn-xs" onclick="cancelMa();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
                     <a class="btn btn-primary btn-xs" onclick="importMaExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -355,6 +355,9 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm2()">
                         确认审批
+                    </button>
+                    <button type="button" class="btn btn-danger" id="back1" data-dismiss="modal" onclick="back2()">
+                        确认驳回
                     </button>
                 </div>
             </div>
