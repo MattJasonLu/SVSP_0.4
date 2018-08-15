@@ -11,4 +11,9 @@ public interface MaterialRequireService {
     void  addMix(MaterialRequire materialRequire);
     List<String> check();
     List<MaterialRequire> list(String materialRequireId);
+    MaterialRequire getByMrId(String materialRequireId );
+    void  approval(String id,String remarks);
+    void submit(String id);
+    void cancel(String id);
+    void  back(String id,String remarks);
 }

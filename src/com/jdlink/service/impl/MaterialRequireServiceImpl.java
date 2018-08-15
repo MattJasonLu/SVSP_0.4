@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MaterialRequireServiceImpl implements MaterialRequireService {
+public class MaterialRequireServiceImpl implements MaterialRequireService  {
     @Autowired
     MaterialRequireMapper materialRequireMapper;
     @Override
@@ -33,4 +33,31 @@ public class MaterialRequireServiceImpl implements MaterialRequireService {
     public List<MaterialRequire> list(String materialRequireId) {
         return materialRequireMapper.list(materialRequireId);
     }
+
+    @Override
+    public MaterialRequire getByMrId(String materialRequireId) {
+        return materialRequireMapper.getByMrId(materialRequireId);
+    }
+
+    @Override
+    public void approval(String id, String remarks) {
+        materialRequireMapper.approval(id,remarks);
+    }
+
+    @Override
+    public void submit(String id) {
+        materialRequireMapper.submit(id);
+    }
+
+    @Override
+    public void cancel(String id) {
+        materialRequireMapper.cancel(id);
+    }
+
+    @Override
+    public void back(String id, String remarks) {
+        materialRequireMapper.back(id,remarks);
+    }
+
+
 }

@@ -356,8 +356,8 @@ try{
                  MixingElement parameter = new MixingElement();
                  parameter.setParameter(Parameter.values()[3]);//设置热值
                  if(data[i][8].toString()!="null"&&data[i][9].toString()!="null"){
-                     parameter.setMinimum(Float.parseFloat(data[i][8].toString()));
-                     parameter.setMaximum(Float.parseFloat(data[i][9].toString()));
+                     parameter.setMaximum(Float.parseFloat(data[i][8].toString()));
+                     parameter.setMinimum(Float.parseFloat(data[i][9].toString()));
                  }
                  if(data[i][8].toString()=="null"||data[i][9].toString()=="null"){
                      parameter.setMinimum(0);
@@ -369,8 +369,8 @@ try{
                  MixingElement parameter1 = new MixingElement();
                  parameter1.setParameter(Parameter.values()[4]);//设置灰分
                  if(data[i][10].toString()!="null"&&data[i][11].toString()!="null"){
-                     parameter1.setMinimum(Float.parseFloat(data[i][10].toString()));
-                     parameter1.setMaximum(Float.parseFloat(data[i][11].toString()));
+                     parameter1.setMaximum(Float.parseFloat(data[i][10].toString()));
+                     parameter1.setMinimum(Float.parseFloat(data[i][11].toString()));
                  }
                  if(data[i][10].toString()=="null"||data[i][11].toString()=="null"){
                      parameter1.setMinimum(0);
@@ -382,8 +382,8 @@ try{
                  MixingElement parameter2 = new MixingElement();
                  parameter2.setParameter(Parameter.values()[8]);
                  if(data[i][12].toString()!="null"&&data[i][13].toString()!="null"){
-                     parameter2.setMinimum(Float.parseFloat(data[i][12].toString()));
-                     parameter2.setMaximum(Float.parseFloat(data[i][13].toString()));
+                     parameter2.setMaximum(Float.parseFloat(data[i][12].toString()));
+                     parameter2.setMinimum(Float.parseFloat(data[i][13].toString()));
                  }
                  if(data[i][12].toString()=="null"||data[i][13].toString()=="null"){
                      parameter2.setMinimum(0);
@@ -395,8 +395,8 @@ try{
                  MixingElement parameter3 = new MixingElement();
                  parameter3.setParameter(Parameter.values()[10]);//设置硫
                  if(data[i][14].toString()!="null"&&data[i][15].toString()!="null"){
-                     parameter3.setMinimum(Float.parseFloat(data[i][14].toString()));
-                     parameter3.setMaximum(Float.parseFloat(data[i][15].toString()));
+                     parameter3.setMaximum(Float.parseFloat(data[i][14].toString()));
+                     parameter3.setMinimum(Float.parseFloat(data[i][15].toString()));
                  }
                  if(data[i][14].toString()=="null"||data[i][15].toString()=="null"){
                      parameter3.setMinimum(0);
@@ -408,8 +408,8 @@ try{
                  MixingElement parameter4 = new MixingElement();
                  parameter4.setParameter(Parameter.values()[11]);
                  if(data[i][16].toString()!="null"&&data[i][17].toString()!="null"){
-                     parameter4.setMinimum(Float.parseFloat(data[i][16].toString()));
-                     parameter4.setMaximum(Float.parseFloat(data[i][17].toString()));
+                     parameter4.setMaximum(Float.parseFloat(data[i][16].toString()));
+                     parameter4.setMinimum(Float.parseFloat(data[i][17].toString()));
                  }
                  if(data[i][16].toString()=="null"||data[i][17].toString()=="null"){
                      parameter4.setMinimum(0);
@@ -421,8 +421,8 @@ try{
                  MixingElement parameter5 = new MixingElement();
                  parameter5.setParameter(Parameter.values()[13]);//设置磷
                  if(data[i][18].toString()!="null"&&data[i][19].toString()!="null"){
-                     parameter5.setMinimum(Float.parseFloat(data[i][18].toString()));
-                     parameter5.setMaximum(Float.parseFloat(data[i][19].toString()));
+                     parameter5.setMaximum(Float.parseFloat(data[i][18].toString()));
+                     parameter5.setMinimum(Float.parseFloat(data[i][19].toString()));
                  }
                  if(data[i][18].toString()=="null"||data[i][19].toString()=="null"){
                      parameter5.setMinimum(0);
@@ -434,8 +434,8 @@ try{
                  MixingElement parameter6 = new MixingElement();
                  parameter6.setParameter(Parameter.values()[12]);//设置磷
                  if(data[i][20].toString()!="null"&&data[i][21].toString()!="null"){
-                     parameter6.setMinimum(Float.parseFloat(data[i][20].toString()));
-                     parameter6.setMaximum(Float.parseFloat(data[i][21].toString()));
+                     parameter6.setMaximum(Float.parseFloat(data[i][20].toString()));
+                     parameter6.setMinimum(Float.parseFloat(data[i][21].toString()));
                  }
                  if(data[i][20].toString()=="null"||data[i][21].toString()=="null"){
                      parameter6.setMinimum(0);
@@ -447,8 +447,8 @@ try{
                  MixingElement parameter7 = new MixingElement();
                  parameter7.setParameter(Parameter.values()[2]);//设置磷
                  if(data[i][22].toString()!="null"&&data[i][23].toString()!="null"){
-                     parameter7.setMinimum(Float.parseFloat(data[i][22].toString()));
-                     parameter7.setMaximum(Float.parseFloat(data[i][23].toString()));
+                     parameter7.setMaximum(Float.parseFloat(data[i][22].toString()));
+                     parameter7.setMinimum(Float.parseFloat(data[i][23].toString()));
                  }
                  if(data[i][22].toString()=="null"||data[i][23].toString()=="null"){
                      parameter7.setMinimum(0);
@@ -472,6 +472,98 @@ try{
 
          return res.toString();
      }
+     /*根据编号获得信息*/
+    @RequestMapping("getByMrId")
+    @ResponseBody
+    public String getByMrId(String id){
+        JSONObject res=new JSONObject();
+        try {
+            MaterialRequire materialRequire=materialRequireService.getByMrId(id);
+            res.put("data",materialRequire);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+      catch (Exception e){
+          e.printStackTrace();
+          res.put("status", "fail");
+          res.put("message", "查询失败");
+      }
+
+
+        return res.toString();
+    }
+    //审批物料
+    @RequestMapping("backMa")
+    @ResponseBody
+    public String backMa(String id,String remarks){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.back(id,remarks);
+            res.put("status", "success");
+            res.put("message", "驳回通过!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败!");
+        }
+        return res.toString();
+    }
+    //驳回物料
+    @RequestMapping("approvalMa")
+    @ResponseBody
+    public String approvalMa(String id,String remarks){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.approval(id,remarks);
+            res.put("status", "success");
+            res.put("message", "审批通过!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败!");
+        }
+        return res.toString();
+    }
+    //提交至审批
+    @RequestMapping("submitByMrId")
+    @ResponseBody
+    public  String submitByMrId(String id){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.submit(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+
+        return res.toString();
+    }
+    //作废
+    @RequestMapping("cancelByMrId")
+    @ResponseBody
+    public  String cancelByMrId(String id){
+        JSONObject res=new JSONObject();
+        try {
+            materialRequireService.cancel(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+
+        return res.toString();
+    }
     //获取三位序列号
     public static String getString3(String id){
         while (id.length()!=3){

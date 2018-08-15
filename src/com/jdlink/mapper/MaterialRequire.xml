@@ -25,14 +25,14 @@
 </select>
     <insert id="addMix" parameterType="MaterialRequire">
     insert into t_pr_materialrequire(materialRequireId,id,currentInventory,marketPurchases,remarks,compatibilityId,nowTime,safety,weeklyDemand,formType,handleCategory,packageType,checkState)
-    values (#{materialRequireId},#{id},#{currentInventory},#{marketPurchases},#{remarks},#{compatibilityId},NOW(),#{safety},#{weeklyDemand},#{formType},#{handleCategory},#{packageType},'ToExamine');
+    values (#{materialRequireId},#{id},#{currentInventory},#{marketPurchases},#{remarks},#{compatibilityId},NOW(),#{safety},#{weeklyDemand},#{formType},#{handleCategory},#{packageType},'ToSubmit');
 <if test="wastesList.size()>0" >
 <foreach collection="wastesList" item="wastes" index="index">
-    insert into t_wastes (id,materialRequireId,nowTime) values (#{wastes.id},#{materialRequireId},NOW());
+    insert into t_wastes (id,materialRequireId) values (#{wastes.id},#{materialRequireId});
     <if test="wastes.parameterList.size()>0" >
         <foreach collection="wastes.parameterList" index="index" item="parameter">
-            insert  into t_mixingelement(id,wastesId,minimum,maximum,parameter,materialRequireId,nowTime)
-            values (#{parameter.id},#{wastes.id},#{parameter.minimum},#{parameter.maximum},#{parameter.parameter},#{materialRequireId},NOW());
+            insert  into t_mixingelement(id,wastesId,minimum,maximum,parameter,materialRequireId)
+            values (#{parameter.id},#{wastes.id},#{parameter.minimum},#{parameter.maximum},#{parameter.parameter},#{materialRequireId});
         </foreach>
     </if>
 </foreach>
@@ -46,6 +46,21 @@
         SELECT * FROM t_wastes WHERE materialRequireId =#{materialRequireId} order by nowTime desc  ;
     </select>
     <select id="list" resultMap="MaterialRequireMapperRM" parameterType="String">
-   select * from t_pr_materialrequire where materialRequireId=#{materialRequireId} order  by id ;
+   select * from t_pr_materialrequire where materialRequireId=#{materialRequireId} order by nowTime desc ;
     </select>
+    <select id="getByMrId" resultMap="MaterialRequireMapperRM" parameterType="String">
+        select * from t_pr_materialrequire where id=#{id};
+    </select>
+    <update id="approval" >
+        update t_pr_materialrequire set checkState='Approval',remarks=#{1},nowTime=NOW() where id=#{0};
+    </update>
+    <update id="submit" parameterType="String">
+        update t_pr_materialrequire set checkState='ToExamine',nowTime=NOW() where id=#{id};
+    </update>
+    <update id="cancel" parameterType="String">
+        update t_pr_materialrequire set checkState='Invalid',nowTime=NOW() where id=#{id};
+    </update>
+    <update id="back" parameterType="String">
+        update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where id=#{0};
+    </update>
     </mapper>
