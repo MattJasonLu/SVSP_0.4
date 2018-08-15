@@ -60,10 +60,12 @@ function setWayBillItemList(result) {
                     break;
                 case (1):
                     // 委托单位/危废生产单位
+                    if (result.produceCompany != null)
                     $(this).html(result.produceCompany.companyName);
                     break;
                 case (2):
                     //接收单位
+                    if (obj.receiveCompany != null)
                     $(this).html(obj.receiveCompany.companyName);
                     break;
                 case (3):
@@ -76,26 +78,32 @@ function setWayBillItemList(result) {
                     break;
                 case (5):
                     //业务员
+                    if (obj.salesman != null)
                     $(this).html(obj.salesman.name);
                     break;
                 case (6):
                     //危废名称
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.name);
                     break;
                 case (7):
                     //危废数量
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.wasteAmount);
                     break;
                 case (8):
                     //危废含税单价
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.unitPriceTax);
                     break;
                 case(9):
                     //危废运费
+                    if (obj.wastes != null)
                     $(this).html(obj.wastes.freight);
                     break;
                 case(10):
                     //危废单个合计
+                    if (obj.wastes != null)
                     var total = obj.wastes.unitPriceTax * obj.wastes.wasteAmount - obj.wastes.freight;
                     $(this).html(total);
                     break;

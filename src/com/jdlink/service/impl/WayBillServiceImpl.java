@@ -3,13 +3,11 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
-import com.jdlink.mapper.WastesInfoMapper;
 import com.jdlink.mapper.WayBillMapper;
 import com.jdlink.service.WayBillService;
 import com.jdlink.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,6 +84,18 @@ public class WayBillServiceImpl implements WayBillService {
         String id = RandomUtil.getAppointId(prefix, suffix);
         // 确保编号唯一
         while (getById(id) != null) {
+            int index = Integer.parseInt(id);
+            index += 1;
+            id = index + "";
+        }
+        return id;
+    }
+
+    @Override
+    public String getItemId() {
+        int count = countItem() + 1;
+        String id = Integer.toString(count);
+        while (getItemById(id) != null) {
             int index = Integer.parseInt(id);
             index += 1;
             id = index + "";

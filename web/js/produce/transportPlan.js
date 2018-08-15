@@ -447,74 +447,78 @@ function setExamined() {    //已作废
  * 编辑数据
  */
 function editData() {
-    $("#editBtnGrp").removeClass("hidden");
-    $("#editBtnGrp").addClass("show");
-    $("#mainData").find("[id^='transportPlanItemList']").each(function () {
-        var id = $(this).prop('id');
-        var content = $(this).text();
-        if (id.search("id2") != -1) {
-            // 编号不要修改
-        } else if (id.search("approachTime2") != -1) {
-            $(this).prop('id', '');
-            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' id='" + id + "'>");
-        } else if (id.search("processWay2") != -1) {
-            $(this).prop('id', '');
-            if (content == "焚烧")
-            $(this).html("<select id='" + id + "'><option value='Burning' selected>焚烧</option><option value='Landfill'>填埋</option></select>");
-            if (content == "填埋")
-                $(this).html("<select id='" + id + "'><option value='Burning'>焚烧</option><option value='Landfill' selected>填埋</option></select>");
-        } else {
-            $(this).prop('id','');
-            $(this).html("<input type='text' style='width: 50px;' value='" + content + "' id='" + id + "'>");
-        }
-    });
-
-    $("#editBtnCancel").unbind();
-    $("#editBtnCancel").click(function () {
-        window.location.reload();
-    });
-
-    $("#editBtnSave").unbind();
-    $("#editBtnSave").click(function () {
-        var data = {};
-        data.id = $("#id").val();
-        data['transportPlanItemList'] = [];
-        var count = $("input[id$='approachTime2']").length;
-        for (var i = 1; i < count; i++) {
-            var $i = i;
-            var transportPlanItem = {};
-            transportPlanItem.id = $("td[id='transportPlanItemList[" + $i + "].id2']").text();
-            transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime2']").val();
-            var wastes = {};
-            wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount2']").val();
-            wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit2']").val();
-            wastes.processWay = $("select[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val();
-            transportPlanItem.wastes = wastes;
-            data.transportPlanItemList.push(transportPlanItem);
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "updateTransportPlan",
-            async: false,
-            dataType: "json",
-            data: JSON.stringify(data),
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
+    if ($("#editBtnGrp").hasClass("hidden")) {
+        $("#editBtnGrp").removeClass("hidden");
+        $("#editBtnGrp").addClass("show");
+        $("#mainData").find("[id^='transportPlanItemList']").each(function () {
+            var id = $(this).prop('id');
+            var content = $(this).text();
+            if (id.search("id2") != -1) {
+                // 编号不要修改
+            } else if (id.search("approachTime2") != -1) {
+                $(this).prop('id', '');
+                $(this).html("<input type='text' style='width: 100px;' value='" + content + "' id='" + id + "'>");
+            } else if (id.search("processWay2") != -1) {
+                $(this).prop('id', '');
+                if (content == "焚烧")
+                    $(this).html("<select id='" + id + "'><option value='Burning' selected>焚烧</option><option value='Landfill'>填埋</option></select>");
+                if (content == "填埋")
+                    $(this).html("<select id='" + id + "'><option value='Burning'>焚烧</option><option value='Landfill' selected>填埋</option></select>");
+            } else {
+                $(this).prop('id', '');
+                $(this).html("<input type='text' style='width: 50px;' value='" + content + "' id='" + id + "'>");
             }
         });
-    });
+
+        $("#editBtnCancel").unbind();
+        $("#editBtnCancel").click(function () {
+            window.location.reload();
+        });
+
+        $("#editBtnSave").unbind();
+        $("#editBtnSave").click(function () {
+            var data = {};
+            data.id = $("#id").val();
+            data['transportPlanItemList'] = [];
+            var count = $("input[id$='approachTime2']").length;
+            for (var i = 1; i < count; i++) {
+                var $i = i;
+                var transportPlanItem = {};
+                transportPlanItem.id = $("td[id='transportPlanItemList[" + $i + "].id2']").text();
+                transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime2']").val();
+                var wastes = {};
+                wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount2']").val();
+                wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit2']").val();
+                wastes.processWay = $("select[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val();
+                transportPlanItem.wastes = wastes;
+                data.transportPlanItemList.push(transportPlanItem);
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "updateTransportPlan",
+                async: false,
+                dataType: "json",
+                data: JSON.stringify(data),
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        console.log(result);
+                        alert(result.message);
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器异常");
+                }
+            });
+        });
+    } else {
+        window.location.reload();
+    }
 }
 
 /**
@@ -536,7 +540,8 @@ function generateWayBill() {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
-                    alert(result.message);
+                    var r2 = confirm(result.message + ", 是否查看？");
+                    if (r2) $(location).attr('href', 'wayBill1.html');
                 } else {
                     alert(result.message);
                 }
