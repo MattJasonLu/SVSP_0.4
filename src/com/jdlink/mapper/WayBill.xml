@@ -181,11 +181,8 @@
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
             values
-            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
+            (#{wayBillItem.itemId},#{id},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
 
-            insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount,freight)
-            values
-            (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wastesTotal},#{wayBillItem.wastes.wasteAmount},#{wayBillItem.wastes.freight});
         </foreach>
     </insert>
 

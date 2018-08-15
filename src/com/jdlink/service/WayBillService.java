@@ -32,4 +32,6 @@ public interface WayBillService  {
      * @return 序列号
      */
     String getCurrentWayBillId();
+
+    String getItemId();
 }
