@@ -71,43 +71,39 @@ function setWayBillItemList(result) {
                     $(this).html(obj.receiveCompanyOperator);
                     break;
                 case (4):
-                    //创建人
-                    $(this).html(result.founder);
+                    // 接运单日期
+                    $(this).html(getDateStr(obj.receiveDate));
                     break;
                 case (5):
-                    // 接运单创建日期
-                    $(this).html(getDateStr(result.wayBillDate));
-                    break;
-                case (6):
                     //业务员
                     $(this).html(obj.salesman.name);
                     break;
-                case (7):
+                case (6):
                     //危废名称
                     $(this).html(obj.wastes.name);
                     break;
-                case (8):
+                case (7):
                     //危废数量
                     $(this).html(obj.wastes.wasteAmount);
                     break;
-                case(9):
+                case (8):
                     //危废含税单价
                     $(this).html(obj.wastes.unitPriceTax);
                     break;
-                case(10):
+                case(9):
                     //危废运费
                     $(this).html(obj.wastes.freight);
                     break;
-                case(11):
+                case(10):
                     //危废单个合计
                     var total = obj.wastes.unitPriceTax * obj.wastes.wasteAmount - obj.wastes.freight;
                     $(this).html(total);
                     break;
-                case(12):
+                case(11):
                     //开票日期
                     $(this).html(getDateStr(obj.invoiceDate));
                     break;
-                case(13):
+                case(12):
                     //发票号码
                     $(this).html(obj.invoiceNumber);
                     break;
@@ -167,7 +163,6 @@ function addNewItemLine() {
     clonedTr.children().find("button:eq(0)").remove();
     clonedTr.children().find("button:eq(1)").remove();
     $('.selectpicker').selectpicker();
-    $()
     clonedTr.children().find("input,select,span").each(function () {
         var id = $(this).prop('id');
         var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
@@ -175,7 +170,17 @@ function addNewItemLine() {
     });
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
-
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
 }
 
 function getSalesmanIdByName(name) {
@@ -308,6 +313,7 @@ function addWastes() {
         // receiveCompany.clientId = getClientIdByName(companyName);
         receiveCompany.clientId = $("#wastes" + $i + "-receiveCompany option:selected").val();
         wastes.id = conversionIdFormat(wastesId1);
+        wastes.name = $("#wastes" + $i + "-name").val();
         wastes.wasteAmount = $("#wastes" + $i + "-wasteAmount").val();
         wastes.unitPriceTax = $("#wastes" + $i + "-unitPriceTax").val();
         wastes.freight = $("#wastes" + $i + "-freight").val();
@@ -318,6 +324,7 @@ function addWastes() {
         wayBillItem.invoiceNumber = $("#wastes" + $i + "-invoiceNumber").val();
         wayBillItem.receiveCompanyOperator = $("#wastes" + $i + "-receiveCompanyOpterator").val();
         wayBillItem.receiveCompany = receiveCompany;
+        wayBillItem.receiveDate = $("#wastes" + $i + "-receiveDate").val();
         wayBillItem.salesman = salesman;
         wayBillItem.wayBillId = localStorage.id;
         wayBill.wayBillItemList.push(wayBillItem);
