@@ -25,4 +25,11 @@ public interface WayBillService  {
     String getWastesIdByName(String name);
     int countWastes();
     String getWastesById(String id);
+    void addWayBill(WayBill wayBill);
+
+    /**
+     * 获得当前接运单的序列号
+     * @return 序列号
+     */
+    String getCurrentWayBillId();
 }

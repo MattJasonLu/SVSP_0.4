@@ -28,6 +28,24 @@ public class PRWayBillController {
     @Autowired
     WayBillService wayBillService;
 
+
+    @RequestMapping("addWayBill")
+    @ResponseBody
+    public String addWayBill(@RequestBody WayBill wayBill){
+        JSONObject res = new JSONObject();
+        try{
+            wayBillService.addWayBill(wayBill);
+            res.put("status","success");
+            res.put("message","添加成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            res.put("status","fail");
+            res.put("message","添加失败！");
+        }
+        return res.toString();
+    }
+
+
     /**
      * 获取总记录数
      *
@@ -93,21 +111,7 @@ public class PRWayBillController {
     @RequestMapping("getCurrentWayBillId")
     @ResponseBody
     public String getCurrentWayBillId() {
-        // 生成预约号
-        Date date = new Date();   //获取当前时间
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        String prefix = simpleDateFormat.format(date);
-        int count = wayBillService.countById(prefix) + 1;
-        String suffix;
-        if (count <= 9) suffix = "0" + count;
-        else suffix = count + "";
-        String id = RandomUtil.getAppointId(prefix, suffix);
-        // 确保编号唯一
-        while (wayBillService.getById(id) != null) {
-            int index = Integer.parseInt(id);
-            index += 1;
-            id = index + "";
-        }
+        String id = getCurrentWayBillId();
         JSONObject res = new JSONObject();
         res.put("id", id);
         return res.toString();
