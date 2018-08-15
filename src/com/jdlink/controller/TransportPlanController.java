@@ -74,13 +74,19 @@ public class TransportPlanController {
     public String updateTransportPlan(@RequestBody TransportPlan transportPlan) {
         JSONObject res = new JSONObject();
         try {
-
+            // 为危废设置编号
+            TransportPlan oldTransportPlan = transportPlanService.getById(transportPlan.getId());
+            for (int i = 0; i < oldTransportPlan.getTransportPlanItemList().size(); i++) {
+                transportPlan.getTransportPlanItemList().get(i).getWastes().setId(oldTransportPlan.getTransportPlanItemList().get(i).getWastes().getId());
+            }
+            // 更新运输计划
+            transportPlanService.update(transportPlan);
             res.put("status", "success");
-            res.put("message", "审核成功");
+            res.put("message", "更新成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "审核失败");
+            res.put("message", "更新失败");
         }
         return res.toString();
     }

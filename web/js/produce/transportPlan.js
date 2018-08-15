@@ -451,13 +451,20 @@ function editData() {
     $("#editBtnGrp").addClass("show");
     $("#mainData").find("[id^='transportPlanItemList']").each(function () {
         var id = $(this).prop('id');
-        $(this).prop('id','');
         var content = $(this).text();
         if (id.search("id2") != -1) {
             // 编号不要修改
         } else if (id.search("approachTime2") != -1) {
+            $(this).prop('id', '');
             $(this).html("<input type='text' style='width: 100px;' value='" + content + "' id='" + id + "'>");
+        } else if (id.search("processWay2") != -1) {
+            $(this).prop('id', '');
+            if (content == "焚烧")
+            $(this).html("<select id='" + id + "'><option value='Burning' selected>焚烧</option><option value='Landfill'>填埋</option></select>");
+            if (content == "填埋")
+                $(this).html("<select id='" + id + "'><option value='Burning'>焚烧</option><option value='Landfill' selected>填埋</option></select>");
         } else {
+            $(this).prop('id','');
             $(this).html("<input type='text' style='width: 50px;' value='" + content + "' id='" + id + "'>");
         }
     });
@@ -470,6 +477,7 @@ function editData() {
     $("#editBtnSave").unbind();
     $("#editBtnSave").click(function () {
         var data = {};
+        data.id = $("#id").val();
         data['transportPlanItemList'] = [];
         var count = $("input[id$='approachTime2']").length;
         for (var i = 1; i < count; i++) {
@@ -480,7 +488,7 @@ function editData() {
             var wastes = {};
             wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount2']").val();
             wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit2']").val();
-            wastes.processWay = getProcessWayFromStr($("input[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val());
+            wastes.processWay = $("select[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val();
             transportPlanItem.wastes = wastes;
             data.transportPlanItemList.push(transportPlanItem);
         }
