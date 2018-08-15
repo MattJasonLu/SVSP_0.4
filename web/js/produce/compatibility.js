@@ -64,7 +64,15 @@ function getWeekDate() {
     var month = obj.getMonth()+1;
     var day = obj.getDate();
     if(day % 7 > 0)  var a = 1; else a = 0;
-    var week = parseInt(day / 7) + a;
+    var days = new Date();
+    days.setFullYear(year);
+    days.setMonth(month);
+    days.setDate(1);
+    if(day.getDay() <= days.getDay()){
+        var week = parseInt(day / 7) + a + 1;
+    }else {
+        week = parseInt(day / 7) + a;
+    }
     return year + "年" + month + "月第" + week + "周";
 
 }
@@ -759,11 +767,18 @@ $.ajax({
     url: "generateSheet",                  // url
     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
     dataType: "json",
+    contentType: "application/json; charset=utf-8",
     success:function (result) {
-        
+        if (result != undefined && result.status == "success"){
+            console.log(result)
+            window.location.href="materialDemand.html";
+        }
+        else {
+            alert(result.message);
+        }
     },
     error:function (result) {
-        
+        alert("服务器异常！")
     }
 
 

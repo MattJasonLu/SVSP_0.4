@@ -35,7 +35,14 @@ public enum PackageType implements CodeBaseEnum {
         }
         return null;
     }
-
+    public static PackageType getPackageType(String keyword) {
+        for (PackageType p : PackageType.values()) {
+            if(p.getName().contains(keyword)){
+                return p;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }

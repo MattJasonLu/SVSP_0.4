@@ -21,6 +21,7 @@ function loadData() {
             console.log("失败");
         }
     });
+    $("#week").text(getWeekDate());
 }
 
 /**
@@ -38,10 +39,11 @@ function setDataList(result) {
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
+            changeId(clonedTr, index+1);
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (0):
-                    $(this).html(inner_index+1);
+                    $(this).html(index+1);
                     break;
                 case (1):
                     if (obj.produceCompany != null)
@@ -102,6 +104,9 @@ function setDataList(result) {
                     if (obj.wastes.processWay != null)
                         $(this).html(obj.wastes.processWay.name);
                     break;
+                case (19):
+                    $(this).html(obj.id);
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -110,10 +115,23 @@ function setDataList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+    $("#id").val(result.id);
     $("#author").val(result.author);
     $("#departmentDirector").val(result.departmentDirector);
     $("#group").val(result.group);
     $("#productionDirector").val(result.productionDirector);
+
+    /**
+     * 改变id
+     * @param element
+     */
+    function changeId(element, index) {
+        element.find("td[id*='transportPlanItemList']").each(function () {
+            var oldId = $(this).prop("id");
+            var newId = oldId.replace(/[0-9]\d*/, index);
+            $(this).prop('id', newId);
+        });
+    }
 }
 
 function setWastesData() {
@@ -266,174 +284,6 @@ function searchData() {
 }
 
 /**
- * 增加数据
- */
-function addData(state) {
-    var transferId;
-    if (localStorage.transferDraftId == null) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getCurrentTransferDraftId",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    transferId = result.transferDraftId;
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    } else {
-        transferId = localStorage.transferDraftId;
-    }
-    var data = {
-        id: transferId,
-        produceCompany: {
-            companyName: $("#produceCompanyName").val(),
-            phone: $("#produceCompanyPhone").val(),
-            location: $("#produceCompanyLocation").val(),
-            postCode: $("#produceCompanyPostcode").val()
-        },
-        transportCompany: {
-            companyName: $("#transportCompanyName").val(),
-            phone: $("#transportCompanyPhone").val(),
-            location: $("#transportCompanyLocation").val(),
-            postCode: $("#transportCompanyPostcode").val()
-        },
-        acceptCompany: {
-            companyName: $("#acceptCompanyName").val(),
-            phone: $("#acceptCompanyPhone").val(),
-            location: $("#acceptCompanyLocation").val(),
-            postCode: $("#acceptCompanyPostcode").val()
-        },
-        wastes: {
-            name: $("#wastesName").val(),
-            prepareTransferCount: $("#wastesPrepareTransferCount").val(),
-            wastesCharacter: $("#wastesCharacter").val(),
-            category: $("#wastesCategory").val(),
-            transferCount: $("#wastesTransferCount").val(),
-            formType: $("#wastesFormType").val(),
-            code: $("#wastesCode").val(),
-            signCount: $("#wastesSignCount").val(),
-            packageType: $("#wastesPackageType").val()
-        },
-        outwardIsTransit: $("#outwardIsTransit").prop("checked"),
-        outwardIsUse: $("#outwardIsUse").prop("checked"),
-        outwardIsDeal: $("#outwardIsDeal").prop("checked"),
-        outwardIsDispose: $("#outwardIsDispose").prop("checked"),
-        mainDangerComponent: $("#mainDangerComponent").val(),
-        dangerCharacter: $("#dangerCharacter").val(),
-        emergencyMeasure: $("#emergencyMeasure").val(),
-        emergencyEquipment: $("#emergencyEquipment").val(),
-        dispatcher: $("#dispatcher").val(),
-        destination: $("#destination").val(),
-        transferTime: getStdTimeStr($("#transferTime").val()),
-        // 运输单位填写
-        firstCarrier: $("#firstCarrier").val(),
-        firstCarryTime: getStdTimeStr($("#firstCarryTime").val()),
-        firstModel: $("#firstModel").val(),
-        firstBrand: $("#firstBrand").val(),
-        firstTransportNumber: $("#firstTransportNumber").val(),
-        firstOrigin: $("#firstOrigin").val(),
-        firstStation: $("#firstStation").val(),
-        firstDestination: $("#firstDestination").val(),
-        firstCarrierSign: $("#firstCarrierSign").val(),
-        secondCarrier: $("#secondCarrier").val(),
-        secondCarryTime: getStdTimeStr($("#secondCarryTime").val()),
-        secondModel: $("#secondModel").val(),
-        secondBrand: $("#secondBrand").val(),
-        secondTransportNumber: $("#secondTransportNumber").val(),
-        secondOrigin: $("#secondOrigin").val(),
-        secondStation: $("#secondStation").val(),
-        secondDestination: $("#secondDestination").val(),
-        secondCarrierSign: $("#secondCarrierSign").val(),
-        acceptCompanyLicense: $("#acceptCompanyLicense").val(),
-        recipient: $("#recipient").val(),
-        acceptDate: $("#acceptDate").val(),
-        disposeIsUse: $("#disposeIsUse").prop("checked"),
-        disposeIsStore: $("#disposeIsStore").prop("checked"),
-        disposeIsBurn: $("#disposeIsBurn").prop("checked"),
-        disposeIsLandFill: $("#disposeIsLandFill").prop("checked"),
-        disposeIsOther: $("#disposeIsOther").prop("checked"),
-        headSign: $("#headSign").val(),
-        signDate: $("#signDate").val(),
-        checkState: state == 'save' ? 'ToSubmit' : 'ToExamine'
-    };
-    // 上传用户数据
-    $.ajax({
-        type: "POST",                           // 方法类型
-        url: "addTransferDraft",                // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined) {
-                if (result.status == "success") {
-                    alert(result.message);
-                    // if (addType == "continue") window.location.reload();
-                    // else $(location).attr('href', 'transferDraft.html');//跳转
-
-                    $(location).attr('href', 'transferDraft.html');
-                } else {
-                    console.log(result);
-                    alert(result.message);
-                }
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
-}
-
-/**
- * 设置物质形态和包装方式的枚举信息
- */
-function getSelectedInfo() {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var wastesFormType = $("#wastesFormType");
-                wastesFormType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastesFormType.append(option);
-                });
-                wastesFormType.get(0).selectedIndex = -1;
-                var wastespackagetype = $("#wastesPackageType");
-                wastespackagetype.children().remove();
-                $.each(data.packageTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastespackagetype.append(option);
-                });
-                wastespackagetype.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-}
-
-/**
  * 设置高级查询的审核状态数据
  */
 function getCheckState() {
@@ -466,15 +316,15 @@ function getCheckState() {
 }
 
 /**
- * 作废转移联单
+ * 确认
  */
-function setInvalid(e) {    //已作废
-    var r = confirm("确认作废该联单吗？");
+function setConfirm() {
+    var r = confirm("确认该运输计划单吗？");
     if (r) {
-        var id = getIdByMenu(e);
+        var id = $("#id").val();
         $.ajax({
             type: "POST",
-            url: "setTransferDraftInvalid",
+            url: "setTransportPlanConfirm",
             async: false,
             dataType: "json",
             data: {
@@ -498,15 +348,15 @@ function setInvalid(e) {    //已作废
 }
 
 /**
- * 作废转移联单
+ * 作废
  */
-function setSubmit(e) {    //已作废
-    var r = confirm("确认提交该联单吗？");
+function setInvalid() {    //已作废
+    var r = confirm("确认作废该运输计划单吗？");
     if (r) {
-        var id = getIdByMenu(e);
+        var id = $("#id").val();
         $.ajax({
             type: "POST",
-            url: "setTransferDraftToExamine",
+            url: "setTransportPlanInvalid",
             async: false,
             dataType: "json",
             data: {
@@ -530,51 +380,133 @@ function setSubmit(e) {    //已作废
 }
 
 /**
- * 修改数据
- * @param e
+ * 提交
  */
-function adjustData(e) {
-    var id = getIdByMenu(e);
-    localStorage.transferDraftId = id;
-    location.href = "transferDraftInfo.html";
+function setSubmit() {    //已作废
+    var r = confirm("确认提交该运输计划单吗？");
+    if (r) {
+        var id = $("#id").val();
+        $.ajax({
+            type: "POST",
+            url: "setTransportPlanSubmit",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    }
 }
 
 /**
- * 查看数据
- * @param e
+ * 审批
  */
-function viewData(e) {
-    var id = getIdByMenu(e);
-    $.ajax({
-        type: "POST",
-        url: "",
-        async: false,
-        dataType: "json",
-        data: {
-            id: id
-        },
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
+function setExamined() {    //已作废
+    var r = confirm("确认审批该运输计划单吗？");
+    if (r) {
+        var id = $("#id").val();
+        $.ajax({
+            type: "POST",
+            url: "setTransportPlanExamined",
+            async: false,
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
                 console.log(result);
-
-            } else {
-                alert(result.message);
+                alert("服务器异常");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常");
+        });
+    }
+}
+
+/**
+ * 编辑数据
+ */
+function editData() {
+    $("#editBtnGrp").removeClass("hidden");
+    $("#editBtnGrp").addClass("show");
+    $("#mainData").find("[id^='transportPlanItemList']").each(function () {
+        var id = $(this).prop('id');
+        $(this).prop('id','');
+        var content = $(this).text();
+        if (id.search("id2") != -1) {
+            // 编号不要修改
+        } else if (id.search("approachTime2") != -1) {
+            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' id='" + id + "'>");
+        } else {
+            $(this).html("<input type='text' style='width: 50px;' value='" + content + "' id='" + id + "'>");
         }
     });
-}
 
-/**
- * 通过操作菜单来获取编号
- * @param e 点击的按钮
- * @returns {string} 联单编号
- */
-function getIdByMenu(e) {
-    return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    $("#editBtnCancel").unbind();
+    $("#editBtnCancel").click(function () {
+        window.location.reload();
+    });
+
+    $("#editBtnSave").unbind();
+    $("#editBtnSave").click(function () {
+        var data = {};
+        data['transportPlanItemList'] = [];
+        var count = $("input[id$='approachTime2']").length;
+        for (var i = 1; i < count; i++) {
+            var $i = i;
+            var transportPlanItem = {};
+            transportPlanItem.id = $("td[id='transportPlanItemList[" + $i + "].id2']").text();
+            transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime2']").val();
+            var wastes = {};
+            wastes.wasteAmount = $("input[id='transportPlanItemList[" + $i + "].wastes.wasteAmount2']").val();
+            wastes.unit = $("input[id='transportPlanItemList[" + $i + "].wastes.unit2']").val();
+            wastes.processWay = getProcessWayFromStr($("input[id='transportPlanItemList[" + $i + "].wastes.processWay2']").val());
+            transportPlanItem.wastes = wastes;
+            data.transportPlanItemList.push(transportPlanItem);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "updateTransportPlan",
+            async: false,
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    });
 }
 
 function allSelect() {
@@ -658,17 +590,436 @@ function view2(e) {
 
 
 }
+/**
+ * 获取年月周 返回格式：2018年8月第1周
+ */
 function getWeekDate() {
-    //获取时间
-    var obj = new Date();
-    var year = obj.getFullYear();
-    var month = obj.getMonth()+1;
-    var day = obj.getDate();
-    if(day % 7 > 0)  var a = 1; else a = 0;
-    var week = parseInt(day / 7) + a;
-    return year + "年第" + week + "周";
+    var getMonthWeek = function getMonthWeek(a, b, c) {
+        var date = new Date(a, parseInt(b) - 1, c), w = date.getDay(), d = date.getDate();
+        return Math.ceil(
+            (d + 6 - w) / 7
+        );
+    };
+    var d;
+    var getYearWeek = function(a, b, c)
+    {
+        /*
+        date1是当前日期
+        date2是当年第一天
+        d是当前日期是今年第多少天
+        用d + 当前年的第一天的周差距的和在除以7就是本年第几周
+        */
+        var date1 = new Date(a, parseInt(b) - 1, c),
+            date2 = new Date(a, 0, 1);
+            d = Math.round((date1.valueOf() - date2.valueOf()) / 86400000);
+        return Math.ceil((d + ((date2.getDay() + 1) - 1)) / 7);
+    };
+    var today = new Date(); //获取当前时间
+    var year = today.getFullYear();
+    var month = today.getMonth() + 1;
+    var day = today.getDate();
 
+    //获取时间
+    // var obj = new Date();
+    // var year = obj.getFullYear();
+    // var month = obj.getMonth()+1;
+    // var day = obj.getDate();
+    // if(day % 7 > 0)  var a = 1; else a = 0;
+    // var week = parseInt(day / 7) + a;
+    return year + "年" + month + "月第" + getMonthWeek(year,month,day) + "周";
 }
+function getDateOfWeek() {
+    var e;
+    var month = new Date().getMonth()+1;
+    var year = new Date().getFullYear();
+    var day = new Date().getDate();
+    if(month == 1||month == 3||month == 5||month == 7||month == 8||month == 10||month == 12){
+        e = 31;
+    }else if (month == 2){
+        if((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0)) e = 29;
+        else e = 28;
+    }else {
+        e = 30;
+    }
+    var f1;       //f为当前日期的下周一日期，f+7为当前日期的下周日日期
+    var f7;
+    var monday;
+    var sunday;
+    var g = day; //当前日期
+    var h = new Date().getDay();
+    if(h == 0){
+        f1 = g+1;
+        f7 = g+7;
+        if(e == 28&&f1 > 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f1 < 28&&f7>28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f7 < 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 29&&f1 > 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f1 < 29&&f7>29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f7 < 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 30&&f1 > 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f1 < 30&&f7>30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f7 < 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 31&&f1 > 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f1 < 31&&f7>31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f7 < 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }
+    }
+    else if(h == 1){
+        f1 = g+7;
+        f7 = g+13;
+        if(e == 28&&f1 > 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f1 < 28&&f7>28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f7 < 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 29&&f1 > 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f1 < 29&&f7>29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f7 < 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 30&&f1 > 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f1 < 30&&f7>30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f7 < 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 31&&f1 > 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f1 < 31&&f7>31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f7 < 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }
+    }
+    else if(h == 2){
+        f1 = g+6;
+        f7 = g+12;
+        if(e == 28&&f1 > 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f1 < 28&&f7>28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f7 < 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 29&&f1 > 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f1 < 29&&f7>29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f7 < 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 30&&f1 > 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f1 < 30&&f7>30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f7 < 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 31&&f1 > 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f1 < 31&&f7>31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f7 < 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }
+    }
+    else if(h == 3){
+        f1 = g+5;
+        f7 = g+11;
+        if(e == 28&&f1 > 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f1 < 28&&f7>28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f7 < 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 29&&f1 > 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f1 < 29&&f7>29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f7 < 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 30&&f1 > 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f1 < 30&&f7>30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f7 < 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 31&&f1 > 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f1 < 31&&f7>31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f7 < 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }
+    }
+    else if(h == 4){
+        f1 = g+4;
+        f7 = g+10;
+        if(e == 28&&f1 > 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f1 < 28&&f7>28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f7 < 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 29&&f1 > 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f1 < 29&&f7>29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f7 < 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 30&&f1 > 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f1 < 30&&f7>30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f7 < 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 31&&f1 > 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f1 < 31&&f7>31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f7 < 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }
+    }
+    else if(h == 5){
+        f1 = g+3;
+        f7 = g+9;
+        if(e == 28&&f1 > 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f1 < 28&&f7>28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f7 < 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 29&&f1 > 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f1 < 29&&f7>29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f7 < 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 30&&f1 > 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f1 < 30&&f7>30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f7 < 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 31&&f1 > 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f1 < 31&&f7>31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f7 < 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }
+    }
+    else if(h == 6){
+        f1 = g+2;
+        f7 = g+8;
+        if(e == 28&&f1 > 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f1 < 28&&f7>28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 28&&f7 < 28){
+            monday = f1 - 28;
+            sunday = f7 - 21;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 29&&f1 > 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f1 < 29&&f7>29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 29&&f7 < 29){
+            monday = f1 - 29;
+            sunday = f7 - 22;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 30&&f1 > 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f1 < 30&&f7>30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 30&&f7 < 30){
+            monday = f1 - 30;
+            sunday = f7 - 23;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }else if(e == 31&&f1 > 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f1 < 31&&f7>31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
+        }else if(e == 31&&f7 < 31){
+            monday = f1 - 31;
+            sunday = f7 - 24;
+            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+        }
+    }
+}
+
 function loadPageTransportPlan() {
     $("#week").text(getWeekDate());
 }
