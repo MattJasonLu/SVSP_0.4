@@ -180,7 +180,7 @@ function getWeekDate() {
     days.setFullYear(year);
     days.setMonth(month);
     days.setDate(1);
-    if(day.getDay() <= days.getDay()){
+    if(obj.getDay() <= obj.getDay()){
         var week = parseInt(day / 7) + a + 1;
     }else {
         week = parseInt(day / 7) + a;
