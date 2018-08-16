@@ -42,7 +42,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="ingredientsList.html">每日配料单</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">危废出库</a></li>
+                            <li><a href="warehouseManageOut.html">危废出库</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="#">次生出库</a></li>
                         </ul>
@@ -119,11 +119,9 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="newIngredientsList.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
@@ -181,9 +179,7 @@
                         <tr>
                             <th class="text-center">序号</th>
                             <th class="text-center">配料单号</th>
-                            <th class="text-center">配料日期</th>
                             <th class="text-center">危废名称</th>
-                            <th class="text-center">危废类别</th>
                             <th class="text-center">处理类别</th>
                             <th class="text-center">数量</th>
                             <th class="text-center">计量单位</th>
@@ -191,6 +187,7 @@
                             <th class="text-center">创建人</th>
                             <th class="text-center">创建日期</th>
                             <th class="text-center">备注</th>
+                            <th class="text-center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -201,12 +198,15 @@
                             <td class="text-center">123</td>
                             <td class="text-center">132123</td>
                             <td class="text-center">123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">123</td>
                             <td class="text-center">1123123</td>
                             <td class="text-center">1123123</td>
                             <td class="text-center">1123123</td>
                             <td class="text-center">1123123</td>
+                            <td class="text-center">
+                                <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                <a href="#" onclick="addNew(this);" title="新增"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </a>
+                                <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

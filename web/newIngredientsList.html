@@ -33,39 +33,27 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="receiveManagement.html">首页</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="transportPlan.html">运输计划单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="transferDraft.html">转移联单</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="sampleInfoRegiter.html">送样登记</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="testResults.html">化验结果</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="storageManagement.html">首页</a></li>
                     <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="ingredientsList.html">每日配料单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="warehouseManageOut.html">危废出库</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">次生出库</a></li>
+                        </ul>
+                    </li>
+                    <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a href="#">入库管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="materialRequisition.html">领料单</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="warehouseManage.html">危废入库</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">次生入库</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="#">危废查询</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="singlePoundsManage.html">磅单管理</a></li>
+                            <li><a href="#">医废出入库登记</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">属性调整</a>
                     </li>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -115,12 +103,13 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="businessModel.html">接收管理</a></li>
-                    <li><a href="#">入库管理</a></li>
-                    <li class="active"><a href="#">危废入库</a></li>
+                    <li><a href="businessModel.html">贮存管理</a></li>
+                    <li>出库管理</li>
+                    <li class="active">每日配料单</li>
                 </ol>
+                <p class="text-right"><b>配料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>
             </div>
-            <h4 class="sub-header">计划单列表</h4>
+            <h4 class="sub-header">配料单新增</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
@@ -168,6 +157,62 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label for="wastesName" class="col-sm-4 control-label">危废名称</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" id="wastesName" name="wastesName" placeholder="">
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label for="modal-date" class="col-sm-4 control-label">入库日期</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="modal-date" name="modal-date" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label for="companyName" class="col-sm-4 control-label">产废单位</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" id="companyName" name="companyName" placeholder="">
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label for="modal-department" class="col-sm-4 control-label">部门</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="modal-department" name="modal-department" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <!--<div class="form-group">-->
+                        <!--<label for="modal-salesman" class="col-sm-4 control-label">业务员</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="modal-salesman" name="modal-salesman" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label for="modal-type" class="col-sm-4 control-label">入库类别</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<select class="form-control" id="modal-type" name="modal-type">-->
+                                <!--<option value="0">正常</option>-->
+                                <!--<option value="1">预处理退回</option>-->
+                                <!--<option value="2">其他</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <!--<div class="form-group">-->
+                        <!--<label for="modal-note" class="col-sm-4 control-label">备注</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="modal-note" name="modal-note" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
             <form method="post" id="infoForm" enctype="multipart/form-data">
                 <table class="table table-bordered">
                     <tbody>
@@ -177,21 +222,14 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <td class="text-center">计划单号</td>
-                        <td class="text-center">转移联单号</td>
-                        <td class="text-center">计划日期</td>
+                        <td class="text-center">入库时间</td>
                         <td class="text-center">产废单位</td>
-                        <td class="text-center">接收单位</td>
-                        <td class="text-center">转移时间</td>
-                        <td class="text-center">联单号</td>
-                        <td class="text-center">转移数量</td>
-                        <td class="text-center">磅单数量</td>
-                        <td class="text-center">已入库数量</td>
-                        <td class="text-center">剩余数量</td>
-                        <td class="text-center">拟转数量</td>
                         <td class="text-center">危废名称</td>
                         <td class="text-center">危废代码</td>
-                        <td class="text-center">危废列别</td>
+                        <td class="text-center">产废类别</td>
+                        <td class="text-center">进料方式</td>
+                        <td class="text-center">数量</td>
+                        <td class="text-center">备注</td>
                     </tr>
                     <tr>
                         <td class="text-center">
@@ -207,13 +245,6 @@
                         <td class="text-right modal-weight">5</td>
                         <td class="text-right modal-materialForm">液态</td>
                         <td class="text-right modal-packingType">标准装</td>
-                        <td class="text-right modal-KCal">20</td>
-                        <td class="text-right modal-PH">10</td>
-                        <td class="text-right modal-ashContent">20</td>
-                        <td class="text-right modal-waterContent">10</td>
-                        <td class="text-right modal-CLContent">20</td>
-                        <td class="text-right modal-SContent">10</td>
-                        <td class="text-right modal-PContent">10</td>
                     </tr>
                     </tbody>
                 </table>
@@ -227,55 +258,55 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="modal-Id" class="col-sm-4 control-label">入库单号</label>
+                            <label for="id" class="col-sm-4 control-label">配料单号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="modal-Id" name="modal-Id" placeholder="">
+                                <input type="text" class="form-control" id="id" name="id" placeholder="">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="modal-date" class="col-sm-4 control-label">入库日期</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="modal-date" name="modal-date" placeholder="">
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="modal-date" class="col-sm-4 control-label">入库日期</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<input type="text" class="form-control" id="modal-date" name="modal-date" placeholder="">-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="modal-warehouseId" class="col-sm-4 control-label">仓库</label>
+                            <label for="date" class="col-sm-4 control-label">配料日期</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="modal-warehouseId" name="modal-warehouseId" placeholder="">
+                                <input type="text" class="form-control" id="date" name="date" placeholder="">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="modal-department" class="col-sm-4 control-label">部门</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="modal-department" name="modal-department" placeholder="">
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="modal-department" class="col-sm-4 control-label">部门</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<input type="text" class="form-control" id="modal-department" name="modal-department" placeholder="">-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="modal-salesman" class="col-sm-4 control-label">业务员</label>
+                            <label for="creator" class="col-sm-4 control-label">创建人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="modal-salesman" name="modal-salesman" placeholder="">
+                                <input type="text" class="form-control" id="creator" name="creator" placeholder="">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="modal-type" class="col-sm-4 control-label">入库类别</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" id="modal-type" name="modal-type">
-                                    <option value="0">正常</option>
-                                    <option value="1">预处理退回</option>
-                                    <option value="2">其他</option>
-                                </select>
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="modal-type" class="col-sm-4 control-label">入库类别</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<select class="form-control" id="modal-type" name="modal-type">-->
+                                    <!--<option value="0">正常</option>-->
+                                    <!--<option value="1">预处理退回</option>-->
+                                    <!--<option value="2">其他</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="modal-note" class="col-sm-4 control-label">备注</label>
+                            <label for="note" class="col-sm-4 control-label">备注</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="modal-note" name="modal-note" placeholder="">
+                                <input type="text" class="form-control" id="note" name="note" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -285,16 +316,13 @@
                     <tbody>
                     <tr>
                         <td class="text-center">序号</td>
-                        <td class="text-center">入库单号</td>
-                        <td class="text-center">产废单位</td>
                         <td class="text-center">危废名称</td>
-                        <td class="text-center">危废代码</td>
-                        <td class="text-center">危废数量</td>
-                        <td class="text-center">单价</td>
-                        <td class="text-center">金额</td>
-                        <td class="text-center">处置方式</td>
+                        <td class="text-center">危废类别</td>
+                        <td class="text-center">进料方式</td>
+                        <td class="text-center">辅料</td>
+                        <td class="text-center">化验单号</td>
+                        <td class="text-center">产废单位</td>
                         <td class="text-center">备注</td>
-                        <td class="text-center">库区</td>
                     </tr>
                     <tr>
                         <td class="text-center modal-companyName">1</td>
@@ -305,9 +333,6 @@
                         <td class="text-right modal-weight">5</td>
                         <td class="text-right modal-materialForm">液态</td>
                         <td class="text-right modal-packingType">标准装</td>
-                        <td class="text-right modal-KCal">20</td>
-                        <td class="text-right modal-PH">10</td>
-                        <td class="text-right modal-ashContent">20</td>
                     </tr>
                     </tbody>
                 </table>
