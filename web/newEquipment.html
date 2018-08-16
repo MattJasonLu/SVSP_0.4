@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>贮存管理</title>
+    <title>设备运行情况</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -11,6 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/equipment.js"></script>
 </head>
 <body>
     <!--导航条-->
@@ -30,28 +31,9 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="storageManagement.html">首页</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="ingredientsList.html">每日配料单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="warehouseManageOut.html">危废出库</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">次生出库</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">危废查询</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">医废出入库登记</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">属性调整</a>
-                    </li>
+                    <li><a href="dispositionManagement.html">首页</a></li>
+                    <li><a href="burnOrder.html">焚烧工单</a></li>
+                    <li class="active"><a href="equipment.html">设备运行情况</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -98,79 +80,109 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">流程节点</h1>
-
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="businessModel.html"><img src="image/Business.png" width="80" height="80" class="img-circle"></a>
-                    <h4>商务</h4>
-                    <!--<span class="text-muted">系统节点1</span>-->
+            <div class="row">
+                <div>
+                    <ol class="breadcrumb">
+                        <li><a href="businessModel.html">处置管理</a></li>
+                        <li class="active">设备运行情况</li>
+                    </ol>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/LR.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Receive.png" width="80" height="80" class="img-circle"></a>
-                    <h4>接收</h4>
-                    <!--<span class="text-muted">系统节点2</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
+                <h4 class="sub-header">设备管理</h4>
             </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RB.png" width="80" height="80">
-                </div>
-            </div>
-            <div class="row placeholders">
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Storage.png" width="80" height="80" class="img-circle"></a>
-                    <h4>贮存</h4>
-                    <!--<span class="text-muted">系统节点3</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <h1>产废平台</h1>
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Preprocessing.png" width="80" height="80" class="img-circle"></a>
-                    <h4>预处理</h4>
-                    <!--<span class="text-muted">系统节点4</span>-->
-                </div>
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LB.png" width="80" height="80">
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Management.png" width="80" height="80" class="img-circle"></a>
-                    <h4>处置</h4>
-                    <!--<span class="text-muted">系统节点5</span>-->
+            <br>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-id" class="col-sm-4 control-label">故障设备</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-id" name="search-id" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-faultEquipment" class="col-sm-4 control-label">运行时间</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-faultEquipment" name="search-faultEquipment" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-stopTime" class="col-sm-4 control-label">停运时间</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-stopTime" name="search-stopTime" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-reason" class="col-sm-4 control-label">停运原因</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-reason" name="search-reason" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/RL.png" width="80" height="80">
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">故障设备</th>
+                            <th class="text-center">运行时间</th>     <!--时间，精确到秒 下同-->
+                            <th class="text-center">停运时间</th>
+                            <th class="text-center">停运原因</th>
+                            <th class="text-center">备注</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center"><input type="text" class="focus id" title=""></td>
+                            <td class="text-center"><input type="text" class="focus faultEquipment" title=""></td>
+                            <td class="text-center"><input type="datetime-local" class="focus runningTime" title=""></td>
+                            <td class="text-center"><input type="datetime-local" class="focus stopTime" title=""></td>
+                            <td class="text-center"><input type="text" class="focus reason" title=""></td>
+                            <td class="text-center"><input type="text" class="focus note" title=""></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Secondary.png" width="80" height="80" class="img-circle"></a>
-                    <h4>次生</h4>
-                    <!--<span class="text-muted">系统节点6</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
             </div>
         </div>
     </div>
     <div id="embed"></div>
 </body>
+<style type="text/css">
+    input {
+        width: 100%;
+        height: 100%;
+    }
+</style>
 <script>
     $('#embed').load('embed/loginLogModal.html');
 </script>
