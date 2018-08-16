@@ -4,7 +4,7 @@ import com.jdlink.domain.CheckState;
 
 import java.util.Date;
 
-public class productionPlan {
+public class ProductionPlan {
     /**
      * 产量计划单编号
      */
