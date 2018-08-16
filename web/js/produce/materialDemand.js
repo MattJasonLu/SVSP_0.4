@@ -662,8 +662,6 @@ function cancelMa() {
 function adjustMa() {
     $("#editBtnGrp").removeClass("hidden");
     $("#editBtnGrp").addClass("show");
-    $("#td1").hide();
-    $("#td2").show();
     var td=$("td[name='123']");//找到指定的单元格
     td.each(function () {
         var content = $(this).html();//获得内容
