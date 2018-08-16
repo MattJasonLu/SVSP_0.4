@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>领料单</title>
+    <title>磅单管理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -13,12 +13,17 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/materialRequisition.js"></script>
+    <script src="js/produce/transportPlan.js"></script>
 </head>
 <script type="text/javascript">
-    $('#embed').load('embed/loginLogModal.html');
+    $('#embed').load('embed/loginLogModal.html');     //当前页数
 </script>
-<body onload="loadThresholdList()">
+<style>
+    textarea {
+        resize: none;
+    }
+</style>
+<body onload="loadPageTransportPlan()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -87,7 +92,6 @@
             </li>
         </ul>
     </nav>
-
     <div class="container-fluid">
         <div class="row">
             <div class="sidebar">
@@ -119,35 +123,29 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="businessModel.html">接收管理</a></li>
-                        <li>库存管理</li>
-                        <li>入库管理</li>
-                        <li class="active">领料单</li>
+                        <li><a href="#">库存管理</a></li>
+                        <li class="active">磅单管理</li>
                     </ol>
-                    <p class="text-right"><b>领料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>
+                    <p class="text-right"><b>转移联单号&nbsp;&nbsp;</b><span id="Id"></span></p>
                 </div>
-                <h4 class="sub-header">领料单</h4>
+                <h4 class="sub-header">磅单管理</h4>
             </div>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查询</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 领用</a>
+                        <a class="btn btn-primary btn-xs" href="singlePoundsManage.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 打印</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                    <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
                             <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
                     </div>
@@ -159,96 +157,82 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-Id" class="col-sm-4 control-label">编号</label>
+                                <label for="search-delivery" class="col-sm-4 control-label">发货单位</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
+                                    <input type="text" class="form-control" id="search-delivery" name="search-delivery" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
+                                <label for="search-goods" class="col-sm-4 control-label">收货单位</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesCode" name="search-wastesCode" placeholder="">
+                                    <input type="text" class="form-control" id="search-goods" name="search-goods" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-wastesType" class="col-sm-4 control-label">危废列别</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesType" name="search-wastesType" placeholder="">
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-materialForm" class="col-sm-4 control-label">物质形态</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-materialForm" name="search-materialForm" placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                         <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-company" class="col-sm-4 control-label">单位</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-company" name="search-company" placeholder="">
-                                </div>
-                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-packingForm" class="col-sm-4 control-label">包装形式</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-packingForm" name="search-packingForm" placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
             </div>
+            <h3 class="text-center">北控安耐得环保科技发展常州有限公司</h3>
             <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <table class="table table-bordered">
-                        <thead>
+                    <table class="table table-striped table-hover table-condensed">
                         <tr>
-                            <th class="text-left" id="department" colspan="4">部门:<input class="focus" type="text" title="部门" maxlength="6"></th>
-                            <th class="text-left" id="date" colspan="4"><span id="weekDate"></span></th>
-                            <th class="text-left" id="serialNumber">文件编号:M-TD-107-R04<input class="focus" type="text" title="文件编号" maxlength="15"></th>
+                            <td class="text-center" style="width: 150px;">入场车号</td>
+                            <td class="text-center" style="width: 150px;">出场车号</td>
+                            <td class="text-center" style="width: 150px;">货物名称</td>
+                            <td class="text-center" style="width: 150px;">毛重</td>
+                            <td class="text-center" style="width: 150px;">发货单位</td>
+                            <td class="text-center" style="width: 150px;">皮重</td>
+                            <td class="text-center" style="width: 150px;">收货单位</td>
+                            <td class="text-center" style="width: 150px;">净重</td>
+                            <td class="text-center" style="width: 150px;">业务类型</td>
+                            <td class="text-center" style="width: 150px;">进场时间</td>
+                            <td class="text-center" style="width: 150px;">司磅员</td>
+                            <td class="text-center" style="width: 150px;">司机</td>
+                            <td class="text-center" style="width: 150px;">备注</td>
+                            <td class="text-center" style="width: 150px;">签字</td>
                         </tr>
                         <tr>
-                            <th class="text-center">编号</th>
-                            <th class="text-center">厂家</th>
-                            <th class="text-center">危废名称</th>
-                            <th class="text-center">危废代码</th>
-                            <th class="text-center">危废类别</th>
-                            <th class="text-center">单位</th>
-                            <th class="text-center">配料数量</th>
-                            <th class="text-center">领用数量</th>
-                            <th class="text-center">附注</th>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">
+                                <select class="select" title="">
+                                    <option value="1">1单位</option>
+                                    <option value="2">2单位</option>
+                                    <option value="3">3单位</option>
+                                </select>
+                            </td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
+                            <td class="text-center">31213213</td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">132123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">1123123</td>
-                        </tr>
-                        </tbody>
                     </table>
-                    <br>
-                    <div class="row">
-                        <table style="width: 100%;border: 0;">
-                            <tr>
-                                <td>
-                                    <b>主管副总经理:</b><input class="focus" type="text" title="主管副总经理" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>部门仓库主管:</b><input class="focus" type="text" title="部门仓库主管" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>保管员:</b><input class="focus" type="text" title="保管员" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>领料部门主管:</b><input class="focus" type="text" title="领料部门主管" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>领料人:</b><input class="focus" type="text" title="领料人" maxlength="6">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
                 </div>
             </div>
             <!--分页-->

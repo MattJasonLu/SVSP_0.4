@@ -762,25 +762,32 @@ $.ajax({
  * 生成物料需求单
  */
 function generate() {
-$.ajax({
-    type:"POST",
-    url: "generateSheet",                  // url
-    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    dataType: "json",
-    contentType: "application/json; charset=utf-8",
-    success:function (result) {
-        if (result != undefined && result.status == "success"){
-            console.log(result)
-            window.location.href="materialDemand.html";
-        }
-        else {
-            alert(result.message);
-        }
-    },
-    error:function (result) {
-        alert("服务器异常！")
+    if(confirm("是否生成物料需求?")){
+        //点击确定后操作
+        $.ajax({
+            type:"POST",
+            url: "generateSheet",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    if(confirm("是否跳转到物料需求页面?")){
+                        window.location.href="materialDemand.html";
+                    }
+
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+
+
+        });
     }
 
-
-});
 }
