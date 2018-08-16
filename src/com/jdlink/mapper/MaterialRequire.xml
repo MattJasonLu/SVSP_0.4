@@ -74,7 +74,7 @@
         update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where id=#{0};
     </update>
     <update id="updatemarketPurchases" >
-        update  t_pr_materialrequire set marketPurchases=#{1},nowTime=NOW() where
+        update  t_pr_materialrequire set marketPurchases=#{1} where
         id=#{0};
     </update>
     </mapper>
