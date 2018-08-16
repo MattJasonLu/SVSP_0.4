@@ -24,7 +24,8 @@
                 INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{id}, #{wastes.id});
                 INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint, nowTime)
                 VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
-                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint}), NOW();
+                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint}, NOW());
+                UPDATE t_wastes SET contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax}, unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate} WHERE wastesId=#{wastes.wastesId} AND clientId=#{client.clientId};
             </foreach>
         </if>
     </insert>
@@ -37,6 +38,7 @@
                 UPDATE t_wastes SET name=#{wastes.name}, formType=#{wastes.formType}, wastesId=#{wastes.wastesId}, contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax},
                 unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate}, ph=#{wastes.ph}, ashPercentage=#{wastes.ashPercentage}, wetPercentage=#{wastes.wetPercentage}, calorific=#{wastes.calorific},
                 halogenPercentage=#{wastes.halogenPercentage}, sulfurPercentage=#{wastes.sulfurPercentage}, flashPoint=#{wastes.flashPoint}, nowTime=NOW() WHERE id=#{wastes.id};
+                UPDATE t_wastes SET contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax}, unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate} WHERE wastesId=#{wastes.wastesId} AND clientId=#{client.clientId};
             </foreach>
         </if>
     </update>
@@ -50,6 +52,7 @@
                 INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint, nowTime)
                 VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
                 #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint}, NOW());
+                UPDATE t_wastes SET contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax}, unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate} WHERE wastesId=#{wastes.wastesId} AND clientId=#{client.clientId};
             </foreach>
         </if>
     </insert>

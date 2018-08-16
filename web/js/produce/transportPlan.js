@@ -213,6 +213,9 @@ function setWastesData() {
                     case (13):
                         $(this).html(obj.fluorinePercentage);
                         break;
+                    case (14):
+                        $(this).html(obj.id);
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -588,6 +591,7 @@ function view1() {
             wastes.phosphorusPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.phosphorusPercentage']").text();
             wastes.fluorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.fluorinePercentage']").text();
             wastes.processWay = parseInt($("select[id='transportPlanItemList[" + $i + "].wastes.processWay']").val())-1;
+            wastes.id = $("td[id='transportPlanItemList[" + $i + "].wastes.id']").text();
             transportPlanItem.handleCategory = getHandleCategoryFromStr($("td[id='transportPlanItemList[" + $i + "].handleCategory']").text());
             transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime']").val();
             transportPlanItem.wastes = wastes;
@@ -691,12 +695,11 @@ function saveData(handleType) {
     var wastesList = [];
     $.each(items, function (index) {
         if (index < count) {
-            // console.log(index);
             var wastes = {};
             var params = [];
             var param_0 = $(this).parent().parent();
             params.push(param_0);
-            for (var i = 0; i < 13; i++) {
+            for (var i = 0; i < 14; i++) {
                 var param = param_0.next();
                 param_0 = param;
                 params.push(param.text());
@@ -714,6 +717,7 @@ function saveData(handleType) {
             wastes.sulfur = params[11];
             wastes.phosphorus = params[12];
             wastes.fluorine = params[13];
+            wastes.id = params[14];
             wastes.handleType = handleType;
             wastesList.push(wastes);
         }
@@ -764,22 +768,27 @@ function setWastesData2(wastesList) {
                     $(this).html(obj.heat);
                     break;
                 case (11):
+                    $(this).html(obj.ph);
+                case (12):
                     $(this).html(obj.ash);
                     break;
-                case (12):
+                case (13):
                     $(this).html(obj.water);
                     break;
-                case (13):
+                case (14):
                     $(this).html(obj.chlorine);
                     break;
-                case (14):
+                case (15):
                     $(this).html(obj.sulfur);
                     break;
-                case (15):
+                case (16):
                     $(this).html(obj.phosphorus);
                     break;
-                case (16):
+                case (17):
                     $(this).html(obj.fluorine);
+                    break;
+                case (19):
+                    $(this).html(obj.id);
                     break;
             }
         });
@@ -800,7 +809,6 @@ function setWastesData2(wastesList) {
         startView: 2,
         minView: 2,
         forceParse: 0,
-        endDate:new Date()
     });
     /**
      * 改变id

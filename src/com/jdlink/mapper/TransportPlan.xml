@@ -15,6 +15,10 @@
         <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
         <association property="wastes" column="id" select="getWastes"/>
     </resultMap>
+    <resultMap id="ClientRM" type="Client" autoMapping="true">
+        <id property="clientId" column="clientId"/>
+        <association property="salesman" column="salesmanId" select="getSalesman"/>
+    </resultMap>
     <insert id="add" parameterType="TransportPlan">
         INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime, checkState)
         VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW(), #{checkState});
@@ -24,17 +28,13 @@
                 approachTime, wastesId, transportPlanId) VALUES (#{transportPlanItem.id},
                 #{transportPlanItem.produceCompany.clientId}, #{transportPlanItem.handleCategory},
                 #{transportPlanItem.approachTime}, #{transportPlanItem.wastes.id}, #{id});
-                INSERT INTO t_wastes (id, name, formType, wastesId, ph, ashPercentage, wetPercentage,
-                calorific, sulfurPercentage, fluorinePercentage, phosphorusPercentage, chlorinePercentage,
-                nowTime, packageType, wasteAmount, unit, processWay, transportPlanItemId) VALUES
-                (#{transportPlanItem.wastes.id}, #{transportPlanItem.wastes.name},
-                #{transportPlanItem.wastes.formType}, #{transportPlanItem.wastes.wastesId}, #{transportPlanItem.wastes.ph},
-                #{transportPlanItem.wastes.ashPercentage}, #{transportPlanItem.wastes.wetPercentage},
-                #{transportPlanItem.wastes.calorific}, #{transportPlanItem.wastes.sulfurPercentage},
-                #{transportPlanItem.wastes.fluorinePercentage}, #{transportPlanItem.wastes.phosphorusPercentage},
-                #{transportPlanItem.wastes.chlorinePercentage}, NOW(), #{transportPlanItem.wastes.packageType},
-                #{transportPlanItem.wastes.wasteAmount}, #{transportPlanItem.wastes.unit},
-                #{transportPlanItem.wastes.processWay}, #{transportPlanItem.id});
+                UPDATE t_wastes SET name=#{transportPlanItem.wastes.name}, formType=#{transportPlanItem.wastes.formType},
+                wastesId=#{transportPlanItem.wastes.wastesId}, ph=#{transportPlanItem.wastes.ph}, ashPercentage=#{transportPlanItem.wastes.ashPercentage},
+                wetPercentage=#{transportPlanItem.wastes.wetPercentage}, calorific=#{transportPlanItem.wastes.calorific},
+                sulfurPercentage=#{transportPlanItem.wastes.sulfurPercentage}, fluorinePercentage=#{transportPlanItem.wastes.fluorinePercentage},
+                phosphorusPercentage=#{transportPlanItem.wastes.phosphorusPercentage}, chlorinePercentage=#{transportPlanItem.wastes.chlorinePercentage},
+                nowTime=NOW(), packageType=#{transportPlanItem.wastes.packageType}, wasteAmount=#{transportPlanItem.wastes.wasteAmount}, unit=#{transportPlanItem.wastes.unit},
+                processWay=#{transportPlanItem.wastes.processWay}, transportPlanItemId=#{transportPlanItem.id} WHERE id=#{transportPlanItem.wastes.id};
             </foreach>
         </if>
     </insert>
@@ -61,12 +61,15 @@
         SELECT * FROM t_pr_transportplanitem WHERE transportPlanId=#{id};
     </select>
 
-    <select id="getProduceCompany" parameterType="String" resultType="Client">
+    <select id="getProduceCompany" parameterType="String" resultMap="ClientRM">
         SELECT * FROM client WHERE clientId=#{produceCompanyId};
     </select>
 
     <select id="getWastes" parameterType="String" resultType="Wastes">
         SELECT * FROM t_wastes WHERE transportPlanItemId=#{id};
+    </select>
+    <select id="getSalesman" parameterType="String" resultType="Salesman">
+        select * from salesman where salesmanId = #{salesmanId};
     </select>
 
     <update id="setStateConfirm" parameterType="String">
