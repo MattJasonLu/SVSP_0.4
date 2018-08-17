@@ -5,6 +5,8 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ProductionPlan;
 import com.jdlink.service.ProductionPlanService;
 import com.jdlink.util.DBUtil;
+import com.jdlink.util.DateUtil;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -26,10 +28,10 @@ public class PRProductionPlanController {
 
     @RequestMapping("totalProductionPlanRecord")
     @ResponseBody
-    public int totalProductionPlanRecord(){
+    public int totalProductionPlanRecord() {
         try {
             return productionPlanService.count();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -37,10 +39,10 @@ public class PRProductionPlanController {
 
     @RequestMapping("searchProductionPlanTotal")
     @ResponseBody
-    public int searchProductionPlanTotal(ProductionPlan productionPlan){
+    public int searchProductionPlanTotal(ProductionPlan productionPlan) {
         try {
             return productionPlanService.searchCount(productionPlan);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -48,7 +50,7 @@ public class PRProductionPlanController {
 
     @RequestMapping("loadPageProductionPlanList")
     @ResponseBody
-    public  String loadPageProductionPlanList(@RequestBody Page page){
+    public String loadPageProductionPlanList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             // 取出查询客户
@@ -96,7 +98,7 @@ public class PRProductionPlanController {
     public String getProductionPlanSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.ToExamine, CheckState.Examining, CheckState.Approval, CheckState.Backed,CheckState.Invalid};
+        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.ToExamine, CheckState.Examining, CheckState.Approval, CheckState.Backed, CheckState.Invalid};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();
@@ -104,18 +106,65 @@ public class PRProductionPlanController {
 
     /**
      * 导入
+     *
      * @param excelFile
-     * @param tableName
-     * @param id
      * @return
      */
     @RequestMapping("importProductionPlanExcel")
     @ResponseBody
-    public String importProductionPlanExcel(MultipartFile excelFile, String tableName, String id) {
+    public String importProductionPlanExcel(MultipartFile excelFile) {
         JSONObject res = new JSONObject();
         try {
-            DBUtil db = new DBUtil();
-            db.importExcel(excelFile, tableName, id);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            ProductionPlan productionPlan = new ProductionPlan();
+            for (int i = 1; i < data.length; i++) {
+                productionPlan.setId(data[i][0].toString());
+               // System.out.println(data[i][0].toString());
+                for (int j = 1; j < data[0].length; j++) {
+                    productionPlan.setFounder(data[i][j].toString());
+                    productionPlan.getAuxiliaryConsumption().setCalcareousLime(Float.parseFloat(data[i][j + 1].toString()));
+                    productionPlan.getAuxiliaryConsumption().setWaterReducingAgent(Float.parseFloat(data[i][j + 2].toString()));
+                    productionPlan.getAuxiliaryConsumption().setCommonActivatedCarbon(Float.parseFloat(data[i][j + 3].toString()));
+                    productionPlan.getAuxiliaryConsumption().setNaclo(Float.parseFloat(data[i][j + 4].toString()));
+                    productionPlan.getAuxiliaryConsumption().setActivatedCarbon(Float.parseFloat(data[i][j + 5].toString()));
+                    productionPlan.getAuxiliaryConsumption().setStandardBox(Float.parseFloat(data[i][j + 6].toString()));
+                    productionPlan.getAuxiliaryConsumption().setActivatedCarbonParticles(Float.parseFloat(data[i][j + 7].toString()));
+                    productionPlan.getAuxiliaryConsumption().setWoodenPallets(Float.parseFloat(data[i][j + 8].toString()));
+                    productionPlan.getAuxiliaryConsumption().setLye(Float.parseFloat(data[i][j + 9].toString()));
+                    productionPlan.getAuxiliaryConsumption().setStandardTray_1m(Float.parseFloat(data[i][j + 10].toString()));
+                    productionPlan.getAuxiliaryConsumption().setCausticSoda(Float.parseFloat(data[i][j + 11].toString()));
+                    productionPlan.getAuxiliaryConsumption().setStandardTray_1_2m(Float.parseFloat(data[i][j + 12].toString()));
+                    productionPlan.getAuxiliaryConsumption().setUrea(Float.parseFloat(data[i][j + 13].toString()));
+                    productionPlan.getAuxiliaryConsumption().setSlagBag(Float.parseFloat(data[i][j + 14].toString()));
+                    productionPlan.getAuxiliaryConsumption().setHydrochloricAcid(Float.parseFloat(data[i][j + 15].toString()));
+                    productionPlan.getAuxiliaryConsumption().setFlyAshBag(Float.parseFloat(data[i][j + 16].toString()));
+                    productionPlan.getAuxiliaryConsumption().setNahco3(Float.parseFloat(data[i][j + 17].toString()));
+                    productionPlan.getAuxiliaryConsumption().setTonBox(Float.parseFloat(data[i][j + 18].toString()));
+                    productionPlan.getAuxiliaryConsumption().setFlour(Float.parseFloat(data[i][j + 29].toString()));
+                    productionPlan.getAuxiliaryConsumption().setSteam(Float.parseFloat(data[i][j + 20].toString()));
+                    productionPlan.getAuxiliaryConsumption().setDefoamer(Float.parseFloat(data[i][j + 21].toString()));
+                    productionPlan.getAuxiliaryConsumption().setDieselOil(Float.parseFloat(data[i][j + 22].toString()));
+                    productionPlan.getAuxiliaryConsumption().setFlocculant(Float.parseFloat(data[i][j + 23].toString()));
+                    productionPlan.getAuxiliaryConsumption().setNaturalGas(Float.parseFloat(data[i][j + 24].toString()));
+                    productionPlan.getAuxiliaryConsumption().setSoftWaterReducingAgent(Float.parseFloat(data[i][j + 25].toString()));
+                    productionPlan.getAuxiliaryConsumption().setElectricQuantity(Float.parseFloat(data[i][j + 26].toString()));
+                    productionPlan.getAuxiliaryConsumption().setSoftWaterScaleInhibitor(Float.parseFloat(data[i][j + 27].toString()));
+                    productionPlan.getAuxiliaryConsumption().setIndustrialWater(Float.parseFloat(data[i][j + 28].toString()));
+                    productionPlan.getAuxiliaryConsumption().setpH(Float.parseFloat(data[i][j + 29].toString()));
+                    productionPlan.getAuxiliaryConsumption().setTapWaterQuantity(Float.parseFloat(data[i][j + 30].toString()));
+                    productionPlan.getAuxiliaryConsumption().setWaterReducingAgent(Float.parseFloat(data[i][j + 31].toString()));
+                    productionPlan.setTransportRate(Float.parseFloat(data[i][j + 32].toString()));
+                    productionPlan.setPlanQuantity(Float.parseFloat(data[i][j + 33].toString()));
+                }
+                ProductionPlan productionPlan1 = productionPlanService.getById(productionPlan.getId());
+                if (productionPlan1 == null) {
+                    //插入新数据
+                    productionPlanService.add(productionPlan);
+                } else {
+                    //根据id更新数据
+                    productionPlanService.update(productionPlan);
+                }
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
@@ -128,6 +177,7 @@ public class PRProductionPlanController {
 
     /**
      * 审核通过
+     *
      * @param
      * @return
      */
@@ -149,6 +199,7 @@ public class PRProductionPlanController {
 
     /**
      * 驳回
+     *
      * @param
      * @return
      */
@@ -170,6 +221,7 @@ public class PRProductionPlanController {
 
     /**
      * 提交
+     *
      * @param id
      * @return
      */
@@ -191,6 +243,7 @@ public class PRProductionPlanController {
 
     /**
      * 作废
+     *
      * @param id
      * @return
      */
@@ -212,6 +265,7 @@ public class PRProductionPlanController {
 
     /**
      * 确认
+     *
      * @param id
      * @return
      */
@@ -253,6 +307,7 @@ public class PRProductionPlanController {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
@@ -274,7 +329,7 @@ public class PRProductionPlanController {
 
     @RequestMapping("addProductionPlan")
     @ResponseBody
-    public String addProductionPlan(@RequestBody ProductionPlan productionPlan){
+    public String addProductionPlan(@RequestBody ProductionPlan productionPlan) {
         JSONObject res = new JSONObject();
         try {
             productionPlanService.add(productionPlan);
@@ -314,7 +369,7 @@ public class PRProductionPlanController {
                 id = index + "";
             }
             res.put("id", id);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
         }
@@ -323,7 +378,7 @@ public class PRProductionPlanController {
 
     @RequestMapping("updateProductionPlan")
     @ResponseBody
-    public String updateProductionPlan(@RequestBody ProductionPlan productionPlan){
+    public String updateProductionPlan(@RequestBody ProductionPlan productionPlan) {
         JSONObject res = new JSONObject();
         try {
             productionPlanService.update(productionPlan);

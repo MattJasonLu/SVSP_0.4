@@ -93,7 +93,7 @@ public class ImportUtil {
                 int row = sht.getRows();    // 获得Excel行
                 Cell c1;
                 param = new Object[row][col];
-                // 将数据装到parm中去
+                // 将数据装到param中去
                 // i=1 去掉表格第一行的属性名
                 for (int i = 0; i < row; i++) {
                     obj = new Object[col];
@@ -165,7 +165,6 @@ public class ImportUtil {
                         }    else  {
                             obj[j] = "";
                         }
-                        //在此转换中英文===>不是这个意思
                         //如果单元格为空时的操作
                         if (cellStyle==null||cellStyle.equals("")||cellStyle.getCellTypeEnum()==CellType.BLANK)
                             obj[j] ="null";
