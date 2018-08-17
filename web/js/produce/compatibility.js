@@ -761,7 +761,7 @@ $.ajax({
 /**
  * 生成物料需求单
  */
-function generate() {
+function  generate() {
     if(confirm("是否生成物料需求?")){
         //点击确定后操作
         $.ajax({
