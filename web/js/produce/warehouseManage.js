@@ -1,5 +1,8 @@
-function view() {
-    $("#appointModal2").modal("show");
+function view1() {
+    $("#examineModal").modal("show");
+}
+function view2() {
+    $("#examineModal").modal("show");
 }
 //全选复选框
 function allSelect() {
