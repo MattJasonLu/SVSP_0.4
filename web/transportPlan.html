@@ -192,7 +192,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th class="text-center" colspan="19">生产经营运输计划 <span id="weekDate">2018年8月第1周</span></th>
+                                <th class="text-center" colspan="20">生产经营运输计划 <span id="weekDate">2018年8月第1周</span></th>
                             </tr>
                             <tr>
                                 <th class="text-center">序号</th>
@@ -221,7 +221,8 @@
                         <tbody>
                             <tr id="cloneTr">
                                 <td class="text-center">1</td>
-                                <td class="text-center">测试产废单位</td>
+                                <td class="text-center">0001</td>
+                                <td class="text-center">测试产废单位01</td>
                                 <td class="text-center">污泥</td>
                                 <td class="text-center" id="transportPlanItemList[0].approachTime2">2018-08-07</td>
                                 <td class="text-left">废液</td>
@@ -238,9 +239,8 @@
                                 <td class="text-right">20</td>
                                 <td class="text-right">10</td>
                                 <td class="text-right">10</td>
-                                <td class="text-right">10</td>
                                 <td class="text-right" id="transportPlanItemList[0].wastes.processWay2">焚烧</td>
-                                <td class="text-right hidden" id="transportPlanItemList[0].id2">01</td>
+                                <td class="text-center hidden" id="transportPlanItemList[0].id2">01</td>
                             </tr>
                         </tbody>
                     </table>
@@ -342,166 +342,31 @@
                                 <th class="text-center">max</th>
                                 <th class="text-center">min</th>
                             </tr>
-                            <tr class="click">
-                                <td class="text-center">1</td>
-                                <td class="text-center">污泥</td>
-                                <td class="text-center">标准箱</td>
-                                <td class="text-center">半固态</td>
-                                <td class="text-center">200</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">150</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
-                            </tr>
-                            <tr class="click">
-                                <td class="text-center">2</td>
-                                <td class="text-center">废液</td>
-                                <td class="text-center">标准箱</td>
-                                <td class="text-center">半固态</td>
-                                <td class="text-center">200</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">150</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
-                            </tr>
-                            <tr class="click">
-                                <td class="text-center">3</td>
-                                <td class="text-center">散装料</td>
-                                <td class="text-center">标准箱</td>
-                                <td class="text-center">半固态</td>
-                                <td class="text-center">200</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">150</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
-                            </tr>
-                            <tr class="click">
-                                <td class="text-center">4</td>
-                                <td class="text-center">破碎料</td>
-                                <td class="text-center">标准箱</td>
-                                <td class="text-center">半固态</td>
-                                <td class="text-center">200</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">150</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
-                            </tr>
-                            <tr class="click">
-                                <td class="text-center">5</td>
-                                <td class="text-center">精馏残渣</td>
-                                <td class="text-center">标准箱</td>
-                                <td class="text-center">半固态</td>
-                                <td class="text-center">200</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">150</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
-                            </tr>
-                            <tr class="click">
-                                <td class="text-center">6</td>
-                                <td class="text-center">悬挂连</td>
-                                <td class="text-center">标准箱</td>
-                                <td class="text-center">半固态</td>
-                                <td class="text-center">200</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">150</td>
-                                <td class="text-center">100</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
-                                <td class="text-center">50</td>
-                                <td class="text-center">20</td>
+                            <tr id="cloneTr1"  onclick="selected2(this);" class="myclass">
+                                <td class="text-center"  ></td><!--序号-->
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td><!--市场采购量-->
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
                                 <td class="text-center"><input type="button" value="分配" onclick="view2(this);"></td>
                             </tr>
                             <tr>
@@ -509,28 +374,29 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
+                                <td class="text-center" id="dailyProportionsTotal"></td><!--周生产计划量(T)总量-->
+                                <td class="text-center" id="currentInventoryTotal"></td><!--目前库存量(T)总和-->
+                                <td class="text-center" id="safetyTotal"></td><!--安全库存量总和-->
+                                <td class="text-center" id="marketPurchasesTotal"></td><!--市场采购量总和-->
+                                <td class="text-center" id="calorificmaxTotal"></td><!--热值max总和-->
+                                <td class="text-center" id="calorificminTotal"></td><!--热值min总和-->
+                                <td class="text-center" id="ashmaxTotal"></td><!--灰分最大总量-->
+                                <td class="text-center" id="ashminTotal"></td><!--灰分最小总量-->
+                                <td class="text-center" id="watermaxTotal"></td><!--水分最大总量-->
+                                <td class="text-center" id="waterminTotal"></td><!--水分最小总量-->
+                                <td class="text-center" id="smaxTotal"></td><!--硫最大总量-->
+                                <td class="text-center" id="sminTotal"></td><!--硫最小总量-->
+                                <td class="text-center" id="clmaxTotal"></td><!--氯最大总量-->
+                                <td class="text-center" id="clminTotal"></td><!--氯最小总量-->
+                                <td class="text-center" id="pmaxTotal"></td><!--磷最大总量-->
+                                <td class="text-center" id="pminTotal"></td><!--磷最小总量-->
+                                <td class="text-center" id="fmaxTotal"></td><!--弗最大总量-->
+                                <td class="text-center" id="fminTotal"></td><!--弗最小总量-->
+                                <td class="text-center" id="phmaxTotal"></td><!--PH最大总量-->
+                                <td class="text-center" id="phminTotal"></td><!--PH最小总量-->
                                 <td class="text-center"></td>
                             </tr>
+
                             </tbody>
                         </table>
                         <table class="table table-bordered">
@@ -560,6 +426,7 @@
                                 <th class="text-center">磷含量/%</th>
                                 <th class="text-center">氟含量/%</th>
                                 <th class="text-center">处理方式</th>
+                                <th class="text-center hidden">ID</th>
                             </tr>
                             <tr id="wastesClonedTr2" style="display: none;">
                                 <td class="text-center" id="transportPlanItemList[0].id">0</td>
@@ -591,6 +458,7 @@
                                         <option value="2">填埋</option>
                                     </select>
                                 </td>
+                                <td class="text-right hidden" id="transportPlanItemList[0].wastes.id">01</td>
                             </tr>
                             </tbody>
                         </table>
@@ -634,6 +502,7 @@
                                     <th class="text-center">硫含量/%</th>
                                     <th class="text-center">磷含量/%</th>
                                     <th class="text-center">氟含量/%</th>
+                                    <th class="text-center hidden">ID</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -656,6 +525,7 @@
                                     <td class="text-right">10</td>
                                     <td class="text-right">10</td>
                                     <td class="text-right">10</td>
+                                    <td class="text-right hidden">01</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -62,7 +62,7 @@ public class TransportPlanController {
                 transportPlanItem.setId(RandomUtil.getRandomEightNumber());
                 Client produceCompany = clientService.getByName(transportPlanItem.getProduceCompany().getCompanyName());
                 transportPlanItem.setProduceCompany(produceCompany);
-                transportPlanItem.getWastes().setId(RandomUtil.getRandomEightNumber());
+//                transportPlanItem.getWastes().setId(RandomUtil.getRandomEightNumber());
             }
             transportPlanService.add(transportPlan);
             res.put("status", "success");
