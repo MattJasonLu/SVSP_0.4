@@ -14,14 +14,6 @@
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
 </head>
-<script type="text/javascript">
-    function allSelect() {
-        var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
-    }
-    $('#embed').load('embed/loginLogModal.html');
-</script>
 <body onload="loadPageSalesManList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
