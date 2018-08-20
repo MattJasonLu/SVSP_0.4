@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>每日配料单</title>
+    <title>预处理</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -13,7 +13,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/materialRequisition.js"></script>
+    <script src="js/produce/pretreatment.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
@@ -36,27 +36,9 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="storageManagement.html">首页</a></li>
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="materialRequisition.html">领料单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="ingredientsList.html">每日配料单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="warehouseManageOut.html">危废出库</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">次生出库</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="wastesQuery.html">危废查询</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">医废出入库登记</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="preprocessingManagement.html">首页</a></li>
+                    <li class="active"><a href="pretreatment1.html">预处理</a></li>
+                    <li><a href="#">属性调整</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -88,8 +70,8 @@
                     <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                     <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
                     <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li class="active"><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li class="active"><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
@@ -106,27 +88,28 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="businessModel.html">贮存管理</a></li>
-                        <li>出库管理</li>
-                        <li class="active">每日配料单</li>
+                        <li><a href="businessModel.html">预备管理</a></li>
+                        <li class="active">预处理</li>
                     </ol>
-                    <p class="text-right"><b>配料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>
                 </div>
-                <h4 class="sub-header">配料单</h4>
+                <h4 class="sub-header">日预处理单</h4>
             </div>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newIngredientsList.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="pretreatment.html"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 查看</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 作废</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 属性调整</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                    <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
                             <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
                     </div>
@@ -138,33 +121,33 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-Id" class="col-sm-4 control-label">序号</label>
+                                <label for="search-id" class="col-sm-4 control-label">序号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
+                                    <input type="text" class="form-control" id="search-id" name="search-id" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-wastesCode" class="col-sm-4 control-label">危废名称</label>
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesCode" name="search-wastesCode" placeholder="">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-wastesType" class="col-sm-4 control-label">危废列别</label>
+                                <label for="search-proportion" class="col-sm-4 control-label">比例</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesType" name="search-wastesType" placeholder="">
+                                    <input type="text" class="form-control" id="search-proportion" name="search-proportion" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-company" class="col-sm-4 control-label">产废单位</label>
+                                <label for="search-disposalWay" class="col-sm-4 control-label">处置方式</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-company" name="search-company" placeholder="">
+                                    <input type="text" class="form-control" id="search-disposalWay" name="search-disposalWay" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -177,63 +160,49 @@
                         <thead>
                         <tr>
                             <th class="text-center">序号</th>
-                            <th class="text-center">配料单号</th>
-                            <th class="text-center">危废名称</th>
-                            <th class="text-center">处理类别</th>
-                            <th class="text-center">数量</th>
-                            <th class="text-center">计量单位</th>
                             <th class="text-center">产废单位</th>
-                            <th class="text-center">创建人</th>
-                            <th class="text-center">创建日期</th>
+                            <th class="text-center">指标要求及来源</th>
+                            <th class="text-center">比例</th>
+                            <th class="text-center">重量(吨)</th>
+                            <th class="text-center">危废热值(cal/g)</th>
+                            <th class="text-center">灰分(%)</th>
+                            <th class="text-center">水分(%)</th>
+                            <th class="text-center">挥发分(%)</th>
+                            <th class="text-center">氯(%)</th>
+                            <th class="text-center">硫(%)</th>
+                            <th class="text-center">PH</th>
+                            <th class="text-center">P</th>
+                            <th class="text-center">F</th>
                             <th class="text-center">备注</th>
-                            <th class="text-center">操作</th>
+                            <th class="text-center">处置方式</th>
+                            <th class="text-center">新料方式</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">132123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">1123123</td>
-                            <td class="text-center">1123123</td>
-                            <td class="text-center">1123123</td>
-                            <td class="text-center">1123123</td>
-                            <td class="text-center">
-                                <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                <a href="#" onclick="addNew(this);" title="新增"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </a>
-                                <a href="#" onclick="cancel(this);" title="作废"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> </a>
-                            </td>
+                            <td class="text-center"><10</td>
+                            <td class="text-center">10kg</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><10</td>
+                            <td class="text-center">10kg</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"><10</td>
+                            <td class="text-center">10kg</td>
+                            <td class="text-center">0</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center">0.000</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <!--分页-->
-            <!--属性调整模态框-->
-            <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">属性调整</div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label for="modal-type" class="col-sm-4 control-label">进料方式</label>
-                                    <div class="col-xs-7">
-                                        <input type="text" class="form-control" id="modal-type" name="modal-type" placeholder="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" onclick="comfirm();">确认</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div id="embed"></div>
