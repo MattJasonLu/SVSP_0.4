@@ -13,6 +13,62 @@ public class MaterialRequisitionOrder {
     private String remarks;
     /*仓库*/
     private WareHouse wareHouse;
+    /*保管员*/
+    private String  guardian;
+    /*仓库部门主管*/
+    private String warehouseManager;
+    /*领料部门主管*/
+    private String materialManager;
+    /*领料人*/
+    private String picker;
+
+    @Override
+    public String toString() {
+        return "MaterialRequisitionOrder{" +
+                "batchingOrder=" + batchingOrder +
+                ", materialRequisitionId='" + materialRequisitionId + '\'' +
+                ", specification='" + specification + '\'' +
+                ", unit='" + unit + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", wareHouse=" + wareHouse +
+                ", guardian='" + guardian + '\'' +
+                ", warehouseManager='" + warehouseManager + '\'' +
+                ", materialManager='" + materialManager + '\'' +
+                ", picker='" + picker + '\'' +
+                '}';
+    }
+
+    public String getGuardian() {
+        return guardian;
+    }
+
+    public void setGuardian(String guardian) {
+        this.guardian = guardian;
+    }
+
+    public String getWarehouseManager() {
+        return warehouseManager;
+    }
+
+    public void setWarehouseManager(String warehouseManager) {
+        this.warehouseManager = warehouseManager;
+    }
+
+    public String getMaterialManager() {
+        return materialManager;
+    }
+
+    public void setMaterialManager(String materialManager) {
+        this.materialManager = materialManager;
+    }
+
+    public String getPicker() {
+        return picker;
+    }
+
+    public void setPicker(String picker) {
+        this.picker = picker;
+    }
 
     public WareHouse getWareHouse() {
         return wareHouse;
@@ -61,14 +117,4 @@ public class MaterialRequisitionOrder {
         this.remarks = remarks;
     }
 
-    @Override
-    public String toString() {
-        return "MaterialRequisitionOrder{" +
-                "batchingOrder=" + batchingOrder +
-                ", materialRequisitionId='" + materialRequisitionId + '\'' +
-                ", specification='" + specification + '\'' +
-                ", unit='" + unit + '\'' +
-                ", remarks='" + remarks + '\'' +
-                '}';
-    }
 }

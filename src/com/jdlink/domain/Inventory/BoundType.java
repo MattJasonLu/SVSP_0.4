@@ -1,32 +1,35 @@
 package com.jdlink.domain.Inventory;
 
-public enum RecordState {
-    Delete("删除",0),
-    Usable("可用",1),
-    Disabled("不可用",2);
+import sun.org.mozilla.javascript.internal.ast.StringLiteral;
+
+/*出库类别*/
+public enum  BoundType {
+    NormalOutbound("正常出库",1),
+    OtherOutbound("其它出库",2);
     private String name;
     private int index;
-    RecordState(String name, int index) {
+    BoundType(String name, int index) {
         this.name = name;
         this.index = index;
     }
     // 普通方法
-    public static RecordState get(int index) {
-        for (RecordState c : RecordState.values()) {
+    public static BoundType get(int index) {
+        for (BoundType c : BoundType.values()) {
             if (c.getIndex() == index) {
                 return c;
             }
         }
         return null;
     }
-    public static RecordState getRecordState(String keyword) {
-        for (RecordState p : RecordState.values()) {
+    public static BoundType getBoundType(String keyword) {
+        for (BoundType p : BoundType.values()) {
             if(p.getName().contains(keyword)){
                 return p;
             }
         }
         return null;
     }
+
     public String getName() {
         return name;
     }
@@ -43,9 +46,11 @@ public enum RecordState {
         this.index = index;
     }
 
-
     @Override
     public String toString() {
-        return super.toString();
+        return "BoundType{" +
+                "name='" + name + '\'' +
+                ", index=" + index +
+                '}';
     }
 }
