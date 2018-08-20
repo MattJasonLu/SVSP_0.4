@@ -36,38 +36,25 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="receiveManagement.html">首页</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="transportPlan.html">运输计划单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="transferDraft.html">转移联单</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="sampleInfoRegiter.html">送样登记</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="testResults.html">化验结果</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="storageManagement.html">首页</a></li>
                     <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="materialRequisition.html">领料单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="ingredientsList.html">每日配料单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="warehouseManageOut.html">危废出库</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">次生出库</a></li>
+                        </ul>
+                    </li>
+                    <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a href="#">入库管理</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="materialRequisition.html">领料单</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="warehouseManage.html">危废入库</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="#">次生入库</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="wastesQuery.html">危废查询</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="singlePoundsManage1.html">磅单管理</a></li>
+                            <li><a href="#">医废出入库登记</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -119,38 +106,34 @@
             <div class="row">
                 <div>
                     <ol class="breadcrumb">
-                        <li><a href="businessModel.html">接收管理</a></li>
-                        <li>库存管理</li>
-                        <li>入库管理</li>
+                        <li><a href="businessModel.html">贮存管理</a></li>
+                        <li>出库管理</li>
                         <li class="active">领料单</li>
                     </ol>
-                    <p class="text-right"><b>领料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>
                 </div>
                 <h4 class="sub-header">领料单</h4>
             </div>
             <div class="row">
-                <div>
-                    <!--操作按钮-->
-                    <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查询</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 领用</a>
-                    </div>
-                    <!--查询框-->
-                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
-                        <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
-                        </span>
-                    </div>
+                <!--操作按钮-->
+                <div class="pull-left col-md-6">
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="materialRequisition1.html"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查询</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
+                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 领用</a>
+                </div>
+                <!--查询框-->
+                <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                    <span class="input-group-btn">
+                        <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                        <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                    </span>
                 </div>
             </div>
             <br>
@@ -194,16 +177,12 @@
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <table class="table table-bordered">
+                    <table class="table table-striped table-hover table-condensed">
                         <thead>
-                        <tr>
-                            <th class="text-left" id="department" colspan="4">部门:<input class="focus" type="text" title="部门" maxlength="6"></th>
-                            <th class="text-left" id="date" colspan="4"><span id="weekDate"></span></th>
-                            <th class="text-left" id="serialNumber">文件编号:M-TD-107-R04<input class="focus" type="text" title="文件编号" maxlength="15"></th>
-                        </tr>
                         <tr>
                             <th class="text-center">编号</th>
                             <th class="text-center">厂家</th>
+                            <th class="text-center">领料单号</th>
                             <th class="text-center">危废名称</th>
                             <th class="text-center">危废代码</th>
                             <th class="text-center">危废类别</th>
@@ -211,6 +190,11 @@
                             <th class="text-center">配料数量</th>
                             <th class="text-center">领用数量</th>
                             <th class="text-center">附注</th>
+                            <th class="text-center">主管副总经理</th>
+                            <th class="text-center">部门仓库主管</th>
+                            <th class="text-center">保管员</th>
+                            <th class="text-center">领料部门主管</th>
+                            <th class="text-center">领料人</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -218,37 +202,21 @@
                             <td class="text-center">12312</td>
                             <td class="text-center">123</td>
                             <td class="text-center">12312</td>
+                            <td class="text-center">12312</td>
                             <td class="text-center">123</td>
                             <td class="text-center">132123</td>
                             <td class="text-center">123</td>
                             <td class="text-center">123</td>
                             <td class="text-center">123</td>
                             <td class="text-center">1123123</td>
+                            <td class="text-center">1123123</td>
+                            <td class="text-center">1123123</td>
+                            <td class="text-center">1123123</td>
+                            <td class="text-center">1123123</td>
+                            <td class="text-center">1123123</td>
                         </tr>
                         </tbody>
                     </table>
-                    <br>
-                    <div class="row">
-                        <table style="width: 100%;border: 0;">
-                            <tr>
-                                <td>
-                                    <b>主管副总经理:</b><input class="focus" type="text" title="主管副总经理" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>部门仓库主管:</b><input class="focus" type="text" title="部门仓库主管" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>保管员:</b><input class="focus" type="text" title="保管员" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>领料部门主管:</b><input class="focus" type="text" title="领料部门主管" maxlength="6">
-                                </td>
-                                <td>
-                                    <b>领料人:</b><input class="focus" type="text" title="领料人" maxlength="6">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
                 </div>
             </div>
             <!--分页-->
