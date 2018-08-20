@@ -93,17 +93,17 @@
                 <div>
                     <ol class="breadcrumb">
                         <li><a href="businessModel.html">辅料/备件管理</a></li>
-                        <li class="active">辅料/备件出库</li>
+                        <li class="active">辅料/备件领用</li>
                     </ol>
                     <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
                 </div>
-                <h4 class="sub-header">辅料/备件出库单</h4>
+                <h4 class="sub-header">辅料/备件领用单</h4>
             </div>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newIngredientsOut.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="newIngredientsReceive.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
@@ -123,9 +123,9 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-Id" class="col-sm-4 control-label">编号</label>
+                                <label for="search-unit" class="col-sm-4 control-label">单位</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
+                                    <input type="text" class="form-control" id="search-unit" name="search-unit" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -147,9 +147,9 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-account" class="col-sm-4 control-label">记账</label>
+                                <label for="search-Number" class="col-sm-4 control-label">数量</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-account" name="search-account" placeholder="">
+                                    <input type="text" class="form-control" id="search-Number" name="search-Number" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -166,19 +166,17 @@
                     </th>
                     <td class="text-center">编号</td>
                     <td class="text-center">单位</td>
-                    <td class="text-center">记账</td>
                     <td class="text-center">数量</td>     <!--时间，精确到秒 下同-->
-                    <td class="text-center">审批人</td>
-                    <td class="text-center">金额</td>
-                    <td class="text-center">保管</td>
-                    <td class="text-center">验收</td>
-                    <td class="text-center">经手人</td>
-                    <td class="text-center">出库日期</td>
+                    <td class="text-center">规格</td>     <!--时间，精确到秒 下同-->
+                    <td class="text-center">保管员</td>
+                    <td class="text-center">领用日期</td>
+                    <td class="text-center">物品名称</td>
                     <td class="text-center">创建人</td>
                     <td class="text-center">创建日期</td>
                     <td class="text-center">创建部门</td>
                     <td class="text-center">修改人</td>
                     <td class="text-center">修改时间</td>
+                    <td class="text-center">附注</td>
                     <td class="text-center">操作</td>
                 </tr>
                 <tr>
@@ -199,8 +197,6 @@
                     <td class="text-center">123123</td>
                     <td class="text-center">123123</td>
                     <td class="text-center">123123</td>     <!--时间，精确到秒 下同-->
-                    <td class="text-center">123123</td>
-                    <td class="text-center">123123</td>
                     <td class="text-center">123123</td>
                     <td class="text-center">
                         <a class="btn btn-primary btn-xs" title="查看" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
