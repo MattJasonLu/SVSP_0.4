@@ -78,6 +78,10 @@
         select t_wastes.id from t_wastes where id = #{id};
     </select>
 
+    <select id="getByName" parameterType="String" resultMap="WayBillRM">
+        select * from t_pr_waybill where produceCompanyName=#{produceCompanyName};
+    </select>
+
     <select id="listPage" resultMap="WayBillRM">
         select * from t_pr_waybill order by nowTime desc
         <if test="start != null and count != null">
@@ -158,6 +162,20 @@
     <update id="invalid" parameterType="String">
         update t_pr_waybill set state = 'Invalid' where id = #{id}
     </update>
+
+    <insert id="update" parameterType="WayBill">
+        update t_pr_waybill
+        set id=#{id},total=#{total},remarks=#{remarks},wayBillDate=NOW(),produceCompanyId=#{produceCompany.clientId},
+        nowTime=NOW(),produceCompanyOperator=#{produceCompanyOperator},produceCompanyName=#{produceCompany.companyName},
+        founder=#{founder};
+        <foreach collection="wayBillItemList" index="index" item="wayBillItem">
+            update t_pr_waybillitem
+            set itemId=#{wayBillItem.itemId},wayBillId=#{id},receiveDate=#{wayBillItem.receiveDate},
+            receiveCompanyOperator=#{wayBillItem.receiveCompanyOperator},invoiceNumber=#{wayBillItem.invoiceNumber},
+            invoiceDate=#{wayBillItem.invoiceDate},salesmanId=#{wayBillItem.salesman.salesmanId},
+            receiveCompanyId=#{wayBillItem.receiveCompany.clientId},wastesId=#{wayBillItem.wastes.id};
+        </foreach>
+    </insert>
 
     <insert id="addItem" parameterType="WayBill">
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">

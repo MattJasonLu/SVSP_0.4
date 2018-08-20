@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.AuxiliaryConsumption;
 import com.jdlink.domain.Produce.ProductionPlan;
 import com.jdlink.service.ProductionPlanService;
 import com.jdlink.util.DBUtil;
@@ -116,46 +117,56 @@ public class PRProductionPlanController {
         JSONObject res = new JSONObject();
         try {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            {
+                System.out.println("数据如下：");
+                for (int i = 1; i < data.length; i++) {
+                    for (int j = 0; j < data[0].length; j++) {
+                        System.out.print(data[i][j].toString());
+                        System.out.print(",");
+                    }
+                    System.out.println();
+                }
+            }
             ProductionPlan productionPlan = new ProductionPlan();
             for (int i = 1; i < data.length; i++) {
                 productionPlan.setId(data[i][0].toString());
-               // System.out.println(data[i][0].toString());
-                for (int j = 1; j < data[0].length; j++) {
-                    productionPlan.setFounder(data[i][j].toString());
-                    productionPlan.getAuxiliaryConsumption().setCalcareousLime(Float.parseFloat(data[i][j + 1].toString()));
-                    productionPlan.getAuxiliaryConsumption().setWaterReducingAgent(Float.parseFloat(data[i][j + 2].toString()));
-                    productionPlan.getAuxiliaryConsumption().setCommonActivatedCarbon(Float.parseFloat(data[i][j + 3].toString()));
-                    productionPlan.getAuxiliaryConsumption().setNaclo(Float.parseFloat(data[i][j + 4].toString()));
-                    productionPlan.getAuxiliaryConsumption().setActivatedCarbon(Float.parseFloat(data[i][j + 5].toString()));
-                    productionPlan.getAuxiliaryConsumption().setStandardBox(Float.parseFloat(data[i][j + 6].toString()));
-                    productionPlan.getAuxiliaryConsumption().setActivatedCarbonParticles(Float.parseFloat(data[i][j + 7].toString()));
-                    productionPlan.getAuxiliaryConsumption().setWoodenPallets(Float.parseFloat(data[i][j + 8].toString()));
-                    productionPlan.getAuxiliaryConsumption().setLye(Float.parseFloat(data[i][j + 9].toString()));
-                    productionPlan.getAuxiliaryConsumption().setStandardTray_1m(Float.parseFloat(data[i][j + 10].toString()));
-                    productionPlan.getAuxiliaryConsumption().setCausticSoda(Float.parseFloat(data[i][j + 11].toString()));
-                    productionPlan.getAuxiliaryConsumption().setStandardTray_1_2m(Float.parseFloat(data[i][j + 12].toString()));
-                    productionPlan.getAuxiliaryConsumption().setUrea(Float.parseFloat(data[i][j + 13].toString()));
-                    productionPlan.getAuxiliaryConsumption().setSlagBag(Float.parseFloat(data[i][j + 14].toString()));
-                    productionPlan.getAuxiliaryConsumption().setHydrochloricAcid(Float.parseFloat(data[i][j + 15].toString()));
-                    productionPlan.getAuxiliaryConsumption().setFlyAshBag(Float.parseFloat(data[i][j + 16].toString()));
-                    productionPlan.getAuxiliaryConsumption().setNahco3(Float.parseFloat(data[i][j + 17].toString()));
-                    productionPlan.getAuxiliaryConsumption().setTonBox(Float.parseFloat(data[i][j + 18].toString()));
-                    productionPlan.getAuxiliaryConsumption().setFlour(Float.parseFloat(data[i][j + 29].toString()));
-                    productionPlan.getAuxiliaryConsumption().setSteam(Float.parseFloat(data[i][j + 20].toString()));
-                    productionPlan.getAuxiliaryConsumption().setDefoamer(Float.parseFloat(data[i][j + 21].toString()));
-                    productionPlan.getAuxiliaryConsumption().setDieselOil(Float.parseFloat(data[i][j + 22].toString()));
-                    productionPlan.getAuxiliaryConsumption().setFlocculant(Float.parseFloat(data[i][j + 23].toString()));
-                    productionPlan.getAuxiliaryConsumption().setNaturalGas(Float.parseFloat(data[i][j + 24].toString()));
-                    productionPlan.getAuxiliaryConsumption().setSoftWaterReducingAgent(Float.parseFloat(data[i][j + 25].toString()));
-                    productionPlan.getAuxiliaryConsumption().setElectricQuantity(Float.parseFloat(data[i][j + 26].toString()));
-                    productionPlan.getAuxiliaryConsumption().setSoftWaterScaleInhibitor(Float.parseFloat(data[i][j + 27].toString()));
-                    productionPlan.getAuxiliaryConsumption().setIndustrialWater(Float.parseFloat(data[i][j + 28].toString()));
-                    productionPlan.getAuxiliaryConsumption().setpH(Float.parseFloat(data[i][j + 29].toString()));
-                    productionPlan.getAuxiliaryConsumption().setTapWaterQuantity(Float.parseFloat(data[i][j + 30].toString()));
-                    productionPlan.getAuxiliaryConsumption().setWaterReducingAgent(Float.parseFloat(data[i][j + 31].toString()));
-                    productionPlan.setTransportRate(Float.parseFloat(data[i][j + 32].toString()));
-                    productionPlan.setPlanQuantity(Float.parseFloat(data[i][j + 33].toString()));
-                }
+                productionPlan.setFounder(data[i][1].toString());
+                AuxiliaryConsumption auxiliaryConsumption = new AuxiliaryConsumption();
+                auxiliaryConsumption.setCalcareousLime(Float.parseFloat(data[i][2].toString()));
+                auxiliaryConsumption.setWaterReducingAgent(Float.parseFloat(data[i][3].toString()));
+                auxiliaryConsumption.setCommonActivatedCarbon(Float.parseFloat(data[i][4].toString()));
+                auxiliaryConsumption.setNaclo(Float.parseFloat(data[i][5].toString()));
+                auxiliaryConsumption.setActivatedCarbon(Float.parseFloat(data[i][6].toString()));
+                auxiliaryConsumption.setStandardBox(Float.parseFloat(data[i][7].toString()));
+                auxiliaryConsumption.setActivatedCarbonParticles(Float.parseFloat(data[i][8].toString()));
+                auxiliaryConsumption.setWoodenPallets(Float.parseFloat(data[i][9].toString()));
+                auxiliaryConsumption.setLye(Float.parseFloat(data[i][10].toString()));
+                auxiliaryConsumption.setStandardTray_1m(Float.parseFloat(data[i][11].toString()));
+                auxiliaryConsumption.setCausticSoda(Float.parseFloat(data[i][12].toString()));
+                auxiliaryConsumption.setStandardTray_1_2m(Float.parseFloat(data[i][13].toString()));
+                auxiliaryConsumption.setUrea(Float.parseFloat(data[i][14].toString()));
+                auxiliaryConsumption.setSlagBag(Float.parseFloat(data[i][15].toString()));
+                auxiliaryConsumption.setHydrochloricAcid(Float.parseFloat(data[i][16].toString()));
+                auxiliaryConsumption.setFlyAshBag(Float.parseFloat(data[i][17].toString()));
+                auxiliaryConsumption.setNahco3(Float.parseFloat(data[i][18].toString()));
+                auxiliaryConsumption.setTonBox(Float.parseFloat(data[i][19].toString()));
+                auxiliaryConsumption.setFlour(Float.parseFloat(data[i][20].toString()));
+                auxiliaryConsumption.setSteam(Float.parseFloat(data[i][21].toString()));
+                auxiliaryConsumption.setDefoamer(Float.parseFloat(data[i][22].toString()));
+                auxiliaryConsumption.setDieselOil(Float.parseFloat(data[i][23].toString()));
+                auxiliaryConsumption.setFlocculant(Float.parseFloat(data[i][24].toString()));
+                auxiliaryConsumption.setNaturalGas(Float.parseFloat(data[i][25].toString()));
+                auxiliaryConsumption.setSoftWaterReducingAgent(Float.parseFloat(data[i][26].toString()));
+                auxiliaryConsumption.setElectricQuantity(Float.parseFloat(data[i][27].toString()));
+                auxiliaryConsumption.setSoftWaterScaleInhibitor(Float.parseFloat(data[i][28].toString()));
+                auxiliaryConsumption.setIndustrialWater(Float.parseFloat(data[i][29].toString()));
+                auxiliaryConsumption.setpH(Float.parseFloat(data[i][30].toString()));
+                auxiliaryConsumption.setTapWaterQuantity(Float.parseFloat(data[i][31].toString()));
+                auxiliaryConsumption.setWaterReducingAgent(Float.parseFloat(data[i][32].toString()));
+                productionPlan.setAuxiliaryConsumption(auxiliaryConsumption);
+                productionPlan.setTransportRate(Float.parseFloat(data[i][33].toString()));
+                productionPlan.setPlanQuantity(Float.parseFloat(data[i][34].toString()));
+
                 ProductionPlan productionPlan1 = productionPlanService.getById(productionPlan.getId());
                 if (productionPlan1 == null) {
                     //插入新数据
