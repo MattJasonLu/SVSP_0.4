@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.ProductionPlanMapper">
+    <resultMap id="ProductionPlanRM" type="ProductionPlan" autoMapping="true">
+        <id column="id" property="id"/>
+        <association property="auxiliaryConsumption" resultMap="AuxiliaryConsumptionRM" javaType="com.jdlink.domain.Produce.AuxiliaryConsumption"/>
+    </resultMap>
+
+    <resultMap id="AuxiliaryConsumptionRM" type="AuxiliaryConsumption" autoMapping="true">
+        <result column="calcareousLime" property="calcareousLime" />
+    </resultMap>
+
+    <select id="count" resultType="int">
+        select count(*) from t_pr_productionplan;
+    </select>
+
+    <select id="countById" resultType="int">
+        select count(*) from t_pr_productionplan where id like "%"#{id}"%";
+    </select>
+
+    <select id="listPage" resultMap="ProductionPlanRM">
+        select * from t_pr_productionplan order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count};
+        </if>
+    </select>
+
+    <select id="search" resultMap="ProductionPlanRM">
+        select * from t_pr_productionplan
+        <where>
+            <if test="id != null and id != ''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="founder !=null and founder != ''">
+                and founder like "%"{founder}"%"
+            </if>
+            <if test="creationDate != null and creationDate != ''">
+                and creationDate like "%"{creationDate}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state like "%"{state}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="searchCount" resultType="int">
+        select count(*) from t_pr_productionplan
+        <where>
+            <if test="id != null and id != ''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="founder !=null and founder != ''">
+                and founder like "%"{founder}"%"
+            </if>
+            <if test="creationDate != null and creationDate != ''">
+                and creationDate like "%"{creationDate}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state like "%"{state}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getById" parameterType="String" resultMap="ProductionPlanRM">
+        select * from t_pr_productionplan where id = #{id};
+    </select>
+
+    <update id="approval" parameterType="ProductionPlan">
+        update t_pr_productionplan set state = 'Approval',advice = #{advice} where id = #{id};
+    </update>
+
+    <update id="reject" parameterType="ProductionPlan">
+        update t_pr_productionplan set state = 'Backed',advice = #{advice} where id = #{id};
+    </update>
+
+    <update id="submit" parameterType="String">
+        update t_pr_productionplan set state = 'Examining' where id = #{id};
+    </update>
+
+    <update id="invalid" parameterType="String">
+        update t_pr_productionplan set state = 'Invalid' where id = #{id};
+    </update>
+
+    <update id="confirm" parameterType="String">
+        update t_pr_productionplan set state = 'ToExamine' where id = #{id};
+    </update>
+
+    <update id="update" parameterType="ProductionPlan">
+        update t_pr_productionplan set founder=#{founder},transportRate=#{transportRate},planQuantity=#{planQuantity},
+        calcareousLime=#{auxiliaryConsumption.calcareousLime},waterScaleInhibitor=#{auxiliaryConsumption.waterScaleInhibitor},
+        commonActivatedCarbon=#{auxiliaryConsumption.commonActivatedCarbon},naclo=#{auxiliaryConsumption.naclo},
+        activatedCarbon=#{auxiliaryConsumption.activatedCarbon},standardBox=#{auxiliaryConsumption.standardBox},
+        activatedCarbonParticles=#{auxiliaryConsumption.activatedCarbonParticles},woodenPallets=#{auxiliaryConsumption.woodenPallets},
+        lye=#{auxiliaryConsumption.lye},standardTray_1m=#{auxiliaryConsumption.standardTray_1m},causticSoda=#{auxiliaryConsumption.causticSoda},
+        standardTray_1_2m=#{auxiliaryConsumption.standardTray_1_2m},urea=#{auxiliaryConsumption.urea},slagBag=#{auxiliaryConsumption.slagBag},
+        hydrochloricAcid=#{auxiliaryConsumption.hydrochloricAcid},flyAshBag=#{auxiliaryConsumption.flyAshBag},nahco3=#{auxiliaryConsumption.nahco3},
+        tonBox=#{auxiliaryConsumption.tonBox},flour=#{auxiliaryConsumption.flour},steam=#{auxiliaryConsumption.steam},defoamer=#{auxiliaryConsumption.defoamer},
+        dieselOil=#{auxiliaryConsumption.dieselOil},flocculant=#{auxiliaryConsumption.flocculant},naturalGas=#{auxiliaryConsumption.naturalGas},
+        softWaterReducingAgent=#{auxiliaryConsumption.softWaterReducingAgent},electricQuantity=#{auxiliaryConsumption.electricQuantity},
+        softWaterScaleInhibitor=#{auxiliaryConsumption.softWaterScaleInhibitor},industrialWater=#{auxiliaryConsumption.industrialWater},
+        pH=#{auxiliaryConsumption.pH},tapWaterQuantity=#{auxiliaryConsumption.tapWaterQuantity},waterReducingAgent=#{auxiliaryConsumption.waterReducingAgent},
+        nowTime=NOW()
+        where id = #{id};
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from t_pr_productionplan where id = #{id};
+    </delete>
+
+    <insert id="add" parameterType="ProductionPlan">
+        insert into t_pr_productionplan (id,founder,creationDate,transportRate,planQuantity,state,calcareousLime,
+        waterScaleInhibitor,commonActivatedCarbon,naclo,activatedCarbon,standardBox,activatedCarbonParticles,
+        woodenPallets,lye,standardTray_1m,causticSoda,standardTray_1_2m,urea,slagBag,hydrochloricAcid,flyAshBag,
+        nahco3,tonBox,flour,steam,defoamer,dieselOil,flocculant,naturalGas,softWaterReducingAgent,electricQuantity,
+        softWaterScaleInhibitor,industrialWater,pH,tapWaterQuantity,waterReducingAgent,nowTime)
+        values (#{id},#{founder},NOW(),#{transportRate},#{planQuantity},'NewBuild',#{auxiliaryConsumption.calcareousLime},
+        #{auxiliaryConsumption.waterScaleInhibitor},#{auxiliaryConsumption.commonActivatedCarbon},#{auxiliaryConsumption.naclo},
+        #{auxiliaryConsumption.activatedCarbon},#{auxiliaryConsumption.standardBox},#{auxiliaryConsumption.activatedCarbonParticles},
+        #{auxiliaryConsumption.woodenPallets},#{auxiliaryConsumption.lye},#{auxiliaryConsumption.standardTray_1m},#{auxiliaryConsumption.causticSoda},
+        #{auxiliaryConsumption.standardTray_1_2m},#{auxiliaryConsumption.urea},#{auxiliaryConsumption.slagBag},
+        #{auxiliaryConsumption.hydrochloricAcid},#{auxiliaryConsumption.flyAshBag},#{auxiliaryConsumption.nahco3},
+        #{auxiliaryConsumption.tonBox},#{auxiliaryConsumption.flour},#{auxiliaryConsumption.steam},#{auxiliaryConsumption.defoamer},
+        #{auxiliaryConsumption.dieselOil},#{auxiliaryConsumption.flocculant},#{auxiliaryConsumption.naturalGas},
+        #{auxiliaryConsumption.softWaterReducingAgent},#{auxiliaryConsumption.electricQuantity},#{auxiliaryConsumption.softWaterScaleInhibitor},
+        #{auxiliaryConsumption.industrialWater},#{auxiliaryConsumption.pH},#{auxiliaryConsumption.tapWaterQuantity},
+        #{auxiliaryConsumption.waterReducingAgent},NOW())
+    </insert>
+
+
+</mapper>

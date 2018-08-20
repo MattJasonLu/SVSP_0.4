@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Page;
 
 import java.util.Date;
 
@@ -33,6 +34,15 @@ public class ProductionPlan {
      *计划辅助消耗
      */
     private AuxiliaryConsumption auxiliaryConsumption;
+    /**
+     * 审核意见
+     */
+    private String advice;
+    /**
+     *分页
+     */
+    private Page page;
+
 
     public String getId() {
         return id;
@@ -88,5 +98,36 @@ public class ProductionPlan {
 
     public void setAuxiliaryConsumption(AuxiliaryConsumption auxiliaryConsumption) {
         this.auxiliaryConsumption = auxiliaryConsumption;
+    }
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductionPlan{" +
+                "id='" + id + '\'' +
+                ", founder='" + founder + '\'' +
+                ", creationDate=" + creationDate +
+                ", state=" + state +
+                ", transportRate=" + transportRate +
+                ", planQuantity=" + planQuantity +
+                ", auxiliaryConsumption=" + auxiliaryConsumption +
+                ", advice='" + advice + '\'' +
+                ", page=" + page +
+                '}';
     }
 }
