@@ -1,9 +1,14 @@
 package com.jdlink.domain.Inventory;
 
+import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
+import com.jdlink.domain.Salesman;
+
 import java.util.Date;
+import java.util.List;
 
 /*配料单*/
-public class BatchingOrder {
+   public class BatchingOrder {
     /*配料单号*/
     private String batchingOrderId;
     /*配料日期*/
@@ -16,6 +21,101 @@ public class BatchingOrder {
     private String remarks;
     /*仓库*/
     private WareHouse wareHouse;
+    /*产废单位*/
+    private Client produceCompany;
+    /*接收单位*/
+    private Client acceptCompany;
+    /*联单号*/
+    private  String transferDraftId;
+    /*创建部门*/
+    private String departmentId;
+    /*创建公司*/
+    private String companyId;
+    /*修改人*/
+    private String modifierId;
+    /*业务员 来自产废单位的业务员*/
+    private Salesman salmsman;
+    /*单据状态*/
+    private CheckState checkState;
+    /*记录状态*/
+    private  RecordState recordState;
+    /*库存明细*/
+    private InventoryItem inventoryItem;
+    /*领料单对象
+    * 1:N
+    * */
+    private List<MaterialRequisitionOrder> materialRequisitionOrderList;
+    public Client getProduceCompany() {
+        return produceCompany;
+    }
+
+    public void setProduceCompany(Client produceCompany) {
+        this.produceCompany = produceCompany;
+    }
+
+    public Client getAcceptCompany() {
+        return acceptCompany;
+    }
+
+    public void setAcceptCompany(Client acceptCompany) {
+        this.acceptCompany = acceptCompany;
+    }
+
+    public String getTransferDraftId() {
+        return transferDraftId;
+    }
+
+    public void setTransferDraftId(String transferDraftId) {
+        this.transferDraftId = transferDraftId;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getModifierId() {
+        return modifierId;
+    }
+
+    public void setModifierId(String modifierId) {
+        this.modifierId = modifierId;
+    }
+
+    public Salesman getSalmsman() {
+        return salmsman;
+    }
+
+    public void setSalmsman(Salesman salmsman) {
+        this.salmsman = salmsman;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
+    public RecordState getRecordState() {
+        return recordState;
+    }
+
+    public void setRecordState(RecordState recordState) {
+        this.recordState = recordState;
+    }
 
     public WareHouse getWareHouse() {
         return wareHouse;
@@ -25,7 +125,7 @@ public class BatchingOrder {
         this.wareHouse = wareHouse;
     }
 
-    /*明细*/
+
     public String getBatchingOrderId() {
         return batchingOrderId;
     }
@@ -65,6 +165,11 @@ public class BatchingOrder {
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
+
+    public InventoryItem getInventoryItem() {
+        return inventoryItem;
+    }
+
     @Override
     public String toString() {
         return "BatchingOrder{" +
@@ -73,6 +178,31 @@ public class BatchingOrder {
                 ", founder='" + founder + '\'' +
                 ", founderDate=" + founderDate +
                 ", remarks='" + remarks + '\'' +
+                ", wareHouse=" + wareHouse +
+                ", produceCompany=" + produceCompany +
+                ", acceptCompany=" + acceptCompany +
+                ", transferDraftId='" + transferDraftId + '\'' +
+                ", departmentId='" + departmentId + '\'' +
+                ", companyId='" + companyId + '\'' +
+                ", modifierId='" + modifierId + '\'' +
+                ", salmsman=" + salmsman +
+                ", checkState=" + checkState +
+                ", recordState=" + recordState +
+                ", inventoryItem=" + inventoryItem +
+                ", materialRequisitionOrderList=" + materialRequisitionOrderList +
                 '}';
     }
+
+    public void setInventoryItem(InventoryItem inventoryItem) {
+        this.inventoryItem = inventoryItem;
+    }
+
+    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
+        return materialRequisitionOrderList;
+    }
+
+    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
+        this.materialRequisitionOrderList = materialRequisitionOrderList;
+    }
+
 }
