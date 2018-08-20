@@ -409,7 +409,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/EIA/Material/productionPlan模板.xls';
+    var filePath = 'Files/EIA/Material/产量计划单模板.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);

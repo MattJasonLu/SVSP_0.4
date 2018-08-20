@@ -7,6 +7,7 @@ import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.service.WayBillService;
 import com.jdlink.util.DBUtil;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -121,17 +122,42 @@ public class PRWayBillController {
      * 导入
      *
      * @param excelFile
-     * @param tableName
-     * @param id
      * @return
      */
     @RequestMapping("importWayBillExcel")
     @ResponseBody
-    public String importWayBillExcel(MultipartFile excelFile, String tableName, String id) {
+    public String importWayBillExcel(MultipartFile excelFile) {
         JSONObject res = new JSONObject();
         try {
-            DBUtil db = new DBUtil();
-            db.importExcel(excelFile, tableName, id);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            {
+                System.out.println("数据如下：");
+                for(int i = 1; i <data.length; i++){
+                    for(int j = 0; j < data[0].length; j++){
+                        System.out.print(data[i][j].toString());
+                        System.out.print(",");
+                    }
+                    System.out.println();
+                }
+            }
+            for (int i = 1; i < data.length; i++) {
+                WayBill wayBill = new WayBill();
+                wayBill.getProduceCompany().setCompanyName(data[i][1].toString());
+                for (int j = 1; j < data[0].length; j++) {
+                    //赋值
+
+
+                }
+                WayBill wayBill1 = wayBillService.getByName(wayBill.getProduceCompany().getCompanyName());
+                //根据单位名判断数据是否存在，如果存在即更新，不存在即插入
+                if (wayBill1 == null) {
+                    //插入新数据
+                    wayBillService.addWayBill(wayBill);
+                } else {
+                    //根据id更新数据
+                    wayBillService.update(wayBill);
+                }
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
@@ -140,7 +166,6 @@ public class PRWayBillController {
             res.put("message", "导入失败，请重试！");
         }
         return res.toString();
-
     }
 
     @RequestMapping("getWayBillSeniorSelectedList")
