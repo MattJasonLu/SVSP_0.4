@@ -26,6 +26,9 @@ public interface WayBillService  {
     int countWastes();
     String getWastesById(String id);
     void addWayBill(WayBill wayBill);
+    WayBill getByName(String name);
+    void update(WayBill wayBill);
+
 
     /**
      * 获得当前接运单的序列号

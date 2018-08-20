@@ -107,4 +107,10 @@ public class WayBillServiceImpl implements WayBillService {
     public void addWayBill(WayBill wayBill){
         wayBillMapper.addWayBill(wayBill);
     }
+
+    @Override
+    public WayBill getByName(String name) { return wayBillMapper.getByName(name); }
+
+    @Override
+    public void update(WayBill wayBill){ wayBillMapper.update(wayBill); }
 }
