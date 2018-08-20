@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>贮存管理</title>
+    <title>辅料/备件入库</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -30,25 +30,19 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="storageManagement.html">首页</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
+                    <li><a href="procurementManagement.html">首页</a></li>
+                    <li><a href="monthProcurement.html">月度采购</a></li>
+                    <li class="active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="ingredientsList.html">每日配料单</a></li>
+                            <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
                             <li role="separator" class="divider"></li>
-                            <li><a href="warehouseManageOut.html">危废出库</a></li>
+                            <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">次生出库</a></li>
+                            <li><a href="ingredientsReceive.html">辅料/备件领用</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="wastesQuery.html">危废查询</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">医废出入库登记</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="emergencyProcurement.html">应急采购</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -95,75 +89,86 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">流程节点</h1>
-
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="businessModel.html"><img src="image/Business.png" width="80" height="80" class="img-circle"></a>
-                    <h4>商务</h4>
-                    <!--<span class="text-muted">系统节点1</span>-->
+            <div class="row">
+                <div>
+                    <ol class="breadcrumb">
+                        <li><a href="businessModel.html">辅料/备件领用</a></li>
+                        <li class="active">辅料/备件入库</li>
+                    </ol>
+                    <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
                 </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/LR.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Receive.png" width="80" height="80" class="img-circle"></a>
-                    <h4>接收</h4>
-                    <!--<span class="text-muted">系统节点2</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
+                <h4 class="sub-header">辅料/备件入库单新增</h4>
             </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/RB.png" width="80" height="80">
-                </div>
-            </div>
-            <div class="row placeholders">
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Storage.png" width="80" height="80" class="img-circle"></a>
-                    <h4>贮存</h4>
-                    <!--<span class="text-muted">系统节点3</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <h1>产废平台</h1>
-                </div>
-                <div class="col-xs-6 col-sm-4 placeholder">
-                    <a href="#"><img src="image/Preprocessing.png" width="80" height="80" class="img-circle"></a>
-                    <h4>预处理</h4>
-                    <!--<span class="text-muted">系统节点4</span>-->
-                </div>
-                <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LT.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-6 placeholder">
-                    <img src="image/LB.png" width="80" height="80">
-                </div>
-            </div>
-            <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Management.png" width="80" height="80" class="img-circle"></a>
-                    <h4>处置</h4>
-                    <!--<span class="text-muted">系统节点5</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <img src="image/RL.png" width="80" height="80">
-                </div>
-                <div class="col-xs-6 col-sm-2 placeholder">
-                    <a href="#"><img src="image/Secondary.png" width="80" height="80" class="img-circle"></a>
-                    <h4>次生</h4>
-                    <!--<span class="text-muted">系统节点6</span>-->
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder"></div>
-            </div>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th colspan="6" class="text-left">单位:<input class="focus" type="text" title=""></th>
+                    <th colspan="6" class="text-left"><input class="focus" type="date" title=""></th>
+                    <th colspan="6" class="text-left">文件编号:<input title="" type="text" class="focus"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center" rowspan="2">编号</td>
+                    <td class="text-center" rowspan="2">物品名称</td>
+                    <td class="text-center" rowspan="2">规格</td>
+                    <td class="text-center" rowspan="2">单位</td>
+                    <td class="text-center" rowspan="2">数量</td>
+                    <td class="text-center" rowspan="2">单价</td>
+                    <td class="text-center" colspan="8">金额</td>
+                    <td class="text-center" rowspan="2">过账</td>
+                    <td class="text-center" rowspan="2">附注</td>
+                </tr>
+                <tr>
+                    <td class="text-center">十</td>
+                    <td class="text-center">万</td>
+                    <td class="text-center">千</td>
+                    <td class="text-center">百</td>
+                    <td class="text-center">十</td>
+                    <td class="text-center">元</td>
+                    <td class="text-center">角</td>
+                    <td class="text-center">分</td>
+                </tr>
+                <tr>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                    <td class="text-center">12</td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="text-left">合计</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-left" colspan="4">记账：<input title="" class="focus" type="text"></td>
+                    <td class="text-left" colspan="3">审批：<input title="" class="focus" type="text"></td>
+                    <td class="text-left" colspan="3">保管：<input title="" class="focus" type="text"></td>
+                    <td class="text-left" colspan="3">验收：<input title="" class="focus" type="text"></td>
+                    <td class="text-left" colspan="3">经手人：<input title="" class="focus" type="text"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div id="embed"></div>
@@ -171,4 +176,10 @@
 <script>
     $('#embed').load('embed/loginLogModal.html');
 </script>
+<style>
+    input {
+        width: 80%;
+        height: 100%;
+    }
+</style>
 </html>

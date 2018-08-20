@@ -45,66 +45,66 @@ function setDataList(result) {
                 case (0):
                     $(this).html(index+1);
                     break;
-                case (1):
+                case (2):
                     if (obj.produceCompany != null)
                         $(this).html(obj.produceCompany.companyName);
                     break;
-                case (2):
+                case (3):
                     if (obj.handleCategory != null)
                         $(this).html(obj.handleCategory.name);
                     break;
-                case (3):
+                case (4):
                     $(this).html(getDateStr(obj.approachTime));
                     break;
-                case (4):
+                case (5):
                     $(this).html(obj.wastes.name);
                     break;
-                case (5):
+                case (6):
                     $(this).html(obj.wastes.wastesId);
                     break;
-                case (6):
+                case (7):
                     $(this).html(obj.wastes.wasteAmount);
                     break;
-                case (7):
+                case (8):
                     $(this).html(obj.wastes.unit);
                     break;
-                case (8):
+                case (9):
                     if (obj.wastes.formType != null)
                         $(this).html(obj.wastes.formType.name);
                     break;
-                case (9):
+                case (10):
                     if (obj.wastes.packageType != null)
                         $(this).html(obj.wastes.packageType.name);
                     break;
-                case (10):
+                case (11):
                     $(this).html(obj.wastes.calorific);
                     break;
-                case (11):
+                case (12):
                     $(this).html(obj.wastes.ph);
                     break;
-                case (12):
+                case (13):
                     $(this).html(obj.wastes.ashPercentage);
                     break;
-                case (13):
+                case (14):
                     $(this).html(obj.wastes.wetPercentage);
                     break;
-                case (14):
+                case (15):
                     $(this).html(obj.wastes.chlorinePercentage);
                     break;
-                case (15):
+                case (16):
                     $(this).html(obj.wastes.sulfurPercentage);
                     break;
-                case (16):
+                case (17):
                     $(this).html(obj.wastes.phosphorusPercentage);
                     break;
-                case (17):
+                case (18):
                     $(this).html(obj.wastes.fluorinePercentage);
                     break;
-                case (18):
+                case (19):
                     if (obj.wastes.processWay != null)
                         $(this).html(obj.wastes.processWay.name);
                     break;
-                case (19):
+                case (20):
                     $(this).html(obj.id);
                     break;
             }
@@ -212,6 +212,9 @@ function setWastesData() {
                         break;
                     case (13):
                         $(this).html(obj.fluorinePercentage);
+                        break;
+                    case (14):
+                        $(this).html(obj.id);
                         break;
                 }
             });
@@ -560,6 +563,26 @@ function allSelect() {
     else $("input[name='select']").prop('checked', false);
 }
 function view1() {
+    // 设置物料需求表的数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialList",   // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setMaterialList(result.array);
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
     $('#appointModal2').modal('show');
     $("#saveBtn1").unbind('click');
     $("#saveBtn1").click(function () {
@@ -588,6 +611,7 @@ function view1() {
             wastes.phosphorusPercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.phosphorusPercentage']").text();
             wastes.fluorinePercentage = $("td[id='transportPlanItemList[" + $i + "].wastes.fluorinePercentage']").text();
             wastes.processWay = parseInt($("select[id='transportPlanItemList[" + $i + "].wastes.processWay']").val())-1;
+            wastes.id = $("td[id='transportPlanItemList[" + $i + "].wastes.id']").text();
             transportPlanItem.handleCategory = getHandleCategoryFromStr($("td[id='transportPlanItemList[" + $i + "].handleCategory']").text());
             transportPlanItem.approachTime = $("input[id='transportPlanItemList[" + $i + "].approachTime']").val();
             transportPlanItem.wastes = wastes;
@@ -617,6 +641,326 @@ function view1() {
             }
         });
     });
+
+    /**
+     * 设置物料需求的数据
+     */
+    function setMaterialList(obj) {
+        arrayId = [];
+        var tr = $("#cloneTr1");//克隆一行
+        //tr.siblings().remove();
+        //每日配比量合计
+        // tr.siblings().remove();
+        dailyProportionsTotal=0;
+        //每周需求总量
+        weeklyDemandTotal=0;
+        //热值最大总量
+        calorificmaxTotal=0;
+        //热值最小总量
+        calorificminTotal=0;
+        //灰分最大总量
+        ashmaxTotal=0;
+        //灰分最小总量
+        ashminTotal=0;
+        //水分最大总量
+        watermaxTotal=0;
+        //水分最小总量
+        waterminTotal=0;
+        //氯最大总量
+        clmaxTotal=0;
+        //氯最大总量
+        clminTotal=0;
+        //硫最大总量
+        smaxTotal=0;
+        //硫最小总量
+        sminTotal=0;
+        //磷最大总量
+        pmaxTotal=0;
+        //磷最小总量
+        pminTotal=0;
+        //弗最大总量
+        fmaxTotal=0;
+        //弗最小总量
+        fminTotal=0;
+        //PH最大总量
+        phmaxTotal=0;
+        //PH最小总量
+        phminTotal=0;
+        //目前库存总量
+        currentInventoryTotal=0;
+        //安全库存总和
+        safetyTotal=0;
+        //市场采购量总和
+        marketPurchasesTotal=0;
+        // console.log(obj);
+        $.each(obj, function (index, item) {
+            var data = eval(item);
+            // console.log(data);
+            //console.log(index);
+            var clonedTr = tr.clone();
+            clonedTr.children("td").each(function (inner_index) {
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 序号
+                    case (0):
+                        $(this).html(index+1);
+                        break;
+                    //处理类别
+                    case (1):
+                        // $(this).html();
+                        //判断是否是物流合同
+                        if (data.handleCategory != null) {
+                            $(this).html(data.handleCategory.name);
+                        }
+                        else {
+                            $(this).html("");
+                        }
+                        break;
+                    // 包装方式
+                    case (2):
+                        if (data.packageType != null)
+                            $(this).html(data.packageType.name);
+                        else {
+                            $(this).html("");
+                        }
+                        break;
+                    //形态
+                    case (3):
+                        if (data.formType != null) {
+                            $(this).html(data.formType.name);
+                        }
+                        else { $(this).html("");}
+
+                        break;
+                    // 周生产计划量(T)
+                    case (4):
+                        $(this).html(data.weeklyDemand);
+                        dailyProportionsTotal+=data.weeklyDemand;
+                        break;
+                    //目前库存量(T)
+                    case (5):
+                        $(this).html(data.currentInventory);
+                        currentInventoryTotal+=data.currentInventory;
+                        break;
+                    // 安全库存量(T)
+                    case (6):
+                        $(this).html(data.safety);
+                        safetyTotal+=data.safety;
+                        break;
+                    // 市场采购量
+                    case (7):
+                        $(this).html(data.marketPurchases);
+                        marketPurchasesTotal+=data.marketPurchases;
+                        break;
+                    //热值max
+                    case (8):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1=eval(item);
+                            if (obj1.parameter.name =="热值") {
+                                calorificmax=obj1.maximum;
+                                calorificmaxTotal+=obj1.maximum;
+                            }
+                        });
+                        $(this).html(calorificmax);
+                        break;
+                    //热值min
+                    case (9):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="热值") {
+                                calorificmix= obj1.minimum;
+                                calorificminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(calorificmix);
+                        break;
+                    //灰分max
+                    case (10):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="灰分") {
+                                ascmax= obj1.maximum;
+                                ashmaxTotal+=obj1.maximum;
+
+                            }
+                        });
+                        $(this).html(ascmax);
+                        break;
+                    //灰分min
+                    case (11):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="灰分") {
+                                ascmix= obj1.minimum;
+                                ashminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(ascmix);
+                        break;
+                    //水分max
+                    case (12):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="含水率") {
+                                watermax= obj1.maximum;
+                                watermaxTotal+=obj1.maximum;
+                            }
+                        });
+                        $(this).html(watermax);
+                        break;
+                    //水分min
+                    case (13):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="含水率") {
+                                watermin= obj1.minimum;
+                                waterminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(watermin);
+                        break;
+                    //硫max
+                    case (14):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="硫含量") {
+                                smax= obj1.maximum;
+                                smaxTotal+=obj1.maximum;
+                            }
+                        });
+                        $(this).html(smax);
+                        break;
+                    //硫min
+                    case (15):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="硫含量") {
+                                smin= obj1.minimum;
+                                sminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(smin);
+                        break;
+                    //氯max
+                    case (16):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="氯含量") {
+                                clmax= obj1.maximum;
+                                clmaxTotal+=obj1.maximum;
+                            }
+                        });
+                        $(this).html(clmax);
+                        break;
+                    //氯min
+                    case (17):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="氯含量") {
+                                clmin= obj1.minimum;
+                                clminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(clmin);
+                        break;
+                    //磷max
+                    case (18):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="磷含量") {
+                                pmax= obj1.maximum;
+                                pmaxTotal+=obj1.maximum;
+                            }
+                        });
+                        $(this).html(pmax);
+                        break;
+                    //磷min
+                    case (19):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="磷含量") {
+                                pmin= obj1.minimum;
+                                pminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(pmin);
+                        break;
+                    //氟max
+                    case (20):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="氟含量") {
+                                fmax= obj1.maximum;
+                                fmaxTotal+=obj1.maximum;
+                            }
+                        });
+                        $(this).html(fmax);
+                        break;
+                    //氟min
+                    case (21):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="氟含量") {
+                                fmin= obj1.minimum;
+                                fminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(fmin);
+                        break;
+                    //phmax
+                    case (22):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="酸碱度") {
+                                phmax= obj1.maximum;
+                                phmaxTotal+=obj1.maximum;
+                            }
+                        });
+                        $(this).html(phmax);
+                        break;
+                    //phmin
+                    case (23):
+                        $.each(obj[index].wastesList[index].parameterList, function (index, item) {
+                            var obj1 = eval(item);
+                            if (obj1.parameter.name =="酸碱度") {
+                                phmin= obj1.minimum;
+                                phminTotal+=obj1.minimum;
+                            }
+                        });
+                        $(this).html(phmin);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.removeAttr("style");
+            clonedTr.insertBefore(tr);
+
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+        //赋值
+        $("#dailyProportionsTotal").text(dailyProportionsTotal);
+        $("#currentInventoryTotal").text(currentInventoryTotal);
+        $("#safetyTotal").text(safetyTotal);
+        $("#marketPurchasesTotal").text(marketPurchasesTotal);
+        $("#calorificmaxTotal").text(calorificmaxTotal);
+        $("#calorificminTotal").text(calorificminTotal);
+        $("#ashmaxTotal").text(ashmaxTotal);
+        $("#ashminTotal").text(ashminTotal);
+        $("#watermaxTotal").text(watermaxTotal);
+        $("#waterminTotal").text(waterminTotal);
+        $("#smaxTotal").text(smaxTotal);
+        $("#sminTotal").text(sminTotal);
+        $("#clmaxTotal").text(clmaxTotal);
+        $("#clminTotal").text(clminTotal);
+        $("#pmaxTotal").text(pmaxTotal);
+        $("#pminTotal").text(pminTotal);
+        $("#fmaxTotal").text(fmaxTotal);
+        $("#fminTotal").text(fminTotal);
+        $("#phmaxTotal").text(phmaxTotal);
+        $("#phminTotal").text(phminTotal);
+    }
 }
 function view2(e) {
     // 获取处置类别
@@ -674,7 +1018,6 @@ function getWeekDate() {
     return year + "年" + month + "月第" + getMonthWeek(year,month,day) + "周";
 }
 
-
 function loadPageTransportPlan() {
     $("#week").text(getWeekDate());
 }
@@ -691,12 +1034,11 @@ function saveData(handleType) {
     var wastesList = [];
     $.each(items, function (index) {
         if (index < count) {
-            // console.log(index);
             var wastes = {};
             var params = [];
             var param_0 = $(this).parent().parent();
             params.push(param_0);
-            for (var i = 0; i < 13; i++) {
+            for (var i = 0; i < 14; i++) {
                 var param = param_0.next();
                 param_0 = param;
                 params.push(param.text());
@@ -714,6 +1056,7 @@ function saveData(handleType) {
             wastes.sulfur = params[11];
             wastes.phosphorus = params[12];
             wastes.fluorine = params[13];
+            wastes.id = params[14];
             wastes.handleType = handleType;
             wastesList.push(wastes);
         }
@@ -764,22 +1107,27 @@ function setWastesData2(wastesList) {
                     $(this).html(obj.heat);
                     break;
                 case (11):
+                    $(this).html(obj.ph);
+                case (12):
                     $(this).html(obj.ash);
                     break;
-                case (12):
+                case (13):
                     $(this).html(obj.water);
                     break;
-                case (13):
+                case (14):
                     $(this).html(obj.chlorine);
                     break;
-                case (14):
+                case (15):
                     $(this).html(obj.sulfur);
                     break;
-                case (15):
+                case (16):
                     $(this).html(obj.phosphorus);
                     break;
-                case (16):
+                case (17):
                     $(this).html(obj.fluorine);
+                    break;
+                case (19):
+                    $(this).html(obj.id);
                     break;
             }
         });
@@ -800,7 +1148,6 @@ function setWastesData2(wastesList) {
         startView: 2,
         minView: 2,
         forceParse: 0,
-        endDate:new Date()
     });
     /**
      * 改变id

@@ -29,9 +29,9 @@
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO t_wastes (id, name, wastesId, isProductionLine, isStorageArea, samplingDate,
-                samplingNumber, testDate, laboratoryTestNumber) VALUES (#{wastes.id}, #{wastes.name}, #{wastes.wastesId},
+                samplingNumber, testDate, laboratoryTestNumber, clientId) VALUES (#{wastes.id}, #{wastes.name}, #{wastes.wastesId},
                 #{wastes.isProductionLine}, #{wastes.isStorageArea}, #{wastes.samplingDate}, #{wastes.samplingNumber},
-                #{wastes.testDate}, #{laboratoryTestNumber});
+                #{wastes.testDate}, #{laboratoryTestNumber}, #{client.clientId});
                 <if test="wastes.parameterList.size() > 0">
                     <foreach collection="wastes.parameterList" item="parameter" index="index">
                         INSERT INTO t_mixingelement (id, name, minimum, average, maximum, nowTime, parameter,
