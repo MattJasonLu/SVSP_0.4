@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>业务员合同新增</title>
+    <title>业务员合同</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -139,146 +139,117 @@
                         <li class="active">业务员合同</li>
                     </ol>
                 </div>
-                <h4 class="sub-header">业务员合同新增</h4>
+                <h4 class="sub-header">业务员合同</h4>
+            </div>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>
+                        <a class="btn btn-primary btn-xs" href="salesmanContract.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-xs-3 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-questionnaireId" class="col-sm-4 control-label">调查表编号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-questionnaireId" name="search-questionnaireId" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-industry" class="col-sm-4 control-label">所属行业</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-industry" name="search-industry" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-state" class="col-sm-4 control-label">状态</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-state" id="search-state">
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-product" class="col-sm-4 control-label">主要产品</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-product" name="search-product" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-author" class="col-sm-4 control-label">填报人</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-author" id="search-author">
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-time" class="col-sm-4 control-label">填报日期</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-time" name="search-time" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <table class="table table-bordered">
+                    <table class="table table-striped table-hover table-condensed">
                         <tbody>
                         <tr>
                             <th class="text-center">序号</th>
                             <th class="text-center">单位名称</th>
                             <th class="text-center" style="width: 70px;">所属区域</th>
-                            <th class="text-center">签订日期</th>
                             <th class="text-center">危废品名</th>
-                            <th class="text-center" style="width: 70px;">状态</th>
+                            <th class="text-center">状态</th>
                             <th class="text-center">类别</th>
                             <th class="text-center">合约量</th>
                             <th class="text-center">总量(吨)</th>
-                            <th class="text-center">单价(元/吨)</th>
-                            <th class="text-center">价格(元)</th>
                             <th class="text-center">总价(元)</th>
                             <th class="text-center">PH</th>
-                            <th class="text-center">灰分%</th>
-                            <th class="text-center">水分%</th>
-                            <th class="text-center">热值Kcal</th>
-                            <th class="text-center">卤素%</th>
-                            <th class="text-center">硫%</th>
-                            <th class="text-center">闪点°C</th>
-                            <th class="text-center">粘度CST</th>
-                            <th class="text-center">热熔度°C</th>
-                            <th class="text-center">预处理费(元)</th>
+                            <th class="text-center" style="width: 70px;">预处理费(元)</th>
                             <th class="text-center">联系人/联系电话</th>
                         </tr>
                         <tr>
-                            <td class="text-center" rowspan="6">15</td>
-                            <td class="text-center" rowspan="6">常州市海宸汽车销售有限公司</td>
-                            <td class="text-center" rowspan="6">武进区</td>
-                            <td class="text-center" rowspan="6"><input type="date" class="focus"></td>
+                            <td class="text-center">15</td>
+                            <td class="text-center">常州市海宸汽车销售有限公司</td>
+                            <td class="text-center">武进区</td>
+                            <td class="text-center"><input type="date" class="focus" title=""></td>
                             <td class="text-center">废溶剂(香蕉水，塑料桶包装)</td>
                             <td class="text-center">液态</td>
                             <td class="text-center">900-403-06</td>
                             <td class="text-center">0.05</td>
-                            <td class="text-center" rowspan="6">0.29</td>
-                            <td class="text-center" rowspan="6"></td>
-                            <td class="text-center" rowspan="6">2000</td>
-                            <td class="text-center" rowspan="6">2000</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"><input type="number" class="focus"></td>
+                            <td class="text-center">2000</td>
+                            <td class="text-center">2000</td>
+                            <td class="text-center"><input type="number" class="focus" title=""></td>
                             <td class="text-center">岳晔华15161150099</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">废包装桶(塑料桶)</td>
-                            <td class="text-center">固态</td>
-                            <td class="text-center">900-041-49</td>
-                            <td class="text-center">0.045</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">废活性炭(吸附油漆气味，袋装)</td>
-                            <td class="text-center">固态</td>
-                            <td class="text-center">900-041-49</td>
-                            <td class="text-center">0.08</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">废机滤(铁质，袋装)</td>
-                            <td class="text-center">固态</td>
-                            <td class="text-center">900-041-49</td>
-                            <td class="text-center">0.015</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">废漆渣(含废屏蔽纸，袋装)</td>
-                            <td class="text-center">固态</td>
-                            <td class="text-center">900-252-12</td>
-                            <td class="text-center">0.05</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">废防冻液(塑料桶包装)</td>
-                            <td class="text-center">液态</td>
-                            <td class="text-center">900-007-09</td>
-                            <td class="text-center">0.05</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
                         </tr>
                         </tbody>
                     </table>
