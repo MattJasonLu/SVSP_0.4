@@ -185,3 +185,8 @@ function getProcessWayFromStr(formType) {
     }
     return res;
 }
+function allSelect() {
+    var isChecked = $('#allSel').prop('checked');
+    if (isChecked) $("input[name='select']").prop('checked', true);
+    else $("input[name='select']").prop('checked', false);
+}
