@@ -1,14 +1,16 @@
 package com.jdlink.domain.Produce;
 
 public class AuxiliaryConsumption {
-    // 消石灰
+    /**
+     * 消石灰
+     */
     private Float calcareousLime;
     // 污水用阻垢剂
     private Float waterScaleInhibitor;
     // 普通活性炭粉
     private Float commonActivatedCarbon;
     // 消毒液
-    private Float NaCLO;
+    private Float naclo;
     // 高活性碳粉
     private Float activatedCarbon;
     // 标准箱
@@ -34,9 +36,9 @@ public class AuxiliaryConsumption {
     // 飞灰用吨袋
     private Float flyAshBag;
     // 小苏打(NaHCO3)
-    private Float NaHCO3;
+    private Float nahco3;
     // 吨箱
-    private Float TonBox;
+    private Float tonBox;
     // 面粉
     private Float flour;
     // 蒸汽
@@ -58,7 +60,7 @@ public class AuxiliaryConsumption {
     // 工业水量
     private Float industrialWater;
     // 氨水(PH调节剂)
-    private Float PH;
+    private Float pH;
     // 自来水量
     private Float tapWaterQuantity;
     // 污水用还原剂
@@ -88,12 +90,12 @@ public class AuxiliaryConsumption {
         this.commonActivatedCarbon = commonActivatedCarbon;
     }
 
-    public Float getNaCLO() {
-        return NaCLO;
+    public Float getNaclo() {
+        return naclo;
     }
 
-    public void setNaCLO(Float naCLO) {
-        NaCLO = naCLO;
+    public void setNaclo(Float naclo) {
+        this.naclo = naclo;
     }
 
     public Float getActivatedCarbon() {
@@ -192,20 +194,20 @@ public class AuxiliaryConsumption {
         this.flyAshBag = flyAshBag;
     }
 
-    public Float getNaHCO3() {
-        return NaHCO3;
+    public Float getNahco3() {
+        return nahco3;
     }
 
-    public void setNaHCO3(Float naHCO3) {
-        NaHCO3 = naHCO3;
+    public void setNahco3(Float nahco3) {
+        this.nahco3 = nahco3;
     }
 
     public Float getTonBox() {
-        return TonBox;
+        return tonBox;
     }
 
     public void setTonBox(Float tonBox) {
-        TonBox = tonBox;
+        this.tonBox = tonBox;
     }
 
     public Float getFlour() {
@@ -288,12 +290,12 @@ public class AuxiliaryConsumption {
         this.industrialWater = industrialWater;
     }
 
-    public Float getPH() {
-        return PH;
+    public Float getpH() {
+        return pH;
     }
 
-    public void setPH(Float PH) {
-        this.PH = PH;
+    public void setpH(Float pH) {
+        this.pH = pH;
     }
 
     public Float getTapWaterQuantity() {
@@ -310,5 +312,42 @@ public class AuxiliaryConsumption {
 
     public void setWaterReducingAgent(Float waterReducingAgent) {
         this.waterReducingAgent = waterReducingAgent;
+    }
+
+    @Override
+    public String toString() {
+        return "AuxiliaryConsumption{" +
+                "calcareousLime=" + calcareousLime +
+                ", waterScaleInhibitor=" + waterScaleInhibitor +
+                ", commonActivatedCarbon=" + commonActivatedCarbon +
+                ", naclo=" + naclo +
+                ", activatedCarbon=" + activatedCarbon +
+                ", standardBox=" + standardBox +
+                ", activatedCarbonParticles=" + activatedCarbonParticles +
+                ", woodenPallets=" + woodenPallets +
+                ", lye=" + lye +
+                ", standardTray_1m=" + standardTray_1m +
+                ", causticSoda=" + causticSoda +
+                ", standardTray_1_2m=" + standardTray_1_2m +
+                ", urea=" + urea +
+                ", slagBag=" + slagBag +
+                ", hydrochloricAcid=" + hydrochloricAcid +
+                ", flyAshBag=" + flyAshBag +
+                ", nahco3=" + nahco3 +
+                ", tonBox=" + tonBox +
+                ", flour=" + flour +
+                ", steam=" + steam +
+                ", defoamer=" + defoamer +
+                ", dieselOil=" + dieselOil +
+                ", flocculant=" + flocculant +
+                ", naturalGas=" + naturalGas +
+                ", softWaterReducingAgent=" + softWaterReducingAgent +
+                ", electricQuantity=" + electricQuantity +
+                ", softWaterScaleInhibitor=" + softWaterScaleInhibitor +
+                ", industrialWater=" + industrialWater +
+                ", pH=" + pH +
+                ", tapWaterQuantity=" + tapWaterQuantity +
+                ", waterReducingAgent=" + waterReducingAgent +
+                '}';
     }
 }

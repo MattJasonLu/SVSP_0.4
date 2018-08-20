@@ -159,7 +159,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchWayBillInfo",         // url
+            url: "searchWayBill",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -238,7 +238,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchWayBillInfo",         // url
+                url: "searchWayBill",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -419,7 +419,6 @@ function setSeniorSelectedList() {
  * @param e
  */
 function exportExcel() {
-    console.log("dianjile");
     var name = 't_pr_waybill';
     var sqlWords = "select id,produceCompanyName,total,founder,wayBillDate,remarks,produceCompanyOperator,state from t_pr_waybill ";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
