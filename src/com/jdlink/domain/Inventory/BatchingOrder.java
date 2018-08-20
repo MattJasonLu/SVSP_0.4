@@ -5,9 +5,10 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Salesman;
 
 import java.util.Date;
+import java.util.List;
 
 /*配料单*/
-public class BatchingOrder {
+   public class BatchingOrder {
     /*配料单号*/
     private String batchingOrderId;
     /*配料日期*/
@@ -38,6 +39,12 @@ public class BatchingOrder {
     private CheckState checkState;
     /*记录状态*/
     private  RecordState recordState;
+    /*库存明细*/
+    private InventoryItem inventoryItem;
+    /*领料单对象
+    * 1:N
+    * */
+    private List<MaterialRequisitionOrder> materialRequisitionOrderList;
     public Client getProduceCompany() {
         return produceCompany;
     }
@@ -158,6 +165,11 @@ public class BatchingOrder {
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
+
+    public InventoryItem getInventoryItem() {
+        return inventoryItem;
+    }
+
     @Override
     public String toString() {
         return "BatchingOrder{" +
@@ -176,6 +188,21 @@ public class BatchingOrder {
                 ", salmsman=" + salmsman +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
+                ", inventoryItem=" + inventoryItem +
+                ", materialRequisitionOrderList=" + materialRequisitionOrderList +
                 '}';
     }
+
+    public void setInventoryItem(InventoryItem inventoryItem) {
+        this.inventoryItem = inventoryItem;
+    }
+
+    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
+        return materialRequisitionOrderList;
+    }
+
+    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
+        this.materialRequisitionOrderList = materialRequisitionOrderList;
+    }
+
 }

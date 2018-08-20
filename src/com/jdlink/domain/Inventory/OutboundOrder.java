@@ -8,7 +8,9 @@ import java.util.List;
 
 /*出库单*/
 public class OutboundOrder {
-    /*领料单对列表*/
+    /*领料单对列表
+    * 1:N
+    * */
     private List<MaterialRequisitionOrder> materialRequisitionOrder;
     /*仓库*/
     private WareHouse wareHouse;
