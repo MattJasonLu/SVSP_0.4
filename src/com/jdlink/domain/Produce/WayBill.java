@@ -19,6 +19,10 @@ public class WayBill {
      */
     private Float total;
     /**
+     *总运费
+     */
+    private Float freight;
+    /**
      * 接运单创建人
      */
     private String founder;
@@ -139,18 +143,25 @@ public class WayBill {
         this.wayBillItemList = wayBillItemList;
     }
 
+    public Float getFreight() {
+        return freight;
+    }
+
+    public void setFreight(Float freight) {
+        this.freight = freight;
+    }
+
     @Override
     public String toString() {
         return "WayBill{" +
                 "id='" + id + '\'' +
                 ", produceCompany=" + produceCompany +
                 ", total=" + total +
+                ", freight=" + freight +
                 ", founder='" + founder + '\'' +
                 ", wayBillDate=" + wayBillDate +
                 ", remarks='" + remarks + '\'' +
-                ", wayBillNumber='" +  '\'' +
                 ", produceCompanyOperator='" + produceCompanyOperator + '\'' +
-                ", receiveCompanyOperator='" + '\'' +
                 ", state=" + state +
                 ", advice='" + advice + '\'' +
                 ", page=" + page +

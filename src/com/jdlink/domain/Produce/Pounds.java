@@ -1,6 +1,8 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import jxl.write.DateTime;
 
 import java.util.Date;
 
@@ -81,6 +83,10 @@ public class Pounds {
      * 备注
      */
     private String remarks;
+    /**
+     * 磅单状态
+     */
+    private CheckState state;
 
     public String getId() {
         return id;
@@ -100,6 +106,14 @@ public class Pounds {
 
     public String getOutLicencePlate() {
         return outLicencePlate;
+    }
+
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
     }
 
     public void setOutLicencePlate(String outLicencePlate) {
@@ -256,6 +270,7 @@ public class Pounds {
                 ", driver='" + driver + '\'' +
                 ", weighman='" + weighman + '\'' +
                 ", remarks='" + remarks + '\'' +
+                ", state=" + state +
                 '}';
     }
 }

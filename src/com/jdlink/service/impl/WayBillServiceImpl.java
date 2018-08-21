@@ -9,6 +9,7 @@ import com.jdlink.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -104,6 +105,25 @@ public class WayBillServiceImpl implements WayBillService {
     }
 
     @Override
+    public String getWastesId(){
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(8);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(8);
+        String id;
+        int index = countWastes();
+        // 获取唯一的编号
+        do {
+            index += 1;
+            id = nf.format(index);
+        } while (getWastesById(id) != null);
+        return id;
+    }
+
+    @Override
     public void addWayBill(WayBill wayBill){
         wayBillMapper.addWayBill(wayBill);
     }
@@ -113,4 +133,7 @@ public class WayBillServiceImpl implements WayBillService {
 
     @Override
     public void update(WayBill wayBill){ wayBillMapper.update(wayBill); }
+
+    @Override
+    public void addSingleItem(WayBillItem wayBillItem){ wayBillMapper.addSingleItem(wayBillItem); }
 }

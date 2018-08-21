@@ -28,5 +28,6 @@ public interface WayBillMapper {
     void addWayBill(WayBill wayBill);
     void update(WayBill wayBill);
     WayBill getByName(String name);
+    void addSingleItem(WayBillItem wayBillItem);
 }
 
