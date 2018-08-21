@@ -20,6 +20,7 @@ public interface ContractService {
     void setCheckStateInvalid(Contract contract);
     int countTemplate();
     int countManage(int contractIndex);
+    int count();
     List<Contract> listPageTemplate(Page page);
     List<Contract> listPageManege(Page page);
     List<Contract> list();

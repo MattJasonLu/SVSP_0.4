@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.InboundMapper">
+    <insert id="addInboundPlanOrder" parameterType="InboundPlanOrder" >
+        INSERT INTO t_pl_inboundplanorder (inboundPlanOrderId, planDate, produceCompanyId,
+        acceptCompanyId, transferDraftId, prepareTransferCount, transferCount, storageCount,
+        leftCount, poundsCount, wastesId, creatorId, createDate, departmentId, companyId,
+        modifierId, checkState, recordState, processWay, handleCategory, isQualified)
+        VALUES (#{inboundPlanOrderId}, #{planDate}, #{produceCompanyId},
+        #{acceptCompanyId}, #{transferDraftId}, #{prepareTransferCount}, #{transferCount}, #{storageCount},
+        #{leftCount}, #{poundsCount}, #{wastesId}, #{creatorId}, #{createDate}, #{departmentId},
+        #{companyId}, #{modifierId}, #{checkState}, #{recordState}, #{processWay}, #{handleCategory},
+        #{isQualified});
+    </insert>
+</mapper>

@@ -2,6 +2,8 @@ package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.Wastes;
 
 import java.util.Date;
@@ -83,4 +85,211 @@ public class InboundPlanOrder {
      * 记录状态
      */
     private RecordState recordState;
+    /**
+     * 处理方式
+     */
+    private ProcessWay processWay;
+    /**
+     * 进料方式
+     */
+    private HandleCategory handleCategory;
+    /**
+     * 化验结果是否合格
+     */
+    private boolean isQualified;
+
+    public String getInboundPlanOrderId() {
+        return inboundPlanOrderId;
+    }
+
+    public void setInboundPlanOrderId(String inboundPlanOrderId) {
+        this.inboundPlanOrderId = inboundPlanOrderId;
+    }
+
+    public Date getPlanDate() {
+        return planDate;
+    }
+
+    public void setPlanDate(Date planDate) {
+        this.planDate = planDate;
+    }
+
+    public Client getProduceCompany() {
+        return produceCompany;
+    }
+
+    public void setProduceCompany(Client produceCompany) {
+        this.produceCompany = produceCompany;
+    }
+
+    public Client getAcceptCompany() {
+        return acceptCompany;
+    }
+
+    public void setAcceptCompany(Client acceptCompany) {
+        this.acceptCompany = acceptCompany;
+    }
+
+    public String getTransferDraftId() {
+        return transferDraftId;
+    }
+
+    public void setTransferDraftId(String transferDraftId) {
+        this.transferDraftId = transferDraftId;
+    }
+
+    public float getPrepareTransferCount() {
+        return prepareTransferCount;
+    }
+
+    public void setPrepareTransferCount(float prepareTransferCount) {
+        this.prepareTransferCount = prepareTransferCount;
+    }
+
+    public float getTransferCount() {
+        return transferCount;
+    }
+
+    public void setTransferCount(float transferCount) {
+        this.transferCount = transferCount;
+    }
+
+    public float getStorageCount() {
+        return storageCount;
+    }
+
+    public void setStorageCount(float storageCount) {
+        this.storageCount = storageCount;
+    }
+
+    public float getLeftCount() {
+        return leftCount;
+    }
+
+    public void setLeftCount(float leftCount) {
+        this.leftCount = leftCount;
+    }
+
+    public float getPoundsCount() {
+        return poundsCount;
+    }
+
+    public void setPoundsCount(float poundsCount) {
+        this.poundsCount = poundsCount;
+    }
+
+    public Wastes getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(Wastes wastes) {
+        this.wastes = wastes;
+    }
+
+    public String getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getModifierId() {
+        return modifierId;
+    }
+
+    public void setModifierId(String modifierId) {
+        this.modifierId = modifierId;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
+    public RecordState getRecordState() {
+        return recordState;
+    }
+
+    public void setRecordState(RecordState recordState) {
+        this.recordState = recordState;
+    }
+
+    public ProcessWay getProcessWay() {
+        return processWay;
+    }
+
+    public void setProcessWay(ProcessWay processWay) {
+        this.processWay = processWay;
+    }
+
+    public HandleCategory getHandleCategory() {
+        return handleCategory;
+    }
+
+    public void setHandleCategory(HandleCategory handleCategory) {
+        this.handleCategory = handleCategory;
+    }
+
+    public boolean getIsQualified() {
+        return isQualified;
+    }
+
+    public void setIsQualified(boolean qualified) {
+        isQualified = qualified;
+    }
+
+    @Override
+    public String toString() {
+        return "InboundPlanOrder{" +
+                "inboundPlanOrderId='" + inboundPlanOrderId + '\'' +
+                ", planDate=" + planDate +
+                ", produceCompany=" + produceCompany +
+                ", acceptCompany=" + acceptCompany +
+                ", transferDraftId='" + transferDraftId + '\'' +
+                ", prepareTransferCount=" + prepareTransferCount +
+                ", transferCount=" + transferCount +
+                ", storageCount=" + storageCount +
+                ", leftCount=" + leftCount +
+                ", poundsCount=" + poundsCount +
+                ", wastes=" + wastes +
+                ", creatorId='" + creatorId + '\'' +
+                ", createDate=" + createDate +
+                ", departmentId='" + departmentId + '\'' +
+                ", companyId='" + companyId + '\'' +
+                ", modifierId='" + modifierId + '\'' +
+                ", checkState=" + checkState +
+                ", recordState=" + recordState +
+                ", processWay=" + processWay +
+                ", handleCategory=" + handleCategory +
+                ", isQualified=" + isQualified +
+                '}';
+    }
 }
