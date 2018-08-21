@@ -185,4 +185,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         </if>
     </select>
 
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_contract;
+    </select>
+
 </mapper>
