@@ -34,6 +34,7 @@ public interface SalesmanMapper {
     int searchCount(Salesman salesman);
 
     int count();
+    List<String> getClientBySalesId(String salesmanId);
 
 
 

@@ -100,7 +100,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="businessModel.html">贮存管理</a></li>
+                    <li><a href="storageManagement.html">贮存管理</a></li>
                     <li>出库管理</li>
                     <li class="active">每日配料单</li>
                 </ol>
@@ -122,94 +122,65 @@
                 </div>
             </div>
             <br>
-            <div class="panel panel-default" id="senior" style="display: none;">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-Id" class="col-sm-4 control-label">转移联单号</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-company" class="col-sm-4 control-label">产废单位</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-company" id="search-company">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-wastesName" id="search-wastesName">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!--<div class="panel panel-default" id="senior" style="display: none;">-->
+                <!--<div class="panel-body">-->
+                    <!--<div class="row">-->
+                        <!--<div class="form-horizontal col-md-4">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-Id" class="col-sm-4 control-label">转移联单号</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-horizontal col-md-4">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-company" class="col-sm-4 control-label">产废单位</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<select class="form-control" name="search-company" id="search-company">-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-horizontal col-md-4">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<select class="form-control" name="search-wastesName" id="search-wastesName">-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+                <!--<div class="form-horizontal col-md-3">-->
+                    <!--<div class="form-group">-->
+                        <!--<label for="wastesName" class="col-sm-4 control-label">危废名称</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="wastesName" name="wastesName" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-horizontal col-md-3">-->
+                    <!--<div class="form-group">-->
+                        <!--<label for="companyName" class="col-sm-4 control-label">产废单位</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="companyName" name="companyName" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-horizontal col-md-3">-->
+                <!--</div>-->
+                <!--<div class="form-horizontal col-md-3">-->
+                <!--</div>-->
+            <!--</div>-->
+            <div >
+                <h4 class="sub-header">库存列表</h4>
             </div>
-            <div class="row">
-                <div class="form-horizontal col-md-3">
-                    <div class="form-group">
-                        <label for="wastesName" class="col-sm-4 control-label">危废名称</label>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" id="wastesName" name="wastesName" placeholder="">
-                        </div>
-                    </div>
-                    <!--<div class="form-group">-->
-                        <!--<label for="modal-date" class="col-sm-4 control-label">入库日期</label>-->
-                        <!--<div class="col-xs-7">-->
-                            <!--<input type="text" class="form-control" id="modal-date" name="modal-date" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
-                <div class="form-horizontal col-md-3">
-                    <div class="form-group">
-                        <label for="companyName" class="col-sm-4 control-label">产废单位</label>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" id="companyName" name="companyName" placeholder="">
-                        </div>
-                    </div>
-                    <!--<div class="form-group">-->
-                        <!--<label for="modal-department" class="col-sm-4 control-label">部门</label>-->
-                        <!--<div class="col-xs-7">-->
-                            <!--<input type="text" class="form-control" id="modal-department" name="modal-department" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
-                <div class="form-horizontal col-md-3">
-                    <!--<div class="form-group">-->
-                        <!--<label for="modal-salesman" class="col-sm-4 control-label">业务员</label>-->
-                        <!--<div class="col-xs-7">-->
-                            <!--<input type="text" class="form-control" id="modal-salesman" name="modal-salesman" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label for="modal-type" class="col-sm-4 control-label">入库类别</label>-->
-                        <!--<div class="col-xs-7">-->
-                            <!--<select class="form-control" id="modal-type" name="modal-type">-->
-                                <!--<option value="0">正常</option>-->
-                                <!--<option value="1">预处理退回</option>-->
-                                <!--<option value="2">其他</option>-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
-                <div class="form-horizontal col-md-3">
-                    <!--<div class="form-group">-->
-                        <!--<label for="modal-note" class="col-sm-4 control-label">备注</label>-->
-                        <!--<div class="col-xs-7">-->
-                            <!--<input type="text" class="form-control" id="modal-note" name="modal-note" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
-            </div>
+
+
             <form method="post" id="infoForm" enctype="multipart/form-data">
                 <table class="table table-bordered">
                     <tbody>
@@ -219,7 +190,7 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                             </label>
                         </th>
-                        <td class="text-center">入库时间</td>
+                        <td class="text-center">入库单号</td>
                         <td class="text-center">产废单位</td>
                         <td class="text-center">危废名称</td>
                         <td class="text-center">危废代码</td>
@@ -234,14 +205,14 @@
                                 <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="..." >
                             </label>
                         </td>
-                        <td class="text-center modal-companyName">1</td>
-                        <td class="text-center modal-einlass">2018-08-07</td>
-                        <td class="text-left model-wastesName">废液</td>
-                        <td class="text-center model-wastesCode">QW10001</td>
-                        <td class="text-center model-wastesCode">QW10001</td>
-                        <td class="text-right modal-weight">5</td>
-                        <td class="text-right modal-materialForm">液态</td>
-                        <td class="text-right modal-packingType">标准装</td>
+                        <td class="text-center inboundOrderId"></td><!--入库单号-->
+                        <td class="text-center produceCompany "></td><!--产废单位-->
+                        <td class="text-left model-wastesName"></td>
+                        <td class="text-center model-wastesCode"></td>
+                        <td class="text-center model-wastesCode"></td>
+                        <td class="text-right modal-weight"></td>
+                        <td class="text-right modal-materialForm"></td>
+                        <td class="text-right modal-packingType"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -249,7 +220,7 @@
                     <a class="btn btn-primary" onclick="comfirm();">确认</a>
                 </div>
                 <br>
-                <h4>入库表</h4>
+                <h4>配料单</h4>
                 <hr class="simple" color="#6f5499" />
                 <br>
                 <div class="row">

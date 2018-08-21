@@ -11,9 +11,10 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/ingredientsOut.js"></script>
 </head>
 <body>
-    <!--导航条-->
+    <!--导航条ingredientsOut.html-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
@@ -112,7 +113,7 @@
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
                     </div>
                 </div>
@@ -167,7 +168,7 @@
                     <td class="text-center">编号</td>
                     <td class="text-center">单位</td>
                     <td class="text-center">记账</td>
-                    <td class="text-center">数量</td>     <!--时间，精确到秒 下同-->
+                    <td class="text-center">数量</td>     <!--时间，精确到分 下同-->
                     <td class="text-center">审批人</td>
                     <td class="text-center">金额</td>
                     <td class="text-center">保管</td>
@@ -198,7 +199,7 @@
                     <td class="text-center">123123</td>
                     <td class="text-center">123123</td>
                     <td class="text-center">123123</td>
-                    <td class="text-center">123123</td>     <!--时间，精确到秒 下同-->
+                    <td class="text-center">123123</td>     <!--时间，精确到分 下同-->
                     <td class="text-center">123123</td>
                     <td class="text-center">123123</td>
                     <td class="text-center">123123</td>

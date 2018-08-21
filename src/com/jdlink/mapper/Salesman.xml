@@ -106,4 +106,7 @@
             </if>
         </where>
     </select>
+    <select id="getClientBySalesId" parameterType="String" resultType="String">
+        select clientId from client where salesmanId=#{salesmanId} order by nowTime desc;
+    </select>
 </mapper>

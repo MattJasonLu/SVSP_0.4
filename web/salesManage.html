@@ -13,15 +13,10 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
+    <script src="js/business/salesman.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
-<script type="text/javascript">
-    function allSelect() {
-        var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
-    }
-    $('#embed').load('embed/loginLogModal.html');
-</script>
 <body onload="loadPageSalesManList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
@@ -40,7 +35,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li><a href="businessModel.html">首页</a></li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -75,7 +70,7 @@
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html">合同模板</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="salesmanContract.html">业务员合同</a></li>
+                            <li><a href="salesmanContract1.html">业务员合同</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -105,7 +100,6 @@
             </li>
         </ul>
     </nav>
-
     <div class="container-fluid">
         <div class="row">
             <div class="sidebar">
@@ -237,6 +231,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="row text-center">
+                    <a class="btn btn-success" href="#" onclick="save()">保存</a>
+                    <a class="btn btn-danger" href="questionnaireManage.html">返回</a>
+                </div>
             </div>
 
             <!--分页1-->
@@ -275,7 +273,6 @@
             </nav>
         </div>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -296,11 +293,52 @@
                         </div>
                         <div class="form-group">
                             <label for="model-clientList" class="control-label">分配客户</label>
-                            <select class="form-control" name="model-clientList" id="model-clientList">
+                            <select class="selectpicker input-xlarge form-control show-tick"  multiple  data-live-search="true"  data-live-search-placeholder="搜索..." name="model-clientList" id="model-clientList">
                                 <option value="0">--请选择--</option>
                             </select>
                         </div>
+                        <!--<a class="btn btn-primary btn-xs" onclick="Distribution();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配客户</a>-->
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="Distribution();">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="file" name="excelPath" id="idExcel" style="display:none">
+    <!--业务员分配模态框-->
+    <div class="modal fade" id="Distribution" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">未分配客户</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="model-salesmanId" class="control-label">客户名称</label>
+                                <input type="text" class="form-control"  name="model-salesmanId" readonly>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="model-salesmanId" class="control-label">已分配客户</label>
+                                <input type="text" class="form-control"  name="model-salesmanId" >
+                            </div>
+                        </div>
+                    </div>
+
+                        <!--<div class="form-group">-->
+                        <!--<label for="model-clientList" class="control-label">分配客户</label>-->
+                        <!--<select class="form-control" name="model-clientList" id="model-clientList">-->
+                        <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
+                        <!--</select>-->
+                        <!--</div>-->
+                        <!--<a class="btn btn-primary btn-xs" onclick="Distribution();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配客户</a>-->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -309,7 +347,6 @@
             </div>
         </div>
     </div>
-    <input type="file" name="excelPath" id="idExcel" style="display:none">
     <div id="embed"></div>
 </body>
 <style type="text/css">
@@ -331,6 +368,7 @@
 </style>
 <script type="text/javascript">
     var salesmanId;
+    var clientList1;
     function getId(item) {
         return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
@@ -384,7 +422,14 @@
             },
             success: function (result) {
                 if (result != undefined) {
-                    console.log("success: " + result);
+                    console.log("success: " + result.json);
+                    clientList1= result.json;
+                    //给多选框赋值
+
+                    // $.each(result.json,function (index,item) {
+                    //     $('#model-clientList').selectpicker('val', item);
+                    //
+                    // });
                     $("#model-salesmanId").val(result.salesmanId);
                     $("#model-name").val(result.name);
                 } else {
@@ -405,7 +450,7 @@
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined) {
-                    console.log("success: " + result);
+                    //console.log("success: " + result);
                     var data = eval(result);
                     // 各下拉框数据填充
                     var clientList = $("#model-clientList");
@@ -417,6 +462,9 @@
                         option.text(item.companyName);
                         clientList.append(option);
                     });
+                    $('.selectpicker').selectpicker('val', clientList1);//默认选中
+                    $('.selectpicker').selectpicker('refresh');
+
                 } else {
                     console.log("fail: " + result);
                 }
@@ -430,8 +478,7 @@
     /**
      * 分配客户模态框信息设置
      */
-    function assignClient() {
-        var clientId = $("#model-clientList").val();
+    function assignClient(salesman,clientId) {
         $.ajax({
             type: "POST",                       // 方法类型
             url: "assignSalesman",              // url
@@ -447,9 +494,8 @@
             success: function (result) {
                 if (result != undefined) {
                     console.log("success: " + result);
-                    alert("保存成功!");
-                    window.location.reload();
-                } else {
+                }
+                else {
                     console.log("fail: " + result);
                     alert("保存失败!");
                 }
@@ -461,6 +507,7 @@
                 alert("服务器异常!");
             }
         });
+
     }
 
 

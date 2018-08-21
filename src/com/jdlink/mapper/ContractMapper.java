@@ -23,6 +23,7 @@ public interface ContractMapper {
     void setCheckStateInvalid(Contract contract);
     int countTemplate();
     int countManage(@Param("contractIndex")int contractIndex);
+    int count();
     List<Contract> listPageTemplate(Page page);
     List<Contract> listPageManege(Page page);
     List<Contract> list();

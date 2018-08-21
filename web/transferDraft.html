@@ -113,10 +113,9 @@
                 </ol>
             </div>
             <h4 class="sub-header">联单列表</h4>
-            <div>
+            <div class="row">
                 <!--操作按钮-->
-
-                <div class="pull-left">
+                <div class="pull-left col-md-9">
                     <a class="btn btn-primary btn-xs" href="transferDraftInfo.html" onclick="localStorage.removeItem('transferDraftId');"><span class="glyphicon glyphicon-plus"
                                                                                    aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span
@@ -125,18 +124,21 @@
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-xs-3 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchData()"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog"
                                     aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset()"><span
+                                    class="glyphicon glyphicon-cog"
+                                    aria-hidden="true"></span> 重置</a>
                         </span>
                 </div>
             </div>
         </div>
+        <br>
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
