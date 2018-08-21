@@ -39,8 +39,17 @@ import java.util.List;
     private CheckState checkState;
     /*记录状态*/
     private  RecordState recordState;
-    /*库存明细*/
-    private InventoryItem inventoryItem;
+    /*危废库存*/
+    private WasteInventory wasteInventory;
+
+    public WasteInventory getWasteInventory() {
+        return wasteInventory;
+    }
+
+    public void setWasteInventory(WasteInventory wasteInventory) {
+        this.wasteInventory = wasteInventory;
+    }
+
     /*领料单对象
     * 1:N
     * */
@@ -166,8 +175,15 @@ import java.util.List;
         this.remarks = remarks;
     }
 
-    public InventoryItem getInventoryItem() {
-        return inventoryItem;
+
+
+
+    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
+        return materialRequisitionOrderList;
+    }
+
+    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
+        this.materialRequisitionOrderList = materialRequisitionOrderList;
     }
 
     @Override
@@ -188,21 +204,8 @@ import java.util.List;
                 ", salmsman=" + salmsman +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
-                ", inventoryItem=" + inventoryItem +
+                ", wasteInventory=" + wasteInventory +
                 ", materialRequisitionOrderList=" + materialRequisitionOrderList +
                 '}';
     }
-
-    public void setInventoryItem(InventoryItem inventoryItem) {
-        this.inventoryItem = inventoryItem;
-    }
-
-    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
-        return materialRequisitionOrderList;
-    }
-
-    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
-        this.materialRequisitionOrderList = materialRequisitionOrderList;
-    }
-
 }

@@ -57,9 +57,13 @@ public class SalesmanController {
     @RequestMapping("getSalesmanById")
     @ResponseBody
     public String getSalesmanById(String salesmanId) {
+        JSONObject rs=new JSONObject();
         try {
             Salesman salesman = salesmanService.getBySalesmanId(salesmanId);
+            List<String> clientIdList= salesmanService.getClientBySalesId(salesmanId);
+            JSONArray json=JSONArray.fromObject(clientIdList);
             JSONObject res = JSONObject.fromBean(salesman);
+            res.put("json",json);
             return res.toString();
         } catch (Exception e) {
             e.printStackTrace();

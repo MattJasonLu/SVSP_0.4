@@ -183,7 +183,7 @@
     </update>
 
     <update id="assignSalesman" parameterType="Client">
-        UPDATE client SET salesmanId=#{salesman.salesmanId}, nowTime=NOW() WHERE clientId=#{clientId};
+        UPDATE client SET salesmanId=#{salesman.salesmanId}, nowTime=NOW() WHERE clientId=#{clientId} ;
     </update>
 
     <update id="setFilePath" parameterType="Client">
@@ -195,6 +195,7 @@
             UPDATE client SET processAttachmentUrl=#{processAttachmentUrl}, nowTime=NOW() WHERE clientId=#{clientId};
             INSERT INTO t_document (clientId, filePath, documentType) VALUES (#{clientId}, #{processAttachmentUrl}, 'EIA');
         </if>
+
     </update>
 
     <select id="list" resultMap="ClientRM">
@@ -211,8 +212,11 @@
     <select id="listUnallocated" resultMap="ClientRM">
         SELECT client.* from client WHERE client.salesmanId IS NULL order by nowTime desc;;
     </select>
-
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM client;
     </select>
+    <update id="deleteSalesId" parameterType="String">
+        update client set salesmanId=null where clientId=#{clientId}
+
+    </update>
 </mapper>
