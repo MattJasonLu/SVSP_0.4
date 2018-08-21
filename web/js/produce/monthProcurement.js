@@ -1,8 +1,8 @@
 function reset() {
     $("#search-Id").val("");
-    $("#search-name").val("");
-    $("#search-specifications").val("");
-    $("#search-account").val("");
+    $("#search-wastesCode").val("");
+    $("#search-wastesType").val("");
+    $("#search-company").val("");
 }
 //全选复选框
 function allSelect() {
