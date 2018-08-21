@@ -10,7 +10,16 @@ public class InventoryItem {
     /**
      * 库存编号
      */
-    private String stockId;
+    private String inventoryId;
+
+    public String getInventoryId() {
+        return inventoryId;
+    }
+
+    public void setInventoryId(String inventoryId) {
+        this.inventoryId = inventoryId;
+    }
+
     /**
      * 入库单号
      */
@@ -47,7 +56,7 @@ public class InventoryItem {
     @Override
     public String toString() {
         return "InventoryItem{" +
-                "stockId='" + stockId + '\'' +
+                "inventoryId='" + inventoryId + '\'' +
                 ", inboundOrderId='" + inboundOrderId + '\'' +
                 ", produceCompany=" + produceCompany +
                 ", wastes=" + wastes +
@@ -58,15 +67,6 @@ public class InventoryItem {
                 ", handleCategory=" + handleCategory +
                 '}';
     }
-
-    public String getStockId() {
-        return stockId;
-    }
-
-    public void setStockId(String stockId) {
-        this.stockId = stockId;
-    }
-
     public String getInboundOrderId() {
         return inboundOrderId;
     }

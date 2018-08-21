@@ -517,7 +517,7 @@
                     </div>
                     <div class="row">
                         <div class="form-horizontal col-md-12">
-                            <textarea class="form-control" rows="5" id="advice1" style="min-width: 95%;max-width: 95%;resize: none;"></textarea>
+                            <textarea class="form-control" rows="5" id="advice" style="min-width: 95%;max-width: 95%;resize: none;" readonly></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -665,7 +665,7 @@
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                    <textarea class="form-control" rows="5" id="advice1" style="min-width: 70%"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
@@ -823,6 +823,10 @@
                     $("#modal4_bankAccount").text(data.bankAccount);
                     $("#modal4_taxNumber").text(data.taxNumber);
                     $("#modal4_ticketType").text(data.ticketType);
+                    $("#advice").text(data.advice);
+                    $("#advice1").val(data.advice)
+                    $("#modal4_approvalState").text(data.checkState.name);
+                    $("#modal4_approvalDate").text(getTimeStr(data.nowTime));
                 } else {
                     $("#modal4_companyName").text("");
                     $("#modal4_organizationCode").text("");
@@ -961,13 +965,14 @@
      * 审批通过客户
      */
     function passClient() {
-        var id = $("#modal4_clientId").val();
+        var id = $("#modal4_clientId").text();
+        console.log(id);
         $.ajax({
             type: "POST",                       // 方法类型
             url: "passClient",               // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                'clientId': id
+                'clientId': id,'advice':$("#advice1").val()
             },
             dataType: "json",
             success: function (result) {
@@ -992,13 +997,13 @@
      * 驳回客户
      */
     function backClient() {
-        var id = $("#modal4_clientId").val();
+        var id = $("#modal4_clientId").text();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "backClient",               // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: {
-                'clientId': id
+                'clientId': id,'advice':$("#backContent").val()
             },
             dataType: "json",
             success: function (result) {
