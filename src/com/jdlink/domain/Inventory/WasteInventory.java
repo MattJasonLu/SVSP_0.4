@@ -1,5 +1,6 @@
 package com.jdlink.domain.Inventory;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Wastes;
 
 import java.util.Date;
@@ -20,6 +21,10 @@ public class WasteInventory {
      * 入库日期
      */
     private Date inboundDate;
+    /**
+     * 产废单位
+     */
+    private Client produceCompany;
     /**
      * 危废信息(危废名称、危废代码、危废类别、危废数量、单价、总价，计量单位，数量,各种元素)
      */
@@ -51,6 +56,14 @@ public class WasteInventory {
 
     public String getInboundOrderId() {
         return inboundOrderId;
+    }
+
+    public Client getProduceCompany() {
+        return produceCompany;
+    }
+
+    public void setProduceCompany(Client produceCompany) {
+        this.produceCompany = produceCompany;
     }
 
     public void setInboundOrderId(String inboundOrderId) {
@@ -135,6 +148,7 @@ public class WasteInventory {
                 "inboundOrderId='" + inboundOrderId + '\'' +
                 ", wasteInventoryId='" + wasteInventoryId + '\'' +
                 ", inboundDate=" + inboundDate +
+                ", produceCompany=" + produceCompany +
                 ", wastes=" + wastes +
                 ", actualCount=" + actualCount +
                 ", wareHouse=" + wareHouse +
