@@ -1,12 +1,12 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.ApplyState;
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Page;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Produce.WayBill;
+import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.WayBillService;
 import com.jdlink.util.DBUtil;
+import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class PRWayBillController {
@@ -32,16 +32,16 @@ public class PRWayBillController {
 
     @RequestMapping("addWayBill")
     @ResponseBody
-    public String addWayBill(@RequestBody WayBill wayBill){
+    public String addWayBill(@RequestBody WayBill wayBill) {
         JSONObject res = new JSONObject();
-        try{
+        try {
             wayBillService.addWayBill(wayBill);
-            res.put("status","success");
-            res.put("message","添加成功！");
-        }catch (Exception e){
+            res.put("status", "success");
+            res.put("message", "添加成功！");
+        } catch (Exception e) {
             e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","添加失败！");
+            res.put("status", "fail");
+            res.put("message", "添加失败！");
         }
         return res.toString();
     }
@@ -130,26 +130,63 @@ public class PRWayBillController {
         JSONObject res = new JSONObject();
         try {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
-            {
-                System.out.println("数据如下：");
-                for(int i = 1; i <data.length; i++){
-                    for(int j = 0; j < data[0].length; j++){
-                        System.out.print(data[i][j].toString());
-                        System.out.print(",");
-                    }
-                    System.out.println();
-                }
-            }
+//            {
+//                System.out.println("数据如下：");
+//                for (int i = 1; i < data.length; i++) {
+//                    for (int j = 0; j < data[0].length; j++) {
+//                        System.out.print(data[i][j].toString());
+//                        System.out.print(",");
+//                    }
+//                    System.out.println();
+//                }
+//            }
+            Map<String, WayBill> map = new HashMap<>();
             for (int i = 1; i < data.length; i++) {
-                WayBill wayBill = new WayBill();
-                wayBill.getProduceCompany().setCompanyName(data[i][1].toString());
-                for (int j = 1; j < data[0].length; j++) {
-                    //赋值
-
-
+                BigDecimal id = new BigDecimal(data[i][0].toString());  // 科学计数法转换，获取ID
+                WayBillItem wayBillItem = new WayBillItem();
+                wayBillItem.setItemId(wayBillService.getItemId());
+                wayBillItem.setWayBillId(id.toString());
+                Client receiveCompany = new Client();
+                receiveCompany.setCompanyName(data[i][6].toString());
+                receiveCompany.setClientId(wayBillService.getClientIdByName(data[i][6].toString()));
+                wayBillItem.setReceiveCompany(receiveCompany);
+                wayBillItem.setReceiveCompanyOperator(data[i][7].toString());
+                wayBillItem.setReceiveDate(DateUtil.getDateFromStr(data[i][8].toString()));
+                Salesman salesman = new Salesman();
+                salesman.setName(data[i][9].toString());
+                salesman.setSalesmanId(wayBillService.getSalesmanIdByName(data[i][9].toString()));
+                wayBillItem.setSalesman(salesman);
+                Wastes wastes = new Wastes();
+                wastes.setId(wayBillService.getWastesId());
+                wastes.setName(data[i][10].toString());
+                wastes.setWasteAmount(Float.parseFloat(data[i][11].toString()));
+                wastes.setUnitPriceTax(Float.parseFloat(data[i][12].toString()));
+                wastes.setWastesTotal(Float.parseFloat(data[i][12].toString()) * Float.parseFloat(data[i][11].toString()));
+                wayBillItem.setWastes(wastes);
+                wayBillItem.setInvoiceDate(DateUtil.getDateFromStr(data[i][13].toString()));
+                BigDecimal invoiceNumber = new BigDecimal(data[i][14].toString());
+                wayBillItem.setInvoiceNumber(invoiceNumber.toString());
+                //map内不存在即添加公共数据，存在即添加List内数据
+                if (!map.keySet().contains(id.toString())) {
+                    map.put(id.toString(), new WayBill());
+                    map.get(id.toString()).setId(id.toString());
+                    Client produceCompany = new Client();
+                    produceCompany.setCompanyName(data[i][1].toString());
+                    produceCompany.setClientId(wayBillService.getClientIdByName(data[i][1].toString()));
+                    map.get(id.toString()).setProduceCompany(produceCompany);
+                    map.get(id.toString()).setFounder(data[i][2].toString());
+                    map.get(id.toString()).setRemarks(data[i][3].toString());
+                    map.get(id.toString()).setProduceCompanyOperator(data[i][4].toString());
+                    map.get(id.toString()).setFreight(Float.parseFloat(data[i][5].toString()));
                 }
-                WayBill wayBill1 = wayBillService.getByName(wayBill.getProduceCompany().getCompanyName());
-                //根据单位名判断数据是否存在，如果存在即更新，不存在即插入
+                map.get(id.toString()).getWayBillItemList().add(wayBillItem);
+                float wastesTotal = Float.parseFloat(data[i][12].toString()) * Float.parseFloat(data[i][11].toString());
+                map.get(id.toString()).setTotal(map.get(id.toString()).getTotal() + wastesTotal);
+                map.get(id.toString()).getWayBillItemList().add(wayBillItem);
+            }
+            for(String key : map.keySet()) {
+                WayBill wayBill1 = wayBillService.getById(map.get(key).getId());
+                WayBill wayBill = map.get(key);
                 if (wayBill1 == null) {
                     //插入新数据
                     wayBillService.addWayBill(wayBill);
@@ -217,6 +254,7 @@ public class PRWayBillController {
 
     /**
      * 审核通过
+     *
      * @param wayBill
      * @return
      */
@@ -238,6 +276,7 @@ public class PRWayBillController {
 
     /**
      * 驳回
+     *
      * @param wayBill
      * @return
      */
@@ -259,6 +298,7 @@ public class PRWayBillController {
 
     /**
      * 提交
+     *
      * @param id
      * @return
      */
@@ -280,6 +320,7 @@ public class PRWayBillController {
 
     /**
      * 作废
+     *
      * @param id
      * @return
      */
@@ -303,21 +344,22 @@ public class PRWayBillController {
 
     /**
      * 添加接运单详细项目
+     *
      * @param wayBill
      * @return
      */
     @RequestMapping("addWayBillItem")
     @ResponseBody
-    public String addWayBillItem(@RequestBody WayBill wayBill){
+    public String addWayBillItem(@RequestBody WayBill wayBill) {
         JSONObject res = new JSONObject();
-        try{
+        try {
             wayBillService.addItem(wayBill);
-            res.put("status","success");
-            res.put("message","添加接运单详细项目成功！");
-        }catch (Exception e){
+            res.put("status", "success");
+            res.put("message", "添加接运单详细项目成功！");
+        } catch (Exception e) {
             e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","添加接运单详细项目失败！");
+            res.put("status", "fail");
+            res.put("message", "添加接运单详细项目失败！");
         }
         return res.toString();
     }
@@ -333,40 +375,40 @@ public class PRWayBillController {
             index += 1;
             id = index + "";
         }
-        res.put("id",id);
+        res.put("id", id);
         return res.toString();
     }
 
     @RequestMapping("getSalesmanIdByName")
     @ResponseBody
-    public String getSalesmanByName(String name){
+    public String getSalesmanByName(String name) {
         JSONObject res = new JSONObject();
         String id = wayBillService.getSalesmanIdByName(name);
-        res.put("id",id);
+        res.put("id", id);
         return res.toString();
     }
 
     @RequestMapping("getClientIdByName")
     @ResponseBody
-    public String getClientIdByName(String name){
+    public String getClientIdByName(String name) {
         JSONObject res = new JSONObject();
         String id = wayBillService.getClientIdByName(name);
-        res.put("id",id);
+        res.put("id", id);
         return res.toString();
     }
 
     @RequestMapping("getWastesIdByName")
     @ResponseBody
-    public String getWastesIdByName(String name){
+    public String getWastesIdByName(String name) {
         JSONObject res = new JSONObject();
         String id = wayBillService.getWastesIdByName(name);
-        res.put("id",id);
+        res.put("id", id);
         return res.toString();
     }
 
     @RequestMapping("getCurrentItemWastesId")
     @ResponseBody
-    public String getCurrentWastesId(){
+    public String getCurrentWastesId() {
         JSONObject res = new JSONObject();
         // 得到一个NumberFormat的实例
         NumberFormat nf = NumberFormat.getInstance();
@@ -376,20 +418,20 @@ public class PRWayBillController {
         nf.setMaximumIntegerDigits(8);
         //设置最小整数位数
         nf.setMinimumIntegerDigits(8);
-        String id ;
+        String id;
         int index = wayBillService.countWastes();
         // 获取唯一的编号
         do {
             index += 1;
             id = nf.format(index);
         } while (wayBillService.getWastesById(id) != null);
-        res.put("id",id);
+        res.put("id", id);
         return res.toString();
     }
 
     @RequestMapping("changeWastesIdFormat")
     @ResponseBody
-    public String changeWastesIdFormat(int id){
+    public String changeWastesIdFormat(int id) {
         JSONObject res = new JSONObject();
         // 得到一个NumberFormat的实例
         NumberFormat nf = NumberFormat.getInstance();
@@ -400,7 +442,7 @@ public class PRWayBillController {
         //设置最小整数位数
         nf.setMinimumIntegerDigits(8);
         String r = nf.format(id);
-        res.put("id",r);
+        res.put("id", r);
         return res.toString();
     }
 
