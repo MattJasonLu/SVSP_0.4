@@ -15,6 +15,8 @@
     <script src="js/page.js"></script>
     <script src="js/produce/warehouseManage.js"></script>
     <script src="js/produce/batching.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
 <body onload="batchingList()" >
     <!--导航条-->
@@ -115,7 +117,7 @@
                     <!--查询框-->
                     <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchPw();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchInventory();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
@@ -127,37 +129,35 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-stockId" class="col-sm-4 control-label">入库日期</label>
+                                <label for="search-inboundDate" class="col-sm-4 control-label">入库日期</label>
                                 <div class="col-xs-7">
-                                    <input type="date" class="form-control" id="search-stockId" name="search-stockId"
+                                    <input type="date" class="form-control" id="search-inboundDate" name="search-inboundDate"
                                            placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-checkState" class="col-sm-4 control-label">进料方式</label>
+                                <label for="search-handelCategory" class="col-sm-4 control-label">进料方式</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                                    <select class="form-control" id="search-handelCategory" name="search-handelCategory"></select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-proTelephone"
+                                <label for="search-companyName"
                                        class="col-sm-4 control-label">产废单位</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-proTelephone"
-                                           name="search-proTelephone" placeholder="">
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-companyName" id="search-companyName"></select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-transport" class="col-sm-4 control-label">危废代码</label>
+                                <label for="search-wasteId" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-transport" name="search-transport"
-                                           placeholder="">
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-wasteId" id="search-wasteId"></select>
                                 </div>
                             </div>
                         </div>
