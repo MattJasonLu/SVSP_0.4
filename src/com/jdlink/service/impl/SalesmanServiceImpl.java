@@ -65,6 +65,11 @@ public class SalesmanServiceImpl implements SalesmanService {
     }
 
     @Override
+    public List<String> getClientBySalesId(String salesmanId) {
+        return salesmanMapper.getClientBySalesId(salesmanId);
+    }
+
+    @Override
     public List<Salesman> listPage(Page page) {
         return salesmanMapper.listPage(page);
     }

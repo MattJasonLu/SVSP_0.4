@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.SalesmanService;
 import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -16,7 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +30,8 @@ public class ClientController {
 
     @Autowired
     ClientService clientService;
-
+    @Autowired
+    SalesmanService salesmanService;
     /**
      * 新增客户
      * @param client 客户
@@ -517,6 +521,8 @@ public class ClientController {
     @ResponseBody
     public String assignSalesman(@RequestBody Client client) {
         JSONObject res = new JSONObject();
+        List<String> list=new ArrayList<>();
+        list.add(client.getClientId());//获得有用的用户编号
         try {
             clientService.assignSalesman(client);
             res.put("status", "success");
@@ -595,5 +601,22 @@ public class ClientController {
         return res.toString();
 
     }
+   /*取出没有分配到的业务员*/
+    @RequestMapping("nearestClient")
+    @ResponseBody
+    public  String nearestClient(String salesmanId, String selectedValues){
+        JSONArray jsonArray = JSONArray.fromObject(selectedValues);
+        //1找到所有的list
+        List<String> list = JSONArray.toList(jsonArray, String.class);// 过时方法 小
+        //1找到所有的list1
+        List<String> list1=salesmanService.getClientBySalesId(salesmanId);//大
+        list1.removeAll(list);//将需要的客户编号去除
+        for(int i=0;i<list1.size();i++){
+           clientService.deleteSalesId(list1.get(i));
+    }
 
+
+
+        return null;
+    }
 }
