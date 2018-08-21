@@ -6,9 +6,11 @@ public class EmergencyProcurement {
     //申请日期
     private Date applyDate;
     //采购数量
-    private Date purchaseQuantity;
+    private float purchaseQuantity;
     //应急备注
-    private Date emergencyNote;
+    private String emergencyNote;
+    //数据类别
+    private boolean emergency;
 
     public Date getApplyDate() {
         return applyDate;
@@ -18,20 +20,28 @@ public class EmergencyProcurement {
         this.applyDate = applyDate;
     }
 
-    public Date getPurchaseQuantity() {
+    public float getPurchaseQuantity() {
         return purchaseQuantity;
     }
 
-    public void setPurchaseQuantity(Date purchaseQuantity) {
+    public void setPurchaseQuantity(float purchaseQuantity) {
         this.purchaseQuantity = purchaseQuantity;
     }
 
-    public Date getEmergencyNote() {
+    public String getEmergencyNote() {
         return emergencyNote;
     }
 
-    public void setEmergencyNote(Date emergencyNote) {
+    public void setEmergencyNote(String emergencyNote) {
         this.emergencyNote = emergencyNote;
+    }
+
+    public boolean isEmergency() {
+        return emergency;
+    }
+
+    public void setEmergency(boolean emergency) {
+        this.emergency = emergency;
     }
 
     @Override
@@ -39,7 +49,8 @@ public class EmergencyProcurement {
         return "EmergencyProcurement{" +
                 "applyDate=" + applyDate +
                 ", purchaseQuantity=" + purchaseQuantity +
-                ", emergencyNote=" + emergencyNote +
+                ", emergencyNote='" + emergencyNote + '\'' +
+                ", emergency=" + emergency +
                 '}';
     }
 }

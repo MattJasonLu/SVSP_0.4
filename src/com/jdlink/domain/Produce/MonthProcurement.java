@@ -37,6 +37,8 @@ public class MonthProcurement {
     private String inventory;
     //备注
     private String note;
+    //数据类别
+    private boolean month;
 
     public String getSuppliesCategory() {
         return suppliesCategory;
@@ -182,6 +184,14 @@ public class MonthProcurement {
         this.note = note;
     }
 
+    public boolean isMonth() {
+        return month;
+    }
+
+    public void setMonth(boolean month) {
+        this.month = month;
+    }
+
     @Override
     public String toString() {
         return "MonthProcurement{" +
@@ -203,6 +213,7 @@ public class MonthProcurement {
                 ", unit='" + unit + '\'' +
                 ", inventory='" + inventory + '\'' +
                 ", note='" + note + '\'' +
+                ", month='" + month + '\'' +
                 '}';
     }
 }
