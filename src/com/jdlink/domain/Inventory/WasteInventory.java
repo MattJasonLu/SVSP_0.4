@@ -30,6 +30,10 @@ public class WasteInventory {
      */
     private Wastes wastes;
     /**
+     * 危废主键
+     */
+    private String id;
+    /**
      * 危废数量
      */
     private float actualCount;
