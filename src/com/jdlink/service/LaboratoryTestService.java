@@ -28,4 +28,11 @@ public interface LaboratoryTestService {
     void confirm(String laboratoryTestNumber);
 
     String getCurrentId();
+
+    /**
+     * 根据客户编号获取化验室单号
+     * @param clientId 客户编号
+     * @return 化验室单号
+     */
+    LaboratoryTest getRecentLaboratoryTestByClientId(String clientId);
 }
