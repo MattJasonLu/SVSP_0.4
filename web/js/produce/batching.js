@@ -2,6 +2,8 @@
  * 
  */
 var isSearch = false;
+array=[];//数组用来存放入库编号
+array1=[]//数组用来存放剩余量的
 function  batchingList() {
     $.ajax({
         type: "POST",                       // 方法类型
@@ -36,7 +38,6 @@ function setWasteInventoryList(result) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
-        var _index = index;
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
@@ -45,6 +46,7 @@ function setWasteInventoryList(result) {
                 // 入库编号
                 case (1):
                     $(this).html(obj.inboundOrderId);
+
                     break;
                  // 仓库号
                 case (2):
@@ -94,7 +96,14 @@ function setWasteInventoryList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
-
+    //遍历赋值
+    $(".myclass").each(function(){
+        //1获得入库单号
+        var inboundOrderId=this.firstElementChild.nextElementSibling.innerHTML;
+        //console.log(inboundOrderId);
+       $("#residualQuantity").attr("name",inboundOrderId);
+        $("#residualQuantity").removeAttr('id');
+    });
 
 
 }
@@ -113,9 +122,11 @@ function batching() {
             data:{'inboundOrderId':inboundOrderId},
             success:function (result) {
                 if(result != undefined && result.status == "success"){
-                   // console.log(result);
+                   console.log(result);
                     //设置配料列表
                     setBatchingWList(result.data);
+                    //赋值配料单号这里为自动生成
+                    $("#batchingOrderId").val(result.batchingOrderId);
                 }
                 else {
                     console.log(result.message);
@@ -133,8 +144,9 @@ function batching() {
  */
 function setBatchingWList(result) {
     var tr = $("#cloneTr2");
+    tr.attr('class','myclass2');
     //tr.siblings().remove();
-    console.log(result);
+    //console.log(result);
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -145,14 +157,11 @@ function setBatchingWList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 // 入库编号
-                case (1):
-                    if(obj.inboundOrderId){
-
-                    }
+                case (0):
                     $(this).html(obj.inboundOrderId);
                     break;
                 // 仓库号
-                case (2):
+                case (1):
                     if(obj.wareHouse==null){
                         $(this).html("");
                     }
@@ -161,33 +170,33 @@ function setBatchingWList(result) {
                     }
                     break;
                 //产废单位
-                case (3):
+                case (2):
                     $(this).html(obj.wastes.client.companyName);
                     break;
                 // 危废名称
-                case (4):
+                case (3):
                     $(this).html(obj.wastes.name);
                     break;
                 // 危废代码
-                case (5):
+                case (4):
                     $(this).html(obj.wastes.wastesId);
                     break;
                 // 产废类别
-                case (6):
+                case (5):
                     $(this).html("");
                     break;
                 // 处置类别
-                case (7):
+                case (6):
                     $(this).html(obj.wastes.processWay.name);
                     break;
                 //数量
-                case (8):
+                case (7):
                     $(this).html(obj.wastes.wasteAmount);
                     break;
-                case (9):
+                case (8):
                     $(this).html(obj.wastes.remarks);
                     break;
-                case (10):
+                case (9):
                     $(this).html(obj.wasteInventoryId);
                     break;
             }
@@ -198,7 +207,7 @@ function setBatchingWList(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
-
+    tr.removeAttr('class');
 }
 //加载高级查询数据
 function setSeniorSelectedList() {
@@ -214,7 +223,7 @@ function setSeniorSelectedList() {
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                console.log(result);
+                //console.log(result);
                 var data = eval(result);
                 // 高级检索下拉框数据填充
                 //进料方式
@@ -298,11 +307,12 @@ function searchInventory() {
 function adjustNumber() {
     var td=$("td[name='123']");//找到指定的单元格
     td.each(function () {
+        //获得指定的入库单号
         var content = $(this).html();//获得内容
         var name = $(this).attr('name');
         if (name.search("123") != -1) {
             $(this).attr('name', '');
-            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' name='count' onfocus='subtraction(this);'>");
+            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' name='count' onkeyup='subtraction(this);'>");
         }
     });
 
@@ -310,8 +320,6 @@ function adjustNumber() {
 function subtraction(item) {
     //获得相应的入库单号
     var inboundOrderId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-    var number=$(item).val();
-    console.log(inboundOrderId+number);
     //1根据入库单号获得总量
     $.ajax({
         type: "POST",                       // 方法类型
@@ -322,7 +330,26 @@ function subtraction(item) {
        // contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                console.log(result);
+                 number=$(item).val();//输入的数量
+                if(number==""){
+                    number=0;
+                }
+                numberTotal=result.data[0].wastes.wasteAmount;//第一次的剩余数量相当于总量
+                // if(array.indexOf(inboundOrderId)==-1){//如果不存在就添加
+                //     array.push(inboundOrderId);
+                //     numberTotal=result.data[0].wastes.wasteAmount;//第一次的剩余数量相当于总量
+                //     console.log(numberTotal);
+                //     array1.push(parseInt(numberTotal)-parseInt(number));
+                //     console.log(parseInt(numberTotal)-parseInt(number));
+                //     $("td[name="+inboundOrderId+"]").html(parseInt(numberTotal)-parseInt(number));
+                // }
+                // else(array.indexOf(inboundOrderId)!=-1)
+                //     numberTotal=parseInt(array1[array1.length-1])-parseInt(number);
+                //     array1.push( parseInt(array1[array1.length-1])-parseInt(number));
+
+               $("td[name="+inboundOrderId+"]").html(numberTotal-parseInt(number));
+
+
             } else {
                 alert(result.message);
             }
@@ -331,9 +358,48 @@ function subtraction(item) {
             console.log(result);
         }
     });
-
-
+  // console.log(array)
     //进行运算
+}
+//保存
+function save() {
+    $(".myclass2").each(function (item,index) {
+        var data={
+          batchingOrderId:$("#batchingOrderId").val(),//配料编号
+            inboundOrder:{ inboundOrderId:this.firstElementChild.innerHTML},
+            wareHouse:{ wareHouseId:this.firstElementChild.nextElementSibling.innerHTML},
+            produceCompany:{companyName:this.firstElementChild.nextElementSibling.nextElementSibling.innerHTML},
+            wastes:{wastesId:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,//危废代码
+             //processWay:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+             name:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,},
+            // wasteType:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+          batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+          'remarks':this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+    };
+        $.ajax({
+                type: "POST",                       // 方法类型
+                url: "addBatchingOrder",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+               contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                }
+                else {
+                    alert(result.message);
 
+                }
+            },
 
+            error:function (result) {
+                    alert("服务器异常")
+
+            }
+        });
+       console.log(item);
+
+    });
+    alert("添加成功！")
 }
