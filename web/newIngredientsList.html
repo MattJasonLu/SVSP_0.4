@@ -241,8 +241,8 @@
                         <td class="text-center">产废类别</td>
                         <td class="text-center">进料方式</td>
                         <td class="text-center">数量</td>
+                        <td class="text-center">剩余数量</td>
                         <td class="text-center">备注</td>
-                        <td class="text-center hidden">库存编号</td>
                     </tr>
                     <tr id="cloneTr">
                         <td class="text-center">
@@ -258,8 +258,8 @@
                         <td class="text-center model-wastesCode"></td>
                         <td class="text-right modal-weight"></td>
                         <td class="text-right modal-materialForm"></td>
-                        <td class="text-right modal-packingType"></td>
-                        <td class="text-right hidden" id="wasteInventoryId"></td>
+                        <td class="text-right modal-packingType" name="residualQuantity"></td>
+                        <td class="text-right modal-packingType" ></td>
                     </tr>
                     </tbody>
                 </table>
@@ -349,7 +349,7 @@
                         <td class="text-center model-wastesCode"></td>
                         <td class="text-right modal-weight"></td>
                         <td class="text-right modal-materialForm"></td>
-                        <td class="text-right modal-packingType"></td>
+                        <td class="text-right modal-packingType" onclick="adjustNumber();" name="123"></td>
                         <td class="text-right modal-packingType"></td>
                     </tr>
                     </tbody>
