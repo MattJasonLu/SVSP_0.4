@@ -1,8 +1,11 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.Page;
+import com.jdlink.domain.*;
+import com.jdlink.domain.Inventory.InboundPlanOrder;
+import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Produce.TransferDraft;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.InboundService;
 import com.jdlink.service.SupplierService;
 import com.jdlink.service.TransferDraftService;
 import com.jdlink.util.RandomUtil;
@@ -34,6 +37,8 @@ public class TransferDraftController {
     ClientService clientService;
     @Autowired
     SupplierService supplierService;
+    @Autowired
+    InboundService inboundService;
 
     /**
      * 获取目前的编号
@@ -73,13 +78,13 @@ public class TransferDraftController {
     public String addTransferDraft(@RequestBody TransferDraft transferDraft) {
         JSONObject res = new JSONObject();
         try {
-            // 更新三个公司的编号
-            String produceCompanyId = clientService.getByName(transferDraft.getProduceCompany().getCompanyName()).getClientId();
-            transferDraft.getProduceCompany().setClientId(produceCompanyId);
-            String transportCompanyId = supplierService.getByName(transferDraft.getTransportCompany().getCompanyName()).getSupplierId();
-            transferDraft.getTransportCompany().setSupplierId(transportCompanyId);
-            String acceptCompanyId = clientService.getByName(transferDraft.getAcceptCompany().getCompanyName()).getClientId();
-            transferDraft.getAcceptCompany().setClientId(acceptCompanyId);
+            // 更新三个公司的信息
+            Client produceCompany = clientService.getByName(transferDraft.getProduceCompany().getCompanyName());
+            transferDraft.setProduceCompany(produceCompany);
+            Supplier transportCompany = supplierService.getByName(transferDraft.getTransportCompany().getCompanyName());
+            transferDraft.setTransportCompany(transportCompany);
+            Client acceptCompany = clientService.getByName(transferDraft.getAcceptCompany().getCompanyName());
+            transferDraft.setAcceptCompany(acceptCompany);
             // 获取旧的数据
             TransferDraft oldTransferDraft = transferDraftService.getById(transferDraft.getId());
             // 如果已存在数据则更新，否则进行新建
@@ -92,6 +97,38 @@ public class TransferDraftController {
                 // 更新危废物品的代码
                 transferDraft.getWastes().setId(RandomUtil.getRandomEightNumber());
                 transferDraftService.add(transferDraft);
+                // 根据转移联单的信息生成入库计划单
+                InboundPlanOrder inboundPlanOrder = new InboundPlanOrder();
+                // 设置入库计划单号
+                inboundPlanOrder.setInboundPlanOrderId(inboundService.getInboundPlanOrderId());
+                // 设置计划日期
+                inboundPlanOrder.setPlanDate(transferDraft.getTransferTime());
+                // 设置产废单位
+                inboundPlanOrder.setProduceCompany(transferDraft.getProduceCompany());
+                // 设置接收单位
+                inboundPlanOrder.setAcceptCompany(transferDraft.getAcceptCompany());
+                // 设置转移时间
+                inboundPlanOrder.setTransferDate(transferDraft.getTransferTime());
+                // 设置联单号
+                inboundPlanOrder.setTransferDraftId(transferDraft.getId());
+                // 拟转数量
+                inboundPlanOrder.setPrepareTransferCount(transferDraft.getWastes().getPrepareTransferCount());
+                // 转移数量
+                inboundPlanOrder.setTransferCount(transferDraft.getWastes().getTransferCount());
+                // 危废信息
+                Wastes wastes = new Wastes();
+                wastes.setName(transferDraft.getWastes().getName());
+                wastes.setCode(wastes.getCode());
+                wastes.setCategory(transferDraft.getWastes().getCategory());
+                inboundPlanOrder.setWastes(wastes);
+                // 业务员信息
+                inboundPlanOrder.setSalesman(transferDraft.getProduceCompany().getSalesman());
+                // 单据状态
+                inboundPlanOrder.setCheckState(CheckState.ToInbound);
+                // 记录状态
+                inboundPlanOrder.setRecordState(RecordState.Usable);
+                // 增加入库计划单
+                inboundService.addInboundPlanOrder(inboundPlanOrder);
                 res.put("status", "success");
                 res.put("message", "新增成功");
             }
