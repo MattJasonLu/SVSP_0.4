@@ -134,6 +134,14 @@ function setDataList(result) {
     }
 }
 
+/**
+ * 重置搜索数据
+ */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
+
 function setWastesData() {
     $.ajax({
         type: "POST",                       // 方法类型
