@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by matt on 2018/8/22.
@@ -18,6 +19,11 @@ public class InboundServiceImpl implements InboundService {
 
     @Autowired
     InboundMapper inboundMapper;
+
+    @Override
+    public List<InboundPlanOrder> listInboundPlanOrder() {
+        return inboundMapper.listInboundPlanOrder();
+    }
 
     @Override
     public void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder) {
