@@ -79,12 +79,13 @@ function setWasteInventoryList(result) {
                 case (8):
                         $(this).html(obj.wastes.wasteAmount);
                     break;
-                    case (9):
+                case (9):
+                    $(this).html(obj.wastes.wasteAmount);
+                    break;
+                    case (10):
                     $(this).html(obj.wastes.remarks);
                     break;
-                case (10):
-                    $(this).html(obj.wasteInventoryId);
-                    break;
+
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -292,4 +293,47 @@ function searchInventory() {
     //     }
     // });
     // isSearch = true;
+}
+//数量加减
+function adjustNumber() {
+    var td=$("td[name='123']");//找到指定的单元格
+    td.each(function () {
+        var content = $(this).html();//获得内容
+        var name = $(this).attr('name');
+        if (name.search("123") != -1) {
+            $(this).attr('name', '');
+            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' name='count' onfocus='subtraction(this);'>");
+        }
+    });
+
+}
+function subtraction(item) {
+    //获得相应的入库单号
+    var inboundOrderId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    var number=$(item).val();
+    console.log(inboundOrderId+number);
+    //1根据入库单号获得总量
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWasteInventoryByInboundOrderId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {'inboundOrderId':inboundOrderId},
+        dataType: "json",
+       // contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+
+    //进行运算
+
+
 }
