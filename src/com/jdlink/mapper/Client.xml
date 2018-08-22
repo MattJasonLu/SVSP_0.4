@@ -174,12 +174,12 @@
         UPDATE client SET checkState='Examining', nowTime=NOW() WHERE clientId=#{clientId};
     </update>
 
-    <update id="setCheckStateFinished" parameterType="String">
-        UPDATE client SET checkState='Finished', nowTime=NOW() WHERE clientId=#{clientId};
+    <update id="setCheckStateFinished"  >
+        UPDATE client SET checkState='Finished',advice=#{1}, nowTime=NOW() WHERE clientId=#{0};
     </update>
 
-    <update id="setCheckStateBacked" parameterType="String">
-        UPDATE client SET checkState='Backed', nowTime=NOW() WHERE clientId=#{clientId};
+    <update id="setCheckStateBacked" >
+        UPDATE client SET checkState='Backed', nowTime=NOW(),advice=#{1} WHERE clientId=#{0};
     </update>
 
     <update id="assignSalesman" parameterType="Client">

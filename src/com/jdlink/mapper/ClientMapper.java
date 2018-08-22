@@ -49,9 +49,9 @@ public interface ClientMapper {
 
     void setCheckStateExamining(String clientId);
 
-    void setCheckStateFinished(String clientId);
+    void setCheckStateFinished(String clientId,String advice);
 
-    void setCheckStateBacked(String clientId);
+    void setCheckStateBacked(String clientId,String advice);
 
     void setFilePath(Client client);
 

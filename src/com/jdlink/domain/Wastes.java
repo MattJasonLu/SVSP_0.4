@@ -1,5 +1,6 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
 
 import java.util.ArrayList;
@@ -31,6 +32,10 @@ public class Wastes {
      * 包装方式
      */
     private PackageType packageType;
+    /**
+     * 处置方式
+     */
+    private HandleCategory handleCategory;
     /**
      * 危废编码
      */
@@ -164,39 +169,6 @@ public class Wastes {
         return compatibilityId;
     }
 
-    public void setCompatibilityId(String compatibilityId) {
-        this.compatibilityId = compatibilityId;
-    }
-
-    private boolean isPH; // PH值
-
-    private boolean isAsh;  // 灰分
-
-    private boolean isWater;  // 水分
-
-    private boolean isHeat;   // 热值
-
-    private boolean isSulfur;  // 硫
-
-    private boolean isChlorine;  // 氯
-
-    private boolean isFluorine;  // 氟
-
-    private boolean isPhosphorus;  // 磷
-
-    private boolean isFlashPoint;  // 闪点
-
-    private boolean isViscosity;  // 黏度
-
-    /**
-     * 取样日期
-     */
-    private Date samplingDate;
-    /**
-     * 取样号
-     */
-    private String samplingNumber;
-
     @Override
     public String toString() {
         return "Wastes{" +
@@ -205,6 +177,7 @@ public class Wastes {
                 ", name='" + name + '\'' +
                 ", formType=" + formType +
                 ", packageType=" + packageType +
+                ", handleCategory=" + handleCategory +
                 ", wastesId='" + wastesId + '\'' +
                 ", contractAmount=" + contractAmount +
                 ", unitPriceTax=" + unitPriceTax +
@@ -254,8 +227,50 @@ public class Wastes {
                 ", isProductionLine=" + isProductionLine +
                 ", isStorageArea=" + isStorageArea +
                 ", testDate=" + testDate +
+                ", id1='" + id1 + '\'' +
                 '}';
     }
+
+    public HandleCategory getHandleCategory() {
+        return handleCategory;
+    }
+
+    public void setHandleCategory(HandleCategory handleCategory) {
+        this.handleCategory = handleCategory;
+    }
+
+    public void setCompatibilityId(String compatibilityId) {
+        this.compatibilityId = compatibilityId;
+    }
+
+    private boolean isPH; // PH值
+
+    private boolean isAsh;  // 灰分
+
+    private boolean isWater;  // 水分
+
+    private boolean isHeat;   // 热值
+
+    private boolean isSulfur;  // 硫
+
+    private boolean isChlorine;  // 氯
+
+    private boolean isFluorine;  // 氟
+
+    private boolean isPhosphorus;  // 磷
+
+    private boolean isFlashPoint;  // 闪点
+
+    private boolean isViscosity;  // 黏度
+
+    /**
+     * 取样日期
+     */
+    private Date samplingDate;
+    /**
+     * 取样号
+     */
+    private String samplingNumber;
 
     /**
      * 参数列表

@@ -115,14 +115,15 @@ public class ClientServiceImpl implements ClientService {
         clientMapper.setCheckStateExamining(clientId);
     }
 
+
     @Override
-    public void setCheckStateFinished(String clientId) {
-        clientMapper.setCheckStateFinished(clientId);
+    public void setCheckStateFinished(String clientId, String advice) {
+        clientMapper.setCheckStateFinished(clientId,advice);
     }
 
     @Override
-    public void setCheckStateBacked(String clientId) {
-        clientMapper.setCheckStateBacked(clientId);
+    public void setCheckStateBacked(String clientId, String advice) {
+        clientMapper.setCheckStateBacked(clientId,advice);
     }
 
     @Override
