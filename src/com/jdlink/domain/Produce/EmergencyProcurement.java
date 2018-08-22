@@ -3,13 +3,21 @@ package com.jdlink.domain.Produce;
 import java.util.Date;
 
 public class EmergencyProcurement {
-    //申请日期
+    /**
+     * 申请日期
+     */
     private Date applyDate;
-    //采购数量
+    /**
+     * 采购数量
+     */
     private float purchaseQuantity;
-    //应急备注
+    /**
+     * 应急备注
+     */
     private String emergencyNote;
-    //数据类别
+    /**
+     * 数据类别
+     */
     private boolean emergency;
 
     public Date getApplyDate() {
