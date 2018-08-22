@@ -2,6 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Contract;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Salesman;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -44,4 +45,24 @@ public interface ContractMapper {
     void opinion(String contractId,String opinion,String nowTime);
     Contract getModel2(String modelName);
     String getContent(String contractId);
+
+    /**
+     * 根据合同中的客户信息筛选出业务员列表
+     * @return 业务员列表
+     */
+    List<Salesman> listSalesmanByContract(Page page);
+
+    /**
+     * 根据合同中的客户信息筛选出业务员列表，获取其业务员数量
+     * @return 业务员数量
+     */
+    int countSalesmanByContract();
+
+    /**
+     * 根据业务员的编号筛选出所有的合同
+     * @param salesmanId 业务员编号
+     * @param page 页码
+     * @return 合同列表
+     */
+    List<Contract> getContractBySalesman(String salesmanId, @Param("page") Page page);
 }

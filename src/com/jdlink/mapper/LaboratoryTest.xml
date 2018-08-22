@@ -168,4 +168,9 @@
     <select id="getHeavyMetalList" parameterType="String" resultType="MixingElement">
         select * from t_mixingelement where wastesId=#{id};
     </select>
+
+    <select id="getRecentLaboratoryTestNumberByClientId" parameterType="String" resultType="String">
+        SELECT laboratorytestnumber FROM t_pr_laboratorytest
+        WHERE clientId=#{clientId} ORDER BY nowTime DESC LIMIT 1;
+    </select>
 </mapper>
