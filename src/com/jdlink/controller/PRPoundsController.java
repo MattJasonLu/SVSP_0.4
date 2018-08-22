@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +101,6 @@ public class PRPoundsController {
 
     /**
      * 导入
-     *
      * @param excelFile
      * @return
      */
@@ -110,19 +110,46 @@ public class PRPoundsController {
         JSONObject res = new JSONObject();
         try {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
-            Pounds pounds = new Pounds();
-
-                //Pounds pounds1 = poundsService.getById( );
-//
-//                if (pounds1 == null) {
-//                    //插入新数据
-//                    poundsService.add(pounds);
-//                } else {
-//                    //根据id更新数据
-//                    poundsService.update(pounds);
-//                }
-            res.put("status", "success");
-            res.put("message", "导入成功");
+            for (int i = 0; i < data.length; i++) {
+                System.out.println();
+                for (int j = 0; j < data[0].length; j++) {
+                    System.out.print(data[i][j].toString() + ',');
+                }
+            }
+            for (int i = 1; i < data.length; i++) {
+                Pounds pounds = new Pounds();
+                pounds.setId(poundsService.getCurrentPoundsId());
+                pounds.setTransferId(data[i][0].toString());
+                pounds.setEnterLicencePlate(data[i][1].toString());
+                pounds.setGoodsName(data[i][2].toString());
+                pounds.setGrossWeight(Float.parseFloat(data[i][3].toString()));
+                pounds.setNetWeight(Float.parseFloat(data[i][4].toString()));
+                pounds.setTare(Float.parseFloat(data[i][5].toString()));
+                Client deliveryCompany = new Client();
+                deliveryCompany.setClientId(poundsService.getClientIdByName(data[i][6].toString()));
+                pounds.setDeliveryCompany(deliveryCompany);
+                Client receiveCompany = new Client();
+                receiveCompany.setClientId(poundsService.getClientIdByName(data[i][7].toString()));
+                pounds.setReceiveCompany(receiveCompany);
+                pounds.setBusinessType(data[i][8].toString());
+                pounds.setEnterTime(DateUtil.getDateTimeFromStr(data[i][9].toString()));
+                pounds.setOutTime(DateUtil.getDateTimeFromStr(data[i][10].toString()));
+                pounds.setDriver(data[i][11].toString());
+                pounds.setWeighman(data[i][12].toString());
+                pounds.setRemarks(data[i][13].toString());
+                pounds.setOutLicencePlate(data[i][14].toString());
+                pounds.setFounder(data[i][15].toString());
+                pounds.setCreationDate(new Date());
+                Pounds pounds1 = poundsService.getByTransferId(pounds.getTransferId());
+                if (pounds1 != null) {
+                    res.put("status", "fail");
+                    res.put("message", "转移联单号已存在，请检查！");
+                } else {
+                    poundsService.add(pounds);
+                    res.put("status", "success");
+                    res.put("message", "导入成功");
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -136,7 +163,7 @@ public class PRPoundsController {
     public String getPoundsSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.Confirm,CheckState.Invalid};
+        CheckState[] states = new CheckState[]{CheckState.Confirm, CheckState.Invalid};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();
@@ -193,16 +220,32 @@ public class PRPoundsController {
 
     @RequestMapping("invalidPounds")
     @ResponseBody
-    public String invalidPounds(String id){
+    public String invalidPounds(String id) {
         JSONObject res = new JSONObject();
-        try{
+        try {
             poundsService.invalid(id);
-            res.put("status","success");
-            res.put("message","作废成功！");
-        }catch (Exception e){
+            res.put("status", "success");
+            res.put("message", "作废成功！");
+        } catch (Exception e) {
             e.printStackTrace();
-            res.put("status","fail");
-            res.put("message","作废失败！");
+            res.put("status", "fail");
+            res.put("message", "作废失败！");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("printTime")
+    @ResponseBody
+    public String printTime(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            poundsService.printTime(id);
+            res.put("status", "success");
+            res.put("message", "打印时间更新成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "打印时间更新失败！");
         }
         return res.toString();
     }

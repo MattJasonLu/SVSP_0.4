@@ -23,7 +23,29 @@ public interface PoundsMapper {
 
     int countById(String id);
 
+    /**
+     * 根据客户名称获取ID
+     * @param name
+     * @return
+     */
     String getClientIdByName(String name);
 
+    /**
+     * 更新作废状态
+     * @param id
+     */
     void invalid(String id);
+
+    /**
+     * 更新打印时间
+     * @param id
+     */
+    void printTime(String id);
+
+    /**
+     * 通过转移联单Id获取对象
+     * @param transferId
+     * @return
+     */
+    Pounds getByTransferId(String transferId);
 }

@@ -442,9 +442,8 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/EIA/Material/磅单模板.xlsx';
-    var r = confirm("是否下载模板?");
-    if (r == true) {
+    var filePath = 'Files/Templates/磅单模板.xls';
+    if (confirm("是否下载模板?")) {
         window.open('downloadFile?filePath=' + filePath);
     }
 }
@@ -454,9 +453,11 @@ function downloadModal() {
  *
  */
 function importExcel() {
-    document.getElementById("idExcel").click();
-    document.getElementById("idExcel").addEventListener("change", function () {
-        var eFile = document.getElementById("idExcel").files[0];
+    document.getElementById("excelFile").click();
+    console.log("before");
+    document.getElementById("excelFile").addEventListener("change", function () {
+        console.log("导入运行！");
+        var eFile = document.getElementById("excelFile").files[0];
         var formFile = new FormData();
         formFile.append("excelFile", eFile);
         $.ajax({
@@ -483,6 +484,7 @@ function importExcel() {
             }
         });
     });
+    console.log("after");
 }
 
 /**
@@ -534,10 +536,10 @@ function searchPounds() {
     if ($("#senior").is(':visible')) {
         var deliveryCompany = {};
         deliveryCompany.companyName = $("#search-deliveryCompany").val();
-        // deliveryCompany.clientId = getClientIdByName(deliveryCompany.companyName);
+        //deliveryCompany.clientId = getClientIdByName(deliveryCompany.companyName);
         var receiveCompany = {};
         receiveCompany.companyName = $("#search-receiveCompany").val();
-        // receiveCompany.clientId = getClientIdByName(receiveCompany.companyName);
+        //receiveCompany.clientId = getClientIdByName(receiveCompany.companyName);
         data = {
             transferId: $("#search-transferId").val(),
             deliveryCompany: deliveryCompany,
@@ -549,26 +551,29 @@ function searchPounds() {
             page: page
         };
     }
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "searchPounds",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            console.log(result);
-            if (result.data != undefined || result.status == "success") {
-                setPageClone(result.data);
-            } else {
-                alert(result.message);
+    if (data == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchPounds",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setPageClone(result.data);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("请点击'查询设置'输入查询内容!");
-        }
-    });
+        });
+    }
 }
 
 function getPoundsId(item) {
@@ -671,6 +676,26 @@ function loadPoundsItems() {
  * 打印功能
  */
 function print() {
-
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "printTime",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: localStorage.id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined || result.status == "success") {
+                window.location.reload();
+                alert("打印时间已更新！");
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+                console.log("error: " + result);
+                console.log("服务器错误！");
+        }
+        });
 }
 
