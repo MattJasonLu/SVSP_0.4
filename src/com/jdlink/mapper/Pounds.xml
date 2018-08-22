@@ -28,6 +28,10 @@
           select * from t_pr_pounds where id = #{id};
      </select>
 
+    <select id="getByTransferId" parameterType="String" resultMap="PoundsRM">
+        select * from t_pr_pounds where transferId = #{transferId};
+    </select>
+
     <select id="listPage" resultMap="PoundsRM">
         select * from t_pr_pounds order by nowTime desc
         <if test="start != null and count != null">
@@ -46,10 +50,10 @@
                 and transferId = #{transferId}
             </if>
             <if test="deliveryCompany.companyName !=null and deliveryCompany.companyName != ''">
-                and deliveryCompanyId = #{deliveryCompany.clientId}
+                and deliveryCompanyId in (select clientId from client where companyName like "%"#{deliveryCompany.companyName}"%")
             </if>
             <if test="receiveCompany.companyName != null and receiveCompany.companyName != ''">
-                and receiveCompanyId = #{receiveCompany.clientId}
+                and receiveCompanyId in (select clientId from client where companyName like "%"#{receiveCompany.companyName}"%")
             </if>
             <if test="driver != null and driver != ''">
                 and driver like "%"#{driver}"%"
@@ -105,6 +109,12 @@
         grossWeight =#{grossWeight},netWeight =#{netWeight},tare =#{tare},deliveryCompanyId =#{deliveryCompany.clientId},
         receiveCompanyId =#{receiveCompany.clientId},businessType =#{businessType},enterTime =#{enterTime},
         outTime =#{outTime},driver =#{driver},weighman =#{weighman},remarks= #{remarks}
+        where id = #{id};
+    </update>
+
+    <update id="printTime" parameterType="String">
+        update t_pr_pounds
+        set printTime = NOW()
         where id = #{id};
     </update>
 
