@@ -1,43 +1,82 @@
 package com.jdlink.domain.Produce;
 
 public class MonthProcurement {
-    //物资类别(应急同)
+    /**
+     * 物资类别(应急同)
+     */
     private String suppliesCategory;
-    //申请单编号
+    /**
+     * 申请单编号
+     */
     private String ReceiptNumber;
-    //申请月份
+    /**
+     * 申请月份
+     */
     private String applyMonth;
-    //需求时间(应急同)
+
+    /**
+     * 需求时间(应急同)
+     */
     private String demandTime;
-    //申请部门
+    /**
+     * 申请部门
+     */
     private String applyDepartment;
-    //需求数量(应急同)
+    /**
+     * 需求数量(应急同)
+     */
     private float demandQuantity;
-    //申购部门负责人
+    /**
+     * 申购部门负责人
+     */
     private String proposer;
-    //申购部门分管领导
+    /**
+     * 申购部门分管领导
+     */
     private String divisionHead;
-    //采购部门负责人
+    /**
+     * 采购部门负责人
+     */
     private String purchasingDirector;
-    //采购部门分管领导
+    /**
+     * 采购部门分管领导
+     */
     private String purchasingHead;
-    //总经理
+    /**
+     * 总经理
+     */
     private String generalManager;
-    //编号
+    /**
+     * 编号
+     */
     private String Id1;
-    //序号
+    /**
+     * 序号
+     */
     private float Id2;
-    //物资名称(应急同)
+    /**
+     * 物资名称(应急同)
+     */
     private String suppliesName;
-    //规格型号(应急同)
+    /**
+     * 规格型号(应急同)
+     */
     private String specifications;
-    //单位(应急同)
+    /**
+     * 单位(应急同)
+     */
     private String unit;
-    //库存量(应急同)
+    /**
+     * 库存量(应急同)
+     */
     private String inventory;
-    //备注
+    /**
+     * 备注
+     */
     private String note;
-    //数据类别
+    /**
+     * 数据类别
+     */
     private boolean month;
 
     public String getSuppliesCategory() {
