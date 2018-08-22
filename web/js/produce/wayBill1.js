@@ -439,7 +439,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/EIA/Material/接运单模板.xlsx';
+    var filePath = 'Files/Templates/接运单模板.xlsx';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
@@ -524,26 +524,29 @@ function searchWayBill() {
         };
         //console.log(data);
     }
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "searchWayBill",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            console.log(result);
-            if (result.data != undefined || result.status == "success") {
-                setPageClone(result.data);
-            } else {
-                alert(result.message);
+    if(data ==  null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchWayBill",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setPageClone(result.data);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("请点击'查询设置'输入查询内容!");
-        }
-    });
+        });
+    }
 }
 
 function getWayBillId(item) {

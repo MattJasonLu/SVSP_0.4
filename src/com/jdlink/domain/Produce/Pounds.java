@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Page;
 import jxl.write.DateTime;
 
 import java.util.Date;
@@ -87,6 +88,10 @@ public class Pounds {
      * 磅单状态
      */
     private CheckState state;
+    /**
+     * 分页
+     */
+    private Page page;
 
     public String getId() {
         return id;
@@ -246,6 +251,14 @@ public class Pounds {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 
     @Override

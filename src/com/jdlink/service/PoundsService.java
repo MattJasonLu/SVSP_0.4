@@ -17,4 +17,6 @@ public interface PoundsService {
     int countById(String id);
     String getClientIdByName(String name);
     void invalid(String id);
+    void printTime(String id);
+    Pounds getByTransferId(String transferId);
 }
