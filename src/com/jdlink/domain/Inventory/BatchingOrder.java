@@ -3,6 +3,7 @@ package com.jdlink.domain.Inventory;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Salesman;
+import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
     /*配料单号*/
     private String batchingOrderId;
     /*配料日期*/
-    private Date  batchigDate;
+    private Date  batchingDate;
     /*创建人*/
     private String founder;
     /*创建日期*/
@@ -41,6 +42,35 @@ import java.util.List;
     private  RecordState recordState;
     /*危废库存*/
     private WasteInventory wasteInventory;
+    /*入库单对象*/
+    private InboundOrder inboundOrder;
+    /*配料数量*/
+    private float batchingNumber;
+    private Wastes wastes;
+
+    public Wastes getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(Wastes wastes) {
+        this.wastes = wastes;
+    }
+
+    public InboundOrder getInboundOrder() {
+        return inboundOrder;
+    }
+
+    public void setInboundOrder(InboundOrder inboundOrder) {
+        this.inboundOrder = inboundOrder;
+    }
+
+    public float getBatchingNumber() {
+        return batchingNumber;
+    }
+
+    public void setBatchingNumber(float batchingNumber) {
+        this.batchingNumber = batchingNumber;
+    }
 
     public WasteInventory getWasteInventory() {
         return wasteInventory;
@@ -143,12 +173,12 @@ import java.util.List;
         this.batchingOrderId = batchingOrderId;
     }
 
-    public Date getBatchigDate() {
-        return batchigDate;
+    public Date getBatchingDate() {
+        return batchingDate;
     }
 
-    public void setBatchigDate(Date batchigDate) {
-        this.batchigDate = batchigDate;
+    public void setBatchingDate(Date batchingDate) {
+        this.batchingDate = batchingDate;
     }
 
     public String getFounder() {
@@ -190,7 +220,7 @@ import java.util.List;
     public String toString() {
         return "BatchingOrder{" +
                 "batchingOrderId='" + batchingOrderId + '\'' +
-                ", batchigDate=" + batchigDate +
+                ", batchingDate=" + batchingDate +
                 ", founder='" + founder + '\'' +
                 ", founderDate=" + founderDate +
                 ", remarks='" + remarks + '\'' +
@@ -205,6 +235,9 @@ import java.util.List;
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
                 ", wasteInventory=" + wasteInventory +
+                ", inboundOrder=" + inboundOrder +
+                ", batchingNumber=" + batchingNumber +
+                ", wastes=" + wastes +
                 ", materialRequisitionOrderList=" + materialRequisitionOrderList +
                 '}';
     }
