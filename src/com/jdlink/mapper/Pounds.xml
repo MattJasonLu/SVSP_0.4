@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.PoundsMapper">
+    <resultMap id="PoundsRM" type="Pounds" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="receiveCompany" column="receiveCompanyId" select="getReceiveCompany"/>
+        <association property="deliveryCompany" column="deliveryCompanyId" select="getDeliveryCompany"/>
+    </resultMap>
+    <select id="getReceiveCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{receiveCompanyId};
+    </select>
+    <select id="getDeliveryCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{deliveryCompanyId};
+    </select>
+
+    <select id="count" resultType="int">
+          select count(*) from t_pr_pounds;
+     </select>
+
+    <select id="countById" resultType="int">
+        select count(*) from t_pr_pounds where id like "%"#{id}"%";
+    </select>
+
+    <select id="getById" parameterType="String" resultMap="PoundsRM">
+          select * from t_pr_pounds where id = #{id};
+     </select>
+
+    <select id="listPage" resultMap="PoundsRM">
+        select * from t_pr_pounds order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="getClientIdByName" parameterType="String" resultType="String">
+        select clientId from client where companyName = #{name};
+    </select>
+
+    <select id="search" parameterType="Pounds" resultMap="PoundsRM">
+        select * from t_pr_pounds
+        <where>
+            <if test="transferId != null and transferId != ''">
+                and transferId = #{transferId}
+            </if>
+            <if test="deliveryCompany.companyName !=null and deliveryCompany.companyName != ''">
+                and deliveryCompanyId = #{deliveryCompany.clientId}
+            </if>
+            <if test="receiveCompany.companyName != null and receiveCompany.companyName != ''">
+                and receiveCompanyId = #{receiveCompany.clientId}
+            </if>
+            <if test="driver != null and driver != ''">
+                and driver like "%"#{driver}"%"
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                and goodsName like "%"#{goodsName}"%"
+            </if>
+            <if test="enterLicencePlate != null and enterLicencePlate != ''">
+                and enterLicencePlate like "%"#{enterLicencePlate}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state like "%"#{state}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="Pounds" resultType="int">
+        select count(*) from t_pr_pounds
+        <where>
+            <if test="deliveryCompany.companyName !=null and deliveryCompany.companyName != ''">
+                and deliveryCompanyId in (select clientId from client where companyName like "%"#{deliveryCompany.companyName}"%")
+            </if>
+            <if test="receiveCompany.companyName != null and receiveCompany.companyName != ''">
+                and receiveCompanyId in (select clientId from client where companyName like "%"#{receiveCompany.companyName}"%")
+            </if>
+            <if test="driver != null and driver != ''">
+                and driver like "%"#{driver}"%"
+            </if>
+            <if test="goodsName != null and goodsName != ''">
+                and goodsName like "%"#{goodsName}"%"
+            </if>
+            <if test="enterLicencePlate != null and enterLicencePlate != ''">
+                and enterLicencePlate like "%"#{enterLicencePlate}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state like "%"#{state}"%"
+            </if>
+        </where>
+    </select>
+
+    <update id="invalid" parameterType="String">
+        update t_pr_pounds set state = 'Invalid' where id = #{id}
+    </update>
+
+
+    <update id="update" parameterType="Pounds">
+        update t_pr_pounds
+        set enterLicencePlate =#{enterLicencePlate},outLicencePlate =#{outLicencePlate},goodsName =#{goodsName},
+        grossWeight =#{grossWeight},netWeight =#{netWeight},tare =#{tare},deliveryCompanyId =#{deliveryCompany.clientId},
+        receiveCompanyId =#{receiveCompany.clientId},businessType =#{businessType},enterTime =#{enterTime},
+        outTime =#{outTime},driver =#{driver},weighman =#{weighman},remarks= #{remarks}
+        where id = #{id};
+    </update>
+
+    <insert id="add" parameterType="Pounds">
+        insert into t_pr_pounds
+        (id,transferId,founder,creationDate,enterLicencePlate,outLicencePlate,goodsName,grossWeight,netWeight,tare,
+        deliveryCompanyId,receiveCompanyId,businessType,enterTime,outTime,driver,weighman,remarks,nowTime,state)
+        values
+        (#{id},#{transferId},#{founder},#{creationDate},#{enterLicencePlate},#{outLicencePlate},
+        #{goodsName},#{grossWeight},#{netWeight},#{tare},#{deliveryCompany.clientId},#{receiveCompany.clientId},
+        #{businessType},#{enterTime},#{outTime},#{driver},#{weighman},#{remarks},NOW(),'Confirm');
+    </insert>
+
+</mapper>

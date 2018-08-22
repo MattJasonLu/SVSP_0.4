@@ -97,21 +97,16 @@ function setWayBillItemList(result) {
                     $(this).html(obj.wastes.unitPriceTax);
                     break;
                 case(9):
-                    //危废运费
-                    if (obj.wastes != null)
-                    $(this).html(obj.wastes.freight);
-                    break;
-                case(10):
                     //危废单个合计
                     if (obj.wastes != null)
-                    var total = obj.wastes.unitPriceTax * obj.wastes.wasteAmount - obj.wastes.freight;
+                    var total = obj.wastes.unitPriceTax * obj.wastes.wasteAmount;
                     $(this).html(total);
                     break;
-                case(11):
+                case(10):
                     //开票日期
                     $(this).html(getDateStr(obj.invoiceDate));
                     break;
-                case(12):
+                case(11):
                     //发票号码
                     $(this).html(obj.invoiceNumber);
                     break;
@@ -324,8 +319,7 @@ function addWastes() {
         wastes.name = $("#wastes" + $i + "-name").val();
         wastes.wasteAmount = $("#wastes" + $i + "-wasteAmount").val();
         wastes.unitPriceTax = $("#wastes" + $i + "-unitPriceTax").val();
-        wastes.freight = $("#wastes" + $i + "-freight").val();
-        wastes.wastesTotal = wastes.wasteAmount * wastes.unitPriceTax - wastes.freight;
+        wastes.wastesTotal = wastes.wasteAmount * wastes.unitPriceTax;
         wayBillItem.itemId = ItemId1.toString();
         wayBillItem.wastes = wastes;
         wayBillItem.invoiceDate = $("#wastes" + $i + "-invoiceDate").val();

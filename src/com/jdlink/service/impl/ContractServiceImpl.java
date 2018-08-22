@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Contract;
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Salesman;
 import com.jdlink.mapper.ContractMapper;
 import com.jdlink.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,6 +173,21 @@ contractMapper.updateFreight2(id);
     @Override
     public String getContent(String contractId) {
         return contractMapper.getContent(contractId);
+    }
+
+    @Override
+    public List<Salesman> listSalesmanByContract(Page page) {
+        return contractMapper.listSalesmanByContract(page);
+    }
+
+    @Override
+    public int countSalesmanByContract() {
+        return contractMapper.countSalesmanByContract();
+    }
+
+    @Override
+    public List<Contract> getContractBySalesman(String salesmanId, Page page) {
+        return contractMapper.getContractBySalesman(salesmanId, page);
     }
 
 

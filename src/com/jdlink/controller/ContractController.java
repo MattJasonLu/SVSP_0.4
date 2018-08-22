@@ -1,10 +1,8 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
-import com.jdlink.service.CityService;
-import com.jdlink.service.ClientService;
-import com.jdlink.service.ContractService;
-import com.jdlink.service.SupplierService;
+import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.service.*;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
 import net.sf.json.JSONArray;
@@ -17,10 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by matt on 2018/5/18.
@@ -35,6 +30,8 @@ public class ContractController {
     ClientService clientService;
     @Autowired
     SupplierService supplierService;
+    @Autowired
+    LaboratoryTestService laboratoryTestService;
 
     @RequestMapping("listContract")
     @ResponseBody
@@ -798,6 +795,89 @@ public class ContractController {
         System.out.println(content);
         JSONObject res=JSONObject.fromBean(content);
         return  res.toString();
+    }
+
+    // 业务员合同部分
+    /**
+     * 根据合同中客户编号获取业务员信息
+     * @return 业务员列表
+     */
+    @RequestMapping("listSalesmanByContract")
+    @ResponseBody
+    public String listSalesmanByContract(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Salesman> salesmanList = contractService.listSalesmanByContract(page);
+            JSONArray data = JSONArray.fromArray(salesmanList.toArray(new Salesman[salesmanList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 根据合同中的客户信息筛选出业务员列表，获取其业务员数量
+     * @return 业务员数量
+     */
+    @RequestMapping("countSalesmanByContract")
+    @ResponseBody
+    public int countSalesmanByContract() {
+        int count = 0;
+        try {
+            count = contractService.countSalesmanByContract();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    /**
+     * 根据业务员的编号筛选出所有的合同
+     * @param salesmanId 业务员编号
+     * @param page 页码
+     * @return 合同列表
+     */
+    @RequestMapping("getContractBySalesman")
+    @ResponseBody
+    public String getContractBySalesman(String salesmanId, Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Contract> contractList = contractService.getContractBySalesman(salesmanId, page);
+            // 危废信息
+            Map<String, List<Wastes>> map = new HashMap<>();
+            // 客户联系信息
+            Map<String, String> map2 = new HashMap<>();
+            // 遍历合同列表，获取每个合同对应客户的
+            for (Contract contract : contractList) {
+                String clientId = contract.getClientId();
+                LaboratoryTest laboratoryTest = laboratoryTestService.getRecentLaboratoryTestByClientId(clientId);
+                if (laboratoryTest != null) map.put(clientId, laboratoryTest.getWastesList());
+                else map.put(clientId, new ArrayList<Wastes>());
+                Client client = clientService.getByClientId(clientId);
+                String contactInfo = client.getContactName() + "-" + client.getPhone();
+                map2.put(clientId, contactInfo);
+            }
+            // map转json
+            JSONObject jMap = JSONObject.fromMap(map);
+            JSONObject jMap2 = JSONObject.fromMap(map2);
+            JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            // 赋值
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", data);
+            res.put("map", jMap);
+            res.put("contactInfo", jMap2);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
     }
 }
 

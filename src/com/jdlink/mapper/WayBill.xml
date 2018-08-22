@@ -101,6 +101,9 @@
             <if test="total != null and total !=''">
                 and total = #{total}
             </if>
+            <if test="freight !=null and freight !='' ">
+                and freight = #{freight}
+            </if>
             <if test="founder !=null and founder !=''">
                 and founder like "%"#{founder}"%"
             </if>
@@ -131,6 +134,9 @@
             </if>
             <if test="total != null and total !=''">
                 and total = #{total}
+            </if>
+            <if test="freight !=null and freight !='' ">
+                and freight = #{freight}
             </if>
             <if test="founder !=null and founder !=''">
                 and founder like "%"#{founder}"%"
@@ -165,42 +171,56 @@
 
     <insert id="update" parameterType="WayBill">
         update t_pr_waybill
-        set id=#{id},total=#{total},remarks=#{remarks},wayBillDate=NOW(),produceCompanyId=#{produceCompany.clientId},
+        set total=#{total},freight=#{freight},remarks=#{remarks},wayBillDate=NOW(),produceCompanyId=#{produceCompany.clientId},
         nowTime=NOW(),produceCompanyOperator=#{produceCompanyOperator},produceCompanyName=#{produceCompany.companyName},
-        founder=#{founder};
+        founder=#{founder}
+        where id = #{id};
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             update t_pr_waybillitem
-            set itemId=#{wayBillItem.itemId},wayBillId=#{id},receiveDate=#{wayBillItem.receiveDate},
+            set itemId=#{wayBillItem.itemId},receiveDate=#{wayBillItem.receiveDate},
             receiveCompanyOperator=#{wayBillItem.receiveCompanyOperator},invoiceNumber=#{wayBillItem.invoiceNumber},
             invoiceDate=#{wayBillItem.invoiceDate},salesmanId=#{wayBillItem.salesman.salesmanId},
-            receiveCompanyId=#{wayBillItem.receiveCompany.clientId},wastesId=#{wayBillItem.wastes.id};
+            receiveCompanyId=#{wayBillItem.receiveCompany.clientId},wastesId=#{wayBillItem.wastes.id}
+            where wayBillId=#{id};
         </foreach>
     </insert>
 
     <insert id="addItem" parameterType="WayBill">
-        <foreach collection="wayBillItemList" index="index" item="wayBillItem">
+    <foreach collection="wayBillItemList" index="index" item="wayBillItem">
+        insert into t_pr_waybillitem
+        (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
+        values
+        (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
+
+        insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount)
+        values
+        (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wastesTotal},#{wayBillItem.wastes.wasteAmount});
+    </foreach>
+</insert>
+
+    <insert id="addSingleItem" parameterType="WayBillItem">
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
             values
-            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
+            (#{itemId},#{wayBillId},#{receiveDate},#{receiveCompanyOperator},
+            #{invoiceNumber},#{invoiceDate},#{salesman.salesmanId},
+            #{receiveCompany.clientId},#{wastes.id});
 
-            insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount,freight)
+            insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount)
             values
-            (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wastesTotal},#{wayBillItem.wastes.wasteAmount},#{wayBillItem.wastes.freight});
-        </foreach>
+            (#{wastes.id},#{wastes.name},#{wastes.unitPriceTax},#{wastes.wastesTotal},#{wastes.wasteAmount});
     </insert>
 
     <insert id="addWayBill" parameterType="WayBill">
         insert into t_pr_waybill
-        (id,total,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder)
+        (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder)
         values
-        (#{id},#{total},#{remarks},NOW(),#{produceCompany.clientId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompany.companyName},#{founder});
+        (#{id},#{total},#{freight},#{remarks},NOW(),#{produceCompany.clientId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompany.companyName},#{founder});
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
             values
             (#{wayBillItem.itemId},#{id},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
-
         </foreach>
     </insert>
 

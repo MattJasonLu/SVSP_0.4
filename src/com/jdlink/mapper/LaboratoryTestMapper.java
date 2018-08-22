@@ -27,4 +27,11 @@ public interface LaboratoryTestMapper {
 
      void confirm(String laboratoryTestNumber);
 
+    /**
+     * 根据客户编号获取化验室单号
+     * @param clientId 客户编号
+     * @return 化验室单号
+     */
+     String getRecentLaboratoryTestNumberByClientId(String clientId);
+
 }

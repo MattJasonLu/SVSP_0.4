@@ -1,8 +1,7 @@
-
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data;
-var wayBillId = "0000000000";
+var poundsId = "0000000000";
 
 /**
  * 返回count值
@@ -21,7 +20,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalWayBillRecord",                  // url
+            url: "totalPoundsRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -40,7 +39,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchWayBillTotal",                  // url
+            url: "searchPoundsTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -70,7 +69,7 @@ function totalPage() {
  * */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setWayBillList(result);
+    setPoundsList(result);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -139,14 +138,14 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageWayBillList",         // url
+            url: "loadPagePoundsList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setWayBillList(result.data);
+                    setPoundsList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -159,7 +158,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchWayBill",         // url
+            url: "searchPounds",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -167,7 +166,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setWayBillList(result.data);
+                    setPoundsList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -217,7 +216,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageWayBillList",         // url
+                url: "loadPagePoundsList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -225,7 +224,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setWayBillList(result.data);
+                        setPoundsList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -238,7 +237,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchWayBill",         // url
+                url: "searchPounds",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -246,7 +245,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setWayBillList(result.data);
+                        setPoundsList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -262,12 +261,12 @@ function inputSwitchPage() {
 /**
  * 分页 获取首页内容
  * */
-function loadPageWayBillList() {
+function loadPagePoundsList() {
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
-    if(totalPage() == 1){
+    if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
     }
@@ -277,7 +276,7 @@ function loadPageWayBillList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "loadPageWayBillList",          // url
+        url: "loadPagePoundsList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
@@ -317,7 +316,7 @@ function loadPages(totalRecord, count) {
         return parseInt(totalRecord / count) + 1;
 }
 
-function setWayBillList(result) {
+function setPoundsList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#clone");
     tr.siblings().remove();
@@ -330,51 +329,55 @@ function setWayBillList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
-                    //接运单号
+                case(0):
+                    //磅单号
                     $(this).html(obj.id);
                     break;
                 case (1):
-                    // 废物生产单位
-                    $(this).html(obj.produceCompany.companyName);
+                    //转移联单号
+                    $(this).html(obj.transferId);
                     break;
                 case (2):
-                    //总额
-                {
-                    var total = 0;
-                    for(var i = 0;i < obj.wayBillItemList.length;i++){
-                        total += obj.wayBillItemList[i].wastes.wastesTotal;
-                    }
-                    obj.total = total;
-                }
-                    $(this).html(obj.total);
+                    // 入厂车号
+                    $(this).html(obj.enterLicencePlate);
                     break;
                 case (3):
-                    //总运费
-                    $(this).html(obj.freight);
-                    break;
-                case (4):
-                    // 创建人
                     $(this).html(obj.founder);
                     break;
+                case (4):
+                    //创建日期
+                    $(this).html(getDateStr(obj.creationDate));
+                    break;
                 case (5):
-                    //接运单创建日期
-                    $(this).html(getDateStr(obj.wayBillDate));
+                    // 货物名称
+                    $(this).html(obj.goodsName);
                     break;
                 case (6):
-                    //备注
-                    $(this).html(obj.remarks);
+                    //发货单位
+                    $(this).html(obj.deliveryCompany.companyName);
                     break;
                 case (7):
-                    //危废产生单位经手人
-                    $(this).html(obj.produceCompanyOperator);
+                    //收货单位
+                    $(this).html(obj.receiveCompany.companyName);
                     break;
                 case (8):
-                    //接运单状态
+                    //业务类型
+                    $(this).html(obj.businessType);
+                    break;
+                case (9):
+                    //司机
+                    $(this).html(obj.driver);
+                    break;
+                case(10):
+                    //状态
                     if (obj.state != null) {
                         obj.name = obj.state.name;
                     }
                     $(this).html(obj.name);
+                    break;
+                case(11):
+                    //备注
+                    $(this).html(obj.remarks);
                     break;
             }
         });
@@ -392,14 +395,14 @@ function setWayBillList(result) {
 function setSeniorSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWayBillSeniorSelectedList",                  // url
+        url: "getPoundsSeniorSelectedList",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
                 var data = eval(result);
                 // 高级检索下拉框数据填充
-                var state = $("#search-wayBillState");
+                var state = $("#search-state");
                 state.children().remove();
                 $.each(data.stateList, function (index, item) {
                     var option = $('<option />');
@@ -423,8 +426,8 @@ function setSeniorSelectedList() {
  * @param e
  */
 function exportExcel() {
-    var name = 't_pr_waybill';
-    var sqlWords = "select id,produceCompanyName,total,freight,founder,wayBillDate,remarks,produceCompanyOperator,state from t_pr_waybill ";
+    var name = 't_pr_pounds';
+    var sqlWords = "select * from t_pr_pounds ";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -439,7 +442,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/EIA/Material/接运单模板.xlsx';
+    var filePath = 'Files/EIA/Material/磅单模板.xlsx';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
@@ -458,7 +461,7 @@ function importExcel() {
         formFile.append("excelFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "importWayBillExcel",              // url
+            url: "importPoundsExcel",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: formFile,
@@ -490,10 +493,34 @@ function reset() {
     $("#senior").find("select").get(0).selectedIndex = -1;
 }
 
+
+// function getClientIdByName(name){
+//     var id = '';
+//     $.ajax({
+//         type: "POST",                       // 方法类型
+//         url: "getClientIdByName",              // url
+//         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+//         dataType: "json",
+//         data:{
+//             name: name
+//         },
+//         processData: false,
+//         contentType: false,
+//         success: function (result) {
+//             if (result != undefined) {
+//                 id = result.id;
+//             }
+//         },
+//         error: function (result) {
+//             console.log(result);
+//         }
+//     });
+//     return id;
+// }
 /**
  * 查询功能
  */
-function searchWayBill() {
+function searchPounds() {
     isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
@@ -501,32 +528,30 @@ function searchWayBill() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-wayBillState").val() == 0) state = "NewBuild";//新建
-    if ($("#search-wayBillState").val() == 1) state = "ToExamine";//待审批
-    if ($("#search-wayBillState").val() == 2) state = "Examining";//审批中
-    if ($("#search-wayBillState").val() == 3) state = "Approval";//审批通过
-    if ($("#search-wayBillState").val() == 4) state = "Backed";//驳回
+    if ($("#search-state").val() == 0) state = "Confirm";//已确认
+    if ($("#search-state").val() == 1) state = "Invalid";//已作废
+
     if ($("#senior").is(':visible')) {
-        var produceCompany = {};
-        produceCompany.companyName = $("#search-companyName").val();
+        var deliveryCompany = {};
+        deliveryCompany.companyName = $("#search-deliveryCompany").val();
+        // deliveryCompany.clientId = getClientIdByName(deliveryCompany.companyName);
         var receiveCompany = {};
-        receiveCompany.companyName = $("#search-companyName").val();
+        receiveCompany.companyName = $("#search-receiveCompany").val();
+        // receiveCompany.clientId = getClientIdByName(receiveCompany.companyName);
         data = {
-            id: $("#search-id").val(),
-            produceCompany: produceCompany,
-            total: $("#search-total").val(),
-            freight: $("#search-freight").val(),
-            founder: $("#search-founder").val(),
+            transferId: $("#search-transferId").val(),
+            deliveryCompany: deliveryCompany,
+            receiveCompany: receiveCompany,
+            goodsName: $("#search-goodsName").val(),
             wayBillDate: $("#search-wayBillDate").val,
-            produceCompanyOperator: $("#search-operator").val(),
+            enterLicencePlate: $("#search-licencePlate").val(),
             state: state,
             page: page
         };
-        //console.log(data);
     }
     $.ajax({
         type: "POST",                            // 方法类型
-        url: "searchWayBill",                 // url
+        url: "searchPounds",                 // url
         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -546,236 +571,106 @@ function searchWayBill() {
     });
 }
 
-function getWayBillId(item) {
+function getPoundsId(item) {
     return item.parentElement.parentElement.firstElementChild.innerHTML;
 }
 
-/**
- * 双击编辑
- * @param item
- */
-function editWayBill1(item){
-    var id = item.firstElementChild.innerHTML;
-    localStorage.id = id;
-    localStorage.add = 1;
-    location.href = "wayBill.html";
+function getPoundsId1(item) {
+    return item.firstElementChild.innerHTML;
 }
+
 /**
  * 查看功能
  */
 function toView(item) {
-    var id = getWayBillId(item);
+    var id = getPoundsId(item);
     localStorage.id = id;
-    localStorage.add = 0;
-    location.href = "wayBill.html";
+    location.href = "singlePoundsManage.html";
 }
 
 /**
- * 编辑功能
+ * 双击查看
+ * @param item
  */
-function editWayBill(item) {
-    var id = getWayBillId(item);
+function toView1(item) {
+    var id = getPoundsId1(item);
     localStorage.id = id;
-    localStorage.add = 1;
-    location.href = "wayBill.html";
-}
-
-/**
- * 提交功能
- */
-function submit(item) {
-    var id = getWayBillId(item);
-    $.ajax({
-        type: "POST",
-        url: "submitWayBill",
-        async: false,
-        data: {
-            id: id
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.status == "success") {
-                alert("提交成功！");
-                window.location.reload();
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
-}
-
-/**
- * 审批
- */
-function examination(item) {
-    wayBillId = getWayBillId(item);
-    console.log(wayBillId);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getWayBill",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {
-            id: wayBillId
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.data != undefined || result.status == "success" || result.data  != null) {
-                var data = eval(result.data);
-                console.log(data.state);
-                if (data.state.name != '审批中') alert("请提交后再进行审批操作！");
-                else $('#examinationModal').modal('show');//手动触发模态框弹出
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
-}
-
-function approval() {
-    $('#contractInfoForm2').modal('show');
-    $("#passContent").val($("#advice").val());
-}
-
-function reject() {
-    $('#contractInfoForm3').modal('show');
-    $("#backContent").val($("#advice").val());
-}
-
-/**
- * 审批通过
- *
- * */
-function approval1() {
-    console.log($("#advice").val());
-    console.log($("#passContent").val());
-    var advice = $("#passContent").val();
-    var wayBill = {};
-    wayBill.id = wayBillId;
-    wayBill.advice = advice;
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "approvalWayBill",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(wayBill),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            console.log(result);
-            if (result != undefined) {
-                var data = eval(result);
-                if (data.status == "success") {
-                    alert(data.message);
-                    window.location.reload();
-                } else {
-                    alert(data.message);
-                }
-            }
-        },
-        error: function (result) {
-            var data = eval(result);
-            console.log(data.message);
-            alert("服务器异常!");
-        }
-    });
-}
-
-/**
- * 审批驳回
- * */
-function reject1() {
-    var advice = $("#backContent").val();
-    var wayBill = {};
-    wayBill.id = wayBillId;
-    wayBill.advice = advice;
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "rejectWayBill",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(wayBill),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            console.log(result);
-            if (result != undefined) {
-                var data = eval(result);
-                if (data.status == "success") {
-                    alert(data.message);
-                    window.location.reload();
-                } else {
-                    alert(data.message);
-                }
-            }
-        },
-        error: function (result) {
-            var data = eval(result);
-            console.log(data.message);
-            alert("服务器异常!");
-        }
-    });
+    location.href = "singlePoundsManage.html";
 }
 
 /**
  * 作废功能
  */
-function invalidWayBill(item) {
-    var id = getWayBillId(item);
+function invalid(item) {
+    var id = getPoundsId(item);
+    if (confirm("确认作废？")) {
+        $.ajax({
+            type: "POST",
+            url: "invalidPounds",
+            async: false,
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.status == "success") {
+                    alert("作废成功！");
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
+            }
+        });
+    }
+}
+
+//---------------------------------------------
+function loadPoundsItems() {
     $.ajax({
-        type: "POST",
-        url: "invalidWayBill",
-        async: false,
+        type: "POST",                       // 方法类型
+        url: "getPounds",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: {
-            id: id
+            id: localStorage.id
         },
         dataType: "json",
         success: function (result) {
-            if (result.status == "success") {
-                alert("作废成功！");
-                window.location.reload();
+            if (result != undefined && result.status == "success") {
+                var data = eval(result.data);
+                $("#modal1_outTime").text(getTimeStr(data.outTime));
+                $("#modal1_enterLicencePlate").text(data.enterLicencePlate);
+                $("#modal1_outLicencePlate").text(data.outLicencePlate);
+                $("#modal1_goodsName").text(data.goodsName);
+                $("#modal1_grossWeight").text(data.grossWeight);
+                $("#modal1_deliveryCompany").text(data.deliveryCompany.companyName);
+                $("#modal1_tare").text(data.tare);
+                $("#modal1_receiveCompany").text(data.receiveCompany.companyName);
+                $("#modal1_netWeight").text(data.netWeight);
+                $("#modal1_businessType").text(data.businessType);
+                $("#modal1_enterTime").text(getTimeStr(data.enterTime));
+                $("#modal1_weighman").text(data.weighman);
+                $("#modal1_driver").text(data.driver);
+                $("#modal1_remarks").text(data.remarks);
+                $("#modal1_printTime").text(getTimeStr(data.printTime));
             } else {
-                alert(result.message);
+                console.log(result.message);
             }
         },
         error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
+            console.log("error: " + result);
+            console.log("首页获取失败");
         }
     });
 }
 
-function addWayBillModal(){
-    $("#wayBillModal").modal('show');
-}
-
 /**
- * 新增详细项数据
+ * 打印功能
  */
-function addNewItemLine() {
-    // 获取id为plusBtn的tr元素
-    var tr = $("#addBtn1").prev();
-    // 克隆tr，每次遍历都可以产生新的tr
-    var clonedTr = tr.clone();
-    // 克隆后清空新克隆出的行数据
-    var num = clonedTr.children().find("span:first").prop('id').charAt(6);
-    clonedTr.children().find("input").val("");
-    clonedTr.children().find("select").selectpicker('val', '');
-    clonedTr.children().find("button:eq(0)").remove();
-    clonedTr.children().find("button:eq(1)").remove();
-    $('.selectpicker').selectpicker();
-    $()
-    clonedTr.children().find("input,select,span").each(function () {
-        var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
-        $(this).prop('id', newId);
-    });
-    clonedTr.addClass("newLine");
-    clonedTr.insertAfter(tr);
+function print() {
 
 }
+
