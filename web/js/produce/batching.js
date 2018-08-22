@@ -29,7 +29,6 @@ function  batchingList() {
     setSeniorSelectedList();
 }
 /**设置库存列表数据
- *
  */
 function setWasteInventoryList(result) {
     var tr = $("#cloneTr");
@@ -365,7 +364,7 @@ function subtraction(item) {
 function save() {
     $(".myclass2").each(function (item,index) {
         var data={
-          batchingOrderId:$("#batchingOrderId").val(),//配料编号
+            batchingOrderId:$("#batchingOrderId").val(),//配料编号
             inboundOrder:{ inboundOrderId:this.firstElementChild.innerHTML},
             wareHouse:{ wareHouseId:this.firstElementChild.nextElementSibling.innerHTML},
             produceCompany:{companyName:this.firstElementChild.nextElementSibling.nextElementSibling.innerHTML},
@@ -373,8 +372,9 @@ function save() {
              //processWay:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
              name:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,},
             // wasteType:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
-          batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+           batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
           'remarks':this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+            batchingDate:$("#date").val()
     };
         $.ajax({
                 type: "POST",                       // 方法类型
@@ -401,5 +401,33 @@ function save() {
        console.log(item);
 
     });
-    alert("添加成功！")
+    alert("添加成功！");
+    window.location.href="ingredientsList.html";
+}
+//配料单显示页面加载
+function loadBatchingOrderList() {
+//1执行ajax取数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getBatchOrderList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+            }
+            else
+                alert(result.message);
+
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+
+
+    });
+
+
+
 }

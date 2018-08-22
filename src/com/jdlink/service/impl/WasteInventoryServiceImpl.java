@@ -39,5 +39,10 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.total();
     }
 
+    @Override
+    public List<BatchingOrder> getBatchingOrderList() {
+        return wasteInventoryMapper.getBatchingOrderList();
+    }
+
 
 }

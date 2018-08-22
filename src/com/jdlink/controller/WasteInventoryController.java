@@ -139,6 +139,27 @@ public class WasteInventoryController {
 
         return res.toString();
     }
+    //获得配料单的下拉列表
+    @RequestMapping("getBatchOrderList")
+    @ResponseBody
+    public String getBatchOrderList(){
+        JSONObject res=new JSONObject();
+    try {
+        List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatchingOrderList();
+      JSONArray array=JSONArray.fromObject(batchingOrderList);
+        res.put("status", "success");
+        res.put("message", "查询成功");
+        res.put("batchingOrderList",batchingOrderList);
+    }
+   catch (Exception e){
+       e.printStackTrace();
+       res.put("status", "fail");
+       res.put("message", "查询失败");
+   }
+
+        return res.toString();
+    }
+
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){
