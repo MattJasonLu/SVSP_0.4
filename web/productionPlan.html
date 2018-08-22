@@ -15,12 +15,6 @@
     <script src="js/util.js"></script>
     <script src="js/produce/productionPlan.js"></script>
 </head>
-<style type="text/css">
-    .focus {
-        width: 100%;
-        height: 100%;
-    }
-</style>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
 </script>
@@ -189,8 +183,8 @@
                         <div class="form-group">
                             <label for="search-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-state" name="search-state" placeholder=""></select>
-                                <option></option>
+                                <select class="form-control" id="search-state" name="search-state"><option></option></select>
+
                             </div>
                         </div>
                     </div>
@@ -227,19 +221,19 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">
-                        <a title="查看" href="#" onclick="view1(this);"><span class="glyphicon glyphicon-pencil"
+                        <a title="查看" href="#" onclick="view1(this);"><span class="glyphicon glyphicon-search"
                                                                                                aria-hidden="true"></span> </a>
                         <a title="修改" href="#" onclick="edit(this);"><span class="glyphicon glyphicon-pencil"
                                                                                     aria-hidden="true"></span> </a>
-                        <a title="删除" href="#" onclick="delete1(this);"><span class="glyphicon glyphicon-pencil"
+                        <a title="删除" href="#" onclick="delete1(this);"><span class="glyphicon glyphicon-remove-sign"
                                                                                     aria-hidden="true"></span> </a>
-                        <a title="确认" href="#" onclick="confirm1(this);"><span class="glyphicon glyphicon-pencil"
+                        <a title="确认" href="#" onclick="confirm1(this);"><span class="glyphicon glyphicon-ok-sign"
                                                                                     aria-hidden="true"></span> </a>
-                        <a title="提交" href="#" onclick="submit(this);"><span class="glyphicon glyphicon-pencil"
+                        <a title="提交" href="#" onclick="submit(this);"><span class="glyphicon glyphicon-export"
                                                                                     aria-hidden="true"></span> </a>
-                        <a title="审批" href="#" onclick="examination(this);"><span class="glyphicon glyphicon-pencil"
+                        <a title="审批" href="#" onclick="examination(this);"><span class="glyphicon glyphicon-floppy-saved"
                                                                                     aria-hidden="true"></span> </a>
-                        <a title="作废" href="#" onclick="invalid(this);"><span class="glyphicon glyphicon-pencil"
+                        <a title="作废" href="#" onclick="invalid(this);"><span class="glyphicon glyphicon-floppy-remove"
                                                                                     aria-hidden="true"></span> </a>
                     </td>
                 </tr>
