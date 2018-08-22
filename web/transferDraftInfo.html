@@ -11,6 +11,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/produce/transferDraft.js"></script>
 </head>
 <body onload="loadData();">
@@ -335,8 +338,10 @@
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">转移时间</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control" placeholder="" name="transferTime" id="transferTime">
+                        <div class="input-group date form_datetime col-xs-6" id="transferTime" name="transferTime">
+                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
                     </div>
                 </div>
@@ -364,8 +369,10 @@
                 <div class="form-horizontal col-md-6">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">运输时间</label>
-                        <div class="col-xs-9">
-                            <input type="text" class="form-control" placeholder="" name="firstCarryTime" id="firstCarryTime">
+                        <div class="input-group date form_datetime col-xs-9" id="firstCarryTime" name="firstCarryTime">
+                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
                     </div>
                 </div>
@@ -442,8 +449,10 @@
                 <div class="form-horizontal col-md-6">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">运输时间</label>
-                        <div class="col-xs-9">
-                            <input type="text" class="form-control" placeholder="" name="secondCarryTime" id="secondCarryTime">
+                        <div class="input-group date form_datetime col-xs-9" id="secondCarryTime" name="secondCarryTime">
+                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
                     </div>
                 </div>
@@ -539,8 +548,10 @@
                 <div class="form-horizontal col-md-3">
                     <div class="form-group">
                         <label class="col-sm-5 control-label">接收日期</label>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" placeholder="" name="acceptDate" id="acceptDate">
+                        <div class="input-group date form_datetime col-xs-7" id="acceptDate" name="acceptDate">
+                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
                     </div>
                 </div>
@@ -586,8 +597,10 @@
                 <div class="form-horizontal col-md-3">
                     <div class="form-group">
                         <label class="col-sm-5 control-label">日期</label>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" placeholder="" name="signDate" id="signDate">
+                        <div class="input-group date form_datetime col-xs-7" id="signDate" name="signDate">
+                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
                     </div>
                 </div>
@@ -606,5 +619,20 @@
 <script>
     $('#embed').load('embed/loginLogModal.html');
     getSelectedInfo();
+    /**
+     * 设置时间格式
+     */
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0,
+        endDate:new Date()
+    });
 </script>
 </html>
