@@ -33,7 +33,7 @@ public class DateUtil {
      * @return 时间对象
      */
     public static Date getDateTimeFromStr(String dataTimeStr){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try{
             date = dateFormat.parse(dataTimeStr);
