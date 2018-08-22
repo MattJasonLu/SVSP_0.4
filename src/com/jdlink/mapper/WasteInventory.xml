@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.WasteInventoryMapper" >
+    <resultMap id="WasteInventoryRM" type="WasteInventory" autoMapping="true">
+        <result property="wasteInventoryId" column="wasteInventoryId"></result>
+        <result property="id" column="id"></result>
+     <!--<collection property="wareHouse" select="getWareHouse" column="wasteInventoryId" ofType="WareHouse"></collection>-->
+        <collection property="wastes" select="getWastes" column="id" ofType="Wastes"></collection>
+        <collection property="wareHouse" select="getWareHouse" column="warseHouseId" ofType="WareHouse"></collection>
+    </resultMap>
+    <resultMap id="WastesRM" type="Wastes" >
+        <association property="client" column="clientId" select="getClient"/>
+    </resultMap>
+    <select id="list" resultMap="WasteInventoryRM">
+        select * from t_pl_wasteinventory;
+    </select>
+    <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryRM" parameterType="String">
+        select * from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId};
+    </select>
+    <select id="getWareHouse" resultType="WareHouse">
+        select * from t_pl_warehouse where  warehouseId=#{warseHouseId}
+    </select>
+    <select id="getWastes" parameterType="String"  resultMap="WastesRM">
+select * from t_wastes where id=#{id};
+    </select>
+    <select id="getClient" resultType="Client">
+        select * from  client where clientId=#{clientId};
+    </select>
+
+</mapper>

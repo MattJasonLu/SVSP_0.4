@@ -482,11 +482,11 @@ public class ClientController {
      */
     @RequestMapping("passClient")
     @ResponseBody
-    public String passClient(String clientId) {
+    public String passClient(String clientId,String advice) {
         JSONObject res = new JSONObject();
         try {
             // 设置客户审批状态为已完成
-            clientService.setCheckStateFinished(clientId);
+            clientService.setCheckStateFinished(clientId,advice);
             res.put("status", "success");
             res.put("message", "客户信息审批通过");
         } catch (Exception e) {
@@ -503,11 +503,11 @@ public class ClientController {
      */
     @RequestMapping("backClient")
     @ResponseBody
-    public String backClient(String clientId) {
+    public String backClient(String clientId,String advice) {
         JSONObject res = new JSONObject();
         try {
             // 设置客户审批状态为已驳回
-            clientService.setCheckStateBacked(clientId);
+            clientService.setCheckStateBacked(clientId,advice);
             res.put("status", "success");
             res.put("message", "客户信息驳回成功");
         } catch (Exception e) {
@@ -614,9 +614,6 @@ public class ClientController {
         for(int i=0;i<list1.size();i++){
            clientService.deleteSalesId(list1.get(i));
     }
-
-
-
         return null;
     }
 }
