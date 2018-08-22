@@ -12,6 +12,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/testResults.js"></script>
 </head>
 <body onload="loadPageList()">
     <!--导航条-->
@@ -114,7 +115,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" onclick="importExcel();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="setInvalidMulti();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 作废</a>
                         <a class="btn btn-primary btn-xs disabled" onclick=""><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 化验</a>
                         <a class="btn btn-primary btn-xs" onclick="setSubmitMulti();"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> 提交</a>
@@ -675,6 +676,30 @@
             </div>
         </div>
     </div>
+    <!--导入模态框-->
+    <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="modelAssign" method="post">
+                        <div class="form-group">
+                            <font size="+2">提示：</font>
+                            <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                    <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--导入-->
     <input type="file" name="excelPath" id="idExcel" class="hidden">
     <div id="embed"></div>
@@ -700,7 +725,7 @@
         line-height: 38px;
     }
 </style>
-<script src="js/produce/testResults.js"></script>
+
 <script>
 
     $('#embed').load('embed/loginLogModal.html');

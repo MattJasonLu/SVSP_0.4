@@ -62,8 +62,8 @@ function setDataList(result) {
                         $.each(result.map[obj.clientId], function (itemIndex, inner_item) {
                             var wastesClonedTr = wastesTr.clone();
                             wastesClonedTr.show();
+                            var itemObj = eval(inner_item);
                             wastesClonedTr.children("td").each(function (_index) {
-                                var itemObj = eval(inner_item);
                                 // 根据索引为部分td赋值
                                 switch (_index) {
                                     case (0):
@@ -93,6 +93,43 @@ function setDataList(result) {
                                         break;
                                 }
                             });
+                            // 遍历危废的参数列表
+                            for (var i = 0; i < itemObj.parameterList.length; i++) {
+                                // 判断是否存在参数
+                                if (itemObj.parameterList[i].parameter != null) {
+                                    // 获取参数
+                                    var paramIndex = itemObj.parameterList[i].parameter.index;
+                                    switch (paramIndex) {
+                                        case 3:
+                                            wastesClonedTr.find("td[name='PH']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 5:
+                                            wastesClonedTr.find("td[name='Ash']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 9:
+                                            wastesClonedTr.find("td[name='WaterContent']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 4:
+                                            wastesClonedTr.find("td[name='Heat']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 12:
+                                            wastesClonedTr.find("td[name='ChlorineContent']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 11:
+                                            wastesClonedTr.find("td[name='SulfurContent']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 6:
+                                            wastesClonedTr.find("td[name='FlashPoint']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 1:
+                                            wastesClonedTr.find("td[name='Viscosity']").text(itemObj.parameterList[i].average);
+                                            break;
+                                        case 7:
+                                            wastesClonedTr.find("td[name='MeltingPoint']").text(itemObj.parameterList[i].average);
+                                            break;
+                                    }
+                                }
+                            }
                             // 把克隆好的tr追加到原来的tr前面
                             wastesClonedTr.removeAttr("id");
                             wastesClonedTrArray.push(wastesClonedTr);
