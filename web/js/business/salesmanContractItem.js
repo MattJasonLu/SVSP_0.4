@@ -58,7 +58,7 @@ function setDataList(result) {
                 case (0):
                     $(this).html(index+1);
                     if (result.map[obj.clientId].length > 0) {
-                        console.log(result.map[obj.clientId]);
+                        // console.log(result.map[obj.clientId]);
                         $.each(result.map[obj.clientId], function (itemIndex, inner_item) {
                             var wastesClonedTr = wastesTr.clone();
                             wastesClonedTr.show();
@@ -122,6 +122,11 @@ function setDataList(result) {
         if (wastesClonedTrArray.length > 0) {
             for (var i = 0; i < wastesClonedTrArray.length; i++) {
                 wastesClonedTrArray[i].insertAfter(clonedTr);
+            }
+        } else {
+            for (var i = 0; i < 17; i++) {
+                var td = $('<td></td>');
+                clonedTr.append(td);
             }
         }
     });
