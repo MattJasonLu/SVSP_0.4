@@ -24,7 +24,7 @@ function getDateStr(obj) {
     return time1;
 }
 /**
- * 获取时间 yyyy-MM-dd HH:mm
+ * 获取时间 yyyy-MM-dd HH:mm:ss
  * @param obj
  * @returns {*}
  */
