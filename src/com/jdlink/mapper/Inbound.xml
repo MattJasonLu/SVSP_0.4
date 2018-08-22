@@ -4,15 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.InboundMapper">
+    <!-- 增加入库计划单 -->
     <insert id="addInboundPlanOrder" parameterType="InboundPlanOrder" >
         INSERT INTO t_pl_inboundplanorder (inboundPlanOrderId, planDate, produceCompanyId,
-        acceptCompanyId, transferDraftId, prepareTransferCount, transferCount, storageCount,
-        leftCount, poundsCount, wastesId, creatorId, createDate, departmentId, companyId,
-        modifierId, checkState, recordState, processWay, handleCategory, isQualified)
-        VALUES (#{inboundPlanOrderId}, #{planDate}, #{produceCompanyId},
-        #{acceptCompanyId}, #{transferDraftId}, #{prepareTransferCount}, #{transferCount}, #{storageCount},
-        #{leftCount}, #{poundsCount}, #{wastesId}, #{creatorId}, #{createDate}, #{departmentId},
-        #{companyId}, #{modifierId}, #{checkState}, #{recordState}, #{processWay}, #{handleCategory},
+        acceptCompanyId, transferDate, transferDraftId, prepareTransferCount, transferCount, storageCount,
+        leftCount, poundsCount, wastesName, wastesCode, wastesCategory, creatorId, createDate, departmentId, companyId,
+        modifierId, salesmanId, checkState, recordState, processWay, handleCategory, isQualified)
+        VALUES (#{inboundPlanOrderId}, #{planDate}, #{produceCompany.clientId},
+        #{acceptCompany.clientId}, #{transferDate}, #{transferDraftId}, #{prepareTransferCount}, #{transferCount}, #{storageCount},
+        #{leftCount}, #{poundsCount}, #{wastes.name}, #{wastes.code}, #{wastes.category}, #{creatorId}, #{createDate}, #{departmentId},
+        #{companyId}, #{modifierId}, #{salesman.salesmanId}, #{checkState}, #{recordState}, #{processWay}, #{handleCategory},
         #{isQualified});
     </insert>
+
+    <!-- 查询入库计划单中的前缀数量 -->
+    <select id="getInboundPlanCountByPrefix" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM t_pl_inboundplanorder WHERE inboundPlanOrderId LIKE "%"#{prefix}"%";
+    </select>
 </mapper>

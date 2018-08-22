@@ -67,4 +67,21 @@ public class PoundsServiceImpl implements PoundsService {
         }
         return id;
     }
+
+    /**
+     * 更新打印时间
+     * @param id
+     */
+    @Override
+    public void printTime(String id){
+        poundsMapper.printTime(id);
+    }
+
+    /**
+     * 根据转移联单Id获取对象
+     * @param transferId
+     * @return
+     */
+    @Override
+    public Pounds getByTransferId(String transferId){ return poundsMapper.getByTransferId(transferId); }
 }

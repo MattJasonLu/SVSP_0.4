@@ -28,5 +28,17 @@ select * from t_wastes where id=#{id};
     <select id="getClient" resultType="Client">
         select * from  client where clientId=#{clientId};
     </select>
+    <select id="getBatchingOrderIdList" resultType="String"  >
+        select batchingOrderId from t_pl_batchingorder order by nowTime desc ;
+    </select>
+    <select id="total" resultType="int">
+    select count(*) from t_pl_batchingorder;
+</select>
+    <insert id="addBatchingOrder" parameterType="BatchingOrder">
+        insert into t_pl_batchingorder(batchingOrderId, batchingDate, founderDate, remarks, wareHouseId, produceCompany,  recordstate,  batchingNumber,  nowTime, inboundOrderId)
+        values (#{batchingOrderId},#{batchingDate},#{founderDate},#{remarks},#{wareHouse.wareHouseId},#{produceCompany.companyName},#{recordState},#{batchingNumber},NOW(),#{inboundOrder.inboundOrderId})
+
+
+</insert>
 
 </mapper>

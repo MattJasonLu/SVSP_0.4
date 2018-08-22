@@ -159,9 +159,9 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down"
+                    <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
                                                                        aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up"
+                    <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up"
                                                                        aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
@@ -361,7 +361,7 @@
     </div>
 </div>
 <!--导入-->
-<input type="file" name="excelPath" id="idExcel" style="display:none">
+<input type="file" name="excelPath" id="excelFile" style="display:none">
 <div id="embed"></div>
 </body>
 <!--分页格式-->

@@ -28,6 +28,23 @@ public class DateUtil {
     }
 
     /**
+     * 获取时间对象
+     * @param dataTimeStr 时间格式字符串 yyyy/MM/dd HH:mm:ss
+     * @return 时间对象
+     */
+    public static Date getDateTimeFromStr(String dataTimeStr){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try{
+            date = dateFormat.parse(dataTimeStr);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+
+    /**
      * 通过时间对象获取时间字符串
      * @param date 时间对象
      * @return 时间格式字符串 yyyy-MM-dd

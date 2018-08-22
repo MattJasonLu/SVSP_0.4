@@ -4,6 +4,7 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
+import com.jdlink.domain.Salesman;
 import com.jdlink.domain.Wastes;
 
 import java.util.Date;
@@ -29,6 +30,10 @@ public class InboundPlanOrder {
      * 接收单位
      */
     private Client acceptCompany;
+    /**
+     * 转移时间
+     */
+    private Date transferDate;
     /**
      * 联单号
      */
@@ -77,6 +82,10 @@ public class InboundPlanOrder {
      * 修改人
      */
     private String modifierId;
+    /**
+     * 业务员
+     */
+    private Salesman salesman;
     /**
      * 单据状态
      */
@@ -128,6 +137,14 @@ public class InboundPlanOrder {
 
     public void setAcceptCompany(Client acceptCompany) {
         this.acceptCompany = acceptCompany;
+    }
+
+    public Date getTransferDate() {
+        return transferDate;
+    }
+
+    public void setTransferDate(Date transferDate) {
+        this.transferDate = transferDate;
     }
 
     public String getTransferDraftId() {
@@ -226,6 +243,14 @@ public class InboundPlanOrder {
         this.modifierId = modifierId;
     }
 
+    public Salesman getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(Salesman salesman) {
+        this.salesman = salesman;
+    }
+
     public CheckState getCheckState() {
         return checkState;
     }
@@ -273,6 +298,7 @@ public class InboundPlanOrder {
                 ", planDate=" + planDate +
                 ", produceCompany=" + produceCompany +
                 ", acceptCompany=" + acceptCompany +
+                ", transferDate=" + transferDate +
                 ", transferDraftId='" + transferDraftId + '\'' +
                 ", prepareTransferCount=" + prepareTransferCount +
                 ", transferCount=" + transferCount +
@@ -285,6 +311,7 @@ public class InboundPlanOrder {
                 ", departmentId='" + departmentId + '\'' +
                 ", companyId='" + companyId + '\'' +
                 ", modifierId='" + modifierId + '\'' +
+                ", salesman=" + salesman +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
                 ", processWay=" + processWay +
