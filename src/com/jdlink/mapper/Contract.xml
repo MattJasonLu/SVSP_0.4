@@ -189,4 +189,35 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         SELECT COUNT(*) FROM t_contract;
     </select>
 
+    <!--列出合同中的所有涉及到的业务员-->
+    <select id="listSalesmanByContract" resultType="Salesman">
+        SELECT * FROM salesman WHERE salesmanId IN (
+          SELECT salesmanId FROM client WHERE clientId IN (
+            SELECT DISTINCT clientId FROM t_contract WHERE clientId IS NOT NULL
+          )
+        )
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--列出合同中所有涉及到的业务员数量-->
+    <select id="countSalesmanByContract" resultType="int">
+        SELECT COUNT(*) FROM salesman WHERE salesmanId IN (
+            SELECT salesmanId FROM client WHERE clientId IN (
+            SELECT DISTINCT clientId FROM t_contract WHERE clientId IS NOT NULL
+            )
+        );
+    </select>
+
+    <!--通过业务员编号读取对应的合同列表-->
+    <select id="getContractBySalesman" resultMap="ContractRM">
+        SELECT * FROM t_contract WHERE clientId in (
+          SELECT clientId FROM client WHERE salesmanId='0006' and contractType='Wastes'
+        )
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
 </mapper>

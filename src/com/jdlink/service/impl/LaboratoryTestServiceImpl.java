@@ -89,4 +89,12 @@ public class LaboratoryTestServiceImpl implements LaboratoryTestService {
         } while (getLaboratoryTestById(id) != null);
         return id;
     }
+
+    @Override
+    public LaboratoryTest getRecentLaboratoryTestByClientId(String clientId) {
+        LaboratoryTest laboratoryTest = null;
+        String laboratoryTestNumber = laboratoryTestMapper.getRecentLaboratoryTestNumberByClientId(clientId);
+        if (laboratoryTestNumber != null) laboratoryTest = getLaboratoryTestById(laboratoryTestNumber);
+        return laboratoryTest;
+    }
 }
