@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -134,6 +135,7 @@ public class PRPoundsController {
                 pounds.setBusinessType(data[i][8].toString());
                 pounds.setEnterTime(DateUtil.getDateTimeFromStr(data[i][9].toString()));
                 pounds.setOutTime(DateUtil.getDateTimeFromStr(data[i][10].toString()));
+                System.out.println(DateUtil.getDateTimeFromStr(data[i][10].toString()));
                 pounds.setDriver(data[i][11].toString());
                 pounds.setWeighman(data[i][12].toString());
                 pounds.setRemarks(data[i][13].toString());
@@ -142,14 +144,24 @@ public class PRPoundsController {
                 pounds.setCreationDate(new Date());
                 Pounds pounds1 = poundsService.getByTransferId(pounds.getTransferId());
                 if (pounds1 != null) {
-                    res.put("status", "fail");
-                    res.put("message", "转移联单号已存在，请检查！");
-                } else {
-                    poundsService.add(pounds);
-                    res.put("status", "success");
-                    res.put("message", "导入成功");
+                    NumberFormat nf = NumberFormat.getInstance();
+                    //设置是否使用分组
+                    nf.setGroupingUsed(false);
+                    //设置最大整数位数
+                    nf.setMaximumIntegerDigits(4);
+                    //设置最小整数位数
+                    nf.setMinimumIntegerDigits(4);
+                    int index = Integer.parseInt(pounds.getTransferId());
+                    // 获取唯一的编号
+                    do {
+                        index += 1;
+                        pounds.setTransferId(nf.format(index));
+                    } while (poundsService.getByTransferId(pounds.getTransferId()) != null);
                 }
+                poundsService.add(pounds);
             }
+            res.put("status", "success");
+            res.put("message", "导入成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
