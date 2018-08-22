@@ -15,7 +15,7 @@
     <script src="js/page.js"></script>
     <script src="js/produce/warehouseManage.js"></script>
 </head>
-<body onload="loadPageLaboratoryList()" class="" >
+<body onload="loadInboundPlanOrder();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -86,12 +86,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="sidebar">
-                <!--<h4>博客管理系统(四月)</h4>-->
-                <!--<div class="cover">-->
-                <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
-                <!--<b>Hi~ 小主</b>-->
-                <!--<p>超级管理员</p>-->
-                <!--</div>-->
                 <ul class="sidenav animated fadeInUp">
                     <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                     <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
@@ -118,7 +112,7 @@
                     <li class="active"><a href="#">危废入库</a></li>
                 </ol>
             </div>
-            <h4 class="sub-header">库存列表</h4>
+            <h4 class="sub-header">入库计划单</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
@@ -168,58 +162,60 @@
             </div>
             <form method="post" id="infoForm" enctype="multipart/form-data">
                 <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                                </label>
+                            </th>
+                            <th class="text-center">计划单号</th>
+                            <th class="text-center">转移联单号</th>
+                            <th class="text-center">计划日期</th>
+                            <th class="text-center">产废单位</th>
+                            <th class="text-center">接收单位</th>
+                            <th class="text-center">转移时间</th>
+                            <th class="text-center">联单号</th>
+                            <th class="text-center">转移数量</th>
+                            <th class="text-center">磅单数量</th>
+                            <th class="text-center">已入库数量</th>
+                            <th class="text-center">剩余数量</th>
+                            <th class="text-center">拟转数量</th>
+                            <th class="text-center">危废名称</th>
+                            <th class="text-center">危废代码</th>
+                            <th class="text-center">危废类别</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                    <tr>
-                        <th class="text-center">
-                            <label>
-                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
-                            </label>
-                        </th>
-                        <td class="text-center">计划单号</td>
-                        <td class="text-center">转移联单号</td>
-                        <td class="text-center">计划日期</td>
-                        <td class="text-center">产废单位</td>
-                        <td class="text-center">接收单位</td>
-                        <td class="text-center">转移时间</td>
-                        <td class="text-center">联单号</td>
-                        <td class="text-center">转移数量</td>
-                        <td class="text-center">磅单数量</td>
-                        <td class="text-center">已入库数量</td>
-                        <td class="text-center">剩余数量</td>
-                        <td class="text-center">拟转数量</td>
-                        <td class="text-center">危废名称</td>
-                        <td class="text-center">危废代码</td>
-                        <td class="text-center">危废列别</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">
-                            <label>
-                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="..." >
-                            </label>
-                        </td>
-                        <td class="text-center modal-companyName">1</td>
-                        <td class="text-center modal-einlass">2018-08-07</td>
-                        <td class="text-left model-wastesName">废液</td>
-                        <td class="text-center model-wastesCode">QW10001</td>
-                        <td class="text-center model-wastesCode">QW10001</td>
-                        <td class="text-right modal-weight">5</td>
-                        <td class="text-right modal-materialForm">液态</td>
-                        <td class="text-right modal-packingType">标准装</td>
-                        <td class="text-right modal-KCal">20</td>
-                        <td class="text-right modal-PH">10</td>
-                        <td class="text-right modal-ashContent">20</td>
-                        <td class="text-right modal-waterContent">10</td>
-                        <td class="text-right modal-CLContent">20</td>
-                        <td class="text-right modal-SContent">10</td>
-                        <td class="text-right modal-PContent">10</td>
-                    </tr>
+                        <tr id="planClonedTr">
+                            <td class="text-center">
+                                <label>
+                                    <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="..." >
+                                </label>
+                            </td>
+                            <td class="text-center modal-companyName">1</td>
+                            <td class="text-center modal-einlass">2018-08-07</td>
+                            <td class="text-left model-wastesName">废液</td>
+                            <td class="text-center model-wastesCode">QW10001</td>
+                            <td class="text-center model-wastesCode">QW10001</td>
+                            <td class="text-right modal-weight">5</td>
+                            <td class="text-right modal-materialForm">液态</td>
+                            <td class="text-right modal-packingType">标准装</td>
+                            <td class="text-right modal-KCal">20</td>
+                            <td class="text-right modal-PH">10</td>
+                            <td class="text-right modal-ashContent">20</td>
+                            <td class="text-right modal-waterContent">10</td>
+                            <td class="text-right modal-CLContent">20</td>
+                            <td class="text-right modal-SContent">10</td>
+                            <td class="text-right modal-PContent">10</td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="row text-center">
                     <a class="btn btn-primary" onclick="comfirm();">确认</a>
                 </div>
                 <br>
-                <h4>配料单</h4>
+                <h4>入库单</h4>
                 <hr class="simple" color="#6f5499" />
                 <br>
                 <div class="row">
@@ -280,33 +276,35 @@
                 </div>
                 <br>
                 <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center">入库单号</th>
+                            <th class="text-center">产废单位</th>
+                            <th class="text-center">危废名称</th>
+                            <th class="text-center">危废代码</th>
+                            <th class="text-center">危废数量</th>
+                            <th class="text-center">单价</th>
+                            <th class="text-center">金额</th>
+                            <th class="text-center">处置方式</th>
+                            <th class="text-center">备注</th>
+                            <th class="text-center">库区</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                    <tr>
-                        <td class="text-center">序号</td>
-                        <td class="text-center">入库单号</td>
-                        <td class="text-center">产废单位</td>
-                        <td class="text-center">危废名称</td>
-                        <td class="text-center">危废代码</td>
-                        <td class="text-center">危废数量</td>
-                        <td class="text-center">单价</td>
-                        <td class="text-center">金额</td>
-                        <td class="text-center">处置方式</td>
-                        <td class="text-center">备注</td>
-                        <td class="text-center">库区</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center modal-companyName">1</td>
-                        <td class="text-center modal-einlass">2018-08-07</td>
-                        <td class="text-left model-wastesName">废液</td>
-                        <td class="text-left model-wastesName">废液</td>
-                        <td class="text-center model-wastesCode">QW10001</td>
-                        <td class="text-right modal-weight">5</td>
-                        <td class="text-right modal-materialForm">液态</td>
-                        <td class="text-right modal-packingType">标准装</td>
-                        <td class="text-right modal-KCal">20</td>
-                        <td class="text-right modal-PH">10</td>
-                        <td class="text-right modal-ashContent">20</td>
-                    </tr>
+                        <tr>
+                            <td class="text-center modal-companyName">1</td>
+                            <td class="text-center modal-einlass">2018-08-07</td>
+                            <td class="text-left model-wastesName">废液</td>
+                            <td class="text-left model-wastesName">废液</td>
+                            <td class="text-center model-wastesCode">QW10001</td>
+                            <td class="text-right modal-weight">5</td>
+                            <td class="text-right modal-materialForm">液态</td>
+                            <td class="text-right modal-packingType">标准装</td>
+                            <td class="text-right modal-KCal">20</td>
+                            <td class="text-right modal-PH">10</td>
+                            <td class="text-right modal-ashContent">20</td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="row text-center">

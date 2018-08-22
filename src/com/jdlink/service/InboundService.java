@@ -2,11 +2,19 @@ package com.jdlink.service;
 
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 
+import java.util.List;
+
 /**
  * Created by matt on 2018/8/22.
  * DoubleClickTo 666
  */
 public interface InboundService {
+
+    /**
+     * 列出所有入库计划单
+     * @return 入库计划单
+     */
+    List<InboundPlanOrder> listInboundPlanOrder();
 
     /**
      * 增加入库计划单
