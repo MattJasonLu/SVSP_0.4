@@ -29,7 +29,7 @@ public class DateUtil {
 
     /**
      * 获取时间对象
-     * @param dataTimeStr 时间格式字符串 yyyy/MM/dd HH:mm:ss
+     * @param dataTimeStr 时间格式字符串 yyyy-MM-dd HH:mm:ss
      * @return 时间对象
      */
     public static Date getDateTimeFromStr(String dataTimeStr){
@@ -75,4 +75,22 @@ public class DateUtil {
         }
         return time;
     }
+
+    /**
+     * 通过时间对象获取时间字符串
+     * @param date 时间对象
+     * @return 时间格式字符串 yyyy-MM-dd HH:mm:ss
+     */
+    public static String getTimeSecondStr(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time;
+        try {
+            time = simpleDateFormat.format(date);
+        } catch (Exception e) {
+            return "时间错误";
+        }
+        return time;
+    }
+
+
 }

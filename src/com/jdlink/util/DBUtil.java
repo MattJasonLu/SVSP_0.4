@@ -68,6 +68,7 @@ public class DBUtil {
             Row row1 = sheet.createRow(0);
             ResultSetMetaData rsmd = rs.getMetaData();
             int colnum = rsmd.getColumnCount();
+            //设置表头信息
             for (int i = 1; i <= colnum; i++) {
                 String columnName = rsmd.getColumnName(i);
                 // 单元格

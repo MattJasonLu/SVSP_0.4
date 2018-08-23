@@ -48,4 +48,10 @@ public interface PoundsMapper {
      * @return
      */
     Pounds getByTransferId(String transferId);
+
+    /**
+     * 获取全部数据
+     * @return
+     */
+    List<Pounds> list();
 }
