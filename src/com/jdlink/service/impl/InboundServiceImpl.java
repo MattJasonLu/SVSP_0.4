@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -32,17 +32,25 @@ public class InboundServiceImpl implements InboundService {
 
     @Override
     public String getInboundPlanOrderId() {
-        // 获取当前时间
-        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
         // 获取年份
-        String year = String.valueOf(date.getYear());
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
         // 获取月份
-        String month = String.valueOf(date.getMonth());
-        String prefix = year + month;
-        // 获取数量
-        int count = getInboundPlanCountByPrefix(prefix) + 1;
         //得到一个NumberFormat的实例
         NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(2);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(2);
+        // 获取最新编号
+        String month = nf.format(calendar.get(Calendar.MONTH));
+        String prefix = year + month;
+        // 获取数量
+        int count = getInboundPlanCountByPrefix(prefix);
+        //得到一个NumberFormat的实例
+        nf = NumberFormat.getInstance();
         //设置是否使用分组
         nf.setGroupingUsed(false);
         //设置最大整数位数
@@ -58,4 +66,5 @@ public class InboundServiceImpl implements InboundService {
     public int getInboundPlanCountByPrefix(String prefix) {
         return inboundMapper.getInboundPlanCountByPrefix(prefix);
     }
+
 }
