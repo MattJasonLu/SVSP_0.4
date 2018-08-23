@@ -375,14 +375,18 @@ function save() {
             batchingOrderId:$("#batchingOrderId").val(),//配料编号
             inboundOrder:{ inboundOrderId:this.firstElementChild.innerHTML},
             wareHouse:{ wareHouseId:this.firstElementChild.nextElementSibling.innerHTML},
-            produceCompany:{companyName:this.firstElementChild.nextElementSibling.nextElementSibling.innerHTML},
-            wastes:{wastesId:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,//危废代码
-             //processWay:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
-             name:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,},
+            // produceCompany:{companyName:this.firstElementChild.nextElementSibling.nextElementSibling.innerHTML},
+            // wastes:{wastesId:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,//危废代码
+            // //  // name:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+            //      },
             // wasteType:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
            batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
           'remarks':this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
-            batchingDate:$("#date").val()
+            batchingDate:$("#date").val(),//配料日期
+            createDate:$("#createDate").val(),//创建日期
+            creator:$("#creator").val(),
+
+
     };
         $.ajax({
                 type: "POST",                       // 方法类型
@@ -423,7 +427,7 @@ function loadBatchingOrderList() {
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                console.log(result);
+               setBatchingOrderList(result.batchingOrderList);
             }
             else
                 alert(result.message);
@@ -436,6 +440,97 @@ function loadBatchingOrderList() {
 
     });
 
+
+
+}
+//加载配料单数据源
+function setBatchingOrderList(result) {
+    var tr = $("#cloneTr3");
+    tr.siblings().remove();
+    $.each(result, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 序号
+                case (0):
+                    $(this).html(parseInt(index)+1);
+                    break;
+                // 配料单号
+                case (1):
+                    $(this).html(obj.batchingOrderId);
+                    break;
+                // 危废名称
+                case (2):
+                    if(obj.wasteInventory.wastes!=null){
+                        $(this).html(obj.wasteInventory.wastes.name);
+                    }
+                    else {
+                        $(this).html("");
+                    }
+
+                    break;
+                // 处理类别
+                case (3):
+                    if(obj.wasteInventory.wastes.processWay!=null){
+                        $(this).html(obj.wasteInventory.wastes.processWay.name);
+                    }
+                        else {
+                        $(this).html("");
+                    }
+
+                    break;
+                // 数量
+                case (4):
+                        $(this).html(obj.batchingNumber);
+                    break;
+                // 计量单位
+                case (5):
+                    if(obj.wasteInventory.wastes!=null){
+                        $(this).html(obj.wasteInventory.wastes.unit);
+                    }
+                        else {
+                        $(this).html("");
+                    }
+                    break;
+                // 产废单位
+                case (6):
+                    if(obj.wasteInventory.wastes.client!=null){
+                        $(this).html(obj.wasteInventory.wastes.client.companyName);
+                    }
+              else {
+                        $(this).html("");
+                    }
+                    break;
+                    //创建人
+                case (7):
+                        $(this).html(obj.creator);
+                    break;
+                    //创建日期
+                case (8):
+                    if(obj.createDate!=null){
+                        $(this).html(getDateStr(obj.createDate));
+                    }
+                    else {
+                        $(this).html("");
+                    }
+                    break;
+                    //备注
+                case (9):
+                     $(this).html(obj.remarks);
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
 
 
 }
