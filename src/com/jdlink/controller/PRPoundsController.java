@@ -336,12 +336,12 @@ public class PRPoundsController {
                 else data[i][18] = "";
                 data[i][19] = pounds.getState().getName();
             }
-            for(int k = 0; k < row; k++){
-                System.out.println();
-                for(int j = 0; j < col; j++){
-                    System.out.print(data[k][j] + ',');
-                }
-            }
+//            for(int k = 0; k < row; k++){
+//                System.out.println();
+//                for(int j = 0; j < col; j++){
+//                    System.out.print(data[k][j] + ',');
+//                }
+//            }
             // 创建Excel表。
             org.apache.poi.ss.usermodel.Workbook book = new HSSFWorkbook();
             // 在当前Excel创建一个子表,并命名为name
@@ -349,81 +349,96 @@ public class PRPoundsController {
             for (int k = 0; k < row; k++) {
                 //在excel中创建一个空行
                 Row rowData = sheet.createRow(k);
+                System.out.println();
                 //给空行赋值
                 for (int j = 0; j < col; j++) {
                     //创建单元格
                     org.apache.poi.ss.usermodel.Cell cell = rowData.createCell(k);
                     //赋值
                     cell.setCellValue(data[k][j]);
+                    System.out.print(cell + ",");
                 }
             }
-//            // 保存
-//            ByteArrayOutputStream fos = null;
-//            try {
-//                fos = new ByteArrayOutputStream();
-//                book.write(fos);
-//            } finally {
-//                try {
-//                    fos.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    //res.put("message", "导出失败!");
-//                }
-//            }
-//            OutputStream os = response.getOutputStream();
-//            String file = name;//初始文件名
-//            //为了让各种浏览器可以识别,需要将中文转换成Byte形式,然后通过ISO-8859-1进行编码
-//            name = new String(file.getBytes("iso8859-1"), "utf-8");
-//            response.reset();
-//            //设置content-disposition响应头控制浏览器以下载的形式打开文件
-//            //报头用于提供一个推荐的文件名，并强制浏览器显示保存对话框
-//            //attachment表示以附件方式下载。如果要在页面中打开，则改为 inline
-//            //name.xls要保存的文件名
-//            response.setHeader("Content-Disposition", "attachment; filename=" + name + ".xls");
-//            response.setContentType("application/octet-stream; charset=utf-8");
-//            book.write(os);
-//            os.flush();
-//            if (os != null) {
-//                try {
-//                    os.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                    res.put("message", e.toString());
-//                }
-//            }
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            byte[] content = os.toByteArray();
-            InputStream is = new ByteArrayInputStream(content);
-            String fileName = name ;
-            response.reset();
-            response.setContentType("application/vnd.ms-excel;charset=utf-8");
-            response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
-            ServletOutputStream out = response.getOutputStream();
-            BufferedInputStream bis = null;
-            BufferedOutputStream bos = null;
+            // 保存
+            ByteArrayOutputStream fos = null;
             try {
-                bis = new BufferedInputStream(is);
-                bos = new BufferedOutputStream(out);
-                byte[] buff = new byte[2048];
-                int bytesRead;
-                // Simple read/write loop.
-                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
-                    bos.write(buff, 0, bytesRead);
-                }
-            } catch (final IOException e) {
-                throw e;
+                fos = new ByteArrayOutputStream();
+                book.write(fos);
             } finally {
-                if (bis != null)
-                    bis.close();
-                if (bos != null)
-                    bos.close();
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            OutputStream os = response.getOutputStream();
+            String file = name;//初始文件名
+            //为了让各种浏览器可以识别,需要将中文转换成Byte形式,然后通过ISO-8859-1进行编码
+            name = new String(file.getBytes("iso8859-1"), "utf-8");
+            response.reset();
+            //设置content-disposition响应头控制浏览器以下载的形式打开文件
+            //报头用于提供一个推荐的文件名，并强制浏览器显示保存对话框
+            //attachment表示以附件方式下载。如果要在页面中打开，则改为 inline
+            //name.xls要保存的文件名
+            response.setHeader("Content-Disposition", "attachment; filename=" + name + ".xls");
+            response.setContentType("application/octet-stream; charset=utf-8");
+            book.write(os);
+            os.flush();
+            if (os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+//            ByteArrayOutputStream os = new ByteArrayOutputStream();
+//            byte[] content = os.toByteArray();
+//            InputStream is = new ByteArrayInputStream(content);
+//            String fileName = name ;
+//            response.reset();
+//            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+//            response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+//            ServletOutputStream out = response.getOutputStream();
+//            BufferedInputStream bis = null;
+//            BufferedOutputStream bos = null;
+//            try {
+//                bis = new BufferedInputStream(is);
+//                bos = new BufferedOutputStream(out);
+//                byte[] buff = new byte[2048];
+//                int bytesRead;
+//                // Simple read/write loop.
+//                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+//                    bos.write(buff, 0, bytesRead);
+//                }
+//            } catch (final IOException e) {
+//                throw e;
+//            } finally {
+//                if (bis != null)
+//                    bis.close();
+//                if (bos != null)
+//                    bos.close();
+//            }
             res.put("status", "success");
             res.put("message", "导出成功!");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导出失败!");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("resetPrintTime")
+    @ResponseBody
+    public String resetPrintTime(String id){
+        JSONObject res = new JSONObject();
+        try{
+            poundsService.printTime(id);
+            res.put("status","success");
+            res.put("message","清零打印时间成功！");
+        }catch (Exception e){
+            res.put("status","fail");
+            res.put("message","清零打印时间失败！");
         }
         return res.toString();
     }

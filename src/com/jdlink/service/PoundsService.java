@@ -20,4 +20,5 @@ public interface PoundsService {
     void printTime(String id);
     Pounds getByTransferId(String transferId);
     List<Pounds> list();
+    void resetPrintTime(String id);
 }

@@ -54,4 +54,10 @@ public interface PoundsMapper {
      * @return
      */
     List<Pounds> list();
+
+    /**
+     * 清零打印时间
+     * @param id
+     */
+    void resetPrintTime(String id);
 }
