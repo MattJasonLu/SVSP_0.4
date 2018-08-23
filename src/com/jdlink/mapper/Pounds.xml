@@ -39,6 +39,10 @@
         </if>
     </select>
 
+    <select id="list" resultMap="PoundsRM">
+        select * from t_pr_pounds order by nowTime desc;
+    </select>
+
     <select id="getClientIdByName" parameterType="String" resultType="String">
         select clientId from client where companyName = #{name};
     </select>

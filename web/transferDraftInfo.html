@@ -338,8 +338,8 @@
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
                         <label class="col-sm-4 control-label">转移时间</label>
-                        <div class="input-group date form_datetime col-xs-6" id="transferTime" name="transferTime">
-                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                        <div class="input-group date form_datetime1 col-xs-6" name="transferTime">
+                            <input class="form-control focus" type="text" value="" id="transferTime" name="transferTime" title="" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
@@ -369,8 +369,8 @@
                 <div class="form-horizontal col-md-6">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">运输时间</label>
-                        <div class="input-group date form_datetime col-xs-9" id="firstCarryTime" name="firstCarryTime">
-                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                        <div class="input-group date form_datetime1 col-xs-9" name="firstCarryTime">
+                            <input class="form-control focus" type="text" value="" id="firstCarryTime" name="transferTime" title="" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
@@ -449,8 +449,8 @@
                 <div class="form-horizontal col-md-6">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">运输时间</label>
-                        <div class="input-group date form_datetime col-xs-9" id="secondCarryTime" name="secondCarryTime">
-                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                        <div class="input-group date form_datetime1 col-xs-9" name="secondCarryTime">
+                            <input class="form-control focus" type="text" value="" id="secondCarryTime" name="transferTime" title="" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
@@ -548,8 +548,8 @@
                 <div class="form-horizontal col-md-3">
                     <div class="form-group">
                         <label class="col-sm-5 control-label">接收日期</label>
-                        <div class="input-group date form_datetime col-xs-7" id="acceptDate" name="acceptDate">
-                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                        <div class="input-group date form_datetime col-xs-7" name="acceptDate">
+                            <input class="form-control focus" type="text" value="" id="acceptDate" name="transferTime" title="" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
@@ -597,8 +597,8 @@
                 <div class="form-horizontal col-md-3">
                     <div class="form-group">
                         <label class="col-sm-5 control-label">日期</label>
-                        <div class="input-group date form_datetime col-xs-7" id="signDate" name="signDate">
-                            <input class="form-control focus" type="text" value="" name="transferTime" title="" readonly>
+                        <div class="input-group date form_datetime col-xs-7" name="signDate">
+                            <input class="form-control focus" type="text" value="" id="signDate" name="transferTime" title="" readonly>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                         </div>
@@ -633,6 +633,21 @@
         minView: 2,
         forceParse: 0,
         endDate:new Date()
+    });
+    /**
+     * 设置时间格式
+     */
+    $('.form_datetime1').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 0,
+        minuteStep:1,
+        forceParse: 0
     });
 </script>
 </html>

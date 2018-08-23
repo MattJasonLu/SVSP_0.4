@@ -7,8 +7,11 @@ import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.PoundsService;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
+import jxl.write.DateTime;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +19,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.rmi.CORBA.Util;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.jdlink.util.DateUtil.getDateStr;
+import static com.jdlink.util.DateUtil.getTimeSecondStr;
+import static com.sun.xml.internal.ws.policy.sourcemodel.wspolicy.XmlToken.Name;
 
 @Controller
 public class PRPoundsController {
@@ -102,6 +115,7 @@ public class PRPoundsController {
 
     /**
      * 导入
+     *
      * @param excelFile
      * @return
      */
@@ -261,5 +275,158 @@ public class PRPoundsController {
         }
         return res.toString();
     }
+
+    @RequestMapping("exportPoundsExcel")
+    @ResponseBody
+    public String exportPoundsExcel(HttpServletResponse response) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Pounds> poundsList = poundsService.list();
+            //对象个数，加上一行表头
+            int row = poundsList.size() + 1;
+            //单个对象需要导出的属性个数，手动输入
+            int col = 20;
+            //表格名称，手动输入
+            String name = "Pounds";
+            String[][] data = new String[row][col];
+            //将list中数据装入数组data,并设置表头
+            data[0][0] = "磅单号";
+            data[0][1] = "转移联单号";
+            data[0][2] = "入厂车牌号";
+            data[0][3] = "货物名称";
+            data[0][4] = "毛重（千克）";
+            data[0][5] = "净重（千克）";
+            data[0][6] = "皮重（千克）";
+            data[0][7] = "发货单位";
+            data[0][8] = "收货单位";
+            data[0][9] = "业务类型";
+            data[0][10] = "入厂时间";
+            data[0][11] = "出厂时间";
+            data[0][12] = "司机";
+            data[0][13] = "司磅员";
+            data[0][14] = "备注";
+            data[0][15] = "出厂车牌号";
+            data[0][16] = "磅单创建人";
+            data[0][17] = "磅单创建时间";
+            data[0][18] = "打印时间";
+            data[0][19] = "磅单状态";
+            //设置表体
+            int i = 0;
+            for (Pounds pounds : poundsList) {
+                i++;
+                data[i][0] = pounds.getId();
+                data[i][1] = pounds.getTransferId();
+                data[i][2] = pounds.getEnterLicencePlate();
+                data[i][3] = pounds.getGoodsName();
+                data[i][4] = pounds.getGrossWeight().toString();
+                data[i][5] = pounds.getNetWeight().toString();
+                data[i][6] = pounds.getTare().toString();
+                data[i][7] = pounds.getDeliveryCompany().getCompanyName();
+                data[i][8] = pounds.getReceiveCompany().getCompanyName();
+                data[i][9] = pounds.getBusinessType();
+                data[i][10] = getTimeSecondStr(pounds.getEnterTime());
+                data[i][11] = getTimeSecondStr(pounds.getOutTime());
+                data[i][12] = pounds.getDriver();
+                data[i][13] = pounds.getWeighman();
+                data[i][14] = pounds.getRemarks();
+                data[i][15] = pounds.getOutLicencePlate();
+                data[i][16] = pounds.getFounder();
+                data[i][17] = getDateStr(pounds.getCreationDate());
+                if(pounds.getPrintTime() != null) data[i][18] = getTimeSecondStr(pounds.getPrintTime());
+                else data[i][18] = "";
+                data[i][19] = pounds.getState().getName();
+            }
+            for(int k = 0; k < row; k++){
+                System.out.println();
+                for(int j = 0; j < col; j++){
+                    System.out.print(data[k][j] + ',');
+                }
+            }
+            // 创建Excel表。
+            org.apache.poi.ss.usermodel.Workbook book = new HSSFWorkbook();
+            // 在当前Excel创建一个子表,并命名为name
+            org.apache.poi.ss.usermodel.Sheet sheet = book.createSheet(name);
+            for (int k = 0; k < row; k++) {
+                //在excel中创建一个空行
+                Row rowData = sheet.createRow(k);
+                //给空行赋值
+                for (int j = 0; j < col; j++) {
+                    //创建单元格
+                    org.apache.poi.ss.usermodel.Cell cell = rowData.createCell(k);
+                    //赋值
+                    cell.setCellValue(data[k][j]);
+                }
+            }
+//            // 保存
+//            ByteArrayOutputStream fos = null;
+//            try {
+//                fos = new ByteArrayOutputStream();
+//                book.write(fos);
+//            } finally {
+//                try {
+//                    fos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    //res.put("message", "导出失败!");
+//                }
+//            }
+//            OutputStream os = response.getOutputStream();
+//            String file = name;//初始文件名
+//            //为了让各种浏览器可以识别,需要将中文转换成Byte形式,然后通过ISO-8859-1进行编码
+//            name = new String(file.getBytes("iso8859-1"), "utf-8");
+//            response.reset();
+//            //设置content-disposition响应头控制浏览器以下载的形式打开文件
+//            //报头用于提供一个推荐的文件名，并强制浏览器显示保存对话框
+//            //attachment表示以附件方式下载。如果要在页面中打开，则改为 inline
+//            //name.xls要保存的文件名
+//            response.setHeader("Content-Disposition", "attachment; filename=" + name + ".xls");
+//            response.setContentType("application/octet-stream; charset=utf-8");
+//            book.write(os);
+//            os.flush();
+//            if (os != null) {
+//                try {
+//                    os.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    res.put("message", e.toString());
+//                }
+//            }
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            byte[] content = os.toByteArray();
+            InputStream is = new ByteArrayInputStream(content);
+            String fileName = name ;
+            response.reset();
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename="+ new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+            ServletOutputStream out = response.getOutputStream();
+            BufferedInputStream bis = null;
+            BufferedOutputStream bos = null;
+            try {
+                bis = new BufferedInputStream(is);
+                bos = new BufferedOutputStream(out);
+                byte[] buff = new byte[2048];
+                int bytesRead;
+                // Simple read/write loop.
+                while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                    bos.write(buff, 0, bytesRead);
+                }
+            } catch (final IOException e) {
+                throw e;
+            } finally {
+                if (bis != null)
+                    bis.close();
+                if (bos != null)
+                    bos.close();
+            }
+            res.put("status", "success");
+            res.put("message", "导出成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败!");
+        }
+        return res.toString();
+    }
+
 }
 
