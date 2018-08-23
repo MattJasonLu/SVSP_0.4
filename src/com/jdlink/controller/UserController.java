@@ -1,5 +1,7 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Account.Authority;
+import com.jdlink.domain.Account.Role;
 import com.jdlink.domain.LoginLog;
 import com.jdlink.domain.User;
 import com.jdlink.service.ClientService;
@@ -142,5 +144,69 @@ public class UserController {
         }
         return res.toString();
     }
+
+    /**
+     * 列出所有用户
+     * @return 所有用户数据
+     */
+    @RequestMapping("listRole")
+    @ResponseBody
+    public String listRole() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Role> roleList = userService.listRole();
+            JSONArray data = JSONArray.fromArray(roleList.toArray(new Role[roleList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "获取信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("setRole")
+    @ResponseBody
+    public String setRole(String userId, String roleId) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.setRole(Integer.parseInt(userId), Integer.parseInt(roleId));
+            res.put("status", "success");
+            res.put("message", "分配角色成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "分配角色失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 列出所有用户
+     * @return 所有用户数据
+     */
+    @RequestMapping("loadAuthority")
+    @ResponseBody
+    public String loadAuthority() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Authority> authorityList = userService.listAuthority();
+            JSONArray data = JSONArray.fromArray(authorityList.toArray(new Authority[authorityList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "获取信息失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
 
 }

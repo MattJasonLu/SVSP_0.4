@@ -1,5 +1,7 @@
 package com.jdlink.domain;
 
+import com.jdlink.domain.Account.Role;
+
 import java.util.Date;
 
 /**
@@ -54,6 +56,10 @@ public class User {
      * 能否分配账户
      */
     private boolean canAllocate;
+    /**
+     * 角色
+     */
+    private Role  role;
     /**
      * 当前时间
      */
@@ -153,6 +159,14 @@ public class User {
 
     public void setCanAllocate(boolean canAllocate) {
         this.canAllocate = canAllocate;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Date getNowTime() {
