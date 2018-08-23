@@ -664,7 +664,44 @@ function loadPoundsItems() {
         }
     });
 }
-
+function print1() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getPounds",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: localStorage.id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result.data);
+                $("#modal2_outTime").text(getTimeStr(data.outTime));
+                $("#modal2_enterLicencePlate").text(data.enterLicencePlate);
+                $("#modal2_outLicencePlate").text(data.outLicencePlate);
+                $("#modal2_goodsName").text(data.goodsName);
+                $("#modal2_grossWeight").text(data.grossWeight);
+                $("#modal2_deliveryCompany").text(data.deliveryCompany.companyName);
+                $("#modal2_tare").text(data.tare);
+                $("#modal2_receiveCompany").text(data.receiveCompany.companyName);
+                $("#modal2_netWeight").text(data.netWeight);
+                $("#modal2_businessType").text(data.businessType);
+                $("#modal2_enterTime").text(getTimeStr(data.enterTime));
+                $("#modal2_weighman").text(data.weighman);
+                $("#modal2_driver").text(data.driver);
+                $("#modal2_remarks").text(data.remarks);
+                $("#modal2_printTime").text(getTimeStr(data.printTime));
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("首页获取失败");
+        }
+    });
+    $("#examineModal").modal("show");
+}
 /**
  * 打印功能
  */

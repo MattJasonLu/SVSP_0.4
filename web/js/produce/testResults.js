@@ -18,6 +18,13 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+/**
+ * 重置搜索数据
+ */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
 
 /**
  * 计算总页数
@@ -871,4 +878,22 @@ function importExcel() {
             }
         });
     });
+}
+
+/**
+ * 导入模态框
+ * */
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+/**
+ * 下载模板
+ * */
+function downloadModal() {
+    var filePath = 'Files/Templates/化验单导入模板.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
 }

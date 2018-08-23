@@ -14,8 +14,11 @@
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
     <script src="js/produce/warehouseManage.js"></script>
+    <script src="js/produce/batching.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
-<body onload="loadPageLaboratoryList()" class="" >
+<body onload="batchingList()" >
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -38,6 +41,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="ingredientsList.html">每日配料单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="materialRequisition.html">领料单</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="warehouseManageOut.html">危废出库</a></li>
                             <li role="separator" class="divider"></li>
@@ -100,11 +105,11 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="storageManagement.html">贮存管理</a></li>
+                    <li><a href="businessModel.html">贮存管理</a></li>
                     <li>出库管理</li>
                     <li class="active">每日配料单</li>
                 </ol>
-                <p class="text-right"><b>配料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>
+                <!--<p class="text-right"><b>配料单号&nbsp;&nbsp;</b><span id="materialRequisitionId"></span></p>-->
             </div>
             <h4 class="sub-header">配料单新增</h4>
             <div class="row">
@@ -114,10 +119,50 @@
                     <!--查询框-->
                     <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchPw();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchInventory();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-inboundDate" class="col-sm-4 control-label">入库日期</label>
+                                <div class="col-xs-7">
+                                    <input type="date" class="form-control" id="search-inboundDate" name="search-inboundDate"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-handelCategory" class="col-sm-4 control-label">进料方式</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" id="search-handelCategory" name="search-handelCategory"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName"
+                                       class="col-sm-4 control-label">产废单位</label>
+                                <div class="col-xs-7">
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-companyName" id="search-companyName"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-wasteId" class="col-sm-4 control-label">危废代码</label>
+                                <div class="col-xs-7">
+                                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="search-wasteId" id="search-wasteId"></select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -191,33 +236,37 @@
                             </label>
                         </th>
                         <td class="text-center">入库单号</td>
+                        <td class="text-center">仓库号</td>
                         <td class="text-center">产废单位</td>
                         <td class="text-center">危废名称</td>
                         <td class="text-center">危废代码</td>
                         <td class="text-center">产废类别</td>
                         <td class="text-center">进料方式</td>
                         <td class="text-center">数量</td>
+                        <td class="text-center">剩余数量</td>
                         <td class="text-center">备注</td>
                     </tr>
-                    <tr>
+                    <tr id="cloneTr" class="myclass">
                         <td class="text-center">
                             <label>
-                                <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="..." >
+                                <input class="checkbox" type="checkbox" value="option1" name="select">
                             </label>
                         </td>
                         <td class="text-center inboundOrderId"></td><!--入库单号-->
                         <td class="text-center produceCompany "></td><!--产废单位-->
                         <td class="text-left model-wastesName"></td>
+                        <td class="text-left model-wastesName"></td>
                         <td class="text-center model-wastesCode"></td>
                         <td class="text-center model-wastesCode"></td>
                         <td class="text-right modal-weight"></td>
                         <td class="text-right modal-materialForm"></td>
+                        <td class="text-right residualQuantity" id="residualQuantity"></td><!--剩余数量-->
                         <td class="text-right modal-packingType"></td>
                     </tr>
                     </tbody>
                 </table>
                 <div class="row text-center">
-                    <a class="btn btn-primary" onclick="comfirm();">确认</a>
+                    <a class="btn btn-primary" onclick="batching(this);">确认</a>
                 </div>
                 <br>
                 <h4>配料单</h4>
@@ -226,9 +275,15 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="id" class="col-sm-4 control-label">配料单号</label>
+                        <label for="batchingOrderId" class="col-sm-4 control-label">配料单号</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" id="batchingOrderId" name="batchingOrderId" placeholder="" readonly>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label for="remarks" class="col-sm-4 control-label">备注</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="id" name="id" placeholder="">
+                                <input type="text" class="form-control" id="remarks" name="remarks" placeholder="" >
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -242,7 +297,7 @@
                         <div class="form-group">
                             <label for="date" class="col-sm-4 control-label">配料日期</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="date" name="date" placeholder="">
+                                <input type="date" class="form-control" id="date" name="date" placeholder="">
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -272,35 +327,38 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="note" class="col-sm-4 control-label">备注</label>
+                            <label for="createDate" class="col-sm-4 control-label">创建日期</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="note" name="note" placeholder="">
+                                <input type="date" class="form-control" id="createDate" name="createDate" placeholder="">
                             </div>
                         </div>
                     </div>
                 </div>
                 <br>
                 <table class="table table-bordered">
-                    <tbody>
                     <tr>
-                        <td class="text-center">序号</td>
-                        <td class="text-center">危废名称</td>
-                        <td class="text-center">危废类别</td>
-                        <td class="text-center">进料方式</td>
-                        <td class="text-center">辅料</td>
-                        <td class="text-center">化验单号</td>
-                        <td class="text-center">产废单位</td>
-                        <td class="text-center">备注</td>
+                        <th class="text-center">入库单号</th>
+                        <th class="text-center">仓库号</th>
+                        <th class="text-center">产废单位</th>
+                        <th class="text-center">危废名称</th>
+                        <th class="text-center">危废代码</th>
+                        <th class="text-center">产废类别</th>
+                        <th class="text-center">进料方式</th>
+                        <th class="text-center">数量</th>
+                        <th class="text-center">备注</th>
                     </tr>
-                    <tr>
-                        <td class="text-center modal-companyName">1</td>
-                        <td class="text-center modal-einlass">2018-08-07</td>
-                        <td class="text-left model-wastesName">废液</td>
-                        <td class="text-left model-wastesName">废液</td>
-                        <td class="text-center model-wastesCode">QW10001</td>
-                        <td class="text-right modal-weight">5</td>
-                        <td class="text-right modal-materialForm">液态</td>
-                        <td class="text-right modal-packingType">标准装</td>
+                    <tbody>
+                    <tr id="cloneTr2" name="clone" class="myclass2">
+                        <!--<td class="text-center modal-companyName"></td>-->
+                        <td class="text-center modal-companyName"></td>
+                        <td class="text-center modal-einlass"></td>
+                        <td class="text-left model-wastesName"></td>
+                        <td class="text-left model-wastesName"></td>
+                        <td class="text-center model-wastesCode"></td>
+                        <td class="text-right modal-weight"></td>
+                        <td class="text-right modal-materialForm"></td>
+                        <td class="text-right modal-packingType" onclick="adjustNumber();" name="123"></td>
+                        <td class="text-right modal-packingType"></td>
                     </tr>
                     </tbody>
                 </table>

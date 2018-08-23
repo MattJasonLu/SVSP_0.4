@@ -3,6 +3,7 @@ package com.jdlink.domain.Inventory;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Salesman;
+import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.List;
     /*配料单号*/
     private String batchingOrderId;
     /*配料日期*/
-    private Date  batchigDate;
+    private Date  batchingDate;
     /*创建人*/
-    private String founder;
+    private String creator;
     /*创建日期*/
-    Date founderDate;
+   private Date createDate;
     /*备注*/
     private String remarks;
     /*仓库*/
@@ -41,6 +42,29 @@ import java.util.List;
     private  RecordState recordState;
     /*危废库存*/
     private WasteInventory wasteInventory;
+    /*入库单对象*/
+    private InboundOrder inboundOrder;
+    /*配料数量*/
+    private float batchingNumber;
+
+
+
+
+    public InboundOrder getInboundOrder() {
+        return inboundOrder;
+    }
+
+    public void setInboundOrder(InboundOrder inboundOrder) {
+        this.inboundOrder = inboundOrder;
+    }
+
+    public float getBatchingNumber() {
+        return batchingNumber;
+    }
+
+    public void setBatchingNumber(float batchingNumber) {
+        this.batchingNumber = batchingNumber;
+    }
 
     public WasteInventory getWasteInventory() {
         return wasteInventory;
@@ -143,28 +167,28 @@ import java.util.List;
         this.batchingOrderId = batchingOrderId;
     }
 
-    public Date getBatchigDate() {
-        return batchigDate;
+    public Date getBatchingDate() {
+        return batchingDate;
     }
 
-    public void setBatchigDate(Date batchigDate) {
-        this.batchigDate = batchigDate;
+    public void setBatchingDate(Date batchingDate) {
+        this.batchingDate = batchingDate;
     }
 
-    public String getFounder() {
-        return founder;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setFounder(String founder) {
-        this.founder = founder;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-    public Date getFounderDate() {
-        return founderDate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setFounderDate(Date founderDate) {
-        this.founderDate = founderDate;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public String getRemarks() {
@@ -190,9 +214,9 @@ import java.util.List;
     public String toString() {
         return "BatchingOrder{" +
                 "batchingOrderId='" + batchingOrderId + '\'' +
-                ", batchigDate=" + batchigDate +
-                ", founder='" + founder + '\'' +
-                ", founderDate=" + founderDate +
+                ", batchingDate=" + batchingDate +
+                ", creator='" + creator + '\'' +
+                ", createDate=" + createDate +
                 ", remarks='" + remarks + '\'' +
                 ", wareHouse=" + wareHouse +
                 ", produceCompany=" + produceCompany +
@@ -205,6 +229,8 @@ import java.util.List;
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
                 ", wasteInventory=" + wasteInventory +
+                ", inboundOrder=" + inboundOrder +
+                ", batchingNumber=" + batchingNumber +
                 ", materialRequisitionOrderList=" + materialRequisitionOrderList +
                 '}';
     }

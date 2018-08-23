@@ -13,12 +13,13 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/materialRequisition.js"></script>
+    <script src="js/produce/batching.js"></script>
+
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
 </script>
-<body onload="loadThresholdList()">
+<body onload="loadBatchingOrderList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -40,9 +41,9 @@
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="materialRequisition.html">领料单</a></li>
-                            <li role="separator" class="divider"></li>
                             <li><a href="ingredientsList.html">每日配料单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="materialRequisition.html">领料单</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="warehouseManageOut.html">危废出库</a></li>
                             <li role="separator" class="divider"></li>
@@ -127,7 +128,7 @@
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
                     </div>
                 </div>
@@ -190,17 +191,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">132123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">1123123</td>
-                            <td class="text-center">1123123</td>
-                            <td class="text-center">1123123</td>
-                            <td class="text-center">1123123</td>
+                        <tr id="cloneTr3">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                             <td class="text-center">
                                 <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                 <a href="#" onclick="addNew(this);" title="新增"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </a>

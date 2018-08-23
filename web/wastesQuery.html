@@ -13,7 +13,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
-    <script src="js/produce/warehouseManage.js"></script>
+    <script src="js/produce/wastesQuery.js"></script>
 </head>
 <body onload="loadPageLaboratoryList()" class="" >
     <!--导航条-->
@@ -37,9 +37,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="materialRequisition.html">领料单</a></li>
-                            <li role="separator" class="divider"></li>
                             <li><a href="ingredientsList.html">每日配料单</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="materialRequisition.html">领料单</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="warehouseManageOut.html">危废出库</a></li>
                             <li role="separator" class="divider"></li>
@@ -123,7 +123,7 @@
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
                     </div>
                 </div>

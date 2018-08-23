@@ -165,6 +165,26 @@ public class Client {
     private String keyword;
 
     private Page page;
+    /**
+     * 审批 驳回意见
+     */
+    private String advice;
+
+    public boolean isDisposal() {
+        return isDisposal;
+    }
+
+    public void setDisposal(boolean disposal) {
+        isDisposal = disposal;
+    }
+
+    public String getAdvice() {
+        return advice;
+    }
+
+    public void setAdvice(String advice) {
+        this.advice = advice;
+    }
 
     public Date getNowTime() {
         return nowTime;
@@ -509,6 +529,9 @@ public class Client {
                 ", ticketType=" + ticketType +
                 ", isDisposal=" + isDisposal +
                 ", nowTime=" + nowTime +
+                ", keyword='" + keyword + '\'' +
+                ", page=" + page +
+                ", advice='" + advice + '\'' +
                 '}';
     }
 }
