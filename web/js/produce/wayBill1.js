@@ -345,7 +345,8 @@ function setWayBillList(result) {
                     for(var i = 0;i < obj.wayBillItemList.length;i++){
                         total += obj.wayBillItemList[i].wastes.wastesTotal;
                     }
-                    obj.total = total;
+                    //减去总运费
+                    obj.total = total - obj.freight;
                 }
                     $(this).html(obj.total);
                     break;

@@ -182,6 +182,10 @@
             invoiceDate=#{wayBillItem.invoiceDate},salesmanId=#{wayBillItem.salesman.salesmanId},
             receiveCompanyId=#{wayBillItem.receiveCompany.clientId},wastesId=#{wayBillItem.wastes.id}
             where wayBillId=#{id};
+
+            update t_wastes
+            set  name=#{wayBillItem.wastes.name},unitPriceTax=#{wayBillItem.wastes.unitPriceTax},wasteAmount=#{wayBillItem.wastes.wasteAmount},wastesTotal=#{wayBillItem.wastes.wastesTotal}
+            where id = #{wayBillItem.wastes.id}
         </foreach>
     </insert>
 
@@ -221,6 +225,11 @@
             (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
             values
             (#{wayBillItem.itemId},#{id},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
+
+            insert into t_wastes
+            (id,name,unitPriceTax,wasteAmount,wastesTotal)
+            values
+            (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wasteAmount},#{wayBillItem.wastes.wastesTotal})
         </foreach>
     </insert>
 

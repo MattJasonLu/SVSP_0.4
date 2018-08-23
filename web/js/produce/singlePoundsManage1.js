@@ -426,9 +426,26 @@ function setSeniorSelectedList() {
  * @param e
  */
 function exportExcel() {
-    var name = 't_pr_pounds';
-    var sqlWords = "select * from t_pr_pounds ";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    // var name = 't_pr_pounds';
+    // var sqlWords = "select * from t_pr_pounds ";
+    // window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "exportPoundsExcel",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined || result.status == 'success') {
+                alert("导出成功！");
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result){
+            alert("导出失败！");
+        }
+        });
 }
 
 /**
@@ -636,7 +653,7 @@ function loadPoundsItems() {
                 $("#modal1_weighman").text(data.weighman);
                 $("#modal1_driver").text(data.driver);
                 $("#modal1_remarks").text(data.remarks);
-                $("#modal1_printTime").text(getTimeStr(data.printTime));
+              //  $("#modal1_printTime").text(getTimeStr(data.printTime));
             } else {
                 console.log(result.message);
             }
@@ -647,11 +664,7 @@ function loadPoundsItems() {
         }
     });
 }
-
-/**
- * 打印功能
- */
-function print() {
+function showPrintModal() {
     //更新打印时间
     $.ajax({
         type: "POST",                       // 方法类型
@@ -664,33 +677,118 @@ function print() {
         success: function (result) {
             if (result != undefined || result.status == "success") {
                 //window.location.reload();
-                console.log("打印时间已更新!");
+                console.log("打印时间已更新，请刷新后再打印！");
             } else {
                 console.log(result.message);
             }
         },
         error: function (result) {
-                console.log("error: " + result);
-                console.log("服务器错误！");
+            console.log("error: " + result);
+            console.log("服务器错误！");
         }
-        });
-    $('#print').hide();
-    $('#pic').show();
-    $('#poundsTitle').hide();
-    $('title').hide();
-    html2canvas(document.querySelector("#poundsForm")).then(function (canvas) {
-        $("#pic").css("visibility", "visible");
-        var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
-        var newImg = document.createElement("img");//创建img对象
-        newImg.src = dataUrl;//将canvas图形url赋给img对象
-        //然后将画布缩放，将图像放大两倍画到画布上
-        $('#pic').append(newImg).printThis({
-            //保留BASE标记或接受URL
-        });//打印img，注意不能直接打印img对象，需要包裹一层div
-        $('#print').show();
     });
-    $('#pic').html('');//打印完毕释放包裹层内容（图像)
-    $('#poundsTitle').show();
+    //获取模态框数据
+    console.log(localStorage.id);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getPounds",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: localStorage.id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data1 = eval(result.data);
+                console.log(data1);
+                $("#modal2_outTime").text(getTimeStr(data1.outTime));
+                $("#modal2_enterLicencePlate").text(data1.enterLicencePlate);
+                $("#modal2_outLicencePlate").text(data1.outLicencePlate);
+                $("#modal2_goodsName").text(data1.goodsName);
+                $("#modal2_grossWeight").text(data1.grossWeight);
+                $("#modal2_deliveryCompany").text(data1.deliveryCompany.companyName);
+                $("#modal2_tare").text(data1.tare);
+                $("#modal2_receiveCompany").text(data1.receiveCompany.companyName);
+                $("#modal2_netWeight").text(data1.netWeight);
+                $("#modal2_businessType").text(data1.businessType);
+                $("#modal2_enterTime").text(getTimeStr(data1.enterTime));
+                $("#modal2_weighman").text(data1.weighman);
+                $("#modal2_driver").text(data1.driver);
+                $("#modal2_remarks").text(data1.remarks);
+                $("#modal2_printTime").text(getTimeStr(data1.printTime));
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("模态框数据获取失败");
+        }
+    });
+    $("#footer").show();
+    $("#printModal").modal("show");
+}
+
+/**
+ * 打印功能
+ */
+function print() {
+    //打印网页
+    // $('#printBtn').hide();
+    // $('#pic').show();
+    // $('#poundsTitle').hide();
+    // $('title').hide();
+    // html2canvas(document.querySelector("#poundsForm")).then(function (canvas) {
+    //     $("#pic").css("visibility", "visible");
+    //     var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
+    //     var newImg = document.createElement("img");//创建img对象
+    //     newImg.src = dataUrl;//将canvas图形url赋给img对象
+    //     //然后将画布缩放，将图像放大两倍画到画布上
+    //     $('#pic').append(newImg).printThis({
+    //         //保留BASE标记或接受URL
+    //     });//打印img，注意不能直接打印img对象，需要包裹一层div
+    //     $('#printBtn').show();
+    // });
+    // $('#pic').html('');//打印完毕释放包裹层内容（图像)
+    // $('#poundsTitle').show();
+    //打印模态框
+    $("#footer").hide();
+    $("#print1").printThis({
+        debug:true,             // 调试模式下打印文本的渲染状态
+        importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        importStyle:false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        copyTagClasses: false
+    });
+
+}
+
+/**
+ * 打印取消
+ */
+function cancel(){
+//更新打印时间
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "resetPrintTime",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: localStorage.id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined || result.status == "success") {
+                window.location.reload();
+                console.log("打印时间已清零！");
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("服务器错误！");
+        }
+    });
 }
 
 

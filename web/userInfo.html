@@ -11,6 +11,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/business/userManage.js"></script>
 </head>
 <body>
     <!--导航条-->
@@ -98,40 +99,21 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="cfmPassword" class="col-sm-4 control-label">确认密码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                            <div class="col-xs-5">
+                                <input type="password" class="form-control" id="cfmPassword" name="cfmPassword" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
                             <label for="name" class="col-sm-4 control-label">姓名 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="department" class="col-sm-4 control-label">部门 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="department" name="department" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="job" class="col-sm-4 control-label">岗位 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control" id="job" name="job" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-6">
-                        <div class="form-group">
-                            <label for="isClient" class="col-sm-4 control-label">是否为客户 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="radio" id="isClient" name="isClient" value="true">是
-                                <input type="radio" id="isClient2" name="isClient" value="false" checked>否
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="cfmPassword" class="col-sm-4 control-label">确认密码 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="password" class="form-control" id="cfmPassword" name="cfmPassword" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="isClient" class="col-sm-4 control-label">性别 </label>
+                            <label for="sex" class="col-sm-4 control-label">性别 </label>
                             <div class="col-xs-5">
                                 <input type="radio" id="sex" name="sex" value="true">男
                                 <input type="radio" id="sex2" name="sex" value="false">女
@@ -141,13 +123,6 @@
                             <label for="age" class="col-sm-4 control-label">年龄 </label>
                             <div class="col-xs-5">
                                 <input type="text" class="form-control" id="age" name="age" placeholder="">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="canAllocate" class="col-sm-4 control-label">能否分配账号 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
-                            <div class="col-xs-5">
-                                <input type="radio" id="canAllocate" name="canAllocate" value="true">是
-                                <input type="radio" id="canAllocate2" name="canAllocate" value="false" checked>否
                             </div>
                         </div>
                     </div>
@@ -163,45 +138,5 @@
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
-
-    function addUser() {
-//        var data = new FormData();
-//        data.append('username', $("#username").val());
-//        data.append('password', $("#password").val());
-//        data.append('name', $("#name").val());
-//        data.append('department', $("#department").val());
-//        data.append('job', $("#job").val());
-//        data.append('cfmPassword', $("#cfmPassword").val());
-//        data.append('age', $("#age").val());
-//        data.append('level', $("#level").val());
-//        data.append('canAllocate', $("input[name='canAllocate']:checked").val());
-//        data.append('isClient', $("input[name='isClient']:checked").val());
-//        data.append('sex', $("input[name='sex']:checked").val());
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "addUser",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: $('#userInfoForm').serialize(),
-//            data: JSON.stringify(data),
-            dataType: "json",
-//            contentType: "application/json; charset=utf-8",
-//            processData: false,
-            success: function (result) {
-                if (result != undefined) {
-                    if (result.status == "success") {
-                        alert(result.message);
-                        $(location).attr('href', 'userManage.html');//跳转
-                    } else {
-                        console.log(result);
-                        alert(result.message);
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
-    }
 </script>
 </html>

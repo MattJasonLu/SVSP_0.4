@@ -4,6 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.InboundMapper">
+    <resultMap id="InboundPlanOrderRM" type="InboundPlanOrder" autoMapping="true">
+        <id column="inboundPlanOrderId" property="inboundPlanOrderId"/>
+        <association property="wastes" javaType="com.jdlink.domain.Wastes">
+            <result column="wastesName" property="name"/>
+            <result column="wastesCode" property="wastesId"/>
+            <result column="wastesCategory" property="category"/>
+        </association>
+        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
+        <association property="acceptCompany" column="acceptCompanyId" select="getAcceptCompany"/>
+    </resultMap>
+
+    <select id="listInboundPlanOrder" resultMap="InboundPlanOrderRM">
+        SELECT * FROM t_pl_inboundplanorder;
+    </select>
+
     <!-- 增加入库计划单 -->
     <insert id="addInboundPlanOrder" parameterType="InboundPlanOrder" >
         INSERT INTO t_pl_inboundplanorder (inboundPlanOrderId, planDate, produceCompanyId,
@@ -20,5 +35,12 @@
     <!-- 查询入库计划单中的前缀数量 -->
     <select id="getInboundPlanCountByPrefix" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM t_pl_inboundplanorder WHERE inboundPlanOrderId LIKE "%"#{prefix}"%";
+    </select>
+
+    <select id="getProduceCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{produceCompanyId};
+    </select>
+    <select id="getAcceptCompany" parameterType="String" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{acceptCompanyId};
     </select>
 </mapper>

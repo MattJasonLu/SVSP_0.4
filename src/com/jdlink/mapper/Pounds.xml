@@ -39,6 +39,10 @@
         </if>
     </select>
 
+    <select id="list" resultMap="PoundsRM">
+        select * from t_pr_pounds order by nowTime desc;
+    </select>
+
     <select id="getClientIdByName" parameterType="String" resultType="String">
         select clientId from client where companyName = #{name};
     </select>
@@ -109,6 +113,12 @@
         grossWeight =#{grossWeight},netWeight =#{netWeight},tare =#{tare},deliveryCompanyId =#{deliveryCompany.clientId},
         receiveCompanyId =#{receiveCompany.clientId},businessType =#{businessType},enterTime =#{enterTime},
         outTime =#{outTime},driver =#{driver},weighman =#{weighman},remarks= #{remarks}
+        where id = #{id};
+    </update>
+
+    <update id="resetPrintTime" parameterType="String">
+        update t_pr_pounds
+        set printTime = null
         where id = #{id};
     </update>
 

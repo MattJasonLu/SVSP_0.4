@@ -13,6 +13,14 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+/**
+ * 重置搜索数据
+ */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
+
 
 /**
  * 计算总页数
@@ -653,9 +661,9 @@ function setInvalid(e) {    //已作废
 }
 
 /**
- * 作废转移联单
+ * 提交转移联单
  */
-function setSubmit(e) {    //已作废
+function setSubmit(e) {    //已提交
     var r = confirm("确认提交该联单吗？");
     if (r) {
         var id = getIdByMenu(e);
@@ -805,135 +813,133 @@ function viewData(e) {
         url: "getTransferDraftById",
         async: false,
         dataType: "json",
-        data: {
-            id: id
-        },
+        data: {"id": id},
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 var date = eval(result);
                 $("#produceCompanyName").text(date.produceCompanyName);
-                $("#produceCompanyPhone").text(date.produceCompanyPhone);
-                $("#produceCompanyLocation").text(date.produceCompanyLocation);
-                $("#transportCompanyName").text(date.transportCompanyName);
-                $("#transportCompanyLocation").text(date.transportCompanyLocation);
-                $("#acceptCompanyName").text(date.acceptCompanyName);
-                $("#acceptCompanyLocation").text(date.acceptCompanyLocation);
-                $("#produceCompanyPostcode").text(date.produceCompanyPostcode);
-                $("#transportCompanyPhone").text(date.transportCompanyPhone);
-                $("#transportCompanyPostcode").text(date.transportCompanyPostcode);
-                $("#acceptCompanyPhone").text(date.acceptCompanyPhone);
-                $("#acceptCompanyPostcode").text(date.acceptCompanyPostcode);
-                $("#wastesName").text(date.wastesName);
-                $("#wastesPrepareTransferCount").text(date.wastesPrepareTransferCount);
-                $("#wastesCharacter").text(date.wastesCharacter);
-                $("#wastesCategory").text(date.wastesCategory);
-                $("#wastesTransferCount").text(date.wastesTransferCount);
-                if(date.wastesFormType !== null) $("#wastesFormType").text(date.wastesFormType);
-                $("#wastesCode").text(date.wastesCode);
-                $("#wastesSignCount").text(date.wastesSignCount);
-                if(date.wastesPackageType !== null) $("#wastesPackageType").text(date.wastesPackageType);
-                $("#outwardIsTransit").text(date.outwardIsTransit);
-                $("#outwardIsUse").text(date.outwardIsUse);
-                $("#outwardIsDeal").text(date.outwardIsDeal);
-                $("#outwardIsDispose").text(date.outwardIsDispose);
-                $("#mainDangerComponent").text(date.mainDangerComponent);
-                $("#dangerCharacter").text(date.dangerCharacter);
-                $("#emergencyMeasure").text(date.emergencyMeasure);
-                $("#emergencyEquipment").text(date.emergencyEquipment);
-                $("#dispatcher").text(date.dispatcher);
-                $("#destination").text(date.destination);
-                $("#transferTime").text(date.transferTime);
-                $("#firstCarrier").text(date.firstCarrier);
-                $("#firstCarryTime").text(date.firstCarryTime);
-                $("#firstModel").text(date.firstModel);
-                $("#firstBrand").text(date.firstBrand);
-                $("#firstTransportNumber").text(date.firstTransportNumber);
-                $("#firstOrigin").text(date.firstOrigin);
-                $("#firstStation").text(date.firstStation);
-                $("#firstDestination").text(date.firstDestination);
-                $("#firstCarrierSign").text(date.firstCarrierSign);
-                $("#secondCarrier").text(date.secondCarrier);
-                $("#secondCarryTime").text(date.secondCarryTime);
-                $("#secondModel").text(date.secondModel);
-                $("#secondBrand").text(date.secondBrand);
-                $("#secondTransportNumber").text(date.secondTransportNumber);
-                $("#secondOrigin").text(date.secondOrigin);
-                $("#secondStation").text(date.secondStation);
-                $("#secondDestination").text(date.secondDestination);
-                $("#secondCarrierSign").text(date.secondCarrierSign);
-                $("#acceptCompanyLicense").text(date.acceptCompanyLicense);
-                $("#recipient").text(date.recipient);
-                $("#acceptDate").text(date.acceptDate);
-                $("#disposeIsUse").text(date.disposeIsUse);
-                $("#disposeIsStore").text(date.disposeIsStore);
-                $("#disposeIsBurn").text(date.disposeIsBurn);
-                $("#disposeIsLandFill").text(date.disposeIsLandFill);
-                $("#disposeIsOther").text(date.disposeIsOther);
-                $("#headSign").text(date.headSign);
-                $("#signDate").text(date.signDate);
+                $("#produceCompanyPhone").val(date.produceCompanyPhone);
+                $("#produceCompanyLocation").val(date.produceCompanyLocation);
+                $("#transportCompanyName").val(date.transportCompanyName);
+                $("#transportCompanyLocation").val(date.transportCompanyLocation);
+                $("#acceptCompanyName").val(date.acceptCompanyName);
+                $("#acceptCompanyLocation").val(date.acceptCompanyLocation);
+                $("#produceCompanyPostcode").val(date.produceCompanyPostcode);
+                $("#transportCompanyPhone").val(date.transportCompanyPhone);
+                $("#transportCompanyPostcode").val(date.transportCompanyPostcode);
+                $("#acceptCompanyPhone").val(date.acceptCompanyPhone);
+                $("#acceptCompanyPostcode").val(date.acceptCompanyPostcode);
+                $("#wastesName").val(date.wastesName);
+                $("#wastesPrepareTransferCount").val(date.wastesPrepareTransferCount);
+                $("#wastesCharacter").val(date.wastesCharacter);
+                $("#wastesCategory").val(date.wastesCategory);
+                $("#wastesTransferCount").val(date.wastesTransferCount);
+                if(date.wastesFormType !== null) $("#wastesFormType").val(date.wastesFormType);
+                $("#wastesCode").val(date.wastesCode);
+                $("#wastesSignCount").val(date.wastesSignCount);
+                if(date.wastesPackageType !== null) $("#wastesPackageType").val(date.wastesPackageType);
+                $("#outwardIsTransit").val(date.outwardIsTransit);
+                $("#outwardIsUse").val(date.outwardIsUse);
+                $("#outwardIsDeal").val(date.outwardIsDeal);
+                $("#outwardIsDispose").val(date.outwardIsDispose);
+                $("#mainDangerComponent").val(date.mainDangerComponent);
+                $("#dangerCharacter").val(date.dangerCharacter);
+                $("#emergencyMeasure").val(date.emergencyMeasure);
+                $("#emergencyEquipment").val(date.emergencyEquipment);
+                $("#dispatcher").val(date.dispatcher);
+                $("#destination").val(date.destination);
+                $("#transferTime").val(date.transferTime);
+                $("#firstCarrier").val(date.firstCarrier);
+                $("#firstCarryTime").val(date.firstCarryTime);
+                $("#firstModel").val(date.firstModel);
+                $("#firstBrand").val(date.firstBrand);
+                $("#firstTransportNumber").val(date.firstTransportNumber);
+                $("#firstOrigin").val(date.firstOrigin);
+                $("#firstStation").val(date.firstStation);
+                $("#firstDestination").val(date.firstDestination);
+                $("#firstCarrierSign").val(date.firstCarrierSign);
+                $("#secondCarrier").val(date.secondCarrier);
+                $("#secondCarryTime").val(date.secondCarryTime);
+                $("#secondModel").val(date.secondModel);
+                $("#secondBrand").val(date.secondBrand);
+                $("#secondTransportNumber").val(date.secondTransportNumber);
+                $("#secondOrigin").val(date.secondOrigin);
+                $("#secondStation").val(date.secondStation);
+                $("#secondDestination").val(date.secondDestination);
+                $("#secondCarrierSign").val(date.secondCarrierSign);
+                $("#acceptCompanyLicense").val(date.acceptCompanyLicense);
+                $("#recipient").val(date.recipient);
+                $("#acceptDate").val(date.acceptDate);
+                $("#disposeIsUse").val(date.disposeIsUse);
+                $("#disposeIsStore").val(date.disposeIsStore);
+                $("#disposeIsBurn").val(date.disposeIsBurn);
+                $("#disposeIsLandFill").val(date.disposeIsLandFill);
+                $("#disposeIsOther").val(date.disposeIsOther);
+                $("#headSign").val(date.headSign);
+                $("#signDate").val(date.signDate);
             } else {
                 alert(result.message);
                 $("#produceCompanyName").text("");
-                $("#produceCompanyPhone").text("");
-                $("#produceCompanyLocation").text("");
-                $("#transportCompanyName").text("");
-                $("#transportCompanyLocation").text("");
-                $("#acceptCompanyName").text("");
-                $("#acceptCompanyLocation").text("");
-                $("#produceCompanyPostcode").text("");
-                $("#transportCompanyPhone").text("");
-                $("#transportCompanyPostcode").text("");
-                $("#acceptCompanyPhone").text("");
-                $("#acceptCompanyPostcode").text("");
-                $("#wastesName").text("");
-                $("#wastesPrepareTransferCount").text("");
-                $("#wastesCharacter").text("");
-                $("#wastesCategory").text("");
-                $("#wastesTransferCount").text("");
-                $("#wastesFormType").text("");
-                $("#wastesCode").text("");
-                $("#wastesSignCount").text("");
-                $("#wastesPackageType").text("");
-                $("#outwardIsTransit").text("");
-                $("#outwardIsUse").text("");
-                $("#outwardIsDeal").text("");
-                $("#outwardIsDispose").text("");
-                $("#mainDangerComponent").text("");
-                $("#dangerCharacter").text("");
-                $("#emergencyMeasure").text("");
-                $("#emergencyEquipment").text("");
-                $("#dispatcher").text("");
-                $("#destination").text("");
-                $("#transferTime").text("");
-                $("#firstCarrier").text("");
-                $("#firstCarryTime").text("");
-                $("#firstModel").text("");
-                $("#firstBrand").text("");
-                $("#firstTransportNumber").text("");
-                $("#firstOrigin").text("");
-                $("#firstStation").text("");
-                $("#firstDestination").text("");
-                $("#firstCarrierSign").text("");
-                $("#secondCarrier").text("");
-                $("#secondCarryTime").text("");
-                $("#secondModel").text("");
-                $("#secondBrand").text("");
-                $("#secondTransportNumber").text("");
-                $("#secondOrigin").text("");
-                $("#secondStation").text("");
-                $("#secondDestination").text("");
-                $("#secondCarrierSign").text("");
-                $("#acceptCompanyLicense").text("");
-                $("#recipient").text("");
-                $("#acceptDate").text("");
-                $("#disposeIsUse").text("");
-                $("#disposeIsStore").text("");
-                $("#disposeIsBurn").text("");
-                $("#disposeIsLandFill").text("");
-                $("#disposeIsOther").text("");
-                $("#headSign").text("");
-                $("#signDate").text("");
+                $("#produceCompanyPhone").val("");
+                $("#produceCompanyLocation").val("");
+                $("#transportCompanyName").val("");
+                $("#transportCompanyLocation").val("");
+                $("#acceptCompanyName").val("");
+                $("#acceptCompanyLocation").val("");
+                $("#produceCompanyPostcode").val("");
+                $("#transportCompanyPhone").val("");
+                $("#transportCompanyPostcode").val("");
+                $("#acceptCompanyPhone").val("");
+                $("#acceptCompanyPostcode").val("");
+                $("#wastesName").val("");
+                $("#wastesPrepareTransferCount").val("");
+                $("#wastesCharacter").val("");
+                $("#wastesCategory").val("");
+                $("#wastesTransferCount").val("");
+                $("#wastesFormType").val("");
+                $("#wastesCode").val("");
+                $("#wastesSignCount").val("");
+                $("#wastesPackageType").val("");
+                $("#outwardIsTransit").val("");
+                $("#outwardIsUse").val("");
+                $("#outwardIsDeal").val("");
+                $("#outwardIsDispose").val("");
+                $("#mainDangerComponent").val("");
+                $("#dangerCharacter").val("");
+                $("#emergencyMeasure").val("");
+                $("#emergencyEquipment").val("");
+                $("#dispatcher").val("");
+                $("#destination").val("");
+                $("#transferTime").val("");
+                $("#firstCarrier").val("");
+                $("#firstCarryTime").val("");
+                $("#firstModel").val("");
+                $("#firstBrand").val("");
+                $("#firstTransportNumber").val("");
+                $("#firstOrigin").val("");
+                $("#firstStation").val("");
+                $("#firstDestination").val("");
+                $("#firstCarrierSign").val("");
+                $("#secondCarrier").val("");
+                $("#secondCarryTime").val("");
+                $("#secondModel").val("");
+                $("#secondBrand").val("");
+                $("#secondTransportNumber").val("");
+                $("#secondOrigin").val("");
+                $("#secondStation").val("");
+                $("#secondDestination").val("");
+                $("#secondCarrierSign").val("");
+                $("#acceptCompanyLicense").val("");
+                $("#recipient").val("");
+                $("#acceptDate").val("");
+                $("#disposeIsUse").val("");
+                $("#disposeIsStore").val("");
+                $("#disposeIsBurn").val("");
+                $("#disposeIsLandFill").val("");
+                $("#disposeIsOther").val("");
+                $("#headSign").val("");
+                $("#signDate").val("");
             }
         },
         error: function (result) {

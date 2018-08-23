@@ -11,7 +11,16 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
-
+/**
+ * 重置搜索数据
+ */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+    if ($("#senior").find("input").checked == "checked") {
+        $("#senior").find("input").removeAttr("checked")
+    }
+}
 /**
  * 计算总页数
  * */

@@ -141,6 +141,8 @@ public class PRWayBillController {
 //                }
 //            }
             Map<String, WayBill> map = new HashMap<>();
+            float total = 0;
+            List<WayBillItem> wayBillItemList = new ArrayList<>();
             for (int i = 1; i < data.length; i++) {
                 BigDecimal id = new BigDecimal(data[i][0].toString());  // 科学计数法转换，获取ID
                 WayBillItem wayBillItem = new WayBillItem();
@@ -161,7 +163,8 @@ public class PRWayBillController {
                 wastes.setName(data[i][10].toString());
                 wastes.setWasteAmount(Float.parseFloat(data[i][11].toString()));
                 wastes.setUnitPriceTax(Float.parseFloat(data[i][12].toString()));
-                wastes.setWastesTotal(Float.parseFloat(data[i][12].toString()) * Float.parseFloat(data[i][11].toString()));
+                float wastesTotal = Float.parseFloat(data[i][12].toString()) * Float.parseFloat(data[i][11].toString());
+                wastes.setWastesTotal(wastesTotal);
                 wayBillItem.setWastes(wastes);
                 wayBillItem.setInvoiceDate(DateUtil.getDateFromStr(data[i][13].toString()));
                 BigDecimal invoiceNumber = new BigDecimal(data[i][14].toString());
@@ -178,11 +181,16 @@ public class PRWayBillController {
                     map.get(id.toString()).setRemarks(data[i][3].toString());
                     map.get(id.toString()).setProduceCompanyOperator(data[i][4].toString());
                     map.get(id.toString()).setFreight(Float.parseFloat(data[i][5].toString()));
+                    //新存储一个id对象时，将以下两个累计数据清零
+                    total = 0;
+                    wayBillItemList = new ArrayList<>();
+
                 }
-                map.get(id.toString()).getWayBillItemList().add(wayBillItem);
-                float wastesTotal = Float.parseFloat(data[i][12].toString()) * Float.parseFloat(data[i][11].toString());
-                map.get(id.toString()).setTotal(map.get(id.toString()).getTotal() + wastesTotal);
-                map.get(id.toString()).getWayBillItemList().add(wayBillItem);
+                wayBillItemList.add(wayBillItem);
+                map.get(id.toString()).setWayBillItemList(wayBillItemList);
+                total += wastesTotal;
+                map.get(id.toString()).setTotal(total);
+               // map.get(id.toString()).getWayBillItemList().add(wayBillItem);
             }
             for(String key : map.keySet()) {
                 WayBill wayBill1 = wayBillService.getById(map.get(key).getId());

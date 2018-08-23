@@ -48,4 +48,16 @@ public interface PoundsMapper {
      * @return
      */
     Pounds getByTransferId(String transferId);
+
+    /**
+     * 获取全部数据
+     * @return
+     */
+    List<Pounds> list();
+
+    /**
+     * 清零打印时间
+     * @param id
+     */
+    void resetPrintTime(String id);
 }
