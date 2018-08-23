@@ -35,13 +35,13 @@
     </select>
     <!--查找库存信息==>危废信息-->
     <select id="getWastes" parameterType="String"  resultMap="WastesRM">
-     select * from t_wastes where id=#{wastes.id};
+     select * from t_wastes where id=#{wastes.id};t_pr_stock
     </select>
     <select id="getClient" resultType="Client">
         select * from  client where clientId=#{clientId};
     </select>
     <select id="getBatchingOrderIdList" resultType="String"  >
-        select batchingOrderId from t_pl_batchingorder order by nowTime desc ;
+        select batchingOrderId from t_pl_batchingorder order by batchingOrderId desc ;
     </select>
     <select id="total" resultType="int">
     select count(*) from t_pl_batchingorder;

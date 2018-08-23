@@ -598,7 +598,11 @@ function setBatchingOrderList(result) {
          add(data);
 
      });
-     alert("添加成功！")
+     alert("添加成功！");
+     if(confirm("是否跳转到领料单页面?")){
+      window.location.href="materialRequisition1.html";
+
+     }
  }
  //生成领料单1
 function add(data) {

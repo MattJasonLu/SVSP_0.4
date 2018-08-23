@@ -66,26 +66,8 @@ public class WasteInventoryController {
          List<WasteInventory> wasteInventoryList= wasteInventoryService.getWasteInventoryByInboundOrderId(inboundOrderId);
          JSONArray array=JSONArray.fromObject(wasteInventoryList);
          res.put("data", array);
-         int total=wasteInventoryService.total();
-         List<String> batchingOrderIdList=wasteInventoryService.getBatchingOrderIdList();
-         Calendar cal = Calendar.getInstance();
-         //获取年
-         String year = String.valueOf(cal.get(Calendar.YEAR));
-         //获取月
-         String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
-         //序列号
-         String number = "001";
 
-         if(total<0){//如果配料单号不存在
-             number = "001";
-         }
-         if(total!=0){
-             String s = batchingOrderIdList.get(0);//原字符串
-             String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-             number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-         }
-         String batchingOrderId = year + mouth + number;
-         res.put("batchingOrderId",batchingOrderId);
+         //res.put("batchingOrderId",batchingOrderId);
          res.put("status", "success");
          res.put("message", "查询成功");
 
@@ -137,6 +119,26 @@ public class WasteInventoryController {
     public String addBatchingOrder(@RequestBody BatchingOrder batchingOrder){
         JSONObject res=new JSONObject();
     try {
+        int total=wasteInventoryService.total();
+        List<String> batchingOrderIdList=wasteInventoryService.getBatchingOrderIdList();
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+        //序列号
+        String number = "001";
+
+        if(total<0){//如果配料单号不存在
+            number = "001";
+        }
+        if(total!=0){
+            String s = batchingOrderIdList.get(0);//原字符串
+            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+        }
+        String batchingOrderId = year + mouth + number;
+        batchingOrder.setBatchingOrderId(batchingOrderId);
         wasteInventoryService.addBatchingOrder(batchingOrder);
         res.put("status", "success");
         res.put("message", "添加成功");
@@ -229,7 +231,7 @@ public class WasteInventoryController {
        }
 
 
-        return null;
+        return res.toString();
     }
 
     //获取两位月数

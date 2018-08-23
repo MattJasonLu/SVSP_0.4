@@ -20,15 +20,15 @@
     <resultMap id="BatchingOrderRM" type="BatchingOrder">
         <collection property="wasteInventory" column="inboundOrderId" ofType="WasteInventory" select="getWasteInventory"></collection>
     </resultMap>
-    <resultMap id="WastesRM" type="Wastes">
-        <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
+    <resultMap id="WastesRM" type="WasteInventory">
+       <association property="wastes" column="id" javaType="Wastes" select="getWastes"></association>
     </resultMap>
     <!--获得入库信息-->
     <select id="getWasteInventory" parameterType="String" resultMap="WastesRM">
          select * from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId}
     </select>
     <!--获得危废信息-->
-    <select id="getWastes" parameterType="Wastes">
+    <select id="getWastes" parameterType="String" resultType="Wastes">
         select * from t_wastes where id=#{id}
     </select>
     <!--获得配料单数据-->
