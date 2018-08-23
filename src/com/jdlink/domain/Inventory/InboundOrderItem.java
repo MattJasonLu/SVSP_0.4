@@ -19,6 +19,10 @@ public class InboundOrderItem {
      */
     private String inboundOrderId;
     /**
+     * 入库计划单号
+     */
+    private String inboundPlanOrderId;
+    /**
      * 产废单位
      */
     private Client produceCompany;
@@ -26,6 +30,18 @@ public class InboundOrderItem {
      * 危废(危废名称、危废代码、危废类别、危废数量、单价、总价)
      */
     private Wastes wastes;
+    /**
+     * 危废数量
+     */
+    private float wastesAmount;
+    /**
+     * 单价
+     */
+    private float unitPriceTax;
+    /**
+     * 总价金额
+     */
+    private float totalPrice;
     /**
      * 处理方式
      */
@@ -129,5 +145,57 @@ public class InboundOrderItem {
 
     public void setIsQualified(boolean qualified) {
         isQualified = qualified;
+    }
+
+    public String getInboundPlanOrderId() {
+        return inboundPlanOrderId;
+    }
+
+    public void setInboundPlanOrderId(String inboundPlanOrderId) {
+        this.inboundPlanOrderId = inboundPlanOrderId;
+    }
+
+    public float getWastesAmount() {
+        return wastesAmount;
+    }
+
+    public void setWastesAmount(float wastesAmount) {
+        this.wastesAmount = wastesAmount;
+    }
+
+    public float getUnitPriceTax() {
+        return unitPriceTax;
+    }
+
+    public void setUnitPriceTax(float unitPriceTax) {
+        this.unitPriceTax = unitPriceTax;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "InboundOrderItem{" +
+                "inboundOrderItemId='" + inboundOrderItemId + '\'' +
+                ", inboundOrderId='" + inboundOrderId + '\'' +
+                ", inboundPlanOrderId='" + inboundPlanOrderId + '\'' +
+                ", produceCompany=" + produceCompany +
+                ", wastes=" + wastes +
+                ", wastesAmount=" + wastesAmount +
+                ", unitPriceTax=" + unitPriceTax +
+                ", totalPrice=" + totalPrice +
+                ", processWay=" + processWay +
+                ", handleCategory=" + handleCategory +
+                ", remarks='" + remarks + '\'' +
+                ", warehouseArea='" + warehouseArea + '\'' +
+                ", recordState=" + recordState +
+                ", isQualified=" + isQualified +
+                '}';
     }
 }
