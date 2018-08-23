@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.MaterialRequisitionOrderMapper" >
+    <insert id="addMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
+   insert into t_pl_materialrequisitionorder (materialRequisitionId, guardian, materialManager, picker, pickerDate, nowTime, batchingOrderId)
+   values (#{materialRequisitionId},#{guardian},#{materialManager},#{picker},#{pickerDate},NOW(),#{batchingOrder.batchingOrderId});
+    </insert>
+    <select id="total" resultType="int">
+    select count(*) from t_pl_materialrequisitionorder;
+</select>
+    <select id="getMaterialRequisitionOrderList" resultType="String"  >
+        select materialRequisitionId from t_pl_materialrequisitionorder order by nowTime desc ;
+    </select>
+</mapper>

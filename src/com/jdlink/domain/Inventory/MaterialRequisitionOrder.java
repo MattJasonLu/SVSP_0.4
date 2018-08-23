@@ -1,4 +1,7 @@
 package com.jdlink.domain.Inventory;
+
+import java.util.Date;
+
 /*领料单*/
 public class MaterialRequisitionOrder {
     /*配料单对象*/
@@ -21,6 +24,16 @@ public class MaterialRequisitionOrder {
     private String materialManager;
     /*领料人*/
     private String picker;
+    /*领料日期*/
+    private Date pickerDate;
+
+    public Date getPickerDate() {
+        return pickerDate;
+    }
+
+    public void setPickerDate(Date pickerDate) {
+        this.pickerDate = pickerDate;
+    }
 
     @Override
     public String toString() {
@@ -35,6 +48,7 @@ public class MaterialRequisitionOrder {
                 ", warehouseManager='" + warehouseManager + '\'' +
                 ", materialManager='" + materialManager + '\'' +
                 ", picker='" + picker + '\'' +
+                ", pickerDate=" + pickerDate +
                 '}';
     }
 
