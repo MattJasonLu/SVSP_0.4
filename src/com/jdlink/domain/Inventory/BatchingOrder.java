@@ -36,7 +36,7 @@ import java.util.List;
     private String modifierId;
     /*业务员 来自产废单位的业务员*/
     private Salesman salmsman;
-    /*单据状态*/
+    /*领料状态*/
     private CheckState checkState;
     /*记录状态*/
     private  RecordState recordState;
@@ -46,10 +46,6 @@ import java.util.List;
     private InboundOrder inboundOrder;
     /*配料数量*/
     private float batchingNumber;
-
-
-
-
     public InboundOrder getInboundOrder() {
         return inboundOrder;
     }

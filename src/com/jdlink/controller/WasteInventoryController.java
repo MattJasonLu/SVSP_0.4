@@ -3,10 +3,12 @@ package com.jdlink.controller;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.BatchingOrder;
+import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
 import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.ClientService;
+import com.jdlink.service.MaterialRequisitionOrderService;
 import com.jdlink.service.WasteInventoryService;
 import com.jdlink.service.WastesInfoService;
 import net.sf.json.JSONArray;
@@ -32,6 +34,8 @@ public class WasteInventoryController {
     WastesInfoService wastesInfoService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    MaterialRequisitionOrderService materialRequisitionOrderService;
    //获得库存信息（无参数）
     @RequestMapping("getWasteInventoryList")
     @ResponseBody
@@ -62,26 +66,8 @@ public class WasteInventoryController {
          List<WasteInventory> wasteInventoryList= wasteInventoryService.getWasteInventoryByInboundOrderId(inboundOrderId);
          JSONArray array=JSONArray.fromObject(wasteInventoryList);
          res.put("data", array);
-         int total=wasteInventoryService.total();
-         List<String> batchingOrderIdList=wasteInventoryService.getBatchingOrderIdList();
-         Calendar cal = Calendar.getInstance();
-         //获取年
-         String year = String.valueOf(cal.get(Calendar.YEAR));
-         //获取月
-         String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
-         //序列号
-         String number = "001";
 
-         if(total<0){//如果配料单号不存在
-             number = "001";
-         }
-         if(total!=0){
-             String s = batchingOrderIdList.get(0);//原字符串
-             String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-             number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-         }
-         String batchingOrderId = year + mouth + number;
-         res.put("batchingOrderId",batchingOrderId);
+         //res.put("batchingOrderId",batchingOrderId);
          res.put("status", "success");
          res.put("message", "查询成功");
 
@@ -93,7 +79,7 @@ public class WasteInventoryController {
      }
         return res.toString();
     }
-    //高级查询
+    //高级查询获得下拉列表
     @RequestMapping("getSeniorList")
     @ResponseBody
     public String getSeniorList(){
@@ -120,12 +106,39 @@ public class WasteInventoryController {
         }
         return res.toString();
     }
+    //高级查询功能
+    @RequestMapping("searchInventory")
+    @ResponseBody
+    public String searchInventory(@RequestBody WasteInventory wasteInventory){
+        System.out.println(wasteInventory+"==>");
+        return null;
+    }
     //添加配料单
     @RequestMapping("addBatchingOrder")
     @ResponseBody
     public String addBatchingOrder(@RequestBody BatchingOrder batchingOrder){
         JSONObject res=new JSONObject();
     try {
+        int total=wasteInventoryService.total();
+        List<String> batchingOrderIdList=wasteInventoryService.getBatchingOrderIdList();
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+        //序列号
+        String number = "001";
+
+        if(total<0){//如果配料单号不存在
+            number = "001";
+        }
+        if(total!=0){
+            String s = batchingOrderIdList.get(0);//原字符串
+            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+        }
+        String batchingOrderId = year + mouth + number;
+        batchingOrder.setBatchingOrderId(batchingOrderId);
         wasteInventoryService.addBatchingOrder(batchingOrder);
         res.put("status", "success");
         res.put("message", "添加成功");
@@ -156,6 +169,67 @@ public class WasteInventoryController {
        res.put("status", "fail");
        res.put("message", "查询失败");
    }
+
+        return res.toString();
+    }
+    //添加领料单
+    @RequestMapping("addRequisition")
+    @ResponseBody
+    public String addRequisition(@RequestBody MaterialRequisitionOrder materialRequisitionOrder){
+        JSONObject res=new JSONObject();
+       int total= materialRequisitionOrderService.total();
+       //查找最新的领料单号
+        //List<String> materialRequisitionOrderList=materialRequisitionOrderService.getMaterialRequisitionOrderList();
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+        //序列号
+        String number = "001";
+//        if(total<0){//如果领料单号不存在
+//            number = "001";
+//        }
+//        if(total!=0){
+//            String s = materialRequisitionOrderList.get(0);//原字符串
+//            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+//            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+//        }
+//        String materialRequisitionId = year + mouth + number;
+        //设置ID
+        //materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
+        try{
+            materialRequisitionOrderService.addMaterialRequisitionOrder(materialRequisitionOrder);
+            res.put("status", "success");
+            res.put("message", "添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+
+        }
+        return res.toString();
+    }
+    //获取领料单数据列表
+    @RequestMapping("getMaterialRequisitionList")
+    @ResponseBody
+    public  String getMaterialRequisitionList(){
+       JSONObject res=new JSONObject();
+       try{
+          List<MaterialRequisitionOrder> materialRequisitionOrderList= materialRequisitionOrderService.list();
+          JSONArray jsonArray=JSONArray.fromObject(materialRequisitionOrderList);
+          res.put("jsonArray",jsonArray);
+           res.put("status", "success");
+           res.put("message", "查询成功");
+
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "查询失败");
+       }
+
 
         return res.toString();
     }
