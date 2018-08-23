@@ -193,21 +193,21 @@
                                     <input name="select" class="checkbox" type="checkbox" value="option1" aria-label="..." >
                                 </label>
                             </td>
-                            <td class="text-center modal-companyName">1</td>
-                            <td class="text-center modal-einlass">2018-08-07</td>
-                            <td class="text-left model-wastesName">废液</td>
-                            <td class="text-center model-wastesCode">QW10001</td>
-                            <td class="text-center model-wastesCode">QW10001</td>
-                            <td class="text-right modal-weight">5</td>
-                            <td class="text-right modal-materialForm">液态</td>
-                            <td class="text-right modal-packingType">标准装</td>
-                            <td class="text-right modal-KCal">20</td>
-                            <td class="text-right modal-PH">10</td>
-                            <td class="text-right modal-ashContent">20</td>
-                            <td class="text-right modal-waterContent">10</td>
-                            <td class="text-right modal-CLContent">20</td>
-                            <td class="text-right modal-SContent">10</td>
-                            <td class="text-right modal-PContent">10</td>
+                            <td class="text-center" name="inboundPlanOrderId">1</td>
+                            <td class="text-center" name="transferDraftId">2018-08-07</td>
+                            <td class="text-left" name="planDate">废液</td>
+                            <td class="text-center" name="produceCompanyName">QW10001</td>
+                            <td class="text-center" name="acceptCompanyName">QW10001</td>
+                            <td class="text-right" name="transferDate">5</td>
+                            <td class="text-right" name="transferDraftId">10</td>
+                            <td class="text-right" name="transferCount">液态</td>
+                            <td class="text-right" name="poundsCount">标准装</td>
+                            <td class="text-right" name="storageCount">20</td>
+                            <td class="text-right" name="leftCount">10</td>
+                            <td class="text-right" name="prepareTransferCount">20</td>
+                            <td class="text-right" name="wastesName">10</td>
+                            <td class="text-right" name="wastesCode">20</td>
+                            <td class="text-right" name="wastesCategory">10</td>
                         </tr>
                     </tbody>
                 </table>
@@ -286,24 +286,26 @@
                             <th class="text-center">危废数量</th>
                             <th class="text-center">单价</th>
                             <th class="text-center">金额</th>
-                            <th class="text-center">处置方式</th>
+                            <th class="text-center">处理方式</th>
+                            <th class="text-center">进料方式</th>
                             <th class="text-center">备注</th>
                             <th class="text-center">库区</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-center modal-companyName">1</td>
-                            <td class="text-center modal-einlass">2018-08-07</td>
-                            <td class="text-left model-wastesName">废液</td>
-                            <td class="text-left model-wastesName">废液</td>
-                            <td class="text-center model-wastesCode">QW10001</td>
-                            <td class="text-right modal-weight">5</td>
-                            <td class="text-right modal-materialForm">液态</td>
-                            <td class="text-right modal-packingType">标准装</td>
-                            <td class="text-right modal-KCal">20</td>
-                            <td class="text-right modal-PH">10</td>
-                            <td class="text-right modal-ashContent">20</td>
+                        <tr id="inboundClonedTr" style="display: none;">
+                            <td class="text-center" name="index">1</td>
+                            <td class="text-center" name="inboundOrderId">inboundOrderId</td>
+                            <td class="text-left" name="produceCompanyName">produceCompanyName</td>
+                            <td class="text-left" name="wastesName">废液</td>
+                            <td class="text-center" name="wastesCode">QW10001</td>
+                            <td class="text-right" name="wastesAmount">5</td>
+                            <td class="text-right" name="unitPriceTax">液态</td>
+                            <td class="text-right" name="totalPrice">标准装</td>
+                            <td class="text-right" name="processWay">20</td>
+                            <td class="text-right" name="handleCategory">10</td>
+                            <td class="text-right" name="remarks">备注</td>
+                            <td class="text-right" name="warehouseArea">库区</td>
                         </tr>
                     </tbody>
                 </table>

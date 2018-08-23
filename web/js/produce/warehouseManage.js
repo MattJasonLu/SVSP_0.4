@@ -102,7 +102,9 @@ function signIn(item) {
     }
 }
 
-
+/**
+ * 读取入库计划单数据
+ */
 function loadInboundPlanOrder() {
     $.ajax({
         type: "POST",                       // 方法类型
