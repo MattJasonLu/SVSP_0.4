@@ -116,6 +116,12 @@
         where id = #{id};
     </update>
 
+    <update id="resetPrintTime" parameterType="String">
+        update t_pr_pounds
+        set printTime = null
+        where id = #{id};
+    </update>
+
     <update id="printTime" parameterType="String">
         update t_pr_pounds
         set printTime = NOW()

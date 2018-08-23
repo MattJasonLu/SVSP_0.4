@@ -92,4 +92,6 @@ public class PoundsServiceImpl implements PoundsService {
     @Override
     public List<Pounds> list(){ return poundsMapper.list(); }
 
+    @Override
+    public void resetPrintTime(String id){ poundsMapper.resetPrintTime(id); }
 }
