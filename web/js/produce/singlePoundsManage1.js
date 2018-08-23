@@ -426,9 +426,26 @@ function setSeniorSelectedList() {
  * @param e
  */
 function exportExcel() {
-    var name = 't_pr_pounds';
-    var sqlWords = "select * from t_pr_pounds ";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    // var name = 't_pr_pounds';
+    // var sqlWords = "select * from t_pr_pounds ";
+    // window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "exportPoundsExcel",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined || result.status == 'success') {
+                alert("导出成功！");
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result){
+            alert("导出失败！");
+        }
+        });
 }
 
 /**
@@ -664,7 +681,7 @@ function print() {
         success: function (result) {
             if (result != undefined || result.status == "success") {
                 //window.location.reload();
-                console.log("打印时间已更新!");
+                alert("打印时间已更新，请刷新后再打印！");
             } else {
                 console.log(result.message);
             }

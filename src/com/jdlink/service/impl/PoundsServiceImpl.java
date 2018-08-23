@@ -83,5 +83,13 @@ public class PoundsServiceImpl implements PoundsService {
      * @return
      */
     @Override
-    public Pounds getByTransferId(String transferId){ return poundsMapper.getByTransferId(transferId); }
+    public Pounds getByTransferId(String transferId){ return poundsMapper.getByTransferId(transferId);}
+
+    /**
+     *获取全部数据
+     * @return
+     */
+    @Override
+    public List<Pounds> list(){ return poundsMapper.list(); }
+
 }
