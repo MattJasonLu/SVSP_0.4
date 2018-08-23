@@ -15,9 +15,9 @@ import java.util.List;
     /*配料日期*/
     private Date  batchingDate;
     /*创建人*/
-    private String founder;
+    private String creator;
     /*创建日期*/
-    Date founderDate;
+   private Date createDate;
     /*备注*/
     private String remarks;
     /*仓库*/
@@ -46,15 +46,9 @@ import java.util.List;
     private InboundOrder inboundOrder;
     /*配料数量*/
     private float batchingNumber;
-    private Wastes wastes;
 
-    public Wastes getWastes() {
-        return wastes;
-    }
 
-    public void setWastes(Wastes wastes) {
-        this.wastes = wastes;
-    }
+
 
     public InboundOrder getInboundOrder() {
         return inboundOrder;
@@ -181,20 +175,20 @@ import java.util.List;
         this.batchingDate = batchingDate;
     }
 
-    public String getFounder() {
-        return founder;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setFounder(String founder) {
-        this.founder = founder;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-    public Date getFounderDate() {
-        return founderDate;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setFounderDate(Date founderDate) {
-        this.founderDate = founderDate;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public String getRemarks() {
@@ -221,8 +215,8 @@ import java.util.List;
         return "BatchingOrder{" +
                 "batchingOrderId='" + batchingOrderId + '\'' +
                 ", batchingDate=" + batchingDate +
-                ", founder='" + founder + '\'' +
-                ", founderDate=" + founderDate +
+                ", creator='" + creator + '\'' +
+                ", createDate=" + createDate +
                 ", remarks='" + remarks + '\'' +
                 ", wareHouse=" + wareHouse +
                 ", produceCompany=" + produceCompany +
@@ -237,7 +231,6 @@ import java.util.List;
                 ", wasteInventory=" + wasteInventory +
                 ", inboundOrder=" + inboundOrder +
                 ", batchingNumber=" + batchingNumber +
-                ", wastes=" + wastes +
                 ", materialRequisitionOrderList=" + materialRequisitionOrderList +
                 '}';
     }

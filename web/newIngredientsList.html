@@ -275,9 +275,15 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="batchingOrderId" class="col-sm-4 control-label">配料单号</label>
+                        <label for="batchingOrderId" class="col-sm-4 control-label">配料单号</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" id="batchingOrderId" name="batchingOrderId" placeholder="" readonly>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label for="remarks" class="col-sm-4 control-label">备注</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="batchingOrderId" name="batchingOrderId" placeholder="" readonly>
+                                <input type="text" class="form-control" id="remarks" name="remarks" placeholder="" >
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -320,12 +326,12 @@
                         <!--</div>-->
                     </div>
                     <div class="form-horizontal col-md-3">
-                        <!--<div class="form-group">-->
-                            <!--<label for="note" class="col-sm-4 control-label">备注</label>-->
-                            <!--<div class="col-xs-7">-->
-                                <!--<input type="text" class="form-control" id="note" name="note" placeholder="">-->
-                            <!--</div>-->
-                        <!--</div>-->
+                        <div class="form-group">
+                            <label for="createDate" class="col-sm-4 control-label">创建日期</label>
+                            <div class="col-xs-7">
+                                <input type="date" class="form-control" id="createDate" name="createDate" placeholder="">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <br>
