@@ -3,6 +3,8 @@ package com.jdlink.controller;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.PackageType;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.WastesInfoService;
 import net.sf.json.JSONArray;
@@ -62,7 +64,7 @@ public class WastesInfoController {
 
     /**
      * 获取审核状态
-     * @return 物质形态和包装方式
+     * @return 审核状态
      */
     @RequestMapping("getCheckState")
     @ResponseBody
@@ -70,6 +72,46 @@ public class WastesInfoController {
         JSONObject res = new JSONObject();
         JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
         res.put("checkStateList", checkStateList);
+        return res.toString();
+    }
+
+    /**
+     * 获取处置方式
+     * @return 处置方式
+     */
+    @RequestMapping("getProcessWay")
+    @ResponseBody
+    public String getProcessWay() {
+        JSONObject res = new JSONObject();
+        try {
+            JSONArray processWayList = JSONArray.fromArray(ProcessWay.values());
+            res.put("processWayList", processWayList);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取处置方式
+     * @return 处置方式
+     */
+    @RequestMapping("getHandleCategory")
+    @ResponseBody
+    public String getHandleCategory() {
+        JSONObject res = new JSONObject();
+        try {
+            JSONArray handleCategoryList = JSONArray.fromArray(HandleCategory.values());
+            res.put("handleCategoryList", handleCategoryList);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+        } catch (Exception e) {
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
         return res.toString();
     }
 }

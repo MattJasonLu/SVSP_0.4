@@ -160,7 +160,7 @@
                     </div>
                 </div>
             </div>
-            <form method="post" id="infoForm" enctype="multipart/form-data">
+            <div id="mainData">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -186,7 +186,7 @@
                             <th class="text-center">危废类别</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="planOrderData">
                         <tr id="planClonedTr">
                             <td class="text-center">
                                 <label>
@@ -212,10 +212,10 @@
                     </tbody>
                 </table>
                 <div class="row text-center">
-                    <a class="btn btn-primary" onclick="comfirm();">确认</a>
+                    <a class="btn btn-primary" onclick="addPlan2Order();">确认</a>
                 </div>
                 <br>
-                <h4>入库单</h4>
+                <h4>入库单明细</h4>
                 <hr class="simple" color="#6f5499" />
                 <br>
                 <div class="row">
@@ -279,7 +279,7 @@
                     <thead>
                         <tr>
                             <th class="text-center">序号</th>
-                            <th class="text-center">入库单号</th>
+                            <th class="text-center">入库计划号</th>
                             <th class="text-center">产废单位</th>
                             <th class="text-center">危废名称</th>
                             <th class="text-center">危废代码</th>
@@ -292,7 +292,7 @@
                             <th class="text-center">库区</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="inboundOrderData">
                         <tr id="inboundClonedTr" style="display: none;">
                             <td class="text-center" name="index">1</td>
                             <td class="text-center" name="inboundOrderId">inboundOrderId</td>
@@ -300,12 +300,12 @@
                             <td class="text-left" name="wastesName">废液</td>
                             <td class="text-center" name="wastesCode">QW10001</td>
                             <td class="text-right" name="wastesAmount">5</td>
-                            <td class="text-right" name="unitPriceTax">液态</td>
-                            <td class="text-right" name="totalPrice">标准装</td>
-                            <td class="text-right" name="processWay">20</td>
-                            <td class="text-right" name="handleCategory">10</td>
-                            <td class="text-right" name="remarks">备注</td>
-                            <td class="text-right" name="warehouseArea">库区</td>
+                            <td class="text-right" name="unitPriceTax"></td>
+                            <td class="text-right" name="totalPrice"></td>
+                            <td class="text-right"><select name="processWay"></select></td>
+                            <td class="text-right"><select name="handleCategory"></select></td>
+                            <td class="text-right"><input type="text" name="remarks"></td>
+                            <td class="text-right"><input type="text" name="warehouseArea"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -314,7 +314,7 @@
                     <a class="btn btn-primary" onclick="submit();">提交</a>
                     <a class="btn btn-danger" href="warehouseManage.html">返回</a>
                 </div>
-            </form>
+            </>
         </div>
     </div>
     <div id="embed"></div>
