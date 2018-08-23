@@ -177,7 +177,7 @@ public class WasteInventoryController {
         JSONObject res=new JSONObject();
        int total= materialRequisitionOrderService.total();
        //查找最新的领料单号
-        List<String> materialRequisitionOrderList=materialRequisitionOrderService.getMaterialRequisitionOrderList();
+        //List<String> materialRequisitionOrderList=materialRequisitionOrderService.getMaterialRequisitionOrderList();
         Calendar cal = Calendar.getInstance();
         //获取年
         String year = String.valueOf(cal.get(Calendar.YEAR));
@@ -185,17 +185,17 @@ public class WasteInventoryController {
         String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
         //序列号
         String number = "001";
-        if(total<0){//如果领料单号不存在
-            number = "001";
-        }
-        if(total!=0){
-            String s = materialRequisitionOrderList.get(0);//原字符串
-            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-        }
-        String materialRequisitionId = year + mouth + number;
+//        if(total<0){//如果领料单号不存在
+//            number = "001";
+//        }
+//        if(total!=0){
+//            String s = materialRequisitionOrderList.get(0);//原字符串
+//            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+//            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+//        }
+//        String materialRequisitionId = year + mouth + number;
         //设置ID
-        materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
+        //materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
         try{
             materialRequisitionOrderService.addMaterialRequisitionOrder(materialRequisitionOrder);
             res.put("status", "success");
@@ -209,6 +209,29 @@ public class WasteInventoryController {
         }
         return res.toString();
     }
+    //获取领料单数据列表
+    @RequestMapping("getMaterialRequisitionList")
+    @ResponseBody
+    public  String getMaterialRequisitionList(){
+       JSONObject res=new JSONObject();
+       try{
+          List<MaterialRequisitionOrder> materialRequisitionOrderList= materialRequisitionOrderService.list();
+          JSONArray jsonArray=JSONArray.fromObject(materialRequisitionOrderList);
+          res.put("jsonArray",jsonArray);
+           res.put("status", "success");
+           res.put("message", "查询成功");
+
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "查询失败");
+       }
+
+
+        return null;
+    }
+
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){

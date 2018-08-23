@@ -8,4 +8,5 @@ public interface MaterialRequisitionOrderMapper {
     int total();
     List<String> getMaterialRequisitionOrderList();
     void addMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
+    List<MaterialRequisitionOrder> list();
 }

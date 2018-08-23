@@ -546,6 +546,31 @@ function setBatchingOrderList(result) {
 //生成领料单
  function generateRequisition(){
      var items = $("input[name='select']:checked");//判断复选框是否选中
+     // for (var i=1;i<items.length;i++) {
+     //     //获得配料单号
+     //     var batchingOrderId=  $(items).parent().parent().next().next().html();
+     //     console.log(batchingOrderId);
+     //     //危废名称
+     //     var name= $(this).parent().parent().next().next().next().html();
+     //     //处理类别
+     //     var handelCatogory=$(this).parent().parent().next().next().next().next().html();
+     //     //数量
+     //     var batchingNumber=$(this).parent().parent().next().next().next().next().next().html();
+     //     //计量单位
+     //     var unit=$(this).parent().parent().next().next().next().next().next().next().html();
+     //     //产废单位
+     //     var produceCompany=$(this).parent().parent().next().next().next().next().next().next().next().html();
+     //     //创建人
+     //     var creator=$(this).parent().parent().next().next().next().next().next().next().next().next().html();
+     //     data={
+     //         batchingOrder:{batchingOrderId:batchingOrderId,
+     //             creator:creator,
+     //             batchingNumber:batchingNumber,
+     //             wasteInventory:{wastes:{name:name,unit:unit,client:{companyName:produceCompany,}}},},
+     //     },
+     //         //根据id获得库存的信息，进行转移放到配料中
+     //         add(data);
+     // }
      items.each(function () {
          //获得配料单号
          var batchingOrderId=  $(this).parent().parent().next().next().html();
@@ -573,35 +598,50 @@ function setBatchingOrderList(result) {
          add(data);
 
      });
-     function add(data) {
-         $.ajax({
-             type: "POST",                       // 方法类型
-             url: "addRequisition",                  // url
-             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-             dataType: "json",
-             data: JSON.stringify(data),
-             contentType: "application/json; charset=utf-8",
-             success:function (result) {
-                 if(result != undefined && result.status == "success"){
-                     console.log(result);
-                 }
-                 else {
-                     console.log(result.message);
-                 }
-             },
-             error:function (result) {
-                 alert("服务器异常！")
-             }
-
-         });
-     }
      alert("添加成功！")
  }
+ //生成领料单1
+function add(data) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addRequisition",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if(result != undefined && result.status == "success"){
+                console.log(result);
+            }
+            else {
+                console.log(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+}
 //领料单新增页面预加载
 function loadMaterialRequisitionList(){
     $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialRequisitionList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+            }
+            else {
 
-
-
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+  alert("服务器异常！")
+        }
     });
 }
