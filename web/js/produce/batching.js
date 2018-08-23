@@ -28,6 +28,14 @@ function  batchingList() {
     //加载高级查询数据
     setSeniorSelectedList();
 }
+/**
+ * 重置搜索数据
+ */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
+
 /**设置库存列表数据
  */
 function setWasteInventoryList(result) {

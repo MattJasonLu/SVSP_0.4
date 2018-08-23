@@ -19,6 +19,14 @@ function getId(item) {
     return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 /**
+ * 重置搜索数据
+ */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
+
+/**
  * 作废计划单
  * @param item 用户
  */

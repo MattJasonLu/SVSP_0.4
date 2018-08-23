@@ -5,7 +5,15 @@
 function loadThresholdList() {
     $("#weekDate").text(getWeekDate());
 }
-/*
+/**
+ * 重置搜索数据
+ */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
+
+/**
 * 加载数据至克隆表格中
 */
 function setThresholdList(result) {

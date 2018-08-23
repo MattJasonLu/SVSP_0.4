@@ -1,13 +1,14 @@
 /*********************
  * jackYang
  */
-/*重置数据*/
+/**
+ * 重置搜索数据
+ */
 function reset() {
-    $("#search-orderNumber").val("");
-    $("#search-processingCategory").val("");
-    $("#search-packingType").val("");
-    $("#search-type").val("");
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
 }
+
 /*获得最新一期的物料需求*/
 function getNewest() {
     $.ajax({
