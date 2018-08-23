@@ -11,67 +11,10 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/business/userManage.js"></script>
 </head>
 <script>
-    function setDataList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                        // 编号
-                    case (1):
-                        $(this).html(obj.id);
-                        break;
-                    case (2):
-                        $(this).html(obj.username);
-                        break;
-                    case (3):
-                        $(this).html(obj.name);
-                        break;
-                        // 审核状态
-                    case (4):
-                        $(this).html(obj.department);
-                        break;
-                        // 账号状态
-                    case (5):
-                        $(this).html(obj.job);
-                        break;
-                    case (6):
-                        $(this).html(obj.canAllocate==true ? "是" : "否");
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-    function loadDataList() {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listUser",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    setDataList(result.data);
-                }
-            },
-            error:function (result) {
-                console.log(result);
-            }
-        });
-    }
+
 </script>
 <body onload="loadDataList();">
     <!--导航条-->
@@ -154,11 +97,8 @@
                             </label>
                         </th>
                         <th class="text-center">编号</th>
-                        <th class="text-center">账号名</th>
+                        <th class="text-center">账号</th>
                         <th class="text-center">姓名</th>
-                        <th class="text-center">部门</th>
-                        <th class="text-center">岗位</th>
-                        <th class="text-center">是否可分配账号</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -172,11 +112,8 @@
                         <td class="text-center">0001</td>
                         <td class="text-center">root</td>
                         <td class="text-center">管理员</td>
-                        <td class="text-center">管理员</td>
-                        <td class="text-center">管理员</td>
-                        <td class="text-center">是</td>
                         <td class="text-center">
-                            <a href="#" onclick="" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" onclick="alert('功能开发中');" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>

@@ -45,10 +45,10 @@ public class InboundServiceImpl implements InboundService {
         //设置最小整数位数
         nf.setMinimumIntegerDigits(2);
         // 获取最新编号
-        String month = nf.format(calendar.get(Calendar.MONTH));
+        String month = nf.format(calendar.get(Calendar.MONTH) + 1);
         String prefix = year + month;
         // 获取数量
-        int count = getInboundPlanCountByPrefix(prefix);
+        int count = getInboundPlanCountByPrefix(prefix) + 1;
         //得到一个NumberFormat的实例
         nf = NumberFormat.getInstance();
         //设置是否使用分组
