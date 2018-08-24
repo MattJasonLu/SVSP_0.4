@@ -655,8 +655,8 @@ function showViewModal(id) {
             if (result.status == "success") {
                 //设置数据
                 var data = eval(result.data);
-                console.log("data:" + data.pretreatmentItemList);
-                setViewDataClone(data);
+                console.log(result);
+                setViewDataClone(result.data);
                 $("#view-pretreatmentId").text(data.id);
                 $("#view-remarks").text(data.remarks);
                 $("#view-weightTotal").text(data.weightTotal);
@@ -710,7 +710,7 @@ function setViewDataClone(result){
                     break;
                 case (1):
                     // 产废单位
-                    $(this).html(obj.companyName);
+                    $(this).html(obj.produceCompanyName);
                     break;
                 case (2):
                     // 指标要求及来源
@@ -915,7 +915,7 @@ function setAdjustClone(result){
                     break;
                 case (2):
                     // 产废单位
-                    $(this).html(obj.companyName);
+                    $(this).html(obj.produceCompanyName);
                     break;
                 case (3):
                     // 指标要求及来源
