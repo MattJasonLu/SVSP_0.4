@@ -1,5 +1,8 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Account.Authority;
+import com.jdlink.domain.Account.Function;
+import com.jdlink.domain.Account.Role;
 import com.jdlink.domain.LoginLog;
 import com.jdlink.domain.User;
 import com.jdlink.mapper.UserMapper;
@@ -52,6 +55,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<LoginLog> getLogById(int id) {
         return userMapper.getLogById(id);
+    }
+
+    @Override
+    public List<Role> listRole() {
+        return userMapper.listRole();
+    }
+
+    @Override
+    public void setRole(int userId, int roleId) {
+        userMapper.setRole(userId, roleId);
+    }
+
+    @Override
+    public List<Function> listFunction() {
+        return userMapper.listFunction();
+    }
+
+
+    @Override
+    public List<Authority> listAuthority() {
+        return userMapper.listAuthority();
     }
 
 }

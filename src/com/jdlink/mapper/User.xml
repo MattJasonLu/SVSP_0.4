@@ -4,10 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.UserMapper">
+    <resultMap id="UserRM" type="User" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="role" column="roleId" select="getRole" javaType="com.jdlink.domain.Account.Role"/>
+    </resultMap>
+    <resultMap id="FunctionRM" type="Function" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="functionName" column="functionName"/>
+        <collection property="children" column="id" select="getFunctionChildren" ofType="com.jdlink.domain.Account.Function" javaType="ArrayList"/>
+    </resultMap>
     <insert id="add" parameterType="User" >
-        INSERT INTO user (username, password, clientId, isClient, nowTime, department, name, age, sex, job, level, canAllocate)
-        VALUES (#{username}, #{password}, #{clientId}, #{isClient}, NOW(), #{department}, #{name}, #{age}, #{sex}, #{job}, #{level}, #{canAllocate});
+        INSERT INTO user (username, password, nowTime, name, age, sex, roleId)
+        VALUES (#{username}, #{password}, NOW(), #{name}, #{age}, #{sex}, 2);
     </insert>
+
+    <update id="setRole" parameterType="int">
+        UPDATE user SET roleId=#{roleId} WHERE id=#{userId};
+    </update>
 
     <delete id="delete" parameterType="User" >
         delete from user where id= #{id}
@@ -28,7 +41,7 @@
     <update id="update" parameterType="User" >
         update user set password=#{password}, nowTime=NOW() where id=#{id}
     </update>
-    <select id="list" resultType="User">
+    <select id="list" resultMap="UserRM">
         select * from user order by nowTime desc;
     </select>
 
@@ -39,4 +52,29 @@
     <select id="getLogById" parameterType="int" resultType="LoginLog">
         SELECT * FROM t_loginlog WHERE userId=#{userId};
     </select>
+
+    <!--列出所有角色-->
+    <select id="listRole" resultType="Role">
+        SELECT * FROM t_ur_role;
+    </select>
+
+    <select id="getRole" resultType="Role">
+        SELECT * FROM t_ur_role WHERE id=#{roleId};
+    </select>
+
+    <!--列出所有功能-->
+    <select id="listFunction" resultMap="FunctionRM">
+        SELECT * FROM t_ur_function WHERE parentFunctionId=0;
+    </select>
+
+    <!--列出子功能-->
+    <select id="getFunctionChildren" resultMap="FunctionRM">
+        SELECT * FROM t_ur_function WHERE parentFunctionId=#{id};
+    </select>
+
+    <!--列出所有的权限-->
+    <select id="listAuthority" resultType="Authority">
+        SELECT * FROM t_ur_authority;
+    </select>
+
 </mapper>

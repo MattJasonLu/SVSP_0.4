@@ -16,7 +16,7 @@
 <script>
 
 </script>
-<body onload="loadDataList();">
+<body onload="loadUserList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -37,9 +37,21 @@
                     <li><a href="basicData.html">首页</a></li>
                     <li><a href="#">开票信息</a></li>
                     <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li class="active"><a href="userManage.html">账号管理</a></li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">账号管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="roleList.html">角色列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="permissionList.html">权限表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="userManage.html">用户列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="organizationList.html">组织架构管理表</a></li>
+                        </ul>
+                    </li>
                     <li><a href="thresholdTable.html">处置类别阈值表</a></li>
-                    <li><a href="#">受控文档表</a></li>
+                    <li><a href="documentControl.html">受控文档表</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -99,6 +111,7 @@
                         <th class="text-center">编号</th>
                         <th class="text-center">账号</th>
                         <th class="text-center">姓名</th>
+                        <th class="text-center">角色</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -109,17 +122,37 @@
                                 <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="checkbox1">
                             </label>
                         </td>
-                        <td class="text-center">0001</td>
+                        <td class="text-center" name="id">0001</td>
                         <td class="text-center">root</td>
+                        <td class="text-center">小李</td>
                         <td class="text-center">管理员</td>
                         <td class="text-center">
                             <a href="#" onclick="alert('功能开发中');" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a href="#" onclick="showRoleModal(this);" title="分配角色"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
 
+        </div>
+    </div>
+    <!-- 分配角色模态框 -->
+    <div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">分配角色</h4>
+                </div>
+                <div class="modal-body">
+                    <select id="role"></select>
+                </div>
+                <div class="modal-footer" id="appoint">
+                    <button type="button" class="btn btn-primary" id="saveRole">保存</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
         </div>
     </div>
     <div id="embed"></div>
