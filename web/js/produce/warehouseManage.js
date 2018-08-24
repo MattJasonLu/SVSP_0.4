@@ -102,7 +102,7 @@ function signIn(item) {
     }
 }
 
-var index;
+var inboundPlanOrderIdArray = [];
 
 /**
  * 读取入库计划单数据
@@ -218,22 +218,26 @@ function addPlan2Order() {
     $("#planOrderData").children().not("#planClonedTr").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
         if (isCheck) {
-            var plan = {};
-            plan.inboundPlanOrderId = $(this).find("td[name='inboundPlanOrderId']").text();
-            plan.transferDraftId = $(this).find("td[name='transferDraftId']").text();
-            plan.planDate = $(this).find("td[name='planDate']").text();
-            plan.produceCompanyName = $(this).find("td[name='produceCompanyName']").text();
-            plan.acceptCompanyName = $(this).find("td[name='acceptCompanyName']").text();
-            plan.transferDate = $(this).find("td[name='transferDate']").text();
-            plan.transferDraftId = $(this).find("td[name='transferDraftId']").text();
-            plan.transferCount = $(this).find("td[name='transferCount']").text();
-            plan.poundsCount = $(this).find("td[name='poundsCount']").text();
-            plan.leftCount = $(this).find("td[name='leftCount']").text();
-            plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
-            plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
-            plan.wastesCode = $(this).find("td[name='wastesCode']").text();
-            plan.wastesCategory = $(this).find("td[name='wastesCategory']").text();
-            planList.push(plan);
+            var inboundPlanOrderId = $(this).find("td[name='inboundPlanOrderId']").text();
+            if ($.inArray(inboundPlanOrderId, inboundPlanOrderIdArray) == -1) {
+                inboundPlanOrderIdArray.push(inboundPlanOrderId);
+                var plan = {};
+                plan.inboundPlanOrderId = inboundPlanOrderId;
+                plan.transferDraftId = $(this).find("td[name='transferDraftId']").text();
+                plan.planDate = $(this).find("td[name='planDate']").text();
+                plan.produceCompanyName = $(this).find("td[name='produceCompanyName']").text();
+                plan.acceptCompanyName = $(this).find("td[name='acceptCompanyName']").text();
+                plan.transferDate = $(this).find("td[name='transferDate']").text();
+                plan.transferDraftId = $(this).find("td[name='transferDraftId']").text();
+                plan.transferCount = $(this).find("td[name='transferCount']").text();
+                plan.poundsCount = $(this).find("td[name='poundsCount']").text();
+                plan.leftCount = $(this).find("td[name='leftCount']").text();
+                plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
+                plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
+                plan.wastesCode = $(this).find("td[name='wastesCode']").text();
+                plan.wastesCategory = $(this).find("td[name='wastesCategory']").text();
+                planList.push(plan);
+            }
         }
     });
     // 遍历js对象数组列表，循环增加入库单条目列表
@@ -290,7 +294,7 @@ function setSelectItem() {
                 var processWayArray = $("select[name='processWay']");
                 for (var i = 0; i < processWayArray.length; i++) {
                     var processWay = $(processWayArray[i]);
-                    console.log(processWay);
+                    // console.log(processWay);
                     processWay.children().remove();
                     $.each(data.processWayList, function (index, item) {
                         var option = $('<option />');
@@ -332,6 +336,53 @@ function setSelectItem() {
                 }
             } else {
                 console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/**
+ * 增加入库单
+ */
+function addInboundOrder(type) {
+    var inboundOrderItemList = [];
+    $("#inboundOrderData").children().not("#inboundClonedTr").each(function () {
+        var inboundOrder = {};
+        inboundOrder.inboundPlanOrderId = $(this).find("td[name='inboundPlanOrderId']").text();
+        var produceCompany = {};
+        produceCompany.companyName = $(this).find("td[name='produceCompanyName']").text();
+        inboundOrder.produceCompany = produceCompany;
+        var wastes = {};
+        wastes.name = $(this).find("td[name='wastesName']").text();
+        wastes.wastesId = $(this).find("td[name='wastesCode']").text();
+        inboundOrder.wastes = wastes;
+        inboundOrder.wastesAmount = $(this).find("td[name='wastesAmount']").text();
+        inboundOrder.unitPriceTax = $(this).find("td[name='unitPriceTax']").text();
+        inboundOrder.totalPrice = $(this).find("td[name='totalPrice']").text();
+        inboundOrder.processWay = $(this).find("select[name='processWay']").val();
+        inboundOrder.handleCategory = $(this).find("select[name='handleCategory']").val();
+        inboundOrder.remarks = $(this).find("input[name='remarks']").val();
+        inboundOrder.warehouseArea = $(this).find("input[name='warehouseArea']").val();
+        inboundOrderItemList.push(inboundOrder);
+    });
+    var data = {};
+    data.inboundOrderItemList = inboundOrderItemList;
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addInboundOrder",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result !== undefined && result.status == "success") {
+                alert(result.message);
+            } else {
+                alert(result.message);
             }
         },
         error: function (result) {

@@ -295,7 +295,7 @@
                     <tbody id="inboundOrderData">
                         <tr id="inboundClonedTr" style="display: none;">
                             <td class="text-center" name="index">1</td>
-                            <td class="text-center" name="inboundOrderId">inboundOrderId</td>
+                            <td class="text-center" name="inboundPlanOrderId">inboundOrderId</td>
                             <td class="text-left" name="produceCompanyName">produceCompanyName</td>
                             <td class="text-left" name="wastesName">废液</td>
                             <td class="text-center" name="wastesCode">QW10001</td>
@@ -310,8 +310,8 @@
                     </tbody>
                 </table>
                 <div class="row text-center">
-                    <a class="btn btn-success" onclick="save();">保存</a>
-                    <a class="btn btn-primary" onclick="submit();">提交</a>
+                    <a class="btn btn-success" onclick="addInboundOrder('save');">保存</a>
+                    <a class="btn btn-primary" onclick="addInboundOrder('submit');">提交</a>
                     <a class="btn btn-danger" href="warehouseManage.html">返回</a>
                 </div>
             </>
