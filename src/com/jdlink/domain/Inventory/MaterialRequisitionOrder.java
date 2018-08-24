@@ -1,5 +1,7 @@
 package com.jdlink.domain.Inventory;
 
+import com.jdlink.domain.CheckState;
+
 import java.util.Date;
 
 /*领料单*/
@@ -30,6 +32,25 @@ public class MaterialRequisitionOrder {
     private String picker;
     /*领料日期*/
     private Date pickerDate;
+    /*领用数量*/
+    private float recipientsNumber;
+   /*状态*/
+    private CheckState checkState;
+    public float getRecipientsNumber() {
+        return recipientsNumber;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
+    public void setRecipientsNumber(float recipientsNumber) {
+        this.recipientsNumber = recipientsNumber;
+    }
 
     public Date getPickerDate() {
         return pickerDate;
@@ -150,6 +171,8 @@ public class MaterialRequisitionOrder {
                 ", materialManager='" + materialManager + '\'' +
                 ", picker='" + picker + '\'' +
                 ", pickerDate=" + pickerDate +
+                ", recipientsNumber=" + recipientsNumber +
+                ", checkState=" + checkState +
                 '}';
     }
 }

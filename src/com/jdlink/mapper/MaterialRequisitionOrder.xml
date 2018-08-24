@@ -4,13 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.MaterialRequisitionOrderMapper" >
     <insert id="addMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
-   insert into t_pl_materialrequisitionorder ( guardian, materialManager, picker, pickerDate, nowTime, batchingOrderId)
-   values (#{guardian},#{materialManager},#{picker},#{pickerDate},NOW(),#{batchingOrder.batchingOrderId});
+   insert into t_pl_materialrequisitionorder ( guardian, materialManager, picker, pickerDate, nowTime, batchingOrderId,checkState)
+   values (#{guardian},#{materialManager},#{picker},#{pickerDate},NOW(),#{batchingOrder.batchingOrderId},'Picked');
     </insert>
     <update id="updateBatchingOrderCheck" parameterType="MaterialRequisitionOrder">
         update t_pl_batchingorder set checkState='Picked'  where batchingOrderId=#{batchingOrder.batchingOrderId}
     </update>
     <!--更新配料单的状态-->
+    <!--更新领料单的状态-->
+    <update id="updateMaterialRequisitionOrderCheck" parameterType="MaterialRequisitionOrder">
+        update t_pl_materialrequisitionorder set checkState='Picked'  where materialRequisitionId=#{materialRequisitionId};
+    </update>
     <select id="total" resultType="int">
     select count(*) from t_pl_materialrequisitionorder;
 </select>
@@ -59,5 +63,11 @@
     <!--更新领料单的单号-->
     <update id="updateMaterialRequisitionId1" parameterType="MaterialRequisitionOrder">
         update t_pl_materialrequisitionorder set materialRequisitionId=#{materialRequisitionId}, nowTime=NOW() where  batchingOrderId=#{batchingOrder.batchingOrderId};
+    </update>
+    <!--更新领料单的特有数据结构-->
+    <update id="updateMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
+        update t_pl_materialrequisitionorder set guardian=#{guardian},materialManager=#{materialManager},
+        picker=#{picker},departmentName=#{departmentName},deputyGeneral=#{deputyGeneral},warehouseManager=#{warehouseManager},checkState='ToOutbound'
+        where materialRequisitionId=#{materialRequisitionId}
     </update>
 </mapper>

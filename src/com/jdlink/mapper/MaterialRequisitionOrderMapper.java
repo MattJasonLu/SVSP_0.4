@@ -13,4 +13,6 @@ public interface MaterialRequisitionOrderMapper {
   void updateBatchingOrderCheck(MaterialRequisitionOrder materialRequisitionOrder);
     void  updateMaterialRequisitionId(String materialRequisitionId,String batchingOrderId);
     void  updateMaterialRequisitionId1(MaterialRequisitionOrder materialRequisitionOrder);
+    void  updateMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
+    void updateMaterialRequisitionOrderCheck(MaterialRequisitionOrder materialRequisitionOrder);
 }

@@ -225,7 +225,7 @@ public class WasteInventoryController {
          //1遍历materialRequisitionOrderList 如果不为空添加
            List<MaterialRequisitionOrder> list=new ArrayList<>();
            for (int i=0;i<materialRequisitionOrderList.size();i++){
-               if(materialRequisitionOrderList.get(i)!=null){
+               if(materialRequisitionOrderList.get(i).getMaterialRequisitionId()!=null){
                    list.add(materialRequisitionOrderList.get(i));
                }
            }
@@ -239,9 +239,16 @@ public class WasteInventoryController {
            for (int i=0;i<list.size();i++){
                materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键
                materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
+               //materialRequisitionOrderService.updateMaterialRequisitionOrderCheck(list.get(i));//更新领料单的状态
            }
-
-          JSONArray jsonArray=JSONArray.fromObject(list);
+           List<MaterialRequisitionOrder> materialRequisitionOrderList1= materialRequisitionOrderService.list();
+           List<MaterialRequisitionOrder> list2=new ArrayList<>();
+           for (int i=0;i<materialRequisitionOrderList1.size();i++){
+               if(materialRequisitionOrderList1.get(i).getMaterialRequisitionId()!=null){
+                   list2.add(materialRequisitionOrderList1.get(i));
+               }
+           }
+          JSONArray jsonArray=JSONArray.fromObject(list2);
           res.put("jsonArray",jsonArray);
            res.put("status", "success");
            res.put("message", "查询成功");
@@ -330,6 +337,27 @@ public class WasteInventoryController {
         }
         return res.toString();
     }
+    //更新领料单的特有数据结构
+    @RequestMapping("updateMaterialRequisitionOrder")
+    @ResponseBody
+    public String updateMaterialRequisitionOrder(@RequestBody MaterialRequisitionOrder materialRequisitionOrder ){
+        JSONObject res=new JSONObject();
+        try{
+          materialRequisitionOrderService.updateMaterialRequisitionOrder(materialRequisitionOrder);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+
+        return  res.toString();
+    }
+
+
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){

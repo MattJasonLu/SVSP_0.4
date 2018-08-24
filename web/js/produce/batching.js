@@ -639,6 +639,7 @@ function add(data) {
 }
 //领料单新增页面预加载
 function loadMaterialRequisitionList(){
+
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getMaterialRequisitionList",                  // url
@@ -668,65 +669,68 @@ function loadMaterialRequisitionList(){
 function setMaterialRequisitionList(result) {
     var tr = $("#cloneTr1");
     tr.attr('class','myclass');
-    $.each(result, function (index, item) {
 
-        // 克隆tr，每次遍历都可以产生新的tr
-        var clonedTr = tr.clone();
-        clonedTr.show();
-        // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.children("td").each(function (inner_index) {
-            //1生成领料单号
-            var obj = eval(item);
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                // 领料单号
-                case (0):
+        $.each(result, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            if(item.checkState.name=='已领料'){
+                var clonedTr = tr.clone();
+                clonedTr.show();
 
-                    $(this).html(obj.materialRequisitionId);
-                    break;
-                // 厂家
-                case (1):
-                    if(obj.batchingOrder.wasteInventory.wastes.client!=null){
-                        $(this).html(obj.batchingOrder.wasteInventory.wastes.client.companyName);
+                // 循环遍历cloneTr的每一个td元素，并赋值
+                clonedTr.children("td").each(function (inner_index) {
+                    //1生成领料单号
+                    var obj = eval(item);
+                    // 根据索引为部分td赋值
+                    switch (inner_index) {
+                        // 领料单号
+                        case (0):
+
+                            $(this).html(obj.materialRequisitionId);
+                            break;
+                        // 厂家
+                        case (1):
+                            if(obj.batchingOrder.wasteInventory.wastes.client!=null){
+                                $(this).html(obj.batchingOrder.wasteInventory.wastes.client.companyName);
+                            }
+                            break;
+                        // 危废名称
+                        case (2):
+                            $(this).html(obj.batchingOrder.wasteInventory.wastes.name);
+                            break;
+                        // 危废代码
+                        case (3):
+                            $(this).html(obj.batchingOrder.wasteInventory.wastes.wastesId);
+                            break;
+                        // 危废类别
+                        case (4):
+                            $(this).html("");
+                            break;
+                        // 单位
+                        case (5):
+                            $(this).html(obj.batchingOrder.wasteInventory.wastes.unit);
+                            break;
+                        // 配料数量
+                        case (6):
+                            $(this).html(obj.batchingOrder.batchingNumber);
+                            break;
+                        //领用数量
+                        case (7):
+                            $(this).html(obj.batchingOrder.batchingNumber);
+                            break;
+                        //附注
+                        case (8):
+                            $(this).html(obj.batchingOrder.wasteInventory.wastes.remarks);
+                            break;
+                        case (9):
+                            $(this).html(obj.batchingOrder.batchingOrderId);
+                            break;
                     }
-                    break;
-                // 危废名称
-                case (2):
-                    $(this).html(obj.batchingOrder.wasteInventory.wastes.name);
-                    break;
-                // 危废代码
-                case (3):
-                        $(this).html(obj.batchingOrder.wasteInventory.wastes.wastesId);
-                    break;
-                // 危废类别
-                case (4):
-                        $(this).html("");
-                    break;
-                // 单位
-                case (5):
-                        $(this).html(obj.batchingOrder.wasteInventory.wastes.unit);
-                    break;
-                // 配料数量
-                case (6):
-                    $(this).html(obj.batchingOrder.batchingNumber);
-                    break;
-                    //领用数量
-                case (7):
-                  $(this).html(0);
-                    break;
-                    //附注
-                case (8):
-                    $(this).html(obj.batchingOrder.wasteInventory.wastes.remarks);
-                    break;
-                case (9):
-                    $(this).html(obj.batchingOrder.batchingOrderId);
-                    break;
+                });
+                // 把克隆好的tr追加到原来的tr前面
+                clonedTr.removeAttr("id");
+                clonedTr.insertBefore(tr);
             }
         });
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
-    });
     // 隐藏无数据的tr
     tr.hide();
     tr.removeAttr('class');
@@ -786,14 +790,78 @@ function getString3(number) {
 }
 //保存领料单 实则是更新
 function updateMaterialRequisitionOrder() {
+    if(confirm("确认领料?")){
 //1遍历
-    $('.myclass').each(function (index) {
-      var materialRequisitionId=  $(this).children().get(0).innerHTML;
-  console.log(materialRequisitionId);
+        $('.myclass').each(function (index) {
+            var materialRequisitionId= $(this).children().get(0).innerHTML;//领料单
+            //厂家
+            var companyName=$(this).children().get(1).innerHTML;
+            //危废名称
+            var name=$(this).children().get(2).innerHTML;
+            //危废代码
+            var wasteId=$(this).children().get(3).innerHTML;
+            //危废类别
+            var category=$(this).children().get(3).innerHTML;
+            //单位
+            var unit=$(this).children().get(4).innerHTML;
+            //配料数量
+            var batchingNumber=$(this).children().get(5).innerHTML;
+            //领用数量
+            var recipientsNumber=$(this).children().get(6).innerHTML;
+            //附注
+            var remarks=$(this).children().get(7).innerHTML;
+            //部门
+            var departmentName=$("#departmentName").val();
+            //主管副总经理
+            var deputyGeneral=$("#deputyGeneral").val();
+            //仓库部门主管
+            var warehouseManager=$("#warehouseManager").val();
+            //保管员
+            var guardian=$("#guardian").val();
+            //	领料部门主管
+            var materialManager=$("#materialManager").val();
+            //领料人
+            var picker=$("#picker").val();
+            data={
+                departmentName:departmentName,
+                deputyGeneral:deputyGeneral,
+                warehouseManager:warehouseManager,
+                guardian:guardian,
+                materialManager:materialManager,
+                picker:picker,
+                materialRequisitionId:materialRequisitionId
+            };
+            update(data);
+        });
+        if(confirm("是否跳转到领料单列表页面?")){
+            //点击确定后操作
+            window.location.href="materialRequisition.html"
+        }
+    }
 
+}
+//更新领料单的特有数据
+function update(data) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "updateMaterialRequisitionOrder",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+            }
+            else {
+                alert(result.message);
 
+            }
+                },
+        error:function (result) {
+            alert("服务器异常！")
+
+        }
     });
-
-
 
 }
