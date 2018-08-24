@@ -33,7 +33,7 @@ public class Wastes {
      */
     private PackageType packageType;
     /**
-     * 处置方式
+     * 进料方式
      */
     private HandleCategory handleCategory;
     /**
@@ -157,91 +157,17 @@ public class Wastes {
      */
     private String unit;
     /**
-     * 处理方式
+     * 处理方式（处置方式）
      */
     private ProcessWay processWay;
     /**
      * 配伍编号
      */
     private  String compatibilityId;
-
-    public String getCompatibilityId() {
-        return compatibilityId;
-    }
-
-    @Override
-    public String toString() {
-        return "Wastes{" +
-                "id='" + id + '\'' +
-                ", client=" + client +
-                ", name='" + name + '\'' +
-                ", formType=" + formType +
-                ", packageType=" + packageType +
-                ", handleCategory=" + handleCategory +
-                ", wastesId='" + wastesId + '\'' +
-                ", contractAmount=" + contractAmount +
-                ", unitPriceTax=" + unitPriceTax +
-                ", unitPrice=" + unitPrice +
-                ", taxRate=" + taxRate +
-                ", tax=" + tax +
-                ", ph=" + ph +
-                ", ashPercentage=" + ashPercentage +
-                ", wetPercentage=" + wetPercentage +
-                ", calorific=" + calorific +
-                ", halogenPercentage=" + halogenPercentage +
-                ", sulfurPercentage=" + sulfurPercentage +
-                ", chlorinePercentage=" + chlorinePercentage +
-                ", phosphorusPercentage=" + phosphorusPercentage +
-                ", fluorinePercentage=" + fluorinePercentage +
-                ", flashPoint=" + flashPoint +
-                ", component='" + component + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", stockId='" + stockId + '\'' +
-                ", code='" + code + '\'' +
-                ", prepareTransferCount=" + prepareTransferCount +
-                ", transferCount=" + transferCount +
-                ", signCount=" + signCount +
-                ", wastesCharacter='" + wastesCharacter + '\'' +
-                ", category='" + category + '\'' +
-                ", wasteAmount=" + wasteAmount +
-                ", wastesTotal=" + wastesTotal +
-                ", freight=" + freight +
-                ", weight=" + weight +
-                ", unit='" + unit + '\'' +
-                ", processWay=" + processWay +
-                ", compatibilityId='" + compatibilityId + '\'' +
-                ", isPH=" + isPH +
-                ", isAsh=" + isAsh +
-                ", isWater=" + isWater +
-                ", isHeat=" + isHeat +
-                ", isSulfur=" + isSulfur +
-                ", isChlorine=" + isChlorine +
-                ", isFluorine=" + isFluorine +
-                ", isPhosphorus=" + isPhosphorus +
-                ", isFlashPoint=" + isFlashPoint +
-                ", isViscosity=" + isViscosity +
-                ", samplingDate=" + samplingDate +
-                ", samplingNumber='" + samplingNumber + '\'' +
-                ", parameterList=" + parameterList +
-                ", heavyMetalList=" + heavyMetalList +
-                ", isProductionLine=" + isProductionLine +
-                ", isStorageArea=" + isStorageArea +
-                ", testDate=" + testDate +
-                ", id1='" + id1 + '\'' +
-                '}';
-    }
-
-    public HandleCategory getHandleCategory() {
-        return handleCategory;
-    }
-
-    public void setHandleCategory(HandleCategory handleCategory) {
-        this.handleCategory = handleCategory;
-    }
-
-    public void setCompatibilityId(String compatibilityId) {
-        this.compatibilityId = compatibilityId;
-    }
+    /**
+     * 挥发份(挥发程度%)
+     */
+    private Float volatileNumber;
 
     private boolean isPH; // PH值
 
@@ -729,4 +655,92 @@ public class Wastes {
         this.fluorinePercentage = fluorinePercentage;
     }
 
+    public String getCompatibilityId() {
+        return compatibilityId;
+    }
+
+    public HandleCategory getHandleCategory() {
+        return handleCategory;
+    }
+
+    public void setHandleCategory(HandleCategory handleCategory) {
+        this.handleCategory = handleCategory;
+    }
+
+    public void setCompatibilityId(String compatibilityId) {
+        this.compatibilityId = compatibilityId;
+    }
+
+    public Float getVolatileNumber() {
+        return volatileNumber;
+    }
+
+    public void setVolatileNumber(Float volatileNumber) {
+        this.volatileNumber = volatileNumber;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Wastes{" +
+                "id='" + id + '\'' +
+                ", client=" + client +
+                ", name='" + name + '\'' +
+                ", formType=" + formType +
+                ", packageType=" + packageType +
+                ", handleCategory=" + handleCategory +
+                ", wastesId='" + wastesId + '\'' +
+                ", contractAmount=" + contractAmount +
+                ", unitPriceTax=" + unitPriceTax +
+                ", unitPrice=" + unitPrice +
+                ", taxRate=" + taxRate +
+                ", tax=" + tax +
+                ", ph=" + ph +
+                ", ashPercentage=" + ashPercentage +
+                ", wetPercentage=" + wetPercentage +
+                ", calorific=" + calorific +
+                ", halogenPercentage=" + halogenPercentage +
+                ", sulfurPercentage=" + sulfurPercentage +
+                ", chlorinePercentage=" + chlorinePercentage +
+                ", phosphorusPercentage=" + phosphorusPercentage +
+                ", fluorinePercentage=" + fluorinePercentage +
+                ", flashPoint=" + flashPoint +
+                ", component='" + component + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", stockId='" + stockId + '\'' +
+                ", code='" + code + '\'' +
+                ", prepareTransferCount=" + prepareTransferCount +
+                ", transferCount=" + transferCount +
+                ", signCount=" + signCount +
+                ", wastesCharacter='" + wastesCharacter + '\'' +
+                ", category='" + category + '\'' +
+                ", wasteAmount=" + wasteAmount +
+                ", wastesTotal=" + wastesTotal +
+                ", freight=" + freight +
+                ", weight=" + weight +
+                ", unit='" + unit + '\'' +
+                ", processWay=" + processWay +
+                ", compatibilityId='" + compatibilityId + '\'' +
+                ", volatileNumber=" + volatileNumber +
+                ", isPH=" + isPH +
+                ", isAsh=" + isAsh +
+                ", isWater=" + isWater +
+                ", isHeat=" + isHeat +
+                ", isSulfur=" + isSulfur +
+                ", isChlorine=" + isChlorine +
+                ", isFluorine=" + isFluorine +
+                ", isPhosphorus=" + isPhosphorus +
+                ", isFlashPoint=" + isFlashPoint +
+                ", isViscosity=" + isViscosity +
+                ", samplingDate=" + samplingDate +
+                ", samplingNumber='" + samplingNumber + '\'' +
+                ", parameterList=" + parameterList +
+                ", heavyMetalList=" + heavyMetalList +
+                ", isProductionLine=" + isProductionLine +
+                ", isStorageArea=" + isStorageArea +
+                ", testDate=" + testDate +
+                ", id1='" + id1 + '\'' +
+                '}';
+    }
 }

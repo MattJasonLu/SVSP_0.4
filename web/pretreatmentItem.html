@@ -37,7 +37,7 @@
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
                     <li><a href="preprocessingManagement.html">首页</a></li>
-                    <li class="active"><a href="pretreatment1.html">预处理</a></li>
+                    <li class="active"><a href="pretreatmentList.html">预处理</a></li>
                     <li><a href="#">属性调整</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -156,9 +156,30 @@
             <table class="table table-bordered">
                         <thead>
                         <tr>
+                            <th class="text-center">预处理单编号：</th>
+                            <th class="text-center"><span class="text-center" id="pretreatmentId"></span></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                        </tr>
+                        <tr>
                             <th class="text-center">序号</th>
                             <th class="text-center">产废单位</th>
                             <th class="text-center">指标要求及来源</th>
+                            <th class="text-center">危废名称</th>
                             <th class="text-center">比例</th>
                             <th class="text-center">重量(吨)</th>
                             <th class="text-center">危废热值(cal/g)</th>
@@ -172,13 +193,16 @@
                             <th class="text-center">F</th>
                             <th class="text-center">备注</th>
                             <th class="text-center">处置方式</th>
+                            <th class="text-center">进料方式</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td class="text-center"><10</td>
+                            <td class="text-center">1</td>
                             <td class="text-center">10kg</td>
                             <td class="text-center">0</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                             <td class="text-center">0.000</td>
                             <td class="text-center"></td>
                             <td class="text-center"><10</td>
@@ -199,34 +223,34 @@
                         </tr>
                         <tr>
                             <td class="text-center" colspan="2">合计</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
+                            <td class="text-center">-</td>
+                            <td class="text-center">-</td>
+                            <td class="text-center">-</td>
+                            <td class="text-center"><span class="text-center" id="weightTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="calorificTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="ashPercentageTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="wetPercentageTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="volatileNumberTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="chlorinePercentageTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="sulfurPercentageTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="phTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="phosphorusPercentageTotal"></span></td>
+                            <td class="text-center"><span class="text-center" id="fluorinePercentageTotal"></span></td>
+                            <td class="text-center">-</td>
                         </tr>
                         <tr>
                             <td class="text-center">残渣比例</td>
-                            <td class="text-center"></td>
+                            <td class="text-center"><span class="text-center" id="distillationProportion"></span></td>
                             <td class="text-center">废液比例</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">污泥</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">散料</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">破碎</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
-                            <td class="text-center">0</td>
+                            <td class="text-center"><span class="text-center" id="wasteLiquidProportion"></span></td>
+                            <td class="text-center">污泥比例</td>
+                            <td class="text-center"><span class="text-center" id="sludgeProportion"></span></td>
+                            <td class="text-center">散料比例</td>
+                            <td class="text-center"><span class="text-center" id="bulkProportion"></span></td>
+                            <td class="text-center">破碎比例</td>
+                            <td class="text-center" ><span class="text-center" id="crushingProportion"></span></span> </td>
+                            <td class="text-center">悬挂连比例</td>
+                            <td class="text-center" ><span class="text-center" id="suspensionProportion"></span></td>
                             <td class="text-center">0</td>
                             <td class="text-center">0</td>
                             <td class="text-center">0</td>
@@ -240,7 +264,7 @@
                     </table>
             <div class="row text-center">
                 <a class="btn btn-success" onclick="save();">保存</a>
-                <a class="btn btn-danger" href="pretreatment1.html">返回</a>
+                <a class="btn btn-danger" href="pretreatmentList.html">返回</a>
             </div>
             <!--分页-->
         </div>
