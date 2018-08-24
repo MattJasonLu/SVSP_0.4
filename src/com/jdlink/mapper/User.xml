@@ -72,6 +72,13 @@
         SELECT * FROM t_ur_function WHERE parentFunctionId=#{id};
     </select>
 
+    <select id="getFunctionByRoleId" resultMap="FunctionRM" parameterType="int">
+        SELECT * FROM t_ur_function WHERE id IN (
+          SELECT t_ur_authority.functionId FROM t_ur_authority
+          WHERE roleId=#{roleId}
+        );
+    </select>
+
     <!--列出所有的权限-->
     <select id="listAuthority" resultType="Authority">
         SELECT * FROM t_ur_authority;

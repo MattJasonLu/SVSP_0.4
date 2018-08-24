@@ -211,6 +211,29 @@ public class UserController {
     }
 
     /**
+     * 根据角色的编号获取可操作的功能
+     * @param roleId 角色编号
+     * @return 可操作的功能列表
+     */
+    @RequestMapping("getFunctionByRoleId")
+    @ResponseBody
+    public String getFunctionByRoleList(String roleId) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Function> functionList = userService.getFunctionByRoleId(Integer.parseInt(roleId));
+            JSONArray data = JSONArray.fromArray(functionList.toArray(new Function[functionList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 列出所有用户
      * @return 所有用户数据
      */
