@@ -1,5 +1,7 @@
 package com.jdlink.domain.Inventory;
 
+import com.jdlink.domain.CheckState;
+
 import java.util.Date;
 
 /*领料单*/
@@ -18,6 +20,10 @@ public class MaterialRequisitionOrder {
     private WareHouse wareHouse;
     /*保管员*/
     private String  guardian;
+    /*部门*/
+    private String departmentName;
+    /*主管副总经理:*/
+   private  String deputyGeneral;
     /*仓库部门主管*/
     private String warehouseManager;
     /*领料部门主管*/
@@ -26,6 +32,25 @@ public class MaterialRequisitionOrder {
     private String picker;
     /*领料日期*/
     private Date pickerDate;
+    /*领用数量*/
+    private float recipientsNumber;
+   /*状态*/
+    private CheckState checkState;
+    public float getRecipientsNumber() {
+        return recipientsNumber;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
+
+    public void setRecipientsNumber(float recipientsNumber) {
+        this.recipientsNumber = recipientsNumber;
+    }
 
     public Date getPickerDate() {
         return pickerDate;
@@ -35,21 +60,20 @@ public class MaterialRequisitionOrder {
         this.pickerDate = pickerDate;
     }
 
-    @Override
-    public String toString() {
-        return "MaterialRequisitionOrder{" +
-                "batchingOrder=" + batchingOrder +
-                ", materialRequisitionId='" + materialRequisitionId + '\'' +
-                ", specification='" + specification + '\'' +
-                ", unit='" + unit + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", wareHouse=" + wareHouse +
-                ", guardian='" + guardian + '\'' +
-                ", warehouseManager='" + warehouseManager + '\'' +
-                ", materialManager='" + materialManager + '\'' +
-                ", picker='" + picker + '\'' +
-                ", pickerDate=" + pickerDate +
-                '}';
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getDeputyGeneral() {
+        return deputyGeneral;
+    }
+
+    public void setDeputyGeneral(String deputyGeneral) {
+        this.deputyGeneral = deputyGeneral;
     }
 
     public String getGuardian() {
@@ -131,4 +155,24 @@ public class MaterialRequisitionOrder {
         this.remarks = remarks;
     }
 
+    @Override
+    public String toString() {
+        return "MaterialRequisitionOrder{" +
+                "batchingOrder=" + batchingOrder +
+                ", materialRequisitionId='" + materialRequisitionId + '\'' +
+                ", specification='" + specification + '\'' +
+                ", unit='" + unit + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", wareHouse=" + wareHouse +
+                ", guardian='" + guardian + '\'' +
+                ", departmentName='" + departmentName + '\'' +
+                ", deputyGeneral='" + deputyGeneral + '\'' +
+                ", warehouseManager='" + warehouseManager + '\'' +
+                ", materialManager='" + materialManager + '\'' +
+                ", picker='" + picker + '\'' +
+                ", pickerDate=" + pickerDate +
+                ", recipientsNumber=" + recipientsNumber +
+                ", checkState=" + checkState +
+                '}';
+    }
 }

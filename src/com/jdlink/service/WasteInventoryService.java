@@ -12,4 +12,5 @@ public interface WasteInventoryService {
     void addBatchingOrder(BatchingOrder batchingOrder);
     int total();
     List<BatchingOrder>getBatchingOrderList();
+    void  updateBatchingOrderOnId(BatchingOrder batchingOrder);
 }
