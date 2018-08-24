@@ -8,6 +8,11 @@
         <id property="id" column="id"/>
         <association property="role" column="roleId" select="getRole" javaType="com.jdlink.domain.Account.Role"/>
     </resultMap>
+    <resultMap id="FunctionRM" type="Function" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="functionName" column="functionName"/>
+        <collection property="children" column="id" select="getFunctionChildren" ofType="com.jdlink.domain.Account.Function" javaType="ArrayList"/>
+    </resultMap>
     <insert id="add" parameterType="User" >
         INSERT INTO user (username, password, nowTime, name, age, sex, roleId)
         VALUES (#{username}, #{password}, NOW(), #{name}, #{age}, #{sex}, 2);
@@ -58,8 +63,13 @@
     </select>
 
     <!--列出所有功能-->
-    <select id="listFunction" resultType="Function">
-        SELECT * FROM t_ur_function;
+    <select id="listFunction" resultMap="FunctionRM">
+        SELECT * FROM t_ur_function WHERE parentFunctionId=0;
+    </select>
+
+    <!--列出子功能-->
+    <select id="getFunctionChildren" resultMap="FunctionRM">
+        SELECT * FROM t_ur_function WHERE parentFunctionId=#{id};
     </select>
 
     <!--列出所有的权限-->
