@@ -18,6 +18,10 @@ public class MaterialRequisitionOrder {
     private WareHouse wareHouse;
     /*保管员*/
     private String  guardian;
+    /*部门*/
+    private String departmentName;
+    /*主管副总经理:*/
+   private  String deputyGeneral;
     /*仓库部门主管*/
     private String warehouseManager;
     /*领料部门主管*/
@@ -35,21 +39,20 @@ public class MaterialRequisitionOrder {
         this.pickerDate = pickerDate;
     }
 
-    @Override
-    public String toString() {
-        return "MaterialRequisitionOrder{" +
-                "batchingOrder=" + batchingOrder +
-                ", materialRequisitionId='" + materialRequisitionId + '\'' +
-                ", specification='" + specification + '\'' +
-                ", unit='" + unit + '\'' +
-                ", remarks='" + remarks + '\'' +
-                ", wareHouse=" + wareHouse +
-                ", guardian='" + guardian + '\'' +
-                ", warehouseManager='" + warehouseManager + '\'' +
-                ", materialManager='" + materialManager + '\'' +
-                ", picker='" + picker + '\'' +
-                ", pickerDate=" + pickerDate +
-                '}';
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getDeputyGeneral() {
+        return deputyGeneral;
+    }
+
+    public void setDeputyGeneral(String deputyGeneral) {
+        this.deputyGeneral = deputyGeneral;
     }
 
     public String getGuardian() {
@@ -131,4 +134,22 @@ public class MaterialRequisitionOrder {
         this.remarks = remarks;
     }
 
+    @Override
+    public String toString() {
+        return "MaterialRequisitionOrder{" +
+                "batchingOrder=" + batchingOrder +
+                ", materialRequisitionId='" + materialRequisitionId + '\'' +
+                ", specification='" + specification + '\'' +
+                ", unit='" + unit + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", wareHouse=" + wareHouse +
+                ", guardian='" + guardian + '\'' +
+                ", departmentName='" + departmentName + '\'' +
+                ", deputyGeneral='" + deputyGeneral + '\'' +
+                ", warehouseManager='" + warehouseManager + '\'' +
+                ", materialManager='" + materialManager + '\'' +
+                ", picker='" + picker + '\'' +
+                ", pickerDate=" + pickerDate +
+                '}';
+    }
 }

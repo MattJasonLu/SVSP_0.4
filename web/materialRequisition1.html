@@ -133,19 +133,21 @@
                             <th class="text-center">配料数量</th>
                             <th class="text-center">领用数量</th>
                             <th class="text-center">附注</th>
+                            <th class="text-center hidden ">配料单</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">12312</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">132123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">123</td>
-                            <td class="text-center">1123123</td>
+                        <tr id="cloneTr1" class="myclass">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center hidden" id="batchingOrderId"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -173,8 +175,9 @@
                     </div>
                 </div>
             </div>
+            <br><br><br><br><br><br><br><br><br>
                 <div class="row text-center">
-                    <a class="btn btn-success" onclick="">保存</a>
+                    <a class="btn btn-success" onclick="updateMaterialRequisitionOrder()">保存</a>
                     <a class="btn btn-primary" onclick="">提交</a>
                     <a class="btn btn-danger" href="materialRequisition.html">返回</a>
                 </div>

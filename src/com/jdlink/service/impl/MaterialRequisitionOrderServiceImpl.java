@@ -31,4 +31,25 @@ public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionO
     public List<MaterialRequisitionOrder> list() {
         return materialRequisitionOrderMapper.list();
     }
+
+    @Override
+    public void updateMaterialRequisitionOrderOnId(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionOrderOnId(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateBatchingOrderCheck(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateBatchingOrderCheck(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateMaterialRequisitionId(String materialRequisitionId, String batchingOrderId) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionId(materialRequisitionId,batchingOrderId);
+
+    }
+
+    @Override
+    public void updateMaterialRequisitionId1(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionId1(materialRequisitionOrder);
+    }
 }

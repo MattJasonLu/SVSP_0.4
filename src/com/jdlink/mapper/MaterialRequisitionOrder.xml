@@ -7,11 +7,15 @@
    insert into t_pl_materialrequisitionorder ( guardian, materialManager, picker, pickerDate, nowTime, batchingOrderId)
    values (#{guardian},#{materialManager},#{picker},#{pickerDate},NOW(),#{batchingOrder.batchingOrderId});
     </insert>
+    <update id="updateBatchingOrderCheck" parameterType="MaterialRequisitionOrder">
+        update t_pl_batchingorder set checkState='Picked'  where batchingOrderId=#{batchingOrder.batchingOrderId}
+    </update>
+    <!--更新配料单的状态-->
     <select id="total" resultType="int">
     select count(*) from t_pl_materialrequisitionorder;
 </select>
-    <select id="getMaterialRequisitionOrderList" resultType="String"  >
-        select materialRequisitionId from t_pl_materialrequisitionorder order by nowTime desc ;
+    <select id="getMaterialRequisitionOrderList" resultType="String">
+        select materialRequisitionId from t_pl_materialrequisitionorder order by materialRequisitionId desc ;
     </select>
     <!--获得配料单对象-->
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
@@ -28,8 +32,14 @@
          select * from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId}
     </select>
     <!--获得危废信息-->
-    <select id="getWastes" parameterType="String" resultType="Wastes">
+    <resultMap id="ClientRM" type="Wastes">
+        <association property="client" column="clientId" select="getClient" javaType="Client"></association>
+    </resultMap>
+    <select id="getWastes" parameterType="String" resultMap="ClientRM">
         select * from t_wastes where id=#{id}
+    </select>
+    <select id="getClient" parameterType="String" resultType="Client">
+        select *from  client where clientId=#{clientId}
     </select>
     <!--获得配料单数据-->
     <select id="getBatchingOrder" resultMap="BatchingOrderRM" parameterType="String">
@@ -39,4 +49,15 @@
     <select id="list" resultMap="MaterialRequisitionOrderRM" >
     select * from t_pl_materialrequisitionorder;
     </select>
+    <update id="updateMaterialRequisitionOrderOnId" parameterType="MaterialRequisitionOrder">
+        update t_pl_materialrequisitionorder set id=#{batchingOrder.wasteInventory.wastes.id} where batchingOrderId=#{batchingOrder.batchingOrderId};
+    </update>
+    <!--更新领料单的单号-->
+    <update id="updateMaterialRequisitionId" >
+        update t_pl_materialrequisitionorder set materialRequisitionId=#{0}, nowTime=NOW() where  batchingOrderId=#{1};
+    </update>
+    <!--更新领料单的单号-->
+    <update id="updateMaterialRequisitionId1" parameterType="MaterialRequisitionOrder">
+        update t_pl_materialrequisitionorder set materialRequisitionId=#{materialRequisitionId}, nowTime=NOW() where  batchingOrderId=#{batchingOrder.batchingOrderId};
+    </update>
 </mapper>

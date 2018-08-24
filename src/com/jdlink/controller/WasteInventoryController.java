@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -159,7 +160,10 @@ public class WasteInventoryController {
         JSONObject res=new JSONObject();
     try {
         List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatchingOrderList();
-      JSONArray array=JSONArray.fromObject(batchingOrderList);
+       for(int i=0;i<batchingOrderList.size();i++){
+           wasteInventoryService.updateBatchingOrderOnId(batchingOrderList.get(i));
+       }
+        JSONArray array=JSONArray.fromObject(batchingOrderList);
         res.put("status", "success");
         res.put("message", "查询成功");
         res.put("batchingOrderList",batchingOrderList);
@@ -177,9 +181,9 @@ public class WasteInventoryController {
     @ResponseBody
     public String addRequisition(@RequestBody MaterialRequisitionOrder materialRequisitionOrder){
         JSONObject res=new JSONObject();
-       int total= materialRequisitionOrderService.total();
+//       int total= materialRequisitionOrderService.total();
        //查找最新的领料单号
-        //List<String> materialRequisitionOrderList=materialRequisitionOrderService.getMaterialRequisitionOrderList();
+//        List<String> materialRequisitionOrderList=materialRequisitionOrderService.getMaterialRequisitionOrderList();
         Calendar cal = Calendar.getInstance();
         //获取年
         String year = String.valueOf(cal.get(Calendar.YEAR));
@@ -195,14 +199,14 @@ public class WasteInventoryController {
 //            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
 //            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
 //        }
-//        String materialRequisitionId = year + mouth + number;
+       //String materialRequisitionId = year + mouth + number;
         //设置ID
         //materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
         try{
             materialRequisitionOrderService.addMaterialRequisitionOrder(materialRequisitionOrder);
             res.put("status", "success");
             res.put("message", "添加成功");
-        }
+            }
         catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
@@ -218,7 +222,26 @@ public class WasteInventoryController {
        JSONObject res=new JSONObject();
        try{
           List<MaterialRequisitionOrder> materialRequisitionOrderList= materialRequisitionOrderService.list();
-          JSONArray jsonArray=JSONArray.fromObject(materialRequisitionOrderList);
+         //1遍历materialRequisitionOrderList 如果不为空添加
+           List<MaterialRequisitionOrder> list=new ArrayList<>();
+           for (int i=0;i<materialRequisitionOrderList.size();i++){
+               if(materialRequisitionOrderList.get(i)!=null){
+                   list.add(materialRequisitionOrderList.get(i));
+               }
+           }
+           Calendar cal = Calendar.getInstance();
+           //获取年
+           String year = String.valueOf(cal.get(Calendar.YEAR));
+           //获取月
+           String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+           //序列号
+           String number = "001";
+           for (int i=0;i<list.size();i++){
+               materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键
+               materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
+           }
+
+          JSONArray jsonArray=JSONArray.fromObject(list);
           res.put("jsonArray",jsonArray);
            res.put("status", "success");
            res.put("message", "查询成功");
@@ -233,7 +256,80 @@ public class WasteInventoryController {
 
         return res.toString();
     }
-
+//更新领料单单号
+    @RequestMapping("updateMaterialRequisitionId")
+    @ResponseBody
+    public String updateMaterialRequisitionId(){
+        JSONObject res=new JSONObject();
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+        //序列号
+        String number = "001";
+        List<MaterialRequisitionOrder> materialRequisitionOrderList= materialRequisitionOrderService.list();
+        //1遍历materialRequisitionOrderList 如果不为空添加
+        List<MaterialRequisitionOrder> list=new ArrayList<>();
+        for (int i=0;i<materialRequisitionOrderList.size();i++){
+            if(materialRequisitionOrderList.get(i)!=null){
+                list.add(materialRequisitionOrderList.get(i));
+            }
+        }
+        try{
+            for (int i=0;i<list.size();i++) {
+                //1找到最新的领料单号
+                List<String> materialRequisitionOrderListId = materialRequisitionOrderService.getMaterialRequisitionOrderList();
+                String theNewestmaterialRequisitionOrderId = materialRequisitionOrderListId.get(0);
+                if (theNewestmaterialRequisitionOrderId == null) {//假设没有领料单号
+                    number = "001";
+                    String materialRequisitionId = year + mouth + number;
+                    list.get(0).setMaterialRequisitionId(materialRequisitionId);
+                    System.out.println(materialRequisitionId+"YH");
+                    materialRequisitionOrderService.updateMaterialRequisitionId1(list.get(0));
+                }
+                if (theNewestmaterialRequisitionOrderId != null) {
+                    String s = theNewestmaterialRequisitionOrderId;//原字符串
+                    String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+                    number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+                    String materialRequisitionId = year + mouth + number;
+                    list.get(i).setMaterialRequisitionId(materialRequisitionId);
+                    System.out.println(materialRequisitionId+"YH");
+                    materialRequisitionOrderService.updateMaterialRequisitionId1(list.get(i));
+                }
+            }
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+    @RequestMapping("isMaterialRequisitionOrderId")
+    @ResponseBody
+    public String isMaterialRequisitionOrderId(){
+        JSONObject res=new JSONObject();
+        try{
+            List<String> materialRequisitionOrderList=materialRequisitionOrderService.getMaterialRequisitionOrderList();
+            String theNewestmaterialRequisitionOrderId=materialRequisitionOrderList.get(0);
+            if(theNewestmaterialRequisitionOrderId==null){
+                theNewestmaterialRequisitionOrderId="null";
+            }
+            //System.out.println(theNewestmaterialRequisitionOrderId+"YH");
+            res.put("theNewestmaterialRequisitionOrderId",theNewestmaterialRequisitionOrderId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){
