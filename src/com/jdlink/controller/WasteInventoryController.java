@@ -356,7 +356,25 @@ public class WasteInventoryController {
 
         return  res.toString();
     }
+//根据领料编号获取信息
+    @RequestMapping("getByMaterialRequisitionId")
+    @ResponseBody
+    public String getByMaterialRequisitionId(String materialRequisitionId){
+        JSONObject res=new JSONObject();
+        try{
+           MaterialRequisitionOrder materialRequisitionOrder= materialRequisitionOrderService.getByMaterialRequisitionId(materialRequisitionId);
+           res.put("materialRequisitionOrder",materialRequisitionOrder);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
 
+        return res.toString() ;
+    }
 
     //获取两位月数
     public  static  String getMouth(String mouth){

@@ -16,4 +16,5 @@ public interface MaterialRequisitionOrderService {
     void  updateMaterialRequisitionId1(MaterialRequisitionOrder materialRequisitionOrder);
     void updateMaterialRequisitionOrderCheck(MaterialRequisitionOrder materialRequisitionOrder);
     void  updateMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
+    MaterialRequisitionOrder getByMaterialRequisitionId(String materialRequisitionId);
 }

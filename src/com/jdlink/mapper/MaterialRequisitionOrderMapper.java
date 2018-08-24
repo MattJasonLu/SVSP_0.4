@@ -15,4 +15,5 @@ public interface MaterialRequisitionOrderMapper {
     void  updateMaterialRequisitionId1(MaterialRequisitionOrder materialRequisitionOrder);
     void  updateMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
     void updateMaterialRequisitionOrderCheck(MaterialRequisitionOrder materialRequisitionOrder);
+    MaterialRequisitionOrder getByMaterialRequisitionId(String materialRequisitionId);
 }

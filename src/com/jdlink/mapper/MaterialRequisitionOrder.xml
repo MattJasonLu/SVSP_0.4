@@ -70,4 +70,19 @@
         picker=#{picker},departmentName=#{departmentName},deputyGeneral=#{deputyGeneral},warehouseManager=#{warehouseManager},checkState='ToOutbound'
         where materialRequisitionId=#{materialRequisitionId}
     </update>
+    <resultMap id="MaterialRequisitionRM" type="MaterialRequisitionOrder">
+        <collection property="wastes" column="id" select="getWastes1" ofType="Wastes"></collection>
+    <collection property="batchingOrder" column="batchingOrderId" select="getBatchingOrder1"></collection>
+    </resultMap>
+    <!--根据配料单号获取信息-->
+    <select id="getByMaterialRequisitionId" parameterType="String" resultMap="MaterialRequisitionRM">
+  select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
+    </select>
+    <select id="getWastes1" resultType="Wastes" parameterType="String">
+        select * from t_wastes where  id=#{id};
+    </select>
+    <select id="getBatchingOrder1" resultType="BatchingOrder" parameterType="String">
+        select  * from  t_pl_batchingorder where batchingOrderId=#{batchingOrderId};
+    </select>
+
 </mapper>

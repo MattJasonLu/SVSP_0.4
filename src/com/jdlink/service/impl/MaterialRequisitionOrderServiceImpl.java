@@ -63,4 +63,9 @@ public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionO
         materialRequisitionOrderMapper.updateMaterialRequisitionOrder(materialRequisitionOrder);
 
     }
+
+    @Override
+    public MaterialRequisitionOrder getByMaterialRequisitionId(String materialRequisitionId) {
+        return materialRequisitionOrderMapper.getByMaterialRequisitionId(materialRequisitionId);
+    }
 }

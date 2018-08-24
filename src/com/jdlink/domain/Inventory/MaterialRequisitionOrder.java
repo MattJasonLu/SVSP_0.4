@@ -1,6 +1,7 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 
@@ -36,6 +37,20 @@ public class MaterialRequisitionOrder {
     private float recipientsNumber;
    /*状态*/
     private CheckState checkState;
+    /*危废信息
+    *
+    * 这里为了好拿数据，不用再xml进行多次迭代
+    * */
+    private Wastes wastes;
+
+    public Wastes getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(Wastes wastes) {
+        this.wastes = wastes;
+    }
+
     public float getRecipientsNumber() {
         return recipientsNumber;
     }
