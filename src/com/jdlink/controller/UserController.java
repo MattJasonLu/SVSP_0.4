@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.Account.Authority;
+import com.jdlink.domain.Account.Function;
 import com.jdlink.domain.Account.Role;
 import com.jdlink.domain.LoginLog;
 import com.jdlink.domain.User;
@@ -180,6 +181,30 @@ public class UserController {
             e.printStackTrace();
             res.put("status", "success");
             res.put("message", "分配角色失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 列出所有功能
+     * @return 功能列表
+     */
+    @RequestMapping("listFunction")
+    @ResponseBody
+    public String listFunction() {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取
+            List<Function> functionList = userService.listFunction();
+            JSONArray data = JSONArray.fromArray(functionList.toArray(new Function[functionList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "获取信息失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();
