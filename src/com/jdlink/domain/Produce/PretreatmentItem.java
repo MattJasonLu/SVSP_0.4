@@ -19,7 +19,7 @@ public class PretreatmentItem {
     /**
      * 产废单位
      */
-    private Client produceCompany;
+    private String produceCompanyName;
     /**
      * 指标要求及来源
      */
@@ -49,12 +49,12 @@ public class PretreatmentItem {
         this.pretreatmentId = pretreatmentId;
     }
 
-    public Client getProduceCompany() {
-        return produceCompany;
+    public String getProduceCompanyName() {
+        return produceCompanyName;
     }
 
-    public void setProduceCompany(Client produceCompany) {
-        this.produceCompany = produceCompany;
+    public void setProduceCompanyName(String produceCompanyName) {
+        this.produceCompanyName = produceCompanyName;
     }
 
     public String getRequirements() {
@@ -77,6 +77,10 @@ public class PretreatmentItem {
         this.proportion = proportion;
     }
 
+    public Float getProportion() {
+        return proportion;
+    }
+
     public String getOutboundOrderId() {
         return outboundOrderId;
     }
@@ -91,10 +95,10 @@ public class PretreatmentItem {
                 "itemId='" + itemId + '\'' +
                 ", pretreatmentId='" + pretreatmentId + '\'' +
                 ", outboundOrderId='" + outboundOrderId + '\'' +
-                ", produceCompany=" + produceCompany +
+                ", produceCompanyName='" + produceCompanyName + '\'' +
                 ", requirements='" + requirements + '\'' +
                 ", wastes=" + wastes +
-                ", proportion='" + proportion + '\'' +
+                ", proportion=" + proportion +
                 '}';
     }
 }

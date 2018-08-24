@@ -1,6 +1,8 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 import sun.plugin2.os.windows.FLASHWINFO;
 
@@ -16,6 +18,10 @@ public class Pretreatment {
      * 预处理单创建日期
      */
     private Date creationDate;
+    /**
+     * 预处理单状态
+     */
+    private CheckState state;
     /**
      * 预处理单数据列表
      */
@@ -88,6 +94,10 @@ public class Pretreatment {
      *悬挂连比例
      */
     private Float suspensionProportion;
+    /**
+     * 分页
+     */
+    private Page page;
 
     public String getId() {
         return id;
@@ -249,11 +259,28 @@ public class Pretreatment {
         this.suspensionProportion = suspensionProportion;
     }
 
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
     @Override
     public String toString() {
         return "Pretreatment{" +
                 "id='" + id + '\'' +
                 ", creationDate=" + creationDate +
+                ", state=" + state +
                 ", pretreatmentItemList=" + pretreatmentItemList +
                 ", remarks='" + remarks + '\'' +
                 ", weightTotal=" + weightTotal +
