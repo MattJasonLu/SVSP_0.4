@@ -1,170 +1,116 @@
-/**
- *
- * 加载基础数据阈值表数据
- */
-function loadThresholdList() {
-    $("#weekDate").text(getWeekDate());
+//加载领料单列表
+function LoadMaterialRequisitionOrder() {
+    //1通过ajax获取领料单数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getMaterialRequisitionList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //设置领料单新增列表
+                //赋值配料单
+                //1重新做一个方法用来生成领料单号
+                setMaterialRequisitionList(result.jsonArray);
+            }
+            else {
+
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
 }
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
-
-/**
-* 加载数据至克隆表格中
-*/
-function setThresholdList(result) {
-     var tr = $("#clonedTr2");//克隆一行
-     //tr.siblings().remove();
-   $.each(result.data,function (index, item) {
-       var obj=eval(item);
-       var clonedTr = tr.clone();
-       clonedTr.show();
-       clonedTr.children("td").each(function (inner_index) {
-           // 根据索引为部分td赋值
-           switch (inner_index) {
-              //序号
-               case (0):
-                   $(this).html(obj.thresholdId);
-                   break;
-                   //处理类别
-               case (1):
-                   if(obj.handleCategory!=null){
-                       $(this).html(obj.handleCategory.name);
-                   }
-                   break;
-                   //物质形态
-               case (2):
-                   if(obj.formType!=null){
-                       $(this).html(obj.formType.name);
-                   }
-                   break;
-                   //最大热值
-               case (3):
-                   $(this).html(obj.calorificMax);
-                   break;
-                   //最低热值
-               case (4):
-                   $(this).html(obj.calorificMin);
-                   break;
-                   //最高灰分
-               case (5):
-                   $(this).html(obj.ashMax);
-                   break;
-                   //最低灰分
-               case (6):
-                   $(this).html(obj.ashMin);
-                   break;
-                   //最大水分
-               case (7):
-                   $(this).html(obj.waterMax);
-                   break;
-                   //最低水分
-               case (8):
-                   $(this).html(obj.waterMin);
-                   break;
-                   //最大硫成分
-               case (9):
-                   $(this).html(obj.sMax);
-                   break;
-               //最少硫成分
-               case (10):
-                   $(this).html(obj.sMin);
-                   break;
-               //最多氯成分
-               case (11):
-                   $(this).html(obj.clMax);
-                   break;
-              //最少氯成分
-               case (12):
-                   $(this).html(obj.clMin);
-                   break;
-              //最多磷成分
-               case (13):
-                   $(this).html(obj.pMax);
-                   break;
-               //最少磷成分
-               case (14):
-                   $(this).html(obj.pMin);
-                   break;
-               //最多弗成分
-               case (15):
-                   $(this).html(obj.fMax);
-                   break;
-               //最少弗成分
-               case (16):
-                   $(this).html(obj.fMin);
-                   break;
-              //最大酸碱度
-               case (17):
-                   $(this).html(obj.phMax);
-                   break;
-               //最小酸碱度
-               case (18):
-                   $(this).html(obj.phMin);
-                   break;
-                   //安全库存量
-               case (19):
-                   $(this).html(obj.safety);
-                   break;
-                   //起始日期
-               case (20):
-                   if(obj.beginTime!=null){
-                       var time=gettime(obj.beginTime);
-                       $(this).html(time);
-                   }
-                   else {
-                       $(this).html("");
-                   }
-                   break;
-               //结束日期
-               case (21):
-                   if(obj.endTime!=null){
-                       var time=gettime(obj.endTime);
-                       $(this).html(time);
-                   }
-                   else {
-                       $(this).html("");
-                   }
-                   break;
-           }
-
-
-       });
-       clonedTr.removeAttr("id");
-       clonedTr.insertBefore(tr);
-   });
+//
+//设置领料单列表
+function setMaterialRequisitionList(result) {
+    var tr = $("#cloneTr4");
+    tr.attr('class','myclass');
+    $.each(result, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
+        if(item.checkState.name=='待出库'){
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 编号
+                    case (0):
+                        $(this).html(parseInt(index)+1);
+                        break;
+                    // 产废单位
+                    case (1):
+                        if(obj.batchingOrder.wasteInventory.wastes.client!=null){
+                            $(this).html(obj.batchingOrder.wasteInventory.wastes.client.companyName);
+                        }
+                        break;
+                    // 领料单号
+                    case (2):
+                        $(this).html(obj.materialRequisitionId);
+                        break;
+                    // 危废名称
+                    case (3):
+                        $(this).html(obj.batchingOrder.wasteInventory.wastes.name);
+                        break;
+                    // 危废代码
+                    case (4):
+                        $(this).html(obj.batchingOrder.wasteInventory.wastes.wastesId);
+                        break;
+                    // 危废类别
+                    case (5):
+                        $(this).html("");
+                        break;
+                    // 单位
+                    case (6):
+                        $(this).html(obj.batchingOrder.wasteInventory.wastes.unit);
+                        break;
+                    //配料数量
+                    case (7):
+                        $(this).html(obj.batchingOrder.batchingNumber);
+                        break;
+                    //领用数量
+                    case (8):
+                        $(this).html(obj.batchingOrder.batchingNumber);
+                        break;
+                        //附注
+                    case (9):
+                        $(this).html(obj.remarks);
+                        break;
+                        //主管副总经理
+                    case (10):
+                        $(this).html(obj.deputyGeneral);
+                        break;
+                        //部门仓库主管
+                    case (11):
+                    $(this).html(obj.warehouseManager);
+                    break;
+                    //保管员
+                    case (12):
+                    $(this).html(obj.guardian);
+                    break;
+                    //领料部门主管
+                    case (13):
+                    $(this).html(obj.materialManager);
+                    break;
+                    //领料人
+                    case (14):
+                        $(this).html(obj.picker);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        }
+    });
     // 隐藏无数据的tr
     tr.hide();
-}
-
-// var day = obj.day
-function gettime(obj) {
-    if (month.length !== 2) {
-        month = 0 + month;
-    }
-    //  dataLeftCompleting(2, "0", mouth.toString()).toString();
-    var day = parseInt((obj.date)).toString();
-    //ataLeftCompleting(2, "0", day.toString()).toString();
-    if (day.length !== 2) {
-        day = 0 + day;
-    }
-    return day;
-}
-
-console.log(getWeekDate());
-
-function getWeekDate() {
-    //获取时间
-    var obj = new Date();
-    var year = obj.getFullYear();
-    var month = obj.getMonth()+1;
-    var day = obj.getDate();
-    if(day % 7 > 0)  var a = 1; else a = 0;
-    var week = parseInt(day / 7) + a;
-    return year + "年" + month + "月" + day + "日";
+    tr.removeAttr('class');
 
 }

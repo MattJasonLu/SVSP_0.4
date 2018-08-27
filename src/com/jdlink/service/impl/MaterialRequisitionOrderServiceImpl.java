@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionOrderService {
+public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionOrderService  {
 @Autowired MaterialRequisitionOrderMapper materialRequisitionOrderMapper;
 
     @Override
@@ -30,5 +30,37 @@ public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionO
     @Override
     public List<MaterialRequisitionOrder> list() {
         return materialRequisitionOrderMapper.list();
+    }
+
+    @Override
+    public void updateMaterialRequisitionOrderOnId(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionOrderOnId(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateBatchingOrderCheck(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateBatchingOrderCheck(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateMaterialRequisitionId(String materialRequisitionId, String batchingOrderId) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionId(materialRequisitionId,batchingOrderId);
+
+    }
+
+    @Override
+    public void updateMaterialRequisitionId1(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionId1(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateMaterialRequisitionOrderCheck(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionOrderCheck(materialRequisitionOrder);
+    }
+
+    @Override
+    public void updateMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionOrder(materialRequisitionOrder);
+
     }
 }
