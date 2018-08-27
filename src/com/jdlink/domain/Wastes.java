@@ -37,6 +37,10 @@ public class Wastes {
      */
     private HandleCategory handleCategory;
     /**
+     * 处理方式（处置方式）
+     */
+    private ProcessWay processWay;
+    /**
      * 危废编码
      */
     private String wastesId;
@@ -156,10 +160,6 @@ public class Wastes {
      * 计量单位
      */
     private String unit;
-    /**
-     * 处理方式（处置方式）
-     */
-    private ProcessWay processWay;
     /**
      * 配伍编号
      */

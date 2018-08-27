@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.PretreatmentMapper">
+    <resultMap id="PretreatmentRM" type="Pretreatment" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="pretreatmentItemList" select="getItems" column="id"
+                    ofType="com.jdlink.domain.Produce.PretreatmentItem"
+                    javaType="ArrayList"/>
+    </resultMap>
+    <resultMap id="PretreatmentItemRM" type="PretreatmentItem" autoMapping="true">
+        <id column="itemId" property="itemId"/>
+        <association property="wastes" javaType="Wastes">
+            <result property="name" column="wastesName"/>
+            <result property="weight" column="weight"/>
+            <result property="volatileNumber" column="volatileNumber"/>
+            <result property="calorific" column="calorific"/>
+            <result property="ashPercentage" column="ashPercentage"/>
+            <result property="wetPercentage" column="wetPercentage"/>
+            <result property="chlorinePercentage" column="chlorinePercentage"/>
+            <result property="sulfurPercentage" column="sulfurPercentage"/>
+            <result property="ph" column="ph"/>
+            <result property="phosphorusPercentage" column="phosphorusPercentage"/>
+            <result property="fluorinePercentage" column="fluorinePercentage"/>
+            <result property="remarks" column="remarks"/>
+            <result property="processWay" column="processWay"/>
+            <result property="handleCategory" column="handleCategory"/>
+        </association>
+    </resultMap>
+
+    <select id="getItems" parameterType="String" resultMap="PretreatmentItemRM">
+        select  * from t_pr_pretreatmentitem where pretreatmentId = #{id};
+    </select>
+
+    <select id="count" resultType="int">
+          select count(*) from t_pr_pretreatment;
+     </select>
+
+    <select id="countById" resultType="int">
+        select count(*) from t_pr_pretreatment where id like "%"#{id}"%";
+    </select>
+
+    <select id="countItem" resultType="int">
+        select count(*) from t_pr_pretreatmentitem;
+    </select>
+
+    <select id="getById" parameterType="String" resultMap="PretreatmentRM">
+          select * from t_pr_pretreatment where id = #{id};
+     </select>
+
+    <select id="listPage" resultMap="PretreatmentRM">
+        select * from t_pr_pretreatment order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="search" parameterType="Pretreatment" resultMap="PretreatmentRM">
+        select * from t_pr_pretreatment
+        <where>
+            <if test="id != null and id != ''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state = #{state}
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="Pretreatment" resultType="int">
+        select count(*) from t_pr_pretreatment
+        <where>
+            <if test="id != null and id != ''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state != ''">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+
+    <select id="getItemsById" parameterType="int" resultMap="PretreatmentItemRM">
+        select * from t_pr_pretreatmentitem where itemId = #{id};
+    </select>
+
+    <update id="invalid" parameterType="String">
+        update t_pr_pretreatment set state = 'Invalid',nowTime = NOW() where id = #{id}
+    </update>
+
+    <update id="adjust" parameterType="Wastes">
+        update t_pr_pretreatmentitem set processWay = #{processWay},handleCategory = #{handleCategory}
+        where itemId = #{id};
+    </update>
+
+    <update id="update" parameterType="Pretreatment">
+        update t_pr_pretreatment
+        set remarks=#{remarks},weightTotal=#{weightTotal},calorificTotal=#{calorificTotal},
+        ashPercentageTotal=#{ashPercentageTotal},wetPercentageTotal=#{wetPercentageTotal},volatileNumberTotal=#{volatileNumberTotal},
+        chlorinePercentageTotal=#{chlorinePercentageTotal},sulfurPercentageTotal=#{sulfurPercentageTotal},phTotal=#{phTotal},
+        phosphorusPercentageTotal=#{phosphorusPercentageTotal},fluorinePercentageTotal=#{fluorinePercentageTotal},
+        distillationProportion=#{distillationProportion},wasteLiquidProportion=#{wasteLiquidProportion},sludgeProportion=#{sludgeProportion},
+        bulkProportion=#{bulkProportion},crushingProportion=#{crushingProportion},suspensionProportion=#{suspensionProportion},nowTime=NOW()
+        where id = #{id};
+        <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index" >
+           update t_pr_pretreatmentitem
+            set produceCompanyName=#{pretreatmentItem.produceCompanyName},requirements=#{pretreatmentItem.requirements},
+            proportion=#{pretreatmentItem.proportion},weight=#{pretreatmentItem.wastes.weight},volatileNumber=#{pretreatmentItem.wastes.volatileNumber},
+            calorific=#{pretreatmentItem.wastes.calorific},ashPercentage=#{pretreatmentItem.wastes.ashPercentage},wetPercentage=#{pretreatmentItem.wastes.wetPercentage},
+            chlorinePercentage=#{pretreatmentItem.wastes.chlorinePercentage},sulfurPercentage=#{pretreatmentItem.wastes.sulfurPercentage},
+            ph=#{pretreatmentItem.wastes.ph},phosphorusPercentage=#{pretreatmentItem.wastes.phosphorusPercentage},fluorinePercentage=#{pretreatmentItem.wastes.fluorinePercentage},
+            remarks=#{pretreatmentItem.wastes.remarks},processWay=#{pretreatmentItem.wastes.processWay},handleCategory=#{pretreatmentItem.wastes.handleCategory},wastesName =#{pretreatmentItem.wastes.name}
+            where serialNumber = #{pretreatmentItem.serialNumber} and pretreatmentId = #{id};
+        </foreach>
+    </update>
+
+    <insert id="add" parameterType="Pretreatment">
+        insert into t_pr_pretreatment
+        (id,creationDate,state,remarks,weightTotal,calorificTotal,ashPercentageTotal,
+        wetPercentageTotal,volatileNumberTotal,chlorinePercentageTotal,sulfurPercentageTotal,
+        phTotal,phosphorusPercentageTotal,fluorinePercentageTotal,distillationProportion,
+        wasteLiquidProportion,sludgeProportion,bulkProportion,crushingProportion,suspensionProportion,nowTime)
+        values
+        (#{id},NOW(),'NewBuild',#{remarks},#{weightTotal},#{calorificTotal},#{ashPercentageTotal},
+        #{wetPercentageTotal},#{volatileNumberTotal},#{chlorinePercentageTotal},#{sulfurPercentageTotal},
+        #{phTotal},#{phosphorusPercentageTotal},#{fluorinePercentageTotal},#{distillationProportion},
+        #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},#{suspensionProportion},NOW());
+
+        <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index" >
+            insert into t_pr_pretreatmentitem
+            (itemId,serialNumber,pretreatmentId,produceCompanyName,requirements,proportion,weight,volatileNumber,
+            calorific,ashPercentage,wetPercentage,chlorinePercentage,sulfurPercentage,ph,phosphorusPercentage,
+            fluorinePercentage,remarks,processWay,handleCategory,wastesName)
+            values
+            (#{pretreatmentItem.itemId},#{pretreatmentItem.serialNumber},#{id},#{pretreatmentItem.produceCompanyName},#{pretreatmentItem.requirements},
+            #{pretreatmentItem.proportion},#{pretreatmentItem.wastes.weight},#{pretreatmentItem.wastes.volatileNumber},
+            #{pretreatmentItem.wastes.calorific},#{pretreatmentItem.wastes.ashPercentage},#{pretreatmentItem.wastes.wetPercentage},
+            #{pretreatmentItem.wastes.chlorinePercentage},#{pretreatmentItem.wastes.sulfurPercentage},#{pretreatmentItem.wastes.ph},
+            #{pretreatmentItem.wastes.phosphorusPercentage},#{pretreatmentItem.wastes.fluorinePercentage},#{pretreatmentItem.wastes.remarks},
+            #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory},#{pretreatmentItem.wastes.name});
+        </foreach>
+    </insert>
+</mapper>

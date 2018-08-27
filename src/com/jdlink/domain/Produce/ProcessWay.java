@@ -25,7 +25,14 @@ public enum ProcessWay {
         }
         return null;
     }
-
+    public static ProcessWay getProcessWay(String keyword) {
+        for (ProcessWay p : ProcessWay.values()) {
+            if(p.getName().contains(keyword)){
+                return p;
+            }
+        }
+        return null;
+    }
     public String getName() {
         return name;
     }
