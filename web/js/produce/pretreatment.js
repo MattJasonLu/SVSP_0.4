@@ -484,8 +484,9 @@ function setSeniorSelectedList() {
  * @param e
  */
 function exportExcel() {
+    console.log("export");
     var name = 't_pr_pretreatment';
-    var sqlWords = "select * from t_pr_pretreatment";
+    var sqlWords = "select * from t_pr_pretreatment join t_pr_pretreatmentitem where pretreatmentId = id;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -516,6 +517,7 @@ function importExcel() {
     document.getElementById("idExcel").addEventListener("change", function () {
         var eFile = document.getElementById("idExcel").files[0];
         var formFile = new FormData();
+        formFile.append("excelFile", eFile);
         formFile.append("excelFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
@@ -643,6 +645,7 @@ function toView(item) {
  * @param id
  */
 function showViewModal(id) {
+    $(".newLine").remove();
     $.ajax({
         type: "POST",
         url: "getById",
@@ -694,7 +697,6 @@ function showViewModal(id) {
 function setViewDataClone(result){
     // 获取id为cloneTr的tr元素
     var tr = $("#viewClone");
-    //tr.siblings().remove();
     $.each(result.pretreatmentItemList, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -706,7 +708,7 @@ function setViewDataClone(result){
             switch (inner_index) {
                 case (0):
                     // 序号
-                    $(this).html(obj.itemId);
+                    $(this).html(obj.serialNumber);
                     break;
                 case (1):
                     // 产废单位
@@ -779,6 +781,7 @@ function setViewDataClone(result){
             }
         });
         // 把克隆好的tr追加到原来的tr前面
+        clonedTr.addClass("newLine");
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
     });

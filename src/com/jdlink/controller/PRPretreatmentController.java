@@ -136,8 +136,132 @@ public class PRPretreatmentController {
                     System.out.println();
                 }
             }
-
-
+            Map<String, Pretreatment> map = new HashMap<>();
+            //累加数据初始化
+            float weightTotal = 0;
+            float calorificTotal = 0;
+            float ashPercentageTotal = 0;
+            float wetPercentageTotal = 0;
+            float volatileNumberTotal = 0;
+            float chlorinePercentageTotal = 0;
+            float sulfurPercentageTotal = 0;
+            float phTotal = 0;
+            float phosphorusPercentageTotal = 0;
+            float fluorinePercentageTotal = 0;
+            float distillationProportion = 0;
+            float wasteLiquidProportion = 0;
+            float sludgeProportion = 0;
+            float bulkProportion = 0;
+            float crushingProportion = 0;
+            float suspensionProportion = 0;
+            int serialNumber = 0;
+            List<PretreatmentItem> pretreatmentItemList = new ArrayList<>();
+            System.out.println("长度" + data.length);
+            for (int i = 1; i < data.length; i++) {
+                //map内不存在即添加公共数据，存在即添加List内数据
+                if (!map.keySet().contains(data[i][0].toString())) {
+                    map.put(data[i][0].toString(), new Pretreatment());
+                    map.get(data[i][0].toString()).setId(data[i][0].toString());
+                    map.get(data[i][0].toString()).setRemarks(data[i][1].toString());
+                    //新存储一个id对象时，将累计数据清零
+                    pretreatmentItemList = new ArrayList<>();
+                    weightTotal = 0;
+                    calorificTotal = 0;
+                    ashPercentageTotal = 0;
+                    wetPercentageTotal = 0;
+                    volatileNumberTotal = 0;
+                    chlorinePercentageTotal = 0;
+                    sulfurPercentageTotal = 0;
+                    phTotal = 0;
+                    phosphorusPercentageTotal = 0;
+                    fluorinePercentageTotal = 0;
+                    distillationProportion = 0;
+                    wasteLiquidProportion = 0;
+                    sludgeProportion = 0;
+                    bulkProportion = 0;
+                    crushingProportion = 0;
+                    suspensionProportion = 0;
+                    serialNumber = 0;
+                }
+                PretreatmentItem pretreatmentItem = new PretreatmentItem();
+                pretreatmentItem.setPretreatmentId(data[i][0].toString());
+                int itemId = pretreatmentService.getCurrentItemId();
+                itemId += i - 1;
+                serialNumber += 1;
+                pretreatmentItem.setSerialNumber(serialNumber);
+                pretreatmentItem.setItemId(itemId);
+                pretreatmentItem.setProduceCompanyName(data[i][2].toString());
+                pretreatmentItem.setRequirements(data[i][4].toString());
+                pretreatmentItem.setProportion(Float.parseFloat(data[i][7].toString()));
+                System.out.println("proportion" + Float.parseFloat(data[i][7].toString()));
+                Wastes wastes = new Wastes();
+                wastes.setName(data[i][3].toString());
+                wastes.setHandleCategory(HandleCategory.getHandleCategory(data[i][5].toString()));
+                wastes.setProcessWay(ProcessWay.getProcessWay(data[i][6].toString()));
+                wastes.setWeight(Float.parseFloat(data[i][8].toString()));
+                wastes.setVolatileNumber(Float.parseFloat(data[i][9].toString()));
+                wastes.setCalorific(Float.parseFloat(data[i][10].toString()));
+                wastes.setAshPercentage(Float.parseFloat(data[i][11].toString()));
+                wastes.setWetPercentage(Float.parseFloat(data[i][12].toString()));
+                wastes.setChlorinePercentage(Float.parseFloat(data[i][13].toString()));
+                wastes.setSulfurPercentage(Float.parseFloat(data[i][14].toString()));
+                wastes.setPh(Float.parseFloat(data[i][15].toString()));
+                wastes.setPhosphorusPercentage(Float.parseFloat(data[i][16].toString()));
+                wastes.setFluorinePercentage(Float.parseFloat(data[i][17].toString()));
+                wastes.setRemarks(data[i][18].toString());
+                pretreatmentItem.setWastes(wastes);
+                pretreatmentItemList.add(pretreatmentItem);
+                map.get(data[i][0].toString()).setPretreatmentItemList(pretreatmentItemList);
+                weightTotal += Float.parseFloat(data[i][8].toString());
+                volatileNumberTotal += Float.parseFloat(data[i][9].toString());
+                calorificTotal += Float.parseFloat(data[i][10].toString());
+                ashPercentageTotal += Float.parseFloat(data[i][11].toString());
+                wetPercentageTotal += Float.parseFloat(data[i][12].toString());
+                chlorinePercentageTotal += Float.parseFloat(data[i][13].toString());
+                sulfurPercentageTotal += Float.parseFloat(data[i][14].toString());
+                phTotal += Float.parseFloat(data[i][15].toString());
+                phosphorusPercentageTotal += Float.parseFloat(data[i][16].toString());
+                fluorinePercentageTotal += Float.parseFloat(data[i][17].toString());
+                if (data[i][5].toString().equals("精馏残渣") || data[i][5].toString().equals("Distillation"))
+                    distillationProportion += Float.parseFloat(data[i][7].toString());
+                if (data[i][5].toString().equals("废液") || data[i][5].toString().equals("WasteLiquid"))
+                    wasteLiquidProportion += Float.parseFloat(data[i][7].toString());
+                if (data[i][5].toString().equals("污泥") || data[i][5].toString().equals("Sludge"))
+                    sludgeProportion += Float.parseFloat(data[i][7].toString());
+                if (data[i][5].toString().equals("散装料") || data[i][5].toString().equals("Bulk"))
+                    bulkProportion += Float.parseFloat(data[i][7].toString());
+                if (data[i][5].toString().equals("破碎料") || data[i][5].toString().equals("Crushing"))
+                    crushingProportion += Float.parseFloat(data[i][7].toString());
+                if (data[i][5].toString().equals("悬挂连") || data[i][5].toString().equals("Suspension"))
+                    suspensionProportion += Float.parseFloat(data[i][7].toString());
+                map.get(data[i][0].toString()).setWeightTotal(weightTotal);
+                map.get(data[i][0].toString()).setVolatileNumberTotal(volatileNumberTotal);
+                map.get(data[i][0].toString()).setCalorificTotal(calorificTotal);
+                map.get(data[i][0].toString()).setAshPercentageTotal(ashPercentageTotal);
+                map.get(data[i][0].toString()).setWetPercentageTotal(wetPercentageTotal);
+                map.get(data[i][0].toString()).setChlorinePercentageTotal(chlorinePercentageTotal);
+                map.get(data[i][0].toString()).setSulfurPercentageTotal(sulfurPercentageTotal);
+                map.get(data[i][0].toString()).setPhTotal(phTotal);
+                map.get(data[i][0].toString()).setPhosphorusPercentageTotal(phosphorusPercentageTotal);
+                map.get(data[i][0].toString()).setFluorinePercentageTotal(fluorinePercentageTotal);
+                map.get(data[i][0].toString()).setDistillationProportion(distillationProportion);
+                map.get(data[i][0].toString()).setWasteLiquidProportion(wasteLiquidProportion);
+                map.get(data[i][0].toString()).setSludgeProportion(sludgeProportion);
+                map.get(data[i][0].toString()).setBulkProportion(bulkProportion);
+                map.get(data[i][0].toString()).setCrushingProportion(crushingProportion);
+                map.get(data[i][0].toString()).setSuspensionProportion(suspensionProportion);
+            }
+            for (String key : map.keySet()) {
+                Pretreatment pretreatment1 = pretreatmentService.getById(map.get(key).getId());
+                Pretreatment pretreatment = map.get(key);
+                if (pretreatment1 == null) {
+                    //插入新数据
+                    pretreatmentService.add(pretreatment);
+                } else {
+                    //根据id更新数据
+                    pretreatmentService.update(pretreatment);
+                }
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
@@ -150,6 +274,7 @@ public class PRPretreatmentController {
 
     /**
      * 获取预处理单状态列表
+     *
      * @return
      */
     @RequestMapping("getPretreatmentStateList")
@@ -165,6 +290,7 @@ public class PRPretreatmentController {
 
     /**
      * 获取处置方式、进料方式列表
+     *
      * @param
      * @return
      */
@@ -173,16 +299,21 @@ public class PRPretreatmentController {
     public String getPretreatmentSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        ProcessWay[] processWays = new ProcessWay[]{ProcessWay.Burning,ProcessWay.Landfill};
+        ProcessWay[] processWays = new ProcessWay[]{ProcessWay.Burning, ProcessWay.Landfill};
         JSONArray processWaysList = JSONArray.fromArray(processWays);
-        HandleCategory[] handleCategories = new HandleCategory[]{HandleCategory.Sludge,HandleCategory.WasteLiquid,HandleCategory.Bulk,HandleCategory.Crushing,HandleCategory.Distillation,HandleCategory.Suspension};
+        HandleCategory[] handleCategories = new HandleCategory[]{HandleCategory.Sludge, HandleCategory.WasteLiquid, HandleCategory.Bulk, HandleCategory.Crushing, HandleCategory.Distillation, HandleCategory.Suspension};
         JSONArray handleCategoryList = JSONArray.fromArray(handleCategories);
         res.put("handleCategoryList", handleCategoryList);
         res.put("processWayList", processWaysList);
         return res.toString();
     }
 
-
+    /**
+     * 搜索计总
+     *
+     * @param pretreatment
+     * @return
+     */
     @RequestMapping("searchPretreatmentTotal")
     @ResponseBody
     public int searchPretreatmentTotal(@RequestBody Pretreatment pretreatment) {
@@ -219,6 +350,12 @@ public class PRPretreatmentController {
         return res.toString();
     }
 
+    /**
+     * 作废功能
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping("invalidPretreatment")
     @ResponseBody
     public String invalidPretreatment(String id) {

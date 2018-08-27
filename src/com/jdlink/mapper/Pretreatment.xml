@@ -85,6 +85,10 @@
         </where>
     </select>
 
+    <select id="getItemsById" parameterType="int" resultMap="PretreatmentItemRM">
+        select * from t_pr_pretreatmentitem where itemId = #{id};
+    </select>
+
     <update id="invalid" parameterType="String">
         update t_pr_pretreatment set state = 'Invalid',nowTime = NOW() where id = #{id}
     </update>
@@ -92,6 +96,27 @@
     <update id="adjust" parameterType="Wastes">
         update t_pr_pretreatmentitem set processWay = #{processWay},handleCategory = #{handleCategory}
         where itemId = #{id};
+    </update>
+
+    <update id="update" parameterType="Pretreatment">
+        update t_pr_pretreatment
+        set remarks=#{remarks},weightTotal=#{weightTotal},calorificTotal=#{calorificTotal},
+        ashPercentageTotal=#{ashPercentageTotal},wetPercentageTotal=#{wetPercentageTotal},volatileNumberTotal=#{volatileNumberTotal},
+        chlorinePercentageTotal=#{chlorinePercentageTotal},sulfurPercentageTotal=#{sulfurPercentageTotal},phTotal=#{phTotal},
+        phosphorusPercentageTotal=#{phosphorusPercentageTotal},fluorinePercentageTotal=#{fluorinePercentageTotal},
+        distillationProportion=#{distillationProportion},wasteLiquidProportion=#{wasteLiquidProportion},sludgeProportion=#{sludgeProportion},
+        bulkProportion=#{bulkProportion},crushingProportion=#{crushingProportion},suspensionProportion=#{suspensionProportion},nowTime=NOW()
+        where id = #{id};
+        <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index" >
+           update t_pr_pretreatmentitem
+            set produceCompanyName=#{pretreatmentItem.produceCompanyName},requirements=#{pretreatmentItem.requirements},
+            proportion=#{pretreatmentItem.proportion},weight=#{pretreatmentItem.wastes.weight},volatileNumber=#{pretreatmentItem.wastes.volatileNumber},
+            calorific=#{pretreatmentItem.wastes.calorific},ashPercentage=#{pretreatmentItem.wastes.ashPercentage},wetPercentage=#{pretreatmentItem.wastes.wetPercentage},
+            chlorinePercentage=#{pretreatmentItem.wastes.chlorinePercentage},sulfurPercentage=#{pretreatmentItem.wastes.sulfurPercentage},
+            ph=#{pretreatmentItem.wastes.ph},phosphorusPercentage=#{pretreatmentItem.wastes.phosphorusPercentage},fluorinePercentage=#{pretreatmentItem.wastes.fluorinePercentage},
+            remarks=#{pretreatmentItem.wastes.remarks},processWay=#{pretreatmentItem.wastes.processWay},handleCategory=#{pretreatmentItem.wastes.handleCategory},wastesName =#{pretreatmentItem.wastes.name}
+            where serialNumber = #{pretreatmentItem.serialNumber} and pretreatmentId = #{id};
+        </foreach>
     </update>
 
     <insert id="add" parameterType="Pretreatment">
@@ -104,19 +129,20 @@
         (#{id},NOW(),'NewBuild',#{remarks},#{weightTotal},#{calorificTotal},#{ashPercentageTotal},
         #{wetPercentageTotal},#{volatileNumberTotal},#{chlorinePercentageTotal},#{sulfurPercentageTotal},
         #{phTotal},#{phosphorusPercentageTotal},#{fluorinePercentageTotal},#{distillationProportion},
-        #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},#{suspensionProportion},NOW())
+        #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},#{suspensionProportion},NOW());
+
         <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index" >
             insert into t_pr_pretreatmentitem
-            (pretreatmentId,produceCompanyName,requirements,proportion,weight,volatileNumber,
+            (itemId,serialNumber,pretreatmentId,produceCompanyName,requirements,proportion,weight,volatileNumber,
             calorific,ashPercentage,wetPercentage,chlorinePercentage,sulfurPercentage,ph,phosphorusPercentage,
-            fluorinePercentage,remarks,processWay,handleCategory)
+            fluorinePercentage,remarks,processWay,handleCategory,wastesName)
             values
-            (#{id},#{pretreatmentItem.produceCompanyName},#{pretreatmentItem.requirements},
+            (#{pretreatmentItem.itemId},#{pretreatmentItem.serialNumber},#{id},#{pretreatmentItem.produceCompanyName},#{pretreatmentItem.requirements},
             #{pretreatmentItem.proportion},#{pretreatmentItem.wastes.weight},#{pretreatmentItem.wastes.volatileNumber},
             #{pretreatmentItem.wastes.calorific},#{pretreatmentItem.wastes.ashPercentage},#{pretreatmentItem.wastes.wetPercentage},
             #{pretreatmentItem.wastes.chlorinePercentage},#{pretreatmentItem.wastes.sulfurPercentage},#{pretreatmentItem.wastes.ph},
             #{pretreatmentItem.wastes.phosphorusPercentage},#{pretreatmentItem.wastes.fluorinePercentage},#{pretreatmentItem.wastes.remarks},
-            #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory})
+            #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory},#{pretreatmentItem.wastes.name});
         </foreach>
     </insert>
 </mapper>

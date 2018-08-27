@@ -2,13 +2,18 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Pretreatment;
+import com.jdlink.domain.Produce.PretreatmentItem;
 import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.PretreatmentMapper;
 import com.jdlink.service.PoundsService;
 import com.jdlink.service.PretreatmentService;
+import com.jdlink.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -60,5 +65,47 @@ public class PretreatmentServiceImpl implements PretreatmentService {
     public void adjust(Wastes wastes) {
         pretreatmentMapper.adjust(wastes);
     }
-    
+
+    @Override
+    public String getCurrentPretreatmentId() {
+        // 生成预约号 YCyyyyMM00000
+        Date date = new Date();   //获取当前时间
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
+        String prefix = simpleDateFormat.format(date);
+        int count = countById(prefix) + 1;
+        String suffix;
+        if (count <= 9) suffix = "0000" + count;
+        else if(count >9 && count <= 99) suffix = "000" + count;
+        else if(count >99 && count <= 999) suffix = "00" + count;
+        else if(count > 999 && count <= 9999)suffix = "0" + count;
+        else suffix = "" + count;
+        String id = RandomUtil.getAppointId(prefix, suffix);
+        // 确保编号唯一
+        while (getById("YC" + id) != null) {
+            int index = Integer.parseInt(id);
+            index += 1;
+            id ="YC" + index + "";
+        }
+        return id;
+    }
+
+    @Override
+    public PretreatmentItem getItemsById(int id){
+        return pretreatmentMapper.getItemsById(id);
+    }
+
+    @Override
+    public int getCurrentItemId(){
+        int count = pretreatmentMapper.countItem() + 1;
+        while (getItemsById(count) != null){
+            count += 1;
+        }
+        return count;
+    }
+
+    @Override
+    public void update(Pretreatment pretreatment){
+        pretreatmentMapper.update(pretreatment);
+    }
+
 }

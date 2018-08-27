@@ -1,10 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Wastes;
-import sun.plugin2.os.windows.FLASHWINFO;
 
 import java.util.Date;
 import java.util.List;

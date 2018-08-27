@@ -169,7 +169,7 @@
         update t_pr_waybill set state = 'Invalid' where id = #{id}
     </update>
 
-    <insert id="update" parameterType="WayBill">
+    <update id="update" parameterType="WayBill">
         update t_pr_waybill
         set total=#{total},freight=#{freight},remarks=#{remarks},wayBillDate=NOW(),produceCompanyId=#{produceCompany.clientId},
         nowTime=NOW(),produceCompanyOperator=#{produceCompanyOperator},produceCompanyName=#{produceCompany.companyName},
@@ -187,7 +187,7 @@
             set  name=#{wayBillItem.wastes.name},unitPriceTax=#{wayBillItem.wastes.unitPriceTax},wasteAmount=#{wayBillItem.wastes.wasteAmount},wastesTotal=#{wayBillItem.wastes.wastesTotal}
             where id = #{wayBillItem.wastes.id}
         </foreach>
-    </insert>
+    </update>
 
     <insert id="addItem" parameterType="WayBill">
     <foreach collection="wayBillItemList" index="index" item="wayBillItem">

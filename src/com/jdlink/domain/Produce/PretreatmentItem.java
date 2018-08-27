@@ -5,13 +5,17 @@ import com.jdlink.domain.Wastes;
 
 public class PretreatmentItem {
     /**
-     * 序号
+     * 项目Id
      */
-    private String itemId;
+    private int itemId;
     /**
      * 预处理单号
      */
     private String pretreatmentId;
+    /**
+     * 项目序号
+     */
+    private int serialNumber;
     /**
      * 出库单号
      */
@@ -33,12 +37,20 @@ public class PretreatmentItem {
      */
     private Float proportion;
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
+    }
+
+    public int getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(int serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getPretreatmentId() {
@@ -92,8 +104,9 @@ public class PretreatmentItem {
     @Override
     public String toString() {
         return "PretreatmentItem{" +
-                "itemId='" + itemId + '\'' +
+                "itemId=" + itemId +
                 ", pretreatmentId='" + pretreatmentId + '\'' +
+                ", serialNumber=" + serialNumber +
                 ", outboundOrderId='" + outboundOrderId + '\'' +
                 ", produceCompanyName='" + produceCompanyName + '\'' +
                 ", requirements='" + requirements + '\'' +

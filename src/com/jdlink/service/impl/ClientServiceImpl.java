@@ -164,4 +164,7 @@ public class ClientServiceImpl implements ClientService {
     public void deleteSalesId(String clienrId) {
         clientMapper.deleteSalesId(clienrId);
     }
+
+    @Override
+    public String getSalesmanIdByName(String name){ return clientMapper.getSalesmanIdByName(name); }
 }
