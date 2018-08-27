@@ -571,7 +571,7 @@ function setBatchingOrderList(result) {
          //获得配料单号
          var batchingOrderId=  $(this).parent().parent().next().next().html();
          //危废名称
-         var name= $(this).parent().parent().next().next().next().html();
+         var namename= $(this).parent().parent().next().next().next().html();
          //处理类别
          var handelCatogory=$(this).parent().parent().next().next().next().next().html();
          //数量
@@ -670,7 +670,7 @@ function setMaterialRequisitionList(result) {
     var tr = $("#cloneTr1");
     tr.attr('class','myclass');
 
-        $.each(result, function (index, item) {
+    $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             if(item.checkState.name=='已领料'){
                 var clonedTr = tr.clone();
