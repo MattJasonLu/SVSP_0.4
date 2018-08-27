@@ -4,13 +4,11 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.BatchingOrder;
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
+import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.WastesInfo;
-import com.jdlink.service.ClientService;
-import com.jdlink.service.MaterialRequisitionOrderService;
-import com.jdlink.service.WasteInventoryService;
-import com.jdlink.service.WastesInfoService;
+import com.jdlink.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +35,8 @@ public class WasteInventoryController {
     ClientService clientService;
     @Autowired
     MaterialRequisitionOrderService materialRequisitionOrderService;
+    @Autowired
+    OutboundOrderService outboundOrderService;
    //获得库存信息（无参数）
     @RequestMapping("getWasteInventoryList")
     @ResponseBody
@@ -237,8 +237,9 @@ public class WasteInventoryController {
            //序列号
            String number = "001";
            for (int i=0;i<list.size();i++){
-               materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键
+               materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键和仓库编码和库户编号
                materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
+               //更新仓库编号
                //materialRequisitionOrderService.updateMaterialRequisitionOrderCheck(list.get(i));//更新领料单的状态
            }
            List<MaterialRequisitionOrder> materialRequisitionOrderList1= materialRequisitionOrderService.list();
@@ -356,8 +357,66 @@ public class WasteInventoryController {
 
         return  res.toString();
     }
+//根据领料编号获取信息
+    @RequestMapping("getByMaterialRequisitionId")
+    @ResponseBody
+    public String getByMaterialRequisitionId(String materialRequisitionId){
+        JSONObject res=new JSONObject();
+        try{
+           MaterialRequisitionOrder materialRequisitionOrder= materialRequisitionOrderService.getByMaterialRequisitionId(materialRequisitionId);
+            res.put("materialRequisitionOrder",materialRequisitionOrder);
+           res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
 
+        return res.toString() ;
+    }
+//添加出库单
+    @RequestMapping("addOutBoundOrder")
+    @ResponseBody
+    public  String addOutBoundOrder(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+        //序列号
+        String number = "001";
+        try{
+            //1查找是否存在出库单号 如果有序列号加1 如果没有就为001
+           List<String>  outboundOrderId= outboundOrderService.check();
+           if(outboundOrderId.size()==0){
+               number = "001";
+           }
+           if(outboundOrderId.size()!=0){
+               String s = outboundOrderId.get(0);//原字符串
+               String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+               number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+           }
+           String outboundOrderId1=year+mouth+number;
+            //添加出库单
+            outboundOrder.setOutboundOrderId(outboundOrderId1);
+            //紧接着进行更新对领料单进行更新
+            outboundOrderService.updateMaterialRequisitionOrderCheck1(outboundOrder);
+            materialRequisitionOrderService.addOutboundOrder(outboundOrder);
+            res.put("status", "success");
+            res.put("message", "添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
 
+        }
+
+        return res.toString();
+    }
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){

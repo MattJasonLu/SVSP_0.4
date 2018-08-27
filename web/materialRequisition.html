@@ -125,7 +125,7 @@
                     <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
                     <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
                     <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 领用</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="receive()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 领用</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
@@ -178,11 +178,16 @@
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     <table class="table table-striped table-hover table-condensed">
-                        <thead>
+                        <tbody>
                         <tr>
+                            <th class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                                </label>
+                            </th>
                             <th class="text-center">编号</th>
-                            <th class="text-center">厂家</th>
                             <th class="text-center">领料单号</th>
+                            <th class="text-center">厂家</th>
                             <th class="text-center">危废名称</th>
                             <th class="text-center">危废代码</th>
                             <th class="text-center">危废类别</th>
@@ -196,9 +201,14 @@
                             <th class="text-center">领料部门主管</th>
                             <th class="text-center">领料人</th>
                         </tr>
-                        </thead>
+                        </tbody>
                         <tbody>
                         <tr id="cloneTr4" class="myclass">
+                            <td class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" name="select">
+                                </label>
+                            </td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>

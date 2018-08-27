@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
+import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.mapper.MaterialRequisitionOrderMapper;
 import com.jdlink.service.MaterialRequisitionOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,4 +64,17 @@ public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionO
         materialRequisitionOrderMapper.updateMaterialRequisitionOrder(materialRequisitionOrder);
 
     }
+
+    @Override
+    public MaterialRequisitionOrder  getByMaterialRequisitionId(String materialRequisitionId) {
+        return materialRequisitionOrderMapper.getByMaterialRequisitionId(materialRequisitionId);
+    }
+
+    @Override
+    public void addOutboundOrder(OutboundOrder outboundOrder) {
+        materialRequisitionOrderMapper.addOutboundOrder(outboundOrder);
+
+    }
+
+
 }
