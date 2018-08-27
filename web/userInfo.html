@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>产废服务平台</title>
+    <title>用户列表新增</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -25,16 +25,31 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 800px;">
+        <div class="container navbar-left" style="width: 920px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li><a href="basicData.html">首页</a></li>
                     <li><a href="#">开票信息</a></li>
                     <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li class="active"><a href="#">账号管理</a></li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">账号管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="roleList.html">角色列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="permissionList.html">权限表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="userManage.html">用户列表</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="organizationList.html">组织架构管理表</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="thresholdTable.html">处置类别阈值表</a></li>
+                    <li><a href="documentControl.html">受控文档表</a></li>
+                    <li><a href="contractCommission.html">合同提成比例计算</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

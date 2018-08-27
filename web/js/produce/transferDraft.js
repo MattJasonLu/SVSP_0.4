@@ -818,8 +818,8 @@ function viewData(e) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 var date = eval(result);
-                $("#produceCompanyName").text(date.produceCompanyName);
-                $("#produceCompanyPhone").val(date.produceCompanyPhone);
+                $("#produceCompanyName").val(date.acceptCompany.companyName);
+                $("#produceCompanyPhone").val(date.acceptCompany.phone);
                 $("#produceCompanyLocation").val(date.produceCompanyLocation);
                 $("#transportCompanyName").val(date.transportCompanyName);
                 $("#transportCompanyLocation").val(date.transportCompanyLocation);
@@ -880,7 +880,7 @@ function viewData(e) {
                 $("#signDate").val(date.signDate);
             } else {
                 alert(result.message);
-                $("#produceCompanyName").text("");
+                $("#produceCompanyName").val("");
                 $("#produceCompanyPhone").val("");
                 $("#produceCompanyLocation").val("");
                 $("#transportCompanyName").val("");
