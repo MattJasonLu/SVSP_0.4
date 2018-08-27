@@ -44,5 +44,10 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.getBatchingOrderList();
     }
 
+    @Override
+    public void updateBatchingOrderOnId(BatchingOrder batchingOrder) {
+        wasteInventoryMapper.updateBatchingOrderOnId(batchingOrder);
+    }
+
 
 }

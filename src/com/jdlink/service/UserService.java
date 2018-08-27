@@ -46,6 +46,13 @@ public interface UserService {
     List<Function> listFunction();
 
     /**
+     * 从权限表中根据角色编号获取该角色可操作的功能列表
+     * @param roleId 角色编号
+     * @return 功能列表
+     */
+    List<Function> getFunctionByRoleId(int roleId);
+
+    /**
      * 列出所有权限
      * @return
      */

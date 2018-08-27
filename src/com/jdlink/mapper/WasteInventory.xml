@@ -35,7 +35,7 @@
     </select>
     <!--查找库存信息==>危废信息-->
     <select id="getWastes" parameterType="String"  resultMap="WastesRM">
-     select * from t_wastes where id=#{wastes.id};t_pr_stock
+     select * from t_wastes where id=#{wastes.id};
     </select>
     <select id="getClient" resultType="Client">
         select * from  client where clientId=#{clientId};
@@ -50,6 +50,9 @@
         insert into t_pl_batchingorder(batchingOrderId, batchingDate, createDate, remarks, wareHouseId, produceCompany,  recordstate,  batchingNumber,  nowTime, inboundOrderId,creator,checkState,name,wastesId,packageType)
         values (#{batchingOrderId},#{batchingDate},#{createDate},#{remarks},#{wareHouse.wareHouseId},#{produceCompany.companyName},#{recordState},#{batchingNumber},NOW(),#{inboundOrder.inboundOrderId},#{creator},'ToPick',#{wasteInventory.wastes.name},#{wasteInventory.wastes.wastesId},#{wasteInventory.wastes.packageType})
 </insert>
+    <update id="updateBatchingOrderOnId" parameterType="BatchingOrder">
+        update t_pl_batchingorder set id=#{wasteInventory.wastes.id} where batchingOrderId=#{batchingOrderId}
+    </update>
     <!--查询配料单信息-->
      <select id="getBatchingOrderList" resultMap="BatchingOrderRM">
          select * from t_pl_batchingorder order by nowTime desc ;
