@@ -185,8 +185,8 @@ li {
 .sidebar-dropdown > li > a{display: block; padding: 10px 0 10px 36px;}
 
 /*伸缩侧边css代码*/
-.sidebar-collapse .main{margin-left: 60px;}
-.sidebar-collapse .sidebar{width: 60px;}
+.sidebar-collapse .main{margin-left: 155px;}
+.sidebar-collapse .sidebar{width: 50px;}
 .sidebar-collapse .sidenav > li{position: relative; z-index: 9999; text-align: center;}
 .sidebar-collapse .sidenav > li:hover > a{border-left: 2px solid rgb(229,229,229); background: rgb(17,79,142); text-decoration: none;}
 .sidebar-collapse .sidenav > li:hover .sidebar-dropdown{display: block!important;}
@@ -195,6 +195,9 @@ li {
 .sidebar-collapse .sidespan,
 .sidebar-collapse .iright,
 .sidebar-collapse .cover > h2:after{
+    display: none;
+}
+.sidebar-collapse .navbar-brand > img{
     display: none;
 }
 .sidebar-collapse .cover{padding-top: 30px;}
@@ -209,4 +212,4 @@ li {
 .sidebar-collapse .cover > h2 img{margin-left: 0; border: none;}
 /* main
  ---------------------------------------- */
-.main{overflow: hidden; margin-left: 215px; transition: all .3s ease; padding-top: 50px; width: 89%}
+.main{overflow: hidden; margin-left: 215px; transition: all .3s ease; padding-top: 50px; width: 85%}
