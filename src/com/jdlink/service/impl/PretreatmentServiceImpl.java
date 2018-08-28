@@ -62,8 +62,8 @@ public class PretreatmentServiceImpl implements PretreatmentService {
     }
 
     @Override
-    public void adjust(Wastes wastes) {
-        pretreatmentMapper.adjust(wastes);
+    public void adjust(Pretreatment pretreatment) {
+        pretreatmentMapper.adjust(pretreatment);
     }
 
     @Override

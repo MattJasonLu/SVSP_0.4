@@ -251,7 +251,10 @@
              aria-labelledby="myModalLabel">
             <div class="modal-dialog modal-lg" role="document" style="width: 90%">
                 <div class="modal-content">
-                    <div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>
+                    <br>
+                    <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
+                    <h4 class="modal-title text-center" id="title">预处理单</h4>
+                    <br>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
@@ -448,8 +451,8 @@
             </div>
         </div>
         <!--属性调整模态框-->
-        <div class="modal fade" id="adjustModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade bs-example-modal-lg" id="adjustModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title" id="titleLabel">属性调整</h4>
@@ -469,8 +472,8 @@
                                 <th class="text-center">进料方式</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr id="adjustClone">
+                            <tbody id="adjustClone">
+                            <tr >
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
@@ -478,21 +481,20 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
-                                <td class="text-center"><select class="form-control" id="adjust-processWay"
+                                <td class="text-center"><select class="form-control adjust-processWay" id="adjust0-processWay"
                                                                 name="adjust-processWay">
                                     <option value="0"></option>
                                 </select></td>
-                                <td class="text-center"><select class="form-control" id="adjust-handleCategory"
+                                <td class="text-center"><select class="form-control adjust-handleCategory" id="adjust0-handleCategory"
                                                                 name="adjust-handleCategory">
                                     <option value="0"></option>
                                 </select></td>
-                                <td class="text-center"></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="modal-footer center">
-                        <button type="button" class="btn btn-default" onclick="adjust()">确认</button>
+                        <button type="button" class="btn btn-primary" onclick="adjust()">确认</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     </div>
                 </div>

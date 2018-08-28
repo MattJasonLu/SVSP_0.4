@@ -374,10 +374,38 @@ public class PRPretreatmentController {
 
     @RequestMapping("adjustPretreatment")
     @ResponseBody
-    public String adjustPretreatment(Wastes wastes) {
+    public String adjustPretreatment(@RequestBody Pretreatment pretreatment) {
         JSONObject res = new JSONObject();
         try {
-            pretreatmentService.adjust(wastes);
+            //重新计算比例
+            float sludgeProportion = 0;
+            float wasteLiquidProportion = 0;
+            float bulkProportion = 0;
+            float crushingProportion = 0;
+            float distillationProportion = 0;
+            float suspensionProportion = 0;
+            for(PretreatmentItem pretreatmentItem : pretreatment.getPretreatmentItemList()){
+               HandleCategory handleCategory = pretreatmentItem.getWastes().getHandleCategory();
+                if(handleCategory.getName() == "污泥" || handleCategory.getIndex() == 1)
+                    sludgeProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "废液" || handleCategory.getIndex() == 2)
+                    wasteLiquidProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "散装料" || handleCategory.getIndex() == 3)
+                    bulkProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "破碎料" || handleCategory.getIndex() == 4)
+                    crushingProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "精馏残渣" || handleCategory.getIndex() == 5)
+                    distillationProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "悬挂连" || handleCategory.getIndex() == 6)
+                    suspensionProportion += pretreatmentItem.getProportion();
+            }
+            pretreatment.setSludgeProportion(sludgeProportion);
+            pretreatment.setWasteLiquidProportion(wasteLiquidProportion);
+            pretreatment.setBulkProportion(bulkProportion);
+            pretreatment.setCrushingProportion(crushingProportion);
+            pretreatment.setDistillationProportion(distillationProportion);
+            pretreatment.setSuspensionProportion(suspensionProportion);
+            pretreatmentService.adjust(pretreatment);
             res.put("status", "success");
             res.put("message", "属性调整成功");
         } catch (Exception e) {

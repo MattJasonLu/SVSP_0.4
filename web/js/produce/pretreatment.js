@@ -694,7 +694,7 @@ function showViewModal(id) {
  * 为查看模态框设置克隆数据
  * @param result
  */
-function setViewDataClone(result){
+function setViewDataClone(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#viewClone");
     $.each(result.pretreatmentItemList, function (index, item) {
@@ -833,7 +833,7 @@ function setAdjustSelectedList() {
             if (result != undefined) {
                 var data = eval(result);
                 // 下拉框数据填充
-                var state = $("#adjust-processWay");
+                var state = $(".adjust-processWay");
                 state.children().remove();
                 $.each(data.processWayList, function (index, item) {
                     var option = $('<option />');
@@ -842,7 +842,7 @@ function setAdjustSelectedList() {
                     state.append(option);
                 });
                 state.get(0).selectedIndex = -1;
-                var state1 = $("#adjust-handleCategory");
+                var state1 = $(".adjust-handleCategory");
                 state1.children().remove();
                 $.each(data.handleCategoryList, function (index, item) {
                     var option = $('<option />');
@@ -866,8 +866,10 @@ function setAdjustSelectedList() {
  * @param item
  */
 function showAdjustModal(item) {
+    //清楚之前克隆行
+    $(".newAjust").remove();
     pretreatmentId = getPretreatmentId(item);
-    //设置下拉数据框数据
+    //填充下拉数据框数据
     setAdjustSelectedList();
     //填充数据
     $.ajax({
@@ -880,8 +882,9 @@ function showAdjustModal(item) {
         dataType: "json",
         success: function (result) {
             if (result.status == "success") {
-               //设置数据
+                //设置数据
                 var data = eval(result.data);
+                length = data.pretreatmentItemList.length;
                 setAdjustClone(data);
             } else {
                 alert(result.message);
@@ -895,10 +898,10 @@ function showAdjustModal(item) {
     $("#adjustModal").modal('show');
 }
 
-function setAdjustClone(result){
-// 获取id为cloneTr的tr元素
-    var tr = $("#adjustClone");
+function setAdjustClone(result) {
+    var tr = $("#adjustClone").find("tr:first");
     //tr.siblings().remove();
+   var num = 0;
     $.each(result.pretreatmentItemList, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -910,7 +913,7 @@ function setAdjustClone(result){
             switch (inner_index) {
                 case (0):
                     // 序号
-                    $(this).html(obj.itemId);
+                    $(this).html(obj.serialNumber);
                     break;
                 case (1):
                     // 预处理编号
@@ -938,41 +941,82 @@ function setAdjustClone(result){
                     break;
                 case (7):
                     // 处置方式
-                    $(this).html(obj.wastes.processWay.name);
+                    $(this).val(obj.wastes.processWay.index);
                     break;
                 case (8):
                     // 进料方式
-                    $(this).html(obj.wastes.handleCategory.name);
+                    $(this).val(obj.wastes.handleCategory.index);
                     break;
             }
         });
+        // var num = $("#adjustClone").children().find("select:first").prop('id').charAt(6);
+        console.log("num:" + num);
+      //  var num = $("#adjustClone").find("tr:first").find("select:first").prop('id').charAt(6);
+        clonedTr.children().find("select").each(function () {
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
+            $(this).prop('id', newId);
+        });
+        num++;
         // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
+        clonedTr.addClass("newAjust");
         clonedTr.insertBefore(tr);
+        // 隐藏无数据的tr
+        tr.hide();
     });
-    // 隐藏无数据的tr
-    tr.hide();
 }
 
 /**
  * 属性调整功能
  */
 function adjust() {
-    var wastes = {};
-    wastes.processWay = $("#adjust-processWay").text();
-    wastes.handleCategory = $("#adjust-handleCategory").text();
-    wastes.id = pretreatmentId;
+    var pretreatment = {};
     $.ajax({
         type: "POST",
-        url: "adjustPretreatment",
+        url: "getById",
         async: false,
         data: {
-            wastes: wastes
+            id: pretreatmentId
         },
         dataType: "json",
         success: function (result) {
             if (result.status == "success") {
+                var data = eval(result.data);
+                pretreatment['pretreatmentItemList'] = [];
+                pretreatment.id = pretreatmentId;
+                for (var i = 0; i < data.pretreatmentItemList.length; i++) {
+                    var $i = i + 1;
+                    var wastes = {};
+                    wastes.processWay = $("#adjust" + $i + "-processWay").find("option:selected").val();
+                    console.log("处置方式：" + $("#adjust" + $i + "-processWay").find("option:selected").val());
+                    wastes.handleCategory = $("#adjust" + $i + "-handleCategory").find("option:selected").val();
+                    console.log("进料方式：" + $("#adjust" + $i + "-handleCategory").find("option:selected").val());
+                    var pretreatmentItem = {};
+                    pretreatmentItem.itemId = data.pretreatmentItemList[i].itemId;
+                    pretreatmentItem.wastes = wastes;
+                    pretreatmentItem.proportion = data.pretreatmentItemList[i].proportion;
+                    pretreatment.pretreatmentItemList.push(pretreatmentItem);
+                }
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
+    $.ajax({
+        type: "POST",
+        url: "adjustPretreatment",
+        async: false,
+        data: JSON.stringify(pretreatment),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result.status == "success") {
                 alert("属性调整成功!");
+                window.location.reload();
             } else {
                 alert(result.message);
             }

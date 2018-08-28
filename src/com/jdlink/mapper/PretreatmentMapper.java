@@ -18,6 +18,6 @@ public interface PretreatmentMapper {
     int countById(String id);
     int countItem();
     void invalid(String id);
-    void adjust(Wastes wastes);
+    void adjust(Pretreatment pretreatment);
     PretreatmentItem getItemsById(int id);
 }

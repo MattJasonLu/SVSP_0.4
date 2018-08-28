@@ -17,7 +17,7 @@ public interface PretreatmentService {
     int searchCount(Pretreatment pretreatment);
     int countById(String id);
     void invalid(String id);
-    void adjust(Wastes wastes);
+    void adjust(Pretreatment pretreatment);
     String getCurrentPretreatmentId();
     int getCurrentItemId();
     PretreatmentItem getItemsById(int id);

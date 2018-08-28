@@ -93,9 +93,20 @@
         update t_pr_pretreatment set state = 'Invalid',nowTime = NOW() where id = #{id}
     </update>
 
-    <update id="adjust" parameterType="Wastes">
-        update t_pr_pretreatmentitem set processWay = #{processWay},handleCategory = #{handleCategory}
-        where itemId = #{id};
+    <update id="adjust" parameterType="Pretreatment">
+        update t_pr_pretreatment
+        set
+        nowTime = NOW(),wasteLiquidProportion =#{wasteLiquidProportion},bulkProportion =#{bulkProportion},
+        crushingProportion =#{crushingProportion},distillationProportion=#{distillationProportion},
+        suspensionProportion=#{suspensionProportion},sludgeProportion=#{sludgeProportion}
+        where id = #{id};
+        <foreach collection="pretreatmentItemList" index="index" item="pretreatmentItem">
+            update t_pr_pretreatmentitem
+            set
+            processWay = #{pretreatmentItem.wastes.processWay},handleCategory = #{pretreatmentItem.wastes.handleCategory}
+            where itemId = #{pretreatmentItem.itemId};
+        </foreach>
+
     </update>
 
     <update id="update" parameterType="Pretreatment">
