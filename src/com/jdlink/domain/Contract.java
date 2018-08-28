@@ -246,6 +246,24 @@ private  TicketRate1 ticketRate1;
     *供应商名称 */
 private  String suppier;
 
+    /**
+     * Page
+     * @return
+     */
+    private Page page;
+
+    public boolean isCompanyContract() {
+        return isCompanyContract;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
     public String getSuppier() {
         return suppier;
     }
@@ -701,8 +719,14 @@ private String content;
                 ", backContent='" + backContent + '\'' +
                 ", keyword='" + keyword + '\'' +
                 ", hazardousList=" + hazardousList +
+                ", totalPrice='" + totalPrice + '\'' +
+                ", suppier='" + suppier + '\'' +
+                ", page=" + page +
+                ", suppierName='" + suppierName + '\'' +
                 ", nowTime='" + nowTime + '\'' +
+                ", company1='" + company1 + '\'' +
                 ", addType='" + addType + '\'' +
+                ", content='" + content + '\'' +
                 '}';
     }
 }
