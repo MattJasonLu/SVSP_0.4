@@ -260,8 +260,8 @@ function setRequisitionList(result) {
                         break;
                     // 厂家
                     case (2):
-                        if(obj.wastes.client!=null){
-                            $(this).html(obj.batchingOrder.wasteInventory.wastes.client.companyName);
+                        if(obj.client!=null){
+                            $(this).html(obj.client.companyName);
                         }
                         break;
                     // 危废名称

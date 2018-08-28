@@ -89,7 +89,7 @@ function loadPages(totalRecord, count) {
  */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setClientList(result);
+    setClientList(result.data);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";

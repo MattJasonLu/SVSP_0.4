@@ -417,6 +417,46 @@ public class WasteInventoryController {
 
         return res.toString();
     }
+//加载出库信息列表
+    @RequestMapping("loadOutBoundList")
+    @ResponseBody
+    public String loadOutBoundList(){
+        JSONObject res=new JSONObject();
+       try {
+           List<OutboundOrder> outboundOrderList=outboundOrderService.loadOutBoundList();
+           res.put("data",outboundOrderList);
+           res.put("status", "success");
+           res.put("message", "查询成功");
+       }
+catch (Exception e){
+    e.printStackTrace();
+    res.put("status", "fail");
+    res.put("message", "查询失败");
+}
+
+        return res.toString();
+    }
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalOutBoundRecord")
+    @ResponseBody
+    public int totalOutBoundRecord(){
+        try {
+            return outboundOrderService.total();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+    @RequestMapping("searchOutBoundTotal")
+    @ResponseBody
+    public int searchOutBoundTotal(@RequestBody OutboundOrder outboundOrder){
+
+        return 0;
+    }
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){

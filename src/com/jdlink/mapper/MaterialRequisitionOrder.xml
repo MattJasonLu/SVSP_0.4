@@ -53,7 +53,7 @@
         select *from  client where clientId=#{clientId}
     </select>
     <select id="getClient1" parameterType="String" resultType="Client">
-        select * from  client where clientId=#{client.clientId}
+        select * from  client where clientId=#{clientId}
     </select>
     <!--获得配料单数据-->
     <select id="getBatchingOrder" resultMap="BatchingOrderRM" parameterType="String">
@@ -84,7 +84,7 @@
         <collection property="wastes" column="id" select="getWastes1" ofType="Wastes"></collection>
         <collection property="wareHouse" column="warseHouseId" select="getWareHouse" ofType="WareHouse"></collection>
         <collection property="batchingOrder" column="batchingOrderId" select="getBatchingOrder1"></collection>
-        <!--<collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>-->
+        <collection property="client" column="clientId" select="getClient1" javaType="Client"></collection>
      </resultMap>
     <!--根据配料单号获取信息-->
     <select id="getByMaterialRequisitionId" parameterType="String" resultMap="MaterialRequisitionRM">
