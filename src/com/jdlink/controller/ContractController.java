@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.jdlink.util.DateUtil.getDateStr;
 
 /**
  * Created by matt on 2018/5/18.
@@ -689,10 +692,32 @@ public class ContractController {
         }
         return res.toString();
     }
-    //高级检索
+    //设置合同模板高级检索下拉数据
+    @RequestMapping("getModelSelectedList")
+    @ResponseBody
+    public String getModelSelectedList(){
+        JSONObject res=new JSONObject();
+        try{
+            JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+            JSONArray contractTypeList=JSONArray.fromArray(ContractType.values());
+            res.put("checkStateList",checkStateList);
+            res.put("contractTypeList",contractTypeList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString();
+    }
+    //高级检索合同列表
     @RequestMapping("searchContract")
     @ResponseBody
-    public String searchContract(String keyword,String nameBykey){
+    public String searchContract(@RequestBody Contract contract){
             //找出合同类型
 //        if(ContractType.getContract(nameBykey)!=null) {
 //            nameBykey=ContractType.getContract(nameBykey).toString();
@@ -709,7 +734,6 @@ public class ContractController {
 //        if(ContractType.getContract(keyword)!=null) {
 //            keyword=ContractType.getContract(keyword).toString();
 //        }
-
         JSONObject res=new JSONObject();
         try{
 
@@ -719,12 +743,46 @@ public class ContractController {
             res.put("status", "fail");
             res.put("message", "查询失败");
         }
+       //contract.setContractType(ContractType.getContract( contract.getContractType().toString()));
+       Date beginTime=contract.getBeginTime();
+        if(beginTime!=null){
+            String time=getDateStr(beginTime);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd" );
+            try {
+                Date date = sdf.parse(time);
+                contract.setBeginTime(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
-        List<Contract> contractList= contractService.getByKeyword(keyword,nameBykey);
+        System.out.println(beginTime+"666");
+        List<Contract> contractList= contractService.search(contract);
         JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
         // 返回结果
-        return array.toString();
+        res.put("data",array);
+        return res.toString();
           }
+          //高级检索合同模板
+    @RequestMapping("searchModel")
+    @ResponseBody
+    public String searchModel(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try{
+            List<Contract> contractList=contractService.searchModel(contract);
+            JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            res.put("data",array);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString();
+    }
     public static List removeDuplicate(List list){
         List listTemp = new ArrayList();
         for(int i=0;i<list.size();i++){

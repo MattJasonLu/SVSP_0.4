@@ -14,6 +14,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/business/contract.js"></script>
 </head>
 <style>
     pre{
@@ -71,7 +72,7 @@
      * */
     function setPageClone(result) {
         $(".beforeClone").remove();
-        setContractList(result);
+        setContractModelList(result);
         var total = totalPage();
         $("#next").prev().hide();
         var st = "共" + total + "页";
@@ -250,6 +251,7 @@
                 console.log("失败");
             }
         });
+        setModelSelectedList();
     }
 
     /**
@@ -291,7 +293,7 @@
             }
         });
     }
-    function setContractList(result){
+    function setContractModelList(result){
      //console.log(eval(result));//可以取到
         // 获取id为cloneTr的tr元素
       //判断字段是否存在
@@ -517,15 +519,85 @@
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索...">
+                        <input type="text" class="form-control" placeholder="搜索..." id="search">
                         <span class="input-group-btn">
-                            <a class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="seniorSearch();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="searchModel();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         </span>
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-modelName" class="col-sm-4 control-label">模板名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-modelName" name="search-modelName"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                          <!--  <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName"
+                                           name="search-companyName" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-search-suppierName" class="col-sm-4 control-label">供应商名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-search-suppierName"
+                                           name="search-search-suppierName" placeholder="">
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label for="search-contractType" class="col-sm-4 control-label">合同类型</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" id="search-contractType" name="search-contractType"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-checkState"-->
+                                       <!--class="col-sm-4 control-label">模板状态</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<select type="text" class="form-control" id="search-checkState"-->
+                                            <!--name="search-checkState" placeholder=""></select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-contactName" class="col-sm-4 control-label">联系人</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-contactName" name="search-contactName"-->
+                                           <!--placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <label for="search-year" class="col-sm-4 control-label">年份</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-year" name="search-year"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
 
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-beginTime" class="col-sm-4 control-label">签订日期</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="date" class="form-control" id="search-beginTime" name="search-beginTime"-->
+                                           <!--placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="table">
                 <table class="table table-striped table-hover table-condensed">
                     <thead>

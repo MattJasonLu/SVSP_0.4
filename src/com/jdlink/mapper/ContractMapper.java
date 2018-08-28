@@ -6,6 +6,7 @@ import com.jdlink.domain.Salesman;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by matt on 2018/4/23.
@@ -65,4 +66,12 @@ public interface ContractMapper {
      * @return 合同列表
      */
     List<Contract> getContractBySalesman(String salesmanId, @Param("page") Page page);
+    /**
+     * 合同列表的高级查询
+     *
+     *
+     */
+    List<Contract> search(Contract contract);
+    List<Contract> searchModel(Contract contract);
+
 }
