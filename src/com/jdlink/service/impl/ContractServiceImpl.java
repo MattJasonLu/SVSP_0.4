@@ -190,5 +190,15 @@ contractMapper.updateFreight2(id);
         return contractMapper.getContractBySalesman(salesmanId, page);
     }
 
+    @Override
+    public List<Contract> search(Contract contract) {
+        return contractMapper.search(contract);
+    }
+
+    @Override
+    public List<Contract> searchModel(Contract contract) {
+        return contractMapper.searchModel(contract);
+    }
+
 
 }
