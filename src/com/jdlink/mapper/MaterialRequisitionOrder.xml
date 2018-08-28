@@ -24,13 +24,20 @@
     <!--获得配料单对象-->
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
         <collection property="batchingOrder" column="batchingOrderId" ofType="BatchingOrder" select="getBatchingOrder"></collection>
+        <!--<collection property="client.clientId" column="clientId"  select="getClient" ofType="com.jdlink.domain.Client"></collection>-->
     </resultMap>
     <resultMap id="BatchingOrderRM" type="BatchingOrder">
         <collection property="wasteInventory" column="inboundOrderId" ofType="WasteInventory" select="getWasteInventory"></collection>
     </resultMap>
     <resultMap id="WastesRM" type="WasteInventory">
        <association property="wastes" column="id" javaType="Wastes" select="getWastes"></association>
+        <association property="wareHouse" column="warseHouseId" javaType="wareHouse" select="getWareHouse"></association>
+        <!--<association property="client" column="clientId" javaType="Client" select="getClient"></association>-->
     </resultMap>
+    <!--获得仓库信息-->
+    <select id="getWareHouse" resultType="WareHouse" parameterType="String">
+        select  * from t_pl_warehouse where  warehouseId=#{warseHouseId};
+    </select>
     <!--获得入库信息-->
     <select id="getWasteInventory" parameterType="String" resultMap="WastesRM">
          select * from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId}
@@ -45,6 +52,9 @@
     <select id="getClient" parameterType="String" resultType="Client">
         select *from  client where clientId=#{clientId}
     </select>
+    <select id="getClient1" parameterType="String" resultType="Client">
+        select * from  client where clientId=#{client.clientId}
+    </select>
     <!--获得配料单数据-->
     <select id="getBatchingOrder" resultMap="BatchingOrderRM" parameterType="String">
         select * from  t_pl_batchingorder where batchingOrderId=#{batchingOrderId}
@@ -54,7 +64,7 @@
     select * from t_pl_materialrequisitionorder;
     </select>
     <update id="updateMaterialRequisitionOrderOnId" parameterType="MaterialRequisitionOrder">
-        update t_pl_materialrequisitionorder set id=#{batchingOrder.wasteInventory.wastes.id} where batchingOrderId=#{batchingOrder.batchingOrderId};
+        update t_pl_materialrequisitionorder set id=#{batchingOrder.wasteInventory.wastes.id},warseHouseId=#{batchingOrder.wasteInventory.wareHouse.wareHouseId},clientId=#{batchingOrder.wasteInventory.wastes.client.clientId} where batchingOrderId=#{batchingOrder.batchingOrderId};
     </update>
     <!--更新领料单的单号-->
     <update id="updateMaterialRequisitionId" >
@@ -70,4 +80,28 @@
         picker=#{picker},departmentName=#{departmentName},deputyGeneral=#{deputyGeneral},warehouseManager=#{warehouseManager},checkState='ToOutbound'
         where materialRequisitionId=#{materialRequisitionId}
     </update>
+    <resultMap id="MaterialRequisitionRM" type="MaterialRequisitionOrder">
+        <collection property="wastes" column="id" select="getWastes1" ofType="Wastes"></collection>
+        <collection property="wareHouse" column="warseHouseId" select="getWareHouse" ofType="WareHouse"></collection>
+        <collection property="batchingOrder" column="batchingOrderId" select="getBatchingOrder1"></collection>
+        <!--<collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>-->
+     </resultMap>
+    <!--根据配料单号获取信息-->
+    <select id="getByMaterialRequisitionId" parameterType="String" resultMap="MaterialRequisitionRM">
+  select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
+    </select>
+    <select id="getWastes1" resultType="Wastes" parameterType="String">
+        select * from t_wastes where  id=#{id};
+    </select>
+    <!--<resultMap id="WastesRM1" type="Wastes">-->
+    <!--<collection property="client" column="clientId" select="getClient" ofType="Client"></collection>-->
+<!--</resultMap>-->
+    <select id="getBatchingOrder1" resultType="BatchingOrder" parameterType="String">
+        select  * from  t_pl_batchingorder where batchingOrderId=#{batchingOrderId};
+    </select>
+<!--添加出库单-->
+    <insert id="addOutboundOrder" parameterType="OutboundOrder">
+      insert into t_pl_outboundorder(outboundOrderId,outBoundDate,creator,auditor,materialRequisitionId,nowTime,checkState)
+      values (#{outboundOrderId},#{outboundDate},#{creator},#{auditor},#{materialRequisitionOrder.materialRequisitionId},NOW(),'OutBounded')
+    </insert>
 </mapper>

@@ -1,6 +1,8 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Wastes;
+import com.sun.security.ntlm.Client;
 
 import java.util.Date;
 
@@ -36,6 +38,30 @@ public class MaterialRequisitionOrder {
     private float recipientsNumber;
    /*状态*/
     private CheckState checkState;
+    /*危废信息
+    *
+    * 这里为了好拿数据，不用再xml进行多次迭代
+    * */
+    private Wastes wastes;
+    /*产废单位*/
+    private Client client;
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Wastes getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(Wastes wastes) {
+        this.wastes = wastes;
+    }
+
     public float getRecipientsNumber() {
         return recipientsNumber;
     }
@@ -173,6 +199,8 @@ public class MaterialRequisitionOrder {
                 ", pickerDate=" + pickerDate +
                 ", recipientsNumber=" + recipientsNumber +
                 ", checkState=" + checkState +
+                ", wastes=" + wastes +
+                ", client=" + client +
                 '}';
     }
 }

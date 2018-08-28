@@ -671,26 +671,55 @@ public class ContractController {
         }
         return res.toString();
         }
-
+        //设置高级检索下拉框数据
+    @RequestMapping("getSeniorSelectedList")
+    @ResponseBody
+    public  String getSeniorSelectedList(){
+        JSONObject res = new JSONObject();
+        try{
+            JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
+            res.put("checkStateList", checkStateList);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
+    //高级检索
     @RequestMapping("searchContract")
     @ResponseBody
     public String searchContract(String keyword,String nameBykey){
             //找出合同类型
-        if(ContractType.getContract(nameBykey)!=null) {
-            nameBykey=ContractType.getContract(nameBykey).toString();
+//        if(ContractType.getContract(nameBykey)!=null) {
+//            nameBykey=ContractType.getContract(nameBykey).toString();
+//        }
+//        System.out.println(nameBykey+"mmm");
+//         //首先检查枚举(省会)
+//       if(Province.getProvince(keyword)!=null) {
+//           keyword=Province.getProvince(keyword).toString();
+//       }
+//       //枚举的还有状态 合同类型
+//        if(CheckState.getCheckState(keyword)!=null) {
+//            keyword=CheckState.getCheckState(keyword).toString();
+//        }
+//        if(ContractType.getContract(keyword)!=null) {
+//            keyword=ContractType.getContract(keyword).toString();
+//        }
+
+        JSONObject res=new JSONObject();
+        try{
+
         }
-        System.out.println(nameBykey+"mmm");
-         //首先检查枚举(省会)
-       if(Province.getProvince(keyword)!=null) {
-           keyword=Province.getProvince(keyword).toString();
-       }
-       //枚举的还有状态 合同类型
-        if(CheckState.getCheckState(keyword)!=null) {
-            keyword=CheckState.getCheckState(keyword).toString();
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
         }
-        if(ContractType.getContract(keyword)!=null) {
-            keyword=ContractType.getContract(keyword).toString();
-        }
+
         List<Contract> contractList= contractService.getByKeyword(keyword,nameBykey);
         JSONArray array = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
         // 返回结果

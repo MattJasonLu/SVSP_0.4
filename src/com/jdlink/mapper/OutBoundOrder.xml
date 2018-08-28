@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.OutboundOrderMapper" >
+<!--查找出库单号-->
+    <select id="check" resultType="String">
+        select outboundOrderId from t_pl_outboundorder order by outboundOrderId desc;
+    </select>
+    <!--更新领料单为已出库-->
+    <update id="updateMaterialRequisitionOrderCheck1" parameterType="OutboundOrder">
+        update t_pl_materialrequisitionorder set checkState='OutBounded'where materialRequisitionId=#{materialRequisitionOrder.materialRequisitionId}
+    </update>
+</mapper>
