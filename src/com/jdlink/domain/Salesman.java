@@ -19,7 +19,7 @@ public class Salesman {
      */
     private Integer age;
     /**
-     * 编号
+     * 性别
      */
     private boolean sex;
     /**

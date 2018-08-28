@@ -69,4 +69,6 @@ public interface ClientService {
     String getCurrentId();
     void deleteSalesId(String clientId);
 
+    String getSalesmanIdByName(String name);
+
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>产废服务平台</title>
+    <title>权限表</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -16,7 +16,7 @@
     <script src="js/util.js"></script>
     <script src="js/business/userManage.js"></script>
 </head>
-<body onload="loadAuthorityList();">
+<body onload="loadRoleAndFunction();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -52,6 +52,7 @@
                 </li>
                 <li><a href="thresholdTable.html">处置类别阈值表</a></li>
                 <li><a href="documentControl.html">受控文档表</a></li>
+                <li><a href="contractCommission.html">合同提成比例计算</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -107,7 +108,7 @@
                     <!--<div class="panel-body"></div>-->
                     <!-- List group -->
                     <ul class="list-group">
-                        <li class="list-group-item" id="roleCloneLi"><a href="#">测试用户</a></li>
+                        <li class="list-group-item" id="roleCloneLi"><a href="#" onclick="showAuthorityById($(this));">测试用户</a></li>
                     </ul>
                 </div>
             </div>
@@ -117,8 +118,8 @@
                     <div class="panel-heading"><b>功能列表</b></div>
                     <!-- List group -->
                     <div id="tree"></div>
-                    <div class="row">
-
+                    <div class="row text-center">
+                        <a class="btn btn-primary" onclick="saveAuthority();">保存</a>
                     </div>
                 </div>
             </div>
@@ -129,7 +130,5 @@
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
-
-
 </script>
 </html>

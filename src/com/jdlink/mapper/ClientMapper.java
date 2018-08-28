@@ -60,5 +60,7 @@ public interface ClientMapper {
     List<Client> getClientList(int index, int pageSize);      //得到请求页的数据列表
     void deleteSalesId(String clienrId);
 
+    String getSalesmanIdByName(String name);
+
 
 }

@@ -219,7 +219,7 @@ function getUserId(e) {
 /**
  * 读取权限列表
  */
-function loadAuthorityList() {
+function loadRoleAndFunction() {
     // 读取角色列表
     $.ajax({
         type: "POST",                       // 方法类型
@@ -246,7 +246,8 @@ function loadAuthorityList() {
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.find('a').text(item.roleName);
             // 把克隆好的tr追加到原来的tr前面
-            clonedTr.prop('id', item.id);
+            clonedTr.find('a').prop('id', item.id);
+            clonedTr.removeProp("id");
             clonedTr.insertBefore(tr);
         });
         // 隐藏无数据的tr
@@ -285,6 +286,7 @@ function loadAuthorityList() {
                 selectedColor: "#000000", //当节点被选中时的前景色
                 selectedBackColor: "#ffffff", //当节点被选中时的背景色
                 onhoverColor: "#F5F5F5", //光标停在节点上激活的默认背景色      String
+                highlightSearchResults:false,//搜索结果不高亮
                 state: { //描述节点的初始状态    Object
                     checked: false, //是否选中节点
                     /*disabled: true,*/ //是否禁用节点
@@ -293,12 +295,15 @@ function loadAuthorityList() {
                 }
             });
         });
+        $('#tree').treeview('collapseAll', { silent: true }); // 折叠所有节点
+        // $('#tree').treeview('checkAll', { silent: true });    // 勾选所有节点
         // 设置子功能
         function setFunctionChildren(children) {
             var childList = [];
             for (var j = 0; j < children.length; j++) {
                 var child = {};
                 var nodes = [];
+                child.id = children[j].id;
                 child.text = children[j].functionName;
                 if (children[j].children.length > 0) {
                     nodes = setFunctionChildren(children[j].children);
@@ -310,23 +315,56 @@ function loadAuthorityList() {
         }
     }
 
+}
 
-    
-    
-    
-
+/**
+ * 通过用户编号显示权限
+ * @param e
+ */
+function showAuthorityById(e) {
+    var roleId = e.prop('id');
     $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadAuthority",                  // url
-        async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        type: "POST",
+        url: "getFunctionByRoleId",
+        async: false,
         dataType: "json",
+        data: { 
+            roleId: roleId 
+        },
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                // console.log(result.data);
+                setFunctionChecked(result.data);
+            } else {
+                console.log(result);
             }
         },
-        error:function (result) {
+        error: function (result) {
             console.log(result);
         }
     });
+    /**
+     * 设置功能勾选
+     * @param result
+     */
+    function setFunctionChecked(result) {
+        $('#tree').treeview('uncheckAll', { silent: false });
+        var data = eval(result);
+        for (var i = 0; i < data.length; i++) {
+            var name = data[i].functionName;
+            var nodes = $('#tree').treeview('search', [ name, {
+                ignoreCase: true,     // case insensitive
+                exactMatch: true,    // like or equals
+                revealResults: false  // reveal matching nodes
+            }]);
+            $('#tree').treeview('selectNode', nodes[0]);
+        }
+    }
+}
+
+/**
+ * 保存选中的节点到数据库
+ */
+function saveAuthority() {
+    var nodes = $('#tree').treeview('getSelected', { silent: false });
+    console.log(nodes);
 }

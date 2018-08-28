@@ -72,6 +72,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.listFunction();
     }
 
+    @Override
+    public List<Function> getFunctionByRoleId(int roleId) {
+        return userMapper.getFunctionByRoleId(roleId);
+    }
+
 
     @Override
     public List<Authority> listAuthority() {

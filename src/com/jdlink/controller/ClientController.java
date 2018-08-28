@@ -253,25 +253,28 @@ public class ClientController {
     @RequestMapping("loadPageClientList")
     @ResponseBody
     public String loadPageClientList(@RequestBody Page page){
+        JSONObject res = new JSONObject();
         try {
             // 取出查询客户
             List<Client> clientList = clientService.list(page);
-            // 计算最后页位置
-            //page.caculateLast(clientService.total());
-            JSONArray array = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+            JSONArray data = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
             // 返回结果
-            return array.toString();
+            res.put("data",data);
+            res.put("status","success");
+            res.put("message","数据获取成功！");
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            res.put("status","fail");
+            res.put("message","数据获取失败！");
         }
+        return res.toString();
     }
 
     /**
      * 获取总记录数
      * @return
      */
-    @RequestMapping("totalRecord")
+    @RequestMapping("totalClientSalesmanRecord")
     @ResponseBody
     public int totalRecord(){
         try {
@@ -387,6 +390,9 @@ public class ClientController {
         res.put("applicationStatusList", applicationStatusList);
         JSONArray clientTypeList = JSONArray.fromArray(ClientType.values());
         res.put("clientTypeList", clientTypeList);
+        String[] salesmenStatus = new String[]{"已分配","未分配"};
+        JSONArray salesmenStatusList = JSONArray.fromArray(salesmenStatus);
+        res.put("salesmenStatusList", salesmenStatusList);
         return res.toString();
     }
 
@@ -616,4 +622,13 @@ public class ClientController {
     }
         return null;
     }
+
+//    @RequestMapping("getSalesmanIdByName1")
+//    @ResponseBody
+//    public String getSalesmanIdByName(String name){
+//        JSONObject res = new JSONObject();
+//        String id = clientService.getSalesmanIdByName(name);
+//        res.put("id",id);
+//        return res.toString();
+//    }
 }

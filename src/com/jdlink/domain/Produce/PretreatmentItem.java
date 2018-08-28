@@ -5,13 +5,17 @@ import com.jdlink.domain.Wastes;
 
 public class PretreatmentItem {
     /**
-     * 序号
+     * 项目Id
      */
-    private String itemId;
+    private int itemId;
     /**
      * 预处理单号
      */
     private String pretreatmentId;
+    /**
+     * 项目序号
+     */
+    private int serialNumber;
     /**
      * 出库单号
      */
@@ -19,7 +23,7 @@ public class PretreatmentItem {
     /**
      * 产废单位
      */
-    private Client produceCompany;
+    private String produceCompanyName;
     /**
      * 指标要求及来源
      */
@@ -33,12 +37,20 @@ public class PretreatmentItem {
      */
     private Float proportion;
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
+    }
+
+    public int getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(int serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getPretreatmentId() {
@@ -49,12 +61,12 @@ public class PretreatmentItem {
         this.pretreatmentId = pretreatmentId;
     }
 
-    public Client getProduceCompany() {
-        return produceCompany;
+    public String getProduceCompanyName() {
+        return produceCompanyName;
     }
 
-    public void setProduceCompany(Client produceCompany) {
-        this.produceCompany = produceCompany;
+    public void setProduceCompanyName(String produceCompanyName) {
+        this.produceCompanyName = produceCompanyName;
     }
 
     public String getRequirements() {
@@ -77,6 +89,10 @@ public class PretreatmentItem {
         this.proportion = proportion;
     }
 
+    public Float getProportion() {
+        return proportion;
+    }
+
     public String getOutboundOrderId() {
         return outboundOrderId;
     }
@@ -88,13 +104,14 @@ public class PretreatmentItem {
     @Override
     public String toString() {
         return "PretreatmentItem{" +
-                "itemId='" + itemId + '\'' +
+                "itemId=" + itemId +
                 ", pretreatmentId='" + pretreatmentId + '\'' +
+                ", serialNumber=" + serialNumber +
                 ", outboundOrderId='" + outboundOrderId + '\'' +
-                ", produceCompany=" + produceCompany +
+                ", produceCompanyName='" + produceCompanyName + '\'' +
                 ", requirements='" + requirements + '\'' +
                 ", wastes=" + wastes +
-                ", proportion='" + proportion + '\'' +
+                ", proportion=" + proportion +
                 '}';
     }
 }
