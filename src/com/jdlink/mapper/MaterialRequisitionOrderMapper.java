@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
+import com.jdlink.domain.Inventory.OutboundOrder;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface MaterialRequisitionOrderMapper {
     void  updateMaterialRequisitionId1(MaterialRequisitionOrder materialRequisitionOrder);
     void  updateMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder);
     void updateMaterialRequisitionOrderCheck(MaterialRequisitionOrder materialRequisitionOrder);
+    MaterialRequisitionOrder getByMaterialRequisitionId(String materialRequisitionId);
+   void addOutboundOrder(OutboundOrder outboundOrder);
 }

@@ -2,6 +2,7 @@ package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Salesman;
+import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,7 @@ public class OutboundOrder {
     /*领料单对列表
     * 1:N
     * */
-    private List<MaterialRequisitionOrder> materialRequisitionOrder;
+    private MaterialRequisitionOrder  materialRequisitionOrder;
     /*仓库*/
     private WareHouse wareHouse;
     /*出库单编号*/
@@ -19,7 +20,7 @@ public class OutboundOrder {
     /*出库日期*/
     private Date outboundDate;
     /*制单人*/
-    private String founder;
+    private String creator;
     /*审核人*/
     private String auditor;
     /*出库类型*/
@@ -42,12 +43,22 @@ public class OutboundOrder {
     private CheckState checkState;
     /*记录状态*/
     private  RecordState recordState;
+    /*危废信息为了便于查询*/
+    private Wastes wastes;
 
-    public List<MaterialRequisitionOrder> getMaterialRequisitionOrder() {
+    public Wastes getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(Wastes wastes) {
+        this.wastes = wastes;
+    }
+
+    public MaterialRequisitionOrder getMaterialRequisitionOrder() {
         return materialRequisitionOrder;
     }
 
-    public void setMaterialRequisitionOrder(List<MaterialRequisitionOrder> materialRequisitionOrder) {
+    public void setMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder) {
         this.materialRequisitionOrder = materialRequisitionOrder;
     }
 
@@ -75,12 +86,13 @@ public class OutboundOrder {
         this.outboundDate = outboundDate;
     }
 
-    public String getFounder() {
-        return founder;
+
+    public String getCreator() {
+        return creator;
     }
 
-    public void setFounder(String founder) {
-        this.founder = founder;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public String getAuditor() {
@@ -172,13 +184,14 @@ public class OutboundOrder {
     }
 
     @Override
-    public String toString() {
+    public String
+    toString() {
         return "OutboundOrder{" +
                 "materialRequisitionOrder=" + materialRequisitionOrder +
                 ", wareHouse=" + wareHouse +
                 ", outboundOrderId='" + outboundOrderId + '\'' +
                 ", outboundDate=" + outboundDate +
-                ", founder='" + founder + '\'' +
+                ", creator='" + creator + '\'' +
                 ", auditor='" + auditor + '\'' +
                 ", outboundOrder=" + outboundOrder +
                 ", transferDraftId='" + transferDraftId + '\'' +
@@ -190,6 +203,7 @@ public class OutboundOrder {
                 ", picker='" + picker + '\'' +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
+                ", wastes=" + wastes +
                 '}';
     }
 }
