@@ -111,8 +111,21 @@ public class WasteInventoryController {
     @RequestMapping("searchInventory")
     @ResponseBody
     public String searchInventory(@RequestBody WasteInventory wasteInventory){
-        System.out.println(wasteInventory+"==>");
-        return null;
+        JSONObject res=new JSONObject();
+        try {
+            List<WasteInventory> wasteInventoryList=wasteInventoryService.searchInventory(wasteInventory);
+            res.put("data",wasteInventoryList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+        return res.toString();
     }
     //添加配料单
     @RequestMapping("addBatchingOrder")
