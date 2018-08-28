@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>生产日报</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/data-format.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/produce/productionDaily.js"></script>
+</head>
+<script type="text/javascript">
+    $('#embed').load('embed/loginLogModal.html');     //当前页数
+</script>
+<style>
+    textarea {
+        resize: none;
+    }
+    table th, table td {
+        vertical-align: middle!important;
+    }
+</style>
+<body >
+    <!--导航条-->
+    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+        <div class="main-title">
+            <ul class="nav navbar-nav navbar-left navbar-side">
+                <li>
+                    <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container navbar-left" style="width: 920px;">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+                <ul class="nav navbar-nav">
+                    <li><a href="reportManagement.html">首页</a></li>
+                    <li class="active"><a href="productionDaily.html">生产日报</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">质量日报<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="wastesAnalysis.html">危废入场分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="secondaryAnalysis.html">次生废物分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sewageAnalysis.html">污水分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="softWaterAnalysis.html">软水分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="businessRegistration.html">业务部送样登记</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="warehouseRegistration.html">仓储部送样登记</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="assessment1.html">业务员考核</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li class="dropdown">
+                <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">个人信息</a></li>
+                    <li><a href="#">待办事项</a></li>
+                    <li><a href="#" onclick="showLog();">登录日志</a></li>
+                    <li><a href="index.html">注销</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidebar">
+                <!--<h4>博客管理系统(四月)</h4>-->
+                <!--<div class="cover">-->
+                <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
+                <!--<b>Hi~ 小主</b>-->
+                <!--<p>超级管理员</p>-->
+                <!--</div>-->
+                <ul class="sidenav animated fadeInUp">
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                    <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                    <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li class="active"><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
+            <div class="row">
+                <div>
+                    <ol class="breadcrumb">
+                        <li><a href="#">报表管理</a></li>
+                        <li class="active">生产日报</li>
+                    </ol>
+                </div>
+                <h4 class="sub-header"><span class="months"></span>生产日报明细</h4>
+            </div>
+            <br>
+            <table class="table" style="border: none">
+                <tr>
+                    <td class="text-left">报表单位：</td>
+                    <td class="text-left">生产技术部</td>
+                    <td class="text-left">报表产生时间：</td>
+                    <td class="text-left"><span id="week"></span></td>
+                </tr>
+            </table>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td class="text-center" colspan="24"><u>北控安耐得环保科技发展常州有限公司生产日报表</u></td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-center" rowspan="2" colspan="2">名称</td>
+                    <td class="text-center" colspan="5">危废进厂(生产)量</td>
+                    <td class="text-center" colspan="5">危废处置(生产)量</td>
+                    <td class="text-center" rowspan="2">期初结余</td>
+                    <td class="text-center" rowspan="2" colspan="3">本日库存</td>
+                    <td class="text-center" colspan="8">辅材、能量消耗明细</td>
+                </tr>
+                <tr>
+                    <td class="text-center">本日</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center">年累计</td>
+                    <td class="text-center">月合计</td>
+                    <td class="text-center">年合计</td>
+                    <td class="text-center">本日</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center">年累计</td>
+                    <td class="text-center">月合计</td>
+                    <td class="text-center">年合计</td>
+                    <td class="text-center" rowspan="9">医疗蒸煮</td>
+                    <td class="text-center">名称</td>
+                    <td class="text-center">日消耗</td>
+                    <td class="text-center">月消耗</td>
+                    <td class="text-center">年累计</td>
+                    <td class="text-center">日平均</td>
+                    <td class="text-center">月平均</td>
+                    <td class="text-center">限额</td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="8">医疗废物</td>
+                    <td class="text-center">进厂医废(接运单)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">消毒液(NaCLO)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">直接委外医废</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">除臭剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">蒸煮医废(过磅量)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">医废吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">误差量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">医废包装塑料袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">蒸煮后医废</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">收集转运箱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">外送蒸煮后医废</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">蒸汽</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">2#库医废(准备焚烧)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">工业水量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">废水量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">电量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="8">工废</td>
+                    <td class="text-center">散料</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" rowspan="6"></td>
+                    <td class="text-center" rowspan="6"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" rowspan="6"></td>
+                    <td class="text-center" rowspan="6"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" rowspan="11">二期</td>
+                    <td class="text-center">消石灰</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">破碎</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">普通活性炭粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">污垢</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">高活性活性炭粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">精蒸馏</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">碱液</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">悬挂链</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">盐</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">废液</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">炉渣用吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">炉渣</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">飞灰用吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">飞灰</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">柴油</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">焚烧后铁桶</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">电量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">直接转移类铁桶</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">工业水量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2" rowspan="2">名称</td>
+                    <td class="text-center" colspan="5">辅材、能源进厂量</td>
+                    <td class="text-center" colspan="5">辅材、能源消耗量</td>
+                    <td class="text-center" rowspan="2">初期结余</td>
+                    <td class="text-center" rowspan="2" colspan="3">本日库存</td>
+                    <td class="text-center">木托盘</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">本日</td>
+                    <td class="text-center" colspan="2">月累计</td>
+                    <td class="text-center" colspan="2">年累计</td>
+                    <td class="text-center">本日</td>
+                    <td class="text-center" colspan="2">月累计</td>
+                    <td class="text-center" colspan="2">年累计</td>
+                    <td class="text-center" rowspan="31">三期</td>
+                    <td class="text-center">消石灰</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="36">辅材、能源</td>
+                    <td class="text-center">消石灰</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">普通活性碳粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">普通活性炭粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">普通活性碳粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">高活性活性炭粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">活性碳颗粒</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">活性炭颗粒</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">碱液</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">碱液</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">片碱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">片碱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">尿素</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">尿素</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">盐酸</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">盐酸</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">小苏打(NaHCO3)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">小苏打(NaHCO3)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">面粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">面粉</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">清泡剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">清泡剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">絮凝剂(聚丙烯酰胺)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">絮凝剂(聚丙烯酰胺)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">软水用还原剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">软水用还原剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">软水用阻垢剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">软水用阻垢剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">氨水(PH调节剂)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">氨水(PH调节剂)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">污水用还原剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">污水用阻垢剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">消毒液(NaClO)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">消毒液(NaClO)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">标准箱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">除臭剂</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">木托盘</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">盐</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">1m标准托盘</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">炉渣用吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">1.2m标准托盘</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">飞灰用吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">炉渣用吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">医废用吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">飞灰用吨袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">医废包装塑料袋</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">吨箱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">收集转运箱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">蒸汽</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">标准箱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">柴油</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">木托盘</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">天然气</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">1m标准托盘(铁)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">电量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">1.2m标准托盘(铁)</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">工业水量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">吨箱</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">自来水量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">蒸汽</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="2">铁塔电量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">柴油</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="8" rowspan="2">运行情况统计</td>
+                </tr>
+                <tr>
+                    <td class="text-center">天然气</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">电量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" rowspan="2">设备名称</td>
+                    <td class="text-center" colspan="3">停机时间</td>
+                    <td class="text-center" colspan="4">运转时间</td>
+                </tr>
+                <tr>
+                    <td class="text-center">工业水量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">本日</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center">年累计</td>
+                    <td class="text-center">本日</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center" colspan="2">年累计</td>
+                </tr>
+                <tr>
+                    <td class="text-center">自来水量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">A2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="15"></td>
+                    <td class="text-center">B2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="2" colspan="2">医疗蒸煮系统</td>
+                    <td class="text-center" colspan="2">本日进厂医废(接运单)</td>
+                    <td class="text-center">本日直接转外处置量</td>
+                    <td class="text-center" colspan="2">本日蒸煮医废(过磅量)</td>
+                    <td class="text-center">蒸煮后重量</td>
+                    <td class="text-center" colspan="2">蒸煮后入2#库</td>
+                    <td class="text-center" colspan="2">蒸煮后外送量</td>
+                    <td class="text-center">误差量</td>
+                    <td class="text-center" colspan="3">水分含量</td>
+                    <td class="text-center">备2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center">二期二燃室</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="17"></td>
+                    <td class="text-center">二期</td>
+                    <td class="text-center">类别</td>
+                    <td class="text-center">本日处置数量</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center">年累计</td>
+                    <td class="text-center">配料比例</td>
+                    <td class="text-center">类别</td>
+                    <td class="text-center">本日处置数量</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center">年累计</td>
+                    <td class="text-center">配料比例</td>
+                    <td class="text-center">二期本日合计</td>
+                    <td class="text-center">二期月累计</td>
+                    <td class="text-center">二期年累计</td>
+                    <td class="text-center">三期</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="7">A2</td>
+                    <td class="text-center">散料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" rowspan="7">B2</td>
+                    <td class="text-center">散料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" rowspan="2" colspan="5">运转率(%)</td>
+                    <td class="text-center" colspan="3">停车原因</td>
+                </tr>
+                <tr>
+                    <td class="text-center">破碎料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">破碎料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" rowspan="29" colspan="3"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">污泥烘干类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">污泥烘干类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">设备名称</td>
+                    <td class="text-center">本日</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center" colspan="2">年累计</td>
+                </tr>
+                <tr>
+                    <td class="text-center">精蒸馏脱桶类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">精蒸馏脱桶类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">A2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">悬挂链类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">悬挂链类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">B2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">废液类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">废液类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">备2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">医疗</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">医疗</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">二期二燃室</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="7">备2</td>
+                    <td class="text-center">散料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" rowspan="8">三期预处理系统</td>
+                    <td class="text-center">类别</td>
+                    <td class="text-center">本日处置数量</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center">年累计</td>
+                    <td class="text-center">日配料比例</td>
+                    <td class="text-center">月配料比例</td>
+                    <td class="text-center">年配料比例</td>
+                    <td class="text-center">三期</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">破碎料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">散料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" rowspan="2" colspan="5">炉渣飞灰产生明细</td>
+                </tr>
+                <tr>
+                    <td class="text-center">污泥烘干类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">破碎料类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">精蒸馏脱桶类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">污泥烘干类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" colspan="2">设备名称</td>
+                    <td class="text-center">本日</td>
+                    <td class="text-center">月累计</td>
+                    <td class="text-center">年累计</td>
+                </tr>
+                <tr>
+                    <td class="text-center">悬挂链类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">精蒸馏脱桶类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" rowspan="2">二期</td>
+                    <td class="text-center">炉渣产生量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">废液类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">悬挂链类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center">飞灰产生量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">医疗</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">废液类</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center" rowspan="2">三期</td>
+                    <td class="text-center">炉渣产生量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="2">二期工废合计</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">医疗</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2"></td>
+                    <td class="text-center">飞灰产生量</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">三期焚烧系统</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="14"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="21">进厂明细</td>
+                </tr>
+                <tr>
+                    <td class="text-center">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                    <td class="text-center">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                    <td class="text-center">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                    <td class="text-center" colspan="2">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                </tr>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">13</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">25</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">37</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">14</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">26</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">38</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">3</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">15</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">27</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">39</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">4</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">16</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">28</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">40</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">5</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">17</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">29</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">41</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">6</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">18</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">30</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">42</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">7</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">19</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">31</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">43</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">8</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">20</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">32</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">44</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">9</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">21</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">33</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">45</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">10</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">22</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">34</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">46</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">11</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">23</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">35</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">47</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">12</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">24</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">36</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">48</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="21">配料明细</td>
+                    <td class="text-center" colspan="3">其他事项</td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="15">二期</td>
+                    <td class="text-center" colspan="6" rowspan="2">三期</td>
+                    <td class="text-center" colspan="3" rowspan="27"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" colspan="5">A2</td>
+                    <td class="text-center" colspan="5">B2</td>
+                    <td class="text-center" colspan="5">备2</td>
+                </tr>
+                <tr>
+                    <td class="text-center">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                    <td class="text-center">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                    <td class="text-center">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                    <td class="text-center" colspan="2">序号</td>
+                    <td class="text-center">货物名称</td>
+                    <td class="text-center">厂家</td>
+                    <td class="text-center">进厂量</td>
+                    <td class="text-center">所属类别</td>
+                </tr>
+                <tr>
+                    <td class="text-center">1</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">1</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">1</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">1</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">2</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">3</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">3</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">3</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">3</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">4</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">4</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">4</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">4</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">5</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">5</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">5</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">5</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">6</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">6</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">6</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">6</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">7</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">7</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">7</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">7</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">8</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">8</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">8</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">8</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">9</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">9</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">9</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">9</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">10</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">10</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">10</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">10</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">11</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">11</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">11</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">11</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">12</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">12</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">12</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">12</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">13</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">13</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">13</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">13</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">14</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">14</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">14</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">14</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">15</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">15</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">15</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">15</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">16</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">16</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">16</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">16</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">17</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">17</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">17</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">17</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">18</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">18</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">18</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">18</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">19</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">19</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">19</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">19</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">20</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">20</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">20</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">20</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">21</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">21</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">21</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">21</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">22</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">22</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">22</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">22</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">23</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">23</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">23</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">23</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">24</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">24</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">24</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">24</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">25</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">25</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">25</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">25</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">填表</td>
+                    <td class="text-center" colspan="2">韩九云</td>
+                </tr>
+                </tbody>
+            </table>
+            <!--分页-->
+        </div>
+    </div>
+    <div id="embed"></div>
+</body>
+</html>
