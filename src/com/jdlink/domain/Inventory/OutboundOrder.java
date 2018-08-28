@@ -14,6 +14,16 @@ public class OutboundOrder {
     * 1:N
     * */
     private MaterialRequisitionOrder  materialRequisitionOrder;
+    private List<MaterialRequisitionOrder> materialRequisitionOrderList;
+
+    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
+        return materialRequisitionOrderList;
+    }
+
+    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
+        this.materialRequisitionOrderList = materialRequisitionOrderList;
+    }
+
     /*出库单编号*/
    private String outboundOrderId;
     /*出库日期*/

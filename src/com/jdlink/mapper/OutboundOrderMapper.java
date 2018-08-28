@@ -9,6 +9,7 @@ public interface OutboundOrderMapper {
    void updateMaterialRequisitionOrderCheck1(OutboundOrder outboundOrder);
    List<OutboundOrder>loadOutBoundList();
    int total();
+  List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
 
 
 }

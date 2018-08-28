@@ -43,16 +43,29 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         SELECT COUNT(*) FROM t_pl_outboundorder;
     </select>
     <select id="searchCount" parameterType="OutBoundOrder" resultType="int">
- SELECT COUNT(*) FROM t_pl_outboundorder
- <where>
-
-
-
-
- </where>
-
-
-
-
+ SELECT COUNT(*) FROM t_pl_outboundorder;
+    </select>
+    <select id="getByOutBoundOrderId" parameterType="String" resultMap="OutBoundRM1">
+        select * from t_pl_outboundorder where outboundOrderId=#{outboundOrderId}
+    </select>
+    <resultMap id="OutBoundRM1" type="OutboundOrder">
+        <collection property="materialRequisitionOrder" column="materialRequisitionId" select="materialRequisitionOrderList1"></collection>
+    </resultMap>
+    <!--//查找领料单的数据-->
+    <select id="materialRequisitionOrderList1"  resultMap="MaterialRequisitionOrderRM" parameterType="String">
+select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId};
+    </select>
+    <resultMap id="MaterialRequisitionOrderRM1" type="MaterialRequisitionOrder">
+        <collection property="wareHouse" column="warseHouseId1" select="getWareHouse" ofType="WareHouse"></collection>
+        <collection property="wastes" column="id" select="getWastes1" ofType="Wastes"></collection>
+        <collection property="client" column="clientId" select="getClient1" ofType="Client" ></collection>
+    </resultMap>
+    <select id="getWastes1" parameterType="String" resultType="Wastes">
+    select * from t_wastes where id=#{id}</select>
+<select id="getWareHouse1" resultType="WareHouse">
+        select * from t_pl_warehouse where warehouseId=#{warseHouseId}
+    </select>
+<select id="getClient1" resultType="Client">
+        select * from client where clientId=#{clientId}
     </select>
 </mapper>

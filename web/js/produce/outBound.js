@@ -291,6 +291,27 @@ function outBound() {
             }
         });
     });
+    //赋值出库单号
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getOutBoundOrderId",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     //contentType: "application/json; charset=utf-8",
+    //     success:function (result) {
+    //         if (result != undefined && result.status == "success"){
+    //             console.log(result);
+    //             $("#outboundOrderId").val(result.outboundOrderId);
+    //
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error:function (result) {
+    //         alert("服务器异常！");
+    //     }
+    // });
 
 
 }
@@ -487,7 +508,7 @@ function setOutBoundList(result) {
                         break;
                     // 部门
                     case (2):
-                        $(this).html(obj.materialRequisitionOrder.wareHouse.departmentName);
+                        $(this).html(obj.materialRequisitionOrder.departmentName);
                         break;
                     // 业务员
                     case (3):
@@ -564,4 +585,63 @@ function setOutBoundList(result) {
 
 
 
+}
+//双击查看出库单明细
+function viewOutBound(item) {
+    var outboundOrderId=$(item).children().get(5).innerHTML;
+ //根据出库单号查询结果
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getByOutBoundOrderId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //赋值
+                //产废单位
+                $("#companyName").text(result.data[0].materialRequisitionOrder.client.companyName);
+                //出库时间
+                $('#outBoundDate').text(getDateStr(result.data[0].outboundDate));
+                //废物名称
+                $('#name').text(result.data[0].materialRequisitionOrder.wastes.name);
+                //废物代码
+                $('#wastesId').text(result.data[0].materialRequisitionOrder.wastes.wastesId);
+                //重量
+                $('#wastesAmount').text(result.data[0].materialRequisitionOrder.wastes.wasteAmount);
+                //物质形态
+                $('#formType').text(result.data[0].materialRequisitionOrder.wastes.formType.name);
+                //包装形式
+                $('#packageType').text(result.data[0].materialRequisitionOrder.wastes.calorific);
+                //热值/KCal/Kg
+                $('#KCal').text(result.data[0].materialRequisitionOrder.wastes.wastesId);
+                //PH
+                $('#PH').text(result.data[0].materialRequisitionOrder.wastes.ph);
+                //灰分/%
+                $('#ashContent').text(result.data[0].materialRequisitionOrder.wastes.ashPercentage);
+                //水分/%
+                $('#waterContent').text(result.data[0].materialRequisitionOrder.wastes.wetPercentage);
+                //氯含量/%
+                $('#CLContent').text(result.data[0].materialRequisitionOrder.wastes.chlorinePercentage);
+                //硫含量/%
+                $('#SContent').text(result.data[0].materialRequisitionOrder.wastes.sulfurPercentage);
+                //磷含量/%
+                $('#PContent').text(result.data[0].materialRequisitionOrder.wastes.phosphorusPercentage);
+                //氟含量/%
+                $('#FContent').text(result.data[0].materialRequisitionOrder.wastes.fluorinePercentage);
+                //处理方式
+                $('#processingMethod').text(result.data[0].materialRequisitionOrder.wastes.processWay.name);
+                $('#appointModal2').modal('show');
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    }) ;
 }

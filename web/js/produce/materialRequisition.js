@@ -234,7 +234,7 @@ function loadRequisitionList() {
 
 
 
-    //localStorage.clear();
+    localStorage.removeItem('array');
 }
 //设置出库增加页面的领料单数据
 function setRequisitionList(result) {

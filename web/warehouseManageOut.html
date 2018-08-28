@@ -218,7 +218,7 @@
                     </tr>
                     </tbody>
                     <tbody>
-                    <tr id="clonedTr1" class="myclass">
+                    <tr id="clonedTr1" class="myclass" ondblclick="viewOutBound(this)">
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -228,7 +228,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center"></td>
+                        <td class="text-center"></td><!--出库单号-->
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -291,7 +291,7 @@
             </nav>
             <!--查看模态框-->
             <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-lg" role="document" id="print1">
+                <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 75%">
                     <div class="modal-content" >
                         <div class="modal-header">
                             <h4 class="modal-title" id="TitleMyModalLabel">出库计划单</h4>
@@ -301,7 +301,7 @@
                                 <tbody>
                                 <tr>
                                     <td class="text-center">产废单位</td>
-                                    <td class="text-center">出场时间</td>
+                                    <td class="text-center">出库时间</td>
                                     <td class="text-center">废物名称</td>
                                     <td class="text-center">废物代码</td>
                                     <td class="text-center">重量/t</td>
@@ -318,22 +318,22 @@
                                     <td class="text-center">处理方式</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center modal-companyName">1</td>
-                                    <td class="text-center modal-einlass">2018-08-07</td>
-                                    <td class="text-center wastesName">废液</td>
-                                    <td class="text-center wastesCode">QW10001</td>
-                                    <td class="text-center modal-weight">5</td>
-                                    <td class="text-center modal-materialForm">液态</td>
-                                    <td class="text-center modal-packingType">标准装</td>
-                                    <td class="text-center modal-KCal">20</td>
-                                    <td class="text-center modal-PH">10</td>
-                                    <td class="text-center modal-ashContent">20</td>
-                                    <td class="text-center modal-waterContent">10</td>
-                                    <td class="text-center modal-CLContent">20</td>
-                                    <td class="text-center modal-SContent">10</td>
-                                    <td class="text-center modal-PContent">10</td>
-                                    <td class="text-center modal-FContent">10</td>
-                                    <td class="text-center modal-processingMethod">焚烧</td>
+                                    <td class="text-center modal-companyName" id="companyName"></td>
+                                    <td class="text-center modal-einlass" id="outBoundDate"></td>
+                                    <td class="text-center wastesName" id="name"></td>
+                                    <td class="text-center wastesCode" id="wastesId"></td>
+                                    <td class="text-center modal-weight" id="wastesAmount"></td>
+                                    <td class="text-center modal-materialForm" id="formType"></td>
+                                    <td class="text-center modal-packingType" id="packageType"></td>
+                                    <td class="text-center modal-KCal" id="KCal"></td>
+                                    <td class="text-center modal-PH" id="PH"></td>
+                                    <td class="text-center modal-ashContent" id="ashContent"></td>
+                                    <td class="text-center modal-waterContent" id="waterContent"></td>
+                                    <td class="text-center modal-CLContent" id="CLContent"></td>
+                                    <td class="text-center modal-SContent" id="SContent"></td>
+                                    <td class="text-center modal-PContent" id="PContent"></td>
+                                    <td class="text-center modal-FContent" id="FContent"></td>
+                                    <td class="text-center modal-processingMethod" id="processingMethod"></td>
                                 </tr>
                                 </tbody>
                             </table>
