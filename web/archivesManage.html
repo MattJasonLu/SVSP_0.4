@@ -16,314 +16,10 @@
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/business/archivesManage.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
-
-    var currentPage = 1;                          //当前页数
-
-    /**
-     * 返回count值
-     * */
-    function countValue(){
-        var mySelect=document.getElementById("count");
-        var index=mySelect.selectedIndex;
-        return mySelect.options[index].text;
-    }
-    /**
-     * 计算总页数
-     * */
-    function totalPage() {
-        var totalRecord = 0;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "totalRecord",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
-        var count = countValue();                         // 可选
-        var total = loadPages(totalRecord, count);
-        return total;
-    }
-
-    /**
-     * 设置克隆页码
-     * */
-    function setPageClone(result) {
-        $(".beforeClone").remove();
-        setClientList(result);
-        var total = totalPage();
-        $("#next").prev().hide();
-        var st = "共" + total + "页";
-        $("#totalPage").text(st);
-        var myArray = new Array();
-        for (var i = 0; i < total; i++) {
-            var li = $("#next").prev();
-            myArray[i] = i + 1;
-            var clonedLi = li.clone();
-            clonedLi.show();
-            clonedLi.find('a:first-child').text(myArray[i]);
-            clonedLi.find('a:first-child').click(function () {
-                var num = $(this).text();
-                switchPage(num);
-            });
-            clonedLi.addClass("beforeClone");
-            clonedLi.removeAttr("id");
-            clonedLi.insertAfter(li);
-        }
-
-    }
-
-    /**
-     * 点击页数跳转页面
-     * @param pageNumber 跳转页数
-     * */
-    function switchPage(pageNumber) {
-        console.log("当前页：" + pageNumber);
-        if (pageNumber == 0) {                 //首页
-            pageNumber = 1;
-        }
-        if (pageNumber == -2) {
-            pageNumber = totalPage();        //尾页
-        }
-        if (pageNumber == null || pageNumber == undefined) {
-            console.log("参数为空,返回首页!");
-            pageNumber = 1;
-        }
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        if (pageNumber == totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber > 1){
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber < totalPage()){
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        var page = {};
-        page.count = countValue();                        //可选
-        page.pageNumber = pageNumber;
-        currentPage = pageNumber;          //当前页面
-        //addClass("active");
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-
-    /**
-     * 输入页数跳转页面
-     * */
-    function inputSwitchPage() {
-        var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == null || pageNumber == undefined) {
-            window.alert("跳转页数不能为空！")
-        } else {
-            if (pageNumber == 1) {
-                $("#previous").addClass("disabled");
-                $("#firstPage").addClass("disabled");
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            if (pageNumber == totalPage()) {
-                $("#next").addClass("disabled");
-                $("#endPage").addClass("disabled");
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber > 1){
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber < totalPage()){
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            currentPage = pageNumber;
-            var page = {};
-            page.count = countValue();//可选
-            page.pageNumber = pageNumber;
-            page.start = (pageNumber - 1) * page.count;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageClientList",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                        setClientList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-
-
-        }
-    }
-
-    /**
-     * 分页 获取首页内容
-     * */
-    function loadPageClientList() {
-        var pageNumber = 1;               // 显示首页
-        $("#current").find("a").text("当前页：1");
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        var page = {};
-        page.count = countValue();                                 // 可选
-        page.pageNumber = pageNumber;
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageClientList",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setPageClone(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                console.log("失败");
-            }
-        });
-    }
-
-    /**
-     * 计算分页总页数
-     * @param totalRecord
-     * @param count
-     * @returns {number}
-     */
-    function loadPages(totalRecord, count) {
-        if (totalRecord == 0) {
-            window.alert("总记录数为0，请检查！");
-            return 0;
-        }
-        else if (totalRecord % count == 0)
-            return totalRecord / count;
-        else
-            return parseInt(totalRecord / count) + 1;
-    }
-
-    function setClientList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 企业编号
-                    case (0):
-                        $(this).html(obj.clientId);
-                        break;
-                    // 企业名称
-                    case (1):
-                        $(this).html(obj.companyName);
-                        break;
-                    // 由谁添加
-                    case (2):
-                        $(this).html(obj.contactName);
-                        break;
-                    // 添加时间
-                    case (3):
-                        $(this).html(getNowDate());
-                        break;
-                    // 编辑时间
-                    case (4):
-                        $(this).html(getNowDate());
-                        break;
-                    // 操作
-                    case (5):
-
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-    function loadClientList() {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listClient",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setClientList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
 </script>
 <body onload="loadPageClientList()">
 <!--导航条-->
@@ -451,7 +147,7 @@
                 <div class="input-group col-xs-3 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                     </span>
                 </div>
@@ -461,49 +157,40 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-founder" class="col-sm-4 control-label">企业编号</label>
+                            <label for="search-clientId" class="col-sm-4 control-label">企业编号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-founder" name="search-founder"
+                                <input type="text" class="form-control" id="search-clientId" name="search-clientId"
                                        placeholder="">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-wayBillDate" class="col-sm-4 control-label">企业名称</label>
+                            <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-wayBillDate"
-                                       name="search-wayBillDate" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label for="search-wayBillState" class="col-sm-4 control-label">接运单状态</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" id="search-wayBillState" name="search-wayBillState">
-                                    <option value="0"></option>
-                                </select>
+                                <input type="text" class="form-control" id="search-companyName"
+                                       name="search-companyName" placeholder="">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-6" style="margin-left: -10px;">
-                        <div class="form-group" style="margin-left: -10px;">
-                            <label class="col-sm-3 control-label">时间范围 </label>
-                            <div class="input-group date">
-                                <input type="text" class="input-sm form-control form_datetime1" name="beginTime" title=""/>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                <span class="input-group-addon">to</span>
-                                <input type="text" class="input-sm form-control form_datetime2" name="endTime" title=""/>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!--时间范围查询暂时不做-->
+                <!--<div class="row">-->
+                    <!--<div class="form-horizontal col-md-6" style="margin-left: -10px;">-->
+                        <!--<div class="form-group" style="margin-left: -10px;">-->
+                            <!--<label class="col-sm-3 control-label">时间范围 </label>-->
+                            <!--<div class="input-group date">-->
+                                <!--<input type="text" class="input-sm form-control form_datetime1" name="beginTime" title=""/>-->
+                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                                <!--<span class="input-group-addon">to</span>-->
+                                <!--<input type="text" class="input-sm form-control form_datetime2" name="endTime" title=""/>-->
+                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
         <div class="table">
@@ -512,7 +199,7 @@
                 <tr>
                     <th class="text-center">企业编号</th>
                     <th class="text-center">企业名称</th>
-                    <th class="text-center">由谁添加</th>
+                    <th class="text-center">业务员</th>
                     <th class="text-center">添加时间</th>
                     <th class="text-center">编辑时间</th>
                     <th class="text-center">操作</th>
