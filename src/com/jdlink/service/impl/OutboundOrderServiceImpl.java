@@ -21,4 +21,19 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     public void updateMaterialRequisitionOrderCheck1(OutboundOrder outboundOrder) {
         outboundOrderMapper.updateMaterialRequisitionOrderCheck1(outboundOrder);
     }
+
+    @Override
+    public List<OutboundOrder> loadOutBoundList() {
+        return outboundOrderMapper.loadOutBoundList();
+    }
+
+    @Override
+    public int total() {
+        return outboundOrderMapper.total();
+    }
+
+    @Override
+    public List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId) {
+        return outboundOrderMapper.getByOutBoundOrderId(outboundOrderId);
+    }
 }

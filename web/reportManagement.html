@@ -9,6 +9,7 @@
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
 </head>
@@ -24,7 +25,7 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 800px;">
+        <div class="container navbar-left" style="width: 920px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
@@ -32,7 +33,25 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="reportManagement.html">首页</a></li>
                     <li><a href="productionDaily.html">生产日报</a></li>
-                    <li><a href="#">质量日报</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">质量日报<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="wastesAnalysis.html">危废入场分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="secondaryAnalysis.html">次生废物分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="sewageAnalysis.html">污水分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="softWaterAnalysis.html">软水分析日报</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="businessRegistration.html">业务部送样登记</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="warehouseRegistration.html">仓储部送样登记</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
+                        </ul>
+                    </li>
                     <li><a href="assessment1.html">业务员考核</a></li>
                 </ul>
             </div><!--/.nav-collapse -->

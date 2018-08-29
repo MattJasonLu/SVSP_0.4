@@ -53,6 +53,15 @@ public class WasteInventory {
      *创建时间
      */
     private Date creatorDate;
+    private float  leftNumeber;
+
+    public float getLeftNumeber() {
+        return leftNumeber;
+    }
+
+    public void setLeftNumeber(float leftNumeber) {
+        this.leftNumeber = leftNumeber;
+    }
 
     public String getInboundOrderId() {
         return inboundOrderId;

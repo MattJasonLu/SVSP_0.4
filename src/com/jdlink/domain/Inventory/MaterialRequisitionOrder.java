@@ -1,8 +1,9 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Wastes;
-import com.sun.security.ntlm.Client;
+
 
 import java.util.Date;
 

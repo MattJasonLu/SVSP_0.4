@@ -6,6 +6,7 @@
 <mapper namespace="com.jdlink.mapper.WastesMapper">
     <resultMap id="WastesRM" type="Wastes" autoMapping="true">
         <id property="id" column="id"/>
+        <result property="handleCategory" column="handelCategory" javaType="HandleCategory"></result>
         <association property="client" column="laboratoryTestNumber" select="getClient"/>
         <collection property="parameterList" select="getParameterList" column="id"
                     ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
