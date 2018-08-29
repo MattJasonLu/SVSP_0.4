@@ -234,7 +234,7 @@ function loadRequisitionList() {
 
 
 
-    //localStorage.clear();
+    localStorage.removeItem('array');
 }
 //设置出库增加页面的领料单数据
 function setRequisitionList(result) {
@@ -260,8 +260,8 @@ function setRequisitionList(result) {
                         break;
                     // 厂家
                     case (2):
-                        if(obj.wastes.client!=null){
-                            $(this).html(obj.batchingOrder.wasteInventory.wastes.client.companyName);
+                        if(obj.client!=null){
+                            $(this).html(obj.client.companyName);
                         }
                         break;
                     // 危废名称

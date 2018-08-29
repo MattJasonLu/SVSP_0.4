@@ -86,10 +86,11 @@ function setWasteInventoryList(result) {
                     break;
                     //数量
                 case (8):
-                        $(this).html(obj.wastes.wasteAmount);
+                        $(this).html(obj.actualCount);
                     break;
+                    //剩余数量
                 case (9):
-                    $(this).html(obj.wastes.wasteAmount);
+                    $(this).html("");
                     break;
                     case (10):
                     $(this).html(obj.wastes.remarks);

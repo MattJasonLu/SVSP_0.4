@@ -77,4 +77,14 @@
     <select id="getWareHouse1" resultType="WareHouse" parameterType="String">
         select  * from t_pl_warehouse where  warehouseId=#{warehouseId};
     </select>
+    <!--高级查询-->
+    <resultMap id="WasteInventoryRM2" type="WasteInventory">
+        <collection property="wastes" column="id" select="getWastes2"></collection>
+    </resultMap>
+    <select id="getWastes2" resultType="Wastes" parameterType="WasteInventory">
+        select * from t_wastes where id=#{id} and handleCategory=#{wasteInventory.swastes.handleCategory}
+    </select>
+    <select id="searchInventory" parameterType="WasteInventory" resultType="WasteInventory">
+     select * from t_pl_wasteinventory ;
+    </select>
 </mapper>
