@@ -12,7 +12,34 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/equipment.js"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
+<script>
+    $('#search-faultEquipment').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('#search-stopTime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+</script>
 <body>
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
@@ -122,17 +149,19 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-faultEquipment" class="col-sm-4 control-label">运行时间</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-faultEquipment" name="search-faultEquipment" placeholder="">
+                                <label for="search-faultEquipment" class="col-sm-4 control-label">运行时间 </label>
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" id="search-faultEquipment" name="search-faultEquipment" title=""/>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-stopTime" class="col-sm-4 control-label">停运时间</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-stopTime" name="search-stopTime" placeholder="">
+                                <label for="search-stopTime" class="col-sm-4 control-label">停运时间 </label>
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" id="search-stopTime" name="search-stopTime" placeholder=""/>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
                             </div>
                         </div>
