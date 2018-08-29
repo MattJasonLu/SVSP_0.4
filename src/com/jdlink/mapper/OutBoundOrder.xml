@@ -32,7 +32,7 @@
     <select id="getWareHouse" resultType="WareHouse">
         select * from t_pl_warehouse where warehouseId=#{warseHouseId}
     </select>
-    <select id="getClient" resultType="Client">
+    <select id="getClient" resultMap="SalesManRM">
         select * from client where clientId=#{clientId}
     </select>
     <!--查找领料单的数据-->
@@ -65,7 +65,20 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
 <select id="getWareHouse1" resultType="WareHouse">
         select * from t_pl_warehouse where warehouseId=#{warseHouseId}
     </select>
-<select id="getClient1" resultType="Client">
+    <resultMap id="SalesManRM" type="Client">
+        <collection property="salesman" column="salesmanId" select="getSalesMan" ofType="Salesman"></collection>
+    </resultMap>
+<select id="getClient1" resultMap="SalesManRM">
         select * from client where clientId=#{clientId}
     </select>
+    <select id="getSalesMan" resultType="Salesman">
+        select * from salesman where salesman.salesmanId=#{client.salesmanId}
+    </select>
+    <!--更新出库单的数据-->
+    <update id="updateOutBoundOrder" parameterType="OutboundOrder">
+        update t_pl_outboundorder set  id=#{materialRequisitionOrder.wastes.id},
+        clientId=#{materialRequisitionOrder.client.clientId},
+        salesmanId=#{materialRequisitionOrder.client.salesman.salesmanId}
+        where outboundOrderId=#{outboundOrderId}
+    </update>
 </mapper>
