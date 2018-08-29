@@ -280,5 +280,35 @@ public class UserController {
         return res.toString();
     }
 
+    /**
+     * 校验权限是否可以进入该功能
+     * @return 能否进入
+     */
+    @RequestMapping("checkAuthority")
+    @ResponseBody
+    public String checkAuthority(HttpSession session, String functionId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取session中保存的用户信息
+            User user = (User) session.getAttribute("user");
+            // 获取user对象中的角色编号
+            if (user != null) {
+                int roleId = user.getRole().getId();
+                // 进行校验
+                if (!userService.checkAuthority(roleId, Integer.parseInt(functionId))) {
+                    res.put("status", "fail");
+                    res.put("message", "对不起，该账号没有权限！");
+                } else {
+                    res.put("status", "success");
+                    res.put("message", "进入功能成功");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "服务器错误");
+        }
+        return res.toString();
+    }
 
 }

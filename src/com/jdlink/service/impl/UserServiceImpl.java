@@ -88,4 +88,9 @@ public class UserServiceImpl implements UserService {
         userMapper.updateAuthority(roleId, functionIdList);
     }
 
+    @Override
+    public boolean checkAuthority(int roleId, int functionId) {
+        return userMapper.checkAuthority(roleId, functionId);
+    }
+
 }

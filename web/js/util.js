@@ -185,8 +185,45 @@ function getProcessWayFromStr(formType) {
     }
     return res;
 }
+/**
+ * 全选功能
+ */
 function allSelect() {
     var isChecked = $('#allSel').prop('checked');
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
+}
+/**
+ * 校验权限
+ * @param e 要进入的功能
+ */
+function checkAuthority(e) {
+    var flag = false;
+    // 获取功能编号
+    var functionId = e.prop('id').split('_')[1];
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "checkAuthority",                           // url
+        async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            functionId: functionId
+        },
+        dataType: "json",
+        success: function (result) {
+            console.log(result);
+            if (result != undefined && result.status == "success") {
+                var data = eval(result);
+                // 进入功能
+                flag = true;
+            } else {
+                // 提示没有权限进入
+                alert(result.message);
+                e.prop('href', '#');
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+    });
+    return flag;
 }

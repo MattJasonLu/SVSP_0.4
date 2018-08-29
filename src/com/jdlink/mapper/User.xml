@@ -85,6 +85,7 @@
         SELECT * FROM t_ur_authority;
     </select>
 
+    <!--更新当前角色的权限-->
     <update id="updateAuthority">
         DELETE FROM t_ur_authority WHERE roleId=#{roleId};
         <if test="functionIdList.length > 0">
@@ -93,5 +94,10 @@
             </foreach>
         </if>
     </update>
+
+    <!--校验当前角色是否可以进入该功能-->
+    <select id="checkAuthority" resultType="boolean">
+        SELECT COUNT(*) FROM t_ur_authority WHERE roleId=#{roleId} AND functionId=#{functionId};
+    </select>
 
 </mapper>
