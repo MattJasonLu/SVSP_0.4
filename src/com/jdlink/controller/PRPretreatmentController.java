@@ -416,4 +416,25 @@ public class PRPretreatmentController {
         return res.toString();
     }
 
+    @RequestMapping("loadPretreatmentList")
+    @ResponseBody
+    public String loadPretreatmentList() {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Pretreatment> pretreatmentList = pretreatmentService.list();
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(pretreatmentList.toArray(new Pretreatment[pretreatmentList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "预处理单列表获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "预处理单列表获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
 }

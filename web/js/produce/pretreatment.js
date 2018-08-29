@@ -939,22 +939,25 @@ function setAdjustClone(result) {
                     // 备注
                     $(this).html(obj.wastes.remarks);
                     break;
-                case (7):
-                    // 处置方式
-                    $(this).val(obj.wastes.processWay.index);
-                    break;
-                case (8):
-                    // 进料方式
-                    $(this).val(obj.wastes.handleCategory.index);
-                    break;
+                // case (7):
+                //     // 处置方式
+                //     $(this).val(obj.wastes.processWay.index);
+                //     break;
+                // case (8):
+                //     // 进料方式
+                //     $(this).val(obj.wastes.handleCategory.index);
+                //     break;
             }
+            var $num = num + 1;
+            // $("#adjust" + $num + "-processWay").text(obj.wastes.processWay.name);
+            // $("#adjust" + $num + "-handleCategory").text(obj.wastes.handleCategory.name);
+
+            // $("#adjust" + $num + "-handleCategory option[text="+obj.wastes.handleCategory.name+"]").attr("selected", true);
         });
-        // var num = $("#adjustClone").children().find("select:first").prop('id').charAt(6);
         console.log("num:" + num);
-      //  var num = $("#adjustClone").find("tr:first").find("select:first").prop('id').charAt(6);
         clonedTr.children().find("select").each(function () {
             var id = $(this).prop('id');
-            var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
+            var newId = id.replace(/[0-9]\d*/, num + 1);
             $(this).prop('id', newId);
         });
         num++;
@@ -988,9 +991,7 @@ function adjust() {
                     var $i = i + 1;
                     var wastes = {};
                     wastes.processWay = $("#adjust" + $i + "-processWay").find("option:selected").val();
-                    console.log("处置方式：" + $("#adjust" + $i + "-processWay").find("option:selected").val());
                     wastes.handleCategory = $("#adjust" + $i + "-handleCategory").find("option:selected").val();
-                    console.log("进料方式：" + $("#adjust" + $i + "-handleCategory").find("option:selected").val());
                     var pretreatmentItem = {};
                     pretreatmentItem.itemId = data.pretreatmentItemList[i].itemId;
                     pretreatmentItem.wastes = wastes;

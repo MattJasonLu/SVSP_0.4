@@ -669,7 +669,6 @@ function edit(item) {
  * 提交功能
  */
 function submit(item) {
-    if(confirm("确定提交？")) {
         productionPlanId = getProductionPlanId(item);
         $.ajax({
             type: "POST",                            // 方法类型
@@ -684,7 +683,9 @@ function submit(item) {
                     var data = eval(result.data);
                     if (data.state.name != '待审批') alert("请确认后再进行提交操作！");
                     else {
-                        submit1(productionPlanId);
+                        if(confirm("确定提交？")){
+                            submit1(productionPlanId);
+                        }
                     }
                 } else {
                     alert(result.message);
@@ -695,7 +696,6 @@ function submit(item) {
                 alert("服务器异常!");
             }
         });
-    }
 }
 
 function submit1(id) {

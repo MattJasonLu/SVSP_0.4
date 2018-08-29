@@ -57,6 +57,10 @@
         </if>
     </select>
 
+    <select id="list" resultMap="PretreatmentRM">
+        select * from t_pr_pretreatment order by nowTime desc;
+    </select>
+
     <select id="search" parameterType="Pretreatment" resultMap="PretreatmentRM">
         select * from t_pr_pretreatment
         <where>

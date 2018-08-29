@@ -12,6 +12,7 @@ public interface PretreatmentService {
     void add(Pretreatment pretreatment);
     void update(Pretreatment pretreatment);
     List<Pretreatment> listPage(Page page);
+    List<Pretreatment> list();
     Pretreatment getById(String id);
     List<Pretreatment> search(Pretreatment pretreatment);
     int searchCount(Pretreatment pretreatment);
