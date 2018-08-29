@@ -10,6 +10,7 @@ public interface OutboundOrderMapper {
    List<OutboundOrder>loadOutBoundList();
    int total();
   List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
+  void  updateOutBoundOrder(OutboundOrder outboundOrder);
 
 
 }
