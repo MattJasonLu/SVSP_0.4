@@ -374,10 +374,38 @@ public class PRPretreatmentController {
 
     @RequestMapping("adjustPretreatment")
     @ResponseBody
-    public String adjustPretreatment(Wastes wastes) {
+    public String adjustPretreatment(@RequestBody Pretreatment pretreatment) {
         JSONObject res = new JSONObject();
         try {
-            pretreatmentService.adjust(wastes);
+            //重新计算比例
+            float sludgeProportion = 0;
+            float wasteLiquidProportion = 0;
+            float bulkProportion = 0;
+            float crushingProportion = 0;
+            float distillationProportion = 0;
+            float suspensionProportion = 0;
+            for(PretreatmentItem pretreatmentItem : pretreatment.getPretreatmentItemList()){
+               HandleCategory handleCategory = pretreatmentItem.getWastes().getHandleCategory();
+                if(handleCategory.getName() == "污泥" || handleCategory.getIndex() == 1)
+                    sludgeProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "废液" || handleCategory.getIndex() == 2)
+                    wasteLiquidProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "散装料" || handleCategory.getIndex() == 3)
+                    bulkProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "破碎料" || handleCategory.getIndex() == 4)
+                    crushingProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "精馏残渣" || handleCategory.getIndex() == 5)
+                    distillationProportion += pretreatmentItem.getProportion();
+                if(handleCategory.getName() == "悬挂连" || handleCategory.getIndex() == 6)
+                    suspensionProportion += pretreatmentItem.getProportion();
+            }
+            pretreatment.setSludgeProportion(sludgeProportion);
+            pretreatment.setWasteLiquidProportion(wasteLiquidProportion);
+            pretreatment.setBulkProportion(bulkProportion);
+            pretreatment.setCrushingProportion(crushingProportion);
+            pretreatment.setDistillationProportion(distillationProportion);
+            pretreatment.setSuspensionProportion(suspensionProportion);
+            pretreatmentService.adjust(pretreatment);
             res.put("status", "success");
             res.put("message", "属性调整成功");
         } catch (Exception e) {
@@ -385,6 +413,27 @@ public class PRPretreatmentController {
             res.put("status", "fail");
             res.put("message", "属性调整失败");
         }
+        return res.toString();
+    }
+
+    @RequestMapping("loadPretreatmentList")
+    @ResponseBody
+    public String loadPretreatmentList() {
+        JSONObject res = new JSONObject();
+        try {
+            // 取出查询客户
+            List<Pretreatment> pretreatmentList = pretreatmentService.list();
+            // 计算最后页位置
+            JSONArray array = JSONArray.fromArray(pretreatmentList.toArray(new Pretreatment[pretreatmentList.size()]));
+            res.put("data", array);
+            res.put("status", "success");
+            res.put("message", "预处理单列表获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "预处理单列表获取失败！");
+        }
+        // 返回结果
         return res.toString();
     }
 
