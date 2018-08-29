@@ -874,7 +874,7 @@ function showAdjustModal(item) {
     //填充数据
     $.ajax({
         type: "POST",
-        url: "getById",
+        url: "getPretreatmentById",
         async: false,
         data: {
             id: pretreatmentId
@@ -976,7 +976,7 @@ function adjust() {
     var pretreatment = {};
     $.ajax({
         type: "POST",
-        url: "getById",
+        url: "getPretreatmentById",
         async: false,
         data: {
             id: pretreatmentId

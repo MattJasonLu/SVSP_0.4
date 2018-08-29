@@ -80,14 +80,14 @@ public class PRPretreatmentController {
         return res.toString();
     }
 
-    @RequestMapping("getById")
+    @RequestMapping("getPretreatmentById")
     @ResponseBody
-    public String getById(String id) {
+    public String getPretreatmentById(String id) {
         JSONObject res = new JSONObject();
         try {
             //根据id查询出相应的对象信息
             Pretreatment pretreatment = pretreatmentService.getById(id);
-            //新建一个对象并给它赋值为wayBill
+            //新建一个对象并给它赋值
             JSONObject data = JSONObject.fromBean(pretreatment);
             res.put("data", data);
             res.put("status", "success");
