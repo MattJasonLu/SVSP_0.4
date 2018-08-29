@@ -63,4 +63,6 @@ public interface ContractService {
      * @return 合同列表
      */
     List<Contract> getContractBySalesman(String salesmanId, Page page);
+    List<Contract> search(Contract contract);
+    List<Contract> searchModel(Contract contract);
 }

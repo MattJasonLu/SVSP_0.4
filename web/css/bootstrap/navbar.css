@@ -2,6 +2,12 @@ th {
     text-align:center;
     vertical-align: middle;
 }
+textarea {
+    resize: none;
+}
+table th, table td {
+    vertical-align: middle!important;
+}
 .pagination > li {
     display: inline;
 }

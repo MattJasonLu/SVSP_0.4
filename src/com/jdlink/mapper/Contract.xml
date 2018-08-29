@@ -52,7 +52,7 @@
         delete from t_contract where contractId;
     </delete>
 
-    <select id="getByKeyword"  resultType="Contract">
+    <select id="getByKeyword"  resultType="Contract" parameterType="Contract">
         select * from t_contract where (contractId like  binary "%"#{0}"%" or checkState like binary "%"#{0}"%" or companyName like binary "%"#{0}"%"
         or city like binary "%"#{0}"%"  or province like binary  "%"#{0}"%" or contactName like binary "%"#{0}"%" or telephone like  binary  "%"#{0}"%" or beginTime like binary  "%"#{0}"%" or contractType like binary  "%"#{0}"%" )and contractType like  "%"#{1}"%";
     </select>
@@ -224,16 +224,59 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
          select * from t_contract
          <where>
              <if test="keyword != null and keyword != ''">
-                 and contactId like "%"#{keyword}"%" or companyName ike "%"#{keyword}"%" or
+                 and contractId like "%"#{keyword}"%" or company1 like "%"#{keyword}"%" or
                  contractName like "%"#{keyword}"%" or telephone like "%"#{keyword}"%" or
-                 suppierName like "%"#{keyword}"%"
-
+                 suppierName like "%"#{keyword}"%" or modelName="%"#{keyword}"%"
              </if>
-
-
-
+             <if test="contractId != null and contractId != ''">
+                 and contractId LIKE "%"#{contractId}"%"
+             </if>
+             <if test="companyName != null and companyName != ''">
+                 and company1 LIKE "%"#{companyName}"%"
+             </if>
+             <if test="contractName != null and contractName != ''">
+                 and contractName LIKE "%"#{contractName}"%"
+             </if>
+             <if test="telephone != null and telephone != ''">
+                 and telephone LIKE "%"#{telephone}"%"
+             </if>
+             <if test="suppierName != null and suppierName != ''">
+                 and suppierName LIKE "%"#{suppierName}"%"
+             </if>
+             <if test="checkState != null and checkState != ''">
+                 and checkState = #{checkState}
+             </if>
+             <if test="beginTime != null and beginTime != ''">
+                 <![CDATA[  and DATE_FORMAT(t_contract.beginTime, '%Y-%m-%d %H:%T:%s') =
+                        DATE_FORMAT(#{beginTime}, '%Y-%m-%d %H:%T:%s')   ]]>
+             </if>
          </where>
-
-
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+    <select id="searchModel" parameterType="Contract" resultType="Contract">
+        select * from t_contract
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and modelName like "%"#{keyword}"%" or year like "%"#{keyword}"%"
+            </if>
+            <if test="modelName != null and modelName != ''">
+                and modelName LIKE "%"#{modelName}"%"
+            </if>
+            <if test="year != null and year != ''">
+                and year LIKE "%"#{year}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState =#{checkState}
+            </if>
+            <if test="contractType != null and contractType != ''">
+                and contractType =#{contractType}
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
     </select>
 </mapper>
