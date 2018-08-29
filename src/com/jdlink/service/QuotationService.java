@@ -38,7 +38,7 @@ public interface QuotationService {
     void reject(String advice,String id);
 
     void approval(String advice,String id);
-
+    List<Quotation> searchQuotation(Quotation quotation);
 
 
 }

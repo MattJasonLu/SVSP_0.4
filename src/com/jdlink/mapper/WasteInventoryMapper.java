@@ -14,4 +14,8 @@ public interface WasteInventoryMapper {
    List<BatchingOrder>getBatchingOrderList();
   void  updateBatchingOrderOnId(BatchingOrder batchingOrder);
   List<WasteInventory>searchInventory(WasteInventory wasteInventory);
+  void getWasteInventoryLeftNumber(String inboundOrderId,float number);
+  float getLeftNumber(String inboundOrderId);
+  void updateLeftNumber();
+  void batchingNumber(WasteInventory wasteInventory);
 }

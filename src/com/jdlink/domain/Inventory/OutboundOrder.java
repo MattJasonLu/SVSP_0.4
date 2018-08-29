@@ -39,7 +39,7 @@ public class OutboundOrder {
     /*部门*/
     private String departmentId;
     /*业务员 来自产废单位的业务员*/
-    private Salesman salmsman;
+    private Salesman salesman;
     /*单据状态*/
     private CheckState checkState;
     /*记录状态*/
@@ -111,17 +111,13 @@ public class OutboundOrder {
         this.departmentId = departmentId;
     }
 
-    public Salesman getSalmsman() {
-        return salmsman;
+    public Salesman getSalesman() {
+        return salesman;
     }
 
-    public void setSalmsman(Salesman salmsman) {
-        this.salmsman = salmsman;
+    public void setSalesman(Salesman salesman) {
+        this.salesman = salesman;
     }
-
-
-
-
 
     public CheckState getCheckState() {
         return checkState;
@@ -151,7 +147,6 @@ public class OutboundOrder {
                 ", outboundOrder=" + outboundOrder +
                 ", transferDraftId='" + transferDraftId + '\'' +
                 ", departmentId='" + departmentId + '\'' +
-                ", salmsman=" + salmsman +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
                 '}';

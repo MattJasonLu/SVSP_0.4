@@ -15,6 +15,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/business/quotation.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
@@ -57,33 +58,7 @@
         return total;
     }
 
-    /**
-     * 设置克隆页码
-     * */
-    function setPageClone(result) {
-        $(".beforeClone").remove();
-        setQuotationList(result);
-        var total = totalPage();
-        $("#next").prev().hide();
-        var st = "共" + total + "页";
-        $("#totalPage").text(st);
-        var myArray = new Array();
-        for (var i = 0; i < total; i++) {
-            var li = $("#next").prev();
-            myArray[i] = i + 1;
-            var clonedLi = li.clone();
-            clonedLi.show();
-            clonedLi.find('a:first-child').text(myArray[i]);
-            clonedLi.find('a:first-child').click(function () {
-                var num = $(this).text();
-                switchPage(num);
-            });
-            clonedLi.addClass("beforeClone");
-            clonedLi.removeAttr("id");
-            clonedLi.insertAfter(li);
-        }
 
-    }
 
     /**
      * 点击页数跳转页面
@@ -238,6 +213,7 @@
                 console.log("失败");
             }
         });
+        setSeniorSelectedList();
     }
 
     /**
@@ -591,9 +567,8 @@
                             <div class="form-group">
                                 <label for="search-client" class="col-sm-4 control-label">联系方式</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-client" id="search-state">
-                                        <option value="0"></option>
-                                    </select>
+                                    <input class="form-control" name="search-client" id="search-state">
+                                    </input>
                                 </div>
                             </div>
                         </div>
@@ -607,9 +582,9 @@
                             <div class="form-group">
                                 <label for="search-client" class="col-sm-4 control-label">所属区域</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-client" id="search-author">
-                                        <option value="0"></option>
-                                    </select>
+                                    <input class="form-control" name="search-client" id="search-author">
+
+                                    </input>
                                 </div>
                             </div>
                         </div>
@@ -623,7 +598,7 @@
                             <div class="form-group">
                                 <label for="search-checkState" class="col-sm-4 control-label">状态</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-checkState" name="search-checkState" placeholder="">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-checkState" placeholder=""></select>
                                 </div>
                             </div>
                         </div>
@@ -1014,32 +989,7 @@
     function getAdvice(){
         return document.getElementById("advice").value;
     }
-    /**
-     *查询报价单
-     * */
-    function searchQuotation() {
-        var keyword = $("#searchContent").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchQuotation",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'keyword': keyword
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setQuotationList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
+
     /**
      * 送审
      */

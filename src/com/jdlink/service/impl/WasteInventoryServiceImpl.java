@@ -54,5 +54,26 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.searchInventory(wasteInventory);
     }
 
+    @Override
+    public void getWasteInventoryLeftNumber(String inboundOrderId, float number) {
+        wasteInventoryMapper.getWasteInventoryLeftNumber(inboundOrderId,number);
+    }
+
+
+    @Override
+    public float getLeftNumber(String inboundOrderId) {
+        return wasteInventoryMapper.getLeftNumber(inboundOrderId);
+    }
+
+    @Override
+    public void updateLeftNumber() {
+        wasteInventoryMapper.updateLeftNumber();
+    }
+
+    @Override
+    public void batchingNumber(WasteInventory wasteInventory) {
+        wasteInventoryMapper.batchingNumber(wasteInventory);
+    }
+
 
 }

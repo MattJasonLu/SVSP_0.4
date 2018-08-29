@@ -274,10 +274,10 @@ public class CostController {
 
     @RequestMapping("searchCost")
     @ResponseBody
-    public String searchCost (String keyword) {
+    public String searchCost (@RequestBody Cost cost) {
         JSONObject res = new JSONObject();
         try {
-            List<Cost> costList = costService.getByKeyword(keyword);
+            List<Cost> costList = costService.searchCost(cost);
             JSONArray data = JSONArray.fromArray(costList.toArray(new Cost[costList.size()]));
             res.put("data", data.toString());
             res.put("status", "success");
