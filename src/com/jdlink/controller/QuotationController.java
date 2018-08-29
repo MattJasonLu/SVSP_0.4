@@ -322,10 +322,10 @@ public class QuotationController {
 
     @RequestMapping("searchQuotation")
     @ResponseBody
-    public String searchQuotation (String keyword) {
+    public String searchQuotation (@RequestBody Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
-            List<Quotation> quotationList = quotationService.getByKeyword(keyword);
+            List<Quotation> quotationList = quotationService.searchQuotation(quotation);
             JSONArray data = JSONArray.fromArray(quotationList.toArray(new Quotation[quotationList.size()]));
             res.put("data", data.toString());
             res.put("status", "success");

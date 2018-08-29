@@ -67,7 +67,6 @@ public class WasteInventoryController {
          List<WasteInventory> wasteInventoryList= wasteInventoryService.getWasteInventoryByInboundOrderId(inboundOrderId);
          JSONArray array=JSONArray.fromObject(wasteInventoryList);
          res.put("data", array);
-
          //res.put("batchingOrderId",batchingOrderId);
          res.put("status", "success");
          res.put("message", "查询成功");

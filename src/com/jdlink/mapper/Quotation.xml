@@ -96,13 +96,13 @@
         SELECT t_quotation.*, client.companyName FROM t_quotation JOIN client WHERE t_quotation.clientId=client.clientId AND quotationId=#{quotationId}
     </select>
 
-    <select id="getByKeyword" parameterType="String" resultMap="QuotationRM">
-        SELECT t_quotation.*,client.companyName FROM t_quotation join client WHERE t_quotation.quotationId like "%"#{keyword}"%"
-                or version like "%"#{keyword}"%" or t_quotation.name like "%"#{keyword}"%"
-                or t_quotation.contactName like "%"#{keyword}"%" or t_quotation.clientId like "%"#{keyword}"%"
-                or t_quotation.phone like "%"#{keyword}"%" or client.companyName like "%"#{keyword}"%"
-                or t_quotation.endDate like binary "%"#{keyword}"%" or t_quotation.location like "%"#{keyword}"%";
-    </select>
+    <!--<select id="getByKeyword" parameterType="String" resultMap="QuotationRM">-->
+        <!--SELECT t_quotation.*,client.companyName FROM t_quotation join client WHERE t_quotation.quotationId like "%"#{keyword}"%"-->
+                <!--or version like "%"#{keyword}"%" or t_quotation.name like "%"#{keyword}"%"-->
+                <!--or t_quotation.contactName like "%"#{keyword}"%" or t_quotation.clientId like "%"#{keyword}"%"-->
+                <!--or t_quotation.phone like "%"#{keyword}"%" or client.companyName like "%"#{keyword}"%"-->
+                <!--or t_quotation.endDate like binary "%"#{keyword}"%" or t_quotation.location like "%"#{keyword}"%";-->
+    <!--</select>-->
 
     <update id="setStateDisabled" parameterType="String">
         UPDATE t_quotation SET checkState='Invalid', nowTime=NOW() WHERE id=#{id};
@@ -119,6 +119,56 @@
     <update id="changeEndDate" parameterType="Quotation">
         UPDATE t_quotation SET endDate=#{endDate}, checkState=#{checkState}, nowTime=NOW() WHERE id=#{id};
     </update>
-
+    <resultMap type="Quotation" id="QuotationRM1" autoMapping="true">
+        <result property="id" column="id" />
+        <result property="quotationId" column="quotationId"/>
+        <result property="checkState" column="checkState" />
+        <association property="client" javaType="Client" resultMap="ClientRM"/>
+    </resultMap>
+<select id="searchQuotation" resultMap="QuotationRM1" parameterType="Quotation">
+   select t_quotation.*,client.* from t_quotation join  client
+<where>
+       <if test="keyword != null and keyword != ''">
+           and t_quotation.quotationId like "%"#{keyword}"%"
+           or version like "%"#{keyword}"%" or t_quotation.name like "%"#{keyword}"%"
+           or t_quotation.contactName like "%"#{keyword}"%"
+           or t_quotation.phone like "%"#{keyword}"%" or t_quotation.contactName like "%"#{keyword}"%"
+           or t_quotation.endDate like binary "%"#{keyword}"%" or t_quotation.location like "%"#{keyword}"%"
+           or client.companyName like "%"#{keyword}"%";
+       </if>
+    <if test="quotationId != null and quotationId != ''">
+        and quotationId LIKE "%"#{quotationId}"%"
+    </if>
+    <if test="endDate != null and endDate != ''">
+        and endDate LIKE  binary "%"#{endDate}"%"
+    </if>
+    <if test="client!=null">
+        <if test="client.phone != null and client.phone != ''">
+            and t_quotation.phone LIKE "%"#{client.phone}"%"
+        </if>
+        <if test="client.contactName != null and client.contactName != ''">
+            and t_quotation.contactName LIKE "%"#{client.contactName}"%"
+        </if>
+        <if test="client.location != null and client.location != ''">
+            and t_quotation.location LIKE "%"#{client.location}"%"
+        </if>
+        <if test="client.companyName != null and client.companyName != ''">
+            and client.companyName LIKE "%"#{client.companyName}"%"
+        </if>
+    </if>
+    <if test="name != null and name != ''">
+        and name LIKE "%"#{name}"%"
+    </if>
+    <if test="version != null and version != ''">
+        and version LIKE "%"#{version}"%"
+    </if>
+    <if test="checkState != null and checkState != ''">
+        and t_quotation.checkState =#{checkState}
+    </if>
+</where>
+    <if test="page != null and page.start != null and page.count != null">
+        limit #{page.start}, #{page.count};
+    </if>
+</select>
 
 </mapper>

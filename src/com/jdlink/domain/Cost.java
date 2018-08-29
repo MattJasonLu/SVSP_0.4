@@ -76,6 +76,25 @@ public class Cost {
      * 当前时间
      */
     private Date nowTime;
+    private Page page;
+    private String keyword;
+
+    public String getKeyword() {
+
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public Date getNowTime() {
         return nowTime;

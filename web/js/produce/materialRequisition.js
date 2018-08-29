@@ -326,3 +326,13 @@ function setRequisitionList(result) {
 
 
 }
+
+$('#number').on('blur','[contenteditable="true"]',function(){
+    //var data = getData();
+    var index = $(this).parent().attr('index');
+    var val = $(this).html();
+    var attr = $(this).attr('data-role');
+    data[index][attr] = val;
+    //saveData(data);
+
+})

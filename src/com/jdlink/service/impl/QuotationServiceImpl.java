@@ -80,6 +80,11 @@ public class QuotationServiceImpl implements QuotationService {
     public void approval(String advice,String id) { quotationMapper.approval(advice,id); }
 
     @Override
+    public List<Quotation> searchQuotation(Quotation quotation) {
+        return quotationMapper.searchQuotation(quotation);
+    }
+
+    @Override
     public void reject(String advice,String id) { quotationMapper.reject(advice,id); }
 
     @Override
