@@ -1,5 +1,5 @@
 function view1() {
-    $("#examineModal").modal("show");
+    $("#appointModal2").modal("show");
 }
 function view2() {
     $("#examineModal").modal("show");

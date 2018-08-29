@@ -111,8 +111,21 @@ public class WasteInventoryController {
     @RequestMapping("searchInventory")
     @ResponseBody
     public String searchInventory(@RequestBody WasteInventory wasteInventory){
-        System.out.println(wasteInventory+"==>");
-        return null;
+        JSONObject res=new JSONObject();
+        try {
+            List<WasteInventory> wasteInventoryList=wasteInventoryService.searchInventory(wasteInventory);
+            res.put("data",wasteInventoryList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+        return res.toString();
     }
     //添加配料单
     @RequestMapping("addBatchingOrder")
@@ -376,7 +389,46 @@ public class WasteInventoryController {
 
         return res.toString() ;
     }
-//添加出库单
+    //获取最新的出库单号
+    @RequestMapping("getOutBoundOrderId")
+    @ResponseBody
+    public  String getOutBoundOrderId(){
+        JSONObject res=new JSONObject();
+        try{
+            Calendar cal = Calendar.getInstance();
+            //获取年
+            String year = String.valueOf(cal.get(Calendar.YEAR));
+            //获取月
+            String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+            //序列号
+            String number = "001";
+            //1查找是否存在出库单号 如果有序列号加1 如果没有就为001
+            List<String>  outboundOrderId= outboundOrderService.check();
+            if(outboundOrderId.size()==0){
+                number = "001";
+            }
+            if(outboundOrderId.size()!=0){
+                String s = outboundOrderId.get(0);//原字符串
+                String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+                number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+            }
+            String outboundOrderId1=year+mouth+number;
+            res.put("outboundOrderId",outboundOrderId1);
+            res.put("status", "success");
+            res.put("message", "入库单号获取成功");
+
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "入库单号获取失败");
+        }
+
+
+        return  res.toString();
+    }
+    //添加出库单
     @RequestMapping("addOutBoundOrder")
     @ResponseBody
     public  String addOutBoundOrder(@RequestBody OutboundOrder outboundOrder){
@@ -388,7 +440,7 @@ public class WasteInventoryController {
         String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
         //序列号
         String number = "001";
-        try{
+       try{
             //1查找是否存在出库单号 如果有序列号加1 如果没有就为001
            List<String>  outboundOrderId= outboundOrderService.check();
            if(outboundOrderId.size()==0){
@@ -416,6 +468,66 @@ public class WasteInventoryController {
         }
 
         return res.toString();
+    }
+//加载出库信息列表
+    @RequestMapping("loadOutBoundList")
+    @ResponseBody
+    public String loadOutBoundList(){
+        JSONObject res=new JSONObject();
+       try {
+           List<OutboundOrder> outboundOrderList=outboundOrderService.loadOutBoundList();
+           res.put("data",outboundOrderList);
+           res.put("status", "success");
+           res.put("message", "查询成功");
+       }
+catch (Exception e){
+    e.printStackTrace();
+    res.put("status", "fail");
+    res.put("message", "查询失败");
+}
+
+        return res.toString();
+    }
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalOutBoundRecord")
+    @ResponseBody
+    public int totalOutBoundRecord(){
+        try {
+            return outboundOrderService.total();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+    @RequestMapping("searchOutBoundTotal")
+    @ResponseBody
+    public int searchOutBoundTotal(@RequestBody OutboundOrder outboundOrder){
+
+        return 0;
+    }
+    //根据入库单号查询信息
+    @RequestMapping("getByOutBoundOrderId")
+    @ResponseBody
+    public  String getByOutBoundOrderId(String outboundOrderId){
+        JSONObject res=new JSONObject();
+        try {
+            List<OutboundOrder> outboundOrderList=outboundOrderService.getByOutBoundOrderId(outboundOrderId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data",outboundOrderList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+        return res.toString();
+
     }
     //获取两位月数
     public  static  String getMouth(String mouth){
