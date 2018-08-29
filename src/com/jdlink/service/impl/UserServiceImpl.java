@@ -83,4 +83,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.listAuthority();
     }
 
+    @Override
+    public void updateAuthority(int roleId, int[] functionIdList) {
+        userMapper.updateAuthority(roleId, functionIdList);
+    }
+
 }
