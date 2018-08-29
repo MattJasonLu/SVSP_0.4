@@ -2,6 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Cost;
 import com.jdlink.domain.Page;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -33,4 +34,5 @@ public interface CostMapper {
     void setStateDisabled(String costId);
 
     void changeEndDate(Cost cost);
+   List<Cost> searchCost( Cost cost);
 }

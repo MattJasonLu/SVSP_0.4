@@ -312,58 +312,51 @@ function searchInventory() {
 //数量加减
 function adjustNumber() {
     var td=$("td[name='123']");//找到指定的单元格
-    td.each(function () {
-        //获得指定的入库单号
-        var content = $(this).html();//获得内容
-        var name = $(this).attr('name');
-        if (name.search("123") != -1) {
-            $(this).attr('name', '');
-            $(this).html("<input type='text' style='width: 100px;' value='" + content + "' name='count' onkeyup='subtraction(this);'>");
-        }
-    });
+    var td1=$("td[name='321']");
+    if(td.length!=0){
+        td.each(function () {
+            //获得指定的入库单号
+            var content = $(this).html();//获得内容
+            var name = $(this).attr('name');
+            if (name.search("123") != -1) {
+                $(this).attr('name', '321');
+                $(this).html("<input type='text' style='width: 100px;' value='0' name='count'  id='input1' onkeyup='subtraction(this);'>");
+            }
+        });
+    }
+    if(td1.length!=0){
+        $(td1).html($("#input1").val());
+        $("#input1").remove();
+        $(td1).attr('name', '123');
+       $(td).html("<td class='text-right modal-packingType' onclick=' adjustNumber();'>");
+    }
+
 
 }
 function subtraction(item) {
     //获得相应的入库单号
     var inboundOrderId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    var number=$(item).val();
+    console.log(number);
     //1根据入库单号获得总量
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWasteInventoryByInboundOrderId",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {'inboundOrderId':inboundOrderId},
-        dataType: "json",
-       // contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                 number=$(item).val();//输入的数量
-                if(number==""){
-                    number=0;
-                }
-                numberTotal=result.data[0].wastes.wasteAmount;//第一次的剩余数量相当于总量
-                // if(array.indexOf(inboundOrderId)==-1){//如果不存在就添加
-                //     array.push(inboundOrderId);
-                //     numberTotal=result.data[0].wastes.wasteAmount;//第一次的剩余数量相当于总量
-                //     console.log(numberTotal);
-                //     array1.push(parseInt(numberTotal)-parseInt(number));
-                //     console.log(parseInt(numberTotal)-parseInt(number));
-                //     $("td[name="+inboundOrderId+"]").html(parseInt(numberTotal)-parseInt(number));
-                // }
-                // else(array.indexOf(inboundOrderId)!=-1)
-                //     numberTotal=parseInt(array1[array1.length-1])-parseInt(number);
-                //     array1.push( parseInt(array1[array1.length-1])-parseInt(number));
-
-               $("td[name="+inboundOrderId+"]").html(numberTotal-parseInt(number));
-
-
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getWasteInventoryByInboundOrderId",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     data: {'inboundOrderId':inboundOrderId,'number':number},
+    //     dataType: "json",
+    //    // contentType: "application/json; charset=utf-8",
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //      console.log(result);
+    //         } else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //     }
+    // });
   // console.log(array)
     //进行运算
 }

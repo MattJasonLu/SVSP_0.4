@@ -48,6 +48,11 @@ public class CostServiceImpl implements CostService {
     }
 
     @Override
+    public List<Cost> searchCost(Cost cost) {
+        return costMapper.searchCost(cost);
+    }
+
+    @Override
     public List<Cost> getByKeyword(String keyword) {
         return costMapper.getByKeyword(keyword);
     }

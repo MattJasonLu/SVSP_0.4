@@ -17,6 +17,7 @@
         <association property="supplier" javaType="Supplier" resultMap="SupplierRM"/>
         <collection property="wastesList" select="getWastes" column="id"
                     ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+
     </resultMap>
     <insert id="add" parameterType="Cost" >
         INSERT INTO t_cost (costId, name, version, supplierId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, supplierType, totalPrice, totalPriceTax, totalAmount, checkState, isStamp, nowTime)
@@ -101,7 +102,49 @@
         UPDATE t_cost SET checkState='Invalid', nowTime=NOW() WHERE id=#{id};
     </update>
 
-    <update id="changeEndDate" parameterType="Cost">
+    <update id="changeEndDate" parameterType="Cost" >
     UPDATE t_cost SET endDate=#{endDate}, nowTime=NOW() WHERE id=#{id};
     </update>
+    <select id="searchCost" parameterType="Cost" resultMap="CostRM">
+        select t_cost.*,t_supplier.* from t_cost join t_supplier
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and t_cost.costId like "%"#{keyword}"%"
+                or version like "%"#{keyword}"%" or t_cost.name like "%"#{keyword}"%"
+                or t_cost.contactName like "%"#{keyword}"%"
+                or t_cost.phone like "%"#{keyword}"%" or t_cost.contactName like "%"#{keyword}"%"
+                or t_cost.endDate like binary "%"#{keyword}"%" or t_cost.location like "%"#{keyword}"%"
+              or t_supplier.companyName like "%"#{keyword}"%"
+            </if>
+            <if test="costId != null and costId != ''">
+                and costId LIKE "%"#{costId}"%"
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and endDate LIKE  binary "%"#{endDate}"%"
+            </if>
+            <if test="supplier!=null">
+                <if test="supplier.phone != null and supplier.phone != ''">
+                    and t_cost.phone LIKE "%"#{supplier.phone}"%"
+                </if>
+                <if test="supplier.contactName != null and supplier.contactName != ''">
+                    and t_cost.contactName LIKE "%"#{supplier.contactName}"%"
+                </if>
+                <if test="supplier.location != null and supplier.location != ''">
+                    and t_cost.location LIKE "%"#{supplier.location}"%"
+                </if>
+                <if test="supplier.companyName != null and supplier.companyName != ''">
+                    and t_supplier.companyName LIKE "%"#{supplier.companyName}"%"
+                </if>
+            </if>
+            <if test="name != null and name != ''">
+                and name LIKE "%"#{name}"%"
+            </if>
+            <if test="version != null and version != ''">
+                and version LIKE "%"#{version}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and t_cost.checkState =#{checkState}
+            </if>
+        </where>
+    </select>
 </mapper>
