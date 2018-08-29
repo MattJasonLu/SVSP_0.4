@@ -87,4 +87,20 @@
     <select id="searchInventory" parameterType="WasteInventory" resultType="WasteInventory">
      select * from t_pl_wasteinventory ;
     </select>
+    <!--获得剩余数量-->
+    <update id="getWasteInventoryLeftNumber">
+     update  t_pl_wasteinventory set leftNumeber=leftNumeber-#{1} where inboundOrderId=#{0};
+    </update>
+    <!--获得剩余数量-->
+    <select id="getLeftNumber" resultType="float" parameterType="String">
+        select  leftNumeber from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId}
+    </select>
+    <!--更新剩余库存量-->
+    <update id="updateLeftNumber">
+        update t_pl_wasteinventory set leftNumeber=actualCount
+    </update>
+    <!--添加成功后更新最新的数量-->
+    <update id="batchingNumber" parameterType="WasteInventory">
+        update  t_pl_wasteinventory set actualCount=leftNumeber where inboundOrderId=#{inboundOrderId}
+    </update>
 </mapper>

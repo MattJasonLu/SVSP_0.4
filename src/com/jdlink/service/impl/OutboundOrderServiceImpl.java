@@ -36,4 +36,9 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     public List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId) {
         return outboundOrderMapper.getByOutBoundOrderId(outboundOrderId);
     }
+
+    @Override
+    public void updateOutBoundOrder(OutboundOrder outboundOrder) {
+        outboundOrderMapper.updateOutBoundOrder(outboundOrder);
+    }
 }

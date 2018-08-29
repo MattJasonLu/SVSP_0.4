@@ -512,7 +512,7 @@ function setOutBoundList(result) {
                         break;
                     // 业务员
                     case (3):
-                        $(this).html("");
+                        $(this).html(obj.materialRequisitionOrder.client.salesman.name);
                         break;
                     // 出库日期
                     case (4):
@@ -614,9 +614,9 @@ function viewOutBound(item) {
                 //物质形态
                 $('#formType').text(result.data[0].materialRequisitionOrder.wastes.formType.name);
                 //包装形式
-                $('#packageType').text(result.data[0].materialRequisitionOrder.wastes.calorific);
+                $('#packageType').text(result.data[0].materialRequisitionOrder.wastes.packageType.name);
                 //热值/KCal/Kg
-                $('#KCal').text(result.data[0].materialRequisitionOrder.wastes.wastesId);
+                $('#KCal').text(result.data[0].materialRequisitionOrder.wastes.calorific);
                 //PH
                 $('#PH').text(result.data[0].materialRequisitionOrder.wastes.ph);
                 //灰分/%

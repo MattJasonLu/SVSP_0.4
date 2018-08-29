@@ -43,8 +43,10 @@ public class WasteInventoryController {
     public String getWasteInventoryList(){
         JSONObject res=new JSONObject();
         try{
-           List<WasteInventory> wasteInventoryList= wasteInventoryService.list();
+            wasteInventoryService.updateLeftNumber();
+            List<WasteInventory> wasteInventoryList= wasteInventoryService.list();
             JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
+            //更新剩余库存量
             res.put("status", "success");
             res.put("message", "查询成功");
            res.put("data", arrray);
@@ -153,6 +155,12 @@ public class WasteInventoryController {
         String batchingOrderId = year + mouth + number;
         batchingOrder.setBatchingOrderId(batchingOrderId);
         wasteInventoryService.addBatchingOrder(batchingOrder);
+        //添加完更新数量更新的是库存表的数据 所有的数据
+        List<WasteInventory> wasteInventoryList= wasteInventoryService.list();
+        for (int i=0;i<wasteInventoryList.size();i++){
+            wasteInventoryService.batchingNumber(wasteInventoryList.get(i));
+        }
+
         res.put("status", "success");
         res.put("message", "添加成功");
     }
@@ -173,7 +181,7 @@ public class WasteInventoryController {
     try {
         List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatchingOrderList();
        for(int i=0;i<batchingOrderList.size();i++){
-           wasteInventoryService.updateBatchingOrderOnId(batchingOrderList.get(i));
+           wasteInventoryService.updateBatchingOrderOnId(batchingOrderList.get(i));//更新危废主键，总量
        }
         JSONArray array=JSONArray.fromObject(batchingOrderList);
         res.put("status", "success");
@@ -478,6 +486,10 @@ public class WasteInventoryController {
            res.put("data",outboundOrderList);
            res.put("status", "success");
            res.put("message", "查询成功");
+           //将获取到的信息进行更新(危废主键 业务员主键 客户主键)
+          for(int i=0;i<outboundOrderList.size();i++){
+              outboundOrderService.updateOutBoundOrder(outboundOrderList.get(i));
+          }
        }
 catch (Exception e){
     e.printStackTrace();
@@ -527,6 +539,31 @@ catch (Exception e){
         }
         return res.toString();
 
+    }
+    //根据入库单号获得总量，然后根据配料量减去得到剩余量
+    @RequestMapping("getWasteInventoryLeftNumber")
+    @ResponseBody
+    public String getWasteInventoryLeftNumber(String inboundOrderId,String number){
+        JSONObject res=new JSONObject();
+        //1先更新 在获取
+        try {
+            if(number==null||number==""||number.trim().length()<=0){
+                number="0";
+            }
+            float number1=Float.parseFloat(number);
+            wasteInventoryService.getWasteInventoryLeftNumber(inboundOrderId, number1);
+            float leftNumber = wasteInventoryService.getLeftNumber(inboundOrderId);
+            res.put("leftNumber", leftNumber);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+
+        return  res.toString();
     }
     //获取两位月数
     public  static  String getMouth(String mouth){
