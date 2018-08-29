@@ -41,4 +41,9 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     public void updateOutBoundOrder(OutboundOrder outboundOrder) {
         outboundOrderMapper.updateOutBoundOrder(outboundOrder);
     }
+
+    @Override
+    public List<OutboundOrder> getOutBoundOrderList() {
+        return outboundOrderMapper.getOutBoundOrderList();
+    }
 }

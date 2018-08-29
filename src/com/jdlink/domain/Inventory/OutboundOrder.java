@@ -44,6 +44,25 @@ public class OutboundOrder {
     private CheckState checkState;
     /*记录状态*/
     private  RecordState recordState;
+    private Wastes wastes;
+    private Client client;
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Wastes getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(Wastes wastes) {
+        this.wastes = wastes;
+    }
+
     public MaterialRequisitionOrder getMaterialRequisitionOrder() {
         return materialRequisitionOrder;
     }

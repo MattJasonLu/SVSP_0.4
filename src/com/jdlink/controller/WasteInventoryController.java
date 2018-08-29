@@ -565,6 +565,29 @@ catch (Exception e){
 
         return  res.toString();
     }
+   //获取出库单信息的接口
+    @RequestMapping("getOutBoundOrderList")
+   @ResponseBody
+    public String getOutBoundOrderList(){
+        JSONObject res=new JSONObject();
+        try{
+            List<OutboundOrder> outboundOrderList=outboundOrderService.getOutBoundOrderList();
+            JSONArray jsonArray=JSONArray.fromObject(outboundOrderList);
+            res.put("jsonArray",jsonArray);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return  res.toString();
+    }
+
+
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){
