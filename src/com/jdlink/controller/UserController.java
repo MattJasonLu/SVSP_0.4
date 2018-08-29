@@ -12,6 +12,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -229,6 +230,29 @@ public class UserController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新权限
+     * @param roleId 角色编号
+     * @param functionIdList 可用的功能编号列表
+     * @return 成功与否
+     */
+    @RequestMapping("updateAuthority")
+    @ResponseBody
+    public String updateAuthority(int roleId, @RequestParam(value = "functionIdList[]")int[] functionIdList) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.updateAuthority(roleId, functionIdList);
+            res.put("status", "success");
+            res.put("message", "权限更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "success");
+            res.put("message", "权限更新失败");
+            res.put("exception", e.getMessage());
         }
         return res.toString();
     }

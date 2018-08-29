@@ -35,7 +35,25 @@ import java.util.List;
     /*修改人*/
     private String modifierId;
     /*业务员 来自产废单位的业务员*/
-    private Salesman salmsman;
+    private Salesman salesman;
+    private Wastes wastes;
+
+    public Wastes getWastes() {
+        return wastes;
+    }
+
+    public void setWastes(Wastes wastes) {
+        this.wastes = wastes;
+    }
+
+    public Salesman getSalesman() {
+        return salesman;
+    }
+
+    public void setSalesman(Salesman salesman) {
+        this.salesman = salesman;
+    }
+
     /*领料状态*/
     private CheckState checkState;
     /*记录状态*/
@@ -121,15 +139,6 @@ import java.util.List;
     public void setModifierId(String modifierId) {
         this.modifierId = modifierId;
     }
-
-    public Salesman getSalmsman() {
-        return salmsman;
-    }
-
-    public void setSalmsman(Salesman salmsman) {
-        this.salmsman = salmsman;
-    }
-
     public CheckState getCheckState() {
         return checkState;
     }
@@ -221,7 +230,6 @@ import java.util.List;
                 ", departmentId='" + departmentId + '\'' +
                 ", companyId='" + companyId + '\'' +
                 ", modifierId='" + modifierId + '\'' +
-                ", salmsman=" + salmsman +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
                 ", wasteInventory=" + wasteInventory +

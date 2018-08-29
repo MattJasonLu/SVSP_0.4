@@ -3,6 +3,11 @@
  */
 
 /**
+ * 角色编号
+ */
+var roleId = -1;
+
+/**
  * 读取账号列表
  */
 function loadUserList() {
@@ -296,7 +301,6 @@ function loadRoleAndFunction() {
             });
         });
         $('#tree').treeview('collapseAll', { silent: true }); // 折叠所有节点
-        // $('#tree').treeview('checkAll', { silent: true });    // 勾选所有节点
         // 设置子功能
         function setFunctionChildren(children) {
             var childList = [];
@@ -322,7 +326,7 @@ function loadRoleAndFunction() {
  * @param e
  */
 function showAuthorityById(e) {
-    var roleId = e.prop('id');
+    roleId = e.prop('id');
     $.ajax({
         type: "POST",
         url: "getFunctionByRoleId",
@@ -347,7 +351,7 @@ function showAuthorityById(e) {
      * @param result
      */
     function setFunctionChecked(result) {
-        $('#tree').treeview('uncheckAll', { silent: false });
+        uncheckAll();
         var data = eval(result);
         for (var i = 0; i < data.length; i++) {
             var name = data[i].functionName;
@@ -365,6 +369,60 @@ function showAuthorityById(e) {
  * 保存选中的节点到数据库
  */
 function saveAuthority() {
+    // 如果用户没有选择过角色
+    if (roleId == -1) {
+        alert("未选择角色！");
+        return;
+    }
     var nodes = $('#tree').treeview('getSelected', { silent: false });
-    console.log(nodes);
+    var functionIdList = [];
+    for (var i in nodes) {
+        var functionId = nodes[i].id;
+        functionIdList.push(functionId);
+    }
+    console.log(functionIdList);
+    $.ajax({
+        type: "post",
+        url: "updateAuthority",
+        dataType: "json",
+        data: {
+            roleId: roleId,
+            functionIdList: functionIdList
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
+
+/**
+ * 勾选所有树节点
+ */
+function checkAll() {
+    // 获取所有未勾选上的节点
+    var nodes = $('#tree').treeview('getUnselected', { silent: false });
+    // 遍历每个节点，调用节点勾选方法
+    for (var i = 0; i < nodes.length; i++) {
+        $('#tree').treeview('selectNode', nodes[i]);
+    }
+}
+
+/**
+ * 去除勾选所有树节点
+ */
+function uncheckAll() {
+    // 获取所有勾选上的节点
+    var nodes = $('#tree').treeview('getSelected', { silent: false });
+    // 遍历每个节点，调用节点去除勾选方法
+    for (var i = 0; i < nodes.length; i++) {
+        $('#tree').treeview('unselectNode', nodes[i]);
+    }
+}
+

@@ -40,4 +40,6 @@ public interface QuotationMapper {
     void approval(@Param(value="advice")String advice, @Param(value="id")String id);
 
     void reject(@Param(value="advice")String advice, @Param(value="id")String id);
+    List<Quotation> searchQuotation(Quotation quotation);
+
 }

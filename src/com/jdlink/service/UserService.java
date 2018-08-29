@@ -58,4 +58,11 @@ public interface UserService {
      */
     List<Authority> listAuthority();
 
+    /**
+     * 更新权限
+     * @param roleId 角色编号
+     * @param functionIdList 功能编号列表
+     */
+    void updateAuthority(int roleId, int[] functionIdList);
+
 }
