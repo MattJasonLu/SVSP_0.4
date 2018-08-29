@@ -36,6 +36,10 @@ public class PretreatmentItem {
      * 比例
      */
     private Float proportion;
+    /**
+     * 预处理暂存点
+     */
+    private String temporaryAddress;
 
     public int getItemId() {
         return itemId;
@@ -101,6 +105,14 @@ public class PretreatmentItem {
         this.outboundOrderId = outboundOrderId;
     }
 
+    public String getTemporaryAddress() {
+        return temporaryAddress;
+    }
+
+    public void setTemporaryAddress(String temporaryAddress) {
+        this.temporaryAddress = temporaryAddress;
+    }
+
     @Override
     public String toString() {
         return "PretreatmentItem{" +
@@ -112,6 +124,7 @@ public class PretreatmentItem {
                 ", requirements='" + requirements + '\'' +
                 ", wastes=" + wastes +
                 ", proportion=" + proportion +
+                ", temporaryAddress='" + temporaryAddress + '\'' +
                 '}';
     }
 }

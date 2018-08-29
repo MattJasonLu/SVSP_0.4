@@ -12,12 +12,13 @@ public interface PretreatmentMapper {
     void add(Pretreatment pretreatment);
     void update(Pretreatment pretreatment);
     List<Pretreatment> listPage(Page page);
+    List<Pretreatment> list();
     Pretreatment getById(String id);
     List<Pretreatment> search(Pretreatment pretreatment);
     int searchCount(Pretreatment pretreatment);
     int countById(String id);
     int countItem();
     void invalid(String id);
-    void adjust(Wastes wastes);
+    void adjust(Pretreatment pretreatment);
     PretreatmentItem getItemsById(int id);
 }

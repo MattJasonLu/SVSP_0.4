@@ -83,6 +83,9 @@
                 or contactName like "%"#{keyword}"%" or phone like "%"#{keyword}"%"
                 or salesmanId = #{keyword} or salesmanId = #{salesman.salesmanId}
             </if>
+            <if test="clientId != null and clientId != ''">
+                and clientId LIKE "%"#{clientId}"%"
+            </if>
             <if test="companyName != null and companyName != ''">
                 and companyName LIKE "%"#{companyName}"%"
             </if>
