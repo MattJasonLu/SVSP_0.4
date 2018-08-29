@@ -68,11 +68,11 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <resultMap id="SalesManRM" type="Client">
         <collection property="salesman" column="salesmanId" select="getSalesMan" ofType="Salesman"></collection>
     </resultMap>
-<select id="getClient1" resultMap="SalesManRM">
+<select id="getClient1" resultType="Client">
         select * from client where clientId=#{clientId}
     </select>
     <select id="getSalesMan" resultType="Salesman">
-        select * from salesman where salesman.salesmanId=#{client.salesmanId}
+        select * from salesman where salesmanId=#{salesmanId}
     </select>
     <!--更新出库单的数据-->
     <update id="updateOutBoundOrder" parameterType="OutboundOrder">
@@ -81,4 +81,20 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         salesmanId=#{materialRequisitionOrder.client.salesman.salesmanId}
         where outboundOrderId=#{outboundOrderId}
     </update>
+<select id="getSalesman1" resultType="Salesman">
+    select * from salesman where salesmanId=#{salesmanId};
+</select>
+    <resultMap id="OutBoundOrderList" type="OutboundOrder">
+        <!--危废信息-->
+        <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
+       <!--业务员-->
+        <collection property="salesman" column="salesmanId" select="getSalesman1" ofType="Salesman"></collection>
+       <!--客户-->
+        <collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>
+    </resultMap>
+
+    <!--获取出库单信息的接口-->
+    <select id="getOutBoundOrderList"  resultMap="OutBoundOrderList">
+        select  * from t_pl_outboundorder;
+    </select>
 </mapper>
