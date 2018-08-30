@@ -2,13 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.BurnOrderMapper" >
+<mapper namespace="com.jdlink.mapper.BurnOrderMapper">
     <resultMap id="BurnOrderRM" type="BurnOrder" autoMapping="true">
-        <id column="id" property="id"/>
-        <association property="pretreatment" column="pretreatmentId" select="getPretreatment"/>
-    </resultMap>
-
-    <resultMap id="PretreatmentRM" type="Pretreatment" autoMapping="true">
         <id column="id" property="id"/>
         <collection property="pretreatmentItemList" select="getItems" column="id"
                     ofType="com.jdlink.domain.Produce.PretreatmentItem"
@@ -35,42 +30,147 @@
         </association>
     </resultMap>
 
-    <select id="getPretreatment" parameterType="String" resultMap="PretreatmentRM">
-        select from t_pr_pretreatment where id = #{pretreatmentId};
-    </select>
-
     <select id="getItems" parameterType="String" resultMap="PretreatmentItemRM">
-        select  * from t_pr_pretreatmentitem where pretreatmentId = #{id};
+        select  * from t_pr_burnorderitem where burnOrderId = #{id};
     </select>
 
     <select id="countById" resultType="int">
         select count(*) from t_pr_burnorder where id like "%"#{id}"%";
     </select>
 
+    <select id="count" resultType="int">
+        select count(*) from t_pr_burnorder;
+    </select>
+
+    <select id="countItem" resultType="int">
+        select count(*) from t_pr_burnorderitem;
+    </select>
+
+    <select id="listPage" resultMap="BurnOrderRM">
+        select * from t_pr_burnorder order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <select id="getById" parameterType="String" resultMap="BurnOrderRM">
           select * from t_pr_burnorder where id = #{id};
      </select>
 
-    <update id="updateTemporaryAddressById" parameterType="Pretreatment" >
-        <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index">
-            update t_pr_pretreatmentitem
-            set
-            temporaryAddress =#{pretreatmentItem.temporaryAddress}
-            where pretreatmentId = #{id} and serialNumber = {pretreatmentItem.serialNumber};
-        </foreach>
+    <select id="getItemsById" parameterType="int" resultMap="BurnOrderRM">
+        select * from t_pr_burnorderitem where itemId = #{id};
+    </select>
+
+    <select id="search" parameterType="BurnOrder" resultMap="BurnOrderRM">
+        select * from t_pr_burnorder
+        <where>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="creationDate != null and creationDate !=''">
+                and creationDate like "%"#{creationDate}"%"
+            </if>
+            <if test="remarks !=null and remarks !='' ">
+                and remarks like "%"#{remarks}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCount" parameterType="BurnOrder" resultType="int">
+        select count(*) from t_pr_burnorder
+        <where>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="creationDate != null and creationDate !=''">
+                and creationDate like "%"#{creationDate}"%"
+            </if>
+            <if test="remarks !=null and remarks !='' ">
+                and remarks like "%"#{remarks}"%"
+            </if>
+        </where>
+    </select>
+
+    <update id="updateTemporaryAddressById" parameterType="Pretreatment">
+        <if test="pretreatmentItemList.size() > 0">
+            <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index">
+                update t_pr_pretreatmentitem
+                set temporaryAddress =#{pretreatmentItem.temporaryAddress}
+                where pretreatmentId =#{pretreatmentItem.pretreatmentId} and serialNumber
+                =#{pretreatmentItem.serialNumber};
+            </foreach>
+        </if>
     </update>
 
     <update id="update" parameterType="BurnOrder">
         update t_pr_burnorder
         set
-        pretreatmentId =#{pretreatment.id},state=#{state},creationDate=#{creationDate}
-        where id =#{id};
+        pretreatmentId =#{pretreatmentId},state=#{state},nowTime=NOW(),remarks=#{remarks},weightTotal=#{weightTotal}
+        ,calorificTotal=#{calorificTotal},ashPercentageTotal=#{ashPercentageTotal},wetPercentageTotal=#{wetPercentageTotal},
+        volatileNumberTotal=#{volatileNumberTotal},chlorinePercentageTotal=#{chlorinePercentageTotal},sulfurPercentageTotal=#{sulfurPercentageTotal},phTotal=#{phTotal},
+        phosphorusPercentageTotal=#{phosphorusPercentageTotal},fluorinePercentageTotal=#{fluorinePercentageTotal},
+        distillationProportion=#{distillationProportion},wasteLiquidProportion=#{wasteLiquidProportion},sludgeProportion=#{sludgeProportion},
+        bulkProportion=#{bulkProportion},crushingProportion=#{crushingProportion},suspensionProportion=#{suspensionProportion},nowTime=NOW()
+        where id = #{id};
+        <if test="pretreatmentItemList.size() > 0">
+            <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index">
+                update t_pr_burnorderitem
+                set
+                produceCompanyName=#{pretreatmentItem.produceCompanyName},requirements=#{pretreatmentItem.requirements},
+                proportion=#{pretreatmentItem.proportion},weight=#{pretreatmentItem.wastes.weight},volatileNumber=#{pretreatmentItem.wastes.volatileNumber},
+                calorific=#{pretreatmentItem.wastes.calorific},ashPercentage=#{pretreatmentItem.wastes.ashPercentage},wetPercentage=#{pretreatmentItem.wastes.wetPercentage},
+                chlorinePercentage=#{pretreatmentItem.wastes.chlorinePercentage},sulfurPercentage=#{pretreatmentItem.wastes.sulfurPercentage},
+                ph=#{pretreatmentItem.wastes.ph},phosphorusPercentage=#{pretreatmentItem.wastes.phosphorusPercentage},fluorinePercentage=#{pretreatmentItem.wastes.fluorinePercentage},
+                remarks=#{pretreatmentItem.wastes.remarks},processWay=#{pretreatmentItem.wastes.processWay},handleCategory=#{pretreatmentItem.wastes.handleCategory},wastesName
+                =#{pretreatmentItem.wastes.name}
+                where serialNumber = #{pretreatmentItem.serialNumber} and burnOrderId = #{id};
+            </foreach>
+        </if>
+    </update>
+
+    <update id="invalid" parameterType="String">
+        update t_pr_burnorder set state = 'Invalid' where id = #{id}
     </update>
 
     <insert id="insert" parameterType="BurnOrder">
         insert into t_pr_burnorder
-        (id,pretreatmentId,state,creationDate)
+        (id,pretreatmentId,state,creationDate,nowTime,remarks,weightTotal,calorificTotal,ashPercentageTotal,
+        wetPercentageTotal,volatileNumberTotal,chlorinePercentageTotal,sulfurPercentageTotal,
+        phTotal,phosphorusPercentageTotal,fluorinePercentageTotal,distillationProportion,
+        wasteLiquidProportion,sludgeProportion,bulkProportion,crushingProportion,suspensionProportion)
         values
-        (#{id},#{pretreatment.id},'NewBuild',NOW());
+        (#{id},#{pretreatmentId},'NewBuild',NOW(),NOW(),#{remarks},#{weightTotal},#{calorificTotal},
+        #{ashPercentageTotal},#{wetPercentageTotal},#{volatileNumberTotal},
+        #{chlorinePercentageTotal},#{sulfurPercentageTotal},#{phTotal},
+        #{phosphorusPercentageTotal},#{fluorinePercentageTotal},#{distillationProportion},
+        #{wasteLiquidProportion},#{sludgeProportion},#{bulkProportion},#{crushingProportion},
+        #{suspensionProportion});
+        <if test="pretreatmentItemList.size() > 0">
+            <foreach collection="pretreatmentItemList" item="pretreatmentItem" index="index">
+                insert into t_pr_burnorderitem
+                (itemId,burnOrderId,serialNumber,produceCompanyName,requirements,proportion,weight,volatileNumber,
+                calorific,ashPercentage,wetPercentage,chlorinePercentage,sulfurPercentage,ph,phosphorusPercentage,
+                fluorinePercentage,remarks,processWay,handleCategory,wastesName,temporaryAddress)
+                values
+                (#{pretreatmentItem.itemId},#{id},#{pretreatmentItem.serialNumber},#{pretreatmentItem.produceCompanyName},#{pretreatmentItem.requirements},
+                #{pretreatmentItem.proportion},#{pretreatmentItem.wastes.weight},#{pretreatmentItem.wastes.volatileNumber},
+                #{pretreatmentItem.wastes.calorific},#{pretreatmentItem.wastes.ashPercentage},#{pretreatmentItem.wastes.wetPercentage},
+                #{pretreatmentItem.wastes.chlorinePercentage},#{pretreatmentItem.wastes.sulfurPercentage},#{pretreatmentItem.wastes.ph},
+                #{pretreatmentItem.wastes.phosphorusPercentage},#{pretreatmentItem.wastes.fluorinePercentage},#{pretreatmentItem.wastes.remarks},
+                #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory},#{pretreatmentItem.wastes.name},#{pretreatmentItem.temporaryAddress});
+            </foreach>
+        </if>
     </insert>
+
+
 </mapper>

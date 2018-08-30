@@ -338,7 +338,6 @@ public class PRPretreatmentController {
         try {
             List<Pretreatment> pretreatmentList = pretreatmentService.search(pretreatment);
             JSONArray data = JSONArray.fromArray(pretreatmentList.toArray(new Pretreatment[pretreatmentList.size()]));
-            System.out.println(data);
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", data);
