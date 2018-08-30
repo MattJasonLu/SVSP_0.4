@@ -40,6 +40,18 @@ public interface UserService {
     void setRole(int userId, int roleId);
 
     /**
+     * 增加角色
+     * @param role 角色
+     */
+    void addRole(Role role);
+
+    /**
+     * 更新角色名称
+     * @param role 角色
+     */
+    void setRoleName(Role role);
+
+    /**
      * 列出所有功能
      * @return
      */
