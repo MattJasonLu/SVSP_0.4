@@ -23,8 +23,8 @@
     </select>
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
         <collection property="wareHouse" column="warseHouseId" select="getWareHouse" ofType="WareHouse"></collection>
-     <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
-     <collection property="client" column="clientId" select="getClient" ofType="Client" ></collection>
+        <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
+        <collection property="client" column="clientId" select="getClient" ofType="Client" ></collection>
     </resultMap>
     <select id="getWastes" parameterType="String" resultType="Wastes">
         select * from t_wastes where id=#{id}
@@ -81,10 +81,12 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         salesmanId=#{materialRequisitionOrder.client.salesman.salesmanId}
         where outboundOrderId=#{outboundOrderId}
     </update>
-<select id="getSalesman1" resultType="Salesman">
+   <select id="getSalesman1" resultType="Salesman">
     select * from salesman where salesmanId=#{salesmanId};
 </select>
-    <resultMap id="OutBoundOrderList" type="OutboundOrder">
+    <resultMap id="OutBoundOrderList" type="OutboundOrder" autoMapping="true">
+        <!--领料单信息-->
+        <collection property="materialRequisitionOrder" column="materialRequisitionId" select="getMaterialRequisitionOrder" ofType="MaterialRequisitionOrder"></collection>
         <!--危废信息-->
         <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
        <!--业务员-->
@@ -92,7 +94,14 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
        <!--客户-->
         <collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>
     </resultMap>
-
+    <!--获取领料单信息-->
+    <select id="getMaterialRequisitionOrder" resultType="MaterialRequisitionOrder" parameterType="String">
+        select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId};
+    </select>
+    <!--根据配料单编号获取信息-->
+<select id="getOutBoundByMId" parameterType="String" resultMap="OutBoundRM1">
+    select * from t_pl_outboundorder where materialRequisitionId=#{materialRequisitionId}
+</select>
     <!--获取出库单信息的接口-->
     <select id="getOutBoundOrderList"  resultMap="OutBoundOrderList">
         select  * from t_pl_outboundorder;
