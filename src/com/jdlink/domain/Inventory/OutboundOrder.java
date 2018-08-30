@@ -48,6 +48,36 @@ public class OutboundOrder {
     private Client client;
    /*出库类别*/
     private BoundType boundType;
+    /*部门*/
+    private String departmentName;
+     /*次生危废对象*/
+    WasteInventory wasteInventory;
+    /*出库数量*/
+    private float outboundNumber;
+
+    public float getOutboundNumber() {
+        return outboundNumber;
+    }
+
+    public void setOutboundNumber(float outboundNumber) {
+        this.outboundNumber = outboundNumber;
+    }
+
+    public WasteInventory getWasteInventory() {
+        return wasteInventory;
+    }
+
+    public void setWasteInventory(WasteInventory wasteInventory) {
+        this.wasteInventory = wasteInventory;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
     public BoundType getBoundType() {
         return boundType;
@@ -166,8 +196,7 @@ public class OutboundOrder {
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "OutboundOrder{" +
                 "materialRequisitionOrder=" + materialRequisitionOrder +
                 ", outboundOrderId='" + outboundOrderId + '\'' +
@@ -176,8 +205,13 @@ public class OutboundOrder {
                 ", auditor='" + auditor + '\'' +
                 ", outboundOrder=" + outboundOrder +
                 ", transferDraftId='" + transferDraftId + '\'' +
+                ", salesman=" + salesman +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
+                ", wastes=" + wastes +
+                ", client=" + client +
+                ", boundType=" + boundType +
+                ", departmentName='" + departmentName + '\'' +
                 '}';
     }
 }

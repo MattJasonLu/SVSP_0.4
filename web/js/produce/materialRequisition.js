@@ -205,7 +205,7 @@ function loadRequisitionList() {
         contentType: "application/json; charset=utf-8",
         success:function (result ) {
             if (result != undefined && result.status == "success"){
-                console.log(result);
+               // console.log(result);
                 //1获得下拉列表
                 var outboundType=$("#outboundType");
                 //2清除子元素
@@ -233,8 +233,8 @@ function loadRequisitionList() {
         }
     });
     var array=new Array(localStorage['array']);
-    //console.log(array[0]);
-    if(array[0]!=undefined){
+   // console.log(array[0].length);
+    if(array[0]!=undefined&&array[0].length>0){
         var array1=array[0].split(",");//获得配料编号的数组
         $.each(array1,function (index,item) {
             $.ajax({
@@ -257,9 +257,8 @@ function loadRequisitionList() {
                 }
             });
         });
-        //console.log(MaterialRequisitionList);
+        // console.log(MaterialRequisitionList.length);
         setRequisitionList(MaterialRequisitionList);
-
     }
     else {
         alert("还未领料，请领料！");
@@ -270,7 +269,7 @@ function loadRequisitionList() {
     /*加载出库类别下拉框
      */
 
-    localStorage.removeItem('array');
+    localStorage.clear();
 }
 //设置出库增加页面的领料单数据
 function setRequisitionList(result) {
@@ -279,7 +278,6 @@ function setRequisitionList(result) {
     //tr.siblings().remove();
     tr.attr('class','myclass');
     $.each(result, function (index, item) {
-        console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
         if(item.checkState.name=='待出库'){
             var clonedTr = tr.clone();
