@@ -101,7 +101,7 @@
     </select>
 <!--添加出库单-->
     <insert id="addOutboundOrder" parameterType="OutboundOrder">
-      insert into t_pl_outboundorder(outboundOrderId,outBoundDate,creator,auditor,materialRequisitionId,nowTime,checkState)
-      values (#{outboundOrderId},#{outboundDate},#{creator},#{auditor},#{materialRequisitionOrder.materialRequisitionId},NOW(),'OutBounded')
+      insert into t_pl_outboundorder(outboundOrderId,outBoundDate,creator,auditor,materialRequisitionId,nowTime,checkState,boundType)
+      values (#{outboundOrderId},#{outboundDate},#{creator},#{auditor},#{materialRequisitionOrder.materialRequisitionId},NOW(),'OutBounded',#{boundType})
     </insert>
 </mapper>

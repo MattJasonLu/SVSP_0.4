@@ -14,15 +14,15 @@ public class OutboundOrder {
     * 1:N
     * */
     private MaterialRequisitionOrder  materialRequisitionOrder;
-    private List<MaterialRequisitionOrder> materialRequisitionOrderList;
+    //private List<MaterialRequisitionOrder> materialRequisitionOrderList;
 
-    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
-        return materialRequisitionOrderList;
-    }
-
-    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
-        this.materialRequisitionOrderList = materialRequisitionOrderList;
-    }
+//    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
+//        return materialRequisitionOrderList;
+//    }
+//
+//    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
+//        this.materialRequisitionOrderList = materialRequisitionOrderList;
+//    }
 
     /*出库单编号*/
    private String outboundOrderId;
@@ -37,7 +37,7 @@ public class OutboundOrder {
     /*转移联单号*/
     private String transferDraftId;
     /*部门*/
-    private String departmentId;
+   // private String departmentId;
     /*业务员 来自产废单位的业务员*/
     private Salesman salesman;
     /*单据状态*/
@@ -46,8 +46,19 @@ public class OutboundOrder {
     private  RecordState recordState;
     private Wastes wastes;
     private Client client;
+   /*出库类别*/
+    private BoundType boundType;
+
+    public BoundType getBoundType() {
+        return boundType;
+    }
+
+    public void setBoundType(BoundType boundType) {
+        this.boundType = boundType;
+    }
 
     public Client getClient() {
+
         return client;
     }
 
@@ -122,13 +133,13 @@ public class OutboundOrder {
         this.transferDraftId = transferDraftId;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
-    }
+//    public String getDepartmentId() {
+//        return departmentId;
+//    }
+//
+//    public void setDepartmentId(String departmentId) {
+//        this.departmentId = departmentId;
+//    }
 
     public Salesman getSalesman() {
         return salesman;
@@ -165,7 +176,6 @@ public class OutboundOrder {
                 ", auditor='" + auditor + '\'' +
                 ", outboundOrder=" + outboundOrder +
                 ", transferDraftId='" + transferDraftId + '\'' +
-                ", departmentId='" + departmentId + '\'' +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
                 '}';
