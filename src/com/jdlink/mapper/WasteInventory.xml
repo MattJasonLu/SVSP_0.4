@@ -84,8 +84,24 @@
     <select id="getWastes2" resultType="Wastes" parameterType="WasteInventory">
         select * from t_wastes where id=#{id} and handleCategory=#{wasteInventory.swastes.handleCategory}
     </select>
-    <select id="searchInventory" parameterType="WasteInventory" resultType="WasteInventory">
-     select * from t_pl_wasteinventory ;
+    <select id="searchInventory" parameterType="WasteInventory" resultMap="WasteInventoryRM">
+     select t_pl_wasteinventory.* ,t_wastes.* from t_pl_wasteinventory  join t_wastes
+    <where>
+        <if test="wastes!=null">
+            <if test="wastes.handleCategory!=null and wastes.handleCategory!=''"  >
+                and  t_wastes.handleCategory=#{wastes.handleCategory} and t_wastes.id=t_pl_wasteinventory.id
+            </if>
+
+        </if>
+        <if test="produceCompany!=null">
+            <if test="produceCompany.companyName!=null and produceCompany.companyName!=''"  >
+                and  client.companyName=#{produceCompany.companyName} and client.clientId=t_pl_wasteinventory.clientId
+            </if>
+
+        </if>
+
+    </where>
+
     </select>
     <!--获得剩余数量-->
     <update id="getWasteInventoryLeftNumber">

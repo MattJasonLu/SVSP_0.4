@@ -58,9 +58,20 @@
         SELECT * FROM t_ur_role;
     </select>
 
+    <!--获取角色-->
     <select id="getRole" resultType="Role">
         SELECT * FROM t_ur_role WHERE id=#{roleId};
     </select>
+
+    <!--增加角色-->
+    <insert id="addRole" parameterType="Role">
+        INSERT INTO t_ur_role (roleName) VALUES (#{roleName});
+    </insert>
+
+    <!--更新角色的名称-->
+    <update id="setRoleName" parameterType="Role">
+        UPDATE t_ur_role SET roleName=#{roleName} WHERE id=#{id};
+    </update>
 
     <!--列出所有功能-->
     <select id="listFunction" resultMap="FunctionRM">

@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -140,7 +141,7 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取用户信息失败");
             res.put("exception", e.getMessage());
         }
@@ -163,7 +164,7 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取信息失败");
             res.put("exception", e.getMessage());
         }
@@ -180,8 +181,52 @@ public class UserController {
             res.put("message", "分配角色成功");
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "分配角色失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 增加角色
+     * @param role 角色
+     * @return 结果
+     */
+    @RequestMapping("addRole")
+    @ResponseBody
+    public String addRole(@RequestBody Role role) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.addRole(role);
+            res.put("status", "success");
+            res.put("message", "增加角色成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加角色失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新角色名称
+     * @param role 角色
+     * @return 结果
+     */
+    @RequestMapping("setRoleName")
+    @ResponseBody
+    public String setRoleName(@RequestBody Role role) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.setRoleName(role);
+            res.put("status", "success");
+            res.put("message", "修改角色名称成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改角色名称失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();
@@ -204,7 +249,7 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取信息失败");
             res.put("exception", e.getMessage());
         }
@@ -250,7 +295,7 @@ public class UserController {
             res.put("message", "权限更新成功");
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "权限更新失败");
             res.put("exception", e.getMessage());
         }
@@ -273,7 +318,7 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取信息失败");
             res.put("exception", e.getMessage());
         }

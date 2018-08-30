@@ -46,4 +46,9 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     public List<OutboundOrder> getOutBoundOrderList() {
         return outboundOrderMapper.getOutBoundOrderList();
     }
+
+    @Override
+    public OutboundOrder getOutBoundByMId(String materialRequisitionId) {
+        return outboundOrderMapper.getOutBoundByMId(materialRequisitionId);
+    }
 }
