@@ -65,4 +65,12 @@ public interface UserService {
      */
     void updateAuthority(int roleId, int[] functionIdList);
 
+    /**
+     * 校验当前账号所对应的角色是否可以进入该功能
+     * @param roleId 角色编号
+     * @param functionId 功能编号
+     * @return 能否进入
+     */
+    boolean checkAuthority(int roleId, int functionId);
+
 }

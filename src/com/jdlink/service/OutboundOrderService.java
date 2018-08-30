@@ -11,4 +11,5 @@ public interface OutboundOrderService {
     int total();
     List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
     void  updateOutBoundOrder(OutboundOrder outboundOrder);
+    List<OutboundOrder> getOutBoundOrderList();
 }
