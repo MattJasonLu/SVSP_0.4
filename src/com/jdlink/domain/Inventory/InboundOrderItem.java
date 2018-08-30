@@ -11,6 +11,10 @@ import com.jdlink.domain.Wastes;
  */
 public class InboundOrderItem {
     /**
+     * 联单编号
+     */
+    private String transferDraftId;
+    /**
      * 入库单明细编号
      */
     private String inboundOrderItemId;
@@ -27,7 +31,7 @@ public class InboundOrderItem {
      */
     private Client produceCompany;
     /**
-     * 危废(危废名称、危废代码、危废类别、危废数量、单价、总价)
+     * 危废(危废名称、危废代码、危废类别)
      */
     private Wastes wastes;
     /**
@@ -66,6 +70,14 @@ public class InboundOrderItem {
      * 化验结果是否合格
      */
     private boolean isQualified;
+
+    public String getTransferDraftId() {
+        return transferDraftId;
+    }
+
+    public void setTransferDraftId(String transferDraftId) {
+        this.transferDraftId = transferDraftId;
+    }
 
     public String getInboundOrderItemId() {
         return inboundOrderItemId;

@@ -1,7 +1,6 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Salesman;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,10 +14,6 @@ import java.util.List;
 public class InboundOrder {
 
     /**
-     * 转移联单号
-     */
-    private String transferDraftId;
-    /**
      * 入库单号
      */
     private String inboundOrderId;
@@ -30,22 +25,22 @@ public class InboundOrder {
      * 仓库
      */
     private WareHouse wareHouse;
-    /**
-     * 业务员
-     */
-    private Salesman salesman;
+//    /**
+//     * 业务员
+//     */
+//    private Salesman salesman;
     /**
      * 入库类别
      */
     private BoundType boundType;
-    /**
-     * 计划数量
-     */
-    private float planCount;
-    /**
-     * 危废数量
-     */
-    private float actualCount;
+//    /**
+//     * 计划数量
+//     */
+//    private float planCount;
+//    /**
+//     * 危废数量
+//     */
+//    private float actualCount;
     /**
      * 保管员编号
      */
@@ -99,14 +94,6 @@ public class InboundOrder {
      */
     private List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
 
-    public String getTransferDraftId() {
-        return transferDraftId;
-    }
-
-    public void setTransferDraftId(String transferDraftId) {
-        this.transferDraftId = transferDraftId;
-    }
-
     public String getInboundOrderId() {
         return inboundOrderId;
     }
@@ -137,30 +124,6 @@ public class InboundOrder {
 
     public void setWareHouse(WareHouse wareHouse) {
         this.wareHouse = wareHouse;
-    }
-
-    public Salesman getSalesman() {
-        return salesman;
-    }
-
-    public void setSalesman(Salesman salesman) {
-        this.salesman = salesman;
-    }
-
-    public float getPlanCount() {
-        return planCount;
-    }
-
-    public void setPlanCount(float planCount) {
-        this.planCount = planCount;
-    }
-
-    public float getActualCount() {
-        return actualCount;
-    }
-
-    public void setActualCount(float actualCount) {
-        this.actualCount = actualCount;
     }
 
     public String getKeeperId() {
@@ -270,14 +233,10 @@ public class InboundOrder {
     @Override
     public String toString() {
         return "InboundOrder{" +
-                "transferDraftId='" + transferDraftId + '\'' +
-                ", inboundOrderId='" + inboundOrderId + '\'' +
+                "inboundOrderId='" + inboundOrderId + '\'' +
                 ", inboundDate=" + inboundDate +
                 ", wareHouse=" + wareHouse +
-                ", salesman=" + salesman +
                 ", boundType=" + boundType +
-                ", planCount=" + planCount +
-                ", actualCount=" + actualCount +
                 ", keeperId='" + keeperId + '\'' +
                 ", directorId='" + directorId + '\'' +
                 ", approverId='" + approverId + '\'' +
