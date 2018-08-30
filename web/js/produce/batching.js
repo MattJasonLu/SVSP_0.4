@@ -39,71 +39,78 @@ function reset() {
 /**设置库存列表数据
  */
 function setWasteInventoryList(result) {
+    $(".myclass").hide();
     var tr = $("#cloneTr");
+    tr.attr('class','myclass')
+    console.log(result);
     //tr.siblings().remove();
-    $.each(result, function (index, item) {
-        // 克隆tr，每次遍历都可以产生新的tr
-        var clonedTr = tr.clone();
-        clonedTr.show();
-        // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                // 入库编号
-                case (1):
-                    $(this).html(obj.inboundOrderId);
+        $.each(result, function (index, item) {
+            if(item.actualCount>0){
+                // 克隆tr，每次遍历都可以产生新的tr
+                var clonedTr = tr.clone();
+                clonedTr.show();
+                // 循环遍历cloneTr的每一个td元素，并赋值
+                clonedTr.children("td").each(function (inner_index) {
+                    var obj = eval(item);
+                    // 根据索引为部分td赋值
+                    switch (inner_index) {
+                        // 入库编号
+                        case (1):
+                            $(this).html(obj.inboundOrderId);
 
-                    break;
-                 // 仓库号
-                case (2):
-                    if(obj.wareHouse==null){
-                        $(this).html("");
-                    }
-                    else {
-                        $(this).html(obj.wareHouse.wareHouseId);
-                    }
-                    break;
-                    //产废单位
-                case (3):
-                        $(this).html(obj.wastes.client.companyName);
-                    break;
-                // 危废名称
-                case (4):
-                        $(this).html(obj.wastes.name);
-                    break;
-                // 危废代码
-                case (5):
-                        $(this).html(obj.wastes.wastesId);
-                    break;
-                // 产废类别
-                case (6):
-                        $(this).html("");
-                    break;
-                // 进料方式
-                case (7):
-                     $(this).html(obj.wastes.handleCategory.name);
-                    break;
-                    //数量
-                case (8):
-                        $(this).html(obj.actualCount);
-                    break;
-                    //剩余数量
-                case (9):
-                    $(this).html(obj.leftNumeber);
-                    break;
-                    case (10):
-                    $(this).html(obj.wastes.remarks);
-                    break;
+                            break;
+                        // 仓库号
+                        case (2):
+                            if (obj.wareHouse == null) {
+                                $(this).html("");
+                            }
+                            else {
+                                $(this).html(obj.wareHouse.wareHouseId);
+                            }
+                            break;
+                        //产废单位
+                        case (3):
+                            $(this).html(obj.wastes.client.companyName);
+                            break;
+                        // 危废名称
+                        case (4):
+                            $(this).html(obj.wastes.name);
+                            break;
+                        // 危废代码
+                        case (5):
+                            $(this).html(obj.wastes.wastesId);
+                            break;
+                        // 产废类别
+                        case (6):
+                            $(this).html("");
+                            break;
+                        // 进料方式
+                        case (7):
+                            $(this).html(obj.wastes.handleCategory.name);
+                            break;
+                        //数量
+                        case (8):
+                            $(this).html(obj.actualCount);
+                            break;
+                        //剩余数量
+                        case (9):
+                            $(this).html(obj.leftNumeber);
+                            break;
+                        case (10):
+                            $(this).html(obj.wastes.remarks);
+                            break;
 
+                    }
+                });
+                // 把克隆好的tr追加到原来的tr前面
+                clonedTr.removeAttr("id");
+                clonedTr.insertBefore(tr);
             }
         });
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
-    });
-    // 隐藏无数据的tr
-    tr.hide();
+        // 隐藏无数据的tr
+        tr.hide();
+    tr.removeAttr('class');
+
     //遍历赋值
     $(".myclass").each(function(){
         //1获得入库单号
@@ -297,7 +304,7 @@ function searchInventory() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-
+                setWasteInventoryList(result.data);
             } else {
                 alert(result.message);
             }
@@ -597,19 +604,19 @@ function setBatchingOrderList(result) {
          });
          alert("领料成功！");
          //在这里进行领料单操作赋值
-         $.ajax({
-             type: "POST",                       // 方法类型
-             url: "updateMaterialRequisitionId",                  // url
-             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-             dataType: "json",
-             contentType: "application/json; charset=utf-8",
-             success:function (result) {
-
-             },
-             error:function (result) {
-
-             }
-         });
+         // $.ajax({
+         //     type: "POST",                       // 方法类型
+         //     url: "updateMaterialRequisitionId",                  // url
+         //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+         //     dataType: "json",
+         //     contentType: "application/json; charset=utf-8",
+         //     success:function (result) {
+         //
+         //     },
+         //     error:function (result) {
+         //
+         //     }
+         // });
          if(confirm("是否跳转到领料单页面?")){
              window.location.href="materialRequisition1.html";
 

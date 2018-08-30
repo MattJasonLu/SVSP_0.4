@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.MaterialRequisitionOrderMapper" >
     <insert id="addMaterialRequisitionOrder" parameterType="MaterialRequisitionOrder">
-   insert into t_pl_materialrequisitionorder ( guardian, materialManager, picker, pickerDate, nowTime, batchingOrderId,checkState,recipientsNumber)
-   values (#{guardian},#{materialManager},#{picker},#{pickerDate},NOW(),#{batchingOrder.batchingOrderId},'Picked',#{batchingOrder.batchingNumber});
+   insert into t_pl_materialrequisitionorder ( guardian, materialManager, picker, pickerDate, nowTime, batchingOrderId,checkState,recipientsNumber,materialRequisitionId)
+   values (#{guardian},#{materialManager},#{picker},#{pickerDate},NOW(),#{batchingOrder.batchingOrderId},'Picked',#{batchingOrder.batchingNumber},#{materialRequisitionId});
     </insert>
     <update id="updateBatchingOrderCheck" parameterType="MaterialRequisitionOrder">
         update t_pl_batchingorder set checkState='Picked'  where batchingOrderId=#{batchingOrder.batchingOrderId}
