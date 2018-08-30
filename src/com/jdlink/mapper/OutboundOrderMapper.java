@@ -12,6 +12,7 @@ public interface OutboundOrderMapper {
   List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
   void  updateOutBoundOrder(OutboundOrder outboundOrder);
     List<OutboundOrder> getOutBoundOrderList();
+    OutboundOrder getOutBoundByMId(String materialRequisitionId);
 
 
 }

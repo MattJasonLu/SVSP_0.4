@@ -211,17 +211,23 @@ public class WasteInventoryController {
         String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
         //序列号
         String number = "001";
-//        if(total<0){//如果领料单号不存在
-//            number = "001";
-//        }
-//        if(total!=0){
-//            String s = materialRequisitionOrderList.get(0);//原字符串
-//            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-//            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-//        }
-       //String materialRequisitionId = year + mouth + number;
-        //设置ID
-        //materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
+        //1找到最新的领料单号
+        List<String> materialRequisitionOrderListId = materialRequisitionOrderService.getMaterialRequisitionOrderList();
+        if(materialRequisitionOrderListId.size()==0){
+            number="001";
+            String materialRequisitionId = year + mouth + number;
+            //设置ID
+            materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
+        }
+        if(materialRequisitionOrderListId.size()>0){
+            String theNewestmaterialRequisitionOrderId = materialRequisitionOrderListId.get(0);
+            String s = theNewestmaterialRequisitionOrderId;//原字符串
+            String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+            number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+            String materialRequisitionId = year + mouth + number;
+            materialRequisitionOrder.setMaterialRequisitionId(materialRequisitionId);
+        }
+
         try{
             materialRequisitionOrderService.addMaterialRequisitionOrder(materialRequisitionOrder);
             res.put("status", "success");
@@ -245,7 +251,7 @@ public class WasteInventoryController {
          //1遍历materialRequisitionOrderList 如果不为空添加
            List<MaterialRequisitionOrder> list=new ArrayList<>();
            for (int i=0;i<materialRequisitionOrderList.size();i++){
-               if(materialRequisitionOrderList.get(i).getMaterialRequisitionId()!=null){
+               if(materialRequisitionOrderList.get(i).getBatchingOrder()!=null){
                    list.add(materialRequisitionOrderList.get(i));
                }
            }
@@ -265,7 +271,7 @@ public class WasteInventoryController {
            List<MaterialRequisitionOrder> materialRequisitionOrderList1= materialRequisitionOrderService.list();
            List<MaterialRequisitionOrder> list2=new ArrayList<>();
            for (int i=0;i<materialRequisitionOrderList1.size();i++){
-               if(materialRequisitionOrderList1.get(i).getMaterialRequisitionId()!=null){
+               if(materialRequisitionOrderList1.get(i).getBatchingOrder()!=null){
                    list2.add(materialRequisitionOrderList1.get(i));
                }
            }
@@ -464,7 +470,10 @@ public class WasteInventoryController {
             //紧接着进行更新对领料单进行更新
             outboundOrderService.updateMaterialRequisitionOrderCheck1(outboundOrder);
             materialRequisitionOrderService.addOutboundOrder(outboundOrder);
-            res.put("status", "success");
+            //添加完进行更新操作 根据配料单编号
+            OutboundOrder outboundOrder1=outboundOrderService.getOutBoundByMId(outboundOrder.getMaterialRequisitionOrder().getMaterialRequisitionId());
+           outboundOrderService.updateOutBoundOrder(outboundOrder1);
+           res.put("status", "success");
             res.put("message", "添加成功");
         }
         catch (Exception e){
@@ -487,9 +496,9 @@ public class WasteInventoryController {
            res.put("status", "success");
            res.put("message", "查询成功");
            //将获取到的信息进行更新(危废主键 业务员主键 客户主键)
-          for(int i=0;i<outboundOrderList.size();i++){
-              outboundOrderService.updateOutBoundOrder(outboundOrderList.get(i));
-          }
+//          for(int i=0;i<outboundOrderList.size();i++){
+//              outboundOrderService.updateOutBoundOrder(outboundOrderList.get(i));
+//          }
        }
 catch (Exception e){
     e.printStackTrace();
