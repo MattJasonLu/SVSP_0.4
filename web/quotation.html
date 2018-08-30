@@ -395,7 +395,7 @@
 </script>
 <body onload="loadPageQuotationList();">
     <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
+    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
             <ul class="nav navbar-nav navbar-left navbar-side">
                 <li>
@@ -415,50 +415,50 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="clientBackup.html">客户备案</a></li>
+                            <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">客户备案</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-submenu">
                                 <a href="#">业务员分配管理</a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="salesManage.html">业务员管理</a></li>
+                                    <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="clientSalesManage.html">客户分配管理</a></li>
+                                    <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">客户分配管理</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                            <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="sampleManage.html">客户样品登记</a></li>
+                            <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">客户样品登记</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="wayBill1.html">接运单管理</a></li>
+                            <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="supplierBackup.html">供应商备案</a></li>
+                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="contractManage.html">合同列表</a></li>
+                            <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="contractTemplate.html">合同模板</a></li>
+                            <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="salesmanContract1.html">业务员合同</a></li>
+                            <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员合同</a></li>
                         </ul>
                     </li>
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="quotation.html">报价管理</a></li>
+                            <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="cost.html">成本管理</a></li>
+                            <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
                         </ul>
                     </li>
-                    <li><a href="archivesManage.html">一企一档</a></li>
-                    <li><a href="stockManage.html">库存申报</a></li>
+                    <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
+                    <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -475,6 +475,7 @@
                 </ul>
             </li>
         </ul>
+
     </nav>
 
     <div class="container-fluid">
@@ -488,18 +489,18 @@
                 <!--</div>-->
                 <ul class="sidenav animated fadeInUp">
                     <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-                    <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
-                    <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="wastesPlatform.html"id="function_1" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                    <li class="active"><a class="withripple" href="businessModel.html"id="function_2" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="compatibilityPlan.html"id="function_3" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="receiveManagement.html"id="function_4" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="storageManagement.html"id="function_5" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="preprocessingManagement.html"id="function_6" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="dispositionManagement.html"id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="secondaryManagement.html"id="function_8" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="procurementManagement.html"id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="reportManagement.html"id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="basicData.html" id="function_11" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="#" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
                 </ul>
             </div>
         </div>
@@ -518,11 +519,11 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newQuotation.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增报价单</a>
-                        <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 打印</a>
-                        <a class="btn btn-primary btn-xs" onclick="importExcel()"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 自定义设置</a>
+                        <a class="btn btn-primary btn-xs" href="newQuotation.html" id="function_156" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增报价单</a>
+                        <a class="btn btn-primary btn-xs" id="function_157" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; print(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 打印</a>
+                        <a class="btn btn-primary btn-xs" id="function_158" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" id="function_159" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" id="function_160" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; customSettings(e)}"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 自定义设置</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
@@ -656,12 +657,12 @@
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center">
-                                <a href="#" onclick="viewQuotation(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                <a href="#" id="function_161" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewQuotation(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                <a href="#" id="function_162" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; levelUp(e);}" title="升级"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                                <a href="#" id="function_163" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showEndDate(e);}" title="有效期变更"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></a>
+                                <a href="#" id="function_164" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examination(e);}" title="送审"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
+                                <a href="#" id="function_165" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; disabledQuotation(e);}" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                                 <!--<a href="#" onclick="adjustQuotation(this);" title="修改信息"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>-->
-                                <a href="#" onclick="levelUp(this);" title="升级"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                                <a href="#" onclick="showEndDate(this);" title="有效期变更"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></a>
-                                <a href="#" onclick="examination(this);" title="送审"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
-                                <a href="#" onclick="disabledQuotation(this);" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                             </td>
                             <td class="hidden text-center"></td>
                         </tr>
