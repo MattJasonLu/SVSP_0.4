@@ -25,4 +25,5 @@ public interface QuestionnaireMapper {
     void updateAttachmentUrl(Questionnaire questionnaire);
     void back(Questionnaire questionnaire);
     void examine(Questionnaire questionnaire);
+    List<Questionnaire> searchQuestionnaireManage(Questionnaire questionnaire);
 }

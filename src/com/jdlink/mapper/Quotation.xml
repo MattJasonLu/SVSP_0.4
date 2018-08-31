@@ -166,6 +166,7 @@
         and t_quotation.checkState =#{checkState}
     </if>
 </where>
+    order by  nowTime desc
     <if test="page != null and page.start != null and page.count != null">
         limit #{page.start}, #{page.count};
     </if>

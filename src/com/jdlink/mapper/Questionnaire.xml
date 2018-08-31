@@ -321,4 +321,54 @@
           client.product, questionnaire.state, questionnaire.author AS contactName, questionnaire.time
             FROM questionnaire JOIN client WHERE questionnaire.clientId=client.clientId order by nowTime desc;;
     </select>
+    <!--高级查询-->
+    <resultMap id="QuestionnaireManage1" type="Questionnaire" autoMapping="true" >
+        <result property="applyState" column="state" javaType="com.jdlink.domain.ApplyState"/>
+        <result  property="questionnaireId" column="questionnaireId" javaType="String"></result>
+        <result  property="author" column="author" javaType="String"></result>
+        <result  property="time" column="time" javaType="Date"></result>
+        <collection property="client"  resultMap="ClientRM" javaType="Client"></collection>
+    </resultMap>
+    <select id="searchQuestionnaireManage" parameterType="Questionnaire" resultMap="QuestionnaireManage1">
+      select  questionnaire.*,client.companyName,industry,product from  questionnaire  join  client
+      <where>
+          <if test="keyword != null and keyword != ''">
+              and questionnaire.questionnaireId like binary"%"#{keyword}"%"
+              or questionnaire.time like binary"%"#{keyword}"%" or questionnaire.author like binary"%"#{keyword}"%"
+              or questionnaire.state like binary"%"#{keyword}"%"
+              or client.companyName like binary"%"#{keyword}"%" or client.industry like binary"%"#{keyword}"%"
+              or client.product like  binary"%"#{keyword}"%"
+          </if>
+          <if test="keyword == ''">
+              and client.clientId=questionnaire.clientId
+          </if>
+          <if test="client!=null">
+              <if test="client.companyName!=null and client.companyName!=''">
+                  and client.companyName Like binary"%"#{client.companyName}"%" and client.clientId=questionnaire.clientId
+              </if>
+              <if test="client.industry!=null and client.industry!=''">
+                  and client.industry Like binary"%"#{client.industry}"%" and client.clientId=questionnaire.clientId
+              </if>
+              <if test="client.product!=null and client.product!=''">
+                  and client.product Like binary"%"#{client.product}"%" and client.clientId=questionnaire.clientId
+              </if>
+          </if>
+              <if test="questionnaireId!=null and questionnaireId!=''">
+                  and questionnaire.questionnaireId Like binary"%"#{questionnaireId}"%"
+              </if>
+              <if test="applyState!=null and applyState!=''">
+                  and questionnaire.state = #{applyState} and client.clientId=questionnaire.clientId
+              </if>
+              <if test="author!=null and author!=''">
+                  and author Like binary"%"#{author}"%"
+              </if>
+              <if test="time!=null and time!=''">
+                  and questionnaire.time Like binary"%"#{time}"%"
+              </if>
+      </where>
+        order by  nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
 </mapper>
