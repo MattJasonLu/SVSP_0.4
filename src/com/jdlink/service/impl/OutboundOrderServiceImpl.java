@@ -51,4 +51,24 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     public OutboundOrder getOutBoundByMId(String materialRequisitionId) {
         return outboundOrderMapper.getOutBoundByMId(materialRequisitionId);
     }
+
+    @Override
+    public void addSecondary(OutboundOrder outboundOrder) {
+        outboundOrderMapper.addSecondary(outboundOrder);
+    }
+
+    @Override
+    public OutboundOrder getOutBoundByInId(String inboundOrderId) {
+        return outboundOrderMapper.getOutBoundByInId(inboundOrderId);
+    }
+
+    @Override
+    public void updateSecOutBoundOrder(OutboundOrder outboundOrder) {
+        outboundOrderMapper.updateSecOutBoundOrder(outboundOrder);
+    }
+
+    @Override
+    public void upWastesInventoryNumber(OutboundOrder outboundOrder) {
+        outboundOrderMapper.upWastesInventoryNumber(outboundOrder);
+    }
 }

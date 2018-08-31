@@ -2,10 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
-import com.jdlink.domain.Inventory.BatchingOrder;
-import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
-import com.jdlink.domain.Inventory.OutboundOrder;
-import com.jdlink.domain.Inventory.WasteInventory;
+import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.*;
@@ -472,8 +469,8 @@ public class WasteInventoryController {
             materialRequisitionOrderService.addOutboundOrder(outboundOrder);
             //添加完进行更新操作 根据配料单编号
             OutboundOrder outboundOrder1=outboundOrderService.getOutBoundByMId(outboundOrder.getMaterialRequisitionOrder().getMaterialRequisitionId());
-           outboundOrderService.updateOutBoundOrder(outboundOrder1);
-           res.put("status", "success");
+            outboundOrderService.updateOutBoundOrder(outboundOrder1);
+            res.put("status", "success");
             res.put("message", "添加成功");
         }
         catch (Exception e){
@@ -595,8 +592,71 @@ catch (Exception e){
 
         return  res.toString();
     }
+   //加载下拉列表
+    @RequestMapping("getOutBoundList")
+    @ResponseBody
+    public String getOutBoundList(){
+        JSONObject res=new JSONObject();
+        try{
+            JSONArray array = JSONArray.fromArray(BoundType.values());
+            res.put("array", array);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
+    //添加次生出库单
+    @RequestMapping("addSecondary")
+    @ResponseBody
+    public String addSecondary(@RequestBody OutboundOrder outboundOrder){
+        JSONObject res=new JSONObject();
+        Calendar cal = Calendar.getInstance();
+        //获取年
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        //获取月
+        String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+        //序列号
+        String number = "001";
+        try{
+            //1查找是否存在出库单号 如果有序列号加1 如果没有就为001
+            List<String>  outboundOrderId= outboundOrderService.check();
+            if(outboundOrderId.size()==0){
+                number = "001";
+            }
+            if(outboundOrderId.size()!=0){
+                String s = outboundOrderId.get(0);//原字符串
+                String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+                number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+            }
+            String outboundOrderId1=year+mouth+number;
+            //添加出库单
+            outboundOrder.setOutboundOrderId(outboundOrderId1);
+            //做添加操作
+            outboundOrderService.addSecondary(outboundOrder);
+            //添加完进行更新操作 根据入库单号
+            //查询后
+             OutboundOrder outboundOrder1=  outboundOrderService.getOutBoundByInId(outboundOrder.getWasteInventory().getInboundOrderId());
+           //更新危废编号 客户编号 业务员编号 仓库编号
+            outboundOrderService.updateSecOutBoundOrder(outboundOrder1);
+            //更新危废库存的数量
+            outboundOrderService.upWastesInventoryNumber(outboundOrder1);
+            res.put("status", "success");
+            res.put("message", "添加成功");
 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "添加失败");
+        }
 
+        return  res.toString();
+    }
     //获取两位月数
     public  static  String getMouth(String mouth){
         if(mouth.length()!=2){

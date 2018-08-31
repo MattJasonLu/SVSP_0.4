@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接收管理</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/page.js"></script>
+    <script src="js/produce/materialRequisition.js"></script>
+    <script src="js/produce/outBound.js"></script>
+    <script src="js/produce/secondary.js"></script>
+</head>
+<body onload="loadSecondaryList()" >
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container navbar-left" style="width: 800px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li><a href="storageManagement.html">首页</a></li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="ingredientsList.html">每日配料单</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="materialRequisition.html">领料单</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="warehouseManageOut.html">危废出库</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="secondaryOutbound.html">次生出库</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="wastesQuery.html">危废查询</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">医废出入库登记</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="#" onclick="showLog();">登录日志</a></li>
+                <li><a href="index.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <!--<h4>博客管理系统(四月)</h4>-->
+            <!--<div class="cover">-->
+            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
+            <!--<b>Hi~ 小主</b>-->
+            <!--<p>超级管理员</p>-->
+            <!--</div>-->
+            <ul class="sidenav animated fadeInUp">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li class="active"><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="storageManagement.html">贮存管理</a></li>
+                <li>出库管理</li>
+                <li class="active">出库单</li>
+            </ol>
+        </div>
+        <h4 class="sub-header">次生库存列表</h4>
+        <form method="post" id="infoForm" enctype="multipart/form-data">
+            <table class="table table-bordered" id="J_tab_fam">
+                <tbody>
+                <tr>
+                    <th class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                        </label>
+                    </th>
+                    <td class="text-center">入库单号</td>
+                    <td class="text-center">仓库号</td>
+                    <td class="text-center">产废单位</td>
+                    <td class="text-center">危废名称</td>
+                    <td class="text-center">危废代码</td>
+                    <td class="text-center">产废类别</td>
+                    <td class="text-center">进料方式</td>
+                    <td class="text-center">数量</td>
+                    <td class="text-center">剩余数量</td>
+                    <td class="text-center">备注</td>
+                </tr>
+                <tr id="cloneTr" class="myclass">
+                    <td class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" name="select">
+                        </label>
+                    </td>
+                    <td class="text-center inboundOrderId"></td><!--入库单号-->
+                    <td class="text-center produceCompany "></td><!--产废单位-->
+                    <td class="text-left model-wastesName"></td>
+                    <td class="text-left model-wastesName"></td>
+                    <td class="text-center model-wastesCode"></td>
+                    <td class="text-center model-wastesCode"></td>
+                    <td class="text-right modal-weight"></td>
+                    <td class="text-right modal-materialForm"></td>
+                    <td class="text-right residualQuantity" id="residualQuantity"></td><!--剩余数量-->
+                    <td class="text-right modal-packingType"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row text-center">
+                <a class="btn btn-primary" onclick="batching(this);">确认</a>
+            </div>
+            <br>
+            <h4>出库单</h4>
+            <hr class="simple" color="#6f5499" />
+            <br>
+            <div class="row">
+                <!--<div class="form-horizontal col-md-3">-->
+                <!--<div class="form-group">-->
+                <!--<label for="batchingOrderId" class="col-sm-4 control-label">配料单号</label>-->
+                <!--<div class="col-xs-7">-->
+                <!--<input type="text" class="form-control" id="batchingOrderId" name="batchingOrderId" placeholder="" readonly>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                <!--<label for="remarks" class="col-sm-4 control-label">备注</label>-->
+                <!--<div class="col-xs-7">-->
+                <!--<input type="text" class="form-control" id="remarks" name="remarks" placeholder="" >-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                <!--&lt;!&ndash;<label for="modal-date" class="col-sm-4 control-label">入库日期</label>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="col-xs-7">&ndash;&gt;-->
+                <!--&lt;!&ndash;<input type="text" class="form-control" id="modal-date" name="modal-date" placeholder="">&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label for="date" class="col-sm-4 control-label">出库日期</label>
+                        <div class="col-xs-7">
+                            <input type="date" class="form-control" id="date" name="date" placeholder="">
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                    <!--<label for="modal-department" class="col-sm-4 control-label">部门</label>-->
+                    <!--<div class="col-xs-7">-->
+                    <!--<input type="text" class="form-control" id="modal-department" name="modal-department" placeholder="">-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label for="creator" class="col-sm-4 control-label">创建人</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" id="creator" name="creator" placeholder="">
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                    <!--<label for="modal-type" class="col-sm-4 control-label">入库类别</label>-->
+                    <!--<div class="col-xs-7">-->
+                    <!--<select class="form-control" id="modal-type" name="modal-type">-->
+                    <!--<option value="0">正常</option>-->
+                    <!--<option value="1">预处理退回</option>-->
+                    <!--<option value="2">其他</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <!--<div class="form-group">-->
+                        <!--<label for="createDate" class="col-sm-4 control-label">创建日期</label>-->
+                        <!--<div class="col-xs-7">-->
+                            <!--<input type="date" class="form-control" id="createDate" name="createDate" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="form-group">
+                        <label for="outboundType" class="col-sm-4 control-label">出库类别</label>
+                        <div class="col-xs-7">
+                            <select class="form-control" id="outboundType" name="outboundType">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-md-3">
+                    <div class="form-group">
+                        <label for="departmentName" class="col-sm-4 control-label">部门</label>
+                        <div class="col-xs-7">
+                            <input type="date" class="form-control" id="departmentName" name="departmentName" placeholder="">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <br>
+            <table class="table table-bordered">
+                <tr>
+                    <th class="text-center">入库单号</th>
+                    <th class="text-center">仓库号</th>
+                    <th class="text-center">产废单位</th>
+                    <th class="text-center">危废名称</th>
+                    <th class="text-center">危废代码</th>
+                    <th class="text-center">产废类别</th>
+                    <th class="text-center">进料方式</th>
+                    <th class="text-center">数量</th>
+                    <th class="text-center">备注</th>
+                </tr>
+                <tbody>
+                <tr id="cloneTr2" name="clone" class="myclass2">
+                    <!--<td class="text-center modal-companyName"></td>-->
+                    <td class="text-center modal-companyName"></td>
+                    <td class="text-center modal-einlass"></td>
+                    <td class="text-left model-wastesName"></td>
+                    <td class="text-left model-wastesName"></td>
+                    <td class="text-center model-wastesCode"></td>
+                    <td class="text-right modal-weight"></td>
+                    <td class="text-right modal-materialForm"></td>
+                    <td class="text-right modal-packingType" name="123">
+                        <input type='text' style='width: 100px;'  name='count' value="" id='input1' onchange='subtraction(this);'>
+                    </td>
+                    <td class="text-right modal-packingType"></td>
+                </tr>
+                <!--<tr  >-->
+                <!--&lt;!&ndash;<td class="text-center modal-companyName"></td>&ndash;&gt;-->
+                <!--<td class="text-center modal-companyName"></td>-->
+                <!--<td class="text-center modal-einlass"></td>-->
+                <!--<td class="text-left model-wastesName"></td>-->
+                <!--<td class="text-left model-wastesName"></td>-->
+                <!--<td class="text-center model-wastesCode"></td>-->
+                <!--<td class="text-right modal-weight"></td>-->
+                <!--<td class="text-right modal-materialForm"></td>-->
+                <!--<td class="text-right modal-packingType" name="123" ondblclick="adjustNumber();">100</td>-->
+                <!--<td class="text-right modal-packingType"></td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
+            <div class="row text-center">
+                <a class="btn btn-success" onclick="save();">保存</a>
+                <a class="btn btn-primary" onclick="submit();">提交</a>
+                <a class="btn btn-danger" href="ingredientsList.html">返回</a>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="embed"></div>
+</body>
+<style>
+    th {
+        text-align:center;
+        vertical-align: middle;
+    }
+    .pagination > li {
+        display: inline;
+    }
+</style>
+</html>

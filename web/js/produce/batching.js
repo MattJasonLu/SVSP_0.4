@@ -237,7 +237,7 @@ function setSeniorSelectedList() {
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                //console.log(result);
+               // console.log(result);
                 var data = eval(result);
                 // 高级检索下拉框数据填充
                 //进料方式
@@ -256,7 +256,7 @@ function setSeniorSelectedList() {
                 wastesInfoList.children().remove();
                 $.each(data.data, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
+                    option.val(item.code);
                     option.text(item.code);
                     wastesInfoList.append(option);
                 });
@@ -266,7 +266,7 @@ function setSeniorSelectedList() {
                 companyList.children().remove();
                 $.each(data.array, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
+                    option.val(item.clientId);
                     option.text(item.companyName);
                     companyList.append(option);
                 });
