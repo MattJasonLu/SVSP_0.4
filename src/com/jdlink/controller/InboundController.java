@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.*;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
@@ -96,13 +97,51 @@ public class InboundController {
             // 增加入库单
             inboundService.addInboundOrder(inboundOrder);
             res.put("status", "success");
+            res.put("message", "增加入库单成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加入库单失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 列出所有入库单
+     * @return 入库单列表
+     */
+    @RequestMapping("listInboundOrder")
+    @ResponseBody
+    public String listInboundOrder(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取入库单列表
+            List<InboundOrder> inboundOrderList = inboundService.listInboundOrder(page);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            res.put("status", "success");
             res.put("message", "获取信息成功");
+            res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取信息失败");
         }
         return res.toString();
+    }
+
+    /**
+     * 获取入库单的数量
+     * @return 入库单数量
+     */
+    @RequestMapping("countInboundOrder")
+    @ResponseBody
+    public int countInboundOrder() {
+        try {
+            return inboundService.countInboundOrder();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }

@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.InboundMapper">
+    <!--入库计划单映射集-->
     <resultMap id="InboundPlanOrderRM" type="InboundPlanOrder" autoMapping="true">
         <id column="inboundPlanOrderId" property="inboundPlanOrderId"/>
         <association property="wastes" javaType="com.jdlink.domain.Wastes">
@@ -18,7 +19,17 @@
     <!--入库单映射集-->
     <resultMap id="InboundOrderRM" type="InboundOrder" autoMapping="true">
         <id column="inboundOrderId" property="inboundOrderId"/>
-        <collection property="inboundOrderItemList" column="inboundOrderId"/>
+        <collection property="inboundOrderItemList" column="inboundOrderId" select="getInboundOrderItemList"
+                    ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
+    </resultMap>
+    
+    <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
+        <id column="inboundOrderItemId" property="inboundOrderItemId"/>
+        <association property="wastes" javaType="Wastes">
+            <id property="name" column="wastesName"/>
+            <result property="wastesId" column="wastesCode"/>
+            <result property="category" column="wastesCategory"/>
+        </association>
     </resultMap>
 
     <select id="listInboundPlanOrder" resultMap="InboundPlanOrderRM">
@@ -75,10 +86,15 @@
         </if>
     </insert>
 
+    <!--列出入库单-->
     <select id="listInboundOrder" resultMap="InboundOrderRM">
         SELECT * FROM t_pl_inboundorder;
     </select>
 
+    <select id="getInboundOrderItemList" resultMap="InboundOrderItemRM">
+        SELECT * FROM t_pl_inboundorderitem WHERE inboundOrderId=#{inboundOrderId};
+    </select>
+    
     <!--判断是否存在该入库单号-->
     <select id="existInboundOrderId" resultType="boolean">
         SELECT COUNT(*) FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
