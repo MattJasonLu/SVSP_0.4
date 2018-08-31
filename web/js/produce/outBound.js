@@ -262,6 +262,7 @@ function inputSwitchPage() {
 
 //点击确认进行出库操作
 function outBound() {
+
     var items = $("input[name='select']:checked");//判断复选框是否选中
     //获得领料单号
     items.each(function (index) {
@@ -399,7 +400,7 @@ function saveOutBound(){
             //1出库日期
             var outboundDate=$("#outBoundDate").val();
             //2出库类别
-            var outboundType=$("#outboundType").val();
+            var boundType=$("#outboundType").val();
             //3制单人
             var  creator=$('#creator').val();
             //4审核人
@@ -407,6 +408,7 @@ function saveOutBound(){
             //5领料单号
             var materialRequisitionId=$(this).children().get(10).innerHTML;
             data={
+                boundType:boundType,
                 outboundDate:outboundDate,
                 creator:creator,
                 auditor:auditor,
@@ -493,7 +495,7 @@ function setOutBoundList(result) {
     $.each(result, function (index, item) {
         console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
-        if(item.checkState.name=="已出库"){
+        if(item.checkState.name=="已出库"&&item.boundType.name=='危废出库'){
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
@@ -524,7 +526,10 @@ function setOutBoundList(result) {
                         break;
                     // 出库类别
                     case (6):
-                        $(this).html("危废出库");
+                        if(obj.boundType!=null){
+                            $(this).html(obj.boundType.name);
+                        }
+
                         break;
                     // 主管
                     case (7):

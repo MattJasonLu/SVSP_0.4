@@ -93,6 +93,9 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         <collection property="salesman" column="salesmanId" select="getSalesman1" ofType="Salesman"></collection>
        <!--客户-->
         <collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>
+       <!--仓库-->
+        <collection property="wareHouse" column="wareHouseId" select="getWareHouse" ofType="WareHouse"></collection>
+    <collection property="wasteInventory" column="inboundOrderId" select="getWasteInventory" ofType="WasteInventory"></collection>
     </resultMap>
     <!--获取领料单信息-->
     <select id="getMaterialRequisitionOrder" resultType="MaterialRequisitionOrder" parameterType="String">
@@ -106,4 +109,37 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <select id="getOutBoundOrderList"  resultMap="OutBoundOrderList">
         select  * from t_pl_outboundorder;
     </select>
+    <!--添加危废出库单-->
+    <insert id="addSecondary" parameterType="OutboundOrder">
+        insert into t_pl_outboundorder(outboundOrderId,inboundOrderId,outboundNumber,nowTime,checkState,boundType,outboundDate,creator,departmentName) values
+        (#{outboundOrderId},#{wasteInventory.inboundOrderId},#{outboundNumber},NOW(),'OutBounded',#{boundType},#{outboundDate},#{creator},#{departmentName});
+    </insert>
+    <resultMap id="RM1" type="OutboundOrder">
+       <collection property="wasteInventory" column="inboundOrderId" ofType="WasteInventory" select="getWasteInventory"></collection>
+    </resultMap>
+    <select id="getWasteInventory" resultMap="WasteInventoryRM" parameterType="String">
+        select * from  t_pl_wasteinventory where inboundOrderId=#{inboundOrderId}
+    </select>
+    <resultMap id="WasteInventoryRM" type="WasteInventory">
+        <collection property="produceCompany" column="clientId" select="getClient"></collection>
+        <collection property="wastes" column="id" select="getWastes"></collection>
+        <collection property="wareHouse" column="warseHouseId" select="getWareHouse"></collection>
+    </resultMap>
+    <!--根据入库单号-->
+    <select id="getOutBoundByInId" parameterType="String" resultMap="RM1">
+        select * from t_pl_outboundorder where inboundOrderId=#{inboundOrderId};
+    </select>
+    <!--更新次生出库单信息-->
+    <update id="updateSecOutBoundOrder" parameterType="OutboundOrder">
+     update  t_pl_outboundorder set
+      id=#{wasteInventory.wastes.id},
+      clientId=#{wasteInventory.produceCompany.clientId},
+      salesmanId=#{wasteInventory.produceCompany.salesman.salesmanId},
+      wareHouseId=#{wasteInventory.wareHouse.wareHouseId}
+      where inboundOrderId=#{wasteInventory.inboundOrderId}
+    </update>
+    <update id="upWastesInventoryNumber" parameterType="OutboundOrder">
+        update t_pl_wasteinventory set actualCount=actualCount-#{outboundNumber}
+        where t_pl_wasteinventory.inboundOrderId=#{wasteInventory.inboundOrderId};
+    </update>
 </mapper>

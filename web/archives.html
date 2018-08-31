@@ -349,7 +349,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left">
-                        <a class="btn btn-primary btn-xs" onclick="window.location.href = 'documentInfo.html?clientId=' + Request['clientId'];"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" id="function_177" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; window.location.href = 'documentInfo.html?clientId=' + Request['clientId'];}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
@@ -399,7 +399,7 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
-                                <td class="text-center"><a href="#" onclick="downloadFile(this);"><span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span></a></td>
+                                <td class="text-center"><a href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; downloadFile(e);}"><span class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span></a></td>
                             </tr>
                             </tbody>
                         </table>

@@ -14,15 +14,15 @@ public class OutboundOrder {
     * 1:N
     * */
     private MaterialRequisitionOrder  materialRequisitionOrder;
-    private List<MaterialRequisitionOrder> materialRequisitionOrderList;
+    //private List<MaterialRequisitionOrder> materialRequisitionOrderList;
 
-    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
-        return materialRequisitionOrderList;
-    }
-
-    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
-        this.materialRequisitionOrderList = materialRequisitionOrderList;
-    }
+//    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
+//        return materialRequisitionOrderList;
+//    }
+//
+//    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
+//        this.materialRequisitionOrderList = materialRequisitionOrderList;
+//    }
 
     /*出库单编号*/
    private String outboundOrderId;
@@ -37,7 +37,7 @@ public class OutboundOrder {
     /*转移联单号*/
     private String transferDraftId;
     /*部门*/
-    private String departmentId;
+   // private String departmentId;
     /*业务员 来自产废单位的业务员*/
     private Salesman salesman;
     /*单据状态*/
@@ -46,8 +46,60 @@ public class OutboundOrder {
     private  RecordState recordState;
     private Wastes wastes;
     private Client client;
+   /*出库类别*/
+    private BoundType boundType;
+    /*部门*/
+    private String departmentName;
+     /*次生危废对象*/
+    WasteInventory wasteInventory;
+    /*出库数量*/
+    /*仓库*/
+    private WareHouse wareHouse;
+
+    public WareHouse getWareHouse() {
+        return wareHouse;
+    }
+
+    public void setWareHouse(WareHouse wareHouse) {
+        this.wareHouse = wareHouse;
+    }
+
+    private float outboundNumber;
+
+    public float getOutboundNumber() {
+        return outboundNumber;
+    }
+
+    public void setOutboundNumber(float outboundNumber) {
+        this.outboundNumber = outboundNumber;
+    }
+
+    public WasteInventory getWasteInventory() {
+        return wasteInventory;
+    }
+
+    public void setWasteInventory(WasteInventory wasteInventory) {
+        this.wasteInventory = wasteInventory;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public BoundType getBoundType() {
+        return boundType;
+    }
+
+    public void setBoundType(BoundType boundType) {
+        this.boundType = boundType;
+    }
 
     public Client getClient() {
+
         return client;
     }
 
@@ -122,13 +174,13 @@ public class OutboundOrder {
         this.transferDraftId = transferDraftId;
     }
 
-    public String getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
-    }
+//    public String getDepartmentId() {
+//        return departmentId;
+//    }
+//
+//    public void setDepartmentId(String departmentId) {
+//        this.departmentId = departmentId;
+//    }
 
     public Salesman getSalesman() {
         return salesman;
@@ -155,8 +207,7 @@ public class OutboundOrder {
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "OutboundOrder{" +
                 "materialRequisitionOrder=" + materialRequisitionOrder +
                 ", outboundOrderId='" + outboundOrderId + '\'' +
@@ -165,9 +216,13 @@ public class OutboundOrder {
                 ", auditor='" + auditor + '\'' +
                 ", outboundOrder=" + outboundOrder +
                 ", transferDraftId='" + transferDraftId + '\'' +
-                ", departmentId='" + departmentId + '\'' +
+                ", salesman=" + salesman +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
+                ", wastes=" + wastes +
+                ", client=" + client +
+                ", boundType=" + boundType +
+                ", departmentName='" + departmentName + '\'' +
                 '}';
     }
 }
