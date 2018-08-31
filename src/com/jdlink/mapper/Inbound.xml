@@ -52,19 +52,23 @@
 
     <!--增加入库单-->
     <insert id="addInboundOrder" parameterType="InboundOrder">
-        INSERT INTO t_pl_inboundorder (inboundOrderId, transferDraftId, inboundDate, warehouseId, salesmanId, boundType, planCount,
-        actualCount, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
-        modifyDate, recordState) VALUES (#{inboundOrderId}, #{transferDraftId}, #{inboundDate}, #{wareHouse.warehouseId},
-        #{salesman.salesmanId}, #{boundType}, #{planCount}, #{actualCount}, #{keeperId}, #{directorId}, #{approverId},
-        #{checkState}, #{remarks}, #{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate},
+        INSERT INTO t_pl_inboundorder (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
+        modifyDate, recordState) VALUES (#{inboundOrderId}, #{inboundDate}, #{wareHouse.warehouseId}, #{boundType},
+        #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
+        #{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate},
         #{recordState});
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
-                INSERT INTO t_pl_inboundorderitem (inboundOrderItemId, transferDraftId, inboundOrderId, produceCompanyId, processWay, handleCategory,
-                remarks, warehourseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount, unitPriceTax,
-                totalPrice) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId}, #{inboundOrderItem.inboundOrderId},
-                #{inboundOrderItem.produceCompany.produceCompanyId}, #{processWay}, #{handleCategory}, #{remarks},
-                #{warehourseArea}, #{recordState}, #{isQualified}, #{inboundOrderItem.wastes.name},
+                INSERT INTO t_pl_inboundorderitem (inboundOrderItemId, transferDraftId, inboundOrderId,
+                produceCompanyId, processWay, handleCategory,
+                remarks, warehouseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,
+                unitPriceTax,
+                totalPrice) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
+                #{inboundOrderItem.inboundOrderId},
+                #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
+                #{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
+                #{inboundOrderItem.warehouseArea}, #{inboundOrderItem.recordState}, #{inboundOrderItem.isQualified},
+                #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice});
             </foreach>

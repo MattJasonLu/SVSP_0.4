@@ -166,35 +166,29 @@ function setDataList(result) {
                     $(this).html(getDateStr(obj.transferDate));
                     break;
                 case (7):
-                    $(this).html(obj.transferDraftId);
+                    $(this).html(obj.transferCount);
                     break;
                 case (8):
-                    $(this).html(obj.transferCount);
-
+                    $(this).html(obj.poundsCount);
                     break;
                 case (9):
-                    $(this).html(obj.poundsCount);
-
+                    $(this).html(obj.storageCount);
                     break;
                 case (10):
-                    $(this).html(obj.storageCount);
-
-                    break;
-                case (11):
                     $(this).html(obj.leftCount);
                     break;
-                case (12):
+                case (11):
                     $(this).html(obj.prepareTransferCount);
                     break;
-                case (13):
+                case (12):
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.name);
                     break;
-                case (14):
+                case (13):
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.wastesId);
                     break;
-                case (15):
+                case (14):
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.category);
                     break;
@@ -228,12 +222,12 @@ function addPlan2Order() {
                 plan.produceCompanyName = $(this).find("td[name='produceCompanyName']").text();
                 plan.acceptCompanyName = $(this).find("td[name='acceptCompanyName']").text();
                 plan.transferDate = $(this).find("td[name='transferDate']").text();
-                plan.transferDraftId = $(this).find("td[name='transferDraftId']").text();
                 plan.transferCount = $(this).find("td[name='transferCount']").text();
                 plan.poundsCount = $(this).find("td[name='poundsCount']").text();
+                plan.storageCount = $(this).find("td[name='storageCount']").text();
                 plan.leftCount = $(this).find("td[name='leftCount']").text();
                 plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
-                plan.prepareTransferCount = $(this).find("td[name='prepareTransferCount']").text();
+                plan.wastesName = $(this).find("td[name='wastesName']").text();
                 plan.wastesCode = $(this).find("td[name='wastesCode']").text();
                 plan.wastesCategory = $(this).find("td[name='wastesCategory']").text();
                 planList.push(plan);
@@ -247,32 +241,13 @@ function addPlan2Order() {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.children("td").each(function (inner_index) {
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                case (0):
-                    $(this).html(i+1);
-                    break;
-                case (1):
-                    $(this).html(planList[i].inboundPlanOrderId);
-                    break;
-                case (2):
-                    $(this).html(planList[i].transferDraftId);
-                    break;
-                case (3):
-                    $(this).html(planList[i].produceCompanyName);
-                    break;
-                case (4):
-                    $(this).html(planList[i].wastesName);
-                    break;
-                case (5):
-                    $(this).html(planList[i].wastesCode);
-                    break;
-                case (6):
-                    $(this).html(planList[i].poundsCount);
-                    break;
-            }
-        });
+        clonedTr.find("td[name='index']").text(i+1);
+        clonedTr.find("td[name='inboundPlanOrderId']").text(planList[i].inboundPlanOrderId);
+        clonedTr.find("td[name='transferDraftId']").text(planList[i].transferDraftId);
+        clonedTr.find("td[name='produceCompanyName']").text(planList[i].produceCompanyName);
+        clonedTr.find("td[name='wastesName']").text(planList[i].wastesName);
+        clonedTr.find("td[name='wastesCode']").text(planList[i].wastesCode);
+        clonedTr.find("td[name='wastesAmount']").text(planList[i].poundsCount);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -355,6 +330,7 @@ function addInboundOrder(type) {
     $("#inboundOrderData").children().not("#inboundClonedTr").each(function () {
         var inboundOrder = {};
         inboundOrder.inboundPlanOrderId = $(this).find("td[name='inboundPlanOrderId']").text();
+        inboundOrder.transferDraftId = $(this).find("td[name='transferDraftId']").text();
         var produceCompany = {};
         produceCompany.companyName = $(this).find("td[name='produceCompanyName']").text();
         inboundOrder.produceCompany = produceCompany;
