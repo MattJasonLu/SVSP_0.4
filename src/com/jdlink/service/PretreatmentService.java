@@ -12,12 +12,13 @@ public interface PretreatmentService {
     void add(Pretreatment pretreatment);
     void update(Pretreatment pretreatment);
     List<Pretreatment> listPage(Page page);
+    List<Pretreatment> list();
     Pretreatment getById(String id);
     List<Pretreatment> search(Pretreatment pretreatment);
     int searchCount(Pretreatment pretreatment);
     int countById(String id);
     void invalid(String id);
-    void adjust(Wastes wastes);
+    void adjust(Pretreatment pretreatment);
     String getCurrentPretreatmentId();
     int getCurrentItemId();
     PretreatmentItem getItemsById(int id);

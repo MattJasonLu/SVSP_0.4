@@ -26,6 +26,7 @@ public class SupplierController {
 
     /**
      * 列出所有供应商
+     *
      * @return 供应商jsonArray字符串
      */
     @RequestMapping("listSupplier")
@@ -48,19 +49,20 @@ public class SupplierController {
      */
     @RequestMapping("listSupplierById")
     @ResponseBody
-    public String listSupplierById(String id){
-     Supplier supplier=supplierService.getBySupplierId(id);
-     JSONObject res=JSONObject.fromBean(supplier);
-     return res.toString();
+    public String listSupplierById(String id) {
+        Supplier supplier = supplierService.getBySupplierId(id);
+        JSONObject res = JSONObject.fromBean(supplier);
+        return res.toString();
     }
+
     /**
      * 根据公司名称查找供应商
      */
     @RequestMapping("getSuppier")
     @ResponseBody
-    public String getSuppier(String companyName){
-        Supplier supplier=supplierService.getByName(companyName);
-        JSONObject res=JSONObject.fromBean(supplier);
+    public String getSuppier(String companyName) {
+        Supplier supplier = supplierService.getByName(companyName);
+        JSONObject res = JSONObject.fromBean(supplier);
         return res.toString();
     }
 
@@ -95,6 +97,7 @@ public class SupplierController {
 
     /**
      * 保存供应商
+     *
      * @param supplier 供应商
      * @return 请求结果
      */
@@ -123,6 +126,7 @@ public class SupplierController {
 
     /**
      * 提交供应商
+     *
      * @param supplier 供应商
      * @return 请求结果
      */
@@ -167,6 +171,7 @@ public class SupplierController {
 
     /**
      * 根据供应商编号删除
+     *
      * @param supplierId 供应商编号
      * @return 操作成功与否
      */
@@ -188,6 +193,7 @@ public class SupplierController {
 
     /**
      * 启用供应商
+     *
      * @param supplierId 供应商编号
      * @return 操作成功与否
      */
@@ -210,6 +216,7 @@ public class SupplierController {
 
     /**
      * 禁用供应商
+     *
      * @param supplierId 供应商编号
      * @return 操作成功与否
      */
@@ -232,6 +239,7 @@ public class SupplierController {
 
     /**
      * 查询供应商信息
+     *
      * @param supplier 供应商
      * @return 供应商信息列表
      */
@@ -240,6 +248,28 @@ public class SupplierController {
     public String searchSupplier(@RequestBody Supplier supplier) {
         JSONObject res = new JSONObject();
         try {
+            //枚举类型转换
+            //供应商类型
+            String keyword = supplier.getKeyword();
+            if (keyword.equals("次生处置供方") || keyword.equals("次生处置") || keyword.equals("次生") || keyword.equals("处置"))
+                keyword = "DeriveDisposal";
+            if (keyword.equals("运输类供方") || keyword.equals("运输类") || keyword.equals("运输"))
+                keyword = "Transport";
+            if (keyword.equals("采购供方") || keyword.equals("采购"))
+                keyword = "Purchase";
+            if (keyword.equals("其他供方") || keyword.equals("其他"))
+                keyword = "Others";
+            //supplierState
+            if (keyword.equals("已启用") || keyword.equals("启用")) keyword = "Enabled";
+            if (keyword.equals("已禁用") || keyword.equals("禁用")) keyword = "Disabled";
+            //checkState
+            for (CheckState c : CheckState.values()) {
+                if (keyword.equals(c.getName())) {
+                    keyword = c.name();
+                    //System.out.println("keyword=" + keyword);
+                }
+            }
+            supplier.setKeyword(keyword);
             List<Supplier> supplierList = supplierService.search(supplier);
             JSONArray data = JSONArray.fromArray(supplierList.toArray(new Supplier[supplierList.size()]));
             res.put("status", "success");
@@ -257,6 +287,28 @@ public class SupplierController {
     @ResponseBody
     public int searchSupplierTotal(@RequestBody Supplier supplier) {
         try {
+            //枚举类型转换
+            //供应商类型
+            String keyword = supplier.getKeyword();
+            if (keyword.equals("次生处置供方") || keyword.equals("次生处置") || keyword.equals("次生") || keyword.equals("处置"))
+                keyword = "DeriveDisposal";
+            if (keyword.equals("运输类供方") || keyword.equals("运输类") || keyword.equals("运输"))
+                keyword = "Transport";
+            if (keyword.equals("采购供方") || keyword.equals("采购"))
+                keyword = "Purchase";
+            if (keyword.equals("其他供方") || keyword.equals("其他"))
+                keyword = "Others";
+            //supplierState
+            if (keyword.equals("已启用") || keyword.equals("启用")) keyword = "Enabled";
+            if (keyword.equals("已禁用") || keyword.equals("禁用")) keyword = "Disabled";
+            //checkState
+            for (CheckState c : CheckState.values()) {
+                if (keyword.equals(c.getName())) {
+                    keyword = c.name();
+                    //System.out.println("keyword=" + keyword);
+                }
+            }
+            supplier.setKeyword(keyword);
             return supplierService.searchCount(supplier);
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,6 +332,7 @@ public class SupplierController {
 
     /**
      * 获取目前的客户编号
+     *
      * @return
      */
     @RequestMapping("getCurrentSupplierId")
@@ -308,6 +361,7 @@ public class SupplierController {
 
     /**
      * 通过供应商编号获取供应商
+     *
      * @param supplierId 供应商编号
      * @return 供应商信息
      */
@@ -331,6 +385,7 @@ public class SupplierController {
 
     /**
      * 审批通过供应商
+     *
      * @param supplierId 客户编号
      * @return 成功与否
      */
@@ -352,6 +407,7 @@ public class SupplierController {
 
     /**
      * 驳回供应商
+     *
      * @param supplierId 客户编号
      * @return 成功与否
      */
@@ -385,7 +441,7 @@ public class SupplierController {
                 supplierDir.mkdirs();
             }
             if (licenseFile1 != null) {
-                String licenseFile1Name = supplierId + "-" +  licenseFile1.getOriginalFilename();
+                String licenseFile1Name = supplierId + "-" + licenseFile1.getOriginalFilename();
                 String licenseFile1Path = supplierPath + "/" + licenseFile1Name;
                 File licenseFile1File = new File(licenseFile1Path);
                 licenseFile1.transferTo(licenseFile1File);
@@ -410,14 +466,15 @@ public class SupplierController {
 
     /**
      * 获取总记录数
+     *
      * @return
      */
     @RequestMapping("totalSupplierRecord")
     @ResponseBody
-    public int totalSupplierRecord(){
+    public int totalSupplierRecord() {
         try {
             return supplierService.count();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -425,7 +482,7 @@ public class SupplierController {
 
     @RequestMapping("loadPageSupplierList")
     @ResponseBody
-    public  String loadPageQuestionnaireList(@RequestBody Page page){
+    public String loadPageQuestionnaireList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             // 取出查询客户

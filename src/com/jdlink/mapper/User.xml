@@ -26,7 +26,7 @@
         delete from user where id= #{id}
     </delete>
 
-    <select id="get" parameterType="map" resultType="User">
+    <select id="get" parameterType="map" resultMap="UserRM">
         select * from user where username = #{username} and password = #{password}
     </select>
 
@@ -34,7 +34,7 @@
         SELECT * FROM user WHERE id=#{id} LIMIT 1;
     </select>
 
-    <select id="getByUsername" parameterType="String" resultType="User">
+    <select id="getByUsername" parameterType="String" resultMap="UserRM">
         SELECT * FROM user WHERE username=#{username};
     </select>
 
@@ -58,9 +58,20 @@
         SELECT * FROM t_ur_role;
     </select>
 
+    <!--获取角色-->
     <select id="getRole" resultType="Role">
         SELECT * FROM t_ur_role WHERE id=#{roleId};
     </select>
+
+    <!--增加角色-->
+    <insert id="addRole" parameterType="Role">
+        INSERT INTO t_ur_role (roleName) VALUES (#{roleName});
+    </insert>
+
+    <!--更新角色的名称-->
+    <update id="setRoleName" parameterType="Role">
+        UPDATE t_ur_role SET roleName=#{roleName} WHERE id=#{id};
+    </update>
 
     <!--列出所有功能-->
     <select id="listFunction" resultMap="FunctionRM">
@@ -72,6 +83,7 @@
         SELECT * FROM t_ur_function WHERE parentFunctionId=#{id};
     </select>
 
+    <!--通过角色编号获取功能-->
     <select id="getFunctionByRoleId" resultMap="FunctionRM" parameterType="int">
         SELECT * FROM t_ur_function WHERE id IN (
           SELECT t_ur_authority.functionId FROM t_ur_authority
@@ -82,6 +94,21 @@
     <!--列出所有的权限-->
     <select id="listAuthority" resultType="Authority">
         SELECT * FROM t_ur_authority;
+    </select>
+
+    <!--更新当前角色的权限-->
+    <update id="updateAuthority">
+        DELETE FROM t_ur_authority WHERE roleId=#{roleId};
+        <if test="functionIdList.length > 0">
+            <foreach collection="functionIdList" item="functionId" index="index">
+                INSERT INTO t_ur_authority (roleId, functionId) VALUES (#{roleId}, #{functionId});
+            </foreach>
+        </if>
+    </update>
+
+    <!--校验当前角色是否可以进入该功能-->
+    <select id="checkAuthority" resultType="boolean">
+        SELECT COUNT(*) FROM t_ur_authority WHERE roleId=#{roleId} AND functionId=#{functionId};
     </select>
 
 </mapper>

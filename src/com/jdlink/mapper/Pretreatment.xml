@@ -57,6 +57,10 @@
         </if>
     </select>
 
+    <select id="list" resultMap="PretreatmentRM">
+        select * from t_pr_pretreatment order by nowTime desc;
+    </select>
+
     <select id="search" parameterType="Pretreatment" resultMap="PretreatmentRM">
         select * from t_pr_pretreatment
         <where>
@@ -77,7 +81,7 @@
         select count(*) from t_pr_pretreatment
         <where>
             <if test="id != null and id != ''">
-                and id like "%"#{id}"%"
+                and id binar like "%"#{id}"%"
             </if>
             <if test="state != null and state != ''">
                 and state = #{state}
@@ -93,9 +97,20 @@
         update t_pr_pretreatment set state = 'Invalid',nowTime = NOW() where id = #{id}
     </update>
 
-    <update id="adjust" parameterType="Wastes">
-        update t_pr_pretreatmentitem set processWay = #{processWay},handleCategory = #{handleCategory}
-        where itemId = #{id};
+    <update id="adjust" parameterType="Pretreatment">
+        update t_pr_pretreatment
+        set
+        nowTime = NOW(),wasteLiquidProportion =#{wasteLiquidProportion},bulkProportion =#{bulkProportion},
+        crushingProportion =#{crushingProportion},distillationProportion=#{distillationProportion},
+        suspensionProportion=#{suspensionProportion},sludgeProportion=#{sludgeProportion}
+        where id = #{id};
+        <foreach collection="pretreatmentItemList" index="index" item="pretreatmentItem">
+            update t_pr_pretreatmentitem
+            set
+            processWay = #{pretreatmentItem.wastes.processWay},handleCategory = #{pretreatmentItem.wastes.handleCategory}
+            where itemId = #{pretreatmentItem.itemId};
+        </foreach>
+
     </update>
 
     <update id="update" parameterType="Pretreatment">

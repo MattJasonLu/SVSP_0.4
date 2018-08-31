@@ -94,7 +94,7 @@
         <div>
             <!--操作按钮-->
             <div class="pull-left">
-                <a class="btn btn-primary btn-xs" href="userInfo.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                <a class="btn btn-primary btn-xs" href="#" onclick="addRole();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
             </div>
         </div>
         <div class="table">
@@ -118,16 +118,37 @@
                             <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="checkbox1">
                         </label>
                     </td>
-                    <td class="text-center">0001</td>
-                    <td class="text-center">管理员</td>
+                    <td class="text-center" name="id">0001</td>
+                    <td class="text-center" name="roleName">管理员</td>
                     <td class="text-center">
-                        <a href="#" onclick="alert('功能开发中');" title="修改名称"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                        <a href="#" onclick="adjustRole($(this));" title="修改名称"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-
+        <!--角色信息模态框-->
+        <div class="modal fade bs-example-modal-lg" id="roleInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">角色信息</div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="modal-roleName" class="col-sm-4 control-label">角色名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="modal-roleName" name="modal-roleName" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="saveBtn">保存</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="embed"></div>

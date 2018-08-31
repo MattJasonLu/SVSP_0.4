@@ -11,7 +11,9 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -139,7 +141,7 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取用户信息失败");
             res.put("exception", e.getMessage());
         }
@@ -162,7 +164,7 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取信息失败");
             res.put("exception", e.getMessage());
         }
@@ -179,8 +181,52 @@ public class UserController {
             res.put("message", "分配角色成功");
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "分配角色失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 增加角色
+     * @param role 角色
+     * @return 结果
+     */
+    @RequestMapping("addRole")
+    @ResponseBody
+    public String addRole(@RequestBody Role role) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.addRole(role);
+            res.put("status", "success");
+            res.put("message", "增加角色成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加角色失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 更新角色名称
+     * @param role 角色
+     * @return 结果
+     */
+    @RequestMapping("setRoleName")
+    @ResponseBody
+    public String setRoleName(@RequestBody Role role) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.setRoleName(role);
+            res.put("status", "success");
+            res.put("message", "修改角色名称成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改角色名称失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();
@@ -203,7 +249,7 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取信息失败");
             res.put("exception", e.getMessage());
         }
@@ -234,6 +280,29 @@ public class UserController {
     }
 
     /**
+     * 更新权限
+     * @param roleId 角色编号
+     * @param functionIdList 可用的功能编号列表
+     * @return 成功与否
+     */
+    @RequestMapping("updateAuthority")
+    @ResponseBody
+    public String updateAuthority(int roleId, @RequestParam(value = "functionIdList[]")int[] functionIdList) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.updateAuthority(roleId, functionIdList);
+            res.put("status", "success");
+            res.put("message", "权限更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "权限更新失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
      * 列出所有用户
      * @return 所有用户数据
      */
@@ -249,12 +318,42 @@ public class UserController {
             res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "success");
+            res.put("status", "fail");
             res.put("message", "获取信息失败");
             res.put("exception", e.getMessage());
         }
         return res.toString();
     }
 
+    /**
+     * 校验权限是否可以进入该功能
+     * @return 能否进入
+     */
+    @RequestMapping("checkAuthority")
+    @ResponseBody
+    public String checkAuthority(HttpSession session, String functionId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取session中保存的用户信息
+            User user = (User) session.getAttribute("user");
+            // 获取user对象中的角色编号
+            if (user != null) {
+                int roleId = user.getRole().getId();
+                // 进行校验
+                if (!userService.checkAuthority(roleId, Integer.parseInt(functionId))) {
+                    res.put("status", "fail");
+                    res.put("message", "对不起，该账号没有权限！");
+                } else {
+                    res.put("status", "success");
+                    res.put("message", "进入功能成功");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "服务器错误");
+        }
+        return res.toString();
+    }
 
 }

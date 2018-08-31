@@ -50,6 +50,18 @@ public interface UserMapper {
     void setRole(@Param("userId") int userId, @Param("roleId") int roleId);
 
     /**
+     * 增加角色
+     * @param role 角色
+     */
+    void addRole(Role role);
+
+    /**
+     * 更新角色名称
+     * @param role 角色
+     */
+    void setRoleName(Role role);
+
+    /**
      * 列出所有功能
      * @return
      */
@@ -67,5 +79,20 @@ public interface UserMapper {
      * @return
      */
     List<Authority> listAuthority();
+
+    /**
+     * 更新权限
+     * @param roleId 角色编号
+     * @param functionIdList 功能编号列表
+     */
+    void updateAuthority(@Param("roleId")int roleId, @Param("functionIdList")int[] functionIdList);
+
+    /**
+     * 校验当前账号所对应的角色是否可以进入该功能
+     * @param roleId 角色编号
+     * @param functionId 功能编号
+     * @return 能否进入
+     */
+    boolean checkAuthority(@Param("roleId") int roleId, @Param("functionId") int functionId);
 
 }

@@ -257,15 +257,18 @@ function addPlan2Order() {
                     $(this).html(planList[i].inboundPlanOrderId);
                     break;
                 case (2):
-                    $(this).html(planList[i].produceCompanyName);
+                    $(this).html(planList[i].transferDraftId);
                     break;
                 case (3):
-                    $(this).html(planList[i].wastesName);
+                    $(this).html(planList[i].produceCompanyName);
                     break;
                 case (4):
-                    $(this).html(planList[i].wastesCode);
+                    $(this).html(planList[i].wastesName);
                     break;
                 case (5):
+                    $(this).html(planList[i].wastesCode);
+                    break;
+                case (6):
                     $(this).html(planList[i].poundsCount);
                     break;
             }

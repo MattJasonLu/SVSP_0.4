@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -317,7 +316,6 @@ public class ClientController {
             e.printStackTrace();
             return null;
         }
-
     }
 
     @RequestMapping("searchClient")
