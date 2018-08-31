@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 
 import java.util.List;
@@ -34,4 +35,29 @@ public interface InboundService {
      * @return 数量
      */
     int getInboundPlanCountByPrefix(String prefix);
+
+    /**
+     * 获取入库单号
+     * @return 入库单号
+     */
+    String getInboundOrderId();
+
+    /**
+     * 增加入库单
+     * @param inboundOrder 入库单
+     */
+    void addInboundOrder(InboundOrder inboundOrder);
+
+    /**
+     * 是否存在该单号
+     * @param inboundOrderId 入库单号
+     * @return 存在与否
+     */
+    boolean existInboundOrderId(String inboundOrderId);
+
+    /**
+     * 计算入库单数量
+     * @return 入库单数量
+     */
+    int countInboundOrder();
 }

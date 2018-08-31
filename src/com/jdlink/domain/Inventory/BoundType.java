@@ -5,7 +5,11 @@ import sun.org.mozilla.javascript.internal.ast.StringLiteral;
 /*出库类别*/
 public enum  BoundType {
     NormalOutbound("正常出库",1),
-    OtherOutbound("其它出库",2);
+    OtherOutbound("其它出库",2),
+    WasteInbound("危废入库",3),
+    SecondaryInbound("次生入库",4),
+    WasteOutbound("危废出库",5),
+    SecondaryOutbound("次生出库",6);
     private String name;
     private int index;
     BoundType(String name, int index) {

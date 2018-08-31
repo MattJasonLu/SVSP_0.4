@@ -22,15 +22,6 @@ function allSelect() {
     else $("input[name='select']").prop('checked', false);
 }
 
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
-
-//////////////////////////
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
@@ -441,42 +432,6 @@ function setSeniorSelectedList() {
             console.log("error: " + result);
         }
     });
-    // //设置处置、进料方式下拉框
-    // $.ajax({
-    //     type: "POST",                       // 方法类型
-    //     url: "getPretreatmentSelectedList",                  // url
-    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    //     dataType: "json",
-    //     success: function (result) {
-    //         if (result != undefined) {
-    //             var data = eval(result);
-    //             // 下拉框数据填充
-    //             var state1 = $("#search-handleCategory");
-    //             state1.children().remove();
-    //             $.each(data.handleCategoryList, function (index, item) {
-    //                 var option = $('<option />');
-    //                 option.val(index);
-    //                 option.text(item.name);
-    //                 state1.append(option);
-    //             });
-    //             state1.get(0).selectedIndex = -1;
-    //             var state2 = $("#search-processWay");
-    //             state2.children().remove();
-    //             $.each(data.processWayList, function (index, item) {
-    //                 var option = $('<option />');
-    //                 option.val(index);
-    //                 option.text(item.name);
-    //                 state2.append(option);
-    //             });
-    //             state2.get(0).selectedIndex = -1;
-    //         } else {
-    //             console.log("fail: " + result);
-    //         }
-    //     },
-    //     error: function (result) {
-    //         console.log("error: " + result);
-    //     }
-    // });
 }
 
 /**

@@ -13,4 +13,8 @@ public interface OutboundOrderService {
     void  updateOutBoundOrder(OutboundOrder outboundOrder);
     List<OutboundOrder> getOutBoundOrderList();
     OutboundOrder getOutBoundByMId(String materialRequisitionId);
+    void addSecondary(OutboundOrder outboundOrder);
+    OutboundOrder  getOutBoundByInId(String inboundOrderId);
+    void updateSecOutBoundOrder(OutboundOrder outboundOrder);
+    void upWastesInventoryNumber(OutboundOrder outboundOrder);
 }
