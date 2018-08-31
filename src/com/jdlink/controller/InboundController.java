@@ -1,8 +1,10 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.User;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
@@ -26,6 +28,8 @@ public class InboundController {
 
     @Autowired
     InboundService inboundService;
+    @Autowired
+    ClientService clientService;
 
     /**
      * 列出所有入库计划单信息
@@ -79,14 +83,15 @@ public class InboundController {
             inboundOrder.setModifyDate(new Date());
             // 设置创建日期为当前日期
             inboundOrder.setCreateDate(new Date());
-
             // 遍历入库条目
             for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
                 // 设置条目编号为随机八位码
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
                 // 入库单号
                 inboundOrderItem.setInboundOrderId(inboundOrder.getInboundOrderId());
-
+                Client produceCompany = clientService.getByName(inboundOrderItem.getProduceCompany().getCompanyName());
+                // 设置生产单位
+                inboundOrderItem.setProduceCompany(produceCompany);
             }
             // 增加入库单
             inboundService.addInboundOrder(inboundOrder);
