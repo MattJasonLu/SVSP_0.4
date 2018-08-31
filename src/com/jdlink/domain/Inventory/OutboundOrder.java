@@ -53,6 +53,17 @@ public class OutboundOrder {
      /*次生危废对象*/
     WasteInventory wasteInventory;
     /*出库数量*/
+    /*仓库*/
+    private WareHouse wareHouse;
+
+    public WareHouse getWareHouse() {
+        return wareHouse;
+    }
+
+    public void setWareHouse(WareHouse wareHouse) {
+        this.wareHouse = wareHouse;
+    }
+
     private float outboundNumber;
 
     public float getOutboundNumber() {
