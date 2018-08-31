@@ -86,4 +86,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         questionnaireMapper.examine(questionnaire);
     }
 
+    @Override
+    public List<Questionnaire> searchQuestionnaireManage(Questionnaire questionnaire) {
+        return questionnaireMapper.searchQuestionnaireManage(questionnaire);
+    }
+
 }

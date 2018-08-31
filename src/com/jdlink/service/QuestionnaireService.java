@@ -24,4 +24,5 @@ public interface QuestionnaireService {
     void updateAttachmentUrl(Questionnaire questionnaire);
     void back(Questionnaire questionnaire);
     void examine(Questionnaire questionnaire);
+    List<Questionnaire> searchQuestionnaireManage(Questionnaire questionnaire);
 }
