@@ -58,6 +58,40 @@ function loadPretreatmentList() {
             console.log("失败");
         }
     });
+    setSeniorSelectedList1();
+}
+
+/**
+ * 设置高级检索的下拉框数据
+ */
+function setSeniorSelectedList1() {
+    //设置状态下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getPretreatmentStateList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var state1 = $("#search1-state");
+                state1.children().remove();
+                $.each(data.stateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    state1.append(option);
+                });
+                state1.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**
@@ -594,6 +628,47 @@ function getCurrentBurnOrderId() {
     });
     return id1;
 }
+
+/**
+ * 新增页面预处理单查询功能
+ */
+function search1() {
+    var state = null;
+    if ($("#search1-state").val() == 0) state = "NewBuild";//新建
+    if ($("#search1-state").val() == 1) state = "Confirm";//已确认
+    if ($("#search1-state").val() == 2) state = "Invalid";//已作废
+    if ($("#senior1").is(':visible')) {
+        var data = {
+            id: $("#search1-id").val(),
+            searchDate: $("#search1-creationDate").val(),
+            remarks: $("#search1-remarks").val(),
+            state: state
+        };
+    }
+    if (data == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchPretreatment",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setPretreatmentList(result.data);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+}
 /////////////////////焚烧工单列表页面/////////////////////////////////
 
 var currentPage = 1;                          //当前页数
@@ -1098,7 +1173,7 @@ function searchBurnOrder() {
     if ($("#senior").is(':visible')) {
         data1 = {
             id: $("#search-id").val(),
-            creationDate: $("#search-creationDate").val(),
+            pretreatmentId: $("#search-creationDate").val(),
             remarks: $("#search-remarks").val(),
             state: state,
             page: page

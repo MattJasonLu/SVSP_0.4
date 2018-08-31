@@ -333,9 +333,10 @@ public class PRBurnOrderController {
      */
     @RequestMapping("searchBurnOrder")
     @ResponseBody
-    public String searchSampleInfo(@RequestBody BurnOrder burnOrder) {
+    public String search(@RequestBody BurnOrder burnOrder) {
         JSONObject res = new JSONObject();
         try {
+            System.out.println(burnOrder.getPretreatmentId());
             List<BurnOrder> burnOrderList = burnOrderService.search(burnOrder);
             JSONArray data = JSONArray.fromArray(burnOrderList.toArray(new BurnOrder[burnOrderList.size()]));
             res.put("status", "success");
