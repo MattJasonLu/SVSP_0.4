@@ -180,7 +180,7 @@
             </tr>
             </thead>
             <tbody id="burnOrderData">
-            <tr id="burnOrderClonedTr" ondblclick="">
+            <tr id="burnOrderClonedTr" >
                 <td class="text-center"></td>
                 <td class="text-center " name="burnOrder-burnOrderId"></td>
                 <td class="text-center " name="burnOrder-pretreatmentId"></td>
@@ -198,153 +198,6 @@
         <div class="row text-center">
             <a class="btn btn-success" onclick="save();">保存</a>
             <a class="btn btn-danger" href="burnOrderList.html">返回</a>
-        </div>
-
-        <!--焚烧工单查看模态框-->
-        <div class="modal fade bs-example-modal-lg" id="view1Modal" tabindex="-1" role="dialog"
-             aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg" role="document" style="width: 90%">
-                <div class="modal-content">
-                    <br>
-                    <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
-                    <h4 class="modal-title text-center" id="title1">焚烧工单</h4>
-                    <br>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th class="text-center">焚烧工单编号：</th>
-                            <th class="text-center"><span class="text-center" id="view1-Id"></span></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                            <th class="text-center"></th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">序号</th>
-                            <th class="text-center">产废单位</th>
-                            <th class="text-center">指标要求及来源</th>
-                            <th class="text-center">危废名称</th>
-                            <th class="text-center">比例</th>
-                            <th class="text-center">重量(吨)</th>
-                            <th class="text-center">危废热值(cal/g)</th>
-                            <th class="text-center">灰分(%)</th>
-                            <th class="text-center">水分(%)</th>
-                            <th class="text-center">挥发份(%)</th>
-                            <th class="text-center">氯(%)</th>
-                            <th class="text-center">硫(%)</th>
-                            <th class="text-center">PH</th>
-                            <th class="text-center">P</th>
-                            <th class="text-center">F</th>
-                            <th class="text-center">备注</th>
-                            <th class="text-center">处置方式</th>
-                            <th class="text-center">进料方式</th>
-                            <th class="text-center">预处理暂存点</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="viewClone1">
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">备注</td>
-                            <td class="text-center" colspan="15"><span class="text-center" id="view1-remarks"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" colspan="2">合计</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center"><span class="text-center" id="view1-weightTotal"></span></td>
-                            <td class="text-center"><span class="text-center" id="view1-calorificTotal"></span></td>
-                            <td class="text-center"><span class="text-center" id="view1-ashPercentageTotal"></span>
-                            </td>
-                            <td class="text-center"><span class="text-center" id="view1-wetPercentageTotal"></span>
-                            </td>
-                            <td class="text-center"><span class="text-center" id="view1-volatileNumberTotal"></span>
-                            </td>
-                            <td class="text-center"><span class="text-center"
-                                                          id="view1-chlorinePercentageTotal"></span>
-                            </td>
-                            <td class="text-center"><span class="text-center"
-                                                          id="view1-sulfurPercentageTotal"></span>
-                            </td>
-                            <td class="text-center"><span class="text-center" id="view1-phTotal"></span></td>
-                            <td class="text-center"><span class="text-center"
-                                                          id="view1-phosphorusPercentageTotal"></span>
-                            </td>
-                            <td class="text-center"><span class="text-center"
-                                                          id="view1-fluorinePercentageTotal"></span>
-                            </td>
-                            <td class="text-center">-</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">残渣比例</td>
-                            <td class="text-center"><span class="text-center"
-                                                          id="view1-distillationProportion"></span>
-                            </td>
-                            <td class="text-center">废液比例</td>
-                            <td class="text-center"><span class="text-center"
-                                                          id="view1-wasteLiquidProportion"></span>
-                            </td>
-                            <td class="text-center">污泥比例</td>
-                            <td class="text-center"><span class="text-center" id="view1-sludgeProportion"></span>
-                            </td>
-                            <td class="text-center">散料比例</td>
-                            <td class="text-center"><span class="text-center" id="view1-bulkProportion"></span></td>
-                            <td class="text-center">破碎比例</td>
-                            <td class="text-center"><span class="text-center"
-                                                          id="view1-crushingProportion"></span></span>
-                            </td>
-                            <td class="text-center">悬挂连比例</td>
-                            <td class="text-center"><span class="text-center" id="view1-suspensionProportion"></span>
-                            </td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">注意事项</td>
-                            <td colspan="15" class="text-left">
-                                作业人员需穿戴防护用品，口罩(防毒面具)，胶皮手套，避免吸入毒气和与人体直接接触，物料转移后及时清理现场环境。
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
 
         <!--预处理单更新暂存点模态框-->
@@ -422,8 +275,8 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
-                                <td class="text-center"><input class="focus" type="text"
-                                                               id="view[0]-temporaryAddress" title="">
+                                <td class="text-center"><input type="text"
+                                                               id="view0-temporaryAddress" title="" >
                                 </td>
                             </tr>
                             <tr>
@@ -495,7 +348,7 @@
                         </table>
                     </div>
                     <div class="modal-footer center">
-                        <button type="button" class="btn btn-primary" onclick="addTemporaryAddress()">确认添加</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addTemporaryAddress()">确认添加</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     </div>
                 </div>
@@ -503,8 +356,6 @@
 
             </div>
         </div>
-
-
     </div>
 </div>
 <div id="embed"></div>

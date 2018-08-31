@@ -81,7 +81,7 @@
         select count(*) from t_pr_pretreatment
         <where>
             <if test="id != null and id != ''">
-                and id like "%"#{id}"%"
+                and id binar like "%"#{id}"%"
             </if>
             <if test="state != null and state != ''">
                 and state = #{state}

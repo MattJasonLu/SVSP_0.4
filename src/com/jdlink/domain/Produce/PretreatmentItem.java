@@ -29,7 +29,7 @@ public class PretreatmentItem {
      */
     private String requirements;
     /**
-     * 危废信息(比例、重量、热值、灰分、水分、挥发份、)
+     * 危废信息(重量、热值、灰分、水分、挥发份、)
      */
     private Wastes wastes;
     /**
