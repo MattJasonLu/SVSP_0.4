@@ -68,6 +68,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void addRole(Role role) {
+        userMapper.addRole(role);
+    }
+
+    @Override
+    public void setRoleName(Role role) {
+        userMapper.setRoleName(role);
+    }
+
+    @Override
     public List<Function> listFunction() {
         return userMapper.listFunction();
     }
@@ -86,6 +96,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateAuthority(int roleId, int[] functionIdList) {
         userMapper.updateAuthority(roleId, functionIdList);
+    }
+
+    @Override
+    public boolean checkAuthority(int roleId, int functionId) {
+        return userMapper.checkAuthority(roleId, functionId);
     }
 
 }

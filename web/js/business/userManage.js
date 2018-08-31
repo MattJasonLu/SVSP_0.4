@@ -426,3 +426,73 @@ function uncheckAll() {
     }
 }
 
+/**
+ * 增加角色
+ */
+function addRole() {
+    $("#modal-roleName").val("");
+    $('#roleInfoModal').modal('toggle');
+    // 点击事件
+    $("#saveBtn").click(function () {
+        console.log($("#modal-roleName").val());
+        $.ajax({
+            type: "POST",
+            url: "addRole",
+            async: false,
+            dataType: "json",
+            data: JSON.stringify({
+                roleName: $("#modal-roleName").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+/**
+ * 修改角色名称
+ * @param e
+ */
+function adjustRole(e) {
+    var roleId = e.parent().parent().find("td[name='id']").text();
+    var roleName = e.parent().parent().find("td[name='roleName']").text();
+    $("#modal-roleName").val(roleName);
+    $('#roleInfoModal').modal('toggle');
+    // 点击事件
+    $("#saveBtn").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "setRoleName",
+            async: false,
+            dataType: "json",
+            data: JSON.stringify({
+                id: roleId,
+                roleName: $("#modal-roleName").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+

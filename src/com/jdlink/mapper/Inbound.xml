@@ -15,6 +15,12 @@
         <association property="acceptCompany" column="acceptCompanyId" select="getAcceptCompany"/>
     </resultMap>
 
+    <!--入库单映射集-->
+    <resultMap id="InboundOrderRM" type="InboundOrder" autoMapping="true">
+        <id column="inboundOrderId" property="inboundOrderId"/>
+        <collection property="inboundOrderItemList" column="inboundOrderId"/>
+    </resultMap>
+
     <select id="listInboundPlanOrder" resultMap="InboundPlanOrderRM">
         SELECT * FROM t_pl_inboundplanorder;
     </select>
@@ -42,5 +48,39 @@
     </select>
     <select id="getAcceptCompany" parameterType="String" resultType="Client">
         SELECT * FROM client WHERE clientId=#{acceptCompanyId};
+    </select>
+
+    <!--增加入库单-->
+    <insert id="addInboundOrder" parameterType="InboundOrder">
+        INSERT INTO t_pl_inboundorder (inboundOrderId, transferDraftId, inboundDate, warehouseId, salesmanId, boundType, planCount,
+        actualCount, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
+        modifyDate, recordState) VALUES (#{inboundOrderId}, #{transferDraftId}, #{inboundDate}, #{wareHouse.warehouseId},
+        #{salesman.salesmanId}, #{boundType}, #{planCount}, #{actualCount}, #{keeperId}, #{directorId}, #{approverId},
+        #{checkState}, #{remarks}, #{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate},
+        #{recordState});
+        <if test="inboundOrderItemList.size() > 0">
+            <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
+                INSERT INTO t_pl_inboundorderitem (inboundOrderItemId, transferDraftId, inboundOrderId, produceCompanyId, processWay, handleCategory,
+                remarks, warehourseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount, unitPriceTax,
+                totalPrice) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId}, #{inboundOrderItem.inboundOrderId},
+                #{inboundOrderItem.produceCompany.produceCompanyId}, #{processWay}, #{handleCategory}, #{remarks},
+                #{warehourseArea}, #{recordState}, #{isQualified}, #{inboundOrderItem.wastes.name},
+                #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
+                #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice});
+            </foreach>
+        </if>
+    </insert>
+
+    <select id="listInboundOrder" resultMap="InboundOrderRM">
+        SELECT * FROM t_pl_inboundorder;
+    </select>
+
+    <!--判断是否存在该入库单号-->
+    <select id="existInboundOrderId" resultType="boolean">
+        SELECT COUNT(*) FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
+    </select>
+
+    <select id="countInboundOrder" resultType="int">
+        SELECT COUNT(*) FROM t_pl_inboundorder;
     </select>
 </mapper>

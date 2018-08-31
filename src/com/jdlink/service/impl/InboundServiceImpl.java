@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.mapper.InboundMapper;
 import com.jdlink.service.InboundService;
@@ -65,6 +66,41 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public int getInboundPlanCountByPrefix(String prefix) {
         return inboundMapper.getInboundPlanCountByPrefix(prefix);
+    }
+
+    @Override
+    public String getInboundOrderId() {
+        // 获取入库单的数量
+        int count = countInboundOrder();
+        //得到一个NumberFormat的实例
+        NumberFormat nf = NumberFormat.getInstance();
+        //设置是否使用分组
+        nf.setGroupingUsed(false);
+        //设置最大整数位数
+        nf.setMaximumIntegerDigits(4);
+        //设置最小整数位数
+        nf.setMinimumIntegerDigits(4);
+        String id = null;
+        do {
+            count += 1;
+            id = nf.format(count);
+        } while (existInboundOrderId(id));
+        return id;
+    }
+
+    @Override
+    public void addInboundOrder(InboundOrder inboundOrder) {
+        inboundMapper.addInboundOrder(inboundOrder);
+    }
+
+    @Override
+    public boolean existInboundOrderId(String inboundOrderId) {
+        return inboundMapper.existInboundOrderId(inboundOrderId);
+    }
+
+    @Override
+    public int countInboundOrder() {
+        return inboundMapper.countInboundOrder();
     }
 
 }
