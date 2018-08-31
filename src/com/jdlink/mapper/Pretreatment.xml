@@ -70,6 +70,14 @@
             <if test="state != null and state != ''">
                 and state = #{state}
             </if>
+            <if test="searchDate != null and searchDate !=''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{searchDate}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{searchDate}"%"
+            </if>
+            <if test="remarks !=null and remarks !='' ">
+                and remarks like "%"#{remarks}"%"
+            </if>
         </where>
         order by nowTime desc
         <if test="page != null and page.start != null and page.count != null">
@@ -81,10 +89,18 @@
         select count(*) from t_pr_pretreatment
         <where>
             <if test="id != null and id != ''">
-                and id binar like "%"#{id}"%"
+                and id like "%"#{id}"%"
             </if>
             <if test="state != null and state != ''">
                 and state = #{state}
+            </if>
+            <if test="searchDate != null and searchDate !=''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{searchDate}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{searchDate}"%"
+            </if>
+            <if test="remarks !=null and remarks !='' ">
+                and remarks like "%"#{remarks}"%"
             </if>
         </where>
     </select>

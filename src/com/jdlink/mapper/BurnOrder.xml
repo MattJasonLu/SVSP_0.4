@@ -70,8 +70,10 @@
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="creationDate != null and creationDate !=''">
-                and creationDate like "%"#{creationDate}"%"
+            <if test="pretreatmentId != null and pretreatmentId !=''">
+                <!--用pretreatmentId来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{pretreatmentId}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{pretreatmentId}"%"
             </if>
             <if test="remarks !=null and remarks !='' ">
                 and remarks like "%"#{remarks}"%"
@@ -79,7 +81,7 @@
         </where>
         order by nowTime desc
         <if test="page != null and page.start != null and page.count != null">
-            limit #{page.start}, #{page.count}
+            limit #{page.start}, #{page.count};
         </if>
     </select>
 
@@ -92,8 +94,10 @@
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="creationDate != null and creationDate !=''">
-                and creationDate like "%"#{creationDate}"%"
+            <if test="pretreatmentId != null and pretreatmentId !=''">
+                <!--用pretreatmentId来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{pretreatmentId}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{pretreatmentId}"%"
             </if>
             <if test="remarks !=null and remarks !='' ">
                 and remarks like "%"#{remarks}"%"
