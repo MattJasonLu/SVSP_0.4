@@ -495,7 +495,7 @@ function setOutBoundList(result) {
     $.each(result, function (index, item) {
         console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
-        if(item.checkState.name=="已出库"){
+        if(item.checkState.name=="已出库"&&item.boundType.name=='危废出库'){
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
