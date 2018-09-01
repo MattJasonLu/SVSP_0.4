@@ -27,4 +27,19 @@ public class ProcurementServiceImpl implements ProcurementService {
     public void addMaterial(Material material) {
         procurementMapper.addMaterial(material);
     }
+
+    @Override
+    public List<Procurement> getProcurementList() {
+        return procurementMapper.getProcurementList();
+    }
+
+    @Override
+    public List<Procurement> getProcurementListById(String receiptNumber) {
+        return procurementMapper.getProcurementListById(receiptNumber);
+    }
+
+    @Override
+    public List<Procurement> searchProcurement(Procurement procurement) {
+        return procurementMapper.searchProcurement(procurement);
+    }
 }

@@ -9,4 +9,7 @@ public interface ProcurementMapper {
     void  add(Procurement procurement);
     List<String> getNewestId();
     void addMaterial(Material material);
+    List<Procurement> getProcurementList();
+    List<Procurement> getProcurementListById(String receiptNumber);
+    List<Procurement> searchProcurement(Procurement procurement);
 }

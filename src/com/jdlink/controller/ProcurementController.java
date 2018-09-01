@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
 import com.jdlink.service.ProcurementService;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,10 +75,75 @@ public class ProcurementController {
         }
      return  res.toString();
     }
+    /**
+     * 加载采购列表
+     */
+     @RequestMapping("getProcurementList")
+     @ResponseBody
+     public  String getProcurementList(){
+         JSONObject res=new JSONObject();
+         try {
+              List<Procurement> procurements=procurementService.getProcurementList();
+             JSONArray array=JSONArray.fromObject(procurements);
+              res.put("data",array);
+             res.put("status", "success");
+             res.put("message", "查询成功");
 
+         }
+         catch (Exception e){
+             e.printStackTrace();
+             res.put("status", "fail");
+             res.put("message", "查询失败");
+         }
+       return res.toString();
+
+     }
+    /**
+     * 根据编号获取信息
+     */
+    @RequestMapping("getProcurementListById")
+    @ResponseBody
+    public String getProcurementListById(String receiptNumber){
+        JSONObject res=new JSONObject();
+        try{
+         List<Procurement> procurementList=procurementService.getProcurementListById(receiptNumber);
+            res.put("data",procurementList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+      return res.toString();
+    }
     /**
      * 获取四位的编号
      */
+    /**
+     * 高级查询
+     * @param
+     * @return
+     */
+    @RequestMapping("searchProcurement")
+    @ResponseBody
+    public String searchProcurement(@RequestBody Procurement procurement){
+        JSONObject res=new JSONObject();
+        try {
+            List<Procurement> procurementList=procurementService.searchProcurement(procurement);
+            JSONArray array=JSONArray.fromObject(procurementList);
+            res.put("data",array);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return  res.toString();
+    }
     public  String get4(String s){
         int i=Integer.parseInt(s);
         int i1=i+1;

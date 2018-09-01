@@ -114,6 +114,221 @@ function save() {
     });
 
 });
+alert("添加成功！")
+    if(confirm("是否跳转到主页？")){
+    window.location.href="monthProcurement.html";
+    }
+}
+//加载月度采购申请表数据列表
+function getMontnProcurement() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementList",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+               // console.log(result)
+                //设置月度采购申请表数据
+                setMonthProcurementList(result);
+            }
+            else {
+
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+
+        }
+    });
+
+}
+//设置月度采购申请表数据
+function setMonthProcurementList(result) {
+    $('.myclass').hide();
+    var tr = $("#cloneTr");
+    console.log(result.data);
+    tr.attr('class','myclass');
+
+        $.each(result.data, function (index, item) {
+            //console.log(item);
+            // 克隆tr，每次遍历都可以产生新的tr
+            if(item.procurementCategory==true) {
+                var clonedTr = tr.clone();
+                clonedTr.show();
+                // 循环遍历cloneTr的每一个td元素，并赋值
+                clonedTr.children("td").each(function (inner_index) {
+                    //1生成领料单号
+                    var obj = eval(item);
+                    // 根据索引为部分td赋值
+                    switch (inner_index) {
+                        // 申请单编号
+                        case (0):
+                            $(this).html(obj.receiptNumber);
+                            break;
+                        // 申请月份
+                        case (1):
+                            $(this).html(obj.applyMouth);
+                            break;
+                        // 需求时间
+                        case (2):
+                            $(this).html(getDateStr(obj.demandTime));
+                            break;
+                        // 申请部门
+                        case (3):
+                            $(this).html(obj.applyDepartment);
+                            break;
+                        // 申购部门负责人
+                        case (4):
+                            $(this).html(obj.proposer);
+                            break;
+                        // 申购部门分管领导
+                        case (5):
+                            $(this).html(obj.divisionHead);
+                            break;
+                        // 采购部门负责人
+                        case (6):
+                            $(this).html(obj.purchasingDirector);
+                            break;
+                        //采购部门分管领导
+                        case (7):
+                            $(this).html(obj.purchasingHead);
+                            break;
+                        //总经理
+                        case (8):
+                            $(this).html(obj.generalManager);
+                            break;
+                        //物资类别
+                        case (9):
+                            $(this).html("");
+                            break;
+                    }
+                });
+                // 把克隆好的tr追加到原来的tr前面
+                // clonedTr.removeAttr("class");
+                clonedTr.insertBefore(tr);
+            }
+
+        });
 
 
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+}
+//双击查询
+function view(item) {
+    var receiptNumber=$(item).children().get(0).innerHTML;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'receiptNumber':receiptNumber},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                setMonthProcurementListModal(result.data[0].materialList);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!");
+        }
+    });
+    $('#appointModal2').modal('show');
+}
+//设置月度采购申请表数据模态框数据
+function setMonthProcurementListModal(result) {
+    $('.myclass1').hide();
+    var tr = $("#cloneTr2");
+    tr.attr('class','myclass1');
+    $.each(result, function (index, item) {
+        //console.log(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                //1生成领料单号
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 物资名称
+                    case (0):
+                        $(this).html(obj.suppliesName);
+                        break;
+                    // 规格型号
+                    case (1):
+                        $(this).html(obj.specifications);
+                        break;
+                    // 单位
+                    case (2):
+                        $(this).html(obj.unit);
+                        break;
+                    // 库存量
+                    case (3):
+                        $(this).html(obj.inventory);
+                        break;
+                    // 需求数量
+                    case (4):
+                        $(this).html(obj.demandQuantity);
+                        break;
+                    // 备注
+                    case (5):
+                        $(this).html(obj.note);
+                        break;
+                    // 采购部门负责人
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+
+
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+}
+//高级查询
+function searchProcurement() {
+    if ($("#senior").is(':visible')) {
+        data = {
+            receiptNumber: $("#search-receiptNumber").val(),
+            applyMouth: $("#search-applyMouth").val(),
+            demandTime: $("#search-demandTime").val(),
+            applyDepartment: $("#search-applyDepartment").val(),
+            proposer: $("#search-proposer").val(),
+            divisionHead: $("#search-divisionHead").val(),
+            purchasingDirector: $("#search-purchasingDirector").val(),
+            purchasingHead:$("#search-purchasingHead").val(),
+            generalManager:$("#search-generalManager").val(),
+        };
+        //console.log(data);
+    }
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchProcurement",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                //console.log(result);
+                setMonthProcurementList(result);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
