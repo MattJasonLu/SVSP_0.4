@@ -26,6 +26,13 @@ public interface InboundService {
     void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
+     * 查找入库计划单
+     * @param inboundPlanOrder 入库计划单数据
+     * @return 符合条件的入库计划单列表
+     */
+    List<InboundPlanOrder> searchInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
+
+    /**
      * 获取入库计划单编号
      * @return 入库计划单编号
      */

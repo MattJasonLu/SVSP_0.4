@@ -26,6 +26,13 @@ public interface InboundMapper {
     void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
+     * 查找入库计划单
+     * @param inboundPlanOrder 入库计划单数据
+     * @return 符合条件的入库计划单列表
+     */
+    List<InboundPlanOrder> searchInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
+
+    /**
      * 根据年月前缀获取入库计划单数量
      * @param prefix 前缀
      * @return 数量

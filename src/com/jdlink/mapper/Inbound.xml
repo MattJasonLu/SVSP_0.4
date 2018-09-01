@@ -50,6 +50,36 @@
         #{isQualified});
     </insert>
 
+    <select id="searchInboundPlanOrder" parameterType="InboundPlanOrder" resultMap="InboundPlanOrderRM">
+        SELECT * FROM t_pl_inboundplanorder
+        <where>
+            <if test="inboundPlanOrderId != null and inboundPlanOrderId != ''">
+                and inboundPlanOrderId LIKE "%"#{inboundPlanOrderId}"%"
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{departmentId}"%"
+                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{departmentId}"%")
+            </if>
+            <if test="companyId != null and companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{companyId}"%"
+                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{companyId}"%")
+            </if>
+            <if test="transferDraftId != null and transferDraftId != ''">
+                and transferDraftId LIKE "%"#{transferDraftId}"%"
+            </if>
+            <if test="wastes != null">
+                <if test="wastes.name != null and wastes.name != ''">
+                    and wastesName LIKE "%"#{wastes.name}"%"
+                </if>
+                <if test="wastes.wastesId != null and wastes.wastesId != ''">
+                    and wastesCode LIKE "%"#{wastes.wastesId}"%"
+                </if>
+            </if>
+        </where>
+    </select>
+
     <!-- 查询入库计划单中的前缀数量 -->
     <select id="getInboundPlanCountByPrefix" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM t_pl_inboundplanorder WHERE inboundPlanOrderId LIKE "%"#{prefix}"%";

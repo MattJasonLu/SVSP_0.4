@@ -25,6 +25,51 @@ function loadInboundPlanOrder() {
 }
 
 /**
+ * 入库计划单查询
+ */
+function searchPlan() {
+    // 查询数据源
+    var data = {
+        inboundPlanOrderId: $("#search-inboundPlanOrderId").val(),
+        transferDraftId: $("#search-transferDraftId").val(),
+        departmentId: $("#search-planDate").val(),
+        companyId: $("#search-transferDate").val(),
+        produceCompany: {
+            companyName: $("#search-produceCompanyName").val()
+        },
+        acceptCompany: {
+            companyName: $("#search-acceptCompany").val()
+        },
+        wastes: {
+            name: $("#search-wastesName").val(),
+            wastesId: $("#search-wastesCode").val()
+        }
+    };
+    
+    $.ajax({
+        type: "POST",
+        url: "searchInboundPlanOrder",
+        async: false,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                setDataList(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+
+}
+
+/**
  * 设置数据
  * @param result
  */

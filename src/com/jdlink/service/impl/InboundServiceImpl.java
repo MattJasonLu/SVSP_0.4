@@ -34,6 +34,11 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
+    public List<InboundPlanOrder> searchInboundPlanOrder(InboundPlanOrder inboundPlanOrder) {
+        return inboundMapper.searchInboundPlanOrder(inboundPlanOrder);
+    }
+
+    @Override
     public String getInboundPlanOrderId() {
         Calendar calendar = Calendar.getInstance();
         // 获取年份

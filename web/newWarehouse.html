@@ -148,7 +148,7 @@
                 <!--查询框-->
                 <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchPw();"><span class="glyphicon glyphicon-search"
+                            <a class="btn btn-default" onclick="searchPlan();"><span class="glyphicon glyphicon-search"
                                                                                    aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -162,29 +162,69 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-Id" class="col-sm-4 control-label">转移联单号</label>
+                            <label for="search-inboundPlanOrderId" class="col-sm-4 control-label">计划单号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
+                                <input type="text" class="form-control" id="search-inboundPlanOrderId" name="search-inboundPlanOrderId" placeholder="">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-company" class="col-sm-4 control-label">产废单位</label>
+                            <label for="search-transferDraftId" class="col-sm-4 control-label">联单号</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-company" id="search-company">
-                                </select>
+                                <input type="text" class="form-control" id="search-transferDraftId" name="search-transferDraftId" placeholder="">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-produceCompanyName" class="col-sm-4 control-label">产废单位</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-produceCompanyName" name="search-produceCompanyName" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-wastesName" id="search-wastesName">
-                                </select>
+                                <input type="text" class="form-control" id="search-wastesName" name="search-wastesName" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-planDate" class="col-sm-4 control-label">计划日期</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-planDate" name="search-planDate" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-acceptCompany" class="col-sm-4 control-label">接收单位</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-acceptCompany" name="search-acceptCompany" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-transferDate" class="col-sm-4 control-label">转移时间</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-transferDate" name="search-transferDate" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-wastesCode" name="search-wastesCode" placeholder="">
                             </div>
                         </div>
                     </div>

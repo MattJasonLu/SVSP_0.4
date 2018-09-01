@@ -55,6 +55,30 @@ public class InboundController {
     }
 
     /**
+     * 查询入库计划单列表
+     * @param inboundPlanOrder 入库计划单数据
+     * @return 查询结果
+     */
+    @RequestMapping("searchInboundPlanOrder")
+    @ResponseBody
+    public String searchInboundPlanOrder(@RequestBody InboundPlanOrder inboundPlanOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            List<InboundPlanOrder> inboundPlanOrderList = inboundService.searchInboundPlanOrder(inboundPlanOrder);
+            JSONArray data = JSONArray.fromArray(inboundPlanOrderList.toArray(new InboundPlanOrder[inboundPlanOrderList.size()]));
+            // 获取入库单列表
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 增加入库单
      * @param inboundOrder
      * @return
