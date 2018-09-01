@@ -25,6 +25,7 @@
     
     <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
         <id column="inboundOrderItemId" property="inboundOrderItemId"/>
+        <association property="produceCompany" select="getProduceCompany" column="produceCompanyId"/>
         <association property="wastes" javaType="Wastes">
             <id property="name" column="wastesName"/>
             <result property="wastesId" column="wastesCode"/>
@@ -91,6 +92,12 @@
         SELECT * FROM t_pl_inboundorder;
     </select>
 
+    <!--通过编号获取入库单-->
+    <select id="getInboundOrderById" resultMap="InboundOrderRM">
+        SELECT * FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
+    </select>
+
+    <!--获取入库单明细列表-->
     <select id="getInboundOrderItemList" resultMap="InboundOrderItemRM">
         SELECT * FROM t_pl_inboundorderitem WHERE inboundOrderId=#{inboundOrderId};
     </select>
@@ -99,6 +106,10 @@
     <select id="existInboundOrderId" resultType="boolean">
         SELECT COUNT(*) FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
     </select>
+
+    <update id="updateItemHandleCategory" parameterType="InboundOrderItem">
+        UPDATE t_pl_inboundorderitem SET handleCategory=#{handleCategory} WHERE inboundOrderItemId=#{inboundOrderItemId};
+    </update>
 
     <select id="countInboundOrder" resultType="int">
         SELECT COUNT(*) FROM t_pl_inboundorder;

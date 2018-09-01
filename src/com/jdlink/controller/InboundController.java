@@ -130,6 +130,46 @@ public class InboundController {
     }
 
     /**
+     * 通过编号获取入库单
+     * @param inboundOrderId 入库单编号
+     * @return 入库单对象
+     */
+    @RequestMapping("getInboundOrderById")
+    @ResponseBody
+    public String getInboundOrderById(String inboundOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            InboundOrder inboundOrder = inboundService.getInboundOrderById(inboundOrderId);
+            JSONObject data = JSONObject.fromBean(inboundOrder);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("updateItemHandleCategory")
+    @ResponseBody
+    public String updateItemHandleCategory(@RequestBody InboundOrderItem InboundOrderItem) {
+        JSONObject res = new JSONObject();
+        try {
+            // 更新进料方式
+            inboundService.updateItemHandleCategory(InboundOrderItem);
+            res.put("status", "success");
+            res.put("message", "属性修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "属性修改失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 获取入库单的数量
      * @return 入库单数量
      */

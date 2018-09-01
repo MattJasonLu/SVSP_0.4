@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.InboundOrder;
+import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Page;
 import com.jdlink.mapper.InboundMapper;
@@ -97,6 +98,16 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public List<InboundOrder> listInboundOrder(Page page) {
         return inboundMapper.listInboundOrder(page);
+    }
+
+    @Override
+    public InboundOrder getInboundOrderById(String inboundOrderId) {
+        return inboundMapper.getInboundOrderById(inboundOrderId);
+    }
+
+    @Override
+    public void updateItemHandleCategory(InboundOrderItem inboundOrderItem) {
+        inboundMapper.updateItemHandleCategory(inboundOrderItem);
     }
 
     @Override
