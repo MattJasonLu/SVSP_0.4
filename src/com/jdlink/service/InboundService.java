@@ -2,6 +2,7 @@ package com.jdlink.service;
 
 import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
+import com.jdlink.domain.Page;
 
 import java.util.List;
 
@@ -47,6 +48,12 @@ public interface InboundService {
      * @param inboundOrder 入库单
      */
     void addInboundOrder(InboundOrder inboundOrder);
+
+    /**
+     * 列出入库单
+     * @return 入库单列表
+     */
+    List<InboundOrder> listInboundOrder(Page page);
 
     /**
      * 是否存在该单号

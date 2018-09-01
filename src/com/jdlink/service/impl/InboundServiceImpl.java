@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
+import com.jdlink.domain.Page;
 import com.jdlink.mapper.InboundMapper;
 import com.jdlink.service.InboundService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,11 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public void addInboundOrder(InboundOrder inboundOrder) {
         inboundMapper.addInboundOrder(inboundOrder);
+    }
+
+    @Override
+    public List<InboundOrder> listInboundOrder(Page page) {
+        return inboundMapper.listInboundOrder(page);
     }
 
     @Override

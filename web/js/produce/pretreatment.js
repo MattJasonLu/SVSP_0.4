@@ -523,15 +523,10 @@ function searchPretreatment() {
     if ($("#search-state").val() == 1) state = "Confirm";//已确认
     if ($("#search-state").val() == 2) state = "Invalid";//已作废
     if ($("#senior").is(':visible')) {
-        // var wastes = {};
-        // wastes.processWay = $("#search-processWay").val();
-        // wastes.handleCategory = $("#search-handleCategory").text();
-        // data['pretreatmentItemList'] =[];
-        // pretreatmentItem = {};
-        // pretreatmentItem.wastes = wastes;
-        // pretreatmentItemList.push(pretreatmentItem);
         data1 = {
             id: $("#search-id").val(),
+            searchDate: $("#search-creationDate").val(),
+            remarks: $("#search-remarks").val(),
             state: state,
             page: page
         };

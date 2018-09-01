@@ -61,7 +61,7 @@
                         <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
                     </ul>
                 </li>
-                <li class="dropdown active">
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
@@ -80,7 +80,7 @@
                     </ul>
                 </li>
                 <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
-                <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
+                <li class="active"><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -139,7 +139,7 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6 boo">
-                    <a class="btn btn-primary btn-xs" id="add" href="stockForm.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_178" href="stockForm.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" id="function_179" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                     <a class="btn btn-primary btn-xs" id="function_180" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" id="function_181" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
