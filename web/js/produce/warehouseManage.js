@@ -1,107 +1,3 @@
-function view1() {
-    $("#appointModal2").modal("show");
-}
-function view2() {
-    $("#examineModal").modal("show");
-}
-//全选复选框
-function allSelect() {
-    var isChecked = $('#allSel').prop('checked');
-    if (isChecked) $("input[name='select']").prop('checked',true);
-    else $("input[name='select']").prop('checked',false);
-}
-/**
- * 获取用户的编号
- * @param item
- * @returns {string}
- */
-function getId(item) {
-    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-}
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
-
-/**
- * 作废计划单
- * @param item 用户
- */
-function changeAttribute(item) {
-    $("#examineModal").modal("show");
-}
-/**
- * 作废计划单
- * @param item 用户
- */
-function cancel(item) {
-    var id = getId(item);
-    var r = confirm("确认作废？");
-    if (r === true) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "",               // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'model-wastesCode': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result !== undefined) {
-                    if (result.status === "success") {
-                        alert("作废成功");
-                        window.location.reload();
-                    } else if (result.status === "fail") {
-                        alert("作废失败");
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-}
-/**
- * 签收计划单
- * @param item 用户
- */
-function signIn(item) {
-    var id = getId(item);
-    var r = confirm("确认签收？");
-    if (r === true) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "",               // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'model-wastesCode': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result !== undefined) {
-                    if (result.status === "success") {
-                        alert("禁用成功");
-                        window.location.reload();
-                    } else if (result.status === "fail") {
-                        alert("禁用失败");
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-}
-
 var inboundPlanOrderIdArray = [];
 
 /**
@@ -848,16 +744,16 @@ function getCheckState() {
  * 作废转移联单
  */
 function setInvalid(e) {    //已作废
-    var r = confirm("确认作废该联单吗？");
+    var r = confirm("确认作废该入库单吗？");
     if (r) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "setTransferDraftInvalid",
+            url: "setInboundOrderStateInvalid",
             async: false,
             dataType: "json",
             data: {
-                id: id
+                inboundOrderId: id
             },
             success: function (result) {
                 if (result !== undefined && result.status === "success") {

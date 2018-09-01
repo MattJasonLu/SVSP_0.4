@@ -45,6 +45,12 @@ public interface InboundMapper {
     List<InboundOrder> listInboundOrder(Page page);
 
     /**
+     * 作废入库单
+     * @param inboundOrderId 入库单编号
+     */
+    void setInboundOrderStateInvalid(String inboundOrderId);
+
+    /**
      * 根据编号获取入库单
      * @param inboundOrderId 入库单号
      * @return 入库单

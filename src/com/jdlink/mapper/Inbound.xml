@@ -97,6 +97,11 @@
         SELECT * FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
     </select>
 
+    <!--作废该入库单-->
+    <update id="setInboundOrderStateInvalid" parameterType="String">
+        UPDATE t_pl_inboundorder SET checkState='Invalid' WHERE inboundOrderId=#{inboundOrderId};
+    </update>
+
     <!--获取入库单明细列表-->
     <select id="getInboundOrderItemList" resultMap="InboundOrderItemRM">
         SELECT * FROM t_pl_inboundorderitem WHERE inboundOrderId=#{inboundOrderId};

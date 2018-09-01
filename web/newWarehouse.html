@@ -207,7 +207,6 @@
                     <th class="text-center">产废单位</th>
                     <th class="text-center">接收单位</th>
                     <th class="text-center">转移时间</th>
-                    <th class="text-center">联单号</th>
                     <th class="text-center">转移数量</th>
                     <th class="text-center">磅单数量</th>
                     <th class="text-center">已入库数量</th>
@@ -231,7 +230,6 @@
                     <td class="text-center" name="produceCompanyName">QW10001</td>
                     <td class="text-center" name="acceptCompanyName">QW10001</td>
                     <td class="text-right" name="transferDate">5</td>
-                    <td class="text-right" name="transferDraftId">10</td>
                     <td class="text-right" name="transferCount">液态</td>
                     <td class="text-right" name="poundsCount">标准装</td>
                     <td class="text-right" name="storageCount">20</td>
@@ -250,7 +248,9 @@
             <h4>入库单明细</h4>
             <hr class="simple" color="#6f5499"/>
             <br>
-            <div class="row">
+            <div class="panel panel-default" id="senior2" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
                 <div class="form-horizontal col-md-3">
                     <div class="form-group">
                         <label for="modal-Id" class="col-sm-4 control-label">入库单号</label>
@@ -307,6 +307,8 @@
                             <input type="text" class="form-control" id="modal-note" name="modal-note" placeholder="">
                         </div>
                     </div>
+                </div>
+            </div>
                 </div>
             </div>
             <br>

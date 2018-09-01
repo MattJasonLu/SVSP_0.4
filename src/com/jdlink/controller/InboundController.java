@@ -130,6 +130,28 @@ public class InboundController {
     }
 
     /**
+     * 作废入库单
+     * @param inboundOrderId 入库单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInboundOrderStateInvalid")
+    @ResponseBody
+    public String setInboundOrderStateInvalid(String inboundOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 作废入库单
+            inboundService.setInboundOrderStateInvalid(inboundOrderId);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 通过编号获取入库单
      * @param inboundOrderId 入库单编号
      * @return 入库单对象
