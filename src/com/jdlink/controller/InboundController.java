@@ -1,8 +1,11 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.*;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
@@ -26,6 +29,8 @@ public class InboundController {
 
     @Autowired
     InboundService inboundService;
+    @Autowired
+    ClientService clientService;
 
     /**
      * 列出所有入库计划单信息
@@ -79,25 +84,64 @@ public class InboundController {
             inboundOrder.setModifyDate(new Date());
             // 设置创建日期为当前日期
             inboundOrder.setCreateDate(new Date());
-
             // 遍历入库条目
             for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
                 // 设置条目编号为随机八位码
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
                 // 入库单号
                 inboundOrderItem.setInboundOrderId(inboundOrder.getInboundOrderId());
-
+                Client produceCompany = clientService.getByName(inboundOrderItem.getProduceCompany().getCompanyName());
+                // 设置生产单位
+                inboundOrderItem.setProduceCompany(produceCompany);
             }
             // 增加入库单
             inboundService.addInboundOrder(inboundOrder);
             res.put("status", "success");
+            res.put("message", "增加入库单成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加入库单失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 列出所有入库单
+     * @return 入库单列表
+     */
+    @RequestMapping("listInboundOrder")
+    @ResponseBody
+    public String listInboundOrder(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取入库单列表
+            List<InboundOrder> inboundOrderList = inboundService.listInboundOrder(page);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            res.put("status", "success");
             res.put("message", "获取信息成功");
+            res.put("data", data);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取信息失败");
         }
         return res.toString();
+    }
+
+    /**
+     * 获取入库单的数量
+     * @return 入库单数量
+     */
+    @RequestMapping("countInboundOrder")
+    @ResponseBody
+    public int countInboundOrder() {
+        try {
+            return inboundService.countInboundOrder();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }

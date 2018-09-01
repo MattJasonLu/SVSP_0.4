@@ -59,6 +59,27 @@ public class Questionnaire {
      * 附件地址
      */
     private String attachmentUrl;
+    /**
+     * 调查问卷关键字
+     */
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     private Boolean isMaterialComplete;
 

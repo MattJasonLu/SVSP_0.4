@@ -1354,7 +1354,52 @@ public class QuestionnaireController {
         }
         return res.toString();
     }
+   /**
+   * 高级查询
+   */
+   @RequestMapping("searchQuestionnaireManage")
+    @ResponseBody
+    public String searchQuestionnaireManage(@RequestBody Questionnaire questionnaire){
+       JSONObject res=new JSONObject();
+       try{
+           List<Questionnaire> questionnaireList=questionnaireService.searchQuestionnaireManage(questionnaire);
+           JSONArray data = JSONArray.fromArray(questionnaireList.toArray(new Questionnaire[questionnaireList.size()]));
+           res.put("status", "success");
+           res.put("message", "查询成功");
+           res.put("data",data);
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "查询失败");
+       }
 
+
+       return  res.toString();
+   }
+    /**
+     * 加载样品预约单状态
+     */
+    @RequestMapping("applyStateList")
+    @ResponseBody
+    public String applyStateList(){
+        JSONObject res=new JSONObject();
+        try{
+       // 获取枚举
+            JSONArray ApplyStateList = JSONArray.fromArray(ApplyState.values());
+            res.put("ApplyStateList", ApplyStateList);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+
+    }
 
 }
 

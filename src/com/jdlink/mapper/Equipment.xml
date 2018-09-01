@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.EquipmentMapper" >
+
+    <!--查询当天的设备运行情况-->
+    <select id="getEquipment" resultType="EquipmentDate">
+        select distinct id,editTime,editor,createDept,creator,note from t_rp_equipment where dayTime = #{dayTime};
+    </select>
+
+    <!--网页列表数据-->
+    <select id="listEquipment" resultType="EquipmentDate">
+        select * from t_rp_equipment;
+    </select>
+</mapper>
