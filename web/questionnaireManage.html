@@ -21,6 +21,7 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script language="javascript" src="js/bootstrap/printThis.js"></script>
+    <script language="javascript" src="js/business/questionnaireMangae.js"></script>
 </head>
 <script type="text/javascript">
     var currentPage = 1;                          //当前页数
@@ -61,33 +62,7 @@
         return total;
     }
 
-    /**
-     * 设置克隆页码
-     * */
-    function setPageClone(result) {
-        $(".beforeClone").remove();
-        setQuestionnaireList(result);
-        var total = totalPage();
-        $("#next").prev().hide();
-        var st = "共" + total + "页";
-        $("#totalPage").text(st);
-        var myArray = new Array();
-        for (var i = 0; i < total; i++) {
-            var li = $("#next").prev();
-            myArray[i] = i + 1;
-            var clonedLi = li.clone();
-            clonedLi.show();
-            clonedLi.find('a:first-child').text(myArray[i]);
-            clonedLi.find('a:first-child').click(function () {
-                var num = $(this).text();
-                switchPage(num);
-            });
-            clonedLi.addClass("beforeClone");
-            clonedLi.removeAttr("id");
-            clonedLi.insertAfter(li);
-        }
 
-    }
 
     /**
      * 点击页数跳转页面
@@ -242,6 +217,8 @@
                 console.log("失败");
             }
         });
+        setSeniorSelectedList();
+
     }
 
     /**
@@ -339,92 +316,7 @@
         });
     });
 
-    function setQuestionnaireList(result) {
-        // 获取id为cloneTr的tr元素
-        var tr = $("#cloneTr");
-        tr.siblings().remove();
-        $.each(result.data, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            var _index = index;
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                        // 调查表编号
-                    case (1):
-                        $(this).html(obj.questionnaireId);
-                        break;
-                        // 企业名称
-                    case (2):
-                        $(this).html(obj.client.companyName);
-                        break;
-                        // 所属行业
-                    case (3):
-                        $(this).html(obj.client.industry);
-                        break;
-                        // 主要产品
-                    case (4):
-                        $(this).html(obj.client.product);
-                        break;
-                        // 审批状态
-                    case (5):
-                        if (obj.applyState != null)
-                            $(this).html(obj.applyState.name);
-                        break;
-                        // 填报人
-                    case (6):
-                        $(this).html(obj.author);
-                        break;
-                        // 填报日期
-                    case (7):
-                        $(this).html(getTimeStr(obj.time));
-                        break;
-//                    case (8):
-//                        if(obj.applyState.name == "已退回"){
-//                            $(this).children().eq(1).attr("class","disabled");
-//                            $(this).children().eq(1).removeAttr("onclick");
-//                            $(this).children().eq(2).attr("class","disabled");
-//                            $(this).children().eq(2).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                            $(this).children().eq(5).attr("class","disabled");
-//                            $(this).children().eq(5).removeAttr("onclick");
-//                        }else if(obj.applyState.name == "已签收"){
-//                            $(this).children().eq(1).attr("class","disabled");
-//                            $(this).children().eq(1).removeAttr("onclick");
-//                            $(this).children().eq(2).attr("class","disabled");
-//                            $(this).children().eq(2).removeAttr("onclick");
-//                            $(this).children().eq(3).attr("class","disabled");
-//                            $(this).children().eq(3).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                            $(this).children().eq(5).attr("class","disabled");
-//                            $(this).children().eq(5).removeAttr("onclick");
-//                        }else{
-//                            $(this).children().eq(0).attr("class","disabled");
-//                            $(this).children().eq(0).removeAttr("onclick");
-//                            $(this).children().eq(1).attr("class","disabled");
-//                            $(this).children().eq(1).removeAttr("onclick");
-//                            $(this).children().eq(2).attr("class","disabled");
-//                            $(this).children().eq(2).removeAttr("onclick");
-//                            $(this).children().eq(3).attr("class","disabled");
-//                            $(this).children().eq(3).removeAttr("onclick");
-//                            $(this).children().eq(4).attr("class","disabled");
-//                            $(this).children().eq(4).removeAttr("onclick");
-//                        }
-//                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
+
     function loadQuestionnaireList() {
         $.ajax({
             type: "POST",                       // 方法类型
@@ -446,30 +338,7 @@
             }
         });
     }
-    /**
-     * 查询问卷
-     */
-    function searchQuestionnaire() {
-        var keyword = $("#searchContent").val();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchQuestionnaire",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'keyword': keyword
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    setQuestionnaireList(result);
-                } else { }
-            },
-            error:function (result) {
-                console.log(result);
-            }
-        });
-    }
+
     function allSelect() {
         var isChecked = $('#allSel').prop('checked');
         if (isChecked) $("input[name='select']").prop('checked',true);
@@ -1091,7 +960,6 @@
                                 <label for="search-state" class="col-sm-4 control-label">状态</label>
                                 <div class="col-xs-7">
                                     <select class="form-control" name="search-state" id="search-state">
-                                        <option value="0"></option>
                                     </select>
                                 </div>
                             </div>
@@ -1106,9 +974,8 @@
                             <div class="form-group">
                                 <label for="search-author" class="col-sm-4 control-label">填报人</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-author" id="search-author">
-                                        <option value="0"></option>
-                                    </select>
+                                    <input class="form-control" name="search-author" id="search-author">
+                                    </input>
                                 </div>
                             </div>
                         </div>

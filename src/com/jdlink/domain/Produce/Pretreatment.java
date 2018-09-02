@@ -95,6 +95,10 @@ public class Pretreatment {
      * 分页
      */
     private Page page;
+    /**
+     * 模糊搜索日期用
+     */
+    private String searchDate;
 
     public String getId() {
         return id;
@@ -272,6 +276,14 @@ public class Pretreatment {
         this.page = page;
     }
 
+    public String getSearchDate() {
+        return searchDate;
+    }
+
+    public void setSearchDate(String searchDate) {
+        this.searchDate = searchDate;
+    }
+
     @Override
     public String toString() {
         return "Pretreatment{" +
@@ -296,6 +308,8 @@ public class Pretreatment {
                 ", bulkProportion=" + bulkProportion +
                 ", crushingProportion=" + crushingProportion +
                 ", suspensionProportion=" + suspensionProportion +
+                ", page=" + page +
+                ", searchDate='" + searchDate + '\'' +
                 '}';
     }
 }

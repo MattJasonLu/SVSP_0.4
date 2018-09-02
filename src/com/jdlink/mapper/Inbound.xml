@@ -25,6 +25,7 @@
     
     <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
         <id column="inboundOrderItemId" property="inboundOrderItemId"/>
+        <association property="produceCompany" select="getProduceCompany" column="produceCompanyId"/>
         <association property="wastes" javaType="Wastes">
             <id property="name" column="wastesName"/>
             <result property="wastesId" column="wastesCode"/>
@@ -48,6 +49,36 @@
         #{companyId}, #{modifierId}, #{salesman.salesmanId}, #{checkState}, #{recordState}, #{processWay}, #{handleCategory},
         #{isQualified});
     </insert>
+
+    <select id="searchInboundPlanOrder" parameterType="InboundPlanOrder" resultMap="InboundPlanOrderRM">
+        SELECT * FROM t_pl_inboundplanorder
+        <where>
+            <if test="inboundPlanOrderId != null and inboundPlanOrderId != ''">
+                and inboundPlanOrderId LIKE "%"#{inboundPlanOrderId}"%"
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(planDate,'%Y-%m-%d') like "%"#{departmentId}"%"
+                or DATE_FORMAT(planDate,'%Y%m%d') like "%"#{departmentId}"%")
+            </if>
+            <if test="companyId != null and companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(transferDate,'%Y-%m-%d') like "%"#{companyId}"%"
+                or DATE_FORMAT(transferDate,'%Y%m%d') like "%"#{companyId}"%")
+            </if>
+            <if test="transferDraftId != null and transferDraftId != ''">
+                and transferDraftId LIKE "%"#{transferDraftId}"%"
+            </if>
+            <if test="wastes != null">
+                <if test="wastes.name != null and wastes.name != ''">
+                    and wastesName LIKE "%"#{wastes.name}"%"
+                </if>
+                <if test="wastes.wastesId != null and wastes.wastesId != ''">
+                    and wastesCode LIKE "%"#{wastes.wastesId}"%"
+                </if>
+            </if>
+        </where>
+    </select>
 
     <!-- 查询入库计划单中的前缀数量 -->
     <select id="getInboundPlanCountByPrefix" parameterType="String" resultType="int">
@@ -91,6 +122,17 @@
         SELECT * FROM t_pl_inboundorder;
     </select>
 
+    <!--通过编号获取入库单-->
+    <select id="getInboundOrderById" resultMap="InboundOrderRM">
+        SELECT * FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
+    </select>
+
+    <!--作废该入库单-->
+    <update id="setInboundOrderStateInvalid" parameterType="String">
+        UPDATE t_pl_inboundorder SET checkState='Invalid' WHERE inboundOrderId=#{inboundOrderId};
+    </update>
+
+    <!--获取入库单明细列表-->
     <select id="getInboundOrderItemList" resultMap="InboundOrderItemRM">
         SELECT * FROM t_pl_inboundorderitem WHERE inboundOrderId=#{inboundOrderId};
     </select>
@@ -99,6 +141,10 @@
     <select id="existInboundOrderId" resultType="boolean">
         SELECT COUNT(*) FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};
     </select>
+
+    <update id="updateItemHandleCategory" parameterType="InboundOrderItem">
+        UPDATE t_pl_inboundorderitem SET handleCategory=#{handleCategory} WHERE inboundOrderItemId=#{inboundOrderItemId};
+    </update>
 
     <select id="countInboundOrder" resultType="int">
         SELECT COUNT(*) FROM t_pl_inboundorder;
