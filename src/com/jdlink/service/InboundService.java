@@ -1,6 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Inventory.InboundOrder;
+import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Page;
 
@@ -23,6 +24,13 @@ public interface InboundService {
      * @param inboundPlanOrder 入库计划单
      */
     void addInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
+
+    /**
+     * 查找入库计划单
+     * @param inboundPlanOrder 入库计划单数据
+     * @return 符合条件的入库计划单列表
+     */
+    List<InboundPlanOrder> searchInboundPlanOrder(InboundPlanOrder inboundPlanOrder);
 
     /**
      * 获取入库计划单编号
@@ -54,6 +62,25 @@ public interface InboundService {
      * @return 入库单列表
      */
     List<InboundOrder> listInboundOrder(Page page);
+
+    /**
+     * 作废入库单
+     * @param inboundOrderId 入库单编号
+     */
+    void setInboundOrderStateInvalid(String inboundOrderId);
+
+    /**
+     * 根据编号获取入库单
+     * @param inboundOrderId 入库单号
+     * @return 入库单
+     */
+    InboundOrder getInboundOrderById(String inboundOrderId);
+
+    /**
+     * 更新入库单明细中的进料方式
+     * @param inboundOrderItem 入库单明细
+     */
+    void updateItemHandleCategory(InboundOrderItem inboundOrderItem);
 
     /**
      * 是否存在该单号
