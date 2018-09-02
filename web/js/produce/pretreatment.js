@@ -1167,6 +1167,9 @@ var outBoundOrderIdArray = [];
  */
 function confirmInsert() {
 // 定义预处理单，存储勾选出库单
+    $(".newLine").remove();
+    pretreatment = {};
+    outBoundOrderIdArray = [];
     var pretreatmentItemList = [];
     var weightTotal = 0;
     var nameList = [];                // 用于存放处置方式、进料方式的name
@@ -1230,6 +1233,7 @@ function confirmInsert() {
             }
         }
     });
+    ///////分段
     // 遍历js对象数组列表，循环增加预处理单条目列表
     //计算总重量
     num = 0;
@@ -1368,7 +1372,10 @@ function confirmInsert() {
         });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
+        clonedTr.addClass("newLine");
         clonedTr.insertBefore(tr);
+        //隐藏无数据的tr
+        tr.hide();
     }
     pretreatment.volatileNumberTotal = volatileNumberTotal;
     pretreatment.calorificTotal = calorificTotal;
@@ -1489,15 +1496,4 @@ function searchOutBoundOrder() {
             }
         });
     }
-}
-
-/**
- * 新增页面撤回/删除已添加的出库单功能
- * @param item
- */
-function deleteItem(item) {
-    if (confirm("是否删除？")) {
-        alert("功能开发中。。。");
-    }
-
 }

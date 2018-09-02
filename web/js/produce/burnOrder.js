@@ -29,7 +29,6 @@ function reset() {
 
 var pretreatmentId = "";    //预处理单号
 var num = 0;               //克隆行数
-var pretreatmentIdArray = [];
 var burnOrderId = "";      //焚烧工单号
 var i1 = 0;           //焚烧工单序号
 /**
@@ -364,12 +363,15 @@ function setViewPretreatmentClone(result) {
     tr.hide();
 }
 
+var pretreatmentIdArray = [];
 /**
  * 添加焚烧工单
  */
 function confirmInsert() {
 // 定义焚烧工单，存储勾选预处理单
+    $(".newLine").remove();
     var burnOrderList = [];
+    pretreatmentIdArray = [];
     var currentId = parseInt(getCurrentBurnOrderId());
     // 遍历计划单表格行，获取勾选的计划列表
     $("#pretreatmentData").children().not("#clone1").each(function () {
@@ -460,6 +462,7 @@ function confirmInsert() {
         });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
+        clonedTr.addClass("newLine");
         clonedTr.insertBefore(tr);
     }
 }
