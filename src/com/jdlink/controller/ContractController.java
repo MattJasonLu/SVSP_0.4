@@ -943,8 +943,8 @@ public class ContractController {
             for (Contract contract : contractList) {
                 String clientId = contract.getClientId();
                 LaboratoryTest laboratoryTest = laboratoryTestService.getRecentLaboratoryTestByClientId(clientId);
-                if (laboratoryTest != null) map.put(clientId, laboratoryTest.getWastesList());
-                else map.put(clientId, new ArrayList<Wastes>());
+//                if (laboratoryTest != null) map.put(clientId, laboratoryTest.getWastesList());
+//                else map.put(clientId, new ArrayList<Wastes>());
                 Client client = clientService.getByClientId(clientId);
                 String contactInfo = client.getContactName() + "-" + client.getPhone();
                 map2.put(clientId, contactInfo);
