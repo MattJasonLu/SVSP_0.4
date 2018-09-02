@@ -448,7 +448,6 @@ function setSeniorSelectedList() {
  * @param e
  */
 function exportExcel() {
-    console.log("export");
     var name = 't_pr_pretreatment';
     var sqlWords = "select * from t_pr_pretreatment join t_pr_pretreatmentitem where pretreatmentId = id;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
