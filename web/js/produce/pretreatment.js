@@ -391,6 +391,15 @@ function setPretreatmentList(result) {
                     // 污泥比例
                     $(this).html(obj.sludgeProportion);
                     break;
+                case (9):
+                    // 破碎料比例
+                    $(this).html(obj.crushingProportion);
+                    break;
+                case (10):
+                    // 悬挂连比例
+                    $(this).html(obj.suspensionProportion);
+                    break;
+
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -598,7 +607,7 @@ function showViewModal(id) {
     $(".newLine").remove();
     $.ajax({
         type: "POST",
-        url: "getById",
+        url: "getPretreatmentById",
         async: false,
         data: {
             id: id
