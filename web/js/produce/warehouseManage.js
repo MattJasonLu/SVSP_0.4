@@ -1,4 +1,5 @@
 var inboundPlanOrderIdArray = [];
+var itemIndex = 0;
 
 /**
  * 读取入库计划单数据
@@ -182,7 +183,7 @@ function addPlan2Order() {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.find("td[name='index']").text(i+1);
+        clonedTr.find("td[name='index']").text(++itemIndex);
         clonedTr.find("td[name='inboundPlanOrderId']").text(planList[i].inboundPlanOrderId);
         clonedTr.find("td[name='transferDraftId']").text(planList[i].transferDraftId);
         clonedTr.find("td[name='produceCompanyName']").text(planList[i].produceCompanyName);
