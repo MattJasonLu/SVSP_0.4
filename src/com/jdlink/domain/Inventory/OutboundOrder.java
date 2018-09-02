@@ -37,7 +37,7 @@ public class OutboundOrder {
     /*转移联单号*/
     private String transferDraftId;
     /*部门*/
-   // private String departmentId;
+    //private String departmentId;
     /*业务员 来自产废单位的业务员*/
     private Salesman salesman;
     /*单据状态*/

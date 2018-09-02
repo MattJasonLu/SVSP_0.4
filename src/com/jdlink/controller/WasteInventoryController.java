@@ -520,12 +520,18 @@ catch (Exception e){
         }
 
     }
+
+    /**
+     * 搜索总记录数
+     * @param outboundOrder
+     * @return
+     */
     @RequestMapping("searchOutBoundTotal")
     @ResponseBody
     public int searchOutBoundTotal(@RequestBody OutboundOrder outboundOrder){
-
-        return 0;
+        return outboundOrderService.searchCount(outboundOrder);
     }
+
     //根据入库单号查询信息
     @RequestMapping("getByOutBoundOrderId")
     @ResponseBody
@@ -579,7 +585,7 @@ catch (Exception e){
         try{
             List<OutboundOrder> outboundOrderList=outboundOrderService.getOutBoundOrderList();
             JSONArray jsonArray=JSONArray.fromObject(outboundOrderList);
-            res.put("jsonArray",jsonArray);
+            res.put("data",jsonArray);
             res.put("status", "success");
             res.put("message", "查询成功");
 
@@ -590,6 +596,27 @@ catch (Exception e){
             res.put("message", "查询失败");
         }
 
+        return  res.toString();
+    }
+
+    //根据Id获取出库数据List形式
+    @RequestMapping("getOutBoundOrderListById")
+    @ResponseBody
+    public String getOutBoundOrderListById(String id){
+        JSONObject res=new JSONObject();
+        try{
+            List<OutboundOrder> outboundOrderList=outboundOrderService.getById(id);
+            JSONArray jsonArray=JSONArray.fromObject(outboundOrderList);
+            res.put("data",jsonArray);
+            res.put("status", "success");
+            res.put("message", "数据获取成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "数据获取失败");
+        }
         return  res.toString();
     }
    //加载下拉列表
@@ -671,5 +698,29 @@ catch (Exception e){
             id="0"+id;
         }
         return id;
+    }
+
+    /**
+     * 查询功能
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("searchOutBoundOrder")
+    @ResponseBody
+    public String searchOutBoundOrder(@RequestBody OutboundOrder outboundOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            List<OutboundOrder> outboundOrderList = outboundOrderService.search(outboundOrder);
+            JSONArray data = JSONArray.fromArray(outboundOrderList.toArray(new OutboundOrder[outboundOrderList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -46,9 +47,17 @@ public class PRBurnOrderController {
         String id = RandomUtil.getAppointId(prefix, suffix);
         // 确保编号唯一
         while (burnOrderService.getById(id) != null) {
-            int index = Integer.parseInt(id);
+            System.out.println("查询的数据为：");
+            System.out.println(burnOrderService.getById(id).getId());
+            int index = Integer.parseInt(suffix);
             index += 1;
-            id = index + "";
+            if (index <= 9) suffix = "0000" + index;
+            else if (index > 9 && index <= 99) suffix = "000" + index;
+            else if (index > 99 && index <= 999) suffix = "00" + index;
+            else if (index > 999 && index <= 9999) suffix = "0" + index;
+            else suffix = "" + index;
+            id = RandomUtil.getAppointId(prefix, suffix);
+            System.out.println(id);
         }
         JSONObject res = new JSONObject();
         res.put("id", id);
