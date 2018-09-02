@@ -37,8 +37,6 @@ var i1 = 0;           //焚烧工单序号
  */
 function loadPretreatmentList() {
     i1 = 0;                         //刷新页面时重新计数
-    //设置创建日期
-    $("#date").val(getWeekDate());
     //获取数据
     $.ajax({
         type: "POST",                       // 方法类型
@@ -531,7 +529,6 @@ function save(){
                         pretreatmentItem.wastes = wastes;
                         pretreatmentItem.proportion = data.pretreatmentItemList[i].proportion ;
                         pretreatmentItem.temporaryAddress = data.pretreatmentItemList[i].temporaryAddress ;
-                        console.log("暂存点地址：" + pretreatmentItem.temporaryAddress);
                         pretreatmentItemList.push(pretreatmentItem);
                     }
                     burnOrder.pretreatmentItemList = pretreatmentItemList;
@@ -542,6 +539,7 @@ function save(){
             }
         });
         //将焚烧工单数据插入到数据库
+        console.log(burnOrder);
         $.ajax({
             type: "POST",
             url: "insertNewBurnOrder",

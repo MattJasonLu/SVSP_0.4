@@ -10,7 +10,7 @@ function getWeekDate() {
     var day = obj.getDate();
     if (day % 7 > 0) var a = 1; else a = 0;
     var week = parseInt(day / 7) + a;
-    return year + "年" + month + "月";
+    return year + "年" + month + "月" + day + "日";
 }
 
 /**
@@ -819,8 +819,6 @@ function showAdjustModal(item) {
     //清楚之前克隆行
     $(".newAjust").remove();
     pretreatmentId = getPretreatmentId(item);
-    //填充下拉数据框数据
-    setAdjustSelectedList();
     //填充数据
     $.ajax({
         type: "POST",
@@ -835,6 +833,8 @@ function showAdjustModal(item) {
                 //设置数据
                 var data = eval(result.data);
                 length = data.pretreatmentItemList.length;
+                //填充下拉数据框数据
+                setAdjustSelectedList();
                 setAdjustClone(data);
             } else {
                 alert(result.message);
@@ -851,7 +851,7 @@ function showAdjustModal(item) {
 function setAdjustClone(result) {
     var tr = $("#adjustClone").find("tr:first");
     //tr.siblings().remove();
-   var num = 0;
+    var num = 0;
     $.each(result.pretreatmentItemList, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
@@ -889,20 +889,15 @@ function setAdjustClone(result) {
                     // 备注
                     $(this).html(obj.wastes.remarks);
                     break;
-                // case (7):
-                //     // 处置方式
-                //     $(this).val(obj.wastes.processWay.index);
-                //     break;
-                // case (8):
-                //     // 进料方式
-                //     $(this).val(obj.wastes.handleCategory.index);
-                //     break;
+                case (7):
+                    // 处置方式
+                    $(this).find("select").val(obj.wastes.processWay.index - 1);
+                    break;
+                case (8):
+                    // 进料方式
+                    $(this).find("select").val(obj.wastes.handleCategory.index - 1);
+                    break;
             }
-            var $num = num + 1;
-            // $("#adjust" + $num + "-processWay").text(obj.wastes.processWay.name);
-            // $("#adjust" + $num + "-handleCategory").text(obj.wastes.handleCategory.name);
-
-            // $("#adjust" + $num + "-handleCategory option[text="+obj.wastes.handleCategory.name+"]").attr("selected", true);
         });
         console.log("num:" + num);
         clonedTr.children().find("select").each(function () {
@@ -979,4 +974,521 @@ function adjust() {
     });
 }
 
+//////////////////////////////新增页面//////////////////////////
+//
+var pretreatment = {};        //新增预处理单
+var num = 0;               //克隆行数
+var i1 = 0;           //焚烧工单序号
+/**
+ * 设置预处理单列表数据
+ */
+function loadOutBoundOrderList() {
+    $("#createDate").val(getWeekDate());
+    i1 = 0;                         //刷新页面时重新计数
+    //获取数据
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getOutBoundOrderList",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setOutBoundOrderList(result.data);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
+    setSeniorSelectedList1();
+}
 
+/**
+ * 设置高级检索的下拉框数据
+ */
+function setSeniorSelectedList1() {
+    //设置状态下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setOutBoundOrderSeniorSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var state = $("#search1-checkState");
+                state.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    state.append(option);
+                });
+                state.get(0).selectedIndex = -1;
+                var state1 = $("#search1-recordState");
+                state1.children().remove();
+                $.each(data.recordStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    state1.append(option);
+                });
+                state1.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+
+/**
+ * 设置出库单数据
+ * @param result
+ */
+function setOutBoundOrderList(result) {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#clone1");
+    tr.siblings().remove();
+    $.each(result, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                case(1):
+                    // 出库单号
+                    $(this).html(obj.outboundOrderId);
+                    break;
+                case (2):
+                    // 部门
+                    $(this).html(obj.departmentName);
+                    break;
+                case (3):
+                    // 出库日期
+                    $(this).html(getDateStr(obj.outboundDate));
+                    break;
+                case (4):
+                    // 仓库号
+                    $(this).html(obj.wareHouse.wareHouseId);
+                    break;
+                case (5):
+                    // 记录状态
+                    $(this).html(obj.recordState.name);
+                    break;
+                case (6):
+                    // 单据状态
+                    $(this).html(obj.checkState.name);
+                    break;
+                case (7):
+                    // 转移联单号
+                    $(this).html(obj.transferDraftId);
+                    break;
+                case (8):
+                    // 产废单位
+                    $(this).html(obj.client.companyName);
+                    break;
+                case (9):
+                    // 危废名称
+                    $(this).html(obj.wastes.name);
+                    break;
+                case(10):
+                    // 危废重量
+                    $(this).html(obj.wastes.weight);
+                    break;
+                case(11):
+                    // 备注
+                    $(this).html(obj.wastes.remarks);
+                    break;
+                case(12):
+                    // 处置方式
+                    $(this).html(obj.wastes.processWay.name);
+                    break;
+                case(13):
+                    // 进料方式
+                    $(this).html(obj.wastes.handleCategory.name);
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+}
+
+/**
+ * 获取当前预处理单号
+ * @returns {string}
+ */
+function getCurrentPretreatmentId() {
+    var id = "";
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentPretreatmentId",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined)
+                id = result.id;
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("获取当前预处理单号失败！");
+        }
+    });
+    return id;
+}
+
+var outBoundOrderIdArray = [];
+
+/**
+ * 添加焚烧工单
+ */
+function confirmInsert() {
+// 定义预处理单，存储勾选出库单
+    var pretreatmentItemList = [];
+    var weightTotal = 0;
+    var nameList = [];                // 用于存放处置方式、进料方式的name
+    pretreatment.id = getCurrentPretreatmentId();
+    var i = 0;  //序号
+    // 遍历计划单表格行，获取勾选的计划列表
+    $("#outBoundOrderData").children().not("#clone1").each(function () {
+        var isCheck = $(this).find("input[name='select']").prop('checked');
+        if (isCheck) {
+            var outBoundOrderId1 = $(this).find("td[name='outBoundOrderId']").text();
+            if ($.inArray(outBoundOrderId1, outBoundOrderIdArray) == -1) {
+                i++;
+                outBoundOrderIdArray.push(outBoundOrderId1);
+                //根据Id查找数据并进行赋值
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "getOutBoundOrderListById",          // url
+                    async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: {
+                        id: outBoundOrderId1
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            var data = eval(result.data[0]);
+                            //将数据存到数组中，然后统一赋值
+                            var pretreatmentItem = {};
+                            pretreatmentItem.serialNumber = i;
+                            pretreatmentItem.pretreatmentId = pretreatment.id;
+                            pretreatmentItem.outboundOrderId = outBoundOrderId1;
+                            pretreatmentItem.produceCompanyName = data.client.companyName;
+                            weightTotal += data.wastes.weight;          // 总重量累加
+                            var wastes = {};
+                            wastes.name = data.wastes.name;
+                            wastes.weight = data.wastes.weight;
+                            wastes.calorific = data.wastes.calorific;
+                            wastes.ashPercentage = data.wastes.ashPercentage;
+                            wastes.wetPercentage = data.wastes.wetPercentage;
+                            wastes.volatileNumber = data.wastes.volatileNumber;
+                            wastes.chlorinePercentage = data.wastes.chlorinePercentage;
+                            wastes.sulfurPercentage = data.wastes.sulfurPercentage;
+                            wastes.ph = data.wastes.ph;
+                            wastes.phosphorusPercentage = data.wastes.phosphorusPercentage;
+                            wastes.fluorinePercentage = data.wastes.fluorinePercentage;
+                            wastes.remarks = data.wastes.remarks;
+                            wastes.handleCategory = data.wastes.handleCategory.index;
+                            wastes.processWay = data.wastes.processWay.index - 1;
+                            nameList.push(data.wastes.handleCategory.name);
+                            nameList.push(data.wastes.processWay.name);
+                            pretreatmentItem.wastes = wastes;
+                            pretreatmentItemList.push(pretreatmentItem);
+                        } else {
+                            console.log(result.message);
+                        }
+                    },
+                    error: function (result) {
+                        console.log("error: " + result);
+                        console.log("获取当前预处理单号失败！");
+                    }
+                });
+            }
+        }
+    });
+    // 遍历js对象数组列表，循环增加预处理单条目列表
+    //计算总重量
+    num = 0;
+    pretreatment.weightTotal = weightTotal;
+    var volatileNumberTotal = 0;
+    var calorificTotal = 0;
+    var ashPercentageTotal = 0;
+    var wetPercentageTotal = 0;
+    var chlorinePercentageTotal = 0;
+    var sulfurPercentageTotal = 0;
+    var phTotal = 0;
+    var phosphorusPercentageTotal = 0;
+    var fluorinePercentageTotal = 0;
+    var distillationProportion = 0;
+    var wasteLiquidProportion = 0;
+    var sludgeProportion = 0;
+    var bulkProportion = 0;
+    var crushingProportion = 0;
+    var suspensionProportion = 0;
+    var j1 = 0;
+    for (var j = 0; j < pretreatmentItemList.length; j++) {
+        //计算比例、总计等数值
+        pretreatmentItemList[j].proportion = pretreatmentItemList[j].wastes.weight / pretreatment.weightTotal;
+        volatileNumberTotal += pretreatmentItemList[j].wastes.volatileNumber;
+        calorificTotal += pretreatmentItemList[j].wastes.calorific;
+        ashPercentageTotal += pretreatmentItemList[j].wastes.ashPercentage;
+        wetPercentageTotal += pretreatmentItemList[j].wastes.wetPercentage;
+        chlorinePercentageTotal += pretreatmentItemList[j].wastes.chlorinePercentage;
+        sulfurPercentageTotal += pretreatmentItemList[j].wastes.sulfurPercentage;
+        phTotal += pretreatmentItemList[j].wastes.ph;
+        phosphorusPercentageTotal += pretreatmentItemList[j].wastes.phosphorusPercentage;
+        fluorinePercentageTotal += pretreatmentItemList[j].wastes.fluorinePercentage;
+        //计算进料方式比例
+        if (nameList[j1] === "污泥" || pretreatmentItemList[j].wastes.handleCategory === 1)
+            sludgeProportion += pretreatmentItemList[j].proportion;
+        if (nameList[j1] === "废液" || pretreatmentItemList[j].wastes.handleCategory === 2)
+            wasteLiquidProportion += pretreatmentItemList[j].proportion;
+        if (nameList[j1] === "散装料" || pretreatmentItemList[j].wastes.handleCategory === 3)
+            bulkProportion += pretreatmentItemList[j].proportion;
+        if (nameList[j1] === "破碎料" || pretreatmentItemList[j].wastes.handleCategory === 4)
+            crushingProportion += pretreatmentItemList[j].proportion;
+        if (nameList[j1] === "精馏残渣" || pretreatmentItemList[j].wastes.handleCategory === 5)
+            distillationProportion += pretreatmentItemList[j].proportion;
+        if (nameList[j1] === "悬挂连" || pretreatmentItemList[j].wastes.handleCategory === 6)
+            suspensionProportion += pretreatmentItemList[j].proportion;
+        //将数据赋值到预处理单
+        var tr = $("#pretreatmentClonrTr");
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        //更新id
+        clonedTr.children().find("input").each(function () {
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, num + 1);
+            $(this).prop('id', newId);
+        });
+        num++;
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        var obj = eval(pretreatmentItemList[j]);
+        clonedTr.children("td").each(function (inner_index) {
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                case (0):
+                    //序号
+                    $(this).html(obj.serialNumber);
+                    break;
+                case (1):
+                    //产废单位
+                    $(this).html(obj.produceCompanyName);
+                    break;
+                case(2):
+                    //指标要求及来源
+                    break;
+                case (3):
+                    //危废名称
+                    $(this).html(obj.wastes.name);
+                    break;
+                case (4):
+                    //比例
+                    $(this).html(obj.proportion);
+                    break;
+                case (5):
+                    //重量
+                    $(this).html(obj.wastes.weight);
+                    break;
+                case (6):
+                    //危废热值
+                    $(this).html(obj.wastes.calorific);
+                    break;
+                case (7):
+                    //灰分
+                    $(this).html(obj.wastes.ashPercentage);
+                    break;
+                case (8):
+                    //水分
+                    $(this).html(obj.wastes.wetPercentage);
+                    break;
+                case (9):
+                    //挥发份
+                    $(this).html(obj.wastes.volatileNumber);
+                    break;
+                case (10):
+                    //氯
+                    $(this).html(obj.wastes.chlorinePercentage);
+                    break;
+                case (11):
+                    //硫
+                    $(this).html(obj.wastes.sulfurPercentage);
+                    break;
+                case (12):
+                    //PH
+                    $(this).html(obj.wastes.ph);
+                    break;
+                case (13):
+                    //P
+                    $(this).html(obj.wastes.phosphorusPercentage);
+                    break;
+                case (14):
+                    //F
+                    $(this).html(obj.wastes.fluorinePercentage);
+                    break;
+                case (15):
+                    //备注
+                    $(this).html(obj.wastes.remarks);
+                    break;
+                case (16):
+                    //处置方式
+                    $(this).html(nameList[j1 + 1]);
+                    break;
+                case (17):
+                    //进料方式
+                    $(this).html(nameList[j1]);
+                    j1 += 2;
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    }
+    pretreatment.volatileNumberTotal = volatileNumberTotal;
+    pretreatment.calorificTotal = calorificTotal;
+    pretreatment.ashPercentageTotal = ashPercentageTotal;
+    pretreatment.wetPercentageTotal = wetPercentageTotal;
+    pretreatment.chlorinePercentageTotal = chlorinePercentageTotal;
+    pretreatment.sulfurPercentageTotal = sulfurPercentageTotal;
+    pretreatment.phTotal = phTotal;
+    pretreatment.phosphorusPercentageTotal = phosphorusPercentageTotal;
+    pretreatment.fluorinePercentageTotal = fluorinePercentageTotal;
+    pretreatment.distillationProportion = distillationProportion;
+    pretreatment.wasteLiquidProportion = wasteLiquidProportion;
+    pretreatment.sludgeProportion = sludgeProportion;
+    pretreatment.bulkProportion = bulkProportion;
+    pretreatment.crushingProportion = crushingProportion;
+    pretreatment.suspensionProportion = suspensionProportion;
+    pretreatment.pretreatmentItemList = pretreatmentItemList;
+    $("#pretreatmentId").text(pretreatment.id);
+    $("#weightTotal").text(pretreatment.weightTotal);
+    $("#calorificTotal").text(pretreatment.calorificTotal);
+    $("#ashPercentageTotal").text(pretreatment.ashPercentageTotal);
+    $("#wetPercentageTotal").text(pretreatment.wetPercentageTotal);
+    $("#volatileNumberTotal").text(pretreatment.volatileNumberTotal);
+    $("#chlorinePercentageTotal").text(pretreatment.chlorinePercentageTotal);
+    $("#sulfurPercentageTotal").text(pretreatment.sulfurPercentageTotal);
+    $("#phTotal").text(pretreatment.phTotal);
+    $("#phosphorusPercentageTotal").text(pretreatment.phosphorusPercentageTotal);
+    $("#fluorinePercentageTotal").text(pretreatment.fluorinePercentageTotal);
+    $("#distillationProportion").text(pretreatment.distillationProportion);
+    $("#wasteLiquidProportion").text(pretreatment.wasteLiquidProportion);
+    $("#sludgeProportion").text(pretreatment.sludgeProportion);
+    $("#bulkProportion").text(pretreatment.bulkProportion);
+    $("#crushingProportion").text(pretreatment.crushingProportion);
+    $("#suspensionProportion").text(pretreatment.suspensionProportion);
+}
+
+/**
+ * 将预处理单数据添加到数据库
+ */
+function save() {
+    //获取输入的指标要求及来源数据、预处理单备注数据,重新定义进料方式、处置方式
+    for (var i = 0; i < pretreatment.pretreatmentItemList.length; i++) {
+        var $i = i + 1;
+        pretreatment.pretreatmentItemList[i].requirements = $("#pretreatment" + $i + "-requirements").val();
+    }
+    pretreatment.remarks = $("#remarks").val();
+    console.log("新增的数据为：");
+    console.log(pretreatment);
+    //将预处理单数据插入到数据库
+    $.ajax({
+        type: "POST",
+        url: "addPretreatment",
+        async: false,
+        data: JSON.stringify(pretreatment),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result.status == "success") {
+                console.log(result.message);
+                alert("预处理单添加成功！");
+                window.location.href = "pretreatmentList.html";
+            } else alert(result.message);
+        },
+        error: function (result) {
+            console.log(result.message);
+            alert("预处理单添加失败！");
+        }
+    });
+}
+
+/**
+ * 新增页面查找出库单功能
+ */
+function searchOutBoundOrder() {
+    var recordState = null;
+    if ($("#search1-recordState").val() === 0) recordState = "Delete";//删除
+    if ($("#search1-recordState").val() === 1) recordState = "Usable";//可用
+    if ($("#search1-recordState").val() === 2) recordState = "Disabled";//不可用
+    var checkState = null;
+    if ($("#search1-checkState").val() === 0) checkState = "NewBuild";//新建
+    if ($("#search1-checkState").val() === 1) checkState = "ToPick";//带领料
+    if ($("#search1-checkState").val() === 2) checkState = "Picked";//已领料
+    if ($("#search1-checkState").val() === 3) checkState = "Invalid";//作废
+    var client = {};
+    client.companyName = $("#search1-client").val();
+    var wareHouse = {};
+    wareHouse.wareHouseId = $("#search1-wareHouseId").val();
+    var data = {
+        wareHouse: wareHouse,
+        departmentName: $("#search1-departmentName").val(),
+        auditor: $("#search1-outboundDate").val(),   //出库日期，用审核人代替，保存为String形式
+        outboundOrderId: $("#search1-outboundDate").val(),
+        recordState: recordState,
+        checkState: checkState,
+        transferDraftId: $("#search1-transferDraftId").val(),
+        client: client
+    };
+    if (data == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchOutBoundOrder",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setOutBoundOrderList(result.data);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+}
+
+/**
+ * 新增页面撤回/删除已添加的出库单功能
+ * @param item
+ */
+function deleteItem(item) {
+    if (confirm("是否删除？")) {
+        alert("功能开发中。。。");
+    }
+
+}

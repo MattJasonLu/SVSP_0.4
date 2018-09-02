@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.OutboundOrderMapper" >
-<!--查找出库单号-->
+<mapper namespace="com.jdlink.mapper.OutboundOrderMapper">
+    <!--查找出库单号-->
     <select id="check" resultType="String">
         select outboundOrderId from t_pl_outboundorder order by outboundOrderId desc;
     </select>
@@ -12,7 +12,8 @@
         update t_pl_materialrequisitionorder set checkState='OutBounded'where materialRequisitionId=#{materialRequisitionOrder.materialRequisitionId}
     </update>
     <resultMap id="OutBoundRM" type="OutboundOrder">
-        <collection property="materialRequisitionOrder" column="materialRequisitionId" select="materialRequisitionOrderList"></collection>
+        <collection property="materialRequisitionOrder" column="materialRequisitionId"
+                    select="materialRequisitionOrderList"></collection>
     </resultMap>
     <select id="getMaterialRequisition" resultType="MaterialRequisitionOrder">
         select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
@@ -24,7 +25,7 @@
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
         <collection property="wareHouse" column="warseHouseId" select="getWareHouse" ofType="WareHouse"></collection>
         <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
-        <collection property="client" column="clientId" select="getClient" ofType="Client" ></collection>
+        <collection property="client" column="clientId" select="getClient" ofType="Client"></collection>
     </resultMap>
     <select id="getWastes" parameterType="String" resultType="Wastes">
         select * from t_wastes where id=#{id}
@@ -36,39 +37,67 @@
         select * from client where clientId=#{clientId}
     </select>
     <!--查找领料单的数据-->
-    <select id="materialRequisitionOrderList"  resultMap="MaterialRequisitionOrderRM" parameterType="String">
+    <select id="materialRequisitionOrderList" resultMap="MaterialRequisitionOrderRM" parameterType="String">
 select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId};
     </select>
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM t_pl_outboundorder;
     </select>
     <select id="searchCount" parameterType="OutBoundOrder" resultType="int">
- SELECT COUNT(*) FROM t_pl_outboundorder;
+        SELECT COUNT(*) FROM t_pl_outboundorder
+       <where>
+        <if test="outboundOrderId != null and outboundOrderId != ''">
+            and outboundOrderId like "%"#{outboundOrderId}"%"
+        </if>
+        <if test="wareHouse.wareHouseId != null and wareHouse.wareHouseId != ''">
+            and wareHouseId like "%"#{wareHouse.wareHouseId}"%"
+        </if>
+        <if test="auditor != null and auditor != ''">
+            and DATE_FORMAT(outboundDate,'%Y-%m-%d') like "%"#{auditor}"%"
+            or DATE_FORMAT(outboundDate,'%Y%m%d') like "%"#{auditor}"%"
+        </if>
+        <if test="departmentName != null and departmentName != ''">
+            and departmentName like "%"#{departmentName}"%"
+        </if>
+        <if test="recordState != null and recordState != ''">
+            and recordState like "%"#{recordState}"%"
+        </if>
+        <if test="checkState != null and checkState != ''">
+            and checkState like "%"#{checkState}"%"
+        </if>
+        <if test="transferDraftId != null and transferDraftId != ''">
+            and transferDraftId like "%"#{transferDraftId}"%"
+        </if>
+        <if test="client.companyName != null and client.companyName != ''">
+            and clientId in (select clientId from client where companyName like "%"#{client.companyName}"%")
+        </if>
+       </where>
     </select>
     <select id="getByOutBoundOrderId" parameterType="String" resultMap="OutBoundRM1">
         select * from t_pl_outboundorder where outboundOrderId=#{outboundOrderId}
     </select>
     <resultMap id="OutBoundRM1" type="OutboundOrder">
-        <collection property="materialRequisitionOrder" column="materialRequisitionId" select="materialRequisitionOrderList1"></collection>
+        <collection property="materialRequisitionOrder" column="materialRequisitionId"
+                    select="materialRequisitionOrderList1"></collection>
     </resultMap>
     <!--//查找领料单的数据-->
-    <select id="materialRequisitionOrderList1"  resultMap="MaterialRequisitionOrderRM" parameterType="String">
+    <select id="materialRequisitionOrderList1" resultMap="MaterialRequisitionOrderRM" parameterType="String">
 select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId};
     </select>
     <resultMap id="MaterialRequisitionOrderRM1" type="MaterialRequisitionOrder">
         <collection property="wareHouse" column="warseHouseId1" select="getWareHouse" ofType="WareHouse"></collection>
         <collection property="wastes" column="id" select="getWastes1" ofType="Wastes"></collection>
-        <collection property="client" column="clientId" select="getClient1" ofType="Client" ></collection>
+        <collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>
     </resultMap>
     <select id="getWastes1" parameterType="String" resultType="Wastes">
     select * from t_wastes where id=#{id}</select>
-<select id="getWareHouse1" resultType="WareHouse">
+    <select id="getWareHouse1" resultType="WareHouse">
         select * from t_pl_warehouse where warehouseId=#{warseHouseId}
     </select>
     <resultMap id="SalesManRM" type="Client">
         <collection property="salesman" column="salesmanId" select="getSalesMan" ofType="Salesman"></collection>
     </resultMap>
-<select id="getClient1" resultType="Client">
+    <select id="getClient1" resultType="Client">
         select * from client where clientId=#{clientId}
     </select>
     <select id="getSalesMan" resultType="Salesman">
@@ -81,41 +110,81 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         salesmanId=#{materialRequisitionOrder.client.salesman.salesmanId}
         where outboundOrderId=#{outboundOrderId}
     </update>
-   <select id="getSalesman1" resultType="Salesman">
+    <select id="getSalesman1" resultType="Salesman">
     select * from salesman where salesmanId=#{salesmanId};
 </select>
     <resultMap id="OutBoundOrderList" type="OutboundOrder" autoMapping="true">
         <!--领料单信息-->
-        <collection property="materialRequisitionOrder" column="materialRequisitionId" select="getMaterialRequisitionOrder" ofType="MaterialRequisitionOrder"></collection>
+        <collection property="materialRequisitionOrder" column="materialRequisitionId"
+                    select="getMaterialRequisitionOrder" ofType="MaterialRequisitionOrder"></collection>
         <!--危废信息-->
         <collection property="wastes" column="id" select="getWastes" ofType="Wastes"></collection>
-       <!--业务员-->
+        <!--业务员-->
         <collection property="salesman" column="salesmanId" select="getSalesman1" ofType="Salesman"></collection>
-       <!--客户-->
+        <!--客户-->
         <collection property="client" column="clientId" select="getClient1" ofType="Client"></collection>
-       <!--仓库-->
+        <!--仓库-->
         <collection property="wareHouse" column="wareHouseId" select="getWareHouse" ofType="WareHouse"></collection>
-    <collection property="wasteInventory" column="inboundOrderId" select="getWasteInventory" ofType="WasteInventory"></collection>
+        <collection property="wasteInventory" column="inboundOrderId" select="getWasteInventory"
+                    ofType="WasteInventory"></collection>
     </resultMap>
     <!--获取领料单信息-->
     <select id="getMaterialRequisitionOrder" resultType="MaterialRequisitionOrder" parameterType="String">
         select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId};
     </select>
     <!--根据配料单编号获取信息-->
-<select id="getOutBoundByMId" parameterType="String" resultMap="OutBoundRM1">
+    <select id="getOutBoundByMId" parameterType="String" resultMap="OutBoundRM1">
     select * from t_pl_outboundorder where materialRequisitionId=#{materialRequisitionId}
 </select>
     <!--获取出库单信息的接口-->
-    <select id="getOutBoundOrderList"  resultMap="OutBoundOrderList">
+    <select id="getOutBoundOrderList" resultMap="OutBoundOrderList">
         select  * from t_pl_outboundorder;
     </select>
+    <!--根据Id获取出库单信息-->
+    <select id="getById" parameterType="String" resultMap="OutBoundOrderList">
+        select * from t_pl_outboundorder where outboundOrderId = #{id};
+    </select>
+    <!--查找出库单-->
+    <select id="search" parameterType="OutBoundOrder" resultMap="OutBoundOrderList">
+        select * from t_pl_outboundorder
+        <where>
+            <if test="outboundOrderId != null and outboundOrderId != ''">
+                and outboundOrderId like "%"#{outboundOrderId}"%"
+            </if>
+            <if test="wareHouse.wareHouseId != null and wareHouse.wareHouseId != ''">
+                and wareHouseId like "%"#{wareHouse.wareHouseId}"%"
+            </if>
+            <if test="auditor != null and auditor != ''">
+                and DATE_FORMAT(outboundDate,'%Y-%m-%d') like "%"#{auditor}"%"
+                or DATE_FORMAT(outboundDate,'%Y%m%d') like "%"#{auditor}"%"
+            </if>
+            <if test="departmentName != null and departmentName != ''">
+                and departmentName like "%"#{departmentName}"%"
+            </if>
+            <if test="recordState != null and recordState != ''">
+                and recordState like "%"#{recordState}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState like "%"#{checkState}"%"
+            </if>
+            <if test="transferDraftId != null and transferDraftId != ''">
+                and transferDraftId like "%"#{transferDraftId}"%"
+            </if>
+            <if test="client.companyName != null and client.companyName != ''">
+                and clientId in (select clientId from client where companyName like "%"#{client.companyName}"%")
+            </if>
+        </where>
+    </select>
+
+
     <!--添加危废出库单-->
     <insert id="addSecondary" parameterType="OutboundOrder">
         insert into t_pl_outboundorder(outboundOrderId,inboundOrderId,outboundNumber,nowTime,checkState,boundType,outboundDate,creator,departmentName) values
         (#{outboundOrderId},#{wasteInventory.inboundOrderId},#{outboundNumber},NOW(),'OutBounded',#{boundType},#{outboundDate},#{creator},#{departmentName});
     </insert>
     <resultMap id="RM1" type="OutboundOrder">
-       <collection property="wasteInventory" column="inboundOrderId" ofType="WasteInventory" select="getWasteInventory"></collection>
+        <collection property="wasteInventory" column="inboundOrderId" ofType="WasteInventory"
+                    select="getWasteInventory"></collection>
     </resultMap>
     <select id="getWasteInventory" resultMap="WasteInventoryRM" parameterType="String">
         select * from  t_pl_wasteinventory where inboundOrderId=#{inboundOrderId}
