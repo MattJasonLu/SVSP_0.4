@@ -72,8 +72,8 @@
             </if>
             <if test="pretreatmentId != null and pretreatmentId !=''">
                 <!--用pretreatmentId来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{pretreatmentId}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{pretreatmentId}"%"
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{pretreatmentId}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{pretreatmentId}"%")
             </if>
             <if test="remarks !=null and remarks !='' ">
                 and remarks like "%"#{remarks}"%"
@@ -96,8 +96,8 @@
             </if>
             <if test="pretreatmentId != null and pretreatmentId !=''">
                 <!--用pretreatmentId来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{pretreatmentId}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{pretreatmentId}"%"
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{pretreatmentId}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{pretreatmentId}"%")
             </if>
             <if test="remarks !=null and remarks !='' ">
                 and remarks like "%"#{remarks}"%"
