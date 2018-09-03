@@ -3,9 +3,8 @@ package com.jdlink.controller;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Quotation;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.QuotationItem;
 import com.jdlink.service.QuotationService;
-import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,10 +109,6 @@ public class QuotationController {
     public String addQuotation(@RequestBody Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
-            // 设置每个危废的编码,唯一
-            for (Wastes wastes : quotation.getWastesList()) {
-                wastes.setId(RandomUtil.getRandomEightNumber());
-            }
             // 获取id 更新
             String id = quotationService.count()+1+"";
             quotation.setId(id);
@@ -140,14 +135,14 @@ public class QuotationController {
     public String updateQuotation(@RequestBody Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
-            List<Wastes> oldWastesList = quotationService.getById(quotation.getId()).getWastesList();
-            List<Wastes> newWastesList = quotation.getWastesList();
-            for (int i = 0; i < oldWastesList.size(); i++) {
-                newWastesList.get(i).setId(oldWastesList.get(i).getId());
-            }
-            for (int i = oldWastesList.size(); i < newWastesList.size(); i++) {
-                newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());
-            }
+//            List<Wastes> oldWastesList = quotationService.getById(quotation.getId()).getWastesList();
+//            List<Wastes> newWastesList = quotation.getWastesList();
+//            for (int i = 0; i < oldWastesList.size(); i++) {
+//                newWastesList.get(i).setId(oldWastesList.get(i).getId());
+//            }
+//            for (int i = oldWastesList.size(); i < newWastesList.size(); i++) {
+//                newWastesList.get(i).setId(RandomUtil.getRandomEightNumber());
+//            }
             quotation.setCheckState(CheckState.ToExamine);
             quotationService.update(quotation);
             res.put("status", "success");
@@ -172,9 +167,6 @@ public class QuotationController {
     public String levelUpQuotation(@RequestBody Quotation quotation) {
         JSONObject res = new JSONObject();
         try {
-            for (Wastes wastes : quotation.getWastesList()) {
-                wastes.setId(RandomUtil.getRandomEightNumber());
-            }
             // 作废旧报价单
             quotationService.setStateDisabled(quotation.getId());
             quotation.setId((quotationService.count() + 1) + "");
@@ -389,6 +381,31 @@ public class QuotationController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 通过危废编码和客户编号获取危废的价格
+     * @return 价格
+     */
+    @RequestMapping("getQuotationByWastesCodeAndClientId")
+    @ResponseBody
+    public String getQuotationByWastesCodeAndClientId(String wastesCode, String clientId) {
+        JSONObject res = new JSONObject();
+        try {
+            QuotationItem quotationItem = quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
+            JSONObject data = JSONObject.fromBean(quotationItem);
+            res.put("status", "success");
+            res.put("message", "报价单信息获取成功");
+            res.put("data", data);
+            // 返回结果
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "报价单信息获取失败");
+            res.put("exception", e.getMessage());
         }
         // 返回结果
         return res.toString();
