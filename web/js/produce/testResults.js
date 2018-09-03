@@ -477,6 +477,243 @@ function view(e) {
                 $('#samplingDate').text(getDateStr(data.samplingDate));
                 $('#wastesName').text(data.wastesName);
                 $('#wastesCode').text(data.wastesCode);
+                $('#samplingNumber_1').text(data.samplingNumber);
+                $('#isProductionLine').prop('checked', data.isProductionLine);
+                $('#isStorageArea').prop('checked', data.isStorageArea);
+                $('#samplingNumber_2').text(data.samplingNumber);
+
+                // 化学性质
+                $('#testDate').text(getDateStr(data.laboratoryDate));
+                $('#isViscosity').prop('checked', data.isViscosity);
+                $('#viscosityMinimum').text(data.viscosityMinimum);
+                $('#viscosityAverage').text(data.viscosityAverage);
+                $('#viscosityMaximum').text(data.viscosityMaximum);
+
+                $('#isWaterContent').prop('checked', data.isWaterContent);
+                $('#waterContentMinimum').text(data.waterContentMinimum);
+                $('#waterContentAverage').text(data.waterContentAverage);
+                $('#waterContentMaximum').text(data.waterContentMaximum);
+
+                $('#isDensity').prop('checked', data.isDensity);
+                $('#densityMinimum').text(data.densityMinimum);
+                $('#densityAverage').text(data.densityAverage);
+                $('#densityMaximum').text(data.densityMaximum);
+
+                $('#isSolidSubstanceContent').prop('checked', data.isSolidSubstanceContent);
+                $('#solidSubstanceContentMinimum').text(data.solidSubstanceContentMinimum);
+                $('#solidSubstanceContentAverage').text(data.solidSubstanceContentAverage);
+                $('#solidSubstanceContentMaximum').text(data.solidSubstanceContentMaximum);
+
+                $('#isPH').prop('checked', data.isPH);
+                $('#phMinimum').text(data.phMinimum);
+                $('#phAverage').text(data.phAverage);
+                $('#phMaximum').text(data.phMaximum);
+
+                $('#isSulfurContent').prop('checked', data.isSulfurContent);
+                $('#sulfurContentMinimum').text(data.sulfurContentMinimum);
+                $('#sulfurContentAverage').text(data.sulfurContentAverage);
+                $('#sulfurContentMaximum').text(data.sulfurContentMaximum);
+
+                $('#isHeat').prop('checked', data.isHeat);
+                $('#heatMinimum').text(data.heatMinimum);
+                $('#heatAverage').text(data.heatAverage);
+                $('#heatMaximum').text(data.heatMaximum);
+
+                $('#isChlorineContent').prop('checked', data.isChlorineContent);
+                $('#chlorineContentMinimum').text(data.chlorineContentMinimum);
+                $('#chlorineContentAverage').text(data.chlorineContentAverage);
+                $('#chlorineContentMaximum').text(data.chlorineContentMaximum);
+
+                $('#isAsh').prop('checked', data.isAsh);
+                $('#ashMinimum').text(data.ashMinimum);
+                $('#ashAverage').text(data.ashAverage);
+                $('#ashMaximum').text(data.ashMaximum);
+
+                $('#isFluorineContent').prop('checked', data.isFluorineContent);
+                $('#fluorineContentMinimum').text(data.fluorineContentMinimum);
+                $('#fluorineContentAverage').text(data.fluorineContentAverage);
+                $('#fluorineContentMaximum').text(data.fluorineContentMaximum);
+
+                $('#isFlashPoint').prop('checked', data.isFlashPoint);
+                $('#flashPointMinimum').text(data.flashPointMinimum);
+                $('#flashPointAverage').text(data.flashPointAverage);
+                $('#flashPointMaximum').text(data.flashPointMaximum);
+
+                $('#otherParameter1').val(data.otherParameter1);
+                $('#parameter1Minimum').text(data.parameter1Minimum);
+                $('#parameter1Average').text(data.parameter1Average);
+                $('#parameter1Maximum').text(data.parameter1Maximum);
+
+                $('#isMeltingPoint').prop('checked', data.isMeltingPoint);
+                $('#meltingPointMinimum').text(data.meltingPointMinimum);
+                $('#meltingPointAverage').text(data.meltingPointAverage);
+                $('#meltingPointMaximum').text(data.meltingPointMaximum);
+
+                $('#otherParameter2').val(data.otherParameter2);
+                $('#parameter2Minimum').text(data.parameter2Minimum);
+                $('#parameter2Average').text(data.parameter2Average);
+                $('#parameter2Maximum').text(data.parameter2Maximum);
+
+                $('#isBoilingPoint').prop('checked', data.isBoilingPoint);
+                $('#boilingPointMinimum').text(data.boilingPointMinimum);
+                $('#boilingPointAverage').text(data.boilingPointAverage);
+                $('#boilingPointMaximum').text(data.boilingPointMaximum);
+
+                $('#otherParameter3').val(data.otherParameter3);
+                $('#parameter3Minimum').text(data.parameter3Minimum);
+                $('#parameter3Average').text(data.parameter3Average);
+                $('#parameter3Maximum').text(data.parameter3Maximum);
+
+                // 金属物质
+                $('#isHg').prop('checked', data.isHg);
+                $('#HgMinimum').text(data.hgMinimum);
+                $('#HgAverage').text(data.hgAverage);
+                $('#HgMaximum').text(data.hgMaximum);
+
+                $('#isK').prop('checked', data.isK);
+                $('#KMinimum').text(data.KMinimum);
+                $('#KAverage').text(data.KAverage);
+                $('#KMaximum').text(data.KMaximum);
+
+                $('#isNa').prop('checked', data.isNa);
+                $('#NaMinimum').text(data.naMinimum);
+                $('#NaAverage').text(data.naAverage);
+                $('#NaMaximum').text(data.naMaximum);
+
+                $('#isMn').prop('checked', data.isMn);
+                $('#MnMinimum').text(data.mnMinimum);
+                $('#MnAverage').text(data.mnAverage);
+                $('#MnMaximum').text(data.mnMaximum);
+
+                $('#isCu').prop('checked', data.isCu);
+                $('#CuMinimum').text(data.cuMinimum);
+                $('#CuAverage').text(data.cuAverage);
+                $('#CuMaximum').text(data.cuMaximum);
+
+                $('#isCo').prop('checked', data.isCo);
+                $('#CoMinimum').text(data.coMinimum);
+                $('#CoAverage').text(data.coAverage);
+                $('#CoMaximum').text(data.coMaximum);
+
+                $('#isTi').prop('checked', data.isTi);
+                $('#TiMinimum').text(data.tiMinimum);
+                $('#TiAverage').text(data.tiAverage);
+                $('#TiMaximum').text(data.tiMaximum);
+
+                $('#isMg').prop('checked', data.isMg);
+                $('#MgMinimum').text(data.mgMinimum);
+                $('#MgAverage').text(data.mgAverage);
+                $('#MgMaximum').text(data.mgMaximum);
+
+                $('#isLi').prop('checked', data.isLi);
+                $('#LiMinimum').text(data.liMinimum);
+                $('#LiAverage').text(data.liAverage);
+                $('#LiMaximum').text(data.liMaximum);
+
+                $('#isAl').prop('checked', data.isAl);
+                $('#AlMinimum').text(data.alMinimum);
+                $('#AlAverage').text(data.alAverage);
+                $('#AlMaximum').text(data.alMaximum);
+
+                $('#isSe').prop('checked', data.isSe);
+                $('#SeMinimum').text(data.seMinimum);
+                $('#SeAverage').text(data.seAverage);
+                $('#SeMaximum').text(data.seMaximum);
+
+                $('#isAs').prop('checked', data.isAs);
+                $('#AsMinimum').text(data.asMinimum);
+                $('#AsAverage').text(data.asAverage);
+                $('#AsMaximum').text(data.asMaximum);
+
+                $('#isSb').prop('checked', data.isSb);
+                $('#SbMinimum').text(data.sbMinimum);
+                $('#SbAverage').text(data.sbAverage);
+                $('#SbMaximum').text(data.sbMaximum);
+
+                $('#isSi').prop('checked', data.isSi);
+                $('#SiMinimum').text(data.siMinimum);
+                $('#SiAverage').text(data.siAverage);
+                $('#SiMaximum').text(data.siMaximum);
+
+                $('#isCa').prop('checked', data.isCa);
+                $('#CaMinimum').text(data.caMinimum);
+                $('#CaAverage').text(data.caAverage);
+                $('#CaMaximum').text(data.caMaximum);
+
+                $('#isTu').prop('checked', data.isTu);
+                $('#TuMinimum').text(data.tuMinimum);
+                $('#TuAverage').text(data.tuAverage);
+                $('#TuMaximum').text(data.tuMaximum);
+
+                $('#isFe').prop('checked', data.isFe);
+                $('#FeMinimum').text(data.feMinimum);
+                $('#FeAverage').text(data.feAverage);
+                $('#FeMaximum').text(data.feMaximum);
+
+                $('#isNi').prop('checked', data.isNi);
+                $('#NiMinimum').text(data.niMinimum);
+                $('#NiAverage').text(data.niAverage);
+                $('#NiMaximum').text(data.niMaximum);
+
+                $('#isPb').prop('checked', data.isPb);
+                $('#PbMinimum').text(data.pbMinimum);
+                $('#PbAverage').text(data.pbAverage);
+                $('#PbMaximum').text(data.pbMaximum);
+
+                $('#isSn').prop('checked', data.isSn);
+                $('#SnMinimum').text(data.snMinimum);
+                $('#SnAverage').text(data.snAverage);
+                $('#SnMaximum').text(data.snMaximum);
+
+                $('#isCr').prop('checked', data.isCr);
+                $('#CrMinimum').text(data.crMinimum);
+                $('#CrAverage').text(data.crAverage);
+                $('#CrMaximum').text(data.crMaximum);
+
+                $('#isTl').prop('checked', data.isTl);
+                $('#TlMinimum').text(data.tlMinimum);
+                $('#TlAverage').text(data.tlAverage);
+                $('#TlMaximum').text(data.tlMaximum);
+
+                $('#isV').prop('checked', data.isV);
+                $('#VMinimum').text(data.VMinimum);
+                $('#VAverage').text(data.VAverage);
+                $('#VMaximum').text(data.VMaximum);
+
+                $('#otherMetal1').val(data.otherMetal1);
+                $('#metal1Minimum').text(data.metal1Minimum);
+                $('#metal1Average').text(data.metal1Average);
+                $('#metal1Maximum').text(data.metal1Maximum);
+
+                $('#isTe').prop('checked', data.isTe);
+                $('#TeMinimum').text(data.teMinimum);
+                $('#TeAverage').text(data.teAverage);
+                $('#TeMaximum').text(data.teMaximum);
+
+                $('#otherMetal2').val(data.otherMetal2);
+                $('#metal2Minimum').text(data.metal2Minimum);
+                $('#metal2Average').text(data.metal2Average);
+                $('#metal2Maximum').text(data.metal2Maximum);
+
+                $('#isZn').prop('checked', data.isZn);
+                $('#ZnMinimum').text(data.znMinimum);
+                $('#ZnAverage').text(data.znAverage);
+                $('#ZnMaximum').text(data.znMaximum);
+
+                $('#otherMetal3').val(data.otherMetal3);
+                $('#metal3Minimum').text(data.metal3Minimum);
+                $('#metal3Average').text(data.metal3Average);
+                $('#metal3Maximum').text(data.metal3Maximum);
+
+                $('#isCd').prop('checked', data.isCd);
+                $('#CdMinimum').text(data.cdMinimum);
+                $('#CdAverage').text(data.cdAverage);
+                $('#CdMaximum').text(data.cdMaximum);
+
+                $('#otherMetal4').val(data.otherMetal4);
+                $('#metal4Minimum').text(data.metal4Minimum);
+                $('#metal4Average').text(data.metal4Average);
+                $('#metal4Maximum').text(data.metal4Maximum);
 
                 // 设置危废列表
                 // if (data.wastesList.length > 0) {
