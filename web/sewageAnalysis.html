@@ -13,136 +13,288 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/productionDaily.js"></script>
+    <script src="js/produce/sewageAnalysis.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
 </script>
-<body >
-    <!--导航条-->
-    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
-        <div class="main-title">
-            <ul class="nav navbar-nav navbar-left navbar-side">
-                <li>
-                    <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
-                        <span class="glyphicon glyphicon-menu-hamburger"></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="container navbar-left" style="width: 920px;">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
-                <ul class="nav navbar-nav">
-                    <li><a href="reportManagement.html">首页</a></li>
-                    <li><a href="productionDaily.html">生产日报</a></li>
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">质量日报<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="wastesAnalysis.html">危废入场分析日报</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="secondaryAnalysis.html">次生废物分析日报</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="sewageAnalysis.html">污水分析日报</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="softWaterAnalysis.html">软水分析日报</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="businessRegistration.html">业务部送样登记</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="warehouseRegistration.html">仓储部送样登记</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="assessment1.html">业务员考核</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
-            <li class="dropdown">
-                <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="#">个人信息</a></li>
-                    <li><a href="#">待办事项</a></li>
-                    <li><a href="#" onclick="showLog();">登录日志</a></li>
-                    <li><a href="index.html">注销</a></li>
-                </ul>
+<body onload="loadPageSewageList();">
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
             </li>
         </ul>
-    </nav>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="sidebar">
-                <!--<h4>博客管理系统(四月)</h4>-->
-                <!--<div class="cover">-->
-                <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
-                <!--<b>Hi~ 小主</b>-->
-                <!--<p>超级管理员</p>-->
-                <!--</div>-->
-                <ul class="sidenav animated fadeInUp">
-                    <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-                    <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
-                    <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li class="active"><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
-                </ul>
-            </div>
+    </div>
+    <div class="container navbar-left" style="width: 920px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
         </div>
-
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
-            <div class="row">
-                <div>
-                    <ol class="breadcrumb">
-                        <li><a href="#">报表管理</a></li>
-                        <li>质量日报</li>
-                        <li class="active">污水分析日报</li>
-                    </ol>
-                </div>
-                <h4 class="sub-header"><span class="months"></span>污水分析日报</h4>
-            </div>
-            <br>
-            <table class="table table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="text-center">序号</td>
-                        <td class="text-center">收样日期</td>
-                        <td class="text-center">采样点</td>
-                        <td class="text-center">pH</td>
-                        <td class="text-center">CODcr mg/l</td>
-                        <td class="text-center">BOD5 mg/l</td>
-                        <td class="text-center">氨氮mg/l</td>
-                        <td class="text-center">碳酸盐碱度</td>
-                        <td class="text-center">备注</td>
-                    </tr>
-                    <tr>
-                        <td class="text-center">日邦树脂(无锡)有限公司</td>
-                        <td class="text-center">锁定</td>
-                        <td class="text-center">asd</td>
-                        <td class="text-center">1月</td>
-                        <td class="text-center">1月</td>
-                        <td class="text-center">1月</td>
-                        <td class="text-center">1月</td>
-                        <td class="text-center">日邦树脂(无锡)有限公司</td>
-                        <td class="text-center">锁定</td>
-                    </tr>
-                </tbody>
-            </table>
-            <!--分页-->
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li><a href="reportManagement.html">首页</a></li>
+                <li><a href="productionDaily.html">生产日报</a></li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">质量日报<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="wastesAnalysis.html">危废入场分析日报</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="secondaryAnalysis.html">次生废物分析日报</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="sewageAnalysis.html">污水分析日报</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="softWaterAnalysis.html">软水分析日报</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="businessRegistration.html">业务部送样登记</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="warehouseRegistration.html">仓储部送样登记</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
+                    </ul>
+                </li>
+                <li><a href="assessment1.html">业务员考核</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="#" onclick="showLog();">登录日志</a></li>
+                <li><a href="index.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <!--<h4>博客管理系统(四月)</h4>-->
+            <!--<div class="cover">-->
+            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
+            <!--<b>Hi~ 小主</b>-->
+            <!--<p>超级管理员</p>-->
+            <!--</div>-->
+            <ul class="sidenav animated fadeInUp">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
+                                                                           aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span
+                        class="sr-only">(current)</span></a></li>
+                <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user"
+                                                                          aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span
+                        class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet"
+                                                                                  aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags"
+                                                                                aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span
+                        class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li class="active"><a class="withripple" href="reportManagement.html"><span
+                        class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal"
+                                                                      aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+            </ul>
         </div>
     </div>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="#">报表管理</a></li>
+                    <li>质量日报</li>
+                    <li class="active">污水分析日报</li>
+                </ol>
+            </div>
+            <h4 class="sub-header"><span class="months"></span>污水分析日报</h4>
+        </div>
+        <div class="row">
+            <div>
+                <!--操作按钮-->
+                <div class="pull-left col-md-6">
+                    <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
+                            class="glyphicon glyphicon-pencil"
+                            aria-hidden="true"></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
+                            class="glyphicon glyphicon-pencil"
+                            aria-hidden="true"></span> 导出</a>
+                </div>
+                <!--查询框-->
+                <div class="input-group col-xs-5 pull-right" style="margin-right: 23px;">
+                    <input type="text" class="form-control" size="5" placeholder="搜索..." id="searchContent" name="searchContent">
+                    <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchSewage();"><span
+                                    class="glyphicon glyphicon-search"
+                                    aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                                                                                aria-hidden="true"></span> 重置</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!--查询框-->
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-receiveDate" class="col-sm-5 control-label">污水接收日期</label>
+                            <div class="col-xs-6">
+                                <input type="text" class="form-control" id="search-receiveDate"
+                                       name="search-receiveDate" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-sewageName" class="col-sm-4 control-label">污水名称</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-sewageName" name="search-sewageName"
+                                       placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4">
+                        <div class="form-group">
+                            <label for="search-remarks" class="col-sm-4 control-label">备注</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-remarks" name="search-remarks"
+                                       placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td class="text-center">序号</td>
+                <td class="text-center">污水接收日期</td>
+                <td class="text-center">污水名称</td>
+                <td class="text-center">COD mg/l</td>
+                <td class="text-center">BOD5 mg/l</td>
+                <td class="text-center">氧 mg/l</td>
+                <td class="text-center">氮 mg/l</td>
+                <td class="text-center">碱液</td>
+                <td class="text-center">PH </td>
+                <td class="text-center">备注</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="clone">
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+            </tr>
+            </tbody>
+        </table>
+        <!--分页-->
+        <nav aria-label="Page navigation" class="text-center">
+            <ol class="pagination" style="width: 800px;">
+                <li id="current"><a>当前页：</a>
+                <li id="firstPage">
+                    <a href='#' onclick="switchPage(0)">首 页</a>
+                </li>
+                <li id="previous">
+                    <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li id="next">
+                    <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                    </a>
+                </li>
+                <li id="endPage">
+                    <a href='#' onclick="switchPage(-2)">尾 页</a>
+                </li>
+                <li><a id="totalPage"></a></li>
+                <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+                <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                           id="pageNumber" title=""></li>
+                <li class="showLi">每页显示:</li>
+                <li class="selectLi">
+                    <select id="count" onchange="loadPageSewageList();" title="">
+                        <option>5</option>
+                        <option selected>15</option>
+                        <option>50</option>
+                    </select>
+                </li>
+            </ol>
+        </nav>
+        <!--导入模态框-->
+        <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="TitleMyModalLabel">导入表格数据</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modelAssign" method="post">
+                            <div class="form-group">
+                                <font size="+2">提示：</font>
+                                <font size="+1" class="text-center">请按照模板格式导入数据！</font>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
+                        <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--导入-->
+    <input type="file" name="excelPath" id="idExcel" style="display:none">
     <div id="embed"></div>
+</div>
 </body>
 </html>
