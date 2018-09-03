@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>开票信息</title>
+    <title>企业信息</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -12,8 +12,9 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/invoice.js"></script>
 </head>
-<body>
+<body onload="viewClient()">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -32,7 +33,7 @@
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
                 <li><a href="basicData.html">首页</a></li>
-                <li class="active"><a href="invoice.html">开票信息</a></li>
+                <li class="active"><a href="invoice.html">企业信息</a></li>
                 <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -95,75 +96,63 @@
     </div>
 
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">流程节点</h1>
-
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="businessModel.html"><img src="image/Business.png" width="80" height="80" class="img-circle"></a>
-                <h4>商务</h4>
-                <!--<span class="text-muted">系统节点1</span>-->
+        <h4 class="sub-header">客户信息</h4>
+        <form method="post" id="clientInfoForm" enctype="multipart/form-data">
+            <table class="table table-bordered">
+                <tr>
+                    <td class="text-center" style="width: 150px;">企业名称</td>
+                    <td class="text-center" style="width: 750px;"><span id="companyName"></span></td>
+                    <td class="text-center" style="width: 150px;">组织机构代码</td>
+                    <td class="text-center" style="width: 750px;"><span id="organizationCode"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 150px;">法人代表</td>
+                    <td class="text-center" style="width: 750px;"><span id="representative"></span></td>
+                    <td class="text-center" style="width: 150px;">所属行业</td>
+                    <td class="text-center" style="width: 750px;"><span id="industry"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 150px;">企业类型</td>
+                    <td class="text-center" style="width: 750px;"><span id="enterpriseType"></span></td>
+                    <td class="text-center" style="width: 150px;">经营单位类别</td>
+                    <td class="text-center" style="width: 750px;"><span id="operationType"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 150px;">危废经营记录情况</td>
+                    <td class="text-center" style="width: 750px;"><span id="operationRecord"></span></td>
+                    <td class="text-center" style="width: 150px;">所属街道</td>
+                    <td class="text-center" style="width: 750px;"><span id="street"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 150px;">客户编码</td>
+                    <td class="text-center" style="width: 750px;"><span id="clientId"></span></td>
+                    <td class="text-center" style="width: 150px;">营业执照注册号</td>
+                    <td class="text-center" style="width: 750px;"><span id="licenseCode"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 150px;">工商注册地邮编</td>
+                    <td class="text-center" style="width: 750px;"><span id="postCode"></span></td>
+                    <td class="text-center" style="width: 150px;">主要产品</td>
+                    <td class="text-center" style="width: 750px;"><span id="product"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 150px;">经营方式</td>
+                    <td class="text-center" style="width: 750px;"><span id="operationMode"></span></td>
+                    <td class="text-center" style="width: 150px;">事故防范应急预案</td>
+                    <td class="text-center" style="width: 750px;"><span id="contingencyPlan"></span></td>
+                </tr>
+                <tr>
+                    <td class="text-center" style="width: 150px;">申报状态</td>
+                    <td class="text-center" style="width: 750px;"><span id="applicationStatus"></span></td>
+                    <td class="text-center" style="width: 150px;">工商注册地址</td>
+                    <td class="text-center" style="width: 750px;"><span id="location"></span></td>
+                </tr>
+            </table>
+            <br>
+            <div class="row text-center">
+                <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
             </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <img src="image/LR.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="#"><img src="image/Receive.png" width="80" height="80" class="img-circle"></a>
-                <h4>接收</h4>
-                <!--<span class="text-muted">系统节点2</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-        </div>
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/RT.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/RB.png" width="80" height="80">
-            </div>
-        </div>
-        <div class="row placeholders">
-            <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-            <div class="col-xs-6 col-sm-4 placeholder">
-                <a href="#"><img src="image/Storage.png" width="80" height="80" class="img-circle"></a>
-                <h4>贮存</h4>
-                <!--<span class="text-muted">系统节点3</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-4 placeholder">
-                <h1>产废平台</h1>
-            </div>
-            <div class="col-xs-6 col-sm-4 placeholder">
-                <a href="#"><img src="image/Preprocessing.png" width="80" height="80" class="img-circle"></a>
-                <h4>预处理</h4>
-                <!--<span class="text-muted">系统节点4</span>-->
-            </div>
-            <!--<div class="col-xs-6 col-sm-2 placeholder"></div>-->
-        </div>
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/LT.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-6 placeholder">
-                <img src="image/LB.png" width="80" height="80">
-            </div>
-        </div>
-        <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="#"><img src="image/Management.png" width="80" height="80" class="img-circle"></a>
-                <h4>处置</h4>
-                <!--<span class="text-muted">系统节点5</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <img src="image/RL.png" width="80" height="80">
-            </div>
-            <div class="col-xs-6 col-sm-2 placeholder">
-                <a href="#"><img src="image/Secondary.png" width="80" height="80" class="img-circle"></a>
-                <h4>次生</h4>
-                <!--<span class="text-muted">系统节点6</span>-->
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder"></div>
-        </div>
+        </form>
     </div>
 </div>
 <div id="embed"></div>
@@ -171,4 +160,9 @@
 <script>
     $('#embed').load('embed/loginLogModal.html');
 </script>
+<style>
+    p{
+        font-size: 20px;
+    }
+</style>
 </html>
