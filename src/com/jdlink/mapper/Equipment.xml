@@ -6,7 +6,7 @@
 
     <!--查询当天的设备运行情况-->
     <select id="getEquipment" resultType="EquipmentDate">
-        select distinct id,editTime,editor,createDept,creator,note from t_rp_equipment where dayTime = #{dayTime};
+        select distinct equipment,runningTime,stopTime,stopResult,note,documentNumber from t_rp_equipment where id = #{id};
     </select>
 
     <!--网页列表数据-->

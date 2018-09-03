@@ -9,6 +9,10 @@ public class EquipmentDate {
      */
     private int id;
     /**
+     * 单据号
+     */
+    private String documentNumber;
+    /**
      * 故障设备
      */
     private String Equipment;
@@ -37,7 +41,7 @@ public class EquipmentDate {
      */
     private String creator;
     /**
-     * 创建日期
+     * 创建部门
      */
     private String createDept;
     /**
@@ -55,6 +59,14 @@ public class EquipmentDate {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getDocumentNumber() {
+        return documentNumber;
+    }
+
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
     }
 
     public String getCreateDept() {
@@ -141,6 +153,7 @@ public class EquipmentDate {
     public String toString() {
         return "EquipmentDate{" +
                 "id=" + id +
+                ", documentNumber='" + documentNumber + '\'' +
                 ", Equipment='" + Equipment + '\'' +
                 ", runningTime=" + runningTime +
                 ", stopTime=" + stopTime +
