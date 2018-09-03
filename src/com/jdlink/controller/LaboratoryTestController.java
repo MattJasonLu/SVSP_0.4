@@ -558,6 +558,28 @@ public class LaboratoryTestController {
         return res.toString();
     }
 
+    @RequestMapping("getLaboratoryTestByWastesCodeAndClientId")
+    @ResponseBody
+    public String getLaboratoryTestByWastesCodeAndClientId(String wastesCode, String clientId) {
+        JSONObject res = new JSONObject();
+        try{
+            // 通过化验单号拿到对应的数据
+            LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(wastesCode, clientId);
+            // 制作json数据
+            JSONObject data = JSONObject.fromBean(laboratoryTest);
+            res.put("status","success");
+            res.put("message","获取成功");
+            // 放入数据
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status","fail");
+            res.put("message","获取失败");
+            res.put("exception",e.getMessage());
+        }
+        return res.toString();
+    }
+
     /**
      * 设置化验单状态为作废
      * @param laboratoryTestNumber 化验单号

@@ -40,6 +40,11 @@ public class LaboratoryTestServiceImpl implements LaboratoryTestService {
     }
 
     @Override
+    public LaboratoryTest getLaboratoryTestByWastesCodeAndClientId(String wastesCode, String clientId) {
+        return laboratoryTestMapper.getLaboratoryTestByWastesCodeAndClientId(wastesCode, clientId);
+    }
+
+    @Override
     public List<LaboratoryTest> search(LaboratoryTest laboratoryTest) {
         return laboratoryTestMapper.search(laboratoryTest);
     }
