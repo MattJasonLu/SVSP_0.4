@@ -1,9 +1,9 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.*;
-import com.jdlink.domain.Produce.HeavyMetal;
+import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.LaboratoryTest;
-import com.jdlink.domain.Produce.Parameter;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.LaboratoryTestService;
 import com.jdlink.util.DateUtil;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -126,7 +125,6 @@ public class LaboratoryTestController {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
             // 化验单对象
             LaboratoryTest laboratoryTest = new LaboratoryTest();
-            List<Wastes> wastesList = new ArrayList<>();
             for (int i = 0; i < data.length; i++) {
                 if (i == 2) {
                     // 创建客户对象
@@ -154,76 +152,345 @@ public class LaboratoryTestController {
                     laboratoryTest.setLaboratoryCompany(data[i][10].toString());
                 }
                 if (i >= 2) {
-                    Wastes wastes = new Wastes();
-                    wastes.setId(RandomUtil.getRandomEightNumber());
-                    wastes.setSamplingDate(DateUtil.getDateFromStr(data[i][11].toString()));
-                    wastes.setName(data[i][12].toString());
-                    wastes.setWastesId(data[i][13].toString());
-                    wastes.setSamplingNumber(data[i][14].toString());
-                    wastes.setTestDate(DateUtil.getDateFromStr(data[i][15].toString()));
-                    wastes.setIsProductionLine(data[i][16] != null && data[i][16].toString().equals("√"));
-                    wastes.setIsStorageArea(data[i][17] != null && data[i][17].toString().equals("√"));
-                    // 参数列表
-                    List<MixingElement> parameterList = new ArrayList<>();
-                    for (int j = 0, k = 18; j < Parameter.values().length; j++, k+=3) {
-                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
-                            MixingElement parameter = new MixingElement();
-                            parameter.setId(RandomUtil.getRandomEightNumber());
-                            parameter.setParameter(Parameter.values()[j]);
-                            parameter.setMinimum(Float.parseFloat(data[i][k].toString()));
-                            parameter.setAverage(Float.parseFloat(data[i][k+1].toString()));
-                            parameter.setMaximum(Float.parseFloat(data[i][k+2].toString()));
-                            parameterList.add(parameter);
-                        }
+                    laboratoryTest.setSamplingDate(DateUtil.getDateFromStr(data[i][11].toString()));
+                    laboratoryTest.setWastesName(data[i][12].toString());
+                    laboratoryTest.setWastesCode(data[i][13].toString());
+                    laboratoryTest.setSamplingNumber(data[i][14].toString());
+                    laboratoryTest.setLaboratoryDate(DateUtil.getDateFromStr(data[i][15].toString()));
+                    laboratoryTest.setIsProductionLine(data[i][16] != null && data[i][16].toString().equals("√"));
+                    laboratoryTest.setIsStorageArea(data[i][17] != null && data[i][17].toString().equals("√"));
+                    // 粘度
+                    if (data[i][18] != null || data[i][19] != null || data[i][20] != null) {
+                        laboratoryTest.setIsViscosity(true);
+                        laboratoryTest.setViscosityMinimum(Float.parseFloat(data[i][18].toString()));
+                        laboratoryTest.setViscosityAverage(Float.parseFloat(data[i][19].toString()));
+                        laboratoryTest.setViscosityMaximum(Float.parseFloat(data[i][20].toString()));
                     }
-                    for (int j = 0, k = 57; j < 3; j++, k+=3) {
-                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
-                            MixingElement parameter = new MixingElement();
-                            parameter.setId(RandomUtil.getRandomEightNumber());
-                            parameter.setName("其他" + (j+1));
-                            parameter.setMinimum(Float.parseFloat(data[i][k].toString()));
-                            parameter.setAverage(Float.parseFloat(data[i][k+1].toString()));
-                            parameter.setMaximum(Float.parseFloat(data[i][k+2].toString()));
-                            parameterList.add(parameter);
-                        }
+                    // 密度
+                    if (data[i][21] != null || data[i][22] != null || data[i][23] != null) {
+                        laboratoryTest.setIsDensity(true);
+                        laboratoryTest.setDensityMinimum(Float.parseFloat(data[i][21].toString()));
+                        laboratoryTest.setDensityAverage(Float.parseFloat(data[i][22].toString()));
+                        laboratoryTest.setDensityMaximum(Float.parseFloat(data[i][23].toString()));
                     }
-                    // 重金属列表
-                    List<MixingElement> heavyMetalList = new ArrayList<>();
-                    for (int j = 0, k = 66; j < HeavyMetal.values().length; j++, k+=3) {
-                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
-                            MixingElement heavyMetal = new MixingElement();
-                            heavyMetal.setId(RandomUtil.getRandomEightNumber());
-                            heavyMetal.setHeavyMetal(HeavyMetal.values()[j]);
-                            heavyMetal.setMinimum(Float.parseFloat(data[i][k].toString()));
-                            heavyMetal.setAverage(Float.parseFloat(data[i][k+1].toString()));
-                            heavyMetal.setMaximum(Float.parseFloat(data[i][k+2].toString()));
-                            heavyMetalList.add(heavyMetal);
-                        }
+                    // 酸碱度
+                    if (data[i][24] != null || data[i][25] != null || data[i][26] != null) {
+                        laboratoryTest.setIsPH(true);
+                        laboratoryTest.setPhMinimum(Float.parseFloat(data[i][24].toString()));
+                        laboratoryTest.setPhAverage(Float.parseFloat(data[i][25].toString()));
+                        laboratoryTest.setPhMaximum(Float.parseFloat(data[i][26].toString()));
                     }
-                    for (int j = 0, k = 144; j < 4; j++, k+=3) {
-                        if (data[i][k] != null || data[i][k+1] != null || data[i][k+2] != null) {
-                            MixingElement heavyMetal = new MixingElement();
-                            heavyMetal.setId(RandomUtil.getRandomEightNumber());
-                            heavyMetal.setName("其他" + (j+1));
-                            heavyMetal.setMinimum(Float.parseFloat(data[i][k].toString()));
-                            heavyMetal.setAverage(Float.parseFloat(data[i][k+1].toString()));
-                            heavyMetal.setMaximum(Float.parseFloat(data[i][k+2].toString()));
-                            heavyMetalList.add(heavyMetal);
-                        }
+                    // 热值
+                    if (data[i][27] != null || data[i][28] != null || data[i][29] != null) {
+                        laboratoryTest.setIsHeat(true);
+                        laboratoryTest.setHeatMinimum(Float.parseFloat(data[i][27].toString()));
+                        laboratoryTest.setHeatAverage(Float.parseFloat(data[i][28].toString()));
+                        laboratoryTest.setHeatMaximum(Float.parseFloat(data[i][29].toString()));
                     }
-                    // 设置列表
-                    wastes.setParameterList(parameterList);
-                    wastes.setHeavyMetalList(heavyMetalList);
-                    wastesList.add(wastes);
+                    // 灰分
+                    if (data[i][30] != null || data[i][31] != null || data[i][32] != null) {
+                        laboratoryTest.setIsAsh(true);
+                        laboratoryTest.setAshMinimum(Float.parseFloat(data[i][30].toString()));
+                        laboratoryTest.setAshAverage(Float.parseFloat(data[i][31].toString()));
+                        laboratoryTest.setAshMaximum(Float.parseFloat(data[i][32].toString()));
+                    }
+                    // 闪点
+                    if (data[i][33] != null || data[i][34] != null || data[i][35] != null) {
+                        laboratoryTest.setIsFlashPoint(true);
+                        laboratoryTest.setFlashPointMinimum(Float.parseFloat(data[i][33].toString()));
+                        laboratoryTest.setFlashPointAverage(Float.parseFloat(data[i][34].toString()));
+                        laboratoryTest.setFlashPointMaximum(Float.parseFloat(data[i][35].toString()));
+                    }
+                    // 熔点
+                    if (data[i][36] != null || data[i][37] != null || data[i][38] != null) {
+                        laboratoryTest.setIsMeltingPoint(true);
+                        laboratoryTest.setMeltingPointMinimum(Float.parseFloat(data[i][36].toString()));
+                        laboratoryTest.setMeltingPointAverage(Float.parseFloat(data[i][37].toString()));
+                        laboratoryTest.setMeltingPointMaximum(Float.parseFloat(data[i][38].toString()));
+                    }
+
+                    // 含水率
+                    if (data[i][39] != null || data[i][40] != null || data[i][41] != null) {
+                        laboratoryTest.setIsWaterContent(true);
+                        laboratoryTest.setWaterContentMinimum(Float.parseFloat(data[i][39].toString()));
+                        laboratoryTest.setWaterContentAverage(Float.parseFloat(data[i][40].toString()));
+                        laboratoryTest.setWaterContentMaximum(Float.parseFloat(data[i][41].toString()));
+                    }
+                    // 固体物质含量
+                    if (data[i][42] != null || data[i][43] != null || data[i][44] != null) {
+                        laboratoryTest.setIsSolidSubstanceContent(true);
+                        laboratoryTest.setSolidSubstanceContentMinimum(Float.parseFloat(data[i][42].toString()));
+                        laboratoryTest.setSolidSubstanceContentAverage(Float.parseFloat(data[i][43].toString()));
+                        laboratoryTest.setSolidSubstanceContentMaximum(Float.parseFloat(data[i][44].toString()));
+                    }
+                    // 硫含量
+                    if (data[i][45] != null || data[i][46] != null || data[i][47] != null) {
+                        laboratoryTest.setIsSulfurContent(true);
+                        laboratoryTest.setSulfurContentMinimum(Float.parseFloat(data[i][45].toString()));
+                        laboratoryTest.setSulfurContentAverage(Float.parseFloat(data[i][46].toString()));
+                        laboratoryTest.setSulfurContentMaximum(Float.parseFloat(data[i][47].toString()));
+                    }
+                    // 氯含量
+                    if (data[i][48] != null || data[i][49] != null || data[i][50] != null) {
+                        laboratoryTest.setIsChlorineContent(true);
+                        laboratoryTest.setChlorineContentMinimum(Float.parseFloat(data[i][48].toString()));
+                        laboratoryTest.setChlorineContentAverage(Float.parseFloat(data[i][49].toString()));
+                        laboratoryTest.setChlorineContentMaximum(Float.parseFloat(data[i][50].toString()));
+                    }
+                    // 氟含量
+                    if (data[i][51] != null || data[i][52] != null || data[i][53] != null) {
+                        laboratoryTest.setIsFluorineContent(true);
+                        laboratoryTest.setFluorineContentMinimum(Float.parseFloat(data[i][51].toString()));
+                        laboratoryTest.setFluorineContentAverage(Float.parseFloat(data[i][52].toString()));
+                        laboratoryTest.setFluorineContentMaximum(Float.parseFloat(data[i][53].toString()));
+                    }
+                    // 沸点
+                    if (data[i][54] != null || data[i][55] != null || data[i][56] != null) {
+                        laboratoryTest.setIsBoilingPoint(true);
+                        laboratoryTest.setBoilingPointMinimum(Float.parseFloat(data[i][54].toString()));
+                        laboratoryTest.setBoilingPointAverage(Float.parseFloat(data[i][55].toString()));
+                        laboratoryTest.setBoilingPointMaximum(Float.parseFloat(data[i][56].toString()));
+                    }
+                    // 其他1
+                    if (data[i][57] != null || data[i][58] != null || data[i][59] != null) {
+                        laboratoryTest.setOtherParameter1("");
+                        laboratoryTest.setParameter1Minimum(Float.parseFloat(data[i][57].toString()));
+                        laboratoryTest.setParameter1Average(Float.parseFloat(data[i][58].toString()));
+                        laboratoryTest.setParameter1Maximum(Float.parseFloat(data[i][59].toString()));
+                    }
+                    // 其他2
+                    if (data[i][60] != null || data[i][61] != null || data[i][62] != null) {
+                        laboratoryTest.setOtherParameter2("");
+                        laboratoryTest.setParameter2Minimum(Float.parseFloat(data[i][60].toString()));
+                        laboratoryTest.setParameter2Average(Float.parseFloat(data[i][61].toString()));
+                        laboratoryTest.setParameter2Maximum(Float.parseFloat(data[i][62].toString()));
+                    }
+                    // 其他3
+                    if (data[i][63] != null || data[i][64] != null || data[i][65] != null) {
+                        laboratoryTest.setOtherParameter3("");
+                        laboratoryTest.setParameter3Minimum(Float.parseFloat(data[i][63].toString()));
+                        laboratoryTest.setParameter3Average(Float.parseFloat(data[i][64].toString()));
+                        laboratoryTest.setParameter3Maximum(Float.parseFloat(data[i][65].toString()));
+                    }
+                    // Hg
+                    if (data[i][66] != null || data[i][67] != null || data[i][68] != null) {
+                        laboratoryTest.setIsHg(true);
+                        laboratoryTest.setHgMinimum(Float.parseFloat(data[i][66].toString()));
+                        laboratoryTest.setHgAverage(Float.parseFloat(data[i][67].toString()));
+                        laboratoryTest.setHgMaximum(Float.parseFloat(data[i][68].toString()));
+                    }
+                    // Na
+                    if (data[i][69] != null || data[i][70] != null || data[i][71] != null) {
+                        laboratoryTest.setIsNa(true);
+                        laboratoryTest.setNaMinimum(Float.parseFloat(data[i][69].toString()));
+                        laboratoryTest.setNaAverage(Float.parseFloat(data[i][70].toString()));
+                        laboratoryTest.setNaMaximum(Float.parseFloat(data[i][71].toString()));
+                    }
+                    // Cu
+                    if (data[i][72] != null || data[i][73] != null || data[i][74] != null) {
+                        laboratoryTest.setIsCu(true);
+                        laboratoryTest.setCuMinimum(Float.parseFloat(data[i][72].toString()));
+                        laboratoryTest.setCuAverage(Float.parseFloat(data[i][73].toString()));
+                        laboratoryTest.setCuMaximum(Float.parseFloat(data[i][74].toString()));
+                    }
+                    // Ti
+                    if (data[i][75] != null || data[i][76] != null || data[i][77] != null) {
+                        laboratoryTest.setIsTi(true);
+                        laboratoryTest.setTiMinimum(Float.parseFloat(data[i][75].toString()));
+                        laboratoryTest.setTiAverage(Float.parseFloat(data[i][76].toString()));
+                        laboratoryTest.setTiMaximum(Float.parseFloat(data[i][77].toString()));
+                    }
+                    // Li
+                    if (data[i][78] != null || data[i][79] != null || data[i][80] != null) {
+                        laboratoryTest.setIsLi(true);
+                        laboratoryTest.setLiMinimum(Float.parseFloat(data[i][78].toString()));
+                        laboratoryTest.setLiAverage(Float.parseFloat(data[i][79].toString()));
+                        laboratoryTest.setLiMaximum(Float.parseFloat(data[i][80].toString()));
+                    }
+                    // Se
+                    if (data[i][81] != null || data[i][82] != null || data[i][83] != null) {
+                        laboratoryTest.setIsSe(true);
+                        laboratoryTest.setSeMinimum(Float.parseFloat(data[i][81].toString()));
+                        laboratoryTest.setSeAverage(Float.parseFloat(data[i][82].toString()));
+                        laboratoryTest.setSeMaximum(Float.parseFloat(data[i][83].toString()));
+                    }
+                    // Sb
+                    if (data[i][84] != null || data[i][85] != null || data[i][86] != null) {
+                        laboratoryTest.setIsSb(true);
+                        laboratoryTest.setSbMinimum(Float.parseFloat(data[i][84].toString()));
+                        laboratoryTest.setSbAverage(Float.parseFloat(data[i][85].toString()));
+                        laboratoryTest.setSbMaximum(Float.parseFloat(data[i][86].toString()));
+                    }
+                    // Ca
+                    if (data[i][87] != null || data[i][88] != null || data[i][89] != null) {
+                        laboratoryTest.setIsCa(true);
+                        laboratoryTest.setCaMinimum(Float.parseFloat(data[i][87].toString()));
+                        laboratoryTest.setCaAverage(Float.parseFloat(data[i][88].toString()));
+                        laboratoryTest.setCaMaximum(Float.parseFloat(data[i][89].toString()));
+                    }
+                    // Fe
+                    if (data[i][90] != null || data[i][91] != null || data[i][92] != null) {
+                        laboratoryTest.setIsFe(true);
+                        laboratoryTest.setFeMinimum(Float.parseFloat(data[i][90].toString()));
+                        laboratoryTest.setFeAverage(Float.parseFloat(data[i][91].toString()));
+                        laboratoryTest.setFeMaximum(Float.parseFloat(data[i][92].toString()));
+                    }
+                    // Pb
+                    if (data[i][93] != null || data[i][94] != null || data[i][95] != null) {
+                        laboratoryTest.setIsPb(true);
+                        laboratoryTest.setPbMinimum(Float.parseFloat(data[i][93].toString()));
+                        laboratoryTest.setPbAverage(Float.parseFloat(data[i][94].toString()));
+                        laboratoryTest.setPbMaximum(Float.parseFloat(data[i][95].toString()));
+                    }
+                    // Cr
+                    if (data[i][96] != null || data[i][97] != null || data[i][98] != null) {
+                        laboratoryTest.setIsCr(true);
+                        laboratoryTest.setCrMinimum(Float.parseFloat(data[i][96].toString()));
+                        laboratoryTest.setCrAverage(Float.parseFloat(data[i][97].toString()));
+                        laboratoryTest.setCrMaximum(Float.parseFloat(data[i][98].toString()));
+                    }
+                    // V
+                    if (data[i][99] != null || data[i][100] != null || data[i][101] != null) {
+                        laboratoryTest.setIsV(true);
+                        laboratoryTest.setVMinimum(Float.parseFloat(data[i][99].toString()));
+                        laboratoryTest.setVAverage(Float.parseFloat(data[i][100].toString()));
+                        laboratoryTest.setVMaximum(Float.parseFloat(data[i][101].toString()));
+                    }
+                    // Te
+                    if (data[i][102] != null || data[i][103] != null || data[i][104] != null) {
+                        laboratoryTest.setIsTe(true);
+                        laboratoryTest.setTeMinimum(Float.parseFloat(data[i][102].toString()));
+                        laboratoryTest.setTeAverage(Float.parseFloat(data[i][103].toString()));
+                        laboratoryTest.setTeMaximum(Float.parseFloat(data[i][104].toString()));
+                    }
+                    // Zn
+                    if (data[i][105] != null || data[i][106] != null || data[i][107] != null) {
+                        laboratoryTest.setIsZn(true);
+                        laboratoryTest.setZnMinimum(Float.parseFloat(data[i][105].toString()));
+                        laboratoryTest.setZnAverage(Float.parseFloat(data[i][106].toString()));
+                        laboratoryTest.setZnMaximum(Float.parseFloat(data[i][107].toString()));
+                    }
+                    // Cd
+                    if (data[i][108] != null || data[i][109] != null || data[i][110] != null) {
+                        laboratoryTest.setIsCd(true);
+                        laboratoryTest.setCdMinimum(Float.parseFloat(data[i][108].toString()));
+                        laboratoryTest.setCdAverage(Float.parseFloat(data[i][109].toString()));
+                        laboratoryTest.setCdMaximum(Float.parseFloat(data[i][110].toString()));
+                    }
+                    // K
+                    if (data[i][111] != null || data[i][112] != null || data[i][113] != null) {
+                        laboratoryTest.setIsK(true);
+                        laboratoryTest.setKMinimum(Float.parseFloat(data[i][111].toString()));
+                        laboratoryTest.setKAverage(Float.parseFloat(data[i][112].toString()));
+                        laboratoryTest.setKMaximum(Float.parseFloat(data[i][113].toString()));
+                    }
+                    // Mn
+                    if (data[i][114] != null || data[i][115] != null || data[i][116] != null) {
+                        laboratoryTest.setIsMn(true);
+                        laboratoryTest.setMnMinimum(Float.parseFloat(data[i][114].toString()));
+                        laboratoryTest.setMnAverage(Float.parseFloat(data[i][115].toString()));
+                        laboratoryTest.setMnMaximum(Float.parseFloat(data[i][116].toString()));
+                    }
+                    // Co
+                    if (data[i][117] != null || data[i][118] != null || data[i][119] != null) {
+                        laboratoryTest.setIsCo(true);
+                        laboratoryTest.setCoMinimum(Float.parseFloat(data[i][117].toString()));
+                        laboratoryTest.setCoAverage(Float.parseFloat(data[i][118].toString()));
+                        laboratoryTest.setCoMaximum(Float.parseFloat(data[i][119].toString()));
+                    }
+                    // Mg
+                    if (data[i][120] != null || data[i][121] != null || data[i][122] != null) {
+                        laboratoryTest.setIsMg(true);
+                        laboratoryTest.setMgMinimum(Float.parseFloat(data[i][120].toString()));
+                        laboratoryTest.setMgAverage(Float.parseFloat(data[i][121].toString()));
+                        laboratoryTest.setMgMaximum(Float.parseFloat(data[i][122].toString()));
+                    }
+                    // Al
+                    if (data[i][123] != null || data[i][124] != null || data[i][125] != null) {
+                        laboratoryTest.setIsAl(true);
+                        laboratoryTest.setAlMinimum(Float.parseFloat(data[i][123].toString()));
+                        laboratoryTest.setAlAverage(Float.parseFloat(data[i][124].toString()));
+                        laboratoryTest.setAlMaximum(Float.parseFloat(data[i][125].toString()));
+                    }
+                    // As
+                    if (data[i][126] != null || data[i][127] != null || data[i][128] != null) {
+                        laboratoryTest.setIsAs(true);
+                        laboratoryTest.setAsMinimum(Float.parseFloat(data[i][126].toString()));
+                        laboratoryTest.setAsAverage(Float.parseFloat(data[i][127].toString()));
+                        laboratoryTest.setAsMaximum(Float.parseFloat(data[i][128].toString()));
+                    }
+                    // Si
+                    if (data[i][129] != null || data[i][130] != null || data[i][131] != null) {
+                        laboratoryTest.setIsSi(true);
+                        laboratoryTest.setSiMinimum(Float.parseFloat(data[i][129].toString()));
+                        laboratoryTest.setSiAverage(Float.parseFloat(data[i][130].toString()));
+                        laboratoryTest.setSiMaximum(Float.parseFloat(data[i][131].toString()));
+                    }
+                    // Tu
+                    if (data[i][132] != null || data[i][133] != null || data[i][134] != null) {
+                        laboratoryTest.setIsTu(true);
+                        laboratoryTest.setTuMinimum(Float.parseFloat(data[i][132].toString()));
+                        laboratoryTest.setTuAverage(Float.parseFloat(data[i][133].toString()));
+                        laboratoryTest.setTuMaximum(Float.parseFloat(data[i][134].toString()));
+                    }
+                    // Ni
+                    if (data[i][135] != null || data[i][136] != null || data[i][137] != null) {
+                        laboratoryTest.setIsNi(true);
+                        laboratoryTest.setNiMinimum(Float.parseFloat(data[i][135].toString()));
+                        laboratoryTest.setNiAverage(Float.parseFloat(data[i][136].toString()));
+                        laboratoryTest.setNiMaximum(Float.parseFloat(data[i][137].toString()));
+                    }
+                    // Sn
+                    if (data[i][138] != null || data[i][139] != null || data[i][140] != null) {
+                        laboratoryTest.setIsSn(true);
+                        laboratoryTest.setSnMinimum(Float.parseFloat(data[i][138].toString()));
+                        laboratoryTest.setSnAverage(Float.parseFloat(data[i][139].toString()));
+                        laboratoryTest.setSnMaximum(Float.parseFloat(data[i][140].toString()));
+                    }
+                    // Tl
+                    if (data[i][141] != null || data[i][142] != null || data[i][143] != null) {
+                        laboratoryTest.setIsTl(true);
+                        laboratoryTest.setTlMinimum(Float.parseFloat(data[i][141].toString()));
+                        laboratoryTest.setTlAverage(Float.parseFloat(data[i][142].toString()));
+                        laboratoryTest.setTlMaximum(Float.parseFloat(data[i][143].toString()));
+                    }
+                    // 金属成分1
+                    if (data[i][144] != null || data[i][145] != null || data[i][146] != null) {
+                        laboratoryTest.setOtherMetal1("");
+                        laboratoryTest.setMetal1Minimum(Float.parseFloat(data[i][144].toString()));
+                        laboratoryTest.setMetal1Average(Float.parseFloat(data[i][145].toString()));
+                        laboratoryTest.setMetal1Maximum(Float.parseFloat(data[i][146].toString()));
+                    }
+                    // 金属成分2
+                    if (data[i][147] != null || data[i][148] != null || data[i][149] != null) {
+                        laboratoryTest.setOtherMetal2("");
+                        laboratoryTest.setMetal2Minimum(Float.parseFloat(data[i][147].toString()));
+                        laboratoryTest.setMetal2Average(Float.parseFloat(data[i][148].toString()));
+                        laboratoryTest.setMetal2Maximum(Float.parseFloat(data[i][149].toString()));
+                    }
+                    // 金属成分3
+                    if (data[i][150] != null || data[i][151] != null || data[i][152] != null) {
+                        laboratoryTest.setOtherMetal3("");
+                        laboratoryTest.setMetal3Minimum(Float.parseFloat(data[i][150].toString()));
+                        laboratoryTest.setMetal3Average(Float.parseFloat(data[i][151].toString()));
+                        laboratoryTest.setMetal3Maximum(Float.parseFloat(data[i][152].toString()));
+                    }
+                    // 金属成分4
+                    if (data[i][153] != null || data[i][154] != null || data[i][155] != null) {
+                        laboratoryTest.setOtherMetal4("");
+                        laboratoryTest.setMetal4Minimum(Float.parseFloat(data[i][153].toString()));
+                        laboratoryTest.setMetal4Average(Float.parseFloat(data[i][154].toString()));
+                        laboratoryTest.setMetal4Maximum(Float.parseFloat(data[i][155].toString()));
+                    }
+                    // 设置状态为待提交
+                    laboratoryTest.setCheckState(CheckState.ToSubmit);
+                    // 设置编号
+                    laboratoryTest.setLaboratoryTestNumber(laboratoryTestService.getCurrentId());
+                    laboratoryTest.setQueryNumber(RandomUtil.getRandomEightNumber());
+                    // 增加化验单
+                    laboratoryTestService.add(laboratoryTest);
                 }
             }
-            laboratoryTest.setWastesList(wastesList);
-            // 设置状态为待提交
-            laboratoryTest.setCheckState(CheckState.ToSubmit);
-            // 设置编号
-            laboratoryTest.setLaboratoryTestNumber(laboratoryTestService.getCurrentId());
-            laboratoryTest.setQueryNumber(RandomUtil.getRandomEightNumber());
-            laboratoryTestService.add(laboratoryTest);
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
@@ -286,6 +553,28 @@ public class LaboratoryTestController {
             e.printStackTrace();
             res.put("status","fail");
             res.put("message","查看失败");
+            res.put("exception",e.getMessage());
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("getLaboratoryTestByWastesCodeAndClientId")
+    @ResponseBody
+    public String getLaboratoryTestByWastesCodeAndClientId(String wastesCode, String clientId) {
+        JSONObject res = new JSONObject();
+        try{
+            // 通过化验单号拿到对应的数据
+            LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(wastesCode, clientId);
+            // 制作json数据
+            JSONObject data = JSONObject.fromBean(laboratoryTest);
+            res.put("status","success");
+            res.put("message","获取成功");
+            // 放入数据
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status","fail");
+            res.put("message","获取失败");
             res.put("exception",e.getMessage());
         }
         return res.toString();

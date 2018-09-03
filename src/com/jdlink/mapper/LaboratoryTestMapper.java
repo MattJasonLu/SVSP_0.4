@@ -2,6 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.LaboratoryTest;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,6 +15,14 @@ public interface LaboratoryTestMapper {
      List<LaboratoryTest> list(Page page);
 
      LaboratoryTest getLaboratoryTestById(String laboratoryTestNumber);
+
+    /**
+     * 通过危废编码和客户编号获取化验单
+     * @param wastesCode 危废代码
+     * @param clientId 客户编码
+     * @return 化验单
+     */
+     LaboratoryTest getLaboratoryTestByWastesCodeAndClientId(@Param("wastesCode") String wastesCode, @Param("clientId") String clientId);
 
      List<LaboratoryTest> search(LaboratoryTest laboratoryTest);
 
