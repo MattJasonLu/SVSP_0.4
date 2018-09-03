@@ -22,6 +22,19 @@ public class Procurement {
      * 需求时间(应急同)
      */
     private Date demandTime;
+
+    /**
+     * 申请日期
+     */
+    private Date applyDate;
+
+    public Date getApplyDate() {
+        return applyDate;
+    }
+
+    public void setApplyDate(Date applyDate) {
+        this.applyDate = applyDate;
+    }
     /**
      * 申请部门
      */

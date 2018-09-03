@@ -5,8 +5,8 @@
 <mapper namespace="com.jdlink.mapper.ProcurementMapper" >
    <!--添加采购-->
     <insert id="add" parameterType="Procurement">
-        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead)
-      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead});
+        insert into t_pl_procurement(receiptNumber, applyMouth, demandTime, applyDepartment, proposer, divisionHead, purchasingDirector, generalManager, id1, procurementCategory,nowTIme,purchasingHead,applyDate,suppliesCategory)
+      values (#{receiptNumber},#{applyMouth},#{demandTime},#{applyDepartment},#{proposer},#{divisionHead},#{purchasingDirector},#{generalManager},#{id1},#{procurementCategory},NOW(),#{purchasingHead},#{applyDate},#{suppliesCategory});
     </insert>
     <!--寻找最新的采购主键-->
     <select id="getNewestId" resultType="String">
@@ -14,8 +14,8 @@
     </select>
     <!--添加物料表-->
     <insert id="addMaterial" parameterType="Material">
-        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber)
-        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber});
+        insert into t_pl_material (suppliesName, specifications, inventory, note, purchaseQuantity, demandQuantity, receiptNumber,unit)
+        values (#{suppliesName},#{specifications},#{inventory},#{note},#{purchaseQuantity},#{demandQuantity},#{receiptNumber},#{unit});
     </insert>
     <!--加载采购列表-->
     <resultMap id="ProcurementRM" type="Procurement" autoMapping="true">
@@ -64,6 +64,14 @@
             <if test="generalManager!=null and generalManager!=''">
                 and generalManager like binary "%"#{generalManager}"%"
             </if>
+            <if test="applyDate!=null and applyDate!=''">
+                and applyDate like binary "%"#{applyDate}"%"
+            </if>
+            <if test="suppliesCategory!=null and suppliesCategory!=''">
+                and suppliesCategory like binary "%"#{suppliesCategory}"%"
+            </if>
+
+
 
         </where>
     </select>
