@@ -612,25 +612,25 @@
                         $('#totalPriceTax').text(parseFloat(data.data.totalPriceTax).toFixed(3));
                         $('#totalPrice').text(parseFloat(data.data.totalPrice).toFixed(3));
                         $('#totalAmount').text(data.data.totalAmount);
-                        for (var i = 0; i < data.data.wastesList.length; i++) {
+                        for (var i = 0; i < data.data.quotationItemList.length; i++) {
                             if (i > 0) addNewLine();
                             var $i = i;
-                            $("input[name='wastesList[" + $i + "].name']").val(data.data.wastesList[i].name);
+                            $("input[name='wastesList[" + $i + "].name']").val(data.data.quotationItemList[i].wastesName);
 //                            console.log($("select[name='wastesList[" + $i + "].formType']"));
-                            if (data.data.wastesList[i].formType != null)
-                            $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = data.data.wastesList[i].formType.index - 1;
-                            $("input[name='wastesList[" + $i + "].wastesId']").val(data.data.wastesList[i].wastesId);
-                            $("input[name='wastesList[" + $i + "].contractAmount']").val(data.data.wastesList[i].contractAmount);
-                            $("input[name='wastesList[" + $i + "].unitPriceTax']").val(data.data.wastesList[i].unitPriceTax);
-                            $("input[name='wastesList[" + $i + "].unitPrice']").val(data.data.wastesList[i].unitPrice);
-                            $("input[name='wastesList[" + $i + "].taxRate']").val(data.data.wastesList[i].taxRate);
-                            $("input[name='wastesList[" + $i + "].ph']").val(data.data.wastesList[i].ph);
-                            $("input[name='wastesList[" + $i + "].ashPercentage']").val(data.data.wastesList[i].ashPercentage);
-                            $("input[name='wastesList[" + $i + "].wetPercentage']").val(data.data.wastesList[i].wetPercentage);
-                            $("input[name='wastesList[" + $i + "].calorific']").val(data.data.wastesList[i].calorific);
-                            $("input[name='wastesList[" + $i + "].halogenPercentage']").val(data.data.wastesList[i].halogenPercentage);
-                            $("input[name='wastesList[" + $i + "].sulfurPercentage']").val(data.data.wastesList[i].sulfurPercentage);
-                            $("input[name='wastesList[" + $i + "].flashPoint']").val(data.data.wastesList[i].flashPoint);
+                            if (data.data.quotationItemList[i].formType != null)
+                            $("select[name='wastesList[" + $i + "].formType']").get(0).selectedIndex = data.data.quotationItemList[i].formType.index - 1;
+                            $("input[name='wastesList[" + $i + "].wastesId']").val(data.data.quotationItemList[i].wastesCode);
+                            $("input[name='wastesList[" + $i + "].contractAmount']").val(data.data.quotationItemList[i].contractAmount);
+                            $("input[name='wastesList[" + $i + "].unitPriceTax']").val(data.data.quotationItemList[i].unitPriceTax);
+                            $("input[name='wastesList[" + $i + "].unitPrice']").val(data.data.quotationItemList[i].unitPrice);
+                            $("input[name='wastesList[" + $i + "].taxRate']").val(data.data.quotationItemList[i].taxRate);
+                            $("input[name='wastesList[" + $i + "].ph']").val(data.data.quotationItemList[i].ph);
+                            $("input[name='wastesList[" + $i + "].ashPercentage']").val(data.data.quotationItemList[i].ash);
+                            $("input[name='wastesList[" + $i + "].wetPercentage']").val(data.data.quotationItemList[i].waterContent);
+                            $("input[name='wastesList[" + $i + "].calorific']").val(data.data.quotationItemList[i].heat);
+                            $("input[name='wastesList[" + $i + "].halogenPercentage']").val(data.data.quotationItemList[i].halogenContent);
+                            $("input[name='wastesList[" + $i + "].sulfurPercentage']").val(data.data.quotationItemList[i].sulfurContent);
+                            $("input[name='wastesList[" + $i + "].flashPoint']").val(data.data.quotationItemList[i].flashPoint);
                         }
                     }
                 },
@@ -750,27 +750,27 @@
             'totalPrice': $("#totalPrice").text(),
             'totalAmount': $("#totalAmount").text()
         };
-        data['wastesList'] = [];
+        data['quotationItemList'] = [];
         // 危废列表的数量
         var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
         for (var i = 0; i < wastesListCount; i++) {
             var $i = i;
-            var wastes = {};
-            wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
-            wastes.formType = $("select[name='wastesList[" + $i + "].formType']").val();
-            wastes.wastesId = $("input[name='wastesList[" + $i + "].wastesId']").val();
-            wastes.contractAmount = $("input[name='wastesList[" + $i + "].contractAmount']").val();
-            wastes.unitPriceTax = $("input[name='wastesList[" + $i + "].unitPriceTax']").val();
-            wastes.unitPrice = $("input[name='wastesList[" + $i + "].unitPrice']").val();
-            wastes.taxRate = $("input[name='wastesList[" + $i + "].taxRate']").val();
-            wastes.ph = $("input[name='wastesList[" + $i + "].ph']").val();
-            wastes.ashPercentage = $("input[name='wastesList[" + $i + "].ashPercentage']").val();
-            wastes.wetPercentage = $("input[name='wastesList[" + $i + "].wetPercentage']").val();
-            wastes.calorific = $("input[name='wastesList[" + $i + "].calorific']").val();
-            wastes.halogenPercentage = $("input[name='wastesList[" + $i + "].halogenPercentage']").val();
-            wastes.sulfurPercentage = $("input[name='wastesList[" + $i + "].sulfurPercentage']").val();
-            wastes.flashPoint = $("input[name='wastesList[" + $i + "].flashPoint']").val();
-            data['wastesList'].push(wastes);
+            var quotationItem = {};
+            quotationItem.wastesName = $("input[name='wastesList[" + $i + "].name']").val();
+            quotationItem.formType = $("select[name='wastesList[" + $i + "].formType']").val();
+            quotationItem.wastesCode = $("input[name='wastesList[" + $i + "].wastesId']").val();
+            quotationItem.contractAmount = $("input[name='wastesList[" + $i + "].contractAmount']").val();
+            quotationItem.unitPriceTax = $("input[name='wastesList[" + $i + "].unitPriceTax']").val();
+            quotationItem.unitPrice = $("input[name='wastesList[" + $i + "].unitPrice']").val();
+            quotationItem.taxRate = $("input[name='wastesList[" + $i + "].taxRate']").val();
+            quotationItem.ph = $("input[name='wastesList[" + $i + "].ph']").val();
+            quotationItem.ash = $("input[name='wastesList[" + $i + "].ashPercentage']").val();
+            quotationItem.waterContent = $("input[name='wastesList[" + $i + "].wetPercentage']").val();
+            quotationItem.heat = $("input[name='wastesList[" + $i + "].calorific']").val();
+            quotationItem.halogenContent = $("input[name='wastesList[" + $i + "].halogenPercentage']").val();
+            quotationItem.sulfurContent = $("input[name='wastesList[" + $i + "].sulfurPercentage']").val();
+            quotationItem.flashPoint = $("input[name='wastesList[" + $i + "].flashPoint']").val();
+            data['quotationItemList'].push(quotationItem);
         }
         if (btnName == "保存") {
             $.ajax({
