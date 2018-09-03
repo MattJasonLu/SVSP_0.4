@@ -217,7 +217,8 @@ function checkAuthority(e) {
                 flag = true;
             } else {
                 // 提示没有权限进入
-                alert(result.message);
+                if (result.message == undefined) alert("未正确登录！");
+                else alert(result.message);
                 e.prop('href', '#');
             }
         },

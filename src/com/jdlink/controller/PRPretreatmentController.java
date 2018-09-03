@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.PretreatmentService;
 import com.jdlink.util.DateUtil;
@@ -108,7 +109,7 @@ public class PRPretreatmentController {
     @RequestMapping("getCurrentPretreatmentId")
     @ResponseBody
     public String getCurrentPretreatmentId() {
-        String id = getCurrentPretreatmentId();
+        String id = pretreatmentService.getCurrentPretreatmentId();
         JSONObject res = new JSONObject();
         res.put("id", id);
         return res.toString();
@@ -435,5 +436,26 @@ public class PRPretreatmentController {
         // 返回结果
         return res.toString();
     }
+    /**
+     * 获取记录状态、单据状态列表
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping("setOutBoundOrderSeniorSelectedList")
+    @ResponseBody
+    public String setOutBoundOrderSeniorSelectedList() {
+        JSONObject res = new JSONObject();
+        // 获取枚举
+        CheckState[] checkState = new CheckState[]{CheckState.NewBuild,CheckState.ToPick,CheckState.Picked,CheckState.Invalid};
+        JSONArray checkStateList = JSONArray.fromArray(checkState);
+        RecordState[] recordState = new RecordState[]{RecordState.Delete, RecordState.Usable, RecordState.Disabled};
+        JSONArray recordStateList = JSONArray.fromArray(recordState);
+        res.put("checkStateList", checkStateList);
+        res.put("recordStateList", recordStateList);
+        return res.toString();
+    }
+
+
 
 }

@@ -88,9 +88,9 @@ public class PretreatmentServiceImpl implements PretreatmentService {
         while (getById("YC" + id) != null) {
             int index = Integer.parseInt(id);
             index += 1;
-            id ="YC" + index + "";
+            id =index + "";
         }
-        return id;
+        return "YC" + id;
     }
 
     @Override

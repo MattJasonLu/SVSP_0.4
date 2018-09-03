@@ -48,6 +48,9 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     }
 
     @Override
+    public List<OutboundOrder> getById(String id){ return outboundOrderMapper.getById(id); }
+
+    @Override
     public OutboundOrder getOutBoundByMId(String materialRequisitionId) {
         return outboundOrderMapper.getOutBoundByMId(materialRequisitionId);
     }
@@ -71,4 +74,10 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     public void upWastesInventoryNumber(OutboundOrder outboundOrder) {
         outboundOrderMapper.upWastesInventoryNumber(outboundOrder);
     }
+
+    @Override
+    public int searchCount(OutboundOrder outboundOrder){ return outboundOrderMapper.searchCount(outboundOrder); }
+
+    @Override
+    public List<OutboundOrder> search(OutboundOrder outboundOrder){ return outboundOrderMapper.search(outboundOrder); }
 }
