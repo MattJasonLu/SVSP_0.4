@@ -334,7 +334,7 @@
       <where>
           <if test="keyword != null and keyword != ''">
               and questionnaire.questionnaireId like binary"%"#{keyword}"%"
-              or questionnaire.time like binary"%"#{keyword}"%" or questionnaire.author like binary"%"#{keyword}"%"
+              or questionnaire.time like binary"%"#{keyword}"%" or questionnaire.author like "%"#{keyword}"%"
               or questionnaire.state like binary"%"#{keyword}"%"
               or client.companyName like binary"%"#{keyword}"%" or client.industry like binary"%"#{keyword}"%"
               or client.product like  binary"%"#{keyword}"%"
@@ -360,7 +360,7 @@
                   and questionnaire.state = #{applyState} and client.clientId=questionnaire.clientId
               </if>
               <if test="author!=null and author!=''">
-                  and author Like binary"%"#{author}"%"
+                  and author Like binary"%"#{author}"%" and client.clientId=questionnaire.clientId
               </if>
               <if test="time!=null and time!=''">
                   and questionnaire.time Like binary"%"#{time}"%"

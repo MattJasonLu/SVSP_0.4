@@ -340,7 +340,7 @@
                                         <td><p class="text-left"><span id="samplingDate">2018-08-08</span></p></td>
                                         <td><p class="text-left"><span id="wastesName">物品01</span></p></td>
                                         <td><p class="text-left"><span id="wastesCode">823-987-09</span></p></td>
-                                        <td><p class="text-left"><span id="samplingNumber">0001</span></p></td>
+                                        <td><p class="text-left"><span id="samplingNumber_1">0001</span></p></td>
                                         <td><p class="text-center"><input type="checkbox" id="isProductionLine"/></td>
                                         <td><p class="text-center"><input type="checkbox" id="isStorageArea"/></td>
                                     </tr>
@@ -352,8 +352,8 @@
                                 <table class="table table-bordered">
                                     <thead style="background-color: yellow">
                                     <tr style="background-color: white">
-                                        <td colspan="5">取&nbsp;&nbsp;样&nbsp;&nbsp;号:<span id="wastesList[0].samplingNumber_2"></span></td>
-                                        <td colspan="5">检测日期:<span id="wastesList[0].testDate"></span></td>
+                                        <td colspan="5">取&nbsp;&nbsp;样&nbsp;&nbsp;号:<span id="samplingNumber_2"></span></td>
+                                        <td colspan="5">检测日期:<span id="testDate"></span></td>
                                     </tr>
                                     <tr>
                                         <th rowspan="2" style="width: 50px;">序号</th>
@@ -374,99 +374,99 @@
                                     </thead>
                                     <tr>
                                         <td>1</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[0].parameter">粘度</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[0].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[0].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[0].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isViscosity">粘度</td>
+                                        <td><p class="text-left"><span id="viscosityMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="viscosityAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="viscosityMaximum"></span></p></td>
                                         <td>9</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[8].parameter">含水率</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[8].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[8].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[8].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isWaterContent">含水率</td>
+                                        <td><p class="text-left"><span id="waterContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="waterContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="waterContentMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[1].parameter">密度</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[1].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[1].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[1].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isDensity">密度</td>
+                                        <td><p class="text-left"><span id="densityMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="densityAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="densityMaximum"></span></p></td>
                                         <td>10</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[9].parameter">固体物质含量</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[9].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[9].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[9].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isSolidSubstanceContent">固体物质含量</td>
+                                        <td><p class="text-left"><span id="solidSubstanceContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="solidSubstanceContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="solidSubstanceContentMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[2].parameter">酸碱度</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[2].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[2].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[2].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isPH">酸碱度</td>
+                                        <td><p class="text-left"><span id="phMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="phAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="phMaximum"></span></p></td>
                                         <td>11</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[10].parameter">硫含量</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[10].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[10].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[10].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isSulfurContent">硫含量</td>
+                                        <td><p class="text-left"><span id="sulfurContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="sulfurContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="sulfurContentMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>4</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[3].parameter">热值</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[3].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[3].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[3].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isHeat">热值</td>
+                                        <td><p class="text-left"><span id="heatMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="heatAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="heatMaximum"></span></p></td>
                                         <td>12</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[11].parameter">氯含量</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[11].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[11].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[11].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isChlorineContent">氯含量</td>
+                                        <td><p class="text-left"><span id="chlorineContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="chlorineContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="chlorineContentMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>5</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[4].parameter">灰分含量</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[4].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[4].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[4].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isAsh">灰分含量</td>
+                                        <td><p class="text-left"><span id="ashMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="ashAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="ashMaximum"></span></p></td>
                                         <td>13</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[12].parameter">氟含量</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[12].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[12].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[12].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isFluorineContent">氟含量</td>
+                                        <td><p class="text-left"><span id="fluorineContentMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="fluorineContentAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="fluorineContentMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>6</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[5].parameter">闪点</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[5].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[5].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[5].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isFlashPoint">闪点</td>
+                                        <td><p class="text-left"><span id="flashPointMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="flashPointAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="flashPointMaximum"></span></p></td>
                                         <td>14</td>
-                                        <td>其他1:<input type="text" class="focus" style="width: 70px;" id="wastesList[0].parameterList[13].name"></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[13].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[13].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[13].maximum"></span></p></td>
+                                        <td>其他1:<input type="text" class="focus" style="width: 70px;" id="otherParameter1"></td>
+                                        <td><p class="text-left"><span id="parameter1Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter1Average"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter1Maximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>7</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[6].parameter">熔点</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[6].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[6].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[6].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isMeltingPoint">熔点</td>
+                                        <td><p class="text-left"><span id="meltingPointMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="meltingPointAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="meltingPointMaximum"></span></p></td>
                                         <td>15</td>
-                                        <td>其他2:<input type="text" class="focus" style="width: 70px;" id="wastesList[0].parameterList[14].name"></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[14].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[14].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[14].maximum"></span></p></td>
+                                        <td>其他2:<input type="text" class="focus" style="width: 70px;" id="otherParameter2"></td>
+                                        <td><p class="text-left"><span id="parameter2Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter2Average"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter2Maximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>8</td>
-                                        <td><input type="checkbox" id="wastesList[0].parameterList[7].parameter">沸点</td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[7].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[7].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[7].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isBoilingPoint">沸点</td>
+                                        <td><p class="text-left"><span id="boilingPointMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="boilingPointAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="boilingPointMaximum"></span></p></td>
                                         <td>16</td>
-                                        <td>其他3:<input type="text" class="focus" style="width: 70px;" id="wastesList[0].parameterList[15].name"></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[15].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[15].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].parameterList[15].maximum"></span></p></td>
+                                        <td>其他3:<input type="text" class="focus" style="width: 70px;" id="otherParameter3"></td>
+                                        <td><p class="text-left"><span id="parameter3Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter3Average"></span></p></td>
+                                        <td><p class="text-left"><span id="parameter3Maximum"></span></p></td>
                                     </tr>
                                 </table>
                                 <table class="table table-bordered">
@@ -490,183 +490,183 @@
                                     </thead>
                                     <tr>
                                         <td>1</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[0].heavyMetal">汞Hg</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[0].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[0].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[0].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isHg">汞Hg</td>
+                                        <td><p class="text-left"><span id="HgMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="HgAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="HgMaximum"></span></p></td>
                                         <td>16</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[15].heavyMetal">钾K</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[15].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[15].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[15].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isK">钾K</td>
+                                        <td><p class="text-left"><span id="KMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="KAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="KMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>2</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[1].heavyMetal">钠Na</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[1].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[1].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[1].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isNa">钠Na</td>
+                                        <td><p class="text-left"><span id="NaMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="NaAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="NaMaximum"></span></p></td>
                                         <td>17</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[16].heavyMetal">锰Mn</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[16].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[16].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[160].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isMn">锰Mn</td>
+                                        <td><p class="text-left"><span id="MnMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="MnAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="MnMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>3</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[2].heavyMetal">铜Cu</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[2].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[2].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[2].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isCu">铜Cu</td>
+                                        <td><p class="text-left"><span id="CuMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CuAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CuMaximum"></span></p></td>
                                         <td>18</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[17].heavyMetal">钴Co</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[17].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[17].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[170].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isCo">钴Co</td>
+                                        <td><p class="text-left"><span id="CoMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CoAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CoMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>4</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[3].heavyMetal">钛Ti</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[3].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[3].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[3].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isTi">钛Ti</td>
+                                        <td><p class="text-left"><span id="TiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TiMaximum"></span></p></td>
                                         <td>19</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[18].heavyMetal">镁Mg</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[18].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[18].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[18].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isMg">镁Mg</td>
+                                        <td><p class="text-left"><span id="MgMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="MgAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="MgMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>5</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[4].heavyMetal">锂Li</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[4].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[4].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[4].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isLi">锂Li</td>
+                                        <td><p class="text-left"><span id="LiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="LiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="LiMaximum"></span></p></td>
                                         <td>20</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[19].heavyMetal">铝Al</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[19].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[19].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[19].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isAl">铝Al</td>
+                                        <td><p class="text-left"><span id="AlMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="AlAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="AlMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>6</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[5].heavyMetal">硒Se</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[5].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[5].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[5].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isSe">硒Se</td>
+                                        <td><p class="text-left"><span id="SeMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SeAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SeMaximum"></span></p></td>
                                         <td>21</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[20].heavyMetal">砷As</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[20].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[20].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[20].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isAs">砷As</td>
+                                        <td><p class="text-left"><span id="AsMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="AsAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="AsMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>7</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[6].heavyMetal">锑Sb</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[6].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[6].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[6].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isSb">锑Sb</td>
+                                        <td><p class="text-left"><span id="SbMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SbAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SbMaximum"></span></p></td>
                                         <td>22</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[21].heavyMetal">硅Si</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[21].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[21].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[21].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isSi">硅Si</td>
+                                        <td><p class="text-left"><span id="SiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SiMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>8</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[7].heavyMetal">钙Ca</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[7].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[7].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[7].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isCa">钙Ca</td>
+                                        <td><p class="text-left"><span id="CaMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CaAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CaMaximum"></span></p></td>
                                         <td>23</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[22].heavyMetal">钍Tu</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[22].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[22].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[22].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isTu">钍Tu</td>
+                                        <td><p class="text-left"><span id="TuMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TuAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TuMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>9</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[8].heavyMetal">铁Fe</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[8].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[8].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[8].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isFe">铁Fe</td>
+                                        <td><p class="text-left"><span id="FeMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="FeAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="FeMaximum"></span></p></td>
                                         <td>24</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[23].heavyMetal">镍Ni</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[23].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[23].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[23].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isNi">镍Ni</td>
+                                        <td><p class="text-left"><span id="NiMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="NiAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="NiMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>10</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[9].heavyMetal">铅Pb</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[9].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[9].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[9].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isPb">铅Pb</td>
+                                        <td><p class="text-left"><span id="PbMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="PbAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="PbMaximum"></span></p></td>
                                         <td>25</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[24].heavyMetal">锡Sn</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[24].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[24].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[24].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isSn">锡Sn</td>
+                                        <td><p class="text-left"><span id="SnMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="SnAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="SnMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>11</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[10].heavyMetal">铬Cr</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[10].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[10].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[10].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isCr">铬Cr</td>
+                                        <td><p class="text-left"><span id="CrMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CrAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CrMaximum"></span></p></td>
                                         <td>26</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[25].heavyMetal">铊Tl</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[25].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[25].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[25].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isTl">铊Tl</td>
+                                        <td><p class="text-left"><span id="TlMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TlAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TlMaximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>12</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[11].heavyMetal">钒V</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[11].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[11].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[11].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isV">钒V</td>
+                                        <td><p class="text-left"><span id="VMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="VAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="VMaximum"></span></p></td>
                                         <td>27</td>
-                                        <td>其他1:<input type="text" class="focus" style="width: 45px;" id="wastesList[0].heavyMetalList[26].name"></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[26].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[26].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[26].maximum"></span></p></td>
+                                        <td>其他1:<input type="text" class="focus" style="width: 45px;" id="otherMetal1"></td>
+                                        <td><p class="text-left"><span id="metal1Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal1Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal1Maximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>13</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[12].heavyMetal">碲Te</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[12].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[12].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[12].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isTe">碲Te</td>
+                                        <td><p class="text-left"><span id="TeMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="TeAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="TeMaximum"></span></p></td>
                                         <td>28</td>
-                                        <td>其他2:<input type="text" class="focus" style="width: 45px;" id="wastesList[0].heavyMetalList[27].name"></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[27].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[27].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[27].maximum"></span></p></td>
+                                        <td>其他2:<input type="text" class="focus" style="width: 45px;" id="otherMetal2"></td>
+                                        <td><p class="text-left"><span id="metal2Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal2Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal2Maximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>14</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[13].heavyMetal">锌Zn</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[13].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[13].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[13].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isZn">锌Zn</td>
+                                        <td><p class="text-left"><span id="ZnMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="ZnAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="ZnMaximum"></span></p></td>
                                         <td>29</td>
-                                        <td>其他3:<input type="text" class="focus" style="width: 45px;" id="wastesList[0].heavyMetalList[28].name"></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[28].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[28].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[28].maximum"></span></p></td>
+                                        <td>其他3:<input type="text" class="focus" style="width: 45px;" id="otherMetal3"></td>
+                                        <td><p class="text-left"><span id="metal3Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal3Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal3Maximum"></span></p></td>
                                     </tr>
                                     <tr>
                                         <td>15</td>
-                                        <td><input type="checkbox" id="wastesList[0].heavyMetalList[14].heavyMetal">镉Cd</td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[14].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[14].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[14].maximum"></span></p></td>
+                                        <td><input type="checkbox" id="isCd">镉Cd</td>
+                                        <td><p class="text-left"><span id="CdMinimum"></span></p></td>
+                                        <td><p class="text-left"><span id="CdAverage"></span></p></td>
+                                        <td><p class="text-left"><span id="CdMaximum"></span></p></td>
                                         <td>30</td>
-                                        <td>其他4:<input type="text" class="focus" style="width: 45px;" id="wastesList[0].heavyMetalList[29].name"></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[29].minimum"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[29].average"></span></p></td>
-                                        <td><p class="text-left"><span id="wastesList[0].heavyMetalList[29].maximum"></span></p></td>
+                                        <td>其他4:<input type="text" class="focus" style="width: 45px;" id="otherMetal4"></td>
+                                        <td><p class="text-left"><span id="metal4Minimum"></span></p></td>
+                                        <td><p class="text-left"><span id="metal4Average"></span></p></td>
+                                        <td><p class="text-left"><span id="metal4Maximum"></span></p></td>
                                     </tr>
                                 </table>
                             </form>

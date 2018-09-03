@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/signin.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <script type="text/javascript">
+        function login() {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getUser",                     // url
+                cache: false,
+                async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: $('#loginForm').serialize(),  // 请求参数
+                dataType: "json",
+                success: function (result) {
+                    if (result != undefined) {
+                        var data = eval(result);
+                        if (data.status == "success") {
+//                            console.log(data.user.isAdmin);
+//                            if (data.user.isAdmin == true)
+                            window.location.href = 'wastesPlatform.html';
+//                            else {
+//                                window.location.href = 'client/wastesPlatform.html';
+//                            }
+                        } else {
+                            alert(data.message);
+                        }
+                    }
+                },
+                error:function (result) {
+                    var data = eval(result);
+                    alert(data.message);
+                }
+            });
+        }
+
+
+        $('#embed').load('embed/loginLogModal.html');
+    </script>
+</head>
+<style>
+    .gap {
+        margin-top: 10%;
+    }
+    body {
+        background-image: url(image/P3.jpg);
+    }
+    form {
+        background-color: #fff;
+    }
+</style>
+<body>
+<!--登录表单-->
+<form class="form-signin gap" id="loginForm" method="post">
+    <h2 class="form-signin-heading">登录</h2>
+    <label for="inputAccount" class="sr-only">账号</label>
+    <input type="text" id="inputAccount" class="form-control" name="username" placeholder="账号" required autofocus>
+    <label for="inputPassword" class="sr-only">密码</label>
+    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="密码" required>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="remember-me"> 记住我
+        </label>
+    </div>
+    <button type="button" class="btn btn-lg btn-primary btn-block" onclick="login()">登录</button>
+    <span>还没有账号？<a class="text-primary" href="signup.html">注册</a></span>
+</form>
+<div id="embed"></div>
+</body>
+</html>
