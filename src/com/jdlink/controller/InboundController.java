@@ -55,6 +55,30 @@ public class InboundController {
     }
 
     /**
+     * 查询入库计划单列表
+     * @param inboundPlanOrder 入库计划单数据
+     * @return 查询结果
+     */
+    @RequestMapping("searchInboundPlanOrder")
+    @ResponseBody
+    public String searchInboundPlanOrder(@RequestBody InboundPlanOrder inboundPlanOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            List<InboundPlanOrder> inboundPlanOrderList = inboundService.searchInboundPlanOrder(inboundPlanOrder);
+            JSONArray data = JSONArray.fromArray(inboundPlanOrderList.toArray(new InboundPlanOrder[inboundPlanOrderList.size()]));
+            // 获取入库单列表
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 增加入库单
      * @param inboundOrder
      * @return
@@ -125,6 +149,68 @@ public class InboundController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 作废入库单
+     * @param inboundOrderId 入库单编号
+     * @return 成功与否
+     */
+    @RequestMapping("setInboundOrderStateInvalid")
+    @ResponseBody
+    public String setInboundOrderStateInvalid(String inboundOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            // 作废入库单
+            inboundService.setInboundOrderStateInvalid(inboundOrderId);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 通过编号获取入库单
+     * @param inboundOrderId 入库单编号
+     * @return 入库单对象
+     */
+    @RequestMapping("getInboundOrderById")
+    @ResponseBody
+    public String getInboundOrderById(String inboundOrderId) {
+        JSONObject res = new JSONObject();
+        try {
+            InboundOrder inboundOrder = inboundService.getInboundOrderById(inboundOrderId);
+            JSONObject data = JSONObject.fromBean(inboundOrder);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("updateItemHandleCategory")
+    @ResponseBody
+    public String updateItemHandleCategory(@RequestBody InboundOrderItem InboundOrderItem) {
+        JSONObject res = new JSONObject();
+        try {
+            // 更新进料方式
+            inboundService.updateItemHandleCategory(InboundOrderItem);
+            res.put("status", "success");
+            res.put("message", "属性修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "属性修改失败");
         }
         return res.toString();
     }

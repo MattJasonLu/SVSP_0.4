@@ -1,108 +1,5 @@
-function view1() {
-    $("#appointModal2").modal("show");
-}
-function view2() {
-    $("#examineModal").modal("show");
-}
-//全选复选框
-function allSelect() {
-    var isChecked = $('#allSel').prop('checked');
-    if (isChecked) $("input[name='select']").prop('checked',true);
-    else $("input[name='select']").prop('checked',false);
-}
-/**
- * 获取用户的编号
- * @param item
- * @returns {string}
- */
-function getId(item) {
-    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-}
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
-
-/**
- * 作废计划单
- * @param item 用户
- */
-function changeAttribute(item) {
-    $("#examineModal").modal("show");
-}
-/**
- * 作废计划单
- * @param item 用户
- */
-function cancel(item) {
-    var id = getId(item);
-    var r = confirm("确认作废？");
-    if (r === true) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "",               // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'model-wastesCode': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result !== undefined) {
-                    if (result.status === "success") {
-                        alert("作废成功");
-                        window.location.reload();
-                    } else if (result.status === "fail") {
-                        alert("作废失败");
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-}
-/**
- * 签收计划单
- * @param item 用户
- */
-function signIn(item) {
-    var id = getId(item);
-    var r = confirm("确认签收？");
-    if (r === true) {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "",               // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'model-wastesCode': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result !== undefined) {
-                    if (result.status === "success") {
-                        alert("禁用成功");
-                        window.location.reload();
-                    } else if (result.status === "fail") {
-                        alert("禁用失败");
-                    }
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
-}
-
 var inboundPlanOrderIdArray = [];
+var itemIndex = 0;
 
 /**
  * 读取入库计划单数据
@@ -126,6 +23,51 @@ function loadInboundPlanOrder() {
             console.log("失败");
         }
     });
+}
+
+/**
+ * 入库计划单查询
+ */
+function searchPlan() {
+    // 查询数据源
+    var data = {
+        inboundPlanOrderId: $("#search-inboundPlanOrderId").val(),
+        transferDraftId: $("#search-transferDraftId").val(),
+        departmentId: $("#search-planDate").val(),
+        companyId: $("#search-transferDate").val(),
+        produceCompany: {
+            companyName: $("#search-produceCompanyName").val()
+        },
+        acceptCompany: {
+            companyName: $("#search-acceptCompany").val()
+        },
+        wastes: {
+            name: $("#search-wastesName").val(),
+            wastesId: $("#search-wastesCode").val()
+        }
+    };
+    
+    $.ajax({
+        type: "POST",
+        url: "searchInboundPlanOrder",
+        async: false,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                setDataList(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+
 }
 
 /**
@@ -241,7 +183,7 @@ function addPlan2Order() {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.find("td[name='index']").text(i+1);
+        clonedTr.find("td[name='index']").text(++itemIndex);
         clonedTr.find("td[name='inboundPlanOrderId']").text(planList[i].inboundPlanOrderId);
         clonedTr.find("td[name='transferDraftId']").text(planList[i].transferDraftId);
         clonedTr.find("td[name='produceCompanyName']").text(planList[i].produceCompanyName);
@@ -848,16 +790,16 @@ function getCheckState() {
  * 作废转移联单
  */
 function setInvalid(e) {    //已作废
-    var r = confirm("确认作废该联单吗？");
+    var r = confirm("确认作废该入库单吗？");
     if (r) {
         var id = getIdByMenu(e);
         $.ajax({
             type: "POST",
-            url: "setTransferDraftInvalid",
+            url: "setInboundOrderStateInvalid",
             async: false,
             dataType: "json",
             data: {
-                id: id
+                inboundOrderId: id
             },
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
@@ -1026,136 +968,16 @@ function viewData(e) {
     var id = getIdByMenu(e);
     $.ajax({
         type: "POST",
-        url: "getTransferDraftById",
+        url: "getInboundOrderById",
         async: false,
         dataType: "json",
-        data: {"id": id},
+        data: {"inboundOrderId": id},
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
-                var date = eval(result);
-                $("#produceCompanyName").val(date.acceptCompany.companyName);
-                $("#produceCompanyPhone").val(date.acceptCompany.phone);
-                $("#produceCompanyLocation").val(date.produceCompanyLocation);
-                $("#transportCompanyName").val(date.transportCompanyName);
-                $("#transportCompanyLocation").val(date.transportCompanyLocation);
-                $("#acceptCompanyName").val(date.acceptCompanyName);
-                $("#acceptCompanyLocation").val(date.acceptCompanyLocation);
-                $("#produceCompanyPostcode").val(date.produceCompanyPostcode);
-                $("#transportCompanyPhone").val(date.transportCompanyPhone);
-                $("#transportCompanyPostcode").val(date.transportCompanyPostcode);
-                $("#acceptCompanyPhone").val(date.acceptCompanyPhone);
-                $("#acceptCompanyPostcode").val(date.acceptCompanyPostcode);
-                $("#wastesName").val(date.wastesName);
-                $("#wastesPrepareTransferCount").val(date.wastesPrepareTransferCount);
-                $("#wastesCharacter").val(date.wastesCharacter);
-                $("#wastesCategory").val(date.wastesCategory);
-                $("#wastesTransferCount").val(date.wastesTransferCount);
-                if(date.wastesFormType !== null) $("#wastesFormType").val(date.wastesFormType);
-                $("#wastesCode").val(date.wastesCode);
-                $("#wastesSignCount").val(date.wastesSignCount);
-                if(date.wastesPackageType !== null) $("#wastesPackageType").val(date.wastesPackageType);
-                $("#outwardIsTransit").val(date.outwardIsTransit);
-                $("#outwardIsUse").val(date.outwardIsUse);
-                $("#outwardIsDeal").val(date.outwardIsDeal);
-                $("#outwardIsDispose").val(date.outwardIsDispose);
-                $("#mainDangerComponent").val(date.mainDangerComponent);
-                $("#dangerCharacter").val(date.dangerCharacter);
-                $("#emergencyMeasure").val(date.emergencyMeasure);
-                $("#emergencyEquipment").val(date.emergencyEquipment);
-                $("#dispatcher").val(date.dispatcher);
-                $("#destination").val(date.destination);
-                $("#transferTime").val(date.transferTime);
-                $("#firstCarrier").val(date.firstCarrier);
-                $("#firstCarryTime").val(date.firstCarryTime);
-                $("#firstModel").val(date.firstModel);
-                $("#firstBrand").val(date.firstBrand);
-                $("#firstTransportNumber").val(date.firstTransportNumber);
-                $("#firstOrigin").val(date.firstOrigin);
-                $("#firstStation").val(date.firstStation);
-                $("#firstDestination").val(date.firstDestination);
-                $("#firstCarrierSign").val(date.firstCarrierSign);
-                $("#secondCarrier").val(date.secondCarrier);
-                $("#secondCarryTime").val(date.secondCarryTime);
-                $("#secondModel").val(date.secondModel);
-                $("#secondBrand").val(date.secondBrand);
-                $("#secondTransportNumber").val(date.secondTransportNumber);
-                $("#secondOrigin").val(date.secondOrigin);
-                $("#secondStation").val(date.secondStation);
-                $("#secondDestination").val(date.secondDestination);
-                $("#secondCarrierSign").val(date.secondCarrierSign);
-                $("#acceptCompanyLicense").val(date.acceptCompanyLicense);
-                $("#recipient").val(date.recipient);
-                $("#acceptDate").val(date.acceptDate);
-                $("#disposeIsUse").val(date.disposeIsUse);
-                $("#disposeIsStore").val(date.disposeIsStore);
-                $("#disposeIsBurn").val(date.disposeIsBurn);
-                $("#disposeIsLandFill").val(date.disposeIsLandFill);
-                $("#disposeIsOther").val(date.disposeIsOther);
-                $("#headSign").val(date.headSign);
-                $("#signDate").val(date.signDate);
+                setItemDataList(result.data);
             } else {
                 alert(result.message);
-                $("#produceCompanyName").val("");
-                $("#produceCompanyPhone").val("");
-                $("#produceCompanyLocation").val("");
-                $("#transportCompanyName").val("");
-                $("#transportCompanyLocation").val("");
-                $("#acceptCompanyName").val("");
-                $("#acceptCompanyLocation").val("");
-                $("#produceCompanyPostcode").val("");
-                $("#transportCompanyPhone").val("");
-                $("#transportCompanyPostcode").val("");
-                $("#acceptCompanyPhone").val("");
-                $("#acceptCompanyPostcode").val("");
-                $("#wastesName").val("");
-                $("#wastesPrepareTransferCount").val("");
-                $("#wastesCharacter").val("");
-                $("#wastesCategory").val("");
-                $("#wastesTransferCount").val("");
-                $("#wastesFormType").val("");
-                $("#wastesCode").val("");
-                $("#wastesSignCount").val("");
-                $("#wastesPackageType").val("");
-                $("#outwardIsTransit").val("");
-                $("#outwardIsUse").val("");
-                $("#outwardIsDeal").val("");
-                $("#outwardIsDispose").val("");
-                $("#mainDangerComponent").val("");
-                $("#dangerCharacter").val("");
-                $("#emergencyMeasure").val("");
-                $("#emergencyEquipment").val("");
-                $("#dispatcher").val("");
-                $("#destination").val("");
-                $("#transferTime").val("");
-                $("#firstCarrier").val("");
-                $("#firstCarryTime").val("");
-                $("#firstModel").val("");
-                $("#firstBrand").val("");
-                $("#firstTransportNumber").val("");
-                $("#firstOrigin").val("");
-                $("#firstStation").val("");
-                $("#firstDestination").val("");
-                $("#firstCarrierSign").val("");
-                $("#secondCarrier").val("");
-                $("#secondCarryTime").val("");
-                $("#secondModel").val("");
-                $("#secondBrand").val("");
-                $("#secondTransportNumber").val("");
-                $("#secondOrigin").val("");
-                $("#secondStation").val("");
-                $("#secondDestination").val("");
-                $("#secondCarrierSign").val("");
-                $("#acceptCompanyLicense").val("");
-                $("#recipient").val("");
-                $("#acceptDate").val("");
-                $("#disposeIsUse").val("");
-                $("#disposeIsStore").val("");
-                $("#disposeIsBurn").val("");
-                $("#disposeIsLandFill").val("");
-                $("#disposeIsOther").val("");
-                $("#headSign").val("");
-                $("#signDate").val("");
             }
         },
         error: function (result) {
@@ -1163,7 +985,131 @@ function viewData(e) {
             alert("服务器异常");
         }
     });
-    $("#appointModal2").modal("show");
+    $("#viewModal").modal("show");
+
+    /**
+     * 设置数据
+     * @param result
+     */
+    function setItemDataList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#itemClonedTr");
+        tr.siblings().remove();
+        $.each(result.inboundOrderItemList, function (index, item) {
+            var data = eval(item);
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.find("td[name='index']").text(index + 1);
+            // clonedTr.find("td[name='inboundPlanOrderId']").text(data.inboundPlanOrderId);
+            clonedTr.find("td[name='transferDraftId']").text(data.transferDraftId);
+            if (data.produceCompany != null)
+                clonedTr.find("td[name='produceCompanyName']").text(data.produceCompany.companyName);
+            if (data.wastes != null) {
+                clonedTr.find("td[name='wastesName']").text(data.wastes.name);
+                clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
+            }
+            clonedTr.find("td[name='wastesAmount']").text(data.wastesAmount);
+            clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
+            clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
+            if (data.processWay != null)
+                clonedTr.find("td[name='processWay']").text(data.processWay.name);
+            if (data.handleCategory != null)
+                clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
+            clonedTr.find("td[name='remarks']").text(data.remarks);
+            clonedTr.find("td[name='warehouseArea']").text(data.warehouseArea);
+            clonedTr.find("td[name='inboundOrderItemId']").text(data.inboundOrderItemId);
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+}
+
+/**
+ * 属性调整
+ * @param e
+ */
+function changeAttribute(e) {
+    // 获取条目编号
+    var itemId = getItemId(e);
+    // 获取条目进料方式
+    var itemHandleCategory = getItemHandleCategory(e);
+    // 选中的旧属性单元格
+    var oldHandleCategory = e.parent().parent().find("td[name='handleCategory']");
+
+    $.ajax({
+        type: "POST",
+        url: "getHandleCategory",
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                var data = eval(result);
+                var handleCategory = $("#modal-handleCategory");
+                handleCategory.children().remove();
+                $.each(data.handleCategoryList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    handleCategory.append(option);
+                });
+                $("#modal-handleCategory option:contains("+handleCategory+")").attr("selected", true);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+
+    $("#attributeModal").modal("show");
+
+    // 点击事件
+    $("#saveBtn").unbind();
+    $("#saveBtn").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "updateItemHandleCategory",
+            async: false,
+            dataType: "json",
+            data: JSON.stringify({
+                inboundOrderItemId: itemId,
+                handleCategory: $("#modal-handleCategory").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    alert(result.message);
+                    oldHandleCategory.text($("#modal-handleCategory").find("option:selected").text());
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常");
+            }
+        });
+    });
+
+    /**
+     * 获取条目编号
+     * @param e
+     * @returns {*}
+     */
+    function getItemId(e) {
+        return e.parent().parent().find("td[name='inboundOrderItemId']").text();
+    }
+
+    function getItemHandleCategory(e) {
+        return e.parent().parent().find("td[name='handleCategory']").text();
+    }
 }
 
 /**
@@ -1172,5 +1118,38 @@ function viewData(e) {
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
-    return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    return e.parent().parent().find("td[name='inboundOrderId']").text();
+}
+
+// 覆盖Modal.prototype的hideModal方法
+$.fn.modal.Constructor.prototype.hideModal = function () {
+    var that = this;
+    this.$element.hide();
+    this.backdrop(function () {
+        //判断当前页面所有的模态框都已经隐藏了之后body移除.modal-open，即body出现滚动条。
+        $('.modal.fade.in').length === 0 && that.$body.removeClass('modal-open');
+        that.resetAdjustments();
+        that.resetScrollbar();
+        that.$element.trigger('hidden.bs.modal');
+    })
+};
+
+// 页面变黑
+$(document).on('show.bs.modal', '.modal', function(event) {
+    $(this).appendTo($('body'));
+}).on('shown.bs.modal', '.modal.in', function(event) {
+    setModalsAndBackdropsOrder();
+}).on('hidden.bs.modal', '.modal', function(event) {
+    setModalsAndBackdropsOrder();
+});
+
+function setModalsAndBackdropsOrder() {
+    var modalZIndex = 1040;
+    $('.modal.in').each(function(index) {
+        var $modal = $(this);
+        modalZIndex++;
+        $modal.css('zIndex', modalZIndex);
+        $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+    });
+    $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
 }

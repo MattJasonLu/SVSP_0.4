@@ -6,48 +6,71 @@
     <resultMap id="LaboratoryTestRM" type="LaboratoryTest" autoMapping="true">
         <id property="laboratoryTestNumber" column="laboratoryTestNumber"/>
         <association property="client" column="clientId" select="getClient"/>
-        <collection property="wastesList" select="getWastesList" column="laboratoryTestNumber"
-                    ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
     </resultMap>
-    <resultMap id="WastesRM" type="Wastes" autoMapping="true">
-        <id property="id" column="id"/>
-        <collection property="parameterList" select="getParameterList" column="id"
-                    ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
-        <collection property="heavyMetalList" select="getHeavyMetalList" column="id"
-                    ofType="com.jdlink.domain.Produce.HeavyMetal" javaType="ArrayList"/>
-    </resultMap>
+    <!--<resultMap id="WastesRM" type="Wastes" autoMapping="true">-->
+        <!--<id property="id" column="id"/>-->
+        <!--<collection property="parameterList" select="getParameterList" column="id"-->
+                    <!--ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>-->
+        <!--<collection property="heavyMetalList" select="getHeavyMetalList" column="id"-->
+                    <!--ofType="com.jdlink.domain.Produce.HeavyMetal" javaType="ArrayList"/>-->
+    <!--</resultMap>-->
 
     <select id="count" resultType="int">
         SELECT COUNT(*) FROM t_pr_laboratorytest;
     </select>
 
     <insert id="add" parameterType="LaboratoryTest">
-        INSERT INTO t_pr_laboratorytest (laboratorytestnumber, querynumber, clientId, companyName, record, recorddate,
-        laboratory, laboratorycompany, laboratorydate, checkState, nowTime) VALUES (#{laboratoryTestNumber},
-        #{queryNumber}, #{client.clientId}, #{client.companyName}, #{record}, #{recordDate}, #{laboratory}, #{laboratoryCompany},
-        #{laboratoryDate}, #{checkState}, NOW());
-        <if test="wastesList.size() > 0">
-            <foreach collection="wastesList" item="wastes" index="index">
-                INSERT INTO t_wastes (id, name, wastesId, isProductionLine, isStorageArea, samplingDate,
-                samplingNumber, testDate, laboratoryTestNumber, clientId) VALUES (#{wastes.id}, #{wastes.name}, #{wastes.wastesId},
-                #{wastes.isProductionLine}, #{wastes.isStorageArea}, #{wastes.samplingDate}, #{wastes.samplingNumber},
-                #{wastes.testDate}, #{laboratoryTestNumber}, #{client.clientId});
-                <if test="wastes.parameterList.size() > 0">
-                    <foreach collection="wastes.parameterList" item="parameter" index="index">
-                        INSERT INTO t_mixingelement (id, name, minimum, average, maximum, nowTime, parameter,
-                        wastesId) VALUES (#{parameter.id}, #{parameter.name}, #{parameter.minimum}, #{parameter.average},
-                        #{parameter.maximum}, NOW(), #{parameter.parameter}, #{wastes.id});
-                    </foreach>
-                </if>
-                <if test="wastes.heavyMetalList.size() > 0">
-                    <foreach collection="wastes.heavyMetalList" item="heavyMetal" index="index">
-                        INSERT INTO t_mixingelement (id, name, minimum, average, maximum, nowTime, heavyMetal,
-                        wastesId) VALUES (#{heavyMetal.id}, #{heavyMetal.name}, #{heavyMetal.minimum}, #{heavyMetal.average},
-                        #{heavyMetal.maximum}, NOW(), #{heavyMetal.heavyMetal}, #{wastes.id});
-                    </foreach>
-                </if>
-            </foreach>
-        </if>
+        INSERT INTO t_pr_laboratorytest (laboratorytestnumber, querynumber, clientId, record, recorddate, laboratory, laboratorycompany,
+        laboratorydate, checkState, nowTime, companyName, samplingDate, samplingNumber, isProductionLine, isStorageArea, isViscosity,
+        viscosityMinimum, viscosityAverage, viscosityMaximum, isDensity, densityMinimum, densityAverage, densityMaximum, isPH, phMinimum,
+        phAverage, phMaximum, isHeat, heatMinimum, heatAverage, heatMaximum, isAsh, ashMinimum, ashAverage, ashMaximum, isFlashPoint,
+        flashPointMinimum, flashPointAverage, flashPointMaximum, isMeltingPoint, meltingPointMinimum, meltingPointAverage,
+        meltingPointMaximum, isBoilingPoint, boilingPointMinimum, boilingPointAverage, boilingPointMaximum, isWaterContent,
+        waterContentMinimum, waterContentAverage, waterContentMaximum, isSolidSubstanceContent, solidSubstanceContentMinimum,
+        solidSubstanceContentAverage, solidSubstanceContentMaximum, isSulfurContent, sulfurContentMinimum, sulfurContentAverage,
+        sulfurContentMaximum, isChlorineContent, chlorineContentMinimum, chlorineContentAverage, chlorineContentMaximum,
+        isPhosphorusContent, phosphorusContentMinimum, phosphorusContentAverage, phosphorusContentMaximum, otherParameter1,
+        parameter1Minimum, parameter1Average, parameter1Maximum, otherParameter2, parameter2Minimum, parameter2Average,
+        parameter2Maximum, otherParameter3, parameter3Minimum, parameter3Average, parameter3Maximum, isHg, HgMinimum,
+        HgAverage, HgMaximum, isNa, NaMinimum, NaAverage, NaMaximum, isCu, CuMinimum, CuAverage, CuMaximum, isTi, TiMinimum,
+        TiAverage, TiMaximum, isLi, LiMinimum, LiAverage, LiMaximum, isSe, SeMinimum, SeAverage, SeMaximum, isSb, SbMinimum,
+        SbAverage, SbMaximum, isCa, CaMinimum, CaAverage, CaMaximum, isFe, FeMinimum, FeAverage, FeMaximum, isPb, PbMinimum,
+        PbAverage, PbMaximum, isCr, CrMinimum, CrAverage, CrMaximum, isV, VMinimum, VAverage, VMaximum, isTe, TeMinimum,
+        TeAverage, TeMaximum, isZn, ZnMinimum, ZnAverage, ZnMaximum, isCd, CdMinimum, CdAverage, CdMaximum, isK, KMinimum,
+        KAverage, KMaximum, isMn, MnMinimum, MnAverage, MnMaximum, isCo, CoMinimum, CoAverage, CoMaximum, isMg, MgMinimum,
+        MgAverage, MgMaximum, isAl, AlMinimum, AlAverage, AlMaximum, isAs, AsMinimum, AsAverage, AsMaximum, isSi, SiMinimum,
+        SiAverage, SiMaximum, isTu, TuMinimum, TuAverage, TuMaximum, isNi, NiMinimum, NiAverage, NiMaximum, isTl, TlMinimum,
+        TlAverage, TlMaximum, otherMetal1, metal1Minimum, metal1Average, metal1Maximum, otherMetal2, metal2Minimum, metal2Average,
+        metal2Maximum, otherMetal3, metal3Minimum, metal3Average, metal3Maximum, otherMetal4, metal4Minimum, metal4Average,
+        metal4Maximum, wastesName, wastesCode) VALUES (#{laboratoryTestNumber}, #{queryNumber}, #{client.clientId}, #{record}, #{recordDate},
+        #{laboratory}, #{laboratoryCompany}, #{laboratoryDate}, #{checkState}, NOW(), #{client.companyName},
+        #{samplingDate}, #{samplingNumber}, #{isProductionLine}, #{isStorageArea}, #{isViscosity}, #{viscosityMinimum},
+        #{viscosityAverage}, #{viscosityMaximum}, #{isDensity}, #{densityMinimum}, #{densityAverage}, #{densityMaximum},
+        #{isPH}, #{phMinimum}, #{phAverage}, #{phMaximum}, #{isHeat}, #{heatMinimum}, #{heatAverage}, #{heatMaximum},
+        #{isAsh}, #{ashMinimum}, #{ashAverage}, #{ashMaximum}, #{isFlashPoint}, #{flashPointMinimum}, #{flashPointAverage},
+        #{flashPointMaximum}, #{isMeltingPoint}, #{meltingPointMinimum}, #{meltingPointAverage}, #{meltingPointMaximum},
+        #{isBoilingPoint}, #{boilingPointMinimum}, #{boilingPointAverage}, #{boilingPointMaximum}, #{isWaterContent},
+        #{waterContentMinimum}, #{waterContentAverage}, #{waterContentMaximum}, #{isSolidSubstanceContent},
+        #{solidSubstanceContentMinimum}, #{solidSubstanceContentAverage}, #{solidSubstanceContentMaximum}, #{isSulfurContent},
+        #{sulfurContentMinimum}, #{sulfurContentAverage}, #{sulfurContentMaximum}, #{isChlorineContent},
+        #{chlorineContentMinimum}, #{chlorineContentAverage}, #{chlorineContentMaximum}, #{isPhosphorusContent},
+        #{phosphorusContentMinimum}, #{phosphorusContentAverage}, #{phosphorusContentMaximum}, #{otherParameter1},
+        #{parameter1Minimum}, #{parameter1Average}, #{parameter1Maximum}, #{otherParameter2}, #{parameter2Minimum},
+        #{parameter2Average}, #{parameter2Maximum}, #{otherParameter3}, #{parameter3Minimum}, #{parameter3Average},
+        #{parameter3Maximum}, #{isHg}, #{HgMinimum}, #{HgAverage}, #{HgMaximum}, #{isNa}, #{NaMinimum}, #{NaAverage},
+        #{NaMaximum}, #{isCu}, #{CuMinimum}, #{CuAverage}, #{CuMaximum}, #{isTi}, #{TiMinimum}, #{TiAverage},
+        #{TiMaximum}, #{isLi}, #{LiMinimum}, #{LiAverage}, #{LiMaximum}, #{isSe}, #{SeMinimum}, #{SeAverage},
+        #{SeMaximum}, #{isSb}, #{SbMinimum}, #{SbAverage}, #{SbMaximum}, #{isCa}, #{CaMinimum}, #{CaAverage},
+        #{CaMaximum}, #{isFe}, #{FeMinimum}, #{FeAverage}, #{FeMaximum}, #{isPb}, #{PbMinimum}, #{PbAverage}, #{PbMaximum},
+        #{isCr}, #{CrMinimum}, #{CrAverage}, #{CrMaximum}, #{isV}, #{VMinimum}, #{VAverage}, #{VMaximum}, #{isTe}, #{TeMinimum},
+        #{TeAverage}, #{TeMaximum}, #{isZn}, #{ZnMinimum}, #{ZnAverage}, #{ZnMaximum}, #{isCd}, #{CdMinimum}, #{CdAverage},
+        #{CdMaximum}, #{isK}, #{KMinimum}, #{KAverage}, #{KMaximum}, #{isMn}, #{MnMinimum}, #{MnAverage}, #{MnMaximum}, #{isCo},
+        #{CoMinimum}, #{CoAverage}, #{CoMaximum}, #{isMg}, #{MgMinimum}, #{MgAverage}, #{MgMaximum}, #{isAl}, #{AlMinimum},
+        #{AlAverage}, #{AlMaximum}, #{isAs}, #{AsMinimum}, #{AsAverage}, #{AsMaximum}, #{isSi}, #{SiMinimum}, #{SiAverage},
+        #{SiMaximum}, #{isTu}, #{TuMinimum}, #{TuAverage}, #{TuMaximum}, #{isNi}, #{NiMinimum}, #{NiAverage}, #{NiMaximum},
+        #{isTl}, #{TlMinimum}, #{TlAverage}, #{TlMaximum}, #{otherMetal1}, #{metal1Minimum}, #{metal1Average}, #{metal1Maximum},
+        #{otherMetal2}, #{metal2Minimum}, #{metal2Average}, #{metal2Maximum}, #{otherMetal3}, #{metal3Minimum}, #{metal3Average},
+        #{metal3Maximum}, #{otherMetal4}, #{metal4Minimum}, #{metal4Average}, #{metal4Maximum}, #{wastesName}, #{wastesCode});
     </insert>
 
     <select id="list" resultMap="LaboratoryTestRM">
@@ -141,9 +164,9 @@
         SELECT * FROM t_pr_laboratorytest WHERE laboratoryTestNumber= #{laboratoryTestNumber};
     </select>
 
-    <select id="getWastesList" parameterType="String" resultMap="WastesRM">
-        select * from t_wastes where laboratoryTestNumber=#{laboratoryTestNumber};
-    </select>
+    <!--<select id="getWastesList" parameterType="String" resultMap="WastesRM">-->
+        <!--select * from t_wastes where laboratoryTestNumber=#{laboratoryTestNumber};-->
+    <!--</select>-->
 
     <update id="setInvalid" parameterType="String">
         update t_pr_laboratorytest set checkState = 'Invalid' where laboratoryTestNumber = #{laboratoryTestNumber};
@@ -161,13 +184,13 @@
         update t_pr_laboratorytest set checkState = 'Confirm' where laboratoryTestNumber = #{laboratoryTestNumber};
     </update>
 
-    <select id="getParameterList" parameterType="String" resultType="MixingElement">
-        select * from t_mixingelement where wastesId=#{id};
-    </select>
+    <!--<select id="getParameterList" parameterType="String" resultType="MixingElement">-->
+        <!--select * from t_mixingelement where wastesId=#{id};-->
+    <!--</select>-->
 
-    <select id="getHeavyMetalList" parameterType="String" resultType="MixingElement">
-        select * from t_mixingelement where wastesId=#{id};
-    </select>
+    <!--<select id="getHeavyMetalList" parameterType="String" resultType="MixingElement">-->
+        <!--select * from t_mixingelement where wastesId=#{id};-->
+    <!--</select>-->
 
     <select id="getRecentLaboratoryTestNumberByClientId" parameterType="String" resultType="String">
         SELECT laboratorytestnumber FROM t_pr_laboratorytest
