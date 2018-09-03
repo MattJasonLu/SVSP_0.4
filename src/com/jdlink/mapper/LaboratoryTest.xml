@@ -164,6 +164,10 @@
         SELECT * FROM t_pr_laboratorytest WHERE laboratoryTestNumber= #{laboratoryTestNumber};
     </select>
 
+    <select id="getLaboratoryTestByWastesCodeAndClientId" parameterType="String" resultMap="LaboratoryTestRM">
+        SELECT * FROM t_pr_laboratorytest WHERE wastesCode=#{wastesCode} AND clientId=#{clientId};
+    </select>
+
     <!--<select id="getWastesList" parameterType="String" resultMap="WastesRM">-->
         <!--select * from t_wastes where laboratoryTestNumber=#{laboratoryTestNumber};-->
     <!--</select>-->
