@@ -10,6 +10,7 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
+    <script src="js/produce/emergencyProcurement.js"></script>
     <script src="js/util.js"></script>
 </head>
 <body>
@@ -101,7 +102,7 @@
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
-                    申请日期：<input title="" type="date" style="border: none;width: 200px;">
+                    申请日期：<input title="" type="date" style="border: none;width: 200px;" id="applyDate">
                     <table class="table table-bordered">
                         <thead>
                         <tr style="height: 100px;">
@@ -111,9 +112,9 @@
                         <tbody>
                         <tr>
                             <td colspan="2">物资类别</td>
-                            <td colspan="2"><input class="focus" title=""></td>
+                            <td colspan="2"><input class="focus" title="" id="suppliesCategory"></td>
                             <td colspan="2">需用时间</td>
-                            <td colspan="2"><input class="focus" title="" type="date"></td>
+                            <td colspan="2"><input class="focus" title="" type="date" id="demandTime"></td>
                         </tr>
                         <tr style="height: 100px;">
                             <td colspan="8"></td>
@@ -131,38 +132,48 @@
                             <td class="text-center">采购数量</td>
                             <td class="text-center">备注</td>
                         </tr>
-                        <tr>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
+                        <tr id="cloneTr1" class="myclass" >
+                            <td class="text-center">1<input class="focus" title=""></td>
+                            <td class="text-center"><input class="focus" title="" id="suppliesName"></td>
+                            <td class="text-center"><input class="focus" title="" id="specifications"></td>
+                            <td class="text-center"><input class="focus" title="" id="unit"></td>
+                            <td class="text-center"><input class="focus" title="" id="inventory"></td>
+                            <td class="text-center"><input class="focus" title="" id="demandQuantity"></td>
+                            <td class="text-center"><input class="focus" title="" id="purchaseQuantity"></td>
+                            <td class="text-center"><input class="focus" title="" id="note"></td>
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td colspan="2">申请部门</td>
-                            <td colspan="2"><input class="focus" title=""></td>
+                            <td colspan="2"><input class="focus" title="" id="applyDepartment"></td>
                             <td colspan="2">申请部门负责人</td>
-                            <td colspan="2"><input class="focus" title=""></td>
+                            <td colspan="2"><input class="focus" title="proposer" id="proposer"></td>
                         </tr>
                         <tr>
                             <td class="text-center">生产部门主管</td>
-                            <td class="text-center" colspan="7"><input class="focus" title=""></td>
+                            <td class="text-center" colspan="7"><input class="focus" title="" id="divisionHead"></td>
                         </tr>
                         <tr>
                             <td class="text-center">采购部门主管</td>
-                            <td class="text-center" colspan="7"><input class="focus" title=""></td>
+                            <td class="text-center" colspan="7"><input class="focus" title="" id="purchasingDirector"></td>
                         </tr>
                         <tr>
                             <td class="text-center">总经理</td>
-                            <td class="text-center" colspan="7"><input class="focus" title=""></td>
+                            <td class="text-center" colspan="7"><input class="focus" title="" id="generalManager"></td>
                         </tr>
                         </tbody>
                     </table>
                     <div class="row text-center">
-                        <a class="btn btn-success" onclick="save();">保存</a>
+                        <a class="btn btn-success" onclick="saveEmer();">保存</a>
                         <a class="btn btn-primary" onclick="submit();">提交</a>
                         <a class="btn btn-danger" href="emergencyProcurement.html">返回</a>
                     </div>

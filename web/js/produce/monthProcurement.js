@@ -17,7 +17,7 @@ function addNewLine() {
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    clonedTr.children("td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)").find("input").val("");
+    clonedTr.children("td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)").find("input").val("");
     // 获取编号
     var id = $("#plusBtn").prev().children().get(0).innerHTML;
     //console.log(id);
@@ -41,8 +41,8 @@ function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
 }
-//保存方法
-function save() {
+//保存月季采购方法
+function saveMonth() {
     //思路先添加
     //1获取除物料需求外的数据
     //在添加物料表
@@ -147,8 +147,9 @@ function getMontnProcurement() {
 }
 //设置月度采购申请表数据
 function setMonthProcurementList(result) {
-    $('.myclass').hide();
+    //$('.myclass').hide();
     var tr = $("#cloneTr");
+    tr.siblings().remove();
     console.log(result.data);
     tr.attr('class','myclass');
 
@@ -245,8 +246,9 @@ function view(item) {
 }
 //设置月度采购申请表数据模态框数据
 function setMonthProcurementListModal(result) {
-    $('.myclass1').hide();
+    //$('.myclass1').hide();
     var tr = $("#cloneTr2");
+    tr.siblings().remove();
     tr.attr('class','myclass1');
     $.each(result, function (index, item) {
         //console.log(item);
