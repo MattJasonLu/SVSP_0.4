@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Quotation;
+import com.jdlink.domain.QuotationItem;
 import com.jdlink.mapper.QuotationMapper;
 import com.jdlink.service.QuotationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,11 @@ public class QuotationServiceImpl implements QuotationService {
     @Override
     public List<Quotation> searchQuotation(Quotation quotation) {
         return quotationMapper.searchQuotation(quotation);
+    }
+
+    @Override
+    public QuotationItem getQuotationByWastesCodeAndClientId(String wastesCode, String clientId) {
+        return quotationMapper.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
     }
 
     @Override

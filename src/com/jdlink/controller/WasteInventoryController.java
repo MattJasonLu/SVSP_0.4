@@ -691,7 +691,7 @@ catch (Exception e){
         }
         return mouth;
     }
-    //获取三位序列号
+    //获取5位序列号
     public static String getString3(String id){
         while (id.length()!=5){
             System.out.println(id.length());

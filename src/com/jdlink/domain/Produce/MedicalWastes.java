@@ -10,7 +10,7 @@ public class MedicalWastes {
     /**
      * 登记单号
      */
-    private String id;
+    private String medicalWastesId;
     /**
      *
      * 登记部门
@@ -31,13 +31,13 @@ public class MedicalWastes {
     /**
      *登记时间
      */
-    private Date date;
+    private Date dateTime;
     /**
      * 本月进厂危废
      */
     private float thisMonthWastes;
     /**
-     * 本日直接处置量
+     * 本日直接转外处置量
      */
     private float directDisposal;
     /**
@@ -66,14 +66,6 @@ public class MedicalWastes {
      *
      */
     private float wetNumber;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getDepartment() {
         return department;
@@ -107,12 +99,13 @@ public class MedicalWastes {
         this.adjustDate = adjustDate;
     }
 
-    public Date getDate() {
-        return date;
+
+    public Date getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
     }
 
     public float getThisMonthWastes() {
@@ -179,15 +172,23 @@ public class MedicalWastes {
         this.wetNumber = wetNumber;
     }
 
+    public String getMedicalWastesId() {
+        return medicalWastesId;
+    }
+
+    public void setMedicalWastesId(String medicalWastesId) {
+        this.medicalWastesId = medicalWastesId;
+    }
+
     @Override
     public String toString() {
         return "MedicalWastes{" +
-                "id='" + id + '\'' +
+                "medicalWastesId='" + medicalWastesId + '\'' +
                 ", department='" + department + '\'' +
                 ", departmentName='" + departmentName + '\'' +
                 ", adjustName='" + adjustName + '\'' +
                 ", adjustDate=" + adjustDate +
-                ", date=" + date +
+                ", dateTime=" + dateTime +
                 ", thisMonthWastes=" + thisMonthWastes +
                 ", directDisposal=" + directDisposal +
                 ", cookingWastes=" + cookingWastes +
