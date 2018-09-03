@@ -15,6 +15,14 @@ public interface LaboratoryTestService {
 
     LaboratoryTest getLaboratoryTestById(String laboratoryTestNumber);
 
+    /**
+     * 通过危废编码和客户编号获取化验单
+     * @param wastesCode 危废代码
+     * @param clientId 客户编码
+     * @return 化验单
+     */
+    LaboratoryTest getLaboratoryTestByWastesCodeAndClientId(String wastesCode, String clientId);
+
     List<LaboratoryTest> search(LaboratoryTest laboratoryTest);
 
     int searchCount(LaboratoryTest laboratoryTest);
