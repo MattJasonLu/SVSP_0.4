@@ -23,15 +23,15 @@ function getId(item) {
  * 模态框数据填充
  */
 function viewEquipment(item) {
-    var id = getId(item);
-    console.log(id);
+    var number = getId(item);   //number为单据号
+    console.log(number);
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getEquipment",            // url
         async: false,
         dataType: "json",
         data: {
-            id: id
+            id: number
         },
         success: function (result) {
             if (result != undefined ) {//&& result.status == "success"
@@ -57,11 +57,11 @@ function viewEquipment1(data) {
     tr.siblings().remove();
     $.each(data, function (index,item) {
         var obj = eval(item);
+        console.log(obj);
         var clonedTr = tr.clone();
         // 赋值
-        clonedTr.find("td[name='id']").text(obj.id);//index + 1
-        clonedTr.find("td[name='documentNumber']").text(obj.documentNumber);//index + 1
-        clonedTr.find("td[name='equipment']").text(obj.Equipment);
+        clonedTr.find("td[name='documentNumber']").text(getId(item));//index + 1
+        clonedTr.find("td[name='equipment']").text(obj.equipment);
         clonedTr.find("td[name='runningTime']").text(obj.runningTime);
         clonedTr.find("td[name='stopTime']").text(obj.stopTime);
         clonedTr.find("td[name='stopResult']").text(obj.stopResult);
@@ -112,7 +112,6 @@ function setEquipment(data) {
         var obj = eval(item);
         var clonedTr = tr.clone();
         // 赋值
-        clonedTr.find("td[name='id']").text(obj.id);//index + 1
         clonedTr.find("td[name='documentNumber']").text(obj.documentNumber);//index + 1
         clonedTr.find("td[name='creator']").text(obj.creator);
         clonedTr.find("td[name='dayTime']").text(getTimeStr(obj.dayTime));

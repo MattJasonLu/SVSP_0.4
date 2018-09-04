@@ -15,7 +15,7 @@ public class EquipmentDate {
     /**
      * 故障设备
      */
-    private String Equipment;
+    private String equipment;
     /**
      * 运行时间(h)
      */
@@ -110,11 +110,11 @@ public class EquipmentDate {
     }
 
     public String getEquipment() {
-        return Equipment;
+        return equipment;
     }
 
     public void setEquipment(String equipment) {
-        Equipment = equipment;
+        this.equipment = equipment;
     }
 
     public float getRunningTime() {
@@ -154,7 +154,7 @@ public class EquipmentDate {
         return "EquipmentDate{" +
                 "id=" + id +
                 ", documentNumber='" + documentNumber + '\'' +
-                ", Equipment='" + Equipment + '\'' +
+                ", equipment='" + equipment + '\'' +
                 ", runningTime=" + runningTime +
                 ", stopTime=" + stopTime +
                 ", stopResult='" + stopResult + '\'' +

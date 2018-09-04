@@ -3,14 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.EquipmentMapper" >
-
     <!--查询当天的设备运行情况-->
     <select id="getEquipment" resultType="EquipmentDate">
-        select distinct equipment,runningTime,stopTime,stopResult,note,documentNumber from t_rp_equipment where id = #{id};
+        select equipment,runningTime,stopTime,stopResult,note from t_rp_equipment where documentNumber = #{documentNumber};
     </select>
 
     <!--网页列表数据-->
     <select id="listEquipment" resultType="EquipmentDate">
-        select * from t_rp_equipment;
+        select distinct documentNumber,creator,dayTime,createDept,editor,editTime,note from t_rp_equipment;
     </select>
 </mapper>
