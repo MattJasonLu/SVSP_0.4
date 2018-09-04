@@ -134,6 +134,9 @@ function setDataList(result) {
                     if (obj.wastes != null)
                         $(this).html(obj.wastes.category);
                     break;
+                case (15):
+                    $(this).html(obj.unitPriceTax);
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -172,6 +175,7 @@ function addPlan2Order() {
                 plan.wastesName = $(this).find("td[name='wastesName']").text();
                 plan.wastesCode = $(this).find("td[name='wastesCode']").text();
                 plan.wastesCategory = $(this).find("td[name='wastesCategory']").text();
+                plan.unitPriceTax = $(this).find("td[name='unitPriceTax']").text();
                 planList.push(plan);
             }
         }
@@ -190,6 +194,8 @@ function addPlan2Order() {
         clonedTr.find("td[name='wastesName']").text(planList[i].wastesName);
         clonedTr.find("td[name='wastesCode']").text(planList[i].wastesCode);
         clonedTr.find("td[name='wastesAmount']").text(planList[i].poundsCount);
+        clonedTr.find("td[name='unitPriceTax']").text(planList[i].unitPriceTax);
+        clonedTr.find("td[name='totalPrice']").text(planList[i].poundsCount * planList[i].unitPriceTax);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
