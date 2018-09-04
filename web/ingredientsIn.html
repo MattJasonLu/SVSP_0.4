@@ -141,7 +141,7 @@
                 <div class="input-group col-md-3 pull-right" style="margin-right: 23px;">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search"
+                            <a class="btn btn-default" onclick="searchIngredientIn();"><span class="glyphicon glyphicon-search"
                                                                                  aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -198,7 +198,7 @@
         <div class="row">
             <div class="form-horizontal col-md-12">
                 <table class="table table-striped table-hover table-condensed">
-                    <tbody>
+                    <thead>
                     <tr>
                         <td class="text-center">入库单号</td>
                         <td class="text-center">单位名</td>
@@ -212,7 +212,9 @@
                         <td class="text-center">创建日期</td>
                         <td class="text-center">操作</td>
                     </tr>
-                    <tr id="clone">
+                    </thead>
+                    <tbody>
+                    <tr id="clone" ondblclick="toViewIngredientsIn1(this)">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -224,9 +226,9 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a class="btn btn-primary btn-xs" title="查看" href="#" onclick="toView()"><span
+                            <a class="btn btn-primary btn-xs" title="查看" href="#" onclick="toViewIngredientsIn(this)"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
-                            <a class="btn btn-primary btn-xs" title="作废" href="#" onclick="invalid()"><span
+                            <a class="btn btn-primary btn-xs" title="作废" href="#" onclick="invalidIngredientsIn(this)"><span
                                     class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
                         </td>
                     </tr>
@@ -295,8 +297,97 @@
                 </div>
             </div>
         </div>
+        <!--查看模态框-->
+        <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-lg" role="document" style="width: 90%">
+                <div class="modal-content">
+                    <br>
+                    <!--<div class="text-center"><span id="creationDate"></span>&nbsp;&nbsp;&nbsp;&nbsp;预处理单</div>-->
+                    <h3 class="modal-title text-center" >北控安耐得环保科技发展常州有限公司</h3>
+                    <h4 class="modal-title text-center" >入库单</h4>
+                    <p class="text-center pull-right"><b>NO.</b><span id="view-id" class="text-left"></span></p>
+                    <br>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th colspan="6" class="text-left">单位:<span id="view-companyName" class="text-left"></span></th>
+                            <th colspan="6" class="text-left"><span id="view-creationDate" class="text-center"></span></th>
+                            <th colspan="6" class="text-left">文件编号:<span id="view-fileId" class="text-left"></span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center" rowspan="2">编号</td>
+                            <td class="text-center" rowspan="2">物品名称</td>
+                            <td class="text-center" rowspan="2">规格</td>
+                            <td class="text-center" rowspan="2">单位</td>
+                            <td class="text-center" rowspan="2">数量</td>
+                            <td class="text-center" rowspan="2">单价</td>
+                            <td class="text-center" colspan="8">金额</td>
+                            <td class="text-center" rowspan="2">过账</td>
+                            <td class="text-center" rowspan="2">附注</td>
+                            <td class="text-center" rowspan="2">仓库</td>
+                            <td class="text-center" rowspan="2">状态</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">十</td>
+                            <td class="text-center">万</td>
+                            <td class="text-center">千</td>
+                            <td class="text-center">百</td>
+                            <td class="text-center">十</td>
+                            <td class="text-center">元</td>
+                            <td class="text-center">角</td>
+                            <td class="text-center">分</td>
+                        </tr>
+                        <tr id="viewClone">
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="text-center">合计</td>
+                            <td class="text-center" id="view-hundredThousand"></td>
+                            <td class="text-center" id="view-tenThousand"></td>
+                            <td class="text-center" id="view-thousand"></td>
+                            <td class="text-center" id="view-hundred"></td>
+                            <td class="text-center" id="view-ten"></td>
+                            <td class="text-center" id="view-yuan"></td>
+                            <td class="text-center" id="view-jiao"></td>
+                            <td class="text-center" id="view-fen"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left" colspan="4">记账：<span id="view-bookkeeper" class="text-left"></span></td>
+                            <td class="text-left" colspan="3">审批：<span id="view-approver" class="text-left"></span></td>
+                            <td class="text-left" colspan="3">保管：<span id="view-keeper" class="text-left"></span></td>
+                            <td class="text-left" colspan="4">验收：<span id="view-acceptor" class="text-left"></span></td>
+                            <td class="text-left" colspan="4">经手：<span id="view-handlers" class="text-left"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <!---->
-
     </div>
 </div>
 <!--导入-->

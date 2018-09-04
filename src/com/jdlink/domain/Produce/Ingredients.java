@@ -7,7 +7,19 @@ public class Ingredients {
     /**
      * 辅料、备件ID
      */
-    private int Itemid;
+    private int itemId;
+    /**
+     * 入库单序号/编号
+     */
+    private String serialNumberIn;
+    /**
+     * 入库单序号/编号
+     */
+    private String serialNumberReceive;
+    /**
+     * 入库单序号/编号
+     */
+    private String serialNumberOut;
     /**
      * 外键ID
      */
@@ -61,12 +73,12 @@ public class Ingredients {
      */
     private IngredientState ingredientState;
 
-    public int getItemid() {
-        return Itemid;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setItemid(int itemid) {
-        Itemid = itemid;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public String getName() {
@@ -75,6 +87,30 @@ public class Ingredients {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSerialNumberIn() {
+        return serialNumberIn;
+    }
+
+    public void setSerialNumberIn(String serialNumberIn) {
+        this.serialNumberIn = serialNumberIn;
+    }
+
+    public String getSerialNumberReceive() {
+        return serialNumberReceive;
+    }
+
+    public void setSerialNumberReceive(String serialNumberReceive) {
+        this.serialNumberReceive = serialNumberReceive;
+    }
+
+    public String getSerialNumberOut() {
+        return serialNumberOut;
+    }
+
+    public void setSerialNumberOut(String serialNumberOut) {
+        this.serialNumberOut = serialNumberOut;
     }
 
     public String getSpecification() {
@@ -176,7 +212,10 @@ public class Ingredients {
     @Override
     public String toString() {
         return "Ingredients{" +
-                "Itemid=" + Itemid +
+                "itemId=" + itemId +
+                ", serialNumberIn='" + serialNumberIn + '\'' +
+                ", serialNumberReceive='" + serialNumberReceive + '\'' +
+                ", serialNumberOut='" + serialNumberOut + '\'' +
                 ", id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", specification='" + specification + '\'' +
@@ -189,6 +228,7 @@ public class Ingredients {
                 ", wareHouseName='" + wareHouseName + '\'' +
                 ", receiveAmount=" + receiveAmount +
                 ", notReceiveAmount=" + notReceiveAmount +
+                ", ingredientState=" + ingredientState +
                 '}';
     }
 }

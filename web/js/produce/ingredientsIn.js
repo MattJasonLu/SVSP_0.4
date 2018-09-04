@@ -1,3 +1,16 @@
+
+
+function getDayDate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth() + 1;
+    var day = obj.getDate();
+    if (day % 7 > 0) var a = 1; else a = 0;
+    var week = parseInt(day / 7) + a;
+    return year + "年" + month + "月" + day + "日";
+}
+
 /**
  * 重置功能
  */
@@ -377,7 +390,7 @@ function setIngredientsInList(result) {
                     break;
                 case (9):
                     // 创建日期
-                    $(this).html(getDateStr(obj.receiveDate));
+                    $(this).html(getDateStr(obj.creationDate));
                     break;
             }
         });
@@ -489,7 +502,7 @@ function importExcel() {
 /**
  * 查询功能
  */
-function search() {
+function searchIngredientIn() {
     isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
@@ -543,7 +556,7 @@ function search() {
  * @param item
  * @returns {string}
  */
-function getIngredientsInId(item) {
+function getIngredientsInId1(item) {
     return item.firstElementChild.innerHTML;
 }
 
@@ -552,10 +565,27 @@ function getIngredientsInId(item) {
  * @param item
  * @returns {*}
  */
-function getIngredientsInId1(item) {
+function getIngredientsInId(item) {
     return item.parentElement.parentElement.firstElementChild.innerHTML;
 }
-//////////
+
+/**
+ * 单击查看功能
+ * @param item
+ */
+function toViewIngredientsIn(item){
+    var id = getIngredientsInId(item);
+    showViewModal(id);
+}
+/**
+ * 双击查看功能
+ * @param item
+ */
+function toViewIngredientsIn1(item){
+    var id = getIngredientsInId1(item);
+    showViewModal(id);
+}
+
 /**
  * 显示查看模态框
  * @param id
@@ -564,7 +594,7 @@ function showViewModal(id) {
     $(".newLine").remove();
     $.ajax({
         type: "POST",
-        url: "getPretreatmentById",
+        url: "getIngredientsInById",
         async: false,
         data: {
             id: id
@@ -575,25 +605,25 @@ function showViewModal(id) {
                 //设置数据
                 var data = eval(result.data);
                 console.log(result);
-                setViewPretreatmentClone(result.data);
-                $("#view-pretreatmentId").text(data.id);
-                $("#view-remarks").text(data.remarks);
-                $("#view-weightTotal").text(data.weightTotal);
-                $("#view-calorificTotal").text(data.calorificTotal);
-                $("#view-ashPercentageTotal").text(data.ashPercentageTotal);
-                $("#view-wetPercentageTotal").text(data.wetPercentageTotal);
-                $("#view-volatileNumberTotal").text(data.volatileNumberTotal);
-                $("#view-chlorinePercentageTotal").text(data.chlorinePercentageTotal);
-                $("#view-sulfurPercentageTotal").text(data.sulfurPercentageTotal);
-                $("#view-phTotal").text(data.phTotal);
-                $("#view-phosphorusPercentageTotal").text(data.phosphorusPercentageTotal);
-                $("#view-fluorinePercentageTotal").text(data.fluorinePercentageTotal);
-                $("#view-distillationProportion").text(data.distillationProportion);
-                $("#view-wasteLiquidProportion").text(data.wasteLiquidProportion);
-                $("#view-sludgeProportion").text(data.sludgeProportion);
-                $("#view-bulkProportion").text(data.bulkProportion);
-                $("#view-crushingProportion").text(data.crushingProportion);
-                $("#view-suspensionProportion").text(data.suspensionProportion);
+                setViewIngredientsClone(result.data);
+                $("#view-id").text(data.id);
+                $("#view-companyName").text(data.companyName);
+                $("#view-creationDate").text(getDayDate(data.creationDate));
+                $("#view-fileId").text(data.fileId);
+                $("#view-hundredThousand").text(Math.floor(data.totalPrice / 100000));
+                $("#view-tenThousand").text(Math.floor(data.totalPrice % 100000 / 10000));
+                $("#view-thousand").text(Math.floor((data.totalPrice % 100000) % 10000 / 1000));
+                $("#view-hundred").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 / 100));
+                $("#view-ten").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+                $("#view-yuan").text(Math.floor((data.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+                var jiao = data.totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+                $("#view-jiao").text(Math.floor(jiao));
+                $("#view-fen").text(Math.floor(jiao % 1 * 10));
+                $("#view-bookkeeper").text(data.bookkeeper);
+                $("#view-approver").text(data.approver);
+                $("#view-keeper").text(data.keeper);
+                $("#view-acceptor").text(data.acceptor);
+                $("#view-handlers").text(data.handlers);
             } else {
                 alert(result.message);
             }
@@ -607,109 +637,95 @@ function showViewModal(id) {
 }
 
 /**
- * 为预处理编辑模态框设置克隆数据
+ * 为查看模态框设置克隆数据
  * @param result
  */
-function setViewPretreatmentClone(result) {
+function setViewIngredientsClone(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#viewClone");
-    num = 0;
-    $.each(result.pretreatmentItemList, function (index, item) {
+    $.each(result.ingredientsList, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
-        //重设id
-        console.log("num:" + num);
-        clonedTr.children().find("input").each(function () {
-            var id = $(this).prop('id');
-            var newId = id.replace(/[0-9]\d*/, num + 1);
-            $(this).prop('id', newId);
-        });
-        num++;
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
+            var jiao1 = obj.totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (0):
-                    // 序号
-                    $(this).html(obj.serialNumber);
+                    // 编号
+                    $(this).html(obj.serialNumberIn);
                     break;
                 case (1):
-                    // 产废单位
-                    $(this).html(obj.produceCompanyName);
+                    // 物品名称
+                    $(this).html(obj.name);
                     break;
                 case (2):
-                    // 指标要求及来源
-                    $(this).html(obj.requirements);
+                    // 规格
+                    $(this).html(obj.specification);
                     break;
                 case (3):
-                    // 危废名称
-                    $(this).html(obj.wastes.name);
+                    // 单位（KG）
+                    $(this).html(obj.unit);
                     break;
                 case (4):
-                    // 比例
-                    $(this).html(obj.proportion);
+                    // 数量
+                    $(this).html(obj.amount);
                     break;
                 case (5):
-                    // 重量（吨）
-                    $(this).html(obj.wastes.weight);
+                    // 单价
+                    $(this).html(obj.unitPrice);
                     break;
                 case (6):
-                    // 危废热值
-                    $(this).html(obj.wastes.calorific);
+                    // 金额 十万
+                    $(this).html(Math.floor(obj.totalPrice / 100000));
                     break;
                 case (7):
-                    // 灰分
-                    $(this).html(obj.wastes.ashPercentage);
+                    // 金额 万
+                    $(this).html(Math.floor(obj.totalPrice % 100000 / 10000));
                     break;
                 case (8):
-                    // 水分
-                    $(this).html(obj.wastes.wetPercentage);
+                    // 金额 千
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 / 1000));
                     break;
                 case (9):
-                    // 挥发份
-                    $(this).html(obj.wastes.volatileNumber);
+                    // 金额 百
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 / 100));
                     break;
                 case (10):
-                    // 氯
-                    $(this).html(obj.wastes.chlorinePercentage);
+                    // 金额 十
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 / 10));
                     break;
                 case (11):
-                    // 硫
-                    $(this).html(obj.wastes.sulfurPercentage);
+                    // 金额 元
+                    $(this).html(Math.floor((obj.totalPrice % 100000) % 10000 % 1000 % 100 % 10));
                     break;
                 case (12):
-                    // PH
-                    $(this).html(obj.wastes.ph);
+                    // 金额 角
+                    $(this).html(Math.floor(jiao1));
                     break;
                 case (13):
-                    // P
-                    $(this).html(obj.wastes.phosphorusPercentage);
+                    // 金额 分
+                    $(this).html(Math.floor(jiao1 % 1 * 10));
                     break;
                 case (14):
-                    // F
-                    $(this).html(obj.wastes.fluorinePercentage);
+                    // 过账
+                    $(this).html(obj.post);
                     break;
                 case (15):
-                    // 备注
-                    $(this).html(obj.wastes.remarks);
+                    // 附注
+                    $(this).html(obj.remarks);
                     break;
                 case (16):
-                    // 处置方式
-                    $(this).html(obj.wastes.processWay.name);
+                    // 仓库
+                    $(this).html(obj.wareHouseName);
                     break;
                 case (17):
-                    // 进料方式
-                    $(this).html(obj.wastes.handleCategory.name);
-                    break;
-                case(18):
-                    //预处理暂存地址
-                    $(this).find("input").val(obj.temporaryAddress);
+                    // 物品状态
+                    $(this).html(obj.ingredientState.name);
                     break;
             }
-            // var $num = num + 1;
-            // $("#view["+ $num +"]-temporaryAddress").text(obj.temporaryAddress);
         });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.addClass("newLine");
@@ -718,5 +734,33 @@ function setViewPretreatmentClone(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
+}
+
+/**
+ * 作废功能
+ */
+function invalidIngredientsIn(item) {
+    var id = getIngredientsInId(item);
+    $.ajax({
+        type: "POST",
+        url: "invalidIngredientsIn",
+        async: false,
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result.status == "success") {
+                alert("作废成功！");
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
 }
 
