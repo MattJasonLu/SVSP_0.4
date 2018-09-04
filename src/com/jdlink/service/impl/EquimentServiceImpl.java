@@ -6,7 +6,6 @@ import com.jdlink.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,8 +15,8 @@ public class EquimentServiceImpl implements EquipmentService {
     EquipmentMapper equipmentMapper;
 
     @Override
-    public List<EquipmentDate> getEquipment(Date dayTime) {
-        return equipmentMapper.getEquipment(dayTime);
+    public List<EquipmentDate> getEquipment(Integer id) {
+        return equipmentMapper.getEquipment(id);
     }
 
     @Override

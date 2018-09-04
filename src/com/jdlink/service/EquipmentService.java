@@ -12,10 +12,10 @@ public interface EquipmentService {
 
     /**
      * 通过日期查询设备明细集合
-     * @param dayTime 日期
+     * @param id 单据号
      * @return 设备明细集合
      */
-    List<EquipmentDate> getEquipment(Date dayTime);
+    List<EquipmentDate> getEquipment(Integer id);
 
     /**
      * 查询设备按日期生成的列表

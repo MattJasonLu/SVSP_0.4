@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>供应商备案</title>
+    <title>处置单位备案</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -23,7 +23,7 @@
         else $("input[name='select']").prop('checked',false);
     }
     /**
-     * 获取供应商的编号
+     * 获取处置单位的编号
      * @param item
      * @returns {string}
      */
@@ -31,12 +31,12 @@
         return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
     /**
-     * 审核供应商
-     * @param item 供应商
+     * 审核处置单位
+     * @param item 处置单位
      */
     function examineSupplier(item) {
         var id = getSupplierId(item);
-        // 添加供应商信息
+        // 添加处置单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listSupplierById",                   // url
@@ -98,8 +98,8 @@
         $('#examineModal').modal('show');
     }
     /**
-     * 提交供应商
-     * @param item 供应商
+     * 提交处置单位
+     * @param item 处置单位
      */
     function commitSupplier(item) {
         var id = getSupplierId(item);
@@ -134,8 +134,8 @@
         }
     }
     /**
-     * 禁用供应商
-     * @param item 供应商
+     * 禁用处置单位
+     * @param item 处置单位
      */
     function disableSupplier(item) {
         var id = getSupplierId(item);
@@ -169,8 +169,8 @@
         }
     }
     /**
-     * 启用供应商
-     * @param item 供应商
+     * 启用处置单位
+     * @param item 处置单位
      */
     function enableSupplier(item) {
         var id = getSupplierId(item);
@@ -224,30 +224,30 @@
                 <ul class="nav navbar-nav">
                     <li><a href="businessModel.html">首页</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">客户备案</a></li>
+                            <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-submenu">
                                 <a href="#">业务员分配管理</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">客户分配管理</a></li>
+                                    <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">客户样品登记</a></li>
+                            <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                         </ul>
                     </li>
                     <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
+                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -256,8 +256,6 @@
                             <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员合同</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -321,11 +319,11 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">供应商管理</a></li>
-                    <li class="active">供应商备案</li>
+                    <li><a href="#">处置单位管理</a></li>
+                    <li class="active">处置单位备案</li>
                 </ol>
             </div>
-            <h4 class="sub-header">供应商列表</h4>
+            <h4 class="sub-header">处置单位列表</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
@@ -350,7 +348,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-supplierId" class="col-sm-5 control-label">供应商编号</label>
+                                <label for="search-supplierId" class="col-sm-5 control-label">处置单位编号</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-supplierId" name="search-supplierId" placeholder="">
                                 </div>
@@ -365,14 +363,14 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-companyName" class="col-sm-5 control-label">供应商名称</label>
+                                <label for="search-companyName" class="col-sm-5 control-label">处置单位名称</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="search-supplierType" class="col-sm-5 control-label">供应商类型</label>
+                                <label for="search-supplierType" class="col-sm-5 control-label">处置单位类型</label>
                                 <div class="col-xs-7">
                                     <select class="form-control" id="search-supplierType" name="search-supplierType"></select>
                                 </div>
@@ -388,7 +386,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="search-checkState" class="col-sm-5 control-label">供应商状态</label>
+                                <label for="search-checkState" class="col-sm-5 control-label">处置单位状态</label>
                                 <div class="col-xs-7">
                                     <select class="form-control" id="search-checkState" name="search-checkState"></select>
                                 </div>
@@ -414,10 +412,10 @@
                                     <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                                 </label>
                             </th>
-                            <th class="text-center">供应商编号</th>
-                            <th class="text-center" style="width: 300px;">供应商名称</th>
-                            <th class="text-center">供应商类型</th>
-                            <th class="text-center">供应商状态</th>
+                            <th class="text-center">处置单位编号</th>
+                            <th class="text-center" style="width: 300px;">处置单位名称</th>
+                            <th class="text-center">处置单位类型</th>
+                            <th class="text-center">处置单位状态</th>
                             <th class="text-center">账号状态</th>
                             <th class="text-center">联系人</th>
                             <th class="text-center">联系方式</th>
@@ -491,13 +489,13 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h4 class="sub-header">供应商信息</h4>
+                    <h4 class="sub-header">处置单位信息</h4>
                     <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                         <h4 class="text-info">基本信息</h4>
                         <div class="row">
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>供应商名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
-                                <p class="text-left"><b>供应商类型&nbsp;&nbsp;</b><span id="modal3_supplierType"></span></p>
+                                <p class="text-left"><b>处置单位名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
+                                <p class="text-left"><b>处置单位类型&nbsp;&nbsp;</b><span id="modal3_supplierType"></span></p>
                                 <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal3_licenseCode"></span></p>
                                 <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal3_postCode"></span></p>
                                 <p class="text-left"><b>组织机构代码证号&nbsp;&nbsp;</b><span id="modal3_organizationCode"></span></p>
@@ -507,7 +505,7 @@
                                 <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal3_expirationDate"></span></p>
                             </div>
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>供应商编码&nbsp;&nbsp;</b><span id="modal3_supplierId"></span></p>
+                                <p class="text-left"><b>处置单位编码&nbsp;&nbsp;</b><span id="modal3_supplierId"></span></p>
                                 <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal3_representative"></span></p>
                                 <p class="text-left"><b>注册资本&nbsp;&nbsp;</b><span id="modal3_registeredCapital"></span></p>
                                 <p class="text-left"><b>成立日期&nbsp;&nbsp;</b><span id="modal3_createDate"></span></p>
@@ -561,14 +559,14 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h4 class="sub-header">供应商审批</h4>
+                    <h4 class="sub-header">处置单位审批</h4>
                     <form method="post" id="clientInfoForm1" enctype="multipart/form-data">
                         <h4 class="text-info">审批</h4>
                         <h4 class="text-info">基本信息</h4>
                         <div class="row">
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>供应商名称&nbsp;&nbsp;</b><span id="modal4_companyName"></span></p>
-                                <p class="text-left"><b>供应商类型&nbsp;&nbsp;</b><span id="modal4_supplierType"></span></p>
+                                <p class="text-left"><b>处置单位名称&nbsp;&nbsp;</b><span id="modal4_companyName"></span></p>
+                                <p class="text-left"><b>处置单位类型&nbsp;&nbsp;</b><span id="modal4_supplierType"></span></p>
                                 <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal4_licenseCode"></span></p>
                                 <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal4_postCode"></span></p>
                                 <p class="text-left"><b>组织机构代码证号&nbsp;&nbsp;</b><span id="modal4_organizationCode"></span></p>
@@ -578,7 +576,7 @@
                                 <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal4_expirationDate"></span></p>
                             </div>
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>供应商编码&nbsp;&nbsp;</b><span id="modal4_supplierId"></span></p>
+                                <p class="text-left"><b>处置单位编码&nbsp;&nbsp;</b><span id="modal4_supplierId"></span></p>
                                 <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal4_representative"></span></p>
                                 <p class="text-left"><b>注册资本&nbsp;&nbsp;</b><span id="modal4_registeredCapital"></span></p>
                                 <p class="text-left"><b>成立日期&nbsp;&nbsp;</b><span id="modal4_createDate"></span></p>
@@ -820,7 +818,7 @@
     }
     function deleteSupplier(item) {
         var id = getId(item);
-        var r = confirm("是否删除该供应商？");
+        var r = confirm("是否删除该处置单位？");
         if (r == true) {
             $.ajax({
                 type: "POST",                       // 方法类型
@@ -849,7 +847,7 @@
         }
     }
     /**
-     * 提交供应商的信息
+     * 提交处置单位的信息
      */
     function submitSuppliers() {
         var items = $("input[type='checkbox']:checked");
