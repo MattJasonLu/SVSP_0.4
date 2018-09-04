@@ -118,7 +118,7 @@ public class TransferDraftController {
                 // 危废信息
                 Wastes wastes = new Wastes();
                 wastes.setName(transferDraft.getWastes().getName());
-                wastes.setCode(wastes.getCode());
+                wastes.setCode(transferDraft.getWastes().getCode());
                 wastes.setCategory(transferDraft.getWastes().getCategory());
                 inboundPlanOrder.setWastes(wastes);
                 // 业务员信息
