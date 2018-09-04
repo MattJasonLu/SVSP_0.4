@@ -479,9 +479,12 @@ public class WasteInventoryController {
             //紧接着进行更新对领料单进行更新
             outboundOrderService.updateMaterialRequisitionOrderCheck1(outboundOrder);
             materialRequisitionOrderService.addOutboundOrder(outboundOrder);
-            //添加完进行更新操作 根据配料单编号
-            OutboundOrder outboundOrder1=outboundOrderService.getOutBoundByMId(outboundOrder.getMaterialRequisitionOrder().getMaterialRequisitionId());
-            outboundOrderService.updateOutBoundOrder(outboundOrder1);
+            //添加完进行更新操作
+           //找到最近的一个出库单号
+           List<String> outboundOrderId2=outboundOrderService.check();
+           outboundOrderService.updateOutBoundOrder(outboundOrderId2.get(0));
+           // OutboundOrder outboundOrder1=outboundOrderService.getOutBoundByMId(outboundOrder.getMaterialRequisitionOrder().getMaterialRequisitionId());
+           // outboundOrderService.updateOutBoundOrder(outboundOrder1);
             res.put("status", "success");
             res.put("message", "添加成功");
         }

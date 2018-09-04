@@ -99,11 +99,10 @@
     <resultMap id="MaterialRequisitionRM" type="MaterialRequisitionOrder">
         <collection property="wastes" column="id" select="getWastes1" ofType="Wastes"></collection>
         <collection property="wareHouse" column="warseHouseId" select="getWareHouse" ofType="WareHouse"></collection>
-        <collection property="batchingOrder" column="batchingOrderId" select="getBatchingOrder1"></collection>
         <collection property="client" column="clientId" select="getClient1" javaType="Client"></collection>
      </resultMap>
     <!--根据配料单号获取信息-->
-    <select id="getByMaterialRequisitionId" parameterType="String" resultMap="MaterialRequisitionRM">
+    <select id="getByMaterialRequisitionId" parameterType="String" resultMap="MaterialRequisitionOrderRM">
   select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
     </select>
     <select id="getWastes1" resultType="Wastes" parameterType="String">
@@ -117,8 +116,8 @@
     </select>
 <!--添加出库单-->
     <insert id="addOutboundOrder" parameterType="OutboundOrder">
-      insert into t_pl_outboundorder(outboundOrderId,outBoundDate,creator,auditor,materialRequisitionId,nowTime,checkState,boundType)
-      values (#{outboundOrderId},#{outboundDate},#{creator},#{auditor},#{materialRequisitionOrder.materialRequisitionId},NOW(),'OutBounded',#{boundType})
+      insert into t_pl_outboundorder(outboundOrderId,outBoundDate,creator,auditor,materialRequisitionId,nowTime,checkState,boundType,outboundNumber)
+      values (#{outboundOrderId},#{outboundDate},#{creator},#{auditor},#{materialRequisitionOrder.materialRequisitionId},NOW(),'OutBounded',#{boundType},#{outboundNumber})
     </insert>
 <!--获得最新的领料单对象-->
     <select id="getNew" resultType="MaterialRequisitionOrder">

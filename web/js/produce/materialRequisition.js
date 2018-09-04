@@ -151,20 +151,20 @@ function receive() {
             var picker=$(this).parent().parent().next().next().next().next().next().next().next().next().next().next().next().next().next().next().next().html();
            data={
                materialRequisitionId:materialRequisitionId,
-             wastes:{client:{companyName:companyName},
-                     name:name,
-                     wastesId:wastesId,
-                     unit:unit,
-                     remarks:remarks,
-             },
-               batchingOrder:{
-                   batchingNumber:batchingNumber,
-                   deputyGeneral:deputyGeneral,
-                   warehouseManager:warehouseManager,
-                   guardian:guardian,
-                   materialManager:materialManager,
-                   picker:picker
-               },
+             //   wastes:{client:{companyName:companyName},
+             //         name:name,
+             //         wastesId:wastesId,
+             //         unit:unit,
+             //         remarks:remarks,
+             // },
+             //   batchingOrder:{
+             //       batchingNumber:batchingNumber,
+             //       deputyGeneral:deputyGeneral,
+             //       warehouseManager:warehouseManager,
+             //       guardian:guardian,
+             //       materialManager:materialManager,
+             //       picker:picker
+             //   },
                recipientsNumber:recipientsNumber,
            },
             $.ajax({
@@ -244,6 +244,7 @@ function loadRequisitionList() {
                 //contentType: "application/json; charset=utf-8",
                 success:function (result) {
                     if (result != undefined && result.status == "success"){
+                        console.log(result);
                         MaterialRequisitionList.push(result.materialRequisitionOrder);
                     }
                     else {
@@ -292,37 +293,35 @@ function setRequisitionList(result) {
                         break;
                     // 厂家
                     case (2):
-                        if(obj.client!=null){
                             $(this).html(obj.client.companyName);
-                        }
                         break;
                     // 危废名称
                     case (3):
-                        $(this).html(obj.wastes.name);
+                        $(this).html(obj.laboratoryTest.wastesName);
                         break;
                     // 危废代码
                     case (4):
-                        $(this).html(obj.wastes.wastesId);
+                        $(this).html(obj.laboratoryTest.wastesCode);
                         break;
                     // 危废类别
                     case (5):
-                        $(this).html("");
+                        $(this).html(obj.wastesCategory);
                         break;
                     // 单位
                     case (6):
-                        $(this).html(obj.wastes.unit);
+                        $(this).html("");
                         break;
                     // 配料数量
                     case (7):
-                        $(this).html(obj.batchingOrder.batchingNumber);
+                        $(this).html(obj.recipientsNumber);
                         break;
                     //领用数量
                     case (8):
-                        $(this).html(obj.batchingOrder.batchingNumber);
+                        $(this).html(obj.brecipientsNumber);
                         break;
                     //附注
                     case (9):
-                        $(this).html(obj.wastes.remarks);
+                        $(this).html("");
                         break;
                         //主管副总经理
                     case (10):
