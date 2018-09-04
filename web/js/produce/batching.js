@@ -461,22 +461,11 @@ function setBatchingOrderList(result) {
                             break;
                         // 危废名称
                         case (3):
-                            if(obj.wasteInventory.wastes!=null){
-                                $(this).html(obj.wasteInventory.wastes.name);
-                            }
-                            else {
-                                $(this).html("");
-                            }
+                          $(this).html(obj.laboratoryTest.wastesName);
                             break;
                         // 处理类别
                         case (4):
-                            if(obj.wasteInventory.wastes.processWay!=null){
-                                $(this).html(obj.wasteInventory.wastes.processWay.name);
-                            }
-                            else {
-                                $(this).html("");
-                            }
-
+                            $(this).html(obj.processWay.name);
                             break;
                         // 数量
                         case (5):
@@ -484,21 +473,11 @@ function setBatchingOrderList(result) {
                             break;
                         // 计量单位
                         case (6):
-                            if(obj.wasteInventory.wastes!=null){
-                                $(this).html(obj.wasteInventory.wastes.unit);
-                            }
-                            else {
-                                $(this).html("");
-                            }
+                            $(this).html("");
                             break;
                         // 产废单位
                         case (7):
-                            if(obj.wasteInventory.wastes.client!=null){
-                                $(this).html(obj.wasteInventory.wastes.client.companyName);
-                            }
-                            else {
-                                $(this).html("");
-                            }
+                                $(this).html(obj.produceCompany.companyName);
                             break;
                         //创建人
                         case (8):
@@ -533,54 +512,55 @@ function setBatchingOrderList(result) {
 }
 //生成领料单
  function generateRequisition(){
-
      var items = $("input[name='select']:checked");//判断复选框是否选中
-     // for (var i=1;i<items.length;i++) {
-     //     //获得配料单号
+     //  for (var i=1;i<items.length;i++) {
+     // //     //获得配料单号
      //     var batchingOrderId=  $(items).parent().parent().next().next().html();
-     //     console.log(batchingOrderId);
-     //     //危废名称
-     //     var name= $(this).parent().parent().next().next().next().html();
-     //     //处理类别
-     //     var handelCatogory=$(this).parent().parent().next().next().next().next().html();
-     //     //数量
+     // //     console.log(batchingOrderId);
+     // //     //危废名称
+     // //     var name= $(this).parent().parent().next().next().next().html();
+     // //     //处理类别
+     // //     var handelCatogory=$(this).parent().parent().next().next().next().next().html();
+     // //     //数量
      //     var batchingNumber=$(this).parent().parent().next().next().next().next().next().html();
-     //     //计量单位
-     //     var unit=$(this).parent().parent().next().next().next().next().next().next().html();
-     //     //产废单位
-     //     var produceCompany=$(this).parent().parent().next().next().next().next().next().next().next().html();
-     //     //创建人
-     //     var creator=$(this).parent().parent().next().next().next().next().next().next().next().next().html();
-     //     data={
-     //         batchingOrder:{batchingOrderId:batchingOrderId,
-     //             creator:creator,
-     //             batchingNumber:batchingNumber,
-     //             wasteInventory:{wastes:{name:name,unit:unit,client:{companyName:produceCompany,}}},},
-     //     },
-     //         //根据id获得库存的信息，进行转移放到配料中
+     // //     //计量单位
+     // //     var unit=$(this).parent().parent().next().next().next().next().next().next().html();
+     // //     //产废单位
+     // //     var produceCompany=$(this).parent().parent().next().next().next().next().next().next().next().html();
+     // //     //创建人
+     //      var creator=$(this).parent().parent().next().next().next().next().next().next().next().next().html();
+     //      data={
+     //          batchingOrder:{batchingOrderId:batchingOrderId,
+     //              creator:creator,
+     //              batchingNumber:batchingNumber,
+     //              //wasteInventory:{wastes:{name:name,unit:unit,client:{companyName:produceCompany,}}},
+     //          },
+     //      },
+     // //         //根据id获得库存的信息，进行转移放到配料中
      //         add(data);
-     // }
+     //  }
      if(items.length>0){
          items.each(function () {
              //获得配料单号
              var batchingOrderId=  $(this).parent().parent().next().next().html();
              //危废名称
-             var namename= $(this).parent().parent().next().next().next().html();
+             //var namename= $(this).parent().parent().next().next().next().html();
              //处理类别
-             var handelCatogory=$(this).parent().parent().next().next().next().next().html();
+             //var handelCatogory=$(this).parent().parent().next().next().next().next().html();
              //数量
              var batchingNumber=$(this).parent().parent().next().next().next().next().next().html();
              //计量单位
              var unit=$(this).parent().parent().next().next().next().next().next().next().html();
              //产废单位
-             var produceCompany=$(this).parent().parent().next().next().next().next().next().next().next().html();
+             //var produceCompany=$(this).parent().parent().next().next().next().next().next().next().next().html();
              //创建人
              var creator=$(this).parent().parent().next().next().next().next().next().next().next().next().html();
              data={
                  batchingOrder:{batchingOrderId:batchingOrderId,
                      creator:creator,
                      batchingNumber:batchingNumber,
-                     wasteInventory:{wastes:{name:name,unit:unit,client:{companyName:produceCompany,}}},},
+                    // wasteInventory:{wastes:{name:name,unit:unit,client:{companyName:produceCompany,}}},
+                 },
 
 
              },
@@ -648,10 +628,7 @@ function loadMaterialRequisitionList(){
             if (result != undefined && result.status == "success"){
                 console.log(result);
                 //设置领料单新增列表
-                //赋值配料单
-                //1重新做一个方法用来生成领料单号
-
-                setMaterialRequisitionList(result.jsonArray);
+               setMaterialRequisitionList(result.jsonArray);
             }
             else {
 
@@ -666,14 +643,13 @@ function loadMaterialRequisitionList(){
 //设置领料单新增列表
 function setMaterialRequisitionList(result) {
     var tr = $("#cloneTr1");
+    tr.siblings().remove();
     tr.attr('class','myclass');
-
     $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
-            if(item.checkState.name=='已领料'){
+            if(item.checkState.name=='已领料'&&item.laboratoryTest!=null){
                 var clonedTr = tr.clone();
                 clonedTr.show();
-
                 // 循环遍历cloneTr的每一个td元素，并赋值
                 clonedTr.children("td").each(function (inner_index) {
                     //1生成领料单号
@@ -682,46 +658,43 @@ function setMaterialRequisitionList(result) {
                     switch (inner_index) {
                         // 领料单号
                         case (0):
-
                             $(this).html(obj.materialRequisitionId);
                             break;
                         // 厂家
                         case (1):
-                            if(obj.batchingOrder.wasteInventory.wastes.client!=null){
-                                $(this).html(obj.batchingOrder.wasteInventory.wastes.client.companyName);
-                            }
+                            $(this).html(obj.client.companyName);
                             break;
                         // 危废名称
                         case (2):
-                            $(this).html(obj.batchingOrder.wasteInventory.wastes.name);
+                            $(this).html(obj.laboratoryTest.wastesName);
                             break;
                         // 危废代码
                         case (3):
-                            $(this).html(obj.batchingOrder.wasteInventory.wastes.wastesId);
+                            $(this).html(obj.laboratoryTest.wastesCode);
                             break;
                         // 危废类别
                         case (4):
-                            $(this).html("");
+                            $(this).html(obj.wasteCategory);
                             break;
                         // 单位
                         case (5):
-                            $(this).html(obj.batchingOrder.wasteInventory.wastes.unit);
+                            $(this).html("");
                             break;
                         // 配料数量
                         case (6):
-                            $(this).html(obj.batchingOrder.batchingNumber);
+                            $(this).html(obj.recipientsNumber);
                             break;
                         //领用数量
                         case (7):
-                            $(this).html(obj.batchingOrder.batchingNumber);
+                            $(this).html(obj.recipientsNumber);
                             break;
                         //附注
                         case (8):
-                            $(this).html(obj.batchingOrder.wasteInventory.wastes.remarks);
+                            $(this).html("");
                             break;
-                        case (9):
-                            $(this).html(obj.batchingOrder.batchingOrderId);
-                            break;
+                        // case (9):
+                        //     $(this).html(obj.batchingOrder.batchingOrderId);
+                        //     break;
                     }
                 });
                 // 把克隆好的tr追加到原来的tr前面

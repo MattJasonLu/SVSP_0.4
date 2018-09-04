@@ -61,9 +61,10 @@
     </update>
     <!--查询配料单信息-->
      <select id="getBatchingOrderList" resultType="BatchingOrder">
-         select * from t_pl_batchingorder order by nowTime desc ;
+         select * from t_pl_batchingorder order by batchingOrderId desc ;
      </select>
-    <!--查找配料信息==>库存信息-->
+    <!--查找配料信
+    息==>库存信息-->
     <resultMap id="WasteInventoryRM3" type="WasteInventory">
         <result property="inboundOrderItemId" column="inboundOrderItemId" javaType="String"></result>
     </resultMap>
@@ -138,7 +139,7 @@
         update  t_pl_batchingorder set  wastesCode=(select wastesCode from t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         produceCompany=(select  clientId from  t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         transferDraftId=(select  transferDraftId from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
-        handelCategory=(select  handelCategory from  t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
+        handelCategory=(select  handleCategory from  t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         processWay=(select processWay from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         wasteCategory=(select  wastesCategory from  t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId)
     </update>
@@ -146,4 +147,18 @@
     <update id="updateWastesCatogory">
         update  t_pl_wasteinventory set wastesCategory=(select wastesCategory from t_pl_inboundplanorder where transferDraftId=t_pl_inboundplanorder.transferDraftId);
     </update>
+    <resultMap id="BH" type="BatchingOrder">
+        <collection property="laboratoryTest"  column="{produceCompany=produceCompany,wastesCode=wastesCode}" select="getItem"></collection>
+        <collection property="produceCompany" column="produceCompany" select="getClient2"></collection>
+    </resultMap>
+    <!--查找配料单的具体信息-->
+    <select id="getBatching" resultMap="BH">
+        select * from t_pl_batchingorder;
+    </select>
+    <select id="getItem" resultType="LaboratoryTest">
+        select * from t_pr_laboratorytest where clientId=#{produceCompany} and  wastesCode=#{wastesCode};
+    </select>
+    <select id="getClient2" resultType="Client">
+        select * from  client where clientId=#{produceCompany};
+    </select>
 </mapper>

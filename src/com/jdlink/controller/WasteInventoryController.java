@@ -4,6 +4,7 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.MaterialRequire;
 import com.jdlink.domain.Quotation;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.*;
@@ -184,14 +185,11 @@ public class WasteInventoryController {
     public String getBatchOrderList(){
         JSONObject res=new JSONObject();
     try {
-        List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatchingOrderList();
-       for(int i=0;i<batchingOrderList.size();i++){
-           wasteInventoryService.updateBatchingOrderOnId(batchingOrderList.get(i));//更新危废主键，总量
-       }
+        List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatching();
         JSONArray array=JSONArray.fromObject(batchingOrderList);
         res.put("status", "success");
         res.put("message", "查询成功");
-        res.put("batchingOrderList",batchingOrderList);
+        res.put("batchingOrderList",array);
     }
    catch (Exception e){
        e.printStackTrace();
@@ -234,7 +232,13 @@ public class WasteInventoryController {
         }
 
         try{
+            //1添加
             materialRequisitionOrderService.addMaterialRequisitionOrder(materialRequisitionOrder);
+           List<MaterialRequisitionOrder> materialRequireList=materialRequisitionOrderService.getNew();
+            //更新配料单状态！
+            materialRequisitionOrderService.updateBatchingOrderCheck(materialRequisitionOrder);
+            //更新领料单状态
+            materialRequisitionOrderService.updateMaterialRequisitionOrder(materialRequireList.get(0));
             res.put("status", "success");
             res.put("message", "添加成功");
             }
@@ -267,12 +271,12 @@ public class WasteInventoryController {
            String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
            //序列号
            String number = "00001";
-           for (int i=0;i<list.size();i++){
-               materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键和仓库编码和库户编号
-               materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
+          // for (int i=0;i<list.size();i++){
+               //materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键和仓库编码和库户编号
+               //materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
                //更新仓库编号
                //materialRequisitionOrderService.updateMaterialRequisitionOrderCheck(list.get(i));//更新领料单的状态
-           }
+           //}
            List<MaterialRequisitionOrder> materialRequisitionOrderList1= materialRequisitionOrderService.list();
            List<MaterialRequisitionOrder> list2=new ArrayList<>();
            for (int i=0;i<materialRequisitionOrderList1.size();i++){
@@ -281,7 +285,7 @@ public class WasteInventoryController {
                }
            }
           JSONArray jsonArray=JSONArray.fromObject(list2);
-          res.put("jsonArray",jsonArray);
+          res.put("jsonArray",materialRequisitionOrderList);
            res.put("status", "success");
            res.put("message", "查询成功");
 
@@ -375,7 +379,7 @@ public class WasteInventoryController {
     public String updateMaterialRequisitionOrder(@RequestBody MaterialRequisitionOrder materialRequisitionOrder ){
         JSONObject res=new JSONObject();
         try{
-          materialRequisitionOrderService.updateMaterialRequisitionOrder(materialRequisitionOrder);
+          materialRequisitionOrderService.updateMaterialRequisitionOrder1(materialRequisitionOrder);
             res.put("status", "success");
             res.put("message", "更新成功");
         }

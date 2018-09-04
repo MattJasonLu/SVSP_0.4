@@ -2,6 +2,9 @@ package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.Salesman;
 import com.jdlink.domain.Wastes;
 
@@ -35,7 +38,7 @@ import java.util.List;
     /*修改人*/
     private String modifierId;
     /*业务员 来自产废单位的业务员*/
-    private Salesman salesman;
+//    private Salesman salesman;
     private Wastes wastes;
     private String inboundOrderItemId;
 
@@ -47,6 +50,14 @@ import java.util.List;
         this.inboundOrderItemId = inboundOrderItemId;
     }
 
+    public HandleCategory getHandelCategory() {
+        return handelCategory;
+    }
+
+    public void setHandelCategory(HandleCategory handelCategory) {
+        this.handelCategory = handelCategory;
+    }
+
     public Wastes getWastes() {
         return wastes;
     }
@@ -55,24 +66,23 @@ import java.util.List;
         this.wastes = wastes;
     }
 
-    public Salesman getSalesman() {
-        return salesman;
-    }
-
-    public void setSalesman(Salesman salesman) {
-        this.salesman = salesman;
-    }
+//    public Salesman getSalesman() {
+//        return salesman;
+//    }
+//
+//    public void setSalesman(Salesman salesman) {
+//        this.salesman = salesman;
+//    }
 
     /*领料状态*/
     private CheckState checkState;
     /*记录状态*/
     private  RecordState recordState;
     /*危废库存*/
-    private WasteInventory wasteInventory;
+//    private WasteInventory wasteInventory;
     /*入库单对象*/
     private InboundOrder inboundOrder;
-    /*配料数量*/
-    private float batchingNumber;
+
     public InboundOrder getInboundOrder() {
         return inboundOrder;
     }
@@ -80,6 +90,39 @@ import java.util.List;
     public void setInboundOrder(InboundOrder inboundOrder) {
         this.inboundOrder = inboundOrder;
     }
+
+    /*配料数量*/
+    private HandleCategory handelCategory;
+    private ProcessWay processWay;
+    private float batchingNumber;
+    private LaboratoryTest laboratoryTest;
+
+
+
+
+    public ProcessWay getProcessWay() {
+        return processWay;
+    }
+
+    public void setProcessWay(ProcessWay processWay) {
+        this.processWay = processWay;
+    }
+
+    public LaboratoryTest getLaboratoryTest() {
+        return laboratoryTest;
+    }
+
+    public void setLaboratoryTest(LaboratoryTest laboratoryTest) {
+        this.laboratoryTest = laboratoryTest;
+    }
+
+//    public InboundOrder getInboundOrder() {
+//        return inboundOrder;
+//    }
+//
+//    public void setInboundOrder(InboundOrder inboundOrder) {
+//        this.inboundOrder = inboundOrder;
+//    }
 
     public float getBatchingNumber() {
         return batchingNumber;
@@ -89,18 +132,18 @@ import java.util.List;
         this.batchingNumber = batchingNumber;
     }
 
-    public WasteInventory getWasteInventory() {
-        return wasteInventory;
-    }
-
-    public void setWasteInventory(WasteInventory wasteInventory) {
-        this.wasteInventory = wasteInventory;
-    }
+//    public WasteInventory getWasteInventory() {
+//        return wasteInventory;
+//    }
+//
+//    public void setWasteInventory(WasteInventory wasteInventory) {
+//        this.wasteInventory = wasteInventory;
+//    }
 
     /*领料单对象
     * 1:N
     * */
-    private List<MaterialRequisitionOrder> materialRequisitionOrderList;
+//    private List<MaterialRequisitionOrder> materialRequisitionOrderList;
     public Client getProduceCompany() {
         return produceCompany;
     }
@@ -216,13 +259,13 @@ import java.util.List;
 
 
 
-    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
-        return materialRequisitionOrderList;
-    }
-
-    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
-        this.materialRequisitionOrderList = materialRequisitionOrderList;
-    }
+//    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
+//        return materialRequisitionOrderList;
+//    }
+//
+//    public void setMaterialRequisitionOrderList(List<MaterialRequisitionOrder> materialRequisitionOrderList) {
+//        this.materialRequisitionOrderList = materialRequisitionOrderList;
+//    }
 
     @Override
     public String toString() {
@@ -241,10 +284,7 @@ import java.util.List;
                 ", modifierId='" + modifierId + '\'' +
                 ", checkState=" + checkState +
                 ", recordState=" + recordState +
-                ", wasteInventory=" + wasteInventory +
-                ", inboundOrder=" + inboundOrder +
                 ", batchingNumber=" + batchingNumber +
-                ", materialRequisitionOrderList=" + materialRequisitionOrderList +
                 '}';
     }
 }

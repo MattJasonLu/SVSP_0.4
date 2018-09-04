@@ -76,5 +76,15 @@ public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionO
 
     }
 
+    @Override
+    public List<MaterialRequisitionOrder> getNew() {
+        return materialRequisitionOrderMapper.getNew();
+    }
+
+    @Override
+    public void updateMaterialRequisitionOrder1(MaterialRequisitionOrder materialRequisitionOrder) {
+        materialRequisitionOrderMapper.updateMaterialRequisitionOrder1(materialRequisitionOrder);
+    }
+
 
 }

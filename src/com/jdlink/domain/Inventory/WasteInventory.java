@@ -84,6 +84,18 @@ public class WasteInventory {
     private String   wastesCategory;
     private HandleCategory handleCategory;
     private String inboundOrderItemId;
+    /**
+     * 类别（危废、次生）
+     */
+    private int category;
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
 
     public String getInboundOrderItemId() {
         return inboundOrderItemId;
