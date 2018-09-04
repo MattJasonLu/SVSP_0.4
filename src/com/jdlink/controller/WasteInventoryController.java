@@ -4,6 +4,7 @@ import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Quotation;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.*;
 import net.sf.json.JSONArray;
@@ -34,6 +35,8 @@ public class WasteInventoryController {
     MaterialRequisitionOrderService materialRequisitionOrderService;
     @Autowired
     OutboundOrderService outboundOrderService;
+    @Autowired
+    QuotationService quotationService;
    //获得库存信息（无参数）
     @RequestMapping("getWasteInventoryList")
     @ResponseBody
@@ -41,8 +44,10 @@ public class WasteInventoryController {
         JSONObject res=new JSONObject();
         try{
             wasteInventoryService.updateLeftNumber();
+
             List<WasteInventory> wasteInventoryList= wasteInventoryService.list();
             JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
+           // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
             //更新剩余库存量
             res.put("status", "success");
             res.put("message", "查询成功");

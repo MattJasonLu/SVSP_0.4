@@ -14,7 +14,6 @@
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
     <script src="js/produce/wastesQuery.js"></script>
-
 </head>
 <body onload="loadWasteInventoryList()" class="" >
     <!--导航条-->
@@ -214,40 +213,32 @@
                         <th class="text-center">进料方式</th>
                         <th class="text-center">危废名称</th>
                         <th class="text-center">危废类型</th>
-                        <th class="text-center">计量单位</th>
                         <th class="text-center">数量</th>
                         <th class="text-center">单价</th>
-                        <th class="text-center">币种</th>
-                        <th class="text-center">金额</th>
-                        <th class="text-center">部门</th>
-                        <th class="text-center">创建人</th>
+                        <th class="text-center">总价</th>
                         <th class="text-center">创建时间</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr id="cloneTr" class="myclass">
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center">Q10000001</td>
-                        <td class="text-center">W10000001</td>
-                        <td class="text-center">2018-08-02</td>
-                        <td class="text-center">QW001</td>
-                        <td class="text-center">危废入库</td>
-                        <td class="text-center">安耐得环保常州分公司</td>
-                        <td class="text-center">废铁</td>
-                        <td class="text-center">AS10001</td>
-                        <td class="text-center">张三</td>
-                        <td class="text-center">张三</td>
-                        <td class="text-center">李四</td>
-                        <td class="text-center">8000</td>
-                        <td class="text-center">345</td>
-                        <td class="text-center">待审批</td>
-                        <td></td>
-                        <td>101</td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
                             <a href="#" onclick="view();" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="cancel();" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
