@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
 import java.util.Arrays;
@@ -56,6 +57,10 @@ public class IngredientsIn {
      */
     private String handlers;
     /**
+     * 入库单状态
+     */
+    private CheckState state;
+    /**
      * 分页
      */
     private Page page;
@@ -102,6 +107,14 @@ public class IngredientsIn {
 
     public float getTotalPrice() {
         return totalPrice;
+    }
+
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
     }
 
     public void setTotalPrice(float totalPrice) {

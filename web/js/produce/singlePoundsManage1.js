@@ -648,6 +648,7 @@ function loadPoundsItems() {
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
+                console.log(result.data);
                 var data = eval(result.data);
                 $("#modal1_outTime").text(getTimeStr(data.outTime));
                 $("#modal1_enterLicencePlate").text(data.enterLicencePlate);
@@ -663,6 +664,7 @@ function loadPoundsItems() {
                 $("#modal1_weighman").text(data.weighman);
                 $("#modal1_driver").text(data.driver);
                 $("#modal1_remarks").text(data.remarks);
+                $("#modal1_wastesCode").text(data.wastesCode);
               //  $("#modal1_printTime").text(getTimeStr(data.printTime));
             } else {
                 console.log(result.message);
@@ -698,7 +700,7 @@ function showPrintModal() {
         }
     });
     //获取模态框数据
-    console.log(localStorage.id);
+   // console.log(localStorage.id);
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getPounds",          // url
@@ -726,6 +728,7 @@ function showPrintModal() {
                 $("#modal2_driver").text(data1.driver);
                 $("#modal2_remarks").text(data1.remarks);
                 $("#modal2_printTime").text(getTimeStr(data1.printTime));
+                $("#modal2_wastesCode").text(getTimeStr(data1.wastesCode));
             } else {
                 console.log(result.message);
             }

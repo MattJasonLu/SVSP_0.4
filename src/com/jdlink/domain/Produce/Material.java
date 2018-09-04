@@ -56,6 +56,10 @@ public class Material {
      * 入库仓库名
      */
     private String wareHouseName;
+    /**
+     * 入库状态
+     */
+    private IngredientState ingredientState;
 
 
     public String getReceiptNumber() {
@@ -153,6 +157,14 @@ public class Material {
 
     public void setWareHouseName(String wareHouseName) {
         this.wareHouseName = wareHouseName;
+    }
+
+    public IngredientState getIngredientState() {
+        return ingredientState;
+    }
+
+    public void setIngredientState(IngredientState ingredientState) {
+        this.ingredientState = ingredientState;
     }
 
     @Override

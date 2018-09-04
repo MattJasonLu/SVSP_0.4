@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
 import java.util.Arrays;
@@ -52,6 +53,10 @@ public class IngredientsOut {
      */
     private String handlers;
     /**
+     * 出库单状态
+     */
+    private CheckState state;
+    /**
      * 分页
      */
     private Page page;
@@ -86,6 +91,14 @@ public class IngredientsOut {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
     }
 
     public String getFileId() {

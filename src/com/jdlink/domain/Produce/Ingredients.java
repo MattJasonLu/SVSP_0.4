@@ -56,7 +56,10 @@ public class Ingredients {
      * 未领料数量（未出库、剩余数量）
      */
     private float notReceiveAmount;
-
+    /**
+     * 辅料/备件状态
+     */
+    private IngredientState ingredientState;
 
     public int getItemid() {
         return Itemid;
@@ -160,6 +163,14 @@ public class Ingredients {
 
     public void setNotReceiveAmount(float notReceiveAmount) {
         this.notReceiveAmount = notReceiveAmount;
+    }
+
+    public IngredientState getIngredientState() {
+        return ingredientState;
+    }
+
+    public void setIngredientState(IngredientState ingredientState) {
+        this.ingredientState = ingredientState;
     }
 
     @Override

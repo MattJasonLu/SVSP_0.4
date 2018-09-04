@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 
 import java.util.Date;
@@ -50,6 +51,10 @@ public class IngredientsReceive {
      * 经手人
      */
     private String handlers;
+    /**
+     * 入库单状态
+     */
+    private CheckState state;
     /**
      * 分页
      */
@@ -129,6 +134,14 @@ public class IngredientsReceive {
 
     public String getKeeper() {
         return keeper;
+    }
+
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
     }
 
     public void setKeeper(String keeper) {
