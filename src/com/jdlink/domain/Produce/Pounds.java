@@ -37,6 +37,10 @@ public class Pounds {
      */
     private String goodsName;
     /**
+     * 危废代码
+     */
+    private String wastesCode;
+    /**
      * 毛重/总重
      */
     private Float grossWeight;
@@ -143,6 +147,14 @@ public class Pounds {
 
     public Float getNetWeight() {
         return netWeight;
+    }
+
+    public String getWastesCode() {
+        return wastesCode;
+    }
+
+    public void setWastesCode(String wastesCode) {
+        this.wastesCode = wastesCode;
     }
 
     public void setNetWeight(Float netWeight) {

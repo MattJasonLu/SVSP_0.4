@@ -1,10 +1,11 @@
 package com.jdlink.domain.Inventory;
+
 /*仓库*/
 public class WareHouse {
     /*仓库代码*/
-  private String wareHouseId;
-  /*仓库名称*/
-  private String wareHouseName;
+    private String wareHouseId;
+    /*仓库名称*/
+    private String wareHouseName;
 
     public String getWareHouseId() {
         return wareHouseId;

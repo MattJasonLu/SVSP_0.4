@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>危废查询</title>
+    <title>产废服务平台</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -13,9 +13,8 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
-    <script src="js/produce/wastesQuery.js"></script>
 </head>
-<body onload="loadWasteInventoryList()" class="" >
+<body onload="loadPageList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -33,25 +32,36 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="storageManagement.html">首页</a></li>
+                    <li><a href="receiveManagement.html">首页</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">出库管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">转移管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="ingredientsList.html">每日配料单</a></li>
+                            <li><a href="transportPlan.html">运输计划单</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="materialRequisition.html">领料单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="warehouseManageOut.html">危废出库</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="secondaryOutbound.html">次生出库</a></li>
+                            <li><a href="transferDraft.html">转移联单</a></li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">化验管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="sampleInfoRegiter.html">送样登记</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="testResults.html">化验结果</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">库存管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="wastesQuery.html">危废查询</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">入库管理</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="warehouseManage.html">危废入库</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">次生入库</a></li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">医废出入库登记</a></li>
+                            <li><a href="singlePoundsManage1.html">磅单管理</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -102,28 +112,26 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="row">
                 <ol class="breadcrumb">
-                    <li><a href="storageManagement.html">贮存管理</a></li>
-                    <li><a href="#">库存管理</a></li>
-                    <li class="active"><a href="#">危废查询</a></li>
+                    <li><a href="businessModel.html">接收管理</a></li>
+                    <li><a href="#">入库管理</a></li>
+                    <li class="active"><a href="#">次生入库</a></li>
                 </ol>
             </div>
-            <h4 class="sub-header">危废查询</h4>
+            <h4 class="sub-header">次生入库列表</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newWastesQuery.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="newSecondWarehouse.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>
+                        <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                     </div>
                     <div class="input-group col-md-3"></div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                    <div class="input-group col-md-3 pull-right" style="margin-right: -300px;">
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick=""><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级搜索</a>
                         </span>
                     </div>
                 </div>
@@ -134,15 +142,15 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-warehouseName" class="col-sm-4 control-label">仓库名称</label>
+                                <label for="search-warehouseId" class="col-sm-4 control-label">仓库号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-warehouseName" name="search-warehouseName" placeholder="">
+                                    <input type="text" class="form-control" id="search-warehouseId" name="search-warehouseId" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-storageType" class="col-sm-4 control-label">入库类别</label>
+                                <label for="search-storageDate" class="col-sm-4 control-label">入库日期</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-storageType" name="search-storageType" placeholder="">
+                                    <input type="text" class="form-control" id="search-storageDate" name="search-storageDate" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -154,25 +162,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-wastesName" id="search-wastesName">
-                                        <option value="0"></option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
                                 <label for="search-wastesId" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-wastesId" name="search-wastesId" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-wastesType" class="col-sm-4 control-label">危废类别</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-wastesType" id="search-wastesType">
+                                    <select class="form-control" name="search-wastesId" id="search-wastesId">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -180,17 +172,30 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-numberRange" class="col-sm-4 control-label">数量范围</label>
+                                <label for="search-storageQuantity" class="col-sm-4 control-label">入库数量</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-numberRange" name="search-numberRange" placeholder="">
+                                    <input type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-packingDate1" class="col-sm-4 control-label">入库日期范围</label>
+                                <label for="search-materialForm" class="col-sm-4 control-label">物质形态</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-packingDate1" name="search-packingType" style="width: 100px;">
-                                    <input type="text" class="form-control" id="search-packingDate2" name="search-packingType" style="width: 100px;">
+                                    <select class="form-control" name="search-materialForm" id="search-materialForm">
+                                        <option value="0"></option>
+                                    </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-packingType" class="col-sm-4 control-label">包装类型</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-packingType" name="search-packingType" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="button" onclick="reset();" value="重置" title="">
+                                <input type="button" value="搜索" title="">
                             </div>
                         </div>
                     </div>
@@ -207,44 +212,54 @@
                         </th>
                         <th class="text-center">入库单号</th>
                         <th class="text-center">入库日期</th>
-                        <th class="text-center">产废单位</th>
-                        <th class="text-center">仓库名称</th>
+                        <th class="text-center">仓库</th>
+                        <!--<th class="text-center">部门</th>-->
+                        <!--<th class="text-center">业务员</th>-->
                         <th class="text-center">入库类别</th>
-                        <th class="text-center">进料方式</th>
-                        <th class="text-center">危废名称</th>
-                        <th class="text-center">危废类型</th>
-                        <th class="text-center">数量</th>
-                        <th class="text-center">单价</th>
-                        <th class="text-center">总价</th>
-                        <th class="text-center">创建时间</th>
+                        <!--<th class="text-center">进料方式</th>-->
+                        <!--<th class="text-center">计划数量</th>-->
+                        <!--<th class="text-center">危废数量</th>-->
+                        <th class="text-center">单据状态</th>
+                        <th class="text-center">制单人</th>
+                        <th class="text-center">保管员</th>
+                        <th class="text-center">主管</th>
+                        <th class="text-center">审批人</th>
+                        <th class="text-center">审批状态</th>
+                        <th class="text-center">备注</th>
+                        <!--<th class="text-center">转移联单号</th>-->
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr id="cloneTr" class="myclass">
+                    <tr id="cloneTr">
                         <td class="text-center">
                             <label>
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
+                        <td class="text-center" name="inboundOrderId">入库单号</td>
+                        <td class="text-center" name="inboundDate">入库日期</td>
+                        <td class="text-center" name="wareHouseName">仓库</td>
+                        <!--<td class="text-center">部门</td>-->
+                        <!--<td class="text-center">业务员</td>-->
+                        <td class="text-center" name="boundType">入库类别</td>
+                        <!--<td class="text-center">进料方式</td>-->
+                        <!--<td class="text-center">计划数量</td>-->
+                        <!--<td class="text-center">危废数量</td>-->
+                        <td class="text-center" name="checkState">单据状态</td>
+                        <td class="text-center" name="creatorId">制单人</td>
+                        <td class="text-center" name="keeperId">保管员</td>
+                        <td class="text-center" name="directorId">主管</td>
+                        <td class="text-center" name="approverId">审批人</td>
+                        <td class="text-center" name="checkState">审批状态</td>
+                        <td class="text-center" name="remarks">备注</td>
+                        <!--<td class="text-center">转移联单号</td>-->
                         <td class="text-center">
-                            <a href="#" onclick="view();" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                            <a href="#" onclick="cancel();" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                            <a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
-                            <a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
-                            <a href="#" onclick="changeAttribute();" title="属性调整"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>
+                            <a href="#" onclick="viewData($(this));" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                            <a href="#" onclick="setInvalid($(this));" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                            <!--<a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
+                            <!--<a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
+                            <!--<a href="#" onclick="changeAttribute();" title="属性调整"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></a>-->
                         </td>
                     </tr>
                     </tbody>
@@ -287,76 +302,80 @@
                     </li>
                 </ol>
             </nav>
-            <!--查看模态框-->
-            <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog modal-lg" role="document" id="print1">
-                    <div class="modal-content" >
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="TitleMyModalLabel">入库计划单</h4>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table table-bordered">
-                                <tbody>
-                                <tr>
-                                    <td class="text-center">产废单位</td>
-                                    <td class="text-center">入场时间</td>
-                                    <td class="text-center">废物名称</td>
-                                    <td class="text-center">废物代码</td>
-                                    <td class="text-center">重量/t</td>
-                                    <td class="text-center">物质形态</td>
-                                    <td class="text-center">包装形式</td>
-                                    <td class="text-center">热值/KCal/Kg</td>
-                                    <td class="text-center">PH</td>
-                                    <td class="text-center">灰分/%</td>
-                                    <td class="text-center">水分/%</td>
-                                    <td class="text-center">氯含量/%</td>
-                                    <td class="text-center">硫含量/%</td>
-                                    <td class="text-center">磷含量/%</td>
-                                    <td class="text-center">氟含量/%</td>
-                                    <td class="text-center">处理方式</td>
-                                    <td class="text-center">进料方式</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center modal-companyName">1</td>
-                                    <td class="text-center modal-einlass">2018-08-07</td>
-                                    <td class="text-center model-wastesName">废液</td>
-                                    <td class="text-center model-wastesCode">QW10001</td>
-                                    <td class="text-center modal-weight">5</td>
-                                    <td class="text-center modal-materialForm">液态</td>
-                                    <td class="text-center modal-packingType">标准装</td>
-                                    <td class="text-center modal-KCal">20</td>
-                                    <td class="text-center modal-PH">10</td>
-                                    <td class="text-center modal-ashContent">20</td>
-                                    <td class="text-center modal-waterContent">10</td>
-                                    <td class="text-center modal-CLContent">20</td>
-                                    <td class="text-center modal-SContent">10</td>
-                                    <td class="text-center modal-PContent">10</td>
-                                    <td class="text-center modal-FContent">10</td>
-                                    <td class="text-center modal-processingMethod">焚烧</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <!--属性调整模态框-->
-            <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal fade bs-example-modal-lg" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">属性调整</div>
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label for="modal-type" class="col-sm-4 control-label">进料方式</label>
+                                    <label for="modal-handleCategory" class="col-sm-4 control-label">进料方式</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control" id="modal-type" name="modal-type" placeholder="">
+                                        <select id="modal-handleCategory"></select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" onclick="comfirm();">确认</button>
+                            <button type="button" class="btn btn-primary" id="saveBtn" data-dismiss="modal">确认</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--入库单明细查看模态框-->
+            <div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">入库单明细</div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">序号</th>
+                                    <!--<th class="text-center">入库计划号</th>-->
+                                    <th class="text-center">转移联单号</th>
+                                    <th class="text-center">产废单位</th>
+                                    <th class="text-center">危废名称</th>
+                                    <th class="text-center">危废代码</th>
+                                    <th class="text-center">危废数量</th>
+                                    <th class="text-center">单价</th>
+                                    <th class="text-center">金额</th>
+                                    <th class="text-center">处理方式</th>
+                                    <th class="text-center">进料方式</th>
+                                    <th class="text-center">备注</th>
+                                    <th class="text-center">库区</th>
+                                    <th class="text-center hidden">编号</th>
+                                    <th class="text-center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="itemData">
+                                <tr id="itemClonedTr" style="display: none;">
+                                    <td class="text-center" name="index">1</td>
+                                    <!--<td class="text-center" name="inboundPlanOrderId">inboundOrderId</td>-->
+                                    <td class="text-center" name="transferDraftId">inboundOrderId</td>
+                                    <td class="text-left" name="produceCompanyName">produceCompanyName</td>
+                                    <td class="text-left" name="wastesName">废液</td>
+                                    <td class="text-center" name="wastesCode">QW10001</td>
+                                    <td class="text-right" name="wastesAmount">5</td>
+                                    <td class="text-right" name="unitPriceTax"></td>
+                                    <td class="text-right" name="totalPrice"></td>
+                                    <td class="text-right" name="processWay"></td>
+                                    <td class="text-right" name="handleCategory"></td>
+                                    <td class="text-right" name="remarks"></td>
+                                    <td class="text-right" name="warehouseArea"></td>
+                                    <td class="text-right hidden" name="inboundOrderItemId"></td>
+                                    <td class="text-right">
+                                        <a href="#" onclick="changeAttribute($(this));" title="属性调整"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </div>

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductionDailyImpl implements ProductionDailyService {
+public class ProductionDailyServiceImpl implements ProductionDailyService {
     @Autowired
     ProductionDailyMapper productionDailyMapper;
 

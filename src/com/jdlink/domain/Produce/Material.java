@@ -1,5 +1,9 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.Inventory.WareHouse;
+
+import java.util.List;
+
 /**
  * 物资需求清单
  */
@@ -8,12 +12,10 @@ public class Material {
      * 物资主键
      */
     private int id;
-
     /**
      * 物资名称(应急同)
      */
     private String suppliesName;
-
      /**
      * 规格型号(应急同)
      */
@@ -30,7 +32,6 @@ public class Material {
      * 备注
      */
     private String note;
-
     /**
      * 采购数量
      */
@@ -39,12 +40,27 @@ public class Material {
      * 需求数量
      */
     private float demandQuantity;
-
     /**
-     *
      * 采购主键
      */
     private String receiptNumber;
+    /**
+     * 未入库的数量
+     */
+    private float outWareHouseAmount;
+    /**
+     * 已入库的数量和存储的仓库(一个辅料对应若干个仓库)
+     */
+    private float inWareHouseAmount;
+    /**
+     * 入库仓库名
+     */
+    private String wareHouseName;
+    /**
+     * 入库状态
+     */
+    private IngredientState ingredientState;
+
 
     public String getReceiptNumber() {
         return receiptNumber;
@@ -117,6 +133,38 @@ public class Material {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public float getOutWareHouseAmount() {
+        return outWareHouseAmount;
+    }
+
+    public void setOutWareHouseAmount(float outWareHouseAmount) {
+        this.outWareHouseAmount = outWareHouseAmount;
+    }
+
+    public float getInWareHouseAmount() {
+        return inWareHouseAmount;
+    }
+
+    public void setInWareHouseAmount(float inWareHouseAmount) {
+        this.inWareHouseAmount = inWareHouseAmount;
+    }
+
+    public String getWareHouseName() {
+        return wareHouseName;
+    }
+
+    public void setWareHouseName(String wareHouseName) {
+        this.wareHouseName = wareHouseName;
+    }
+
+    public IngredientState getIngredientState() {
+        return ingredientState;
+    }
+
+    public void setIngredientState(IngredientState ingredientState) {
+        this.ingredientState = ingredientState;
     }
 
     @Override
