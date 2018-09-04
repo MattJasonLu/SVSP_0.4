@@ -37,6 +37,15 @@ import java.util.List;
     /*业务员 来自产废单位的业务员*/
     private Salesman salesman;
     private Wastes wastes;
+    private String inboundOrderItemId;
+
+    public String getInboundOrderItemId() {
+        return inboundOrderItemId;
+    }
+
+    public void setInboundOrderItemId(String inboundOrderItemId) {
+        this.inboundOrderItemId = inboundOrderItemId;
+    }
 
     public Wastes getWastes() {
         return wastes;

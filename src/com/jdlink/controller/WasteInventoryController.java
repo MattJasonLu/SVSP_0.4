@@ -65,10 +65,10 @@ public class WasteInventoryController {
    //获得库存信息(根据入库单号)
     @RequestMapping("getWasteInventoryByInboundOrderId")
     @ResponseBody
-    public String getWasteInventoryByInboundOrderId(String inboundOrderId){
+    public String getWasteInventoryByInboundOrderId(String inboundOrderItemId){
     JSONObject res=new JSONObject();
      try {
-         List<WasteInventory> wasteInventoryList= wasteInventoryService.getWasteInventoryByInboundOrderId(inboundOrderId);
+         List<WasteInventory> wasteInventoryList= wasteInventoryService.getWasteInventoryByInboundOrderId(inboundOrderItemId);
          JSONArray array=JSONArray.fromObject(wasteInventoryList);
          res.put("data", array);
          //res.put("batchingOrderId",batchingOrderId);
@@ -157,9 +157,12 @@ public class WasteInventoryController {
         String batchingOrderId = year + mouth + number;
         batchingOrder.setBatchingOrderId(batchingOrderId);
         wasteInventoryService.addBatchingOrder(batchingOrder);
-        //添加完更新数量更新的是库存表的数据 所有的数据
+        //添加完更新当前的配料对象
+        List<BatchingOrder> batchingOrderList=  wasteInventoryService.getBatchingOrderList();
+        wasteInventoryService.updateBatching(batchingOrderList.get(0));
         List<WasteInventory> wasteInventoryList= wasteInventoryService.list();
         for (int i=0;i<wasteInventoryList.size();i++){
+            //更新库存的数量
             wasteInventoryService.batchingNumber(wasteInventoryList.get(i));
         }
 
@@ -560,7 +563,7 @@ catch (Exception e){
     //根据入库单号获得总量，然后根据配料量减去得到剩余量
     @RequestMapping("getWasteInventoryLeftNumber")
     @ResponseBody
-    public String getWasteInventoryLeftNumber(String inboundOrderId,String number){
+    public String getWasteInventoryLeftNumber(String inboundOrderItemId,String number){
         JSONObject res=new JSONObject();
         //1先更新 在获取
         try {
@@ -568,8 +571,8 @@ catch (Exception e){
                 number="0";
             }
             float number1=Float.parseFloat(number);
-            wasteInventoryService.getWasteInventoryLeftNumber(inboundOrderId, number1);
-            float leftNumber = wasteInventoryService.getLeftNumber(inboundOrderId);
+            wasteInventoryService.getWasteInventoryLeftNumber(inboundOrderItemId, number1);
+            float leftNumber = wasteInventoryService.getLeftNumber(inboundOrderItemId);
             res.put("leftNumber", leftNumber);
             res.put("status", "success");
             res.put("message", "获取成功");

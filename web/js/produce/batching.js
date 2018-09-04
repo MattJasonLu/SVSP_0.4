@@ -61,32 +61,27 @@ function setWasteInventoryList(result) {
                             break;
                         // 仓库号
                         case (2):
-                            if (obj.wareHouse == null) {
                                 $(this).html("");
-                            }
-                            else {
-                                $(this).html(obj.wareHouse.wareHouseId);
-                            }
                             break;
                         //产废单位
                         case (3):
-                            $(this).html(obj.wastes.client.companyName);
+                            $(this).html(obj.produceCompany.companyName);
                             break;
                         // 危废名称
                         case (4):
-                            $(this).html(obj.wastes.name);
+                            $(this).html(obj.laboratoryTest.wastesName);
                             break;
                         // 危废代码
                         case (5):
-                            $(this).html(obj.wastes.wastesId);
+                            $(this).html(obj.laboratoryTest.wastesCode);
                             break;
                         // 产废类别
                         case (6):
-                            $(this).html("");
+                            $(this).html(obj.wastesCategory);
                             break;
                         // 进料方式
                         case (7):
-                            $(this).html(obj.wastes.handleCategory.name);
+                            $(this).html(obj.handleCategory.name);
                             break;
                         //数量
                         case (8):
@@ -97,9 +92,11 @@ function setWasteInventoryList(result) {
                             $(this).html(obj.leftNumeber);
                             break;
                         case (10):
-                            $(this).html(obj.wastes.remarks);
+                            $(this).html(obj.remarks);
                             break;
-
+                        case (11):
+                            $(this).html(obj.inboundOrderItemId);
+                            break;
                     }
                 });
                 // 把克隆好的tr追加到原来的tr前面
@@ -114,9 +111,9 @@ function setWasteInventoryList(result) {
     //遍历赋值
     $(".myclass").each(function(){
         //1获得入库单号
-        var inboundOrderId=this.firstElementChild.nextElementSibling.innerHTML;
+        var inboundOrderItemId=$(this).children('td').last().text();
         //console.log(inboundOrderId);
-       $("#residualQuantity").attr("name",inboundOrderId);
+       $("#residualQuantity").attr("name",inboundOrderItemId);
         $("#residualQuantity").removeAttr('id');
     });
 
@@ -127,21 +124,19 @@ function batching() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
     items.each(function () {
         //获得库存Id
-      var inboundOrderId=  $(this).parent().parent().next().html();
-      //根据id获得库存的信息，进行转移放到配料中
+      var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
+      //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getWasteInventoryByInboundOrderId",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data:{'inboundOrderId':inboundOrderId},
+            data:{'inboundOrderItemId':inboundOrderItemId},
             success:function (result) {
                 if(result != undefined && result.status == "success"){
                    console.log(result);
                     //设置配料列表
                     setBatchingWList(result.data);
-                    //赋值配料单号这里为自动生成
-                    $("#batchingOrderId").val(result.batchingOrderId);
                 }
                 else {
                     console.log(result.message);
@@ -177,41 +172,37 @@ function setBatchingWList(result) {
                     break;
                 // 仓库号
                 case (1):
-                    if(obj.wareHouse==null){
                         $(this).html("");
-                    }
-                    else {
-                        $(this).html(obj.wareHouse.wareHouseId);
-                    }
+
                     break;
                 //产废单位
                 case (2):
-                    $(this).html(obj.wastes.client.companyName);
+                    $(this).html(obj.produceCompany.companyName);
                     break;
                 // 危废名称
                 case (3):
-                    $(this).html(obj.wastes.name);
+                    $(this).html(obj.laboratoryTest.wastesName);
                     break;
                 // 危废代码
                 case (4):
-                    $(this).html(obj.wastes.wastesId);
+                    $(this).html(obj.laboratoryTest.wastesCode);
                     break;
                 // 产废类别
                 case (5):
-                    $(this).html("");
+                    $(this).html(obj.wastesCategory);
                     break;
                 // 进料方式
                 case (6):
-                    $(this).html(obj.wastes.handleCategory.name);
+                    $(this).html(obj.handleCategory.name);
                     break;
                 //数量
                 case (7):
                     break;
                 case (8):
-                    $(this).html(obj.wastes.remarks);
+                    $(this).html(obj.remarks);
                     break;
                 case (9):
-                    $(this).html(obj.wasteInventoryId);
+                    $(this).html(obj.inboundOrderItemId);
                     break;
             }
         });
@@ -344,26 +335,26 @@ function adjustNumber(item) {
 //数量加减
 function subtraction(item) {
     //获得相应的入库单号
-    var flag=false;
-    var inboundOrderId = item.parentElement.parentElement.firstElementChild.innerHTML;
+    var inboundOrderItemId = $(item).parent().parent().children('td').last().text();
     var number=$(item).val();
+    //console.log(inboundOrderItemId);
     //1根据入库单号获得总量，然后根据配料量减去得到剩余量
-    setTimeout(time(inboundOrderId,number), 2000);
+    setTimeout(time(inboundOrderItemId,number), 2000);
   // console.log(array)
     //进行运算
 }
-function time(inboundOrderId,number) {
+function time(inboundOrderItemId,number) {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWasteInventoryLeftNumber",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {'inboundOrderId':inboundOrderId,'number':number},
+        data: {'inboundOrderItemId':inboundOrderItemId,'number':number},
         dataType: "json",
         // contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                $("td[name="+inboundOrderId+"]").html(result.leftNumber);
+                $("td[name="+inboundOrderItemId+"]").html(result.leftNumber);
             } else {
                 alert(result.message);
             }
@@ -377,7 +368,6 @@ function time(inboundOrderId,number) {
 function save() {
     $(".myclass2").each(function () {
         var data={
-            batchingOrderId:$("#batchingOrderId").val(),//配料编号
             inboundOrder:{ inboundOrderId:this.firstElementChild.innerHTML,},
             wareHouse:{ wareHouseId:this.firstElementChild.nextElementSibling.innerHTML},
             produceCompany:{companyName:this.firstElementChild.nextElementSibling.nextElementSibling.innerHTML},
@@ -386,14 +376,11 @@ function save() {
             //      },
             // wasteType:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
             batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.value,
-           'remarks':this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+            remarks:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
             creator:$("#creator").val(),
-            wasteInventory:{wastes:{name:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,wastesId:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML},
-                }
-
-
+            inboundOrderItemId:$(this).children('td').last().text()
     };
         console.log(data);
         $.ajax({
@@ -480,7 +467,6 @@ function setBatchingOrderList(result) {
                             else {
                                 $(this).html("");
                             }
-
                             break;
                         // 处理类别
                         case (4):

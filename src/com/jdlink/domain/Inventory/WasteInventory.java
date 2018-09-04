@@ -83,6 +83,15 @@ public class WasteInventory {
      */
     private String   wastesCategory;
     private HandleCategory handleCategory;
+    private String inboundOrderItemId;
+
+    public String getInboundOrderItemId() {
+        return inboundOrderItemId;
+    }
+
+    public void setInboundOrderItemId(String inboundOrderItemId) {
+        this.inboundOrderItemId = inboundOrderItemId;
+    }
 
     public String getWastesCategory() {
         return wastesCategory;

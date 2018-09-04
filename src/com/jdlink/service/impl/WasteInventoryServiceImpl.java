@@ -55,8 +55,8 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     }
 
     @Override
-    public void getWasteInventoryLeftNumber(String inboundOrderId, float number) {
-        wasteInventoryMapper.getWasteInventoryLeftNumber(inboundOrderId,number);
+    public void getWasteInventoryLeftNumber(String inboundOrderItemId, float number) {
+        wasteInventoryMapper.getWasteInventoryLeftNumber(inboundOrderItemId,number);
     }
 
 
@@ -73,6 +73,11 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     @Override
     public void batchingNumber(WasteInventory wasteInventory) {
         wasteInventoryMapper.batchingNumber(wasteInventory);
+    }
+
+    @Override
+    public void updateBatching(BatchingOrder batchingOrder) {
+        wasteInventoryMapper.updateBatching(batchingOrder);
     }
 
 
