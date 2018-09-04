@@ -22,6 +22,7 @@
     <script language="javascript" src="js/canvas2image.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <script language="javascript" src="js/business/contract.js"></script>
+    <script src="js/util.js"></script>
 </head>
 <style>
     p {
@@ -1728,26 +1729,16 @@
 <script>
     CKEDITOR.replace('TextArea1',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
     function wastes() {
-        // var item = $("#1").attr("class");
         var id = $("ul#myTab li.active").attr("id");
-        //console.log(id);
-        var k = $("#add");
-        console.log(k.attr("id"));
-        // if(item == "active"){
-        if (id === "1")
-            k.attr("href", "wastesContractInfo.html");    //危废合同
-        else if (id === "2") {
-            k.attr("href", "urgentContractInfo.html"); //应急处置意向书
+        if (id === "1") {
+            $(location).attr("href", "wastesContractInfo.html");    //危废合同
+        } else if (id === "2") {
+            $(location).attr("href", "urgentContractInfo.html"); //应急处置意向书
+        } else if (id === "3") {
+            $(location).attr("href", "logisticsContractInfo.html"); //物流合同
+        } else if (id === "4") {
+            $(location).attr("href", "secondaryContractInfo.html"); //次生合同
         }
-        else if (id === "3") {
-            k.attr("href", "logisticsContractInfo.html"); //物流合同
-        }
-        else if (id === "4") {
-            k.attr("href", "secondaryContractInfo.html"); //次生合同
-        }
-        // else if(id === "5") {
-        //     k.attr("href","#");                          //采购合同 purchaseContractInfo.html
-        // }
     }
 
     // $('.form_datetime1').datetimepicker({

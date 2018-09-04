@@ -5,27 +5,34 @@
 
 <mapper namespace="com.jdlink.mapper.QuotationMapper">
     <resultMap id="ClientRM" type="Client" autoMapping="true">
-        <result property="clientId" column="clientId" />
+        <id property="clientId" column="clientId" />
         <result property="companyName" column="companyName" />
         <result property="contactName" column="contactName" />
+    </resultMap>
+    <resultMap id="QuotationItemRM" type="QuotationItem" autoMapping="true">
+        <id property="quotationItemId" column="quotationItemId"/>
+        <association property="client" column="clientId" select="getClient"/>
     </resultMap>
     <resultMap type="Quotation" id="QuotationRM" autoMapping="true">
         <result property="id" column="id" />
         <result property="quotationId" column="quotationId"/>
         <result property="checkState" column="checkState" />
         <association property="client" javaType="Client" resultMap="ClientRM"/>
-        <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+        <collection property="quotationItemList" select="getWastes" column="id" ofType="com.jdlink.domain.QuotationItem" javaType="ArrayList"/>
     </resultMap>
     <insert id="add" parameterType="Quotation" >
-        INSERT INTO t_quotation (quotationId, name, version, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount, checkState, isStamp, nowTime)
-        VALUES (#{quotationId}, #{name}, #{version}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState}, #{isStamp}, NOW());
-        <if test="wastesList.size() > 0">
-            <foreach collection="wastesList" item="wastes" index="index">
-                INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{id}, #{wastes.id});
-                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint, nowTime)
-                VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
-                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint}, NOW());
-                UPDATE t_wastes SET contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax}, unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate} WHERE wastesId=#{wastes.wastesId} AND clientId=#{client.clientId};
+        INSERT INTO t_quotation (id, quotationId, name, version, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, totalPrice, totalPriceTax, totalAmount, checkState, isStamp, nowTime)
+        VALUES (#{id}, #{quotationId}, #{name}, #{version}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{totalPrice}, #{totalPriceTax}, #{totalAmount}, #{checkState}, #{isStamp}, NOW());
+        <if test="quotationItemList.size() > 0">
+            <foreach collection="quotationItemList" item="quotationItem" index="index">
+                INSERT INTO t_quotationitem (quotationId, clientId, startDate, endDate, formType, wastesName, wastesCode,
+                contractAmount, unitPriceTax, unitPrice, taxRate, tax, ph, ash, waterContent, heat, halogenContent, sulfurContent,
+                chlorineContent, phosphorusContent, fluorineContent, flashPoint) VALUES (#{id}, #{client.clientId}, #{startDate},
+                #{endDate}, #{quotationItem.formType}, #{quotationItem.wastesName}, #{quotationItem.wastesCode}, #{quotationItem.contractAmount},
+                #{quotationItem.unitPriceTax}, #{quotationItem.unitPrice}, #{quotationItem.taxRate}, #{quotationItem.tax}, #{quotationItem.ph},
+                #{quotationItem.ash}, #{quotationItem.waterContent}, #{quotationItem.heat}, #{quotationItem.halogenContent},
+                #{quotationItem.sulfurContent}, #{quotationItem.chlorineContent}, #{quotationItem.phosphorusContent},
+                #{quotationItem.fluorineContent}, #{quotationItem.flashPoint});
             </foreach>
         </if>
     </insert>
@@ -44,15 +51,18 @@
     </update>
 
     <insert id="levelUp" parameterType="Quotation">
-        INSERT INTO t_quotation (quotationId, name, version, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, isStamp, totalPriceTax, totalPrice, totalAmount, checkState, nowTime)
-        VALUES (#{quotationId}, #{name}, #{version}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{isStamp}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState}, NOW());
-        <if test="wastesList.size() > 0">
-            <foreach collection="wastesList" item="wastes" index="index">
-                INSERT INTO r_quotationandwastes (quotationId, wastesId) VALUES (#{id}, #{wastes.id});
-                INSERT INTO t_wastes (id, name, formType, wastesId, contractAmount, unitPriceTax, unitPrice, taxRate, ph, ashPercentage, wetPercentage, calorific, halogenPercentage, sulfurPercentage, flashPoint, nowTime)
-                VALUES (#{wastes.id}, #{wastes.name}, #{wastes.formType}, #{wastes.wastesId}, #{wastes.contractAmount}, #{wastes.unitPriceTax}, #{wastes.unitPrice}, #{wastes.taxRate}, #{wastes.ph},
-                #{wastes.ashPercentage}, #{wastes.wetPercentage}, #{wastes.calorific}, #{wastes.halogenPercentage}, #{wastes.sulfurPercentage}, #{wastes.flashPoint}, NOW());
-                UPDATE t_wastes SET contractAmount=#{wastes.contractAmount}, unitPriceTax=#{wastes.unitPriceTax}, unitPrice=#{wastes.unitPrice}, taxRate=#{wastes.taxRate} WHERE wastesId=#{wastes.wastesId} AND clientId=#{client.clientId};
+        INSERT INTO t_quotation (id, quotationId, name, version, clientId, contactName, phone, location, startDate, endDate, isContainTax, isContainFreight, isStamp, totalPriceTax, totalPrice, totalAmount, checkState, nowTime)
+        VALUES (#{id}, #{quotationId}, #{name}, #{version}, #{client.clientId}, #{client.contactName}, #{client.phone}, #{client.location}, #{startDate}, #{endDate}, #{isContainTax}, #{isContainFreight}, #{isStamp}, #{totalPriceTax}, #{totalPrice}, #{totalAmount}, #{checkState}, NOW());
+        <if test="quotationItemList.size() > 0">
+            <foreach collection="quotationItemList" item="quotationItem" index="index">
+                INSERT INTO t_quotationitem (quotationId, clientId, startDate, endDate, formType, wastesName, wastesCode,
+                contractAmount, unitPriceTax, unitPrice, taxRate, tax, ph, ash, waterContent, heat, halogenContent, sulfurContent,
+                chlorineContent, phosphorusContent, fluorineContent, flashPoint) VALUES (#{id}, #{client.clientId}, #{startDate},
+                #{endDate}, #{quotationItem.formType}, #{quotationItem.wastesName}, #{quotationItem.wastesCode}, #{quotationItem.contractAmount},
+                #{quotationItem.unitPriceTax}, #{quotationItem.unitPrice}, #{quotationItem.taxRate}, #{quotationItem.tax}, #{quotationItem.ph},
+                #{quotationItem.ash}, #{quotationItem.waterContent}, #{quotationItem.heat}, #{quotationItem.halogenContent},
+                #{quotationItem.sulfurContent}, #{quotationItem.chlorineContent}, #{quotationItem.phosphorusContent},
+                #{quotationItem.fluorineContent}, #{quotationItem.flashPoint});
             </foreach>
         </if>
     </insert>
@@ -78,10 +88,12 @@
         </if>
     </select>
 
-    <select id="getWastes" resultType="Wastes">
-        SELECT * FROM t_wastes WHERE id in (
-          SELECT r_quotationandwastes.wastesId FROM r_quotationandwastes
-          WHERE quotationId=#{id});
+    <select id="getWastes" resultType="QuotationItem">
+        SELECT * FROM t_quotationitem WHERE quotationId=#{id};
+    </select>
+
+    <select id="getClient" resultType="Client">
+        SELECT * FROM client WHERE clientId=#{clientId};
     </select>
 
     <select id="count" resultType="int">
@@ -171,5 +183,9 @@
         limit #{page.start}, #{page.count};
     </if>
 </select>
+
+    <select id="getQuotationByWastesCodeAndClientId" parameterType="String" resultMap="QuotationItemRM">
+        SELECT * FROM t_quotationitem WHERE wastesCode=#{wastesCode} AND clientId=#{clientId};
+    </select>
 
 </mapper>

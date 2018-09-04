@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.ProductionDailyMapper">
+    <select id="countSewage" resultType="int">
+          select count(*) from t_pr_sewage;
+    </select>
+
+    <select id="listPageSewage" resultType="Sewage">
+        select * from t_pr_sewage order by receiveDate desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="searchSewage" resultType="Sewage">
+        select * from t_pr_sewage
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+                or COD = #{keywords}
+                or BOD5 = #{keywords}
+                or oxygen = #{keywords}
+                or nitrogen = #{keywords}
+                or lye = #{keywords}
+                or PH = #{keywords}
+            </if>
+            <if test="name != null and name != ''">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="date != null and date != ''">
+                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+        </where>
+        order by receiveDate desc
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCountSewage" resultType="int">
+        select count(*) from t_pr_sewage
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+                or COD = #{keywords}
+                or BOD5 = #{keywords}
+                or oxygen = #{keywords}
+                or nitrogen = #{keywords}
+                or lye = #{keywords}
+                or PH = #{keywords}
+            </if>
+            <if test="name != null and name != ''">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="date != null and date != ''">
+                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+        </where>
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <insert id="addSewage" parameterType="Sewage">
+        insert into t_pr_sewage
+        (receiveDate, name, remarks, COD, oxygen, nitrogen, lye, PH, BOD5)
+        values
+        (#{receiveDate},#{name},#{remarks},#{cod},#{oxygen},#{nitrogen},#{lye},#{ph},#{bod5})
+    </insert>
+
+
+    <select id="countSoftWater" resultType="int">
+          select count(*) from t_pr_softwater;
+    </select>
+
+    <select id="listPageSoftWater" resultType="SoftWater">
+        select * from t_pr_softwater order by receiveDate desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="searchSoftWater" resultType="SoftWater">
+        select * from t_pr_softwater
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+                or relativeAlkalinity = #{keywords}
+                or dissolvedSolidForm = #{keywords}
+                or PH = #{keywords}
+                or alkalinity = #{keywords}
+                or hardness = #{keywords}
+                or electricalConductivity = #{keywords}
+            </if>
+            <if test="name != null and name != ''">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="date != null and date != ''">
+                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+        </where>
+        order by receiveDate desc
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchCountSoftWater" resultType="int">
+        select count(*) from t_pr_softwater
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or name like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+                or relativeAlkalinity = #{keywords}
+                or dissolvedSolidForm = #{keywords}
+                or PH = #{keywords}
+                or alkalinity = #{keywords}
+                or hardness = #{keywords}
+                or electricalConductivity = #{keywords}
+            </if>
+            <if test="name != null and name != ''">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="date != null and date != ''">
+                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks like "%"#{remarks}"%"
+            </if>
+        </where>
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <insert id="addSoftWater" parameterType="SoftWater">
+        insert into t_pr_softwater
+        (receiveDate, name, relativeAlkalinity, dissolvedSolidForm, PH, alkalinity, hardness, electricalConductivity, remarks)
+        values
+        (#{receiveDate},#{name},#{relativeAlkalinity},#{dissolvedSolidForm},#{ph},#{alkalinity},#{hardness},#{electricalConductivity},#{remarks})
+    </insert>
+</mapper>

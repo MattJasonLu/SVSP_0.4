@@ -934,6 +934,7 @@ public class ContractController {
     public String getContractBySalesman(String salesmanId, Page page) {
         JSONObject res = new JSONObject();
         try {
+            // 获取该业务员名下所有合同
             List<Contract> contractList = contractService.getContractBySalesman(salesmanId, page);
             // 危废信息
             Map<String, List<Wastes>> map = new HashMap<>();

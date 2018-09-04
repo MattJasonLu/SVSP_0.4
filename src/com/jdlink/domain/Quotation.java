@@ -61,13 +61,13 @@ public class Quotation {
      */
     private int totalAmount;
     /**
+     * 报价单条目列表
+     */
+    private List<QuotationItem> quotationItemList = new ArrayList<>();
+    /**
      * 状态
      */
     private CheckState checkState;
-    /**
-     * 危废列表
-     */
-    private List<Wastes> wastesList = new ArrayList<>();
     /**
      * 意见
      */
@@ -80,12 +80,13 @@ public class Quotation {
      * 当前时间
      */
     private Date nowTime;
-
     /**
-     *
-     * @页码
+     * 页码
      */
     private Page page;
+    /**
+     * 查询关键字
+     */
     private String keyword;
 
     public String getKeyword() {
@@ -106,30 +107,6 @@ public class Quotation {
 
     public Date getNowTime() {
         return nowTime;
-    }
-
-    @Override
-    public String toString() {
-        return "Quotation{" +
-                "id='" + id + '\'' +
-                ", quotationId='" + quotationId + '\'' +
-                ", name='" + name + '\'' +
-                ", version='" + version + '\'' +
-                ", client=" + client +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", isContainTax=" + isContainTax +
-                ", isContainFreight=" + isContainFreight +
-                ", totalPriceTax=" + totalPriceTax +
-                ", totalPrice=" + totalPrice +
-                ", totalTax=" + totalTax +
-                ", totalAmount=" + totalAmount +
-                ", checkState=" + checkState +
-                ", wastesList=" + wastesList +
-                ", advice='" + advice + '\'' +
-                ", isStamp=" + isStamp +
-                ", nowTime=" + nowTime +
-                '}';
     }
 
     public void setNowTime(Date nowTime) {
@@ -208,14 +185,6 @@ public class Quotation {
         this.totalAmount = totalAmount;
     }
 
-    public List<Wastes> getWastesList() {
-        return wastesList;
-    }
-
-    public void setWastesList(List<Wastes> wastesList) {
-        this.wastesList = wastesList;
-    }
-
     public CheckState getCheckState() {
         return checkState;
     }
@@ -272,4 +241,37 @@ public class Quotation {
         isStamp = stamp;
     }
 
+    public List<QuotationItem> getQuotationItemList() {
+        return quotationItemList;
+    }
+
+    public void setQuotationItemList(List<QuotationItem> quotationItemList) {
+        this.quotationItemList = quotationItemList;
+    }
+
+    @Override
+    public String toString() {
+        return "Quotation{" +
+                "id='" + id + '\'' +
+                ", quotationId='" + quotationId + '\'' +
+                ", name='" + name + '\'' +
+                ", version='" + version + '\'' +
+                ", client=" + client +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isContainTax=" + isContainTax +
+                ", isContainFreight=" + isContainFreight +
+                ", totalPriceTax=" + totalPriceTax +
+                ", totalPrice=" + totalPrice +
+                ", totalTax=" + totalTax +
+                ", totalAmount=" + totalAmount +
+                ", quotationItemList=" + quotationItemList +
+                ", checkState=" + checkState +
+                ", advice='" + advice + '\'' +
+                ", isStamp=" + isStamp +
+                ", nowTime=" + nowTime +
+                ", page=" + page +
+                ", keyword='" + keyword + '\'' +
+                '}';
+    }
 }
