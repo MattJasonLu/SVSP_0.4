@@ -42,4 +42,7 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     @Override
     public void invalidIn(String id){ ingredientsMapper.invalidIn(id); }
+
+    @Override
+    public void updateIn(IngredientsIn ingredientsIn){ ingredientsMapper.updateIn(ingredientsIn); }
 }

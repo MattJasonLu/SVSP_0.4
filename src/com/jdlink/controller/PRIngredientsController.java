@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
@@ -26,6 +27,7 @@ public class PRIngredientsController {
     IngredientsService ingredientsService;
 
     ///////////辅料/备件入库单////////////////
+
     /**
      * 获取当前焚烧单编号
      *
@@ -126,6 +128,7 @@ public class PRIngredientsController {
 
     /**
      * 获取总记录数
+     *
      * @return
      */
     @RequestMapping("totalIngredientsInRecord")
@@ -141,6 +144,7 @@ public class PRIngredientsController {
 
     /**
      * 导入
+     *
      * @param excelFile
      * @return
      */
@@ -158,13 +162,61 @@ public class PRIngredientsController {
                 }
                 System.out.println();
             }
-
+            Map<String, IngredientsIn> map = new HashMap<>();
+            float totalPrice = 0;
+            int serialNumber = 0;    // 序号
+            List<Ingredients> ingredientsList = new ArrayList<>();
+            for (int i = 1; i < data.length; i++) {
+                String id = data[i][0].toString();
+                //map内不存在即添加公共数据，存在即添加List内数据
+                if (!map.keySet().contains(id)) {
+                    map.put(id, new IngredientsIn());
+                    map.get(id).setId(id);
+                    map.get(id).setCompanyName(data[i][1].toString());
+                    map.get(id).setFileId(data[i][2].toString());
+                    map.get(id).setBookkeeper(data[i][3].toString());
+                    map.get(id).setApprover(data[i][4].toString());
+                    map.get(id).setKeeper(data[i][5].toString());
+                    map.get(id).setAcceptor(data[i][6].toString());
+                    map.get(id).setHandlers(data[i][7].toString());
+                    //新存储一个id对象时，将以下两个累计数据清零
+                    totalPrice = 0;
+                    ingredientsList = new ArrayList<>();
+                    serialNumber = 0;
+                }
+                serialNumber++;
+                Ingredients ingredients = new Ingredients();
+                ingredients.setSerialNumberIn(serialNumber + "");
+                ingredients.setName(data[i][8].toString());
+                ingredients.setUnitPrice(Float.parseFloat(data[i][9].toString()));
+                ingredients.setAmount(Float.parseFloat(data[i][10].toString()));
+                ingredients.setWareHouseName(data[i][11].toString());
+                ingredients.setPost(data[i][12].toString());
+                ingredients.setSpecification(data[i][13].toString());
+                ingredients.setUnit(data[i][14].toString());
+                ingredients.setRemarks(data[i][15].toString());
+                float total = Float.parseFloat(data[i][9].toString()) * Float.parseFloat(data[i][10].toString());
+                ingredients.setTotalPrice(total);
+                ingredients.setId(id);
+                ingredientsList.add(ingredients);
+                map.get(id).setIngredientsList(ingredientsList);
+                totalPrice += total;
+                map.get(id).setTotalPrice(totalPrice);
+            }
+            for (String key : map.keySet()) {
+                IngredientsIn ingredientsIn1 = ingredientsService.getInById(map.get(key).getId());
+                IngredientsIn ingredientsIn = map.get(key);
+                if (ingredientsIn1 == null) {
+                    //插入新数据
+                    ingredientsService.addIn(ingredientsIn);
+                } else {
+                    //根据id更新数据
+                    ingredientsService.updateIn(ingredientsIn);
+                }
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
-        } catch(
-                Exception e)
-
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "导入失败，请重试！");
@@ -215,6 +267,7 @@ public class PRIngredientsController {
 
     /**
      * 作废功能
+     *
      * @param id
      * @return
      */
@@ -236,6 +289,7 @@ public class PRIngredientsController {
 
     /**
      * 获取状态列表
+     *
      * @return
      */
     @RequestMapping("getIngredientsInSeniorSelectedList")
@@ -243,7 +297,7 @@ public class PRIngredientsController {
     public String getIngredientsInSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.NewBuild,CheckState.Invalid};
+        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.Invalid};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();

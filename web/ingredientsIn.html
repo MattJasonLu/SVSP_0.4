@@ -132,10 +132,10 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="newIngredientsIn.html"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down"
-                                                                     aria-hidden="true"></span> 导入</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up"
-                                                                     aria-hidden="true"></span> 导出</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="importInExcelChoose();"><span class="glyphicon glyphicon-arrow-down"
+                                                                     aria-hidden="true" ></span> 导入</a>
+                    <a class="btn btn-primary btn-xs" href="#" onclick="exportInExcel();"><span class="glyphicon glyphicon-arrow-up"
+                                                                     aria-hidden="true" ></span> 导出</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-3 pull-right" style="margin-right: 23px;">
@@ -274,7 +274,7 @@
             </ol>
         </nav>
         <!--导入模态框-->
-        <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="importExcelModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -291,8 +291,8 @@
                         </form>
                     </div>
                     <div class="modal-footer center">
-                        <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
-                        <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+                        <button type="button" class="btn btn-default" onclick="downloadInModal()">下载模板</button>
+                        <button type="button" class="btn btn-primary" onclick="importInExcel()">导入数据</button>
                     </div>
                 </div>
             </div>

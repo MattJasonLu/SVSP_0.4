@@ -15,4 +15,5 @@ public interface IngredientsMapper {
     int searchInCount(IngredientsIn ingredientsIn);
     List<IngredientsIn> searchIn(IngredientsIn ingredientsIn);
     void invalidIn(String id);
+    void updateIn(IngredientsIn ingredientsIn);
 }

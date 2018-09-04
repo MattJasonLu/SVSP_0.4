@@ -13,11 +13,11 @@ public class Ingredients {
      */
     private String serialNumberIn;
     /**
-     * 入库单序号/编号
+     * 领料单序号/编号
      */
     private String serialNumberReceive;
     /**
-     * 入库单序号/编号
+     * 出库单序号/编号
      */
     private String serialNumberOut;
     /**

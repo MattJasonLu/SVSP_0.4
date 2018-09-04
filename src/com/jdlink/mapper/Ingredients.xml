@@ -114,6 +114,25 @@
         update t_pr_ingredients_in set state = 'Invalid' where id = #{id}
     </update>
 
+    <update id="updateIn" parameterType="IngredientsIn">
+        update t_pr_ingredients_in
+        set
+        companyName=#{companyName},fileId=#{fileId},totalPrice=#{totalPrice},bookkeeper=#{bookkeeper},approver=#{approver},
+        keeper=#{keeper},acceptor=#{acceptor},handlers=#{handlers},nowTime=NOW()
+        where id = #{id};
+
+        <if test="ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                update t_pr_ingredients
+                set
+                name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
+                amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks}
+                where inId = #{ingredients.id} and serialNumberIn = #{ingredients.serialNumberIn};
+            </foreach>
+        </if>
+    </update>
+
     <insert id="addIn" parameterType="IngredientsIn">
         insert into t_pr_ingredients_in
         (id, companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
@@ -124,11 +143,11 @@
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
-                (itemId,inId,serialNumberIn,name,unitPrice,totalPrice,receiveAmount,
+                (inId,serialNumberIn,name,unitPrice,totalPrice,
                 amount,wareHouseName,post,specification,unit, ingredientState,remarks)
                 values
-                (#{ingredients.itemId},#{id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
-                #{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.amount},#{ingredients.wareHouseName},
+                (#{ingredients.id},#{ingredients.serialNumberIn},#{ingredients.name},#{ingredients.unitPrice},
+                #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
                 #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks});
             </foreach>
         </if>

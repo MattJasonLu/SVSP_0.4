@@ -1,5 +1,3 @@
-
-
 function getDayDate() {
     //获取时间
     var obj = new Date();
@@ -438,27 +436,30 @@ function setSeniorSelectedList() {
  * 导出excel
  * @param e
  */
-function exportExcel() {
-    console.log("export");
+function exportInExcel() {
     var name = 't_pr_ingredients_in';
-    var sqlWords = "select * from t_pr_ingredients_in;";
+    var sqlWords = "select companyName as '单位名称',creationDate as '入库单创建日期',fileId as '文件编号',a.totalPrice as '总额',bookkeeper as '记账人',\n" +
+        "approver as '审批人',keeper as '保管人',acceptor as '验收人',handlers as '经手人',state as '入库单状态',serialNumberIn as '序号',\n" +
+        "name as '物品名称',unitPrice as '单价',amount as '入库数',b.totalPrice as '物品总额',receiveAmount as '已领用数量',wareHouseName as '仓库',\n" +
+        "post as '过账',specification as '规格',unit as '单位', ingredientState as '物品状态',remarks as '附注'\n" +
+        "from t_pr_ingredients_in as a join t_pr_ingredients as b where inId = id;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
  * 导入模态框
  * */
-function importExcelChoose() {
-    $("#importExcelModal").modal('show');
+function importInExcelChoose() {
+    $("#importExcelModal1").modal('show');
 }
 
 /**
  * 下载模板
  * */
-function downloadModal() {
+function downloadInModal() {
     var filePath = 'Files/Templates/辅料/备件入库单模板.xls';
     var r = confirm("是否下载模板?");
-    if (r == true) {
+    if (r === true) {
         window.open('downloadFile?filePath=' + filePath);
     }
 }
@@ -466,7 +467,7 @@ function downloadModal() {
 /**
  * 导入excel
  */
-function importExcel() {
+function importInExcel() {
     document.getElementById("idExcel").click();
     document.getElementById("idExcel").addEventListener("change", function () {
         var eFile = document.getElementById("idExcel").files[0];
@@ -520,7 +521,7 @@ function searchIngredientIn() {
             state: state,
             page: page
         };
-    }else{
+    } else {
         data1 = {
             keywords: $("#searchContent").val(),
             page: page
@@ -573,15 +574,16 @@ function getIngredientsInId(item) {
  * 单击查看功能
  * @param item
  */
-function toViewIngredientsIn(item){
+function toViewIngredientsIn(item) {
     var id = getIngredientsInId(item);
     showViewModal(id);
 }
+
 /**
  * 双击查看功能
  * @param item
  */
-function toViewIngredientsIn1(item){
+function toViewIngredientsIn1(item) {
     var id = getIngredientsInId1(item);
     showViewModal(id);
 }
@@ -741,26 +743,28 @@ function setViewIngredientsClone(result) {
  */
 function invalidIngredientsIn(item) {
     var id = getIngredientsInId(item);
-    $.ajax({
-        type: "POST",
-        url: "invalidIngredientsIn",
-        async: false,
-        data: {
-            id: id
-        },
-        dataType: "json",
-        success: function (result) {
-            if (result.status == "success") {
-                alert("作废成功！");
-                window.location.reload();
-            } else {
-                alert(result.message);
+    if (confirm("是否作废？")) {
+        $.ajax({
+            type: "POST",
+            url: "invalidIngredientsIn",
+            async: false,
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result.status == "success") {
+                    alert("作废成功！");
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器异常!");
             }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常!");
-        }
-    });
+        });
+    }
 }
 
