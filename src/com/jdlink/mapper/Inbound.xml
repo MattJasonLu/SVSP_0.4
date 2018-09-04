@@ -22,7 +22,7 @@
         <collection property="inboundOrderItemList" column="inboundOrderId" select="getInboundOrderItemList"
                     ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
     </resultMap>
-    
+
     <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
         <id column="inboundOrderItemId" property="inboundOrderItemId"/>
         <association property="produceCompany" select="getProduceCompany" column="produceCompanyId"/>
@@ -115,6 +115,14 @@
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice});
             </foreach>
         </if>
+        <if test="inboundOrderItemList.size() > 0">
+        <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
+            insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId)
+            values (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
+            ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId});
+
+        </foreach>
+        </if>
     </insert>
 
     <!--列出入库单-->
@@ -136,7 +144,7 @@
     <select id="getInboundOrderItemList" resultMap="InboundOrderItemRM">
         SELECT * FROM t_pl_inboundorderitem WHERE inboundOrderId=#{inboundOrderId};
     </select>
-    
+
     <!--判断是否存在该入库单号-->
     <select id="existInboundOrderId" resultType="boolean">
         SELECT COUNT(*) FROM t_pl_inboundorder WHERE inboundOrderId=#{inboundOrderId};

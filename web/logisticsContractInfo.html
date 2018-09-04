@@ -144,7 +144,7 @@ function loadContractSelectList() {
                 //开票税率下拉框
                 //开票税率1下拉框
                 var options1=$("#suppier option:selected").val(); //获取选中的项
-                var suppier=data.supplierNameList[options1];//取得被选中供应商的信息
+                var suppier=data.supplierNameList[options1];//取得被选中处置单位的信息
                 var taxRate1=$('#taxRate1');
                 index1=""
                 taxRate1.children().remove();
@@ -178,7 +178,7 @@ function loadContractSelectList() {
                 $("#telephone").prop("value",suppier.phone);//赋值联系电话
                 $("#contactName").prop("value",suppier.contactName);//赋值联系人
                 //console.log(suppier.companyName);
-                $("#suppierName").val(suppier.companyName);//赋值供应商名称
+                $("#suppierName").val(suppier.companyName);//赋值处置单位名称
             } else {
                 console.log(result);
             }
@@ -329,7 +329,7 @@ function contractSubmit(){
 }
 </script>
 <body onload="loadContractSelectList();">
-<nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
         <ul class="nav navbar-nav navbar-left navbar-side">
             <li>
@@ -345,47 +345,52 @@ function contractSubmit(){
         </div>
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
-                <li><a href="wastesPlatform.html">首页</a></li>
+                <li><a href="businessModel.html">首页</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html">客户备案</a></li>
+                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="salesManage.html">业务员分配管理</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">业务员分配管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
+                            </ul>
+                        </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                        <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html">客户样品登记</a></li>
+                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="wayBill.html">接运单管理</a></li>
+                        <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html">供应商备案</a></li>
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="contractManage.html">合同列表</a></li>
+                        <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="contractTemplate.html">合同模板</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="salesmanContract.html">业务员合同</a></li>
+                        <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="quotation.html">报价管理</a></li>
+                        <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="cost.html">成本管理</a></li>
+                        <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
                     </ul>
                 </li>
-                <li><a href="archivesManage.html">一企一档</a></li>
-                <li><a href="stockManage.html">库存申报</a></li>
+                <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
+                <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -402,6 +407,7 @@ function contractSubmit(){
             </ul>
         </li>
     </ul>
+
 </nav>
 <div class="container-fluid">
     <div class="row">
@@ -414,18 +420,18 @@ function contractSubmit(){
             <!--</div>-->
             <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
-                <li class="active"><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="wastesPlatform.html"id="function_1" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"id="function_2" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"id="function_3" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"id="function_4" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"id="function_5" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"id="function_6" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"id="function_8" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html" id="function_11" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
     </div>
@@ -448,7 +454,7 @@ function contractSubmit(){
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="suppier">供应商名称</label>
+                        <label  class="col-sm-4 control-label" for="suppier">处置单位名称</label>
                         <div class="col-xs-5">
                             <select class="selectpicker input-sm form-control form-inline" data-live-search="true" data-live-search-placeholder="搜索..." id="suppier" name="suppier" onchange="findSuppier();">
                             </select>
@@ -504,7 +510,7 @@ function contractSubmit(){
                                 <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked>&nbsp;&nbsp;公司版本
                             </label>
                             <label>
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()">&nbsp;&nbsp;供应商版本
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()">&nbsp;&nbsp;处置单位版本
                             </label>
                         </div>
                     </div>
@@ -561,7 +567,7 @@ function contractSubmit(){
                         <div class="col-xs-5">
                             <input class="form-control"  type="hidden" id="suppierName" name="suppierName">
                         </div>
-                    </div><!--隐藏域接收供应商的名称-->
+                    </div><!--隐藏域接收处置单位的名称-->
                 </div>
             </div>
             <!--<div class="row">-->
@@ -753,7 +759,7 @@ function contractSubmit(){
         location.href="contractManage.html";
     }
     function findSuppier() {
-        //1获取选中的值====>供应商名称
+        //1获取选中的值====>处置单位名称
         //var companyName=($('#suppier').val());
          options=$("#suppier option:selected").val(); //获取选中的项
         $.ajax({
@@ -762,7 +768,7 @@ function contractSubmit(){
             dataType: "json",
             success:function (result) {
              var obj=eval(result);
-              var suppier=(obj.supplierNameList[options]);//获取供应商的信息
+              var suppier=(obj.supplierNameList[options]);//获取处置单位的信息
                 // console.log(suppier);
                 //2赋值
                 $("#telephone").prop("value",suppier.phone);//电话

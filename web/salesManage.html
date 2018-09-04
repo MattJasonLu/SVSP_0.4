@@ -37,30 +37,30 @@
                 <ul class="nav navbar-nav">
                     <li><a href="businessModel.html">首页</a></li>
                     <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">客户备案</a></li>
+                            <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-submenu">
                                 <a href="#">业务员分配管理</a>
                                 <ul class="dropdown-menu">
                                     <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">客户分配管理</a></li>
+                                    <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
                                 </ul>
                             </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">客户样品登记</a></li>
+                            <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
+                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -69,8 +69,6 @@
                             <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员合同</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -132,7 +130,7 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">客户管理</a></li>
+                    <li><a href="#">产废单位管理</a></li>
                     <li><a href="#">业务员分配管理</a></li>
                     <li class="active">业务员管理</li>
                 </ol>
@@ -226,7 +224,7 @@
                             <td class="text-center"></td>
                             <td class="text-center">
                                 <a href="#" onclick="check(this); function check(e) {if(!checkAuthority($(e))) return false; adjustSalesman(e);}" title="修改信息" id="function_97"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                <a href="#" onclick="check(this); function check(e) {if(!checkAuthority($(e))) return false; bindClient(e);}" id="function_98" title="分配客户"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
+                                <a href="#" onclick="check(this); function check(e) {if(!checkAuthority($(e))) return false; bindClient(e);}" id="function_98" title="分配产废单位"><span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span></a>
                                 <a href="#" onclick="check(this); function check(e) {if(!checkAuthority($(e))) return false; deleteSalesman(e);}" id="function_99" title="注销"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
                             </td>
                         </tr>
@@ -280,7 +278,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">分配客户</h4>
+                    <h4 class="modal-title" id="myModalLabel">分配产废单位</h4>
                 </div>
                 <div class="modal-body">
                     <form id="model-assign" method="post">
@@ -293,12 +291,12 @@
                             <input type="text" class="form-control" id="model-name" name="model-name" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="model-clientList" class="control-label">分配客户</label>
+                            <label for="model-clientList" class="control-label">分配产废单位</label>
                             <select class="selectpicker input-xlarge form-control show-tick"  multiple  data-live-search="true"  data-live-search-placeholder="搜索..." name="model-clientList" id="model-clientList">
                                 <option value="0">--请选择--</option>
                             </select>
                         </div>
-                        <!--<a class="btn btn-primary btn-xs" onclick="Distribution();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配客户</a>-->
+                        <!--<a class="btn btn-primary btn-xs" onclick="Distribution();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配产废单位</a>-->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -315,31 +313,31 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">未分配客户</h4>
+                    <h4 class="modal-title">未分配产废单位</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="model-salesmanId" class="control-label">客户名称</label>
+                                <label for="model-salesmanId" class="control-label">产废单位名称</label>
                                 <input type="text" class="form-control"  name="model-salesmanId" readonly>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label for="model-salesmanId" class="control-label">已分配客户</label>
+                                <label for="model-salesmanId" class="control-label">已分配产废单位</label>
                                 <input type="text" class="form-control"  name="model-salesmanId" >
                             </div>
                         </div>
                     </div>
 
                         <!--<div class="form-group">-->
-                        <!--<label for="model-clientList" class="control-label">分配客户</label>-->
+                        <!--<label for="model-clientList" class="control-label">分配产废单位</label>-->
                         <!--<select class="form-control" name="model-clientList" id="model-clientList">-->
                         <!--<option value="0">&#45;&#45;请选择&#45;&#45;</option>-->
                         <!--</select>-->
                         <!--</div>-->
-                        <!--<a class="btn btn-primary btn-xs" onclick="Distribution();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配客户</a>-->
+                        <!--<a class="btn btn-primary btn-xs" onclick="Distribution();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配产废单位</a>-->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -405,7 +403,7 @@
         }
     }
     /**
-     * 绑定客户
+     * 绑定产废单位
      * @param item
      */
     function bindClient(item) {
@@ -441,7 +439,7 @@
                 console.log("error: " + result);
             }
         });
-        // 添加客户信息
+        // 添加产废单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getAllClients",              // url
@@ -477,7 +475,7 @@
         $('#myModal').modal('show');
     }
     /**
-     * 分配客户模态框信息设置
+     * 分配产废单位模态框信息设置
      */
     function assignClient(salesman,clientId) {
         $.ajax({

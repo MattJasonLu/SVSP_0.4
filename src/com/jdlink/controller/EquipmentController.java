@@ -24,20 +24,19 @@ public class EquipmentController {
     @Autowired
     EquipmentService equipmentService;
 
-
     /**
-     * 通过日期来查询这个日期对应的设备列表
-     * @param dayTime 查询的日期
-     * @return 设备列表
+     * 通过日期查询设备明细集合
+     * @param id 序号
+     * @return 设备明细集合
      */
-    @RequestMapping("getEquipmentById")
+    @RequestMapping("getEquipment")
     @ResponseBody
-    public String getEquipmentByDateTime(Date dayTime) {
+    public String getEquipment(Integer id) {
         // 新建一个用于存放数据的结果集
         JSONObject res = new JSONObject();
         try{
             // 通过日期查询到数据列表
-            List<EquipmentDate> equipmentList = equipmentService.getEquipment(dayTime);
+            List<EquipmentDate> equipmentList = equipmentService.getEquipment(id);
             // 获取数据：将数据列表转换成json数组(把list列表转换成json数组的通用写法)
             JSONArray data = JSONArray.fromArray(equipmentList.toArray());
             // 存放数据

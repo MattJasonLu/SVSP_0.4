@@ -1,12 +1,10 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Inventory.*;
-import com.jdlink.domain.Page;
-import com.jdlink.domain.User;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
+import com.jdlink.service.QuotationService;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -31,6 +29,8 @@ public class InboundController {
     InboundService inboundService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    QuotationService quotationService;
 
     /**
      * 列出所有入库计划单信息
@@ -43,6 +43,18 @@ public class InboundController {
         try {
             List<InboundPlanOrder> inboundPlanOrderList = inboundService.listInboundPlanOrder();
             JSONArray data = JSONArray.fromArray(inboundPlanOrderList.toArray(new InboundPlanOrder[inboundPlanOrderList.size()]));
+            for (int i = 0; i < inboundPlanOrderList.size(); i++) {
+                InboundPlanOrder inboundPlanOrder = inboundPlanOrderList.get(i);
+                // 通过客户编码和危废编码获取价格
+                String clientId = inboundPlanOrder.getProduceCompany().getClientId();
+                String wastesCode = inboundPlanOrder.getWastes().getWastesId();
+                QuotationItem quotationItem = quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
+                // 获取价格，如果价格存在则存入数据
+                if (quotationItem != null) {
+                    float unitPriceTax = quotationItem.getUnitPriceTax();
+                    data.getJSONObject(i).put("unitPriceTax", unitPriceTax);
+                }
+            }
             res.put("status", "success");
             res.put("message", "获取信息成功");
             res.put("data", data);
