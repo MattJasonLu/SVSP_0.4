@@ -1,6 +1,10 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Quotation;
+import com.jdlink.domain.QuotationItem;
 import com.jdlink.domain.Wastes;
 
 import java.util.Date;
@@ -53,7 +57,82 @@ public class WasteInventory {
      *创建时间
      */
     private Date creatorDate;
+    /**
+     * 剩余数量
+     */
     private float  leftNumeber;
+
+    /**
+     * 化验单对象
+     * @return
+     */
+    /**
+     * 报价单明细
+     */
+    private QuotationItem quotationItem;
+    private LaboratoryTest laboratoryTest;
+    /**
+     * 含税单价
+     */
+    private float unitPriceTax;
+    /**
+     * 进料方式
+     */
+    /**
+     * 危废类别
+     */
+    private String   wastesCategory;
+    private HandleCategory handleCategory;
+
+    public String getWastesCategory() {
+        return wastesCategory;
+    }
+
+    public void setWastesCategory(String wastesCategory) {
+        this.wastesCategory = wastesCategory;
+    }
+
+    public HandleCategory getHandleCategory() {
+        return handleCategory;
+    }
+
+    public void setHandleCategory(HandleCategory handleCategory) {
+        this.handleCategory = handleCategory;
+    }
+
+    private String transferDraftId;
+
+    public String getTransferDraftId() {
+        return transferDraftId;
+    }
+
+    public void setTransferDraftId(String transferDraftId) {
+        this.transferDraftId = transferDraftId;
+    }
+
+    public float getUnitPriceTax() {
+        return unitPriceTax;
+    }
+
+    public void setUnitPriceTax(float unitPriceTax) {
+        this.unitPriceTax = unitPriceTax;
+    }
+
+    public QuotationItem getQuotationItem() {
+        return quotationItem;
+    }
+
+    public void setQuotationItem(QuotationItem quotationItem) {
+        this.quotationItem = quotationItem;
+    }
+
+    public LaboratoryTest getLaboratoryTest() {
+        return laboratoryTest;
+    }
+
+    public void setLaboratoryTest(LaboratoryTest laboratoryTest) {
+        this.laboratoryTest = laboratoryTest;
+    }
 
     public float getLeftNumeber() {
         return leftNumeber;
