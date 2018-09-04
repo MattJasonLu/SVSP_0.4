@@ -340,11 +340,11 @@
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
-                    // 客户编号
+                    // 产废单位编号
                     case (1):
                         $(this).html(obj.clientId);
                         break;
-                    // 客户名称
+                    // 产废单位名称
                     case (2):
                         $(this).html(obj.companyName);
                         break;
@@ -436,7 +436,7 @@
     }
 
     /**
-     * 加载已分配客户
+     * 加载已分配产废单位
      */
     function loadAllocatedClientList() {
         $.ajax({
@@ -459,7 +459,7 @@
     }
 
     /**
-     * 加载未分配客户
+     * 加载未分配产废单位
      */
     function loadUnallocatedClientList() {
         $.ajax({
@@ -493,7 +493,7 @@
     }
 
     /**
-     * 查找客户
+     * 查找产废单位
      */
     function searchClient() {
         isSearch = true;
@@ -630,7 +630,7 @@
             });
             $("#model-clientId").val(clientId1);
             $("#model-companyName").val(companyName1);
-            // 添加客户信息
+            // 添加产废单位信息
             // 添加业务员信息
             $.ajax({  //用来显示业务员的请求结果
                 type: "POST",                       // 方法类型
@@ -694,30 +694,30 @@
             <ul class="nav navbar-nav">
                 <li><a href="businessModel.html">首页</a></li>
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">客户备案</a></li>
+                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-submenu">
                             <a href="#">业务员分配管理</a>
                             <ul class="dropdown-menu">
                                 <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">客户分配管理</a></li>
+                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
                             </ul>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">客户样品登记</a></li>
+                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -791,12 +791,12 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">客户管理</a></li>
+                    <li><a href="#">产废单位管理</a></li>
                     <li><a href="#">业务员分配管理</a></li>
                     <li class="active">业务员分配</li>
                 </ol>
             </div>
-            <h4 class="sub-header">客户分配列表</h4>
+            <h4 class="sub-header">产废单位分配列表</h4>
             <div>
                 <!--操作按钮-->
                 <div class="pull-left">
@@ -825,7 +825,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
+                            <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-companyName"
                                        name="search-companyName" placeholder="">
@@ -873,8 +873,8 @@
                                id="allSel" onclick="allSelect()">
                     </label>
                 </th>
-                <th class="text-center">客户编号</th>
-                <th class="text-center">客户名称</th>
+                <th class="text-center">产废单位编号</th>
+                <th class="text-center">产废单位名称</th>
                 <th class="text-center">
                     <div class="form-inline">
                         <label class="control-label">业务员分配状态</label>
@@ -967,7 +967,7 @@
             <div class="modal-body">
                 <form id="model-assign" method="post">
                     <div class="form-group">
-                        <label for="model-clientId" class="control-label">客户编号</label>
+                        <label for="model-clientId" class="control-label">产废单位编号</label>
                         <input type="text" class="form-control" id="model-clientId" name="model-clientId" readonly>
                     </div>
                     <div class="form-group">
@@ -1071,9 +1071,9 @@
      * @param item 用户
      */
     function setSales(item) { //ajax请求
-        var id = getClientId(item);//获得客户的编号
+        var id = getClientId(item);//获得产废单位的编号
         clientId = id;
-        // 添加客户信息
+        // 添加产废单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getClient",              // url

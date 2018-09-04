@@ -258,13 +258,13 @@
         if (name == 'undefined' || name == "Wastes" || name == undefined) {
             $('#Wa').click();
             localStorage.clear();
-            $('#toggleName').text("客户名称");
+            $('#toggleName').text("产废单位名称");
         }
         if (name == "Emergency") {
             $('#Em').click();
             localStorage.clear();
-            //如果是物流就改为供应商
-            $('#toggleName').text("客户名称");
+            //如果是物流就改为处置单位
+            $('#toggleName').text("产废单位名称");
         }
         if (name == "Logistics") {
             $('#Lo').click();
@@ -447,7 +447,7 @@
             //     }
             // });
             localStorage.clear();
-            $('#toggleName').text("客户名称");
+            $('#toggleName').text("产废单位名称");
         }
         if (name == "Emergency") {
             $('#Em').click();
@@ -473,8 +473,8 @@
             //     }
             //
             // });
-            //如果是物流就改为供应商
-            $('#toggleName').text("客户名称");
+            //如果是物流就改为处置单位
+            $('#toggleName').text("产废单位名称");
         }
         if (name == "Logistics") {
             $('#Lo').click();
@@ -533,7 +533,7 @@
     //                     case (1):
     //                         $(this).html(obj.contractId);
     //                         break;
-    //                     //供应商名称
+    //                     //处置单位名称
     //                     case (2):
     //                         // $(this).html();
     //                         //判断是否是物流合同
@@ -550,7 +550,7 @@
     //                             if (obj.contractVersion.name == "公司合同") {
     //                                 $(this).html(obj.modelName);
     //                             }
-    //                             if (obj.contractVersion.name == "客户合同") {
+    //                             if (obj.contractVersion.name == "产废单位合同") {
     //                                 $(this).html(obj.contractName + obj.contractType.name);
     //                             }
     //                         }
@@ -688,7 +688,7 @@
                         case (1):
                             $(this).html(obj.contractId);
                             break;
-                        //供应商名称
+                        //处置单位名称
                         case (2):
                             // $(this).html();
                             //判断是否是物流合同
@@ -705,7 +705,7 @@
                                 if (obj.contractVersion.name == "公司合同") {
                                     $(this).html(obj.modelName);
                                 }
-                                if (obj.contractVersion.name == "客户合同") {
+                                if (obj.contractVersion.name == "产废单位合同") {
                                     $(this).html(obj.contractName + obj.contractType.name);
                                 }
                             }
@@ -940,7 +940,7 @@
                     if (data.contractVersion.name == "公司合同") {
                         $("#modal3_contractName").text(data.modelName);//合同名称
                     }
-                    if (data.contractVersion.name == "客户合同") {
+                    if (data.contractVersion.name == "产废单位合同") {
                         $("#modal3_contractName").text(data.contractName + data.contractType.name);//合同名称
                     }
                     //联系人
@@ -955,13 +955,13 @@
                     //预计处置费
                     $("#modal3_order").text(data.order1);
                     if (data.contractType.name == '物流合同') {
-                        $('#name1').html("供应商名称&nbsp;&nbsp;");
+                        $('#name1').html("处置单位名称&nbsp;&nbsp;");
                         //$("#modal3_suppierName").text(data.suppierName);
                         //供用商姓名
                         $('#modal3_suppierName').text(data.suppierName);
                     }
                     if (data.contractType.name != '物流合同') {
-                        $('#name1').html("客户名称&nbsp;&nbsp;");
+                        $('#name1').html("产废单位名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(data.company1);//公司名称
 
                     }
@@ -1088,7 +1088,7 @@
                         if (data.contractVersion.name == "公司合同") {
                             $("#modal3_contractName").text(data.modelName);//合同名称
                         }
-                        if (data.contractVersion.name == "客户合同") {
+                        if (data.contractVersion.name == "产废单位合同") {
                             $("#modal3_contractName").text(data.contractName + data.contractType.name);//合同名称
                         }
                         $("#modal3_contactName").text(data.contactName);
@@ -1253,30 +1253,30 @@
             <ul class="nav navbar-nav">
                 <li><a href="businessModel.html">首页</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">客户备案</a></li>
+                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-submenu">
                             <a href="#">业务员分配管理</a>
                             <ul class="dropdown-menu">
                                 <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">客户分配管理</a></li>
+                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
                             </ul>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">客户样品登记</a></li>
+                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown active">
@@ -1399,14 +1399,14 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-companyName"
                                            name="search-companyName" placeholder="">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-search-suppierName" class="col-sm-4 control-label">供应商名称</label>
+                                <label for="search-search-suppierName" class="col-sm-4 control-label">处置单位名称</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-search-suppierName"
                                            name="search-search-suppierName" placeholder="">
@@ -1491,7 +1491,7 @@
                                     </label>
                                 </th>
                                 <th class="text-center">合同编号</th>
-                                <th class="text-center" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
+                                <th class="text-center" id="toggleName" style="width: 300px;">处置单位名称</th><!--相当于公司名称-->
                                 <th class="text-center">合同名称</th>
                                 <th class="text-center">
                                     <div class="form-inline">
@@ -1524,7 +1524,7 @@
                                     </label>
                                 </td>
                                 <td class="text-center"></td><!--合同编号-->
-                                <td class="text-center"></td><!--供应商名称-->
+                                <td class="text-center"></td><!--处置单位名称-->
                                 <td class="text-center"></td><!--合同名称-->
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
@@ -1595,7 +1595,7 @@
                             <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
                             <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
                             <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
-                            <!--<p class="text-left"><b>客户名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
+                            <!--<p class="text-left"><b>产废单位名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
                             <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
                             <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
                             <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
@@ -1612,7 +1612,7 @@
                         </div>
                         <div class="form-horizontal col-md-6 form-inline">
                             <p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>
-                            <p class="text-left"><b id="name1">供应商名称&nbsp;&nbsp;</b><span
+                            <p class="text-left"><b id="name1">处置单位名称&nbsp;&nbsp;</b><span
                                     id="modal3_suppierName"></span></p>
                             <p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>
                             <p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>
@@ -1797,7 +1797,7 @@
             page.pageNumber = pageNumber;
             page.start = (pageNumber - 1) * page.count;
             page.contractIndex = contractIndex;
-            $('#toggleName').text("客户名称");
+            $('#toggleName').text("产废单位名称");
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "loadPageContractManageList",                  // url
@@ -1827,7 +1827,7 @@
             page.pageNumber = pageNumber;
             page.start = (pageNumber - 1) * page.count;
             page.contractIndex = contractIndex;
-            $('#toggleName').text("客户名称");
+            $('#toggleName').text("产废单位名称");
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "loadPageContractManageList",                  // url
@@ -1858,7 +1858,7 @@
             page.pageNumber = 1;
             page.start = (pageNumber - 1) * page.count;
             page.contractIndex = contractIndex;
-            $('#toggleName').text("供应商名称");
+            $('#toggleName').text("处置单位名称");
             $.ajax({
                 type: "POST",                       // 方法类型
                 url: "loadPageContractManageList",                  // url
@@ -2016,11 +2016,11 @@
                     $("#modal3_telephone").text(data.telephone);
                     $("#modal3_order").text(data.order1);
                     if (data.contractType.name == '物流合同') {
-                        $('#name1').html("供应商名称&nbsp;&nbsp;");
+                        $('#name1').html("处置单位名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(data.suppierName);
                     }
                     else {
-                        $('#name1').html("客户名称&nbsp;&nbsp;");
+                        $('#name1').html("产废单位名称&nbsp;&nbsp;");
                         $("#modal3_companyName").text(data.company1);//公司名称
                     }
                     //开票税率1
@@ -2314,7 +2314,7 @@
                     matchStringByIndexOf(text, 'contractId', obj.contractId);
                     //合同状态
                     matchStringByIndexOf(text, 'checkState', obj.checkState.name);
-                    //客户名称
+                    //产废单位名称
                     matchStringByIndexOf(text, 'company1', obj.company1);
                     //合同版本
                     matchStringByIndexOf(text, 'contractVersion', obj.contractVersion.name);
@@ -2361,7 +2361,7 @@
                     CKEDITOR.instances.TextArea1.setData(text);//获取值
                     $('#viewModal').modal('show');
                 }
-                if (obj.contractVersion.name == '客户合同') {
+                if (obj.contractVersion.name == '产废单位合同') {
                     // alert("其他形式")
                     if (obj.beginTime != null) {
                         var begin = gettime(obj.beginTime);
@@ -2385,7 +2385,7 @@
                     if (obj.contractVersion.name == "公司合同") {
                         $("#modal3_contractName").text(obj.modelName);//合同名称
                     }
-                    if (obj.contractVersion.name == "客户合同") {
+                    if (obj.contractVersion.name == "产废单位合同") {
                         $("#modal3_contractName").text(obj.contractName + obj.contractType.name);//合同名称
                     }
                     $("#modal3_contactName").text(obj.contactName);
@@ -2425,11 +2425,11 @@
                     }
                     // 供用商姓名
                     if (obj.contractType.name == '物流合同') {
-                        $('#name1').html("供应商名称&nbsp;&nbsp;");
+                        $('#name1').html("处置单位名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(obj.suppierName);
                     }
                     else {
-                        $('#name1').html("客户名称&nbsp;&nbsp;");
+                        $('#name1').html("产废单位名称&nbsp;&nbsp;");
                         $("#modal3_suppierName").text(obj.company1);//公司名称
                     }
                     $('#search').prop("readonly", false);

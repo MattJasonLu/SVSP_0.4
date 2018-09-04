@@ -133,7 +133,7 @@
                 //clientName.get(0).selectedIndex = -1;
                 $('.selectpicker').selectpicker('refresh');
                 var options1=$("#companyName option:selected").val(); //获取选中的项
-                var company=data.companyNameList[options1];//取得被选中供应商的信息
+                var company=data.companyNameList[options1];//取得被选中处置单位的信息
                 //开票税率下拉
                 console.log(company);
                 var taxRate1=$('#taxRate1');
@@ -362,23 +362,23 @@ function contractSubmit(){
             <ul class="nav navbar-nav">
                 <li><a href="businessModel.html">首页</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html">客户备案</a></li>
+                        <li><a href="clientBackup.html">产废单位备案</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="salesManage.html">业务员分配管理</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html">客户样品登记</a></li>
+                        <li><a href="sampleManage.html">产废单位样品登记</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="wayBill1.html">接运单管理</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html">供应商备案</a></li>
+                        <li><a href="supplierBackup.html">处置单位备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown active">
@@ -483,7 +483,7 @@ function contractSubmit(){
             <div class="row">
                 <div class="form-horizontal col-md-6">
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="companyName">客户名称</label>
+                        <label  class="col-sm-4 control-label" for="companyName">产废单位名称</label>
                         <div class="col-xs-4">
                             <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
                             </select>
@@ -531,7 +531,7 @@ function contractSubmit(){
                         <div class="col-xs-4" >
                             <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
                         </div>
-                    </div><!--隐藏域保存客户名称-->
+                    </div><!--隐藏域保存产废单位名称-->
                     <div class="form-group" >
                         <label for="taxRate1" class="col-sm-4 control-label">开票税率</label>
                         <div class="col-xs-5">
@@ -571,7 +571,7 @@ function contractSubmit(){
                                 <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 客户合同
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 产废单位合同
                             </label>
                         </div>
                     </div>
@@ -790,7 +790,7 @@ function contractSubmit(){
         });
         $('#modelInfoForm').modal('show');
     }
-    //客户列表下拉框
+    //产废单位列表下拉框
     function findClient() {
         options=$("#companyName option:selected").val(); //获取选中的项
         $.ajax({
@@ -799,11 +799,11 @@ function contractSubmit(){
             dataType: "json",
             success:function (result) {
                 var obj=eval(result);
-                var company=(obj.companyNameList[options]);//获取供应商的信息
+                var company=(obj.companyNameList[options]);//获取处置单位的信息
                  console.log(company);
                 //2赋值
                 //赋值联系人
-                //客户名称
+                //产废单位名称
                 $('#company1').prop("value",company.companyName);
                 $('#contactName').prop("value",company.contactName);
                 //赋值联系方式

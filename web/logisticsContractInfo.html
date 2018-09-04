@@ -144,7 +144,7 @@ function loadContractSelectList() {
                 //开票税率下拉框
                 //开票税率1下拉框
                 var options1=$("#suppier option:selected").val(); //获取选中的项
-                var suppier=data.supplierNameList[options1];//取得被选中供应商的信息
+                var suppier=data.supplierNameList[options1];//取得被选中处置单位的信息
                 var taxRate1=$('#taxRate1');
                 index1=""
                 taxRate1.children().remove();
@@ -178,7 +178,7 @@ function loadContractSelectList() {
                 $("#telephone").prop("value",suppier.phone);//赋值联系电话
                 $("#contactName").prop("value",suppier.contactName);//赋值联系人
                 //console.log(suppier.companyName);
-                $("#suppierName").val(suppier.companyName);//赋值供应商名称
+                $("#suppierName").val(suppier.companyName);//赋值处置单位名称
             } else {
                 console.log(result);
             }
@@ -347,23 +347,23 @@ function contractSubmit(){
             <ul class="nav navbar-nav">
                 <li><a href="wastesPlatform.html">首页</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html">客户备案</a></li>
+                        <li><a href="clientBackup.html">产废单位备案</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="salesManage.html">业务员分配管理</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html">客户样品登记</a></li>
+                        <li><a href="sampleManage.html">产废单位样品登记</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="wayBill.html">接运单管理</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html">供应商备案</a></li>
+                        <li><a href="supplierBackup.html">处置单位备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown active">
@@ -448,7 +448,7 @@ function contractSubmit(){
                         </div>
                     </div>
                     <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="suppier">供应商名称</label>
+                        <label  class="col-sm-4 control-label" for="suppier">处置单位名称</label>
                         <div class="col-xs-5">
                             <select class="selectpicker input-sm form-control form-inline" data-live-search="true" data-live-search-placeholder="搜索..." id="suppier" name="suppier" onchange="findSuppier();">
                             </select>
@@ -504,7 +504,7 @@ function contractSubmit(){
                                 <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked>&nbsp;&nbsp;公司版本
                             </label>
                             <label>
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()">&nbsp;&nbsp;供应商版本
+                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()">&nbsp;&nbsp;处置单位版本
                             </label>
                         </div>
                     </div>
@@ -561,7 +561,7 @@ function contractSubmit(){
                         <div class="col-xs-5">
                             <input class="form-control"  type="hidden" id="suppierName" name="suppierName">
                         </div>
-                    </div><!--隐藏域接收供应商的名称-->
+                    </div><!--隐藏域接收处置单位的名称-->
                 </div>
             </div>
             <!--<div class="row">-->
@@ -753,7 +753,7 @@ function contractSubmit(){
         location.href="contractManage.html";
     }
     function findSuppier() {
-        //1获取选中的值====>供应商名称
+        //1获取选中的值====>处置单位名称
         //var companyName=($('#suppier').val());
          options=$("#suppier option:selected").val(); //获取选中的项
         $.ajax({
@@ -762,7 +762,7 @@ function contractSubmit(){
             dataType: "json",
             success:function (result) {
              var obj=eval(result);
-              var suppier=(obj.supplierNameList[options]);//获取供应商的信息
+              var suppier=(obj.supplierNameList[options]);//获取处置单位的信息
                 // console.log(suppier);
                 //2赋值
                 $("#telephone").prop("value",suppier.phone);//电话
