@@ -726,8 +726,6 @@
                         <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员合同</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -811,14 +809,13 @@
                 <div class="input-group col-xs-3 pull-right">
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchClient();"><span
-                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
-                                    class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                        </span>
+                        <a class="btn btn-default" onclick="searchClient();"><span
+                                class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                    </span>
                 </div>
             </div>
-
         </div>
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
@@ -862,8 +859,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="table">
         <table class="table table-striped table-hover table-condensed">
             <thead>
             <tr>
@@ -909,7 +904,7 @@
                 <td class="text-center"></td>
                 <td class="text-center">
                     <a href="#" id="function_103" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setSales(e);}" title="分配业务员"><span class="glyphicon glyphicon-user"
-                                                                              aria-hidden="true"></span></a>
+                                                                                                                                                                     aria-hidden="true"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -1014,12 +1009,6 @@
         line-height: 38px;
     }
 </style>
-<!--<style>-->
-<!--.table { padding-bottom: 70px; }-->
-<!--.text-center{-->
-<!--margin-bottom: -1px;-->
-<!--}-->
-<!--</style>-->
 <script type="text/javascript">
 
 
