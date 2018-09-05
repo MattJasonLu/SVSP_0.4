@@ -12,9 +12,9 @@ public class IngredientsReceive {
      */
     private String id;
     /**
-     * 公司名
+     * 部门
      */
-    private String companyName;
+    private String department;
     /**
      * 领料单创建日期
      */
@@ -32,25 +32,29 @@ public class IngredientsReceive {
      */
     private List<Ingredients> ingredientsList;
     /**
-     * 所有辅料/备件 总额
+     * 总领料数量
      */
-    private float totalPrice;
+    private float totalAmount;
     /**
-     * 记账员
+     * 主管副总经理
      */
-    private String bookkeeper;
+    private String vicePresident;
     /**
-     * 审批员
+     * 仓库部门主管
      */
-    private String approver;
+    private String warehouseSupervisor;
     /**
      * 保管员
      */
     private String keeper;
     /**
-     * 经手人
+     * 领料部门主管
      */
-    private String handlers;
+    private String pickingSupervisor;
+    /**
+     * 领料人
+     */
+    private String pickingMan;
     /**
      * 入库单状态
      */
@@ -59,6 +63,10 @@ public class IngredientsReceive {
      * 分页
      */
     private Page page;
+    /**
+     * 模糊查询关键字
+     */
+     private String keywords;
 
     public String getId() {
         return id;
@@ -68,12 +76,12 @@ public class IngredientsReceive {
         this.id = id;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public Date getCreationDate() {
@@ -108,29 +116,22 @@ public class IngredientsReceive {
         this.ingredientsList = ingredientsList;
     }
 
-    public float getTotalPrice() {
-        return totalPrice;
+    public float getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setTotalPrice(float totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTotalAmount(float totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
-    public String getBookkeeper() {
-        return bookkeeper;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setBookkeeper(String bookkeeper) {
-        this.bookkeeper = bookkeeper;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
-    public String getApprover() {
-        return approver;
-    }
-
-    public void setApprover(String approver) {
-        this.approver = approver;
-    }
 
     public String getKeeper() {
         return keeper;
@@ -148,12 +149,36 @@ public class IngredientsReceive {
         this.keeper = keeper;
     }
 
-    public String getHandlers() {
-        return handlers;
+    public String getVicePresident() {
+        return vicePresident;
     }
 
-    public void setHandlers(String handlers) {
-        this.handlers = handlers;
+    public void setVicePresident(String vicePresident) {
+        this.vicePresident = vicePresident;
+    }
+
+    public String getWarehouseSupervisor() {
+        return warehouseSupervisor;
+    }
+
+    public void setWarehouseSupervisor(String warehouseSupervisor) {
+        this.warehouseSupervisor = warehouseSupervisor;
+    }
+
+    public String getPickingSupervisor() {
+        return pickingSupervisor;
+    }
+
+    public void setPickingSupervisor(String pickingSupervisor) {
+        this.pickingSupervisor = pickingSupervisor;
+    }
+
+    public String getPickingMan() {
+        return pickingMan;
+    }
+
+    public void setPickingMan(String pickingMan) {
+        this.pickingMan = pickingMan;
     }
 
     public Page getPage() {
@@ -168,16 +193,20 @@ public class IngredientsReceive {
     public String toString() {
         return "IngredientsReceive{" +
                 "id='" + id + '\'' +
-                ", companyName='" + companyName + '\'' +
+                ", department='" + department + '\'' +
                 ", creationDate=" + creationDate +
                 ", date='" + date + '\'' +
                 ", fileId='" + fileId + '\'' +
                 ", ingredientsList=" + ingredientsList +
-                ", totalPrice=" + totalPrice +
-                ", bookkeeper='" + bookkeeper + '\'' +
-                ", approver='" + approver + '\'' +
+                ", totalAmount=" + totalAmount +
+                ", vicePresident='" + vicePresident + '\'' +
+                ", warehouseSupervisor='" + warehouseSupervisor + '\'' +
                 ", keeper='" + keeper + '\'' +
-                ", handlers='" + handlers + '\'' +
+                ", pickingSupervisor='" + pickingSupervisor + '\'' +
+                ", pickingMan='" + pickingMan + '\'' +
+                ", state=" + state +
+                ", page=" + page +
+                ", keywords='" + keywords + '\'' +
                 '}';
     }
 }

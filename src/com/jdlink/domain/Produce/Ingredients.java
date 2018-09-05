@@ -9,17 +9,9 @@ public class Ingredients {
      */
     private int itemId;
     /**
-     * 入库单序号/编号
+     * 序号/编号
      */
-    private String serialNumberIn;
-    /**
-     * 领料单序号/编号
-     */
-    private String serialNumberReceive;
-    /**
-     * 出库单序号/编号
-     */
-    private String serialNumberOut;
+    private String serialNumber;
     /**
      * 外键ID
      */
@@ -61,7 +53,7 @@ public class Ingredients {
      */
     private String wareHouseName;
     /**
-     * 已领料数量(已出库)
+     * 已领料数量(已出库数量)
      */
     private float receiveAmount;
     /**
@@ -72,6 +64,14 @@ public class Ingredients {
      * 辅料/备件状态
      */
     private IngredientState ingredientState;
+    /**
+     * 用于储存第二外键Id
+     */
+    private String aid;
+    /**
+     * 用于储存第二序号
+     */
+    private String serialNumberA;
 
     public int getItemId() {
         return itemId;
@@ -89,28 +89,12 @@ public class Ingredients {
         this.name = name;
     }
 
-    public String getSerialNumberIn() {
-        return serialNumberIn;
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
-    public void setSerialNumberIn(String serialNumberIn) {
-        this.serialNumberIn = serialNumberIn;
-    }
-
-    public String getSerialNumberReceive() {
-        return serialNumberReceive;
-    }
-
-    public void setSerialNumberReceive(String serialNumberReceive) {
-        this.serialNumberReceive = serialNumberReceive;
-    }
-
-    public String getSerialNumberOut() {
-        return serialNumberOut;
-    }
-
-    public void setSerialNumberOut(String serialNumberOut) {
-        this.serialNumberOut = serialNumberOut;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getSpecification() {
@@ -209,13 +193,19 @@ public class Ingredients {
         this.ingredientState = ingredientState;
     }
 
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
+    }
+
     @Override
     public String toString() {
         return "Ingredients{" +
                 "itemId=" + itemId +
-                ", serialNumberIn='" + serialNumberIn + '\'' +
-                ", serialNumberReceive='" + serialNumberReceive + '\'' +
-                ", serialNumberOut='" + serialNumberOut + '\'' +
+                ", serialNumber='" + serialNumber + '\'' +
                 ", id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", specification='" + specification + '\'' +
