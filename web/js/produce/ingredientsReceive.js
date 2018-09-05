@@ -91,12 +91,12 @@ function setPageClone(result) {
     $(".beforeClone").remove();
     setList(result);
     var total = totalPage();
-    $("#next1").prev().hide();
+    $("#next").prev().hide();
     var st = "共" + total + "页";
     $("#totalPage").text(st);
     var myArray = new Array();
     for (var i = 0; i < total; i++) {
-        var li = $("#next1").prev();
+        var li = $("#next").prev();
         myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
@@ -184,7 +184,7 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setIngredientsReceiveList(result.data);
+                    setList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -642,7 +642,7 @@ function setViewClone(result) {
             switch (inner_index) {
                 case (0):
                     // 编号
-                    $(this).html(obj.serialNumberIn);
+                    $(this).html(obj.serialNumber);
                     break;
                 case (1):
                     // 物品名称

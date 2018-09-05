@@ -101,6 +101,10 @@ function setPretreatmentList(result) {
     tr.siblings().remove();
     var serialNumber = 0;
     $.each(result, function (index, item) {
+        //已作废的数据不显示
+        if(item.state.name === '已作废'){
+            return true;
+        }
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();

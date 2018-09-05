@@ -286,7 +286,8 @@
                 update t_pr_ingredients
                 set
                 name=#{ingredients.name},amount=0,wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},
-                specification=#{ingredients.specification},unit=#{ingredients.unit},remarks=#{ingredients.remarks},receiveAmount=#{ingredients.receiveAmount}
+                specification=#{ingredients.specification},unit=#{ingredients.unit},remarks=#{ingredients.remarks},receiveAmount=#{ingredients.receiveAmount},
+                ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartReceived','Received')
                 where receiveId = #{ingredients.id} and serialNumberReceive = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -307,7 +308,7 @@
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},
                 #{ingredients.receiveAmount},#{ingredients.wareHouseName},#{ingredients.specification},
-                #{ingredients.unit},#{ingredients.remarks},'Received');
+                #{ingredients.unit},#{ingredients.remarks},IF(#{ingredients.notReceiveAmount}=1,'PartReceived','Received'));
             </foreach>
         </if>
     </insert>
@@ -337,5 +338,156 @@
     <!--</foreach>-->
     <!--</if>-->
     <!--</insert>-->
+
+    <!-- 出库单-->
+    <resultMap id="IngredientsOutRM" type="IngredientsOut" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="ingredientsList" select="getOutItems" column="id"
+                    ofType="com.jdlink.domain.Produce.Ingredients"
+                    javaType="ArrayList"/>
+    </resultMap>
+
+    <resultMap id="OutIngredientsRM" type="Ingredients" autoMapping="true">
+        <id column="itemId" property="itemId"/>
+        <result column="outId" property="id"/>
+        <result column="serialNumberOut" property="serialNumber"/>
+    </resultMap>
+
+    <select id="getOutItems" parameterType="String" resultMap="OutIngredientsRM">
+        select * from t_pr_ingredients where outId = #{id};
+    </select>
+
+    <select id="countOutById" resultType="int">
+        select count(*) from t_pr_ingredients_out where id like "%"#{id}"%";
+    </select>
+
+    <select id="countOut" resultType="int">
+        select count(*) from t_pr_ingredients_out;
+    </select>
+
+    <select id="listPageOut" resultMap="IngredientsOutRM">
+        select * from t_pr_ingredients_out order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="getOutById" parameterType="String" resultMap="IngredientsOutRM">
+          select * from t_pr_ingredients_out where id = #{id};
+     </select>
+
+    <select id="searchOut" parameterType="IngredientsOut" resultMap="IngredientsOutRM">
+        select * from t_pr_ingredients_out
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or companyName like "%"#{keywords}"%"
+                or fileId like "%"#{keywords}"%"
+                or totalAmount = #{keywords}
+                or totalPrice = #{keywords}
+                or bookkeeper like "%"#{keywords}"%"
+                or approver like "%"#{keywords}"%"
+                or keeper like "%"#{keywords}"%"
+                or handlers like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="date != null and date !=''">
+                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="companyName !=null and companyName !='' ">
+                and companyName like "%"#{companyName}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchOutCount" parameterType="IngredientsOut" resultType="int">
+        select count(*) from t_pr_ingredients_out
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or companyName like "%"#{keywords}"%"
+                or fileId like "%"#{keywords}"%"
+                or totalAmount = #{keywords}
+                or totalPrice = #{keywords}
+                or bookkeeper like "%"#{keywords}"%"
+                or approver like "%"#{keywords}"%"
+                or keeper like "%"#{keywords}"%"
+                or handlers like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="date != null and date !=''">
+                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="companyName !=null and companyName !='' ">
+                and companyName like "%"#{companyName}"%"
+            </if>
+        </where>
+    </select>
+
+    <update id="invalidOut" parameterType="String">
+        update t_pr_ingredients_out set state = 'Invalid' where id = #{id}
+    </update>
+
+    <update id="updateOut" parameterType="IngredientsOut">
+        update t_pr_ingredients_out
+        set
+        companyName=#{companyName},fileId=#{fileId},totalPrice=#{totalPrice},totalAmount=#{totalAmount},bookkeeper=#{bookkeeper},approver=#{approver},
+        keeper=#{keeper},handlers=#{handlers},nowTime=NOW()
+        where id = #{id};
+        <if test="ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                update t_pr_ingredients
+                set
+                name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
+                amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks},ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded')
+                where outId = #{ingredients.id} and serialNumberOut = #{ingredients.serialNumber};
+            </foreach>
+        </if>
+    </update>
+
+    <insert id="addOut" parameterType="IngredientsOut">
+        insert into t_pr_ingredients_out
+        (id, companyName,creationDate,fileId,totalPrice,totalAmount,bookkeeper,approver,keeper,
+        handlers,state,nowTime)
+        values
+        (#{id},#{companyName},NOW(),#{fileId},#{totalPrice},#{totalAmount},#{bookkeeper},#{approver},#{keeper},
+        #{handlers},'NewBuild',NOW());
+        <if test="ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                insert into t_pr_ingredients
+                (outId,serialNumberOut,name,unitPrice,totalPrice,
+                amount,wareHouseName,post,specification,unit,ingredientState,remarks)
+                values
+                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
+                #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
+                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded'),#{ingredients.remarks});
+            </foreach>
+        </if>
+    </insert>
 
 </mapper>

@@ -657,7 +657,7 @@ function setViewIngredientsClone(result) {
             switch (inner_index) {
                 case (0):
                     // 编号
-                    $(this).html(obj.serialNumberIn);
+                    $(this).html(obj.serialNumber);
                     break;
                 case (1):
                     // 物品名称

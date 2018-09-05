@@ -201,6 +201,14 @@ public class Ingredients {
         this.aid = aid;
     }
 
+    public String getSerialNumberA() {
+        return serialNumberA;
+    }
+
+    public void setSerialNumberA(String serialNumberA) {
+        this.serialNumberA = serialNumberA;
+    }
+
     @Override
     public String toString() {
         return "Ingredients{" +

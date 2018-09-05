@@ -1067,6 +1067,10 @@ function setOutBoundOrderList(result) {
     var tr = $("#clone1");
     tr.siblings().remove();
     $.each(result, function (index, item) {
+        //已作废的数据不显示
+        if(item.checkState.name === '已作废'){
+            return true;
+        }
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
