@@ -113,6 +113,55 @@
                 </div>
                 <h4 class="sub-header"><span class="months"></span>危废入场分析日报</h4>
             </div>
+            <!--查询框-->
+            <div class="input-group col-xs-5 pull-right" style="margin-right: 23px;">
+                <input type="text" class="form-control" size="5" placeholder="搜索..." id="searchContent" name="searchContent">
+                <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchSewage();"><span
+                                    class="glyphicon glyphicon-search"
+                                    aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                                                                                aria-hidden="true"></span> 重置</a>
+                    </span>
+            </div>
+            <br>
+            <br>
+            <!--查询框-->
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-receiveDate" class="col-sm-5 control-label">产废单位</label>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control" id="search-receiveDate"
+                                           name="search-receiveDate" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-sewageName" class="col-sm-4 control-label">收样日期</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-sewageName" name="search-sewageName"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-remarks" class="col-sm-4 control-label">联单号码</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-remarks" name="search-remarks"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <br>
             <table class="table table-bordered">
                 <thead>
@@ -160,7 +209,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                     </tr>
-                </tbody>>
+                </tbody>
             </table>
             <!--分页-->
         </div>

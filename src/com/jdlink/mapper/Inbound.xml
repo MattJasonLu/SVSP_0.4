@@ -124,10 +124,8 @@
         </if>
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
-            insert into t_pl_wasteinto(clientId, wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory) values (#{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},
-                #{inboundOrderItem.handleCategory},#{inboundOrderItem.processWay},#{inboundOrderItem.remarks},NOW(),
-                #{inboundOrderItem.transferDraftId,#{inboundOrderItem.wastes.category}}
-                );
+            insert into t_pl_wasteinto(clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory)
+                values(#{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundOrderItem.handleCategory},#{inboundOrderItem.processWay},#{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category});
             </foreach>
         </if>
     </insert>

@@ -85,5 +85,10 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.getBatching();
     }
 
+    @Override
+    public int countInventory() {
+        return wasteInventoryMapper.countInventory();
+    }
+
 
 }

@@ -20,4 +20,5 @@ public interface WasteInventoryMapper {
   void batchingNumber(WasteInventory wasteInventory);
     void updateBatching(BatchingOrder batchingOrder);
    List<BatchingOrder>getBatching();
+   int countInventory();
 }

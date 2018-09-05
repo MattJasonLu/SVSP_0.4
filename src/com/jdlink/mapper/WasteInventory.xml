@@ -167,4 +167,8 @@
     <select id="getClient2" resultType="Client">
         select * from  client where clientId=#{produceCompany};
     </select>
+    <!--计算总共条数-->
+    <select id="countInventory" resultType="int">
+        select count (*) from t_pl_wasteinventory;
+    </select>
 </mapper>

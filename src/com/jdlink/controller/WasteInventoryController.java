@@ -781,4 +781,28 @@ catch (Exception e){
         }
         return  res.toString();
     }
+    /**
+     * totalInventoryRecord计算数据总条数
+     */
+    @RequestMapping("totalInventoryRecord")
+    @ResponseBody
+    public int totalInventoryRecord(){
+        try {
+            return wasteInventoryService.countInventory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     * 获取查询总数
+     * @param wasteInventory
+     * @return
+     */
+//    @RequestMapping("searchSewageTotal")
+//    @ResponseBody
+//    public int searchSewageTotal(@RequestBody WasteInventory wasteInventory) {
+//            return 0;
+//    }
+
 }

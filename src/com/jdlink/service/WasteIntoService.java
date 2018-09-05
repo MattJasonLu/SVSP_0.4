@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface WasteIntoService {
     List<WasteInto> WasteIntoList();
+    void updateWasteInto();
+    int countWaste();
 }

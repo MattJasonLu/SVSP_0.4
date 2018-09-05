@@ -18,4 +18,14 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     public List<WasteInto> WasteIntoList() {
         return wasteIntoMapper.WasteIntoList();
     }
+
+    @Override
+    public void updateWasteInto() {
+        wasteIntoMapper.updateWasteInto();
+    }
+
+    @Override
+    public int countWaste() {
+        return wasteIntoMapper.countWaste();
+    }
 }

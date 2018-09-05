@@ -25,6 +25,8 @@ public class WasteIntoController {
     public String getWasteIntoList(){
         JSONObject res=new JSONObject();
         try {
+            //首先更新
+            wasteIntoService.updateWasteInto();
             List<WasteInto> wasteIntoList=wasteIntoService.WasteIntoList();
             res.put("data",wasteIntoList);
             res.put("status", "success");
@@ -38,5 +40,19 @@ public class WasteIntoController {
         }
 
         return res.toString();
+    }
+    /**
+     * 获取总记录数
+     * @return
+     */
+    @RequestMapping("totalWasteIntoRecord")
+    @ResponseBody
+    public int totalWasteIntoRecord() {
+        try {
+            return wasteIntoService.countWaste();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

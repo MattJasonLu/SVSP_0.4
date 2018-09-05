@@ -1,6 +1,188 @@
 /**
  * 危废入场分析日报
  * */
+///////////污水分析日报//
+function reset() {
+    $("#senior").find("input").val("");
+    $("#searchContent").val("");
+}
+
+var currentPage = 1;                          //当前页数
+var isSearch = false;
+var data1;
+/**
+ * 计算总页数
+ * */
+function totalPage() {
+    var totalRecord = 0;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalWasteIntoRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSewageTotal",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
+    var count = countValue();                         // 可选
+    var total = loadPages(totalRecord, count);
+    return total;
+}
+/**
+ * 设置克隆页码
+ * */
+function setPageClone(result) {
+    $(".beforeClone").remove();
+    setWasteIntoList(result);
+    var total = totalPage();
+    $("#next").prev().hide();
+    var st = "共" + total + "页";
+    $("#totalPage").text(st);
+    var myArray = new Array();
+    for (var i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+}
+/**
+ * 返回count值
+ * */
+function countValue() {
+    var mySelect = document.getElementById("count");
+    var index = mySelect.selectedIndex;
+    return mySelect.options[index].text;
+}
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage(pageNumber) {
+    console.log("当前页：" + pageNumber);
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getWasteIntoList",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    setWasteIntoList(result);
+                }
+                else {
+                    alert(result.message);
+
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+        });
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSewage",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setSewageList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+}
 //加载危废入场分析日报数据列表
 function loadWasteIntoList() {
     $.ajax({
