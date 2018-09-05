@@ -14,8 +14,10 @@ public interface WasteInventoryService {
     List<BatchingOrder>getBatchingOrderList();
     void  updateBatchingOrderOnId(BatchingOrder batchingOrder);
     List<WasteInventory>searchInventory(WasteInventory wasteInventory);
-    void getWasteInventoryLeftNumber(String inboundOrderId,float number);
+    void getWasteInventoryLeftNumber(String inboundOrderItemId,float number);
     float getLeftNumber(String inboundOrderId);
     void updateLeftNumber();
     void batchingNumber(WasteInventory wasteInventory);
+    void updateBatching(BatchingOrder batchingOrder);
+    List<BatchingOrder>getBatching();
 }

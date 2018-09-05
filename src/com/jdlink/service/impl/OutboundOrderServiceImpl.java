@@ -38,8 +38,8 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     }
 
     @Override
-    public void updateOutBoundOrder(OutboundOrder outboundOrder) {
-        outboundOrderMapper.updateOutBoundOrder(outboundOrder);
+    public void updateOutBoundOrder(String outboundOrderId) {
+        outboundOrderMapper.updateOutBoundOrder(outboundOrderId);
     }
 
     @Override
