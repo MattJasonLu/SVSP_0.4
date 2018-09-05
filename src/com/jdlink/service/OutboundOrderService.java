@@ -11,7 +11,7 @@ public interface OutboundOrderService {
     int total();
     int searchCount(OutboundOrder outboundOrder);
     List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
-    void  updateOutBoundOrder(OutboundOrder outboundOrder);
+    void updateOutBoundOrder(String outboundOrderId);
     List<OutboundOrder> getOutBoundOrderList();
     List<OutboundOrder> getById(String id);
     List<OutboundOrder> search(OutboundOrder outboundOrder);

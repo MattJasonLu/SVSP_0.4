@@ -2,6 +2,9 @@ package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.Salesman;
 import com.jdlink.domain.Wastes;
 
@@ -55,6 +58,19 @@ public class OutboundOrder {
     /*出库数量*/
     /*仓库*/
     private WareHouse wareHouse;
+    private LaboratoryTest laboratoryTest;
+    private HandleCategory handelCategory;
+    private ProcessWay processWay;
+    private String wasteCategory;
+
+    public LaboratoryTest getLaboratoryTest() {
+
+        return laboratoryTest;
+    }
+
+    public void setLaboratoryTest(LaboratoryTest laboratoryTest) {
+        this.laboratoryTest = laboratoryTest;
+    }
 
     public WareHouse getWareHouse() {
         return wareHouse;

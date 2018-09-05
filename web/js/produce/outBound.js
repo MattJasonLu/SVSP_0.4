@@ -338,21 +338,19 @@ function setOutboutList(result,index) {
                         break;
                     // 产废单位
                     case (1):
-                        if(obj.client!=null){
                             $(this).html(obj.client.companyName);
-                        }
                         break;
                     // 危废名称
                     case (2):
-                        $(this).html(obj.wastes.name);
+                        $(this).html(obj.laboratoryTest.wastesName);
                         break;
                     // 危废代码
                     case (3):
-                        $(this).html(obj.wastes.wastesId);
+                        $(this).html(obj.laboratoryTest.wastesCode);
                         break;
                     // 出库数量
                     case (4):
-                        $(this).html(obj.batchingOrder.batchingNumber);
+                        $(this).html(obj.recipientsNumber);
                         break;
                     // 单价
                     case (5):
@@ -364,15 +362,15 @@ function setOutboutList(result,index) {
                         break;
                     //处置方式
                     case (7):
-                        $(this).html(obj.wastes.processWay.name);
+                        $(this).html(obj.processWay.name);
                         break;
                     //备注
                     case (8):
-                        $(this).html(obj.wastes.remarks);
+                        $(this).html("");
                         break;
                     //库区
                     case (9):
-                        $(this).html(obj.wareHouse.wareHouseName);
+                        $(this).html("");
                         break;
                     //领料单号
                     case (10):
@@ -412,9 +410,11 @@ function saveOutBound(){
                 outboundDate:outboundDate,
                 creator:creator,
                 auditor:auditor,
+                outboundNumber:$(this).children('td').get(4).innerHTML,
                 materialRequisitionOrder:{materialRequisitionId:materialRequisitionId}
             }
-            addOutBoundOrder(data);
+            //console.log(data);
+           addOutBoundOrder(data);
         });
         window.location.href="warehouseManageOut.html";
     }

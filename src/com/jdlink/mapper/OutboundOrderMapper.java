@@ -17,7 +17,7 @@ public interface OutboundOrderMapper {
 
     List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
 
-    void updateOutBoundOrder(OutboundOrder outboundOrder);
+    void updateOutBoundOrder(String outboundOrderId);
 
     List<OutboundOrder> getOutBoundOrderList();
 

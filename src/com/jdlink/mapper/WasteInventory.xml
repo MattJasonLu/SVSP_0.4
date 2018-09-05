@@ -5,9 +5,9 @@
      <mapper namespace="com.jdlink.mapper.WasteInventoryMapper" >
     <!--查找库存信息-->
     <resultMap id="WasteInventoryRM" type="WasteInventory" autoMapping="true">
-       <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
+        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
         <collection property="wareHouse" select="getWareHouse" column="warseHouseId" ofType="WareHouse"></collection>
-    <collection property="produceCompany" column="clientId" select="getClient"></collection>
+        <collection property="produceCompany" column="clientId" select="getClient"></collection>
     </resultMap>
     <!--查询化验单信息给仓库-->
     <select id="getLaboratoryTest" parameterType="java.util.Map" resultType="LaboratoryTest">
@@ -19,8 +19,9 @@
         <association property="client" column="clientId" select="getClient"/>
     </resultMap>
     <!--查询配料单信息-->
-    <resultMap id="BatchingOrderRM" type="BatchingOrder">
-        <collection property="wasteInventory" column="inboundOrderId" select="getWasteInventory" ofType="WasteInventory"></collection>
+    <resultMap id="BatchingOrderRM" type="BatchingOrder" autoMapping="true">
+        <result  property="inboundOrderItemId" column="inboundOrderItemId"></result>
+        <collection property="wasteInventory.inboundOrderItemId" column="inboundOrderItemId" select="getWasteInventory" javaType="WasteInventory"></collection>
         <collection property="wareHouse" column="wareHouseId" select="getWareHouse1" ofType="WareHouse"></collection>
     </resultMap>
     <!--查找配料单信息==>库存==>危废信息-->
@@ -32,7 +33,7 @@
         select * from t_pl_wasteinventory;
     </select>
     <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryRM" parameterType="String">
-        select * from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId};
+        select * from t_pl_wasteinventory where  inboundOrderItemId=#{inboundOrderItemId};
     </select>
     <!--查找库存信息==>仓库信息-->
     <select id="getWareHouse" resultType="WareHouse">
@@ -52,19 +53,23 @@
     select count(*) from t_pl_batchingorder;
 </select>
     <insert id="addBatchingOrder" parameterType="BatchingOrder">
-        insert into t_pl_batchingorder(batchingOrderId, batchingDate, createDate, remarks, wareHouseId, produceCompany,  recordstate,  batchingNumber,  nowTime, inboundOrderId,creator,checkState,name,wastesId,packageType)
-        values (#{batchingOrderId},#{batchingDate},#{createDate},#{remarks},#{wareHouse.wareHouseId},#{produceCompany.companyName},#{recordState},#{batchingNumber},NOW(),#{inboundOrder.inboundOrderId},#{creator},'ToPick',#{wasteInventory.wastes.name},#{wasteInventory.wastes.wastesId},#{wasteInventory.wastes.packageType})
+        insert into t_pl_batchingorder(batchingOrderId, batchingDate, createDate, remarks, wareHouseId,  recordstate,  batchingNumber,  nowTime, inboundOrderId,creator,checkState,inboundOrderItemId)
+        values (#{batchingOrderId},#{batchingDate},#{createDate},#{remarks},#{wareHouse.wareHouseId},'Usable',#{batchingNumber},NOW(),#{inboundOrder.inboundOrderId},#{creator},'ToPick',#{inboundOrderItemId});
 </insert>
     <update id="updateBatchingOrderOnId" parameterType="BatchingOrder">
         update t_pl_batchingorder set id=#{wasteInventory.wastes.id} where batchingOrderId=#{batchingOrderId}
     </update>
     <!--查询配料单信息-->
-     <select id="getBatchingOrderList" resultMap="BatchingOrderRM">
-         select * from t_pl_batchingorder order by nowTime desc ;
+     <select id="getBatchingOrderList" resultType="BatchingOrder">
+         select * from t_pl_batchingorder order by batchingOrderId desc ;
      </select>
-    <!--查找配料信息==>库存信息-->
-    <select id="getWasteInventory" resultMap="WasteInventoryRM1" parameterType="String">
-        select  * from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId};
+    <!--查找配料信
+    息==>库存信息-->
+    <resultMap id="WasteInventoryRM3" type="WasteInventory">
+        <result property="inboundOrderItemId" column="inboundOrderItemId" javaType="String"></result>
+    </resultMap>
+    <select id="getWasteInventory" resultMap="WasteInventoryRM3" parameterType="String">
+        select  * from t_pl_wasteinventory where  inboundOrderItemId=#{batchingOrder.inboundOrderItemId};
     </select>
     <!--查找配料信息==>库存信息==》危废信息==>客户信息-->
     <resultMap id="WastesRM1" type="Wastes">
@@ -114,23 +119,46 @@
     </select>
     <!--获得剩余数量-->
     <update id="getWasteInventoryLeftNumber">
-     update  t_pl_wasteinventory set leftNumeber=leftNumeber-#{1} where inboundOrderId=#{0};
+     update  t_pl_wasteinventory set leftNumeber=leftNumeber-#{1} where inboundOrderItemId=#{0};
     </update>
     <!--获得剩余数量-->
     <select id="getLeftNumber" resultType="float" parameterType="String">
-        select  leftNumeber from t_pl_wasteinventory where  inboundOrderId=#{inboundOrderId}
+        select  leftNumeber from t_pl_wasteinventory where  inboundOrderItemId=#{inboundOrderItemId}
     </select>
     <!--更新剩余库存量-->
     <update id="updateLeftNumber">
         update t_pl_wasteinventory set leftNumeber=actualCount;
            update  t_pl_wasteinventory set wastesCategory=(select wastesCategory from t_pl_inboundplanorder where transferDraftId=t_pl_wasteinventory.transferDraftId);
     </update>
-    <!--添加成功后更新最新的数量-->
+    <!--添加成功后更新最新的数量==>改为更新所有数据 危废编码，转移联单，客户编号，危废编码，处置方式，进料方式，数量-->
     <update id="batchingNumber" parameterType="WasteInventory">
-        update  t_pl_wasteinventory set actualCount=leftNumeber where inboundOrderId=#{inboundOrderId}
+        update  t_pl_wasteinventory set actualCount=leftNumeber where inboundOrderItemId=#{inboundOrderItemId}
+    </update>
+    <!--更新配料单的数据-->
+    <update id="updateBatching" parameterType="BatchingOrder">
+        update  t_pl_batchingorder set  wastesCode=(select wastesCode from t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
+        produceCompany=(select  clientId from  t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
+        transferDraftId=(select  transferDraftId from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
+        handelCategory=(select  handleCategory from  t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
+        processWay=(select processWay from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
+        wasteCategory=(select  wastesCategory from  t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId)
     </update>
     <!--更新废物类别-->
     <update id="updateWastesCatogory">
         update  t_pl_wasteinventory set wastesCategory=(select wastesCategory from t_pl_inboundplanorder where transferDraftId=t_pl_inboundplanorder.transferDraftId);
     </update>
+    <resultMap id="BH" type="BatchingOrder">
+        <collection property="laboratoryTest"  column="{produceCompany=produceCompany,wastesCode=wastesCode}" select="getItem"></collection>
+        <collection property="produceCompany" column="produceCompany" select="getClient2"></collection>
+    </resultMap>
+    <!--查找配料单的具体信息-->
+    <select id="getBatching" resultMap="BH">
+        select * from t_pl_batchingorder;
+    </select>
+    <select id="getItem" resultType="LaboratoryTest">
+        select * from t_pr_laboratorytest where clientId=#{produceCompany} and  wastesCode=#{wastesCode};
+    </select>
+    <select id="getClient2" resultType="Client">
+        select * from  client where clientId=#{produceCompany};
+    </select>
 </mapper>
