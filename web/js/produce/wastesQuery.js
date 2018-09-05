@@ -100,6 +100,14 @@ function setWasteInventoryList(result) {
                 case (9):
                     $(this).html(obj.actualCount);
                     break;
+                    //单价
+                case (10):
+                    $(this).html(obj.quotationItem.unitPriceTax);
+                    break;
+                    //总价
+                case (11):
+                    $(this).html(parseInt(obj.actualCount)*(obj.quotationItem.unitPriceTax).toFixed(2)  );
+                    break;
                     //创建时间
                 case (12):
                     $(this).html(getDateStr(obj.creatorDate));

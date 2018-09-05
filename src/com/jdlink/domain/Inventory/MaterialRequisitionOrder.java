@@ -5,6 +5,7 @@ import com.jdlink.domain.Client;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
+import com.jdlink.domain.QuotationItem;
 import com.jdlink.domain.Wastes;
 
 
@@ -62,6 +63,15 @@ public class MaterialRequisitionOrder {
     private HandleCategory handelCategory;
     private ProcessWay processWay;
     private String wasteCategory;
+    private QuotationItem quotationItem;
+
+    public QuotationItem getQuotationItem() {
+        return quotationItem;
+    }
+
+    public void setQuotationItem(QuotationItem quotationItem) {
+        this.quotationItem = quotationItem;
+    }
 
     public HandleCategory getHandelCategory() {
         return handelCategory;

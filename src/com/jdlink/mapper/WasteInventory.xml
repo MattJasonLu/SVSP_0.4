@@ -8,7 +8,12 @@
         <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
         <collection property="wareHouse" select="getWareHouse" column="warseHouseId" ofType="WareHouse"></collection>
         <collection property="produceCompany" column="clientId" select="getClient"></collection>
+        <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
     </resultMap>
+    <!--查询报价单的信息-->
+    <select id="getQuotationItem" resultType="QuotationItem">
+        select  * from t_quotationitem  where clientId=#{clientId} and wastesCode=#{wastesCode};
+    </select>
     <!--查询化验单信息给仓库-->
     <select id="getLaboratoryTest" parameterType="java.util.Map" resultType="LaboratoryTest">
         select  * from t_pr_laboratorytest where clientId=#{clientId} and wastesCode=#{wastesCode};
@@ -141,8 +146,9 @@
         transferDraftId=(select  transferDraftId from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         handelCategory=(select  handleCategory from  t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         processWay=(select processWay from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
-        wasteCategory=(select  wastesCategory from  t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId)
-    </update>
+        wasteCategory=(select  wastesCategory from  t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
+        remarks=(select  remarks from  t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId)
+</update>
     <!--更新废物类别-->
     <update id="updateWastesCatogory">
         update  t_pl_wasteinventory set wastesCategory=(select wastesCategory from t_pl_inboundplanorder where transferDraftId=t_pl_inboundplanorder.transferDraftId);
