@@ -450,14 +450,14 @@ function exportInExcel() {
  * 导入模态框
  * */
 function importInExcelChoose() {
-    $("#importExcelModal1").modal('show');
+    $("#importExcelModal").modal('show');
 }
 
 /**
  * 下载模板
  * */
 function downloadInModal() {
-    var filePath = 'Files/Templates/辅料/备件入库单模板.xls';
+    var filePath = 'Files/Templates/辅料备件入库单模板.xls';
     var r = confirm("是否下载模板?");
     if (r === true) {
         window.open('downloadFile?filePath=' + filePath);
@@ -510,12 +510,12 @@ function searchIngredientIn() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    var state = {};
+    var state = null;
     if ($("#search-state").val() == 0) state = "NewBuild";//新建
     if ($("#search-state").val() == 1) state = "Invalid";//已作废
     if ($("#senior").is(':visible')) {
         data1 = {
-            date: $("#search-receiveDate").val(),
+            date: $("#search-creationDate").val(),
             id: $("#search-Id").val(),
             companyName: $("#search-companyName").val(),
             state: state,
@@ -527,7 +527,7 @@ function searchIngredientIn() {
             page: page
         };
     }
-    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    if (data1 == null) alert("请输入查询内容!");
     else {
         $.ajax({
             type: "POST",                            // 方法类型
@@ -754,8 +754,9 @@ function invalidIngredientsIn(item) {
             dataType: "json",
             success: function (result) {
                 if (result.status == "success") {
-                    alert("作废成功！");
-                    window.location.reload();
+                    //alert("作废成功！");
+                    divFadeAlert();
+                    setTimeout(function () { window.location.reload(); }, 1000);
                 } else {
                     alert(result.message);
                 }
@@ -768,3 +769,17 @@ function invalidIngredientsIn(item) {
     }
 }
 
+/**
+ * 提示框自动关闭,待完善
+ */
+function divFadeAlert(){
+    console.log("alert!");
+    var hidvalue_str=$('#hidvalue').val();
+    var divWidth=100;
+    var divHeight=100;
+    var iLeft=($(window).width()-divWidth)/2;
+    var iTop=($(window).height()-divHeight)/2+$(document).scrollTop();
+    var divhtml=$("<div>"+hidvalue_str+"</div>").css({position:'absolute',top:iTop+'px',left:iLeft+'px',display:'none',width:divWidth+'px',height:divHeight+'px'});
+    divhtml.appendTo('body').fadeIn();
+    divhtml.appendTo('body').fadeOut(3000);
+}
