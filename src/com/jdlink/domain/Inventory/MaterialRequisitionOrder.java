@@ -1,12 +1,9 @@
 package com.jdlink.domain.Inventory;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
-import com.jdlink.domain.QuotationItem;
-import com.jdlink.domain.Wastes;
 
 
 import java.util.Date;
@@ -51,6 +48,24 @@ public class MaterialRequisitionOrder {
     /*产废单位*/
     private Client client;
     private RecordState recordState;
+    private PackageType packageType;
+    private FormType formType;
+
+    public PackageType getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
+    }
+
+    public FormType getFormType() {
+        return formType;
+    }
+
+    public void setFormType(FormType formType) {
+        this.formType = formType;
+    }
 
     public RecordState getRecordState() {
         return recordState;

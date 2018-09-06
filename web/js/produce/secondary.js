@@ -159,7 +159,15 @@ function setWasteInventoryList(result) {
                         break;
                     // 危废名称
                     case (4):
-                        $(this).html(obj.laboratoryTest.wastesName);
+                        if(obj.laboratoryTest.wastesName=='slag'){
+                            $(this).html('炉渣');
+                        }
+                        if(obj.laboratoryTest.wastesName=='ash'){
+                            $(this).html('飞灰');
+                        }
+                        if(obj.laboratoryTest.wastesName=='bucket'){
+                            $(this).html('桶');
+                        }
                         break;
                     // 危废代码
                     case (5):
@@ -273,7 +281,15 @@ function setBatchingWList(result) {
                     break;
                 // 危废名称
                 case (3):
-                    $(this).html(obj.laboratoryTest.wastesName);
+                    if(obj.laboratoryTest.wastesName=='slag'){
+                        $(this).html('炉渣');
+                    }
+                    if(obj.laboratoryTest.wastesName=='ash'){
+                        $(this).html('飞灰');
+                    }
+                    if(obj.laboratoryTest.wastesName=='bucket'){
+                        $(this).html('桶');
+                    }
                     break;
                 // 危废代码
                 case (4):

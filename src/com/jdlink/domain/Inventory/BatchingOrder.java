@@ -1,12 +1,9 @@
 package com.jdlink.domain.Inventory;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
-import com.jdlink.domain.Salesman;
-import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +38,24 @@ import java.util.List;
 //    private Salesman salesman;
     private Wastes wastes;
     private String inboundOrderItemId;
+   private PackageType packageType;
+   private FormType formType;
+
+    public PackageType getPackageType() {
+        return packageType;
+    }
+
+    public FormType getFormType() {
+        return formType;
+    }
+
+    public void setFormType(FormType formType) {
+        this.formType = formType;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
+    }
 
     public String getInboundOrderItemId() {
         return inboundOrderItemId;

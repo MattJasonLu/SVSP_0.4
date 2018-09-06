@@ -28,4 +28,9 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     public int countWaste() {
         return wasteIntoMapper.countWaste();
     }
+
+    @Override
+    public List<WasteInto> SecondIntoList() {
+        return wasteIntoMapper.SecondIntoList();
+    }
 }

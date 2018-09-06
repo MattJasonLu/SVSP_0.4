@@ -364,7 +364,7 @@ function setWasteInventoryList(result) {
     tr.attr('class','myclass')
     $.each(result,function (index,item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        if(item.boundType.name=='危废入库'){
+        if(item.boundType.name=='次生入库'){
             var clonedTr = tr.clone();
             clonedTr.show();
             clonedTr.children("td").each(function (inner_index) {
@@ -397,26 +397,36 @@ function setWasteInventoryList(result) {
                         break;
                     // 危废名称
                     case (7):
-                        $(this).html(obj.laboratoryTest.wastesName);
+                        if(obj.laboratoryTest.wastesName=='slag'){
+                            $(this).html('炉渣');
+                        }
+                        if(obj.laboratoryTest.wastesName=='ash'){
+                            $(this).html('飞灰');
+                        }
+                        if(obj.laboratoryTest.wastesName=='bucket'){
+                            $(this).html('桶');
+                        }
+
+
                         break;
                     //危废类型
-                    case (8):
-                        $(this).html(obj.wastesCategory);
-                        break;
+                    // case (8):
+                    //     $(this).html(obj.wastesCategory);
+                    //     break;
                     //数量
-                    case (9):
+                    case (8):
                         $(this).html(obj.actualCount);
                         break;
                     //单价
-                    case (10):
-                        $(this).html(obj.quotationItem.unitPriceTax);
+                    case (9):
+                        $(this).html(obj.unitPriceTax);
                         break;
                     //总价
-                    case (11):
-                        $(this).html(parseInt(obj.actualCount)*(obj.quotationItem.unitPriceTax).toFixed(2)  );
+                    case (10):
+                        $(this).html(parseInt(obj.actualCount)*(obj.unitPriceTax).toFixed(2)  );
                         break;
                     //创建时间
-                    case (12):
+                    case (11):
                         $(this).html(getDateStr(obj.creatorDate));
                         break;
                 }
