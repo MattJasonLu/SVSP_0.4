@@ -5,7 +5,7 @@
      <mapper namespace="com.jdlink.mapper.WasteInventoryMapper" >
     <!--查找库存信息-->
     <resultMap id="WasteInventoryRM" type="WasteInventory" autoMapping="true">
-        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
+        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
         <collection property="wareHouse" select="getWareHouse" column="warseHouseId" ofType="WareHouse"></collection>
         <collection property="produceCompany" column="clientId" select="getClient"></collection>
         <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
@@ -15,8 +15,8 @@
         select  * from t_quotationitem  where clientId=#{clientId} and wastesCode=#{wastesCode};
     </select>
     <!--查询化验单信息给仓库-->
-    <select id="getLaboratoryTest" parameterType="java.util.Map" resultType="LaboratoryTest">
-        select  * from t_pr_laboratorytest where clientId=#{clientId} and wastesCode=#{wastesCode};
+    <select id="getLaboratoryTest" parameterType="String" resultType="LaboratoryTest">
+        select  * from t_pr_laboratorytest where laboratorytestnumber=#{laboratoryTestId};
     </select>
     <!--查询库存信息==>客户信息-->
     <resultMap id="WastesRM" type="Wastes">
@@ -35,7 +35,13 @@
     </resultMap>
     <!--查询库存信息-->
     <select id="list" resultMap="WasteInventoryRM">
-        select * from t_pl_wasteinventory;
+        select * from t_pl_wasteinventory order  by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+    <select id="list1" resultMap="WasteInventoryRM">
+        select * from t_pl_wasteinventory order  by nowTime desc;
     </select>
     <select id="getWasteInventoryByInboundOrderId" resultMap="WasteInventoryRM" parameterType="String">
         select * from t_pl_wasteinventory where  inboundOrderItemId=#{inboundOrderItemId};
@@ -147,7 +153,9 @@
         handelCategory=(select  handleCategory from  t_pl_wasteinventory where t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         processWay=(select processWay from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         wasteCategory=(select  wastesCategory from  t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
-        remarks=(select  remarks from  t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId)
+        remarks=(select  remarks from  t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId),
+        laboratoryTestId=( select laboratoryTestId from t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId)
+
 </update>
     <!--更新废物类别-->
     <update id="updateWastesCatogory">
@@ -169,6 +177,6 @@
     </select>
     <!--计算总共条数-->
     <select id="countInventory" resultType="int">
-        select count (*) from t_pl_wasteinventory;
+        select COUNT(*) from t_pl_wasteinventory;
     </select>
 </mapper>
