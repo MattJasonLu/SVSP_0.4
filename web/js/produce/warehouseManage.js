@@ -308,6 +308,7 @@ function addInboundOrder(type) {
         success: function (result) {
             if (result !== undefined && result.status == "success") {
                 alert(result.message);
+                $(location).prop('href', 'warehouseManage.html');
             } else {
                 alert(result.message);
             }
@@ -647,7 +648,13 @@ function setInboundOrderDataList(result) {
         if (data.wareHouseName != null)
         clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.boundType != null)
+        clonedTr.find("td[name='creatorId']").text(data.creatorId);
+        clonedTr.find("td[name='keeperId']").text(data.keeperId);
+        clonedTr.find("td[name='directorId']").text(data.directorId);
+        clonedTr.find("td[name='approverId']").text(data.approverId);
         clonedTr.find("td[name='boundType']").text(data.boundType.name);
+        if (data.recordState != null)
+        clonedTr.find("td[name='recordState']").text(data.recordState.name);
         if (data.checkState != null)
         clonedTr.find("td[name='checkState']").text(data.checkState.name);
         clonedTr.find("td[name='remarks']").text(data.remarks);
