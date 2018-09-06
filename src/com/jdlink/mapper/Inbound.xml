@@ -20,7 +20,7 @@
     <resultMap id="InboundOrderRM" type="InboundOrder" autoMapping="true">
         <id column="inboundOrderId" property="inboundOrderId"/>
         <collection property="inboundOrderItemList" column="inboundOrderId" select="getInboundOrderItemList"
-                    ofType="com.jdlink.domain.Produce.Parameter" javaType="ArrayList"/>
+                    ofType="com.jdlink.domain.Inventory.InboundOrderItem" javaType="ArrayList"/>
     </resultMap>
 
     <resultMap id="InboundOrderItemRM" type="InboundOrderItem" autoMapping="true">
@@ -31,6 +31,7 @@
             <result property="wastesId" column="wastesCode"/>
             <result property="category" column="wastesCategory"/>
         </association>
+        <association property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"/>
     </resultMap>
 
     <select id="listInboundPlanOrder" resultMap="InboundPlanOrderRM">
@@ -91,6 +92,9 @@
     <select id="getAcceptCompany" parameterType="String" resultType="Client">
         SELECT * FROM client WHERE clientId=#{acceptCompanyId};
     </select>
+    <select id="getLaboratoryTest" parameterType="String" resultType="LaboratoryTest">
+        SELECT * FROM t_pr_laboratorytest WHERE laboratorytestnumber=#{laboratoryTestId};
+    </select>
 
     <!--增加入库单-->
     <insert id="addInboundOrder" parameterType="InboundOrder">
@@ -105,7 +109,7 @@
                 produceCompanyId, processWay, handleCategory,
                 remarks, warehouseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,
                 unitPriceTax,
-                totalPrice, laboratoryTestId, category) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
+                totalPrice, laboratoryTestId, category, formType, packageType) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
                 #{inboundOrderItem.inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
                 #{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
@@ -113,7 +117,7 @@
                 #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
-                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 0);
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 0, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
             </foreach>
         </if>
         <if test="inboundOrderItemList.size() > 0">
@@ -144,7 +148,7 @@
                 produceCompanyId, processWay, handleCategory,
                 remarks, warehouseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,
                 unitPriceTax,
-                totalPrice, laboratoryTestId, category) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
+                totalPrice, laboratoryTestId, category, formType, packageType) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
                 #{inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
                 #{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
@@ -152,11 +156,16 @@
                 #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
-                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1);
-            </foreach>
-        </if>
-        <if test="inboundOrderItemList.size() > 0">
-            <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
+
+                INSERT INTO t_pr_laboratorytest (laboratorytestnumber, clientId, wastesName, wastesCode, heatAverage, phAverage, ashAverage, waterContentAverage, chlorineContentAverage,
+                sulfurContentAverage, phosphorusContentAverage, fluorineContentAverage) VALUES (#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},
+                #{inboundOrderItem.laboratoryTest.client.clientId}, #{inboundOrderItem.laboratoryTest.wastesName}, #{inboundOrderItem.laboratoryTest.wastesCode},
+                #{inboundOrderItem.laboratoryTest.heatAverage}, #{inboundOrderItem.laboratoryTest.phAverage}, #{inboundOrderItem.laboratoryTest.ashAverage},
+                #{inboundOrderItem.laboratoryTest.waterContentAverage}, #{inboundOrderItem.laboratoryTest.chlorineContentAverage},
+                #{inboundOrderItem.laboratoryTest.sulfurContentAverage}, #{inboundOrderItem.laboratoryTest.phosphorusContentAverage},
+                #{inboundOrderItem.laboratoryTest.fluorineContentAverage});
+
                 insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks,laboratoryTestId,wastesCategory,unitPriceTax)
                 values (#{inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},NOW(),
                 #{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},NOW(),#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.remarks},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},
