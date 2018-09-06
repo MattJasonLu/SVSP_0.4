@@ -23,7 +23,7 @@
     </select>
     <!--获得配料单对象-->
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
-        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
+        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
         <collection property="client" column="clientId"  select="getClient" ofType="com.jdlink.domain.Client"></collection>
     <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
     </resultMap>
@@ -31,7 +31,7 @@
         select * from t_quotationitem where clientId=#{clientId} and wastesCode=#{wastesCode};
     </select>
     <select id="getLaboratoryTest" resultType="LaboratoryTest">
-        select * from t_pr_laboratorytest where clientId=#{clientId} and wastesCode=#{wastesCode}
+        select * from t_pr_laboratorytest where laboratorytestnumber=#{laboratoryTestId};
     </select>
     <resultMap id="BatchingOrderRM" type="BatchingOrder">
         <collection property="wasteInventory" column="inboundOrderId" ofType="WasteInventory" select="getWasteInventory"></collection>
@@ -93,7 +93,9 @@
          handelCategory=(select  handelCategory from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
          processWay=(select t_pl_batchingorder.processWay from t_pl_batchingorder where  t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
          wasteCategory=(select  wasteCategory from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
-         remarks=(select  remarks from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId)
+         remarks=(select  remarks from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
+         laboratoryTestId=(select laboratoryTestId from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId)
+
 </update>
     <!--更新特有结构人-->
     <update id="updateMaterialRequisitionOrder1" parameterType="MaterialRequisitionOrder">
