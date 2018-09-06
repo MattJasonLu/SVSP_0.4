@@ -130,4 +130,19 @@ public class InboundServiceImpl implements InboundService {
         return inboundMapper.countInboundOrder();
     }
 
+    @Override
+    public int countSecondInboundOrder() {
+        return inboundMapper.countSecondInboundOrder();
+    }
+
+    @Override
+    public List<InboundOrder> listSecondInboundOrder(Page page) {
+        return inboundMapper.listSecondInboundOrder(page);
+    }
+
+    @Override
+    public void addSecondInboundOrder(InboundOrder inboundOrder) {
+        inboundMapper.addSecondInboundOrder(inboundOrder);
+    }
+
 }

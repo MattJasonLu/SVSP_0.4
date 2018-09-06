@@ -2,6 +2,7 @@ package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.Wastes;
 
@@ -66,6 +67,10 @@ public class InboundOrderItem {
      * 记录状态
      */
     private RecordState recordState;
+    /**
+     * 化验单
+     */
+    private LaboratoryTest laboratoryTest;
     /**
      * 化验结果是否合格
      */
@@ -189,6 +194,14 @@ public class InboundOrderItem {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public LaboratoryTest getLaboratoryTest() {
+        return laboratoryTest;
+    }
+
+    public void setLaboratoryTest(LaboratoryTest laboratoryTest) {
+        this.laboratoryTest = laboratoryTest;
     }
 
     @Override
