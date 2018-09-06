@@ -2,8 +2,10 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.domain.Inventory.*;
+import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
+import com.jdlink.service.LaboratoryTestService;
 import com.jdlink.service.QuotationService;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
@@ -31,6 +33,8 @@ public class InboundController {
     ClientService clientService;
     @Autowired
     QuotationService quotationService;
+    @Autowired
+    LaboratoryTestService laboratoryTestService;
 
     /**
      * 列出所有入库计划单信息
@@ -107,7 +111,7 @@ public class InboundController {
             // 设置审核状态
             inboundOrder.setCheckState(CheckState.NewBuild);
             // 设置入库类别
-            inboundOrder.setBoundType(BoundType.NormalOutbound);
+            inboundOrder.setBoundType(BoundType.WasteInbound);
             // 获取用户登录信息
             User user = (User) session.getAttribute("user");
             if (user != null) {
@@ -129,6 +133,11 @@ public class InboundController {
                 Client produceCompany = clientService.getByName(inboundOrderItem.getProduceCompany().getCompanyName());
                 // 设置生产单位
                 inboundOrderItem.setProduceCompany(produceCompany);
+                // 根据客户编号和危废编码找到化验单中的对应的信息，绑定
+                String clientId = produceCompany.getClientId();
+                String wastesCode = inboundOrderItem.getWastes().getWastesId();
+                LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(wastesCode, clientId);
+                if (laboratoryTest != null) inboundOrderItem.setLaboratoryTest(laboratoryTest);
             }
             // 增加入库单
             inboundService.addInboundOrder(inboundOrder);
@@ -240,6 +249,80 @@ public class InboundController {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 获取入库单的数量
+     * @return 入库单数量
+     */
+    @RequestMapping("countSecondInboundOrder")
+    @ResponseBody
+    public int countSecondInboundOrder() {
+        try {
+            return inboundService.countSecondInboundOrder();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 列出所有次生入库单
+     * @return 次生入库单列表
+     */
+    @RequestMapping("listSecondInboundOrder")
+    @ResponseBody
+    public String listSecondInboundOrder(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取入库单列表
+            List<InboundOrder> inboundOrderList = inboundService.listSecondInboundOrder(page);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("addSecondInboundOrder")
+    @ResponseBody
+    public String addSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
+            // 获取入库单列表
+            inboundOrder.setBoundType(BoundType.SecondaryInbound);
+            inboundOrder.setCheckState(CheckState.NewBuild);
+            inboundOrder.setRecordState(RecordState.Usable);
+            for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
+                inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
+                String companyName = inboundOrderItem.getProduceCompany().getCompanyName();
+                // 通过名字查找客户
+                Client produceCompany = clientService.getByName(companyName);
+                // 如果查找到的公司为空则添加到客户表
+                if (produceCompany == null) {
+                    inboundOrderItem.getProduceCompany().setClientId(clientService.getCurrentId());
+                    clientService.add(inboundOrderItem.getProduceCompany());
+                } else {
+                    inboundOrderItem.setProduceCompany(produceCompany);
+                }
+                // 设置编号
+                inboundOrderItem.getLaboratoryTest().setLaboratoryTestNumber(laboratoryTestService.getCurrentId());
+            }
+            inboundService.addSecondInboundOrder(inboundOrder);
+            res.put("status", "success");
+            res.put("message", "增加次生入库单成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "增加次生入库单失败");
+        }
+        return res.toString();
     }
 
 }

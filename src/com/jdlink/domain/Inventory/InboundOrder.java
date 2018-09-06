@@ -93,6 +93,10 @@ public class InboundOrder {
      * 入库单明细列表
      */
     private List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
+    /**
+     * 类别（危废、次生）
+     */
+    private int category;
 
     public String getInboundOrderId() {
         return inboundOrderId;
@@ -228,6 +232,14 @@ public class InboundOrder {
 
     public void setInboundOrderItemList(List<InboundOrderItem> inboundOrderItemList) {
         this.inboundOrderItemList = inboundOrderItemList;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 
     @Override
