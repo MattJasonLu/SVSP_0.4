@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.BatchingOrder;
 import com.jdlink.domain.Inventory.WasteInventory;
+import com.jdlink.domain.Page;
 import com.jdlink.mapper.WasteInventoryMapper;
 import com.jdlink.service.WasteInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,13 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     WasteInventoryMapper wasteInventoryMapper;
 
     @Override
-    public List<WasteInventory> list() {
-        return wasteInventoryMapper.list();
+    public List<WasteInventory> list(Page page) {
+        return wasteInventoryMapper.list(page);
+    }
+
+    @Override
+    public List<WasteInventory> list1() {
+        return wasteInventoryMapper.list1();
     }
 
     @Override
