@@ -430,9 +430,9 @@ function addData(state) {
             unitPriceTax: tr.find("input[name='unitPriceTax']").val(),
             totalPrice: tr.find("input[name='totalPrice']").val(),
             processWay: tr.find("select[name='processWay']").val(),
-            handleCategory: tr.find("input[select='handleCategory']").val(),
-            formType: tr.find("input[select='formType']").val(),
-            packageType: tr.find("input[select='packageType']").val(),
+            handleCategory: tr.find("select[name='handleCategory']").val(),
+            formType: tr.find("select[name='formType']").val(),
+            packageType: tr.find("select[name='packageType']").val(),
             laboratoryTest: {
                 heatAverage: tr.find("input[name='heat']").val(),
                 phAverage: tr.find("input[name='ph']").val(),
@@ -480,33 +480,31 @@ function addData(state) {
  * 作废转移联单
  */
 function setInvalid(e) {    //已作废
-    alert("功能开发中，敬请期待！");
-    // var r = confirm("确认作废该联单吗？");
-    // if (r) {
-    //     var id = getIdByMenu(e);
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "setTransferDraftInvalid",
-    //         async: false,
-    //         dataType: "json",
-    //         data: {
-    //             id: id
-    //         },
-    //         success: function (result) {
-    //             if (result !== undefined && result.status === "success") {
-    //                 console.log(result);
-    //                 alert(result.message);
-    //                 window.location.reload();
-    //             } else {
-    //                 alert(result.message);
-    //             }
-    //         },
-    //         error: function (result) {
-    //             console.log(result);
-    //             alert("服务器异常");
-    //         }
-    //     });
-    // }
+    var r = confirm("确认作废该入库单吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",
+            url: "setInboundOrderStateInvalid",
+            async: false,
+            dataType: "json",
+            data: {
+                inboundOrderId: id
+            },
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
 }
 
 /**

@@ -117,7 +117,7 @@
                 #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
-                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 0, #{formType}, #{packageType});
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 0, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
             </foreach>
         </if>
         <if test="inboundOrderItemList.size() > 0">
@@ -156,7 +156,15 @@
                 #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
-                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1, #{formType}, #{packageType});
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1, #{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
+
+                INSERT INTO t_pr_laboratorytest (laboratorytestnumber, clientId, wastesName, wastesCode, heatAverage, phAverage, ashAverage, waterContentAverage, chlorineContentAverage,
+                sulfurContentAverage, phosphorusContentAverage, fluorineContentAverage) VALUES (#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},
+                #{inboundOrderItem.laboratoryTest.client.clientId}, #{inboundOrderItem.laboratoryTest.wastesName}, #{inboundOrderItem.laboratoryTest.wastesCode},
+                #{inboundOrderItem.laboratoryTest.heatAverage}, #{inboundOrderItem.laboratoryTest.phAverage}, #{inboundOrderItem.laboratoryTest.ashAverage},
+                #{inboundOrderItem.laboratoryTest.waterContentAverage}, #{inboundOrderItem.laboratoryTest.chlorineContentAverage},
+                #{inboundOrderItem.laboratoryTest.sulfurContentAverage}, #{inboundOrderItem.laboratoryTest.phosphorusContentAverage},
+                #{inboundOrderItem.laboratoryTest.fluorineContentAverage});
             </foreach>
         </if>
     </insert>

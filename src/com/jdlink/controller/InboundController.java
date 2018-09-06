@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -294,11 +295,20 @@ public class InboundController {
     public String addSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
         JSONObject res = new JSONObject();
         try {
+            //得到一个NumberFormat的实例
+            NumberFormat nf = NumberFormat.getInstance();
+            //设置是否使用分组
+            nf.setGroupingUsed(false);
+            //设置最大整数位数
+            nf.setMaximumIntegerDigits(4);
+            //设置最小整数位数
+            nf.setMinimumIntegerDigits(4);
             inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
             // 获取入库单列表
             inboundOrder.setBoundType(BoundType.SecondaryInbound);
             inboundOrder.setCheckState(CheckState.NewBuild);
             inboundOrder.setRecordState(RecordState.Usable);
+            String labId = laboratoryTestService.getCurrentId();
             for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
                 String companyName = inboundOrderItem.getProduceCompany().getCompanyName();
@@ -312,7 +322,17 @@ public class InboundController {
                     inboundOrderItem.setProduceCompany(produceCompany);
                 }
                 // 设置编号
-                inboundOrderItem.getLaboratoryTest().setLaboratoryTestNumber(laboratoryTestService.getCurrentId());
+                inboundOrderItem.getLaboratoryTest().setLaboratoryTestNumber(labId);
+                inboundOrderItem.getLaboratoryTest().setClient(produceCompany);
+                inboundOrderItem.getLaboratoryTest().setWastesName(inboundOrderItem.getWastes().getName());
+                inboundOrderItem.getLaboratoryTest().setWastesCode(inboundOrderItem.getWastes().getWastesId());
+                // 自增编号
+                int num = Integer.parseInt(labId);
+                do {
+                    num += 1;
+                    labId = nf.format(num);
+                } while (laboratoryTestService.getLaboratoryTestById(labId) != null);
+                labId = nf.format(num);
             }
             inboundService.addSecondInboundOrder(inboundOrder);
             res.put("status", "success");
