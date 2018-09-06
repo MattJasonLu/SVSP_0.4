@@ -113,7 +113,7 @@
                 #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
                 #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
-                #{inboundOrderItem.laboratoryTest.laboratorytestnumber}, 0);
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 0);
             </foreach>
         </if>
         <if test="inboundOrderItemList.size() > 0">

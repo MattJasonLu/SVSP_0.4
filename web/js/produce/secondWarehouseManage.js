@@ -332,6 +332,13 @@ function setDataList(result) {
         clonedTr.find("td[name='inboundDate']").text(getDateStr(data.inboundDate));
         if (data.wareHouse != null) clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.boundType != null) clonedTr.find("td[name='boundType']").text(data.boundType.name);
+        if (data.recordState != null) clonedTr.find("td[name='recordState']").text(data.recordState.name);
+        clonedTr.find("td[name='creatorId']").text(data.creatorId);
+        clonedTr.find("td[name='keeperId']").text(data.keeperId);
+        clonedTr.find("td[name='directorId']").text(data.directorId);
+        clonedTr.find("td[name='approverId']").text(data.approverId);
+        if (data.checkState != null) clonedTr.find("td[name='checkState']").text(data.checkState.name);
+        clonedTr.find("td[name='remarks']").text(data.remarks);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -473,32 +480,33 @@ function addData(state) {
  * 作废转移联单
  */
 function setInvalid(e) {    //已作废
-    var r = confirm("确认作废该联单吗？");
-    if (r) {
-        var id = getIdByMenu(e);
-        $.ajax({
-            type: "POST",
-            url: "setTransferDraftInvalid",
-            async: false,
-            dataType: "json",
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result !== undefined && result.status === "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
-    }
+    alert("功能开发中，敬请期待！");
+    // var r = confirm("确认作废该联单吗？");
+    // if (r) {
+    //     var id = getIdByMenu(e);
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "setTransferDraftInvalid",
+    //         async: false,
+    //         dataType: "json",
+    //         data: {
+    //             id: id
+    //         },
+    //         success: function (result) {
+    //             if (result !== undefined && result.status === "success") {
+    //                 console.log(result);
+    //                 alert(result.message);
+    //                 window.location.reload();
+    //             } else {
+    //                 alert(result.message);
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log(result);
+    //             alert("服务器异常");
+    //         }
+    //     });
+    // }
 }
 
 /**
@@ -648,147 +656,25 @@ function loadData() {
  * @param e
  */
 function viewData(e) {
-    var id = getIdByMenu(e);
-    $.ajax({
-        type: "POST",
-        url: "getTransferDraftById",
-        async: false,
-        dataType: "json",
-        data: {"id": id},
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                var date = eval(result);
-                $("#produceCompanyName").val(date.acceptCompany.companyName);
-                $("#produceCompanyPhone").val(date.acceptCompany.phone);
-                $("#produceCompanyLocation").val(date.produceCompanyLocation);
-                $("#transportCompanyName").val(date.transportCompanyName);
-                $("#transportCompanyLocation").val(date.transportCompanyLocation);
-                $("#acceptCompanyName").val(date.acceptCompanyName);
-                $("#acceptCompanyLocation").val(date.acceptCompanyLocation);
-                $("#produceCompanyPostcode").val(date.produceCompanyPostcode);
-                $("#transportCompanyPhone").val(date.transportCompanyPhone);
-                $("#transportCompanyPostcode").val(date.transportCompanyPostcode);
-                $("#acceptCompanyPhone").val(date.acceptCompanyPhone);
-                $("#acceptCompanyPostcode").val(date.acceptCompanyPostcode);
-                $("#wastesName").val(date.wastesName);
-                $("#wastesPrepareTransferCount").val(date.wastesPrepareTransferCount);
-                $("#wastesCharacter").val(date.wastesCharacter);
-                $("#wastesCategory").val(date.wastesCategory);
-                $("#wastesTransferCount").val(date.wastesTransferCount);
-                if(date.wastesFormType !== null) $("#wastesFormType").val(date.wastesFormType);
-                $("#wastesCode").val(date.wastesCode);
-                $("#wastesSignCount").val(date.wastesSignCount);
-                if(date.wastesPackageType !== null) $("#wastesPackageType").val(date.wastesPackageType);
-                $("#outwardIsTransit").val(date.outwardIsTransit);
-                $("#outwardIsUse").val(date.outwardIsUse);
-                $("#outwardIsDeal").val(date.outwardIsDeal);
-                $("#outwardIsDispose").val(date.outwardIsDispose);
-                $("#mainDangerComponent").val(date.mainDangerComponent);
-                $("#dangerCharacter").val(date.dangerCharacter);
-                $("#emergencyMeasure").val(date.emergencyMeasure);
-                $("#emergencyEquipment").val(date.emergencyEquipment);
-                $("#dispatcher").val(date.dispatcher);
-                $("#destination").val(date.destination);
-                $("#transferTime").val(date.transferTime);
-                $("#firstCarrier").val(date.firstCarrier);
-                $("#firstCarryTime").val(date.firstCarryTime);
-                $("#firstModel").val(date.firstModel);
-                $("#firstBrand").val(date.firstBrand);
-                $("#firstTransportNumber").val(date.firstTransportNumber);
-                $("#firstOrigin").val(date.firstOrigin);
-                $("#firstStation").val(date.firstStation);
-                $("#firstDestination").val(date.firstDestination);
-                $("#firstCarrierSign").val(date.firstCarrierSign);
-                $("#secondCarrier").val(date.secondCarrier);
-                $("#secondCarryTime").val(date.secondCarryTime);
-                $("#secondModel").val(date.secondModel);
-                $("#secondBrand").val(date.secondBrand);
-                $("#secondTransportNumber").val(date.secondTransportNumber);
-                $("#secondOrigin").val(date.secondOrigin);
-                $("#secondStation").val(date.secondStation);
-                $("#secondDestination").val(date.secondDestination);
-                $("#secondCarrierSign").val(date.secondCarrierSign);
-                $("#acceptCompanyLicense").val(date.acceptCompanyLicense);
-                $("#recipient").val(date.recipient);
-                $("#acceptDate").val(date.acceptDate);
-                $("#disposeIsUse").val(date.disposeIsUse);
-                $("#disposeIsStore").val(date.disposeIsStore);
-                $("#disposeIsBurn").val(date.disposeIsBurn);
-                $("#disposeIsLandFill").val(date.disposeIsLandFill);
-                $("#disposeIsOther").val(date.disposeIsOther);
-                $("#headSign").val(date.headSign);
-                $("#signDate").val(date.signDate);
-            } else {
-                alert(result.message);
-                $("#produceCompanyName").val("");
-                $("#produceCompanyPhone").val("");
-                $("#produceCompanyLocation").val("");
-                $("#transportCompanyName").val("");
-                $("#transportCompanyLocation").val("");
-                $("#acceptCompanyName").val("");
-                $("#acceptCompanyLocation").val("");
-                $("#produceCompanyPostcode").val("");
-                $("#transportCompanyPhone").val("");
-                $("#transportCompanyPostcode").val("");
-                $("#acceptCompanyPhone").val("");
-                $("#acceptCompanyPostcode").val("");
-                $("#wastesName").val("");
-                $("#wastesPrepareTransferCount").val("");
-                $("#wastesCharacter").val("");
-                $("#wastesCategory").val("");
-                $("#wastesTransferCount").val("");
-                $("#wastesFormType").val("");
-                $("#wastesCode").val("");
-                $("#wastesSignCount").val("");
-                $("#wastesPackageType").val("");
-                $("#outwardIsTransit").val("");
-                $("#outwardIsUse").val("");
-                $("#outwardIsDeal").val("");
-                $("#outwardIsDispose").val("");
-                $("#mainDangerComponent").val("");
-                $("#dangerCharacter").val("");
-                $("#emergencyMeasure").val("");
-                $("#emergencyEquipment").val("");
-                $("#dispatcher").val("");
-                $("#destination").val("");
-                $("#transferTime").val("");
-                $("#firstCarrier").val("");
-                $("#firstCarryTime").val("");
-                $("#firstModel").val("");
-                $("#firstBrand").val("");
-                $("#firstTransportNumber").val("");
-                $("#firstOrigin").val("");
-                $("#firstStation").val("");
-                $("#firstDestination").val("");
-                $("#firstCarrierSign").val("");
-                $("#secondCarrier").val("");
-                $("#secondCarryTime").val("");
-                $("#secondModel").val("");
-                $("#secondBrand").val("");
-                $("#secondTransportNumber").val("");
-                $("#secondOrigin").val("");
-                $("#secondStation").val("");
-                $("#secondDestination").val("");
-                $("#secondCarrierSign").val("");
-                $("#acceptCompanyLicense").val("");
-                $("#recipient").val("");
-                $("#acceptDate").val("");
-                $("#disposeIsUse").val("");
-                $("#disposeIsStore").val("");
-                $("#disposeIsBurn").val("");
-                $("#disposeIsLandFill").val("");
-                $("#disposeIsOther").val("");
-                $("#headSign").val("");
-                $("#signDate").val("");
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("服务器异常");
-        }
-    });
-    $("#appointModal2").modal("show");
+    alert("功能开发中，敬请期待！");
+    // $.ajax({
+    //     type: "POST",
+    //     url: "",
+    //     async: false,
+    //     dataType: "json",
+    //     data: {"id": id},
+    //     success: function (result) {
+    //         if (result !== undefined && result.status === "success") {
+    //             console.log(result);
+    //
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //         alert("服务器异常");
+    //     }
+    // });
+    // $("#appointModal2").modal("show");
 }
 
 /**
