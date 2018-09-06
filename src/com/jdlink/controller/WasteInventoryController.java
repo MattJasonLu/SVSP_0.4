@@ -1,12 +1,9 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Inventory.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.MaterialRequire;
-import com.jdlink.domain.Quotation;
-import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -41,23 +38,23 @@ public class WasteInventoryController {
    //获得库存信息（无参数）
     @RequestMapping("getWasteInventoryList")
     @ResponseBody
-    public String getWasteInventoryList(){
+    public String getWasteInventoryList(@RequestBody Page page){
         JSONObject res=new JSONObject();
         try{
             wasteInventoryService.updateLeftNumber();
 
-            List<WasteInventory> wasteInventoryList= wasteInventoryService.list();
+            List<WasteInventory> wasteInventoryList= wasteInventoryService.list(page);
             JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
            // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
             //更新剩余库存量
             res.put("status", "success");
-            res.put("message", "查询成功");
+            res.put("message", "分页数据获取成功!");
            res.put("data", arrray);
         }
         catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "查询失败");
+            res.put("message", "分页数据获取失败！");
         }
 
 
@@ -161,7 +158,7 @@ public class WasteInventoryController {
         //添加完更新当前的配料对象
         List<BatchingOrder> batchingOrderList=  wasteInventoryService.getBatchingOrderList();
         wasteInventoryService.updateBatching(batchingOrderList.get(0));
-        List<WasteInventory> wasteInventoryList= wasteInventoryService.list();
+        List<WasteInventory> wasteInventoryList= wasteInventoryService.list1();
         for (int i=0;i<wasteInventoryList.size();i++){
             //更新库存的数量
             wasteInventoryService.batchingNumber(wasteInventoryList.get(i));

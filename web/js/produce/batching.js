@@ -5,11 +5,14 @@ var isSearch = false;
 array=[];//数组用来存放入库编号
 array1=[]//数组用来存放剩余量的
 function  batchingList() {
+    var page={};
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWasteInventoryList",                  // url
+        data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
+        contentType: "application/json; charset=utf-8",
         success:function (result) {
          if(result != undefined && result.status == "success"){
              console.log(result);
@@ -45,7 +48,7 @@ function setWasteInventoryList(result) {
     console.log(result);
     //tr.siblings().remove();
         $.each(result, function (index, item) {
-            if(item.actualCount>0){
+            if(item.actualCount>0&&item.boundType.name=='危废入库'){
                 // 克隆tr，每次遍历都可以产生新的tr
                 var clonedTr = tr.clone();
                 clonedTr.show();
@@ -57,7 +60,6 @@ function setWasteInventoryList(result) {
                         // 入库编号
                         case (1):
                             $(this).html(obj.inboundOrderId);
-
                             break;
                         // 仓库号
                         case (2):
