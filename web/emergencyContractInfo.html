@@ -152,7 +152,7 @@
 </script>
 
 <body onload="loadContractSelectList();">
-<nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
         <ul class="nav navbar-nav navbar-left navbar-side">
             <li>
@@ -168,47 +168,52 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
             <ul class="nav navbar-nav">
-                <li><a href="wastesPlatform.html">首页</a></li>
+                <li><a href="businessModel.html">首页</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html">客户备案</a></li>
+                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="salesManage.html">业务员分配管理</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">业务员分配管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
+                            </ul>
+                        </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="questionnaireManage.html">危废数据调查表管理</a></li>
+                        <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html">客户样品登记</a></li>
+                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="wayBill.html">接运单管理</a></li>
+                        <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html">供应商备案</a></li>
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="contractManage.html">合同列表</a></li>
+                        <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="contractTemplate.html">合同模板</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="salesmanContract.html">业务员合同</a></li>
+                        <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="quotation.html">报价管理</a></li>
+                        <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="cost.html">成本管理</a></li>
+                        <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
                     </ul>
                 </li>
-                <li><a href="archivesManage.html">一企一档</a></li>
-                <li><a href="stockManage.html">库存申报</a></li>
+                <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
+                <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -225,6 +230,7 @@
             </ul>
         </li>
     </ul>
+
 </nav>
 <div class="container-fluid">
     <div class="row">

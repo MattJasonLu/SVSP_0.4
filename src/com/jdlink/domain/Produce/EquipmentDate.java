@@ -9,9 +9,13 @@ public class EquipmentDate {
      */
     private int id;
     /**
+     * 单据号
+     */
+    private String documentNumber;
+    /**
      * 故障设备
      */
-    private String Equipment;
+    private String equipment;
     /**
      * 运行时间(h)
      */
@@ -37,7 +41,7 @@ public class EquipmentDate {
      */
     private String creator;
     /**
-     * 创建日期
+     * 创建部门
      */
     private String createDept;
     /**
@@ -55,6 +59,14 @@ public class EquipmentDate {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public String getDocumentNumber() {
+        return documentNumber;
+    }
+
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
     }
 
     public String getCreateDept() {
@@ -98,11 +110,11 @@ public class EquipmentDate {
     }
 
     public String getEquipment() {
-        return Equipment;
+        return equipment;
     }
 
     public void setEquipment(String equipment) {
-        Equipment = equipment;
+        this.equipment = equipment;
     }
 
     public float getRunningTime() {
@@ -141,7 +153,8 @@ public class EquipmentDate {
     public String toString() {
         return "EquipmentDate{" +
                 "id=" + id +
-                ", Equipment='" + Equipment + '\'' +
+                ", documentNumber='" + documentNumber + '\'' +
+                ", equipment='" + equipment + '\'' +
                 ", runningTime=" + runningTime +
                 ", stopTime=" + stopTime +
                 ", stopResult='" + stopResult + '\'' +

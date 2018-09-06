@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.IngredientsMapper">
+    <!-- 入库单-->
+    <resultMap id="IngredientsInRM" type="IngredientsIn" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="ingredientsList" select="getInItems" column="id"
+                    ofType="com.jdlink.domain.Produce.Ingredients"
+                    javaType="ArrayList"/>
+    </resultMap>
+
+    <resultMap id="InIngredientsRM" type="Ingredients" autoMapping="true">
+        <id column="itemId" property="itemId"/>
+        <result column="inId" property="id"/>
+        <result column="serialNumberIn" property="serialNumber"/>
+    </resultMap>
+
+    <select id="getInItems" parameterType="String" resultMap="InIngredientsRM">
+        select * from t_pr_ingredients where inId = #{id};
+    </select>
+
+    <select id="countInById" resultType="int">
+        select count(*) from t_pr_ingredients_in where id like "%"#{id}"%";
+    </select>
+
+    <select id="countIn" resultType="int">
+        select count(*) from t_pr_ingredients_in;
+    </select>
+
+    <select id="listPageIn" resultMap="IngredientsInRM">
+        select * from t_pr_ingredients_in order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="getInById" parameterType="String" resultMap="IngredientsInRM">
+          select * from t_pr_ingredients_in where id = #{id};
+     </select>
+
+    <select id="searchIn" parameterType="IngredientsIn" resultMap="IngredientsInRM">
+        select * from t_pr_ingredients_in
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or companyName like "%"#{keywords}"%"
+                or fileId like "%"#{keywords}"%"
+                or totalPrice = #{keywords}
+                or bookkeeper like "%"#{keywords}"%"
+                or approver like "%"#{keywords}"%"
+                or keeper like "%"#{keywords}"%"
+                or acceptor like "%"#{keywords}"%"
+                or handlers like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="date != null and date !=''">
+                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="companyName !=null and companyName !='' ">
+                and companyName like "%"#{companyName}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchInCount" parameterType="IngredientsIn" resultType="int">
+        select count(*) from t_pr_ingredients_in
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or companyName like "%"#{keywords}"%"
+                or fileId like "%"#{keywords}"%"
+                or totalPrice = #{keywords}
+                or bookkeeper like "%"#{keywords}"%"
+                or approver like "%"#{keywords}"%"
+                or keeper like "%"#{keywords}"%"
+                or acceptor like "%"#{keywords}"%"
+                or handlers like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="date != null and date !=''">
+                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="companyName !=null and companyName !='' ">
+                and companyName like "%"#{companyName}"%"
+            </if>
+        </where>
+    </select>
+
+    <update id="invalidIn" parameterType="String">
+        update t_pr_ingredients_in set state = 'Invalid' where id = #{id}
+    </update>
+
+    <update id="updateIn" parameterType="IngredientsIn">
+        update t_pr_ingredients_in
+        set
+        companyName=#{companyName},fileId=#{fileId},totalPrice=#{totalPrice},bookkeeper=#{bookkeeper},approver=#{approver},
+        keeper=#{keeper},acceptor=#{acceptor},handlers=#{handlers},nowTime=NOW()
+        where id = #{id};
+
+        <if test="ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                update t_pr_ingredients
+                set
+                name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
+                amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks}
+                where inId = #{ingredients.id} and serialNumberIn = #{ingredients.serialNumber};
+            </foreach>
+        </if>
+    </update>
+
+    <insert id="addIn" parameterType="IngredientsIn">
+        insert into t_pr_ingredients_in
+        (id, companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
+        acceptor,handlers,state,nowTime)
+        values
+        (#{id},#{companyName},NOW(),#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},
+        #{acceptor},#{handlers},'NewBuild',NOW());
+        <if test="ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                insert into t_pr_ingredients
+                (inId,serialNumberIn,name,unitPrice,totalPrice,
+                amount,wareHouseName,post,specification,unit, ingredientState,remarks)
+                values
+                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
+                #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
+                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks});
+            </foreach>
+        </if>
+    </insert>
+
+
+    <!--领料单-->
+
+    <resultMap id="IngredientsReceiveRM" type="IngredientsReceive" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="ingredientsList" select="getReceiveItems" column="id"
+                    ofType="com.jdlink.domain.Produce.Ingredients"
+                    javaType="ArrayList"/>
+    </resultMap>
+
+    <resultMap id="ReceiveIngredientsRM" type="Ingredients" autoMapping="true">
+        <id column="itemId" property="itemId"/>
+        <result column="receiveId" property="id"/>
+        <result column="serialNumberReceive" property="serialNumber"/>
+    </resultMap>
+
+    <select id="getReceiveItems" parameterType="String" resultMap="ReceiveIngredientsRM">
+        select * from t_pr_ingredients where receiveId = #{id};
+    </select>
+
+    <select id="countReceiveById" resultType="int">
+        select count(*) from t_pr_ingredients_receive where id like "%"#{id}"%";
+    </select>
+
+    <select id="countReceive" resultType="int">
+        select count(*) from t_pr_ingredients_receive;
+    </select>
+
+    <select id="listPageReceive" resultMap="IngredientsReceiveRM">
+        select * from t_pr_ingredients_receive order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="getReceiveById" parameterType="String" resultMap="IngredientsReceiveRM">
+          select * from t_pr_ingredients_receive where id = #{id};
+     </select>
+
+    <select id="searchReceive" parameterType="IngredientsReceive" resultMap="IngredientsReceiveRM">
+        select * from t_pr_ingredients_receive
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or department like "%"#{keywords}"%"
+                or fileId like "%"#{keywords}"%"
+                or totalAmount = #{keywords}
+                or vicePresident like "%"#{keywords}"%"
+                or wareHouseSupervisor like "%"#{keywords}"%"
+                or keeper like "%"#{keywords}"%"
+                or pickingSupervisor like "%"#{keywords}"%"
+                or pickingMan like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="date != null and date !=''">
+                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="department !=null and department !='' ">
+                and department like "%"#{department}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchReceiveCount" parameterType="IngredientsReceive" resultType="int">
+        select count(*) from t_pr_ingredients_receive
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or department like "%"#{keywords}"%"
+                or fileId like "%"#{keywords}"%"
+                or totalAmount = #{keywords}
+                or vicePresident like "%"#{keywords}"%"
+                or wareHouseSupervisor like "%"#{keywords}"%"
+                or keeper like "%"#{keywords}"%"
+                or pickingSupervisor like "%"#{keywords}"%"
+                or pickingMan like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="date != null and date !=''">
+                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            </if>
+            <if test="department !=null and department !='' ">
+                and department like "%"#{department}"%"
+            </if>
+        </where>
+    </select>
+
+    <select id="getAmountAndReceive" parameterType="Ingredients" resultMap="ReceiveIngredientsRM">
+        select amount,receiveAmount from t_pr_ingredients where name=#{name} and wareHouseName=#{wareHouseName};
+    </select>
+
+    <update id="invalidReceive" parameterType="String">
+        update t_pr_ingredients_receive set state = 'Invalid' where id = #{id}
+    </update>
+
+    <update id="updateReceive" parameterType="IngredientsReceive">
+        update t_pr_ingredients_receive
+        set
+        department=#{department},fileId=#{fileId},totalAmount=#{totalAmount},vicePresident=#{vicePresident},warehouseSupervisor=#{warehouseSupervisor},
+        keeper=#{keeper},pickingSupervisor=#{pickingSupervisor},pickingMan=#{pickingMan},nowTime=NOW()
+        where id = #{id};
+        <if test="ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                update t_pr_ingredients
+                set
+                name=#{ingredients.name},amount=0,wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},
+                specification=#{ingredients.specification},unit=#{ingredients.unit},remarks=#{ingredients.remarks},receiveAmount=#{ingredients.receiveAmount}
+                where receiveId = #{ingredients.id} and serialNumberReceive = #{ingredients.serialNumber};
+            </foreach>
+        </if>
+    </update>
+
+    <insert id="addAllReceive" parameterType="IngredientsReceive"><!--导入用-->
+        insert into t_pr_ingredients_receive
+        (id, department,creationDate,fileId,totalAmount,vicePresident,warehouseSupervisor,keeper,
+        pickingSupervisor,pickingMan,state,nowTime)
+        values
+        (#{id},#{department},NOW(),#{fileId},#{totalAmount},#{vicePresident},#{warehouseSupervisor},#{keeper},
+        #{pickingSupervisor},#{pickingMan},'NewBuild',NOW());
+        <if test="ingredientsList.size() > 0">
+            <foreach collection="ingredientsList" item="ingredients" index="index">
+                insert into t_pr_ingredients
+                (receiveId,serialNumberReceive,name,receiveAmount,wareHouseName,
+                specification,unit,remarks,ingredientState)
+                values
+                (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},
+                #{ingredients.receiveAmount},#{ingredients.wareHouseName},#{ingredients.specification},
+                #{ingredients.unit},#{ingredients.remarks},'Received');
+            </foreach>
+        </if>
+    </insert>
+
+
+    <!--<insert id="addReceive" parameterType="IngredientsReceive">-->
+    <!--insert into t_pr_ingredients_receive-->
+    <!--(id, department,creationDate,fileId,totalAmount,vicePresident,wareHouseSupervisor,keeper,-->
+    <!--pickingSupervisor,pickingMan,state,nowTime)-->
+    <!--values-->
+    <!--(#{id},#{department},NOW(),#{fileId},#{totalAmount},#{vicePresident},#{wareHouseSupervisor},#{keeper},-->
+    <!--#{pickingSupervisor},#{pickingMan},'NewBuild',NOW());-->
+    <!--<if test="ingredientsList.size() > 0">-->
+    <!--<foreach collection="ingredientsList" item="ingredients" index="index">-->
+    <!--update t_pr_ingredients-->
+    <!--set-->
+    <!--name=#{ingredients.name},wareHouseName=#{ingredients.wareHouseName},-->
+    <!--specification=#{ingredients.specification},unit=#{ingredients.unit},remarks=#{ingredients.remarks},-->
+    <!--receiveAmount=#{ingredients.receiveAmount},receiveId=#{ingredients.id},serialNumberReceive=#{ingredients.serialNumber}-->
+    <!--<if test="ingredients.receiveAmount < ingredients.amount">&lt;!&ndash;部分领用&ndash;&gt;-->
+    <!--ingredientState = 'PartReceived'-->
+    <!--</if>-->
+    <!--<if test="ingredients.receiveAmount >= ingredients.amount">&lt;!&ndash;已全领用&ndash;&gt;-->
+    <!--ingredientState = 'Received'-->
+    <!--</if>-->
+    <!--where inId = #{ingredients.aid} and serialNumberIn = #{ingredients.serialNumberA};-->
+    <!--</foreach>-->
+    <!--</if>-->
+    <!--</insert>-->
+
+</mapper>

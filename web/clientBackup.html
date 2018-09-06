@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>客户备案</title>
+    <title>产废单位备案</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -45,30 +45,30 @@
             <ul class="nav navbar-nav">
                 <li><a href="businessModel.html">首页</a></li>
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">客户管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">客户备案</a></li>
+                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
                         <li role="separator" class="divider"></li>
                         <li class="dropdown-submenu">
                             <a href="#">业务员分配管理</a>
                             <ul class="dropdown-menu">
                                 <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">客户分配管理</a></li>
+                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
                             </ul>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">客户样品登记</a></li>
+                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">供应商管理<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">供应商备案</a></li>
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -77,8 +77,6 @@
                         <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员合同</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -143,11 +141,11 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">客户管理</a></li>
-                    <li class="active">客户备案</li>
+                    <li><a href="#">产废单位管理</a></li>
+                    <li class="active">产废单位备案</li>
                 </ol>
             </div>
-            <h4 class="sub-header">客户列表</h4>
+            <h4 class="sub-header">产废单位列表</h4>
             <div>
                 <!--操作按钮-->
 
@@ -179,7 +177,7 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-clientId" class="col-sm-4 control-label">客户编号</label>
+                            <label for="search-clientId" class="col-sm-4 control-label">产废单位编号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-clientId" name="search-clientId"
                                        placeholder="">
@@ -195,7 +193,7 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-companyName" class="col-sm-4 control-label">客户名称</label>
+                            <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-companyName"
                                        name="search-companyName" placeholder="">
@@ -235,7 +233,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="search-clientType" class="col-sm-4 control-label">客户类型</label>
+                            <label for="search-clientType" class="col-sm-4 control-label">产废单位类型</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-clientType" name="search-clientType"></select>
                             </div>
@@ -253,14 +251,14 @@
                             <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                         </label>
                     </th>
-                    <th class="text-center">客户编号</th>
-                    <th class="text-center" style="width: 300px">客户名称</th>
+                    <th class="text-center">产废单位编号</th>
+                    <th class="text-center" style="width: 300px">产废单位名称</th>
                     <th class="text-center">申报状态</th>
                     <th class="text-center">审核状态</th>
                     <th class="text-center">账号状态</th>
                     <th class="text-center">联系人</th>
                     <th class="text-center">联系电话</th>
-                    <th class="text-center">客户类型</th>
+                    <th class="text-center">产废单位类型</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -375,7 +373,7 @@
             <div class="modal-body">
                 <form id="model-assign" method="post">
                     <div class="form-group">
-                        <label for="model-clientId" class="control-label">客户编号</label>
+                        <label for="model-clientId" class="control-label">产废单位编号</label>
                         <input type="text" class="form-control" id="model-clientId" name="model-clientId" readonly>
                     </div>
                     <div class="form-group">
@@ -404,7 +402,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="client_style">
-                <h4 class="sub-header">客户信息</h4>
+                <h4 class="sub-header">产废单位信息</h4>
                 <form method="post" id="clientInfoForm1" enctype="multipart/form-data">
                     <h4 class="text-info">基本信息</h4>
                     <div class="row">
@@ -543,7 +541,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="client_style">
-                <h4 class="sub-header">客户信息</h4>
+                <h4 class="sub-header">产废单位信息</h4>
                 <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                     <h4 class="text-info">基本信息</h4>
                     <div class="row">
@@ -771,11 +769,11 @@
 
     /**
      * 审核用户
-     * @param item 客户
+     * @param item 产废单位
      */
     function examineClient(item) {
         var id = getClientId(item);
-        // 添加客户信息
+        // 添加产废单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getClient",                   // url
@@ -861,11 +859,11 @@
 
     /**
      * 查看用户
-     * @param item 客户
+     * @param item 产废单位
      */
     function viewClient(item) {
         var id = getClientId(item);
-        // 添加客户信息
+        // 添加产废单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getClient",                   // url
@@ -959,7 +957,7 @@
     }
 
     /**
-     * 审批通过客户
+     * 审批通过产废单位
      */
     function passClient() {
         var id = $("#modal4_clientId").text();
@@ -991,7 +989,7 @@
     }
 
     /**
-     * 驳回客户
+     * 驳回产废单位
      */
     function backClient() {
         var id = $("#modal4_clientId").text();
@@ -1024,7 +1022,7 @@
 
     /**
      * 提交用户
-     * @param item 客户
+     * @param item 产废单位
      */
     function commitClient(item) {
         var id = getClientId(item);
@@ -1065,7 +1063,7 @@
      * @param item
      */
     function adjustClient(item) {
-        // 拿到点击条目的客户编号
+        // 拿到点击条目的产废单位编号
         var id = getClientId(item);
         window.location.href = "clientInfo.html?id=" + id;
     }
@@ -1151,7 +1149,7 @@
     function setSales(item) {
         var id = getClientId(item);
         clientId = id;
-        // 添加客户信息
+        // 添加产废单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getClient",              // url
@@ -1248,7 +1246,7 @@
      * @param item
      */
     function deleteClient(item) {
-        var r = confirm("是否删除该客户？");
+        var r = confirm("是否删除该产废单位？");
         if (r == true) {
             var id = getClientId(item);
             $.ajax({
@@ -1277,7 +1275,7 @@
     }
 
     /**
-     * 提交客户的信息
+     * 提交产废单位的信息
      */
     function submitClients() {
         var items = $("input[name='checkbox1']:checked");//判断复选框是否选中
@@ -1304,10 +1302,10 @@
                 });
             }
 
-            var r = confirm("是否提交客户信息?");
+            var r = confirm("是否提交产废单位信息?");
             if (r) {
                 items.each(function () {//遍历
-                    var id = getIdByCheckBox($(this));//获取到了客户编号
+                    var id = getIdByCheckBox($(this));//获取到了产废单位编号
                     console.log(id)
                     console.log(id);
                     submitClientById(id);//调用该方法使用ajax
@@ -1316,7 +1314,7 @@
                 window.location.reload();
             }
         } else {
-            alert("未选择任何客户!");
+            alert("未选择任何产废单位!");
         }
     }
 

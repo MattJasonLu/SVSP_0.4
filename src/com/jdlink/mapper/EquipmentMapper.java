@@ -2,7 +2,6 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Produce.EquipmentDate;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,10 +11,10 @@ public interface EquipmentMapper {
 
     /**
      * 通过日期查询设备明细集合
-     * @param dayTime 日期
+     * @param id 序号
      * @return 设备明细集合
      */
-    List<EquipmentDate> getEquipment(Date dayTime);
+    List<EquipmentDate> getEquipment(Integer  id);
 
     /**
      * 查询设备按日期生成的列表
