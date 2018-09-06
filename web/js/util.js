@@ -228,3 +228,26 @@ function checkAuthority(e) {
     });
     return flag;
 }
+/**
+ * 将危废英文名转换成中文
+ * @param str
+ * @returns {*}
+ */
+function convertStrToWastesName(str) {
+    var name;
+    switch (str) {
+        case 'slag':
+            name = '炉渣';
+            break;
+        case 'ash':
+            name = '飞灰';
+            break;
+        case 'bucket':
+            name = '桶';
+            break;
+        default:
+            name = '';
+            break;
+    }
+    return name;
+}

@@ -656,25 +656,78 @@ function loadData() {
  * @param e
  */
 function viewData(e) {
-    alert("功能开发中，敬请期待！");
-    // $.ajax({
-    //     type: "POST",
-    //     url: "",
-    //     async: false,
-    //     dataType: "json",
-    //     data: {"id": id},
-    //     success: function (result) {
-    //         if (result !== undefined && result.status === "success") {
-    //             console.log(result);
-    //
-    //         }
-    //     },
-    //     error: function (result) {
-    //         console.log(result);
-    //         alert("服务器异常");
-    //     }
-    // });
-    // $("#appointModal2").modal("show");
+    var id = getIdByMenu(e);
+    $.ajax({
+        type: "POST",
+        url: "getInboundOrderById",
+        async: false,
+        dataType: "json",
+        data: {
+            inboundOrderId: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                setItemDataList(result.data);
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    $("#viewModal").modal("show");
+
+
+}
+
+/**
+ * 设置数据
+ * @param result
+ */
+function setItemDataList(result) {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#itemClonedTr");
+    tr.siblings().remove();
+    $.each(result.inboundOrderItemList, function (index, item) {
+        var data = eval(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.find("td[name='index']").text(index + 1);
+        if (data.produceCompany != null) clonedTr.find("td[name='produceCompanyName']").text(data.produceCompany.companyName);
+        if (data.wastes != null) {
+            clonedTr.find("td[name='wastesName']").text(convertStrToWastesName(data.wastes.name));
+            clonedTr.find("td[name='wastesCode']").text(data.wastes.wastesId);
+        }
+        clonedTr.find("td[name='wastesAmount']").text(data.wastesAmount);
+        clonedTr.find("td[name='unitPriceTax']").text(data.unitPriceTax);
+        clonedTr.find("td[name='totalPrice']").text(data.totalPrice);
+        if (data.processWay != null) clonedTr.find("td[name='processWay']").text(data.processWay.name);
+        if (data.handleCategory != null) clonedTr.find("td[name='handleCategory']").text(data.handleCategory.name);
+        if (data.formType != null) clonedTr.find("td[name='formType']").text(data.formType.name);
+        if (data.packageType != null) clonedTr.find("td[name='packageType']").text(data.packageType.name);
+        if (data.laboratoryTest != null) {
+            clonedTr.find("td[name='heatAverage']").text(data.laboratoryTest.heatAverage);
+            clonedTr.find("td[name='phAverage']").text(data.laboratoryTest.phAverage);
+            clonedTr.find("td[name='ashAverage']").text(data.laboratoryTest.ashAverage);
+            clonedTr.find("td[name='waterContentAverage']").text(data.laboratoryTest.waterContentAverage);
+            clonedTr.find("td[name='chlorineContentAverage']").text(data.laboratoryTest.chlorineContentAverage);
+            clonedTr.find("td[name='sulfurContentAverage']").text(data.laboratoryTest.sulfurContentAverage);
+            clonedTr.find("td[name='phosphorusContentAverage']").text(data.laboratoryTest.phosphorusContentAverage);
+            clonedTr.find("td[name='fluorineContentAverage']").text(data.laboratoryTest.fluorineContentAverage);
+        }
+        clonedTr.find("td[name='remarks']").text(data.remarks);
+        clonedTr.find("td[name='warehouseArea']").text(data.warehouseArea);
+
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
 }
 
 /**
@@ -683,7 +736,7 @@ function viewData(e) {
  * @returns {string} 联单编号
  */
 function getIdByMenu(e) {
-    return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    return e.parent().parent().find("td[name='inboundOrderId']").text();
 }
 var id1;
 /**
