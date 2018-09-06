@@ -714,7 +714,29 @@ catch (Exception e){
         }
         return id;
     }
+  //加载进料方式下拉列表
+    @RequestMapping("getHandelCategoryList")
+    @ResponseBody
+    public String getHandelCategoryList(String outboundOrderId){
+        JSONObject res=new JSONObject();
+        try {
+            //获得进料方式下拉列表
+            JSONArray array1 = JSONArray.fromArray(HandleCategory.values());
+            //根据出库单号获取进料方式
+            HandleCategory handelCategory=outboundOrderService.getHandelCategoryById(outboundOrderId);
+             res.put("handelCategory",handelCategory);
+             res.put("array1",array1);
+             res.put("status", "success");
+             res.put("message", "获取成功");
 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return  res.toString();
+    }
     /**
      * 查询功能
      *
@@ -738,4 +760,49 @@ catch (Exception e){
         }
         return res.toString();
     }
+    /**
+     *
+     * 修改属性
+     */
+    @RequestMapping("upHandelCategoryById")
+    @ResponseBody
+    public String upHandelCategoryById(String outboundOrderId,int index){
+        JSONObject res=new JSONObject();
+        try {
+          String  handleCategory=HandleCategory.get(index).toString();
+          outboundOrderService.upHandelCategoryById(outboundOrderId,handleCategory);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return  res.toString();
+    }
+    /**
+     * totalInventoryRecord计算数据总条数
+     */
+    @RequestMapping("totalInventoryRecord")
+    @ResponseBody
+    public int totalInventoryRecord(){
+        try {
+            return wasteInventoryService.countInventory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     * 获取查询总数
+     * @param wasteInventory
+     * @return
+     */
+//    @RequestMapping("searchSewageTotal")
+//    @ResponseBody
+//    public int searchSewageTotal(@RequestBody WasteInventory wasteInventory) {
+//            return 0;
+//    }
+
 }

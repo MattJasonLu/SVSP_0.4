@@ -690,7 +690,7 @@ function setMaterialRequisitionList(result) {
                             break;
                         //附注
                         case (8):
-                            $(this).html("");
+                            $(this).html(obj.remarks);
                             break;
                         // case (9):
                         //     $(this).html(obj.batchingOrder.batchingOrderId);

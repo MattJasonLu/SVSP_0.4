@@ -1,6 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Produce.HandleCategory;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface OutboundOrderService {
     OutboundOrder  getOutBoundByInId(String inboundOrderId);
     void updateSecOutBoundOrder(OutboundOrder outboundOrder);
     void upWastesInventoryNumber(OutboundOrder outboundOrder);
+    HandleCategory getHandelCategoryById(String outboundNumber);
+    void upHandelCategoryById(String outboundOrderId,String  handelCategory);
 }
