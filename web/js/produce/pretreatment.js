@@ -997,7 +997,7 @@ function loadOutBoundOrderList() {
     //获取数据
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getOutBoundOrderList",          // url
+        url: "loadOutBoundList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
@@ -1113,23 +1113,23 @@ function setOutBoundOrderList(result) {
                     break;
                 case (9):
                     // 危废名称
-                    $(this).html(obj.wastes.name);
+                    $(this).html(obj.laboratoryTest.wastesName);
                     break;
                 case(10):
                     // 危废重量
-                    $(this).html(obj.wastes.weight);
+                    $(this).html(obj.outboundNumber);
                     break;
                 case(11):
                     // 备注
-                    $(this).html(obj.wastes.remarks);
+                    $(this).html(obj.remarks);
                     break;
                 case(12):
                     // 处置方式
-                    $(this).html(obj.wastes.processWay.name);
+                    $(this).html(obj.processWay.name);
                     break;
                 case(13):
                     // 进料方式
-                    $(this).html(obj.wastes.handleCategory.name);
+                    $(this).html(obj.handleCategory.name);
                     break;
             }
         });
@@ -1426,8 +1426,6 @@ function save() {
         pretreatment.pretreatmentItemList[i].requirements = $("#pretreatment" + $i + "-requirements").val();
     }
     pretreatment.remarks = $("#remarks").val();
-    console.log("新增的数据为：");
-    console.log(pretreatment);
     //将预处理单数据插入到数据库
     $.ajax({
         type: "POST",

@@ -1,12 +1,25 @@
-function getDayDate() {
+function getDayDate(date) {
     //获取时间
-    var obj = new Date();
-    var year = obj.getFullYear();
-    var month = obj.getMonth() + 1;
-    var day = obj.getDate();
-    if (day % 7 > 0) var a = 1; else a = 0;
-    var week = parseInt(day / 7) + a;
-    return year + "年" + month + "月" + day + "日";
+    var obj = date;
+    if (obj == null) return "";
+    var year = (parseInt(obj.year) + 1900).toString();
+    var mouth = parseInt((obj.month) + 1).toString();
+    if (mouth.length != 2) {
+        mouth = 0 + mouth;
+    }
+    var day = parseInt((obj.date)).toString();
+    if (day.length != 2) {
+        day = 0 + day;
+    }
+    var time1 = year + "年" + mouth + "月" + day + "日";
+    return time1;
+}
+
+//全选复选框
+function allSelect() {
+    var isChecked = $('#allSel1').prop('checked');
+    if (isChecked) $("input[name='select']").prop('checked', true);
+    else $("input[name='select']").prop('checked', false);
 }
 
 /**
@@ -756,7 +769,9 @@ function invalidIngredientsIn(item) {
                 if (result.status == "success") {
                     //alert("作废成功！");
                     divFadeAlert();
-                    setTimeout(function () { window.location.reload(); }, 1000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
                 } else {
                     alert(result.message);
                 }
@@ -772,14 +787,451 @@ function invalidIngredientsIn(item) {
 /**
  * 提示框自动关闭,待完善
  */
-function divFadeAlert(){
+function divFadeAlert() {
     console.log("alert!");
-    var hidvalue_str=$('#hidvalue').val();
-    var divWidth=100;
-    var divHeight=100;
-    var iLeft=($(window).width()-divWidth)/2;
-    var iTop=($(window).height()-divHeight)/2+$(document).scrollTop();
-    var divhtml=$("<div>"+hidvalue_str+"</div>").css({position:'absolute',top:iTop+'px',left:iLeft+'px',display:'none',width:divWidth+'px',height:divHeight+'px'});
+    var hidvalue_str = $('#hidvalue').val();
+    var divWidth = 100;
+    var divHeight = 100;
+    var iLeft = ($(window).width() - divWidth) / 2;
+    var iTop = ($(window).height() - divHeight) / 2 + $(document).scrollTop();
+    var divhtml = $("<div>" + hidvalue_str + "</div>").css({
+        position: 'absolute',
+        top: iTop + 'px',
+        left: iLeft + 'px',
+        display: 'none',
+        width: divWidth + 'px',
+        height: divHeight + 'px'
+    });
     divhtml.appendTo('body').fadeIn();
     divhtml.appendTo('body').fadeOut(3000);
+}
+
+///////////////////新增页面///////////////////////////
+function getcurrentDaydate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth() + 1;
+    var day = obj.getDate();
+    if (day % 7 > 0) var a = 1; else a = 0;
+    return year + "年" + month + "月" + day + "日";
+}
+
+
+function loadProcurementList() {
+    $("#creationDate").text(getcurrentDaydate());
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementList",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                setProcurementList(result);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
+}
+
+//设置月度采购申请表数据
+function setProcurementList(result) {
+    var tr = $("#cloneTr1");
+    tr.siblings().remove();
+    $.each(result.data, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
+        if (item.procurementCategory == true) {
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                //1生成领料单号
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 申请单编号
+                    case (1):
+                        $(this).html(obj.receiptNumber);
+                        break;
+                    // 申请月份
+                    case (2):
+                        $(this).html(obj.applyMouth);
+                        break;
+                    // 需求时间
+                    case (3):
+                        $(this).html(getDateStr(obj.demandTime));
+                        break;
+                    // 申请部门
+                    case (4):
+                        $(this).html(obj.applyDepartment);
+                        break;
+                    // 申购部门负责人
+                    case (5):
+                        $(this).html(obj.proposer);
+                        break;
+                    // 申购部门分管领导
+                    case (6):
+                        $(this).html(obj.divisionHead);
+                        break;
+                    // 采购部门负责人
+                    case (7):
+                        $(this).html(obj.purchasingDirector);
+                        break;
+                    //采购部门分管领导
+                    case (8):
+                        $(this).html(obj.purchasingHead);
+                        break;
+                    //总经理
+                    case (9):
+                        $(this).html(obj.generalManager);
+                        break;
+                    //物资类别
+                    case (10):
+                        $(this).html(obj.suppliesCategory);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.insertBefore(tr);
+            clonedTr.removeAttr('id');
+        }
+
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+}
+
+/**
+ * 双击查看采购单
+ * @param item
+ */
+function toShowView1(item) {
+    var id = item.firstElementChild.nextElementSibling.innerHTML;
+    viewShow(id);
+}
+
+function toShowView(item) {
+    var id = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    viewShow(id);
+}
+
+/**
+ * 显示采购单查看模态框
+ */
+function viewShow(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'receiptNumber': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setMonthProcurementListModal(result.data[0].materialList);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+        }
+    });
+    $('#appointModal2').modal('show');
+}
+
+/**
+ * 设置月度采购申请表数据模态框数据
+ * @param result
+ */
+function setMonthProcurementListModal(result) {
+    var tr = $("#cloneTr2");
+    tr.siblings().remove();
+    $.each(result, function (index, item) {
+        //console.log(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            //1生成领料单号
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 物资名称
+                case (0):
+                    $(this).html(obj.suppliesName);
+                    break;
+                // 规格型号
+                case (1):
+                    $(this).html(obj.specifications);
+                    break;
+                // 单位
+                case (2):
+                    $(this).html(obj.unit);
+                    break;
+                // 库存量
+                case (3):
+                    $(this).html(obj.inventory);
+                    break;
+                // 需求数量
+                case (4):
+                    $(this).html(obj.demandQuantity);
+                    break;
+                // 备注
+                case (5):
+                    $(this).html(obj.note);
+                    break;
+                // 采购部门负责人
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+
+
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+}
+
+/**
+ * 获取当前入库单号
+ * @returns {string}
+ */
+function getCurrentIngredientsInId() {
+    var id = "";
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentIngredientsInId",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined)
+                id = result.id;
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("获取当前入库单号失败！");
+        }
+    });
+    return id;
+}
+
+var procurementIdArray = [];
+var ingredientsIn = {};
+
+/**
+ * 添加入库单
+ */
+function confirmInsert() {
+// 定义预处理单，存储勾选出库单
+    $(".newLine").remove();
+    ingredientsIn = {};
+    procurementIdArray = [];
+    var ingredientsList = [];
+    ingredientsIn.id = getCurrentIngredientsInId();
+    var i = 0;  //序号
+    // 遍历采购单表格行，获取勾选的计划列表
+    $("#ingredientsInData").children().not("#cloneTr1").each(function () {
+        var isCheck = $(this).find("input[name='select']").prop('checked');
+        if (isCheck) {
+            var procurementId1 = $(this).find("td[name='receiptNumber']").text();
+            if ($.inArray(procurementId1, procurementIdArray) == -1) {
+                console.log("OK");
+                procurementIdArray.push(procurementId1);
+                //根据Id查找数据并进行赋值
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "getProcurementListById",          // url
+                    async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: {
+                        receiptNumber: procurementId1
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            //遍历存储物品数组
+                            $.each(result.data[0].materialList, function (index, data) {
+                                i++;
+                                //将数据存到数组中，然后统一赋值
+                                var ingredients = {};
+                                ingredients.serialNumber = i;                    // 序号
+                                ingredients.name = data.suppliesName;            // 物品名称
+                                ingredients.specification = data.specifications; // 规格
+                                ingredients.unit = data.unit;                     // 单位
+                                ingredients.amount = data.demandQuantity;         // 入库数量
+                                ingredients.remarks = data.note;                  // 备注
+                                ingredients.id = ingredientsIn.id;
+                                ingredientsList.push(ingredients);
+                            });
+                        } else {
+                            console.log(result.message);
+                        }
+                    },
+                    error: function (result) {
+                        console.log("获取数据失败！");
+                    }
+                });
+            }
+        }
+    });
+    //将数据遍历赋值到入库单中
+    var tr = $("#clone3");
+    var num = 0;
+    $.each(ingredientsList, function (index, item) {
+        num++;
+        var obj = eval(item);
+        var clonedTr = tr.clone();
+        //更新id
+        clonedTr.children().find("input").each(function () {
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, num);
+            $(this).prop('id', newId);
+        });
+        clonedTr.show();
+        clonedTr.find("td[name='serialNumber']").text(obj.serialNumber);
+        clonedTr.find("td[name='name']").text(obj.name);
+        clonedTr.find("td[name='specification']").text(obj.specification);
+        clonedTr.find("td[name='unit']").text(obj.unit);
+        clonedTr.find("td[name='amount']").text(obj.amount);
+        clonedTr.find("td[name='remarks']").text(obj.remarks);
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    tr.hide();
+    ingredientsIn.ingredientsList = ingredientsList;
+}
+
+/**
+ * 单价输入框输入完成后自动计算总金额并显示
+ */
+$('.clone').bind('input propertychange keyup', function(event) {
+    console.log("click");
+    var item = $(this).parents().parents();
+    var totalPrice = item.find("td[name='amount']").text() * item.find("td[name='unitPrice']").val();
+    item.find("td[name='hundredThousand']").text(Math.floor(totalPrice / 100000));
+    item.find("td[name='tenThousand']").text(Math.floor(totalPrice % 100000 / 10000));
+    item.find("td[name='thousand']").text(Math.floor((totalPrice % 100000) % 10000 / 1000));
+    item.find("td[name='hundred']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
+    item.find("td[name='ten']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+    item.find("td[name='yuan']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+    var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+    item.find("td[name='jiao']").text(Math.floor(jiao1));
+    item.find("td[name='fen']").text(Math.floor(jiao1 % 1 * 10));
+});
+// $("").find("td[name='unitPrice']").mouseleave(function(){
+//     var item = $(this).parents().parents();
+//     var totalPrice = item.find("td[name='amount']").text() * item.find("td[name='unitPrice']").val();
+//     item.find("td[name='hundredThousand']").text(Math.floor(totalPrice / 100000));
+//     item.find("td[name='tenThousand']").text(Math.floor(totalPrice % 100000 / 10000));
+//     item.find("td[name='thousand']").text(Math.floor((totalPrice % 100000) % 10000 / 1000));
+//     item.find("td[name='hundred']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
+//     item.find("td[name='ten']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+//     item.find("td[name='yuan']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+//     var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+//     item.find("td[name='jiao']").text(Math.floor(jiao1));
+//     item.find("td[name='fen']").text(Math.floor(jiao1 % 1 * 10));
+// });
+
+function save(){
+    //获取输入的数据
+    var totalPrice = 0;
+    for(var i = 0; i < ingredientsIn.ingredientsList.length; i++){
+        var $i = i;
+        ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
+        ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
+        ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
+        ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
+        // //单位换算成吨
+        // if(ingredientsIn.ingredientsList[i].unit === "千克" || ingredientsIn.ingredientsList[i].unit === "kg" ||ingredientsIn.ingredientsList[i].unit === "KG")
+        //     ingredientsIn.ingredientsList[i].amount = ingredientsIn.ingredientsList[i].amount / 1000;
+        totalPrice += ingredientsIn.ingredientsList[i].totalPrice;
+    }
+    ingredientsIn.totalPrice = totalPrice;
+    ingredientsIn.companyName = $("#companyName").val();
+    ingredientsIn.fileId = $("#fileId").val();
+    ingredientsIn.bookkeeper = $("#bookkeeper").val();
+    ingredientsIn.approver = $("#approver").val();
+    ingredientsIn.keeper = $("#keeper").val();
+    ingredientsIn.acceptor = $("#acceptor").val();
+    ingredientsIn.handlers = $("#handlers").val();
+    //将入库单数据插入到数据库
+    console.log("数据为：");
+    console.log(ingredientsIn);
+    $.ajax({
+        type: "POST",
+        url: "addIngredientsIn",
+        async: false,
+        data: JSON.stringify(ingredientsIn),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result.status == "success") {
+                console.log(result.message);
+                if(confirm("入库单添加成功，是否返回主页面？"))
+                    window.location.href = "ingredientsIn.html";
+            } else alert(result.message);
+        },
+        error: function (result) {
+            console.log(result.message);
+            alert("入库单添加失败！");
+        }
+    });
+}
+
+/**
+ * 重置
+ */
+function reset1(){
+    $("#senior1").find("input").val("");
+    $("#senior1").find("select").get(0).selectedIndex = -1;
+    $("#searchContent1").val("");
+}
+
+/**
+ * 新增页面查询功能
+ */
+function search1(){
+    var procurement;
+    if ($("#senior1").is(':visible')) {
+        procurement = {
+            receiptNumber: $("#search1-receiptNumber").val(),
+            applyMouth: $("#search1-applyMouth option:selected").text().replace(/[^0-9]/ig,""),
+            suppliesCategory: $("#search1-suppliesCategory").val(),
+            applyDepartment :$("#search1-applyDepartment").val()
+        };
+    } else {
+        procurement = {
+            keywords: $("#searchContent1").val()
+        };
+    }
+    if (procurement == null) alert("请输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",
+            url: "searchProcurement",
+            async: false,
+            data: JSON.stringify(procurement),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result.status == "success") {
+                    setProcurementList(result);
+                } else alert(result.message);
+            },
+            error: function (result) {
+                console.log(result.message);
+            }
+        });
+    }
+
 }

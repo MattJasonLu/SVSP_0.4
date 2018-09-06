@@ -138,7 +138,7 @@
 
     <insert id="addIn" parameterType="IngredientsIn">
         insert into t_pr_ingredients_in
-        (id, companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
+        (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
         acceptor,handlers,state,nowTime)
         values
         (#{id},#{companyName},NOW(),#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},
@@ -147,7 +147,7 @@
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
                 (inId,serialNumberIn,name,unitPrice,totalPrice,
-                amount,wareHouseName,post,specification,unit, ingredientState,remarks)
+                amount,wareHouseName,post,specification,unit,ingredientState,remarks)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},

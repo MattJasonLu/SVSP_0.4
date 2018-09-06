@@ -3,15 +3,21 @@ var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
 
-function getDayDate() {
+function getDayDate(date) {
     //获取时间
-    var obj = new Date();
-    var year = obj.getFullYear();
-    var month = obj.getMonth() + 1;
-    var day = obj.getDate();
-    if (day % 7 > 0) var a = 1; else a = 0;
-    var week = parseInt(day / 7) + a;
-    return year + "年" + month + "月" + day + "日";
+    var obj = date;
+    if (obj == null) return "";
+    var year=(parseInt(obj.year)+1900).toString();
+    var mouth=parseInt((obj.month)+1).toString();
+    if(mouth.length!=2){
+        mouth=0+mouth;
+    }
+    var  day=parseInt((obj.date)).toString();
+    if(day.length!=2){
+        day=0+day;
+    }
+    var time1=year+"年"+mouth+"月"+day+"日";
+    return time1;
 }
 
 /**
