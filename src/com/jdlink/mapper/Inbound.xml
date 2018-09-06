@@ -167,6 +167,14 @@
                 #{inboundOrderItem.laboratoryTest.fluorineContentAverage});
             </foreach>
         </if>
+        <if test="inboundOrderItemList.size() > 0">
+            <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
+                insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks,laboratoryTestId,wastesCategory,unitPriceTax)
+                values (#{inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},NOW(),
+                #{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},NOW(),#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.remarks},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},
+                #{inboundOrderItem.wastes.name},#{inboundOrderItem.unitPriceTax});
+            </foreach>
+        </if>
     </insert>
 
     <!--列出入库单-->
