@@ -66,6 +66,7 @@ function totalPage() {
 }
 //加载次生危废列表
 function loadSecondaryList() {
+    var page = {};
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getOutBoundList",                  // url
@@ -106,6 +107,8 @@ function loadSecondaryList() {
         url: "getWasteInventoryList",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
+        data: JSON.stringify(page),
+        contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if(result != undefined && result.status == "success"){
                 console.log(result);
@@ -133,48 +136,42 @@ function setWasteInventoryList(result) {
     console.log(result);
     //tr.siblings().remove();
     $.each(result, function (index, item) {
-        if(item.actualCount>0&&(item.wastes.name=='炉渣'||item.wastes.name=='飞灰'||item.wastes.name=='桶')){
+        if(item.actualCount>0&&item.boundType.name=='次生入库'){
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
+               clonedTr.children("td").each(function (inner_index) {
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {
                     // 入库编号
                     case (1):
                         $(this).html(obj.inboundOrderId);
-
                         break;
                     // 仓库号
                     case (2):
-                        if (obj.wareHouse == null) {
-                            $(this).html("");
-                        }
-                        else {
-                            $(this).html(obj.wareHouse.wareHouseId);
-                        }
+                        $(this).html("");
                         break;
                     //产废单位
                     case (3):
-                        $(this).html(obj.wastes.client.companyName);
+                        $(this).html(obj.produceCompany.companyName);
                         break;
                     // 危废名称
                     case (4):
-                        $(this).html(obj.wastes.name);
+                        $(this).html(obj.laboratoryTest.wastesName);
                         break;
                     // 危废代码
                     case (5):
-                        $(this).html(obj.wastes.wastesId);
+                        $(this).html(obj.laboratoryTest.wastesCode);
                         break;
                     // 产废类别
                     case (6):
-                        $(this).html("");
+                        $(this).html(obj.wastesCategory);
                         break;
                     // 进料方式
                     case (7):
-                        $(this).html(obj.wastes.handleCategory.name);
+                        $(this).html(obj.handleCategory.name);
                         break;
                     //数量
                     case (8):
@@ -185,9 +182,11 @@ function setWasteInventoryList(result) {
                         $(this).html(obj.leftNumeber);
                         break;
                     case (10):
-                        $(this).html(obj.wastes.remarks);
+                        $(this).html(obj.remarks);
                         break;
-
+                    case (11):
+                        $(this).html(obj.inboundOrderItemId);
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
