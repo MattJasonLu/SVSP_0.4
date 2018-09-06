@@ -41,30 +41,31 @@ function totalPage() {
                 totalRecord = 0;
             }
         });
-    } else {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchInventoryTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                    console.log("总记录数为:" + result);
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
-    }
+     }
+     //else {
+    //     $.ajax({
+    //         type: "POST",                       // 方法类型
+    //         url: "searchInventoryTotal",                  // url
+    //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         data: JSON.stringify(data1),
+    //         dataType: "json",
+    //         contentType: "application/json; charset=utf-8",
+    //         success: function (result) {
+    //             // console.log(result);
+    //             if (result > 0) {
+    //                 totalRecord = result;
+    //                 console.log("总记录数为:" + result);
+    //             } else {
+    //                 console.log("fail: " + result);
+    //                 totalRecord = 0;
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log("error: " + result);
+    //             totalRecord = 0;
+    //         }
+    //     });
+    // }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
     return total;
@@ -143,21 +144,24 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageSewageList",         // url
+            url: "getWasteInventoryList",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    setSewageList(result.data);
-                } else {
-                    console.log("fail: " + result);
+            success:function (result) {
+                if(result != undefined && result.status == "success"){
+                    setWasteInventoryList(result.data);
+                    //setWasteInventoryList(result.data);
+                }
+                else {
+                    console.log(result.message);
                 }
             },
-            error: function (result) {
-                console.log("error: " + result);
+            error:function (result) {
+                alert("服务器异常！")
             }
+
         });
     } else {
         data['page'] = page;
@@ -182,6 +186,7 @@ function switchPage(pageNumber) {
         });
     }
 }
+
 /**
  * 输入页数跳转页面
  * */
@@ -220,7 +225,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageSewageList",         // url
+                url: "getWasteInventoryList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -228,7 +233,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setSewageList(result.data);
+                        setWasteInventoryList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -261,6 +266,7 @@ function inputSwitchPage() {
         }
     }
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -277,8 +283,6 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
-
-
 
 /**
  * 
@@ -300,9 +304,11 @@ function loadWasteInventoryList() {
     //查询危废仓库信息
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWasteInventoryList",                  // url
+        url: "getWasteInventoryList", // url
+        data: JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
+        contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if(result != undefined && result.status == "success"){
                 console.log(result);
@@ -320,7 +326,37 @@ function loadWasteInventoryList() {
 
     });
     isSearch = false;
+    //加载进料方式列表
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandelCategoryList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                var type=$('#search-type');
+                type.children().remove();
+                $.each(result.array1,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    type.append(option);
+                })
+                type.get(0).selectedIndex=-1;
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        },
+
+    });
 }
+
 //设置危废查询列表
 function setWasteInventoryList(result) {
     var tr=$('#cloneTr');
@@ -328,66 +364,86 @@ function setWasteInventoryList(result) {
     tr.attr('class','myclass')
     $.each(result,function (index,item) {
         // 克隆tr，每次遍历都可以产生新的tr
-        var clonedTr = tr.clone();
-        clonedTr.show();
-        clonedTr.children("td").each(function (inner_index) {
-            var obj = eval(item);
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                // 入库单号
-                case (1):
-                    $(this).html(obj.inboundOrderId);
-                    break;
-                // 入库日期
-                case (2):
-                    $(this).html(getDateStr(obj.inboundDate));
-                    break;
-                //产废单位
-                case (3):
-                    $(this).html(obj.produceCompany.companyName);
-                    break;
-                // 仓库名称
-                case (4):
-                    $(this).html("");
-                    break;
-                // 入库类别
-                case (5):
-                    $(this).html("正常出库");
-                    break;
-                // 进料方式
-                case (6):
-                    $(this).html(obj.handleCategory.name);
-                    break;
-                // 危废名称
-                case (7):
-                    $(this).html(obj.laboratoryTest.wastesName);
-                    break;
-                //危废类型
-                case (8):
-                    $(this).html(obj.wastesCategory);
-                    break;
-                //数量
-                case (9):
-                    $(this).html(obj.actualCount);
-                    break;
+        if(item.boundType.name=='危废入库'){
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 入库单号
+                    case (1):
+                        $(this).html(obj.inboundOrderId);
+                        break;
+                    // 入库日期
+                    case (2):
+                        $(this).html(getDateStr(obj.inboundDate));
+                        break;
+                    //产废单位
+                    case (3):
+                        $(this).html(obj.produceCompany.companyName);
+                        break;
+                    // 仓库名称
+                    case (4):
+                        $(this).html("");
+                        break;
+                    // 入库类别
+                    case (5):
+                        $(this).html(obj.boundType.name);
+                        break;
+                    // 进料方式
+                    case (6):
+                        $(this).html(obj.handleCategory.name);
+                        break;
+                    // 危废名称
+                    case (7):
+                        $(this).html(obj.laboratoryTest.wastesName);
+                        break;
+                    //危废类型
+                    case (8):
+                        $(this).html(obj.wastesCategory);
+                        break;
+                    //数量
+                    case (9):
+                        $(this).html(obj.actualCount);
+                        break;
                     //单价
-                case (10):
-                    $(this).html(obj.quotationItem.unitPriceTax);
-                    break;
+                    case (10):
+                        $(this).html(obj.quotationItem.unitPriceTax);
+                        break;
                     //总价
-                case (11):
-                    $(this).html(parseInt(obj.actualCount)*(obj.quotationItem.unitPriceTax).toFixed(2)  );
-                    break;
+                    case (11):
+                        $(this).html(parseInt(obj.actualCount)*(obj.quotationItem.unitPriceTax).toFixed(2)  );
+                        break;
                     //创建时间
-                case (12):
-                    $(this).html(getDateStr(obj.creatorDate));
-                    break;
-            }
-        });
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
+                    case (12):
+                        $(this).html(getDateStr(obj.creatorDate));
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        }
     })
     tr.hide();
     tr.removeAttr('class');
+}
+
+//危废库存查询功能
+function searchWastesInventory() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    if ($("#senior").is(':visible')) {
+        data1 = {
+            date: $("#search-receiveDate").val(),
+            name: $("#search-sewageName").val(),
+            remarks: $("#search-remarks").val(),
+            page: page
+        };
+    }
 }

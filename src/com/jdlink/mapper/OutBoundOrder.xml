@@ -13,13 +13,13 @@
     </update>
     <resultMap id="OutBoundRM" type="OutboundOrder">
         <collection property="client" column="clientId" select="getClient"></collection>
-        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
+        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
     </resultMap>
     <select id="getMaterialRequisition" resultType="MaterialRequisitionOrder">
         select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
     </select>
     <select id="getLaboratoryTest" resultType="LaboratoryTest">
-        select * from t_pr_laboratorytest where clientId=#{clientId} and wastesCode=#{wastesCode};
+        select * from t_pr_laboratorytest where laboratorytestnumber=#{laboratoryTestId};
     </select>
     <!--加载出库信息列表-->
     <select id="loadOutBoundList" resultMap="OutBoundRM">
@@ -81,7 +81,7 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     </select>
     <resultMap id="OutBoundRM1" type="OutboundOrder">
        <collection property="client" column="clientId" select="getClient"></collection>
-        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
+        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
     <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
     </resultMap>
     <select id="getQuotationItem" resultType="QuotationItem">
@@ -125,7 +125,9 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         guardian=(select  guardian from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
         departmentName =(select  departmentName from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
         deputyGeneral=(SELECT  deputyGeneral from  t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
-        remarks=(select remarks from  t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId)
+        remarks=(select remarks from  t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        laboratoryTestId=(select laboratoryTestId from t_pl_materialrequisitionorder where  t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId)
+
         where outboundOrderId=#{outboundOrderId};
     </update>
     <select id="getSalesman1" resultType="Salesman">

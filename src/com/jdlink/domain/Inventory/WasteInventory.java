@@ -1,11 +1,8 @@
 package com.jdlink.domain.Inventory;
 
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
-import com.jdlink.domain.Quotation;
-import com.jdlink.domain.QuotationItem;
-import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 
@@ -89,6 +86,20 @@ public class WasteInventory {
      */
     private int category;
    private String remarks;
+
+    /**
+     * 分页
+     * @return
+     */
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getRemarks() {
         return remarks;

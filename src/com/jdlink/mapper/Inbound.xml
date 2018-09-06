@@ -122,15 +122,15 @@
         </if>
         <if test="inboundOrderItemList.size() > 0">
         <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
-            insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks)
+            insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks,laboratoryTestId)
             values (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
-            ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.remarks});
+            ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.remarks},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
         </foreach>
         </if>
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
-                insert into t_pl_wasteinto(clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory)
-                values(#{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundOrderItem.handleCategory},#{inboundOrderItem.processWay},#{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category});
+                insert into t_pl_wasteinto(clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory,laboratoryTestId)
+                values(#{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundOrderItem.handleCategory},#{inboundOrderItem.processWay},#{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
             </foreach>
         </if>
     </insert>
