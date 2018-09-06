@@ -80,7 +80,7 @@ function setMaterialRequisitionList(result) {
                         break;
                         //附注
                     case (10):
-                        $(this).html("");
+                        $(this).html(obj.remarks);
                         break;
                         //主管副总经理
                     case (11):
@@ -305,7 +305,7 @@ function setRequisitionList(result) {
                         break;
                     // 危废类别
                     case (5):
-                        $(this).html(obj.wastesCategory);
+                        $(this).html(obj.wasteCategory);
                         break;
                     // 单位
                     case (6):
@@ -317,11 +317,11 @@ function setRequisitionList(result) {
                         break;
                     //领用数量
                     case (8):
-                        $(this).html(obj.brecipientsNumber);
+                        $(this).html(obj.recipientsNumber);
                         break;
                     //附注
                     case (9):
-                        $(this).html("");
+                        $(this).html(obj.remarks);
                         break;
                         //主管副总经理
                     case (10):

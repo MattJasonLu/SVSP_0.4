@@ -88,6 +88,15 @@ public class WasteInventory {
      * 类别（危废、次生）
      */
     private int category;
+   private String remarks;
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 
     public int getCategory() {
         return category;

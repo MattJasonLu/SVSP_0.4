@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.WasteIntoMapper">
+    <resultMap id="WasteIntoRM" type="WasteInto">
+        <collection property="client" column="clientId" select="getClient"></collection>
+        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
+    </resultMap>
+    <select id="getClient" resultType="Client">
+        select  * from client where clientId=#{clientId};
+    </select>
+    <select id="getLaboratoryTest" resultType="LaboratoryTest">
+        select * from t_pr_laboratorytest where clientId=#{clientId} and wastesCode=#{wastesCode};
+    </select>
+    <select id="WasteIntoList" resultMap="WasteIntoRM">
+        select * from t_pl_wasteinto;
+    </select>
+    <update id="updateWasteInto">
+        update t_pl_wasteinto set wastesCategory=(select wastesCategory from t_pl_inboundplanorder where t_pl_wasteinto.transferDraftId=t_pl_inboundplanorder.transferDraftId);
+    </update>
+    <select id="countWaste" resultType="int">
+        select count (*) from t_pl_wasteinto;
+    </select>
+</mapper>

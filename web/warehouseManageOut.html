@@ -116,7 +116,7 @@
                         <a class="btn btn-primary btn-xs" href="newWarehouseOut.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" onclick="view2()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>
+                       <!-- <a class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
@@ -190,7 +190,7 @@
             </div>
             <div class="table">
                 <table class="table table-striped table-hover table-condensed">
-                    <tbody>
+                    <thead>
                     <tr>
                         <th class="text-center">
                             <label>
@@ -208,7 +208,7 @@
                         <th class="text-center">保管员</th>
                         <th class="text-center">审批人</th>
                         <th class="text-center">计划数量</th>
-                        <th class="text-center">危废数量</th>
+                        <th class="text-center">出库数量</th>
                         <th class="text-center">进料方式</th>
                         <th class="text-center">单据状态</th>
                         <th class="text-center">审批状态</th>
@@ -216,7 +216,7 @@
                         <th class="text-center">转移联单号</th>
                         <th class="text-center">操作</th>
                     </tr>
-                    </tbody>
+                    </thead>
                     <tbody>
                     <tr id="clonedTr1" class="myclass" ondblclick="viewOutBound(this)">
                         <td class="text-center">
@@ -294,7 +294,7 @@
                 <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 85%">
                     <div class="modal-content" >
                         <div class="modal-header">
-                            <h4 class="modal-title" id="TitleMyModalLabel">出库计划单</h4>
+                            <h4 class="modal-title" id="TitleMyModalLabel">出库单明细</h4>
                         </div>
                         <div class="modal-body">
                             <table class="table table-bordered">
@@ -307,15 +307,18 @@
                                     <td class="text-center">重量/t</td>
                                     <td class="text-center">物质形态</td>
                                     <td class="text-center">包装形式</td>
-                                    <td class="text-center">热值/KCal/Kg</td>
-                                    <td class="text-center">PH</td>
-                                    <td class="text-center">灰分/%</td>
-                                    <td class="text-center">水分/%</td>
-                                    <td class="text-center">氯含量/%</td>
-                                    <td class="text-center">硫含量/%</td>
-                                    <td class="text-center">磷含量/%</td>
-                                    <td class="text-center">氟含量/%</td>
+                                    <td class="text-center">进料方式</td>
                                     <td class="text-center">处理方式</td>
+                                    <td class="text-center">热值最大值/KCal/Kg</td>
+                                    <td class="text-center">热值均值/KCal/Kg</td>
+                                    <td class="text-center">热值最小值/KCal/Kg</td>
+                                    <td class="text-center">PH最大值</td>
+                                    <td class="text-center">PH均值</td>
+                                    <td class="text-center">PH最小值</td>
+                                    <td class="text-center">灰分最大值/%</td>
+                                    <td class="text-center">灰分均值/%</td>
+                                    <td class="text-center">灰分最小值/%</td>
+
                                 </tr>
                                 <tr>
                                     <td class="text-center modal-companyName" id="companyName"></td>
@@ -325,15 +328,55 @@
                                     <td class="text-center modal-weight" id="wastesAmount"></td>
                                     <td class="text-center modal-materialForm" id="formType"></td>
                                     <td class="text-center modal-packingType" id="packageType"></td>
-                                    <td class="text-center modal-KCal" id="KCal"></td>
-                                    <td class="text-center modal-PH" id="PH"></td>
-                                    <td class="text-center modal-ashContent" id="ashContent"></td>
-                                    <td class="text-center modal-waterContent" id="waterContent"></td>
-                                    <td class="text-center modal-CLContent" id="CLContent"></td>
-                                    <td class="text-center modal-SContent" id="SContent"></td>
-                                    <td class="text-center modal-PContent" id="PContent"></td>
-                                    <td class="text-center modal-FContent" id="FContent"></td>
+                                    <td class="text-center modal-packingType" id="handelCategory"></td>
                                     <td class="text-center modal-processingMethod" id="processingMethod"></td>
+                                    <td class="text-center modal-KCal" id="kCalMax"></td>
+                                    <td class="text-center modal-PH" id="kCalAvg"></td>
+                                    <td class="text-center modal-ashContent" id="kCalMin"></td>
+                                    <td class="text-center modal-waterContent" id="phMax"></td>
+                                    <td class="text-center modal-CLContent" id="phAvg"></td>
+                                    <td class="text-center modal-SContent" id="phMin"></td>
+                                    <td class="text-center modal-PContent" id="ashMax"></td>
+                                    <td class="text-center modal-FContent" id="ashAvg"></td>
+                                    <td class="text-center modal-FContent" id="ashMin"></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">水分最大值/%</td>
+                                    <td class="text-center">水分均值/%</td>
+                                    <td class="text-center">水分最小值/%</td>
+                                    <td class="text-center">氯含量最大值/%</td>
+                                    <td class="text-center">氯含量均值/%</td>
+                                    <td class="text-center">氯含量最小值/%</td>
+                                    <td class="text-center">硫含量最大值/%</td>
+                                    <td class="text-center">硫含量均值/%</td>
+                                    <td class="text-center">硫含量最小值/%</td>
+                                    <td class="text-center">磷含量最大值/%</td>
+                                    <td class="text-center">磷含量均值/%</td>
+                                    <td class="text-center">磷含量最小值/%</td>
+                                    <td class="text-center">氟含量最大值/%</td>
+                                    <td class="text-center">氟含量均值/%</td>
+                                    <td class="text-center">氟含量最小值/%</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center modal-FContent" id="waterMax"></td>
+                                    <td class="text-center modal-FContent" id="waterAvg"></td>
+                                    <td class="text-center modal-FContent" id="waterMin"></td>
+                                    <td class="text-center modal-FContent" id="clMax"></td>
+                                    <td class="text-center modal-FContent" id="clAvg"></td>
+                                    <td class="text-center modal-FContent" id="clMin"></td>
+                                    <td class="text-center modal-FContent" id="sMax"></td>
+                                    <td class="text-center modal-FContent" id="sAvg"></td>
+                                    <td class="text-center modal-FContent" id="sMin"></td>
+                                    <td class="text-center modal-FContent" id="pMax"></td>
+                                    <td class="text-center modal-FContent" id="pAvg"></td>
+                                    <td class="text-center modal-FContent" id="pMin"></td>
+                                    <td class="text-center modal-FContent" id="fMax"></td>
+                                    <td class="text-center modal-FContent" id="fAvg"></td>
+                                    <td class="text-center modal-FContent" id="fMin"></td>
+                                    <input class="text-center modal-FContent hidden" id="outboundOrderId"></input>
+                                </tr>
+                                <tr>
+                                        <a class="btn btn-primary btn-xs" onclick="adjustAttr();"><span class="glyphicon glyphicon-log-out" ></span> 属性调整</a>
                                 </tr>
                                 </tbody>
                             </table>
@@ -351,13 +394,13 @@
                                 <div class="col-md-12">
                                     <label for="search-warehouseId" class="col-sm-4 control-label">进料方式</label>
                                     <div class="col-xs-7">
-                                        <input type="text" class="form-control" id="modal-type" name="search-warehouseId" placeholder="">
+                                        <select class="form-control" id="modal-type" name="search-warehouseId" placeholder=""></select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" onclick="comfirm();">确认</button>
+                            <button type="button" class="btn btn-primary" onclick="comfirm()">确认</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </div>
