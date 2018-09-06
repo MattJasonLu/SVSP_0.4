@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.mapper.OutboundOrderMapper;
 import com.jdlink.service.OutboundOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     }
 
     @Override
-    public void updateOutBoundOrder(OutboundOrder outboundOrder) {
-        outboundOrderMapper.updateOutBoundOrder(outboundOrder);
+    public void updateOutBoundOrder(String outboundOrderId) {
+        outboundOrderMapper.updateOutBoundOrder(outboundOrderId);
     }
 
     @Override
@@ -73,6 +74,16 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     @Override
     public void upWastesInventoryNumber(OutboundOrder outboundOrder) {
         outboundOrderMapper.upWastesInventoryNumber(outboundOrder);
+    }
+
+    @Override
+    public HandleCategory getHandelCategoryById(String outboundNumber) {
+        return outboundOrderMapper.getHandelCategoryById(outboundNumber);
+    }
+
+    @Override
+    public void upHandelCategoryById(String outboundOrderId, String handelCategory) {
+        outboundOrderMapper.upHandelCategoryById(outboundOrderId,handelCategory);
     }
 
     @Override

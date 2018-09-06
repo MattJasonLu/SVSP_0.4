@@ -12,15 +12,18 @@
         update t_pl_materialrequisitionorder set checkState='OutBounded'where materialRequisitionId=#{materialRequisitionOrder.materialRequisitionId}
     </update>
     <resultMap id="OutBoundRM" type="OutboundOrder">
-        <collection property="materialRequisitionOrder" column="materialRequisitionId"
-                    select="materialRequisitionOrderList"></collection>
+        <collection property="client" column="clientId" select="getClient"></collection>
+        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
     </resultMap>
     <select id="getMaterialRequisition" resultType="MaterialRequisitionOrder">
         select * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId}
     </select>
+    <select id="getLaboratoryTest" resultType="LaboratoryTest">
+        select * from t_pr_laboratorytest where clientId=#{clientId} and wastesCode=#{wastesCode};
+    </select>
     <!--加载出库信息列表-->
     <select id="loadOutBoundList" resultMap="OutBoundRM">
-     select  * from  t_pl_outboundorder ;
+     select  * from  t_pl_outboundorder order  by nowTime desc;
     </select>
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
         <collection property="wareHouse" column="warseHouseId" select="getWareHouse" ofType="WareHouse"></collection>
@@ -77,9 +80,13 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         select * from t_pl_outboundorder where outboundOrderId=#{outboundOrderId}
     </select>
     <resultMap id="OutBoundRM1" type="OutboundOrder">
-        <collection property="materialRequisitionOrder" column="materialRequisitionId"
-                    select="materialRequisitionOrderList1"></collection>
+       <collection property="client" column="clientId" select="getClient"></collection>
+        <collection property="laboratoryTest" column="{clientId=clientId,wastesCode=wastesCode}" select="getLaboratoryTest"></collection>
+    <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
     </resultMap>
+    <select id="getQuotationItem" resultType="QuotationItem">
+        select  * from t_quotationitem where clientId=#{clientId} and  wastesCode=#{wastesCode};
+    </select>
     <!--//查找领料单的数据-->
     <select id="materialRequisitionOrderList1" resultMap="MaterialRequisitionOrderRM" parameterType="String">
 select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{materialRequisitionId};
@@ -104,11 +111,22 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         select * from salesman where salesmanId=#{salesmanId}
     </select>
     <!--更新出库单的数据-->
-    <update id="updateOutBoundOrder" parameterType="OutboundOrder">
-        update t_pl_outboundorder set  id=#{materialRequisitionOrder.wastes.id},
-        clientId=#{materialRequisitionOrder.client.clientId},
-        salesmanId=#{materialRequisitionOrder.client.salesman.salesmanId}
-        where outboundOrderId=#{outboundOrderId}
+    <update id="updateOutBoundOrder" parameterType="String">
+        update t_pl_outboundorder set
+         transferDraftId=(select  transferDraftId from t_pl_materialrequisitionorder where t_pl_outboundorder.materialRequisitionId=t_pl_materialrequisitionorder.materialRequisitionId),
+        recordState=(select  t_pl_materialrequisitionorder.recordState from t_pl_materialrequisitionorder where t_pl_outboundorder.materialRequisitionId=t_pl_materialrequisitionorder.materialRequisitionId),
+        clientId=(select  clientId from t_pl_materialrequisitionorder where t_pl_outboundorder.materialRequisitionId=t_pl_materialrequisitionorder.materialRequisitionId),
+        handelCategory=(select  handelCategory from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        processWay=(select processWay from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        wasteCategory=(select wasteCategory from  t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        wastesCode=(select  wastesCode from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        inboundOrderItemId=(select inboundOrderItemId from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        recordState=(select recordState from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        guardian=(select  guardian from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        departmentName =(select  departmentName from t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        deputyGeneral=(SELECT  deputyGeneral from  t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId),
+        remarks=(select remarks from  t_pl_materialrequisitionorder where t_pl_materialrequisitionorder.materialRequisitionId=t_pl_outboundorder.materialRequisitionId)
+        where outboundOrderId=#{outboundOrderId};
     </update>
     <select id="getSalesman1" resultType="Salesman">
     select * from salesman where salesmanId=#{salesmanId};
@@ -210,5 +228,13 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <update id="upWastesInventoryNumber" parameterType="OutboundOrder">
         update t_pl_wasteinventory set actualCount=actualCount-#{outboundNumber}
         where t_pl_wasteinventory.inboundOrderId=#{wasteInventory.inboundOrderId};
+    </update>
+    <!--根据出库单号获取进料方式-->
+    <select id="getHandelCategoryById" resultType="HandleCategory" parameterType="String">
+        select handelCategory from t_pl_outboundorder where  outboundOrderId=#{outboundOrderId};
+    </select>
+    <!--修改属性-->
+    <update id="upHandelCategoryById">
+        update t_pl_outboundorder set handelCategory=#{1},nowTime=NOW() WHERE outboundOrderId=#{0};
     </update>
 </mapper>

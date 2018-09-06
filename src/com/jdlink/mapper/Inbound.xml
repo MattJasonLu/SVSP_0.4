@@ -95,39 +95,76 @@
     <!--增加入库单-->
     <insert id="addInboundOrder" parameterType="InboundOrder">
         INSERT INTO t_pl_inboundorder (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
-        modifyDate, recordState) VALUES (#{inboundOrderId}, #{inboundDate}, #{wareHouse.warehouseId}, #{boundType},
+        modifyDate, recordState, category) VALUES (#{inboundOrderId}, #{inboundDate}, #{wareHouse.warehouseId}, #{boundType},
         #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
         #{creatorId}, #{createDate}, #{departmentId}, #{companyId}, #{modifierId}, #{modifyDate},
-        #{recordState});
+        #{recordState}, 0);
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
                 INSERT INTO t_pl_inboundorderitem (inboundOrderItemId, transferDraftId, inboundOrderId,
                 produceCompanyId, processWay, handleCategory,
                 remarks, warehouseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,
                 unitPriceTax,
-                totalPrice) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
+                totalPrice, laboratoryTestId, category) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
                 #{inboundOrderItem.inboundOrderId},
                 #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
                 #{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
                 #{inboundOrderItem.warehouseArea}, #{inboundOrderItem.recordState}, #{inboundOrderItem.isQualified},
                 #{inboundOrderItem.wastes.name},
                 #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
-                #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice});
+                #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
+                #{inboundOrderItem.laboratoryTest.laboratorytestnumber}, 0);
             </foreach>
         </if>
         <if test="inboundOrderItemList.size() > 0">
         <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
-            insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId)
+            insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks)
             values (#{inboundOrderItem.inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundDate}
-            ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId});
-
+            ,#{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},#{createDate},#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.remarks});
         </foreach>
+        </if>
+        <if test="inboundOrderItemList.size() > 0">
+            <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
+                insert into t_pl_wasteinto(clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory)
+                values(#{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundOrderItem.handleCategory},#{inboundOrderItem.processWay},#{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category});
+            </foreach>
+        </if>
+    </insert>
+
+    <!--增加次生入库单-->
+    <insert id="addSecondInboundOrder" parameterType="InboundOrder">
+        INSERT INTO t_pl_inboundorder (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
+        modifyDate, recordState, category) VALUES (#{inboundOrderId}, NOW(), #{wareHouse.warehouseId}, #{boundType},
+        #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
+        #{creatorId}, NOW(), #{departmentId}, #{companyId}, #{modifierId}, NOW(),
+        #{recordState}, 1);
+        <if test="inboundOrderItemList.size() > 0">
+            <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
+                INSERT INTO t_pl_inboundorderitem (inboundOrderItemId, transferDraftId, inboundOrderId,
+                produceCompanyId, processWay, handleCategory,
+                remarks, warehouseArea, recordState, isQualified, wastesName, wastesCode, wastesCategory, wastesAmount,
+                unitPriceTax,
+                totalPrice, laboratoryTestId, category) VALUES (#{inboundOrderItem.inboundOrderItemId}, #{inboundOrderItem.transferDraftId},
+                #{inboundOrderId},
+                #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.processWay},
+                #{inboundOrderItem.handleCategory}, #{inboundOrderItem.remarks},
+                #{inboundOrderItem.warehouseArea}, #{inboundOrderItem.recordState}, #{inboundOrderItem.isQualified},
+                #{inboundOrderItem.wastes.name},
+                #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.wastes.category},
+                #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.unitPriceTax}, #{inboundOrderItem.totalPrice},
+                #{inboundOrderItem.laboratoryTest.laboratoryTestNumber}, 1);
+            </foreach>
         </if>
     </insert>
 
     <!--列出入库单-->
     <select id="listInboundOrder" resultMap="InboundOrderRM">
-        SELECT * FROM t_pl_inboundorder;
+        SELECT * FROM t_pl_inboundorder WHERE boundType='WasteInbound';
+    </select>
+
+    <!--列出次生入库单-->
+    <select id="listSecondInboundOrder" resultMap="InboundOrderRM">
+        SELECT * FROM t_pl_inboundorder WHERE boundType='SecondaryInbound';
     </select>
 
     <!--通过编号获取入库单-->
@@ -155,6 +192,10 @@
     </update>
 
     <select id="countInboundOrder" resultType="int">
-        SELECT COUNT(*) FROM t_pl_inboundorder;
+        SELECT COUNT(*) FROM t_pl_inboundorder WHERE boundType='WasteInbound';
+    </select>
+
+    <select id="countSecondInboundOrder" resultType="int">
+        SELECT COUNT(*) FROM t_pl_inboundorder WHERE boundType='SecondaryInbound';
     </select>
 </mapper>

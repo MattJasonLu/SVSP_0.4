@@ -13,12 +13,12 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/sewageAnalysis.js"></script>
+    <script src="js/produce/wastesAnalysis.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
 </script>
-<body >
+<body onload="loadWasteIntoList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -114,9 +114,58 @@
                 </div>
                 <h4 class="sub-header"><span class="months"></span>危废入场分析日报</h4>
             </div>
+            <!--查询框-->
+            <div class="input-group col-xs-5 pull-right" style="margin-right: 23px;">
+                <input type="text" class="form-control" size="5" placeholder="搜索..." id="searchContent" name="searchContent">
+                <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchSewage();"><span
+                                    class="glyphicon glyphicon-search"
+                                    aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                                                                                aria-hidden="true"></span> 重置</a>
+                    </span>
+            </div>
+            <br>
+            <br>
+            <!--查询框-->
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-receiveDate" class="col-sm-5 control-label">产废单位</label>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control" id="search-receiveDate"
+                                           name="search-receiveDate" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-sewageName" class="col-sm-4 control-label">收样日期</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-sewageName" name="search-sewageName"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-remarks" class="col-sm-4 control-label">联单号码</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-remarks" name="search-remarks"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <br>
             <table class="table table-bordered">
-                <tbody>
+                <thead>
                     <tr>
                         <td class="text-center">序号</td>
                         <td class="text-center">收样日期</td>
@@ -135,10 +184,12 @@
                         <td class="text-center">磷含量%</td>
                         <td class="text-center">闪点℃</td>
                         <td class="text-center">粘度mpa·s</td>
-                        <td class="text-center">热熔实验120℃</td>
+                        <td class="text-center">熔融温度℃</td>
                         <td class="text-center">备注</td>
                     </tr>
-                    <tr>
+                </thead>
+                <tbody>
+                    <tr id="cloneTr" class="myclass">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>

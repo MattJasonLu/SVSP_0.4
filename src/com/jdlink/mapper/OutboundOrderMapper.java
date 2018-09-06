@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Produce.HandleCategory;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface OutboundOrderMapper {
 
     List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
 
-    void updateOutBoundOrder(OutboundOrder outboundOrder);
+    void updateOutBoundOrder(String outboundOrderId);
 
     List<OutboundOrder> getOutBoundOrderList();
 
@@ -34,6 +35,7 @@ public interface OutboundOrderMapper {
     void updateSecOutBoundOrder(OutboundOrder outboundOrder);
 
     void upWastesInventoryNumber(OutboundOrder outboundOrder);
-
+    HandleCategory getHandelCategoryById(String outboundNumber);
+    void upHandelCategoryById(String outboundOrderId,String  handelCategory);
 
 }

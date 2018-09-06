@@ -1,9 +1,9 @@
 package com.jdlink.domain.Inventory;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Salesman;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.ProcessWay;
 
 import java.util.Date;
 import java.util.List;
@@ -55,6 +55,70 @@ public class OutboundOrder {
     /*出库数量*/
     /*仓库*/
     private WareHouse wareHouse;
+    private LaboratoryTest laboratoryTest;
+    private HandleCategory handelCategory;
+    private ProcessWay processWay;
+    private String wasteCategory;
+     private String guardian;
+     private String deputyGeneral;
+
+    public String getDeputyGeneral() {
+        return deputyGeneral;
+    }
+
+    public void setDeputyGeneral(String deputyGeneral) {
+        this.deputyGeneral = deputyGeneral;
+    }
+
+    public String getGuardian() {
+        return guardian;
+    }
+
+    public void setGuardian(String guardian) {
+        this.guardian = guardian;
+    }
+
+    public HandleCategory getHandelCategory() {
+        return handelCategory;
+    }
+
+    public void setHandelCategory(HandleCategory handelCategory) {
+        this.handelCategory = handelCategory;
+    }
+
+    public ProcessWay getProcessWay() {
+        return processWay;
+    }
+
+    public void setProcessWay(ProcessWay processWay) {
+        this.processWay = processWay;
+    }
+
+    public String getWasteCategory() {
+        return wasteCategory;
+    }
+
+    public void setWasteCategory(String wasteCategory) {
+        this.wasteCategory = wasteCategory;
+    }
+
+    public LaboratoryTest getLaboratoryTest() {
+
+        return laboratoryTest;
+    }
+    private QuotationItem quotationItem;
+
+    public QuotationItem getQuotationItem() {
+        return quotationItem;
+    }
+
+    public void setQuotationItem(QuotationItem quotationItem) {
+        this.quotationItem = quotationItem;
+    }
+
+    public void setLaboratoryTest(LaboratoryTest laboratoryTest) {
+        this.laboratoryTest = laboratoryTest;
+    }
 
     public WareHouse getWareHouse() {
         return wareHouse;
