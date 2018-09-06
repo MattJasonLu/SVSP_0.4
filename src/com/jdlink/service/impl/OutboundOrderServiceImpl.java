@@ -87,6 +87,11 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     }
 
     @Override
+    public void updateSecondart(OutboundOrder outboundOrder) {
+        outboundOrderMapper.updateSecondart(outboundOrder);
+    }
+
+    @Override
     public int searchCount(OutboundOrder outboundOrder){ return outboundOrderMapper.searchCount(outboundOrder); }
 
     @Override

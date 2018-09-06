@@ -61,6 +61,15 @@ public class OutboundOrder {
     private String wasteCategory;
      private String guardian;
      private String deputyGeneral;
+     private String inboundOrderItemId;
+
+    public String getInboundOrderItemId() {
+        return inboundOrderItemId;
+    }
+
+    public void setInboundOrderItemId(String inboundOrderItemId) {
+        this.inboundOrderItemId = inboundOrderItemId;
+    }
 
     public String getDeputyGeneral() {
         return deputyGeneral;
