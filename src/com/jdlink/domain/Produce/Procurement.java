@@ -27,14 +27,6 @@ public class Procurement {
      * 申请日期
      */
     private Date applyDate;
-
-    public Date getApplyDate() {
-        return applyDate;
-    }
-
-    public void setApplyDate(Date applyDate) {
-        this.applyDate = applyDate;
-    }
     /**
      * 申请部门
      */
@@ -76,6 +68,38 @@ public class Procurement {
      *
      */
     List<Material> materialList=new ArrayList<>();
+    /**
+     * 模糊查询关键字
+     */
+    private String keywords;
+    /**
+     * 日期模糊查询
+     */
+    private String date;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Date getApplyDate() {
+        return applyDate;
+    }
+
+    public void setApplyDate(Date applyDate) {
+        this.applyDate = applyDate;
+    }
 
     public List<Material> getMaterialList() {
         return materialList;

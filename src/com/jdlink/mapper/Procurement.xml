@@ -37,15 +37,31 @@
     <select id="searchProcurement" parameterType="Procurement" resultMap="ProcurementRM">
         select * from t_pl_procurement
         <where>
+            <if test="keywords != null and keywords != ''">
+                or receiptNumber like "%"#{keywords}"%"
+                or DATE_FORMAT(demandTime,'%Y-%m-%d %H:%i:%s') like "%"#{keywords}"%"
+                or DATE_FORMAT(demandTime,'%Y%m%d% %H:%i:%s') like "%"#{keywords}"%"
+                or applyMouth like "%"#{keywords}"%"
+                or demandTime like "%"#{keywords}"%"
+                or applyDepartment like "%"#{keywords}"%"
+                or proposer like "%"#{keywords}"%"
+                or divisionHead like "%"#{keywords}"%"
+                or purchasingHead like "%"#{keywords}"%"
+                or purchasingDirector like "%"#{keywords}"%"
+                or generalManager like "%"#{keywords}"%"
+                or applyDate like "%"#{keywords}"%"
+                or suppliesCategory like "%"#{keywords}"%"
+            </if>
             <if test="receiptNumber!=null and receiptNumber!=''">
                 and receiptNumber like binary "%"#{receiptNumber}"%"
             </if>
             <if test="applyMouth!=null and applyMouth!=''">
-                and applyMouth like binary "%"#{applyMouth}"%"
+                and applyMouth = #{applyMouth}
             </if>
-            <if test="demandTime!=null and demandTime!=''">
-            and demandTime like binary "%"#{demandTime}"%"
-        </if>
+            <if test="date !=null and date !=''">
+                and DATE_FORMAT(demandTime,'%Y-%m-%d %H:%i:%s') like "%"#{date}"%"
+                and DATE_FORMAT(demandTime,'%Y%m%d% %H:%i:%s') like "%"#{date}"%"
+            </if>
             <if test="applyDepartment!=null and applyDepartment!=''">
                 and applyDepartment like binary "%"#{applyDepartment}"%"
             </if>
@@ -65,14 +81,12 @@
                 and generalManager like binary "%"#{generalManager}"%"
             </if>
             <if test="applyDate!=null and applyDate!=''">
-                and applyDate like binary "%"#{applyDate}"%"
+                and DATE_FORMAT(demandTime,'%Y-%m-%d') like "%"#{applyDate}"%"
+                and DATE_FORMAT(demandTime,'%Y%m%d%') like "%"#{applyDate}"%"
             </if>
             <if test="suppliesCategory!=null and suppliesCategory!=''">
                 and suppliesCategory like binary "%"#{suppliesCategory}"%"
             </if>
-
-
-
         </where>
     </select>
 </mapper>

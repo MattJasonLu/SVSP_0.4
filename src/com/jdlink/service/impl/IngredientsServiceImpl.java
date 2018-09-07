@@ -4,6 +4,7 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Ingredients;
 import com.jdlink.domain.Produce.IngredientsIn;
+import com.jdlink.domain.Produce.IngredientsOut;
 import com.jdlink.domain.Produce.IngredientsReceive;
 import com.jdlink.mapper.IngredientsMapper;
 import com.jdlink.service.IngredientsService;
@@ -81,4 +82,32 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     @Override
     public List<Ingredients> getAmountAndReceive(Ingredients ingredients){ return ingredientsMapper.getAmountAndReceive(ingredients); }
+
+    ///出库单///
+    @Override
+    public int countOutById(String id){ return ingredientsMapper.countOutById(id); }
+
+    @Override
+    public IngredientsOut getOutById(String id){ return ingredientsMapper.getOutById(id); }
+
+    @Override
+    public void addOut(IngredientsOut ingredientsOut){ ingredientsMapper.addOut(ingredientsOut); }
+
+    @Override
+    public List<IngredientsOut> listPageOut(Page page){ return ingredientsMapper.listPageOut(page); }
+
+    @Override
+    public int countOut(){ return ingredientsMapper.countOut(); }
+
+    @Override
+    public int searchOutCount(IngredientsOut ingredientsOut){ return ingredientsMapper.searchOutCount(ingredientsOut); }
+
+    @Override
+    public List<IngredientsOut> searchOut(IngredientsOut ingredientsOut){ return ingredientsMapper.searchOut(ingredientsOut); }
+
+    @Override
+    public void invalidOut(String id){ ingredientsMapper.invalidOut(id); }
+
+    @Override
+    public void updateOut(IngredientsOut ingredientsOut){ ingredientsMapper.updateOut(ingredientsOut); }
 }
