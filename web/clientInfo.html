@@ -24,7 +24,7 @@
     var url=location.search;
     var Request = {};
     if(url.indexOf("?")!=-1) {
-        var str = url.substr(1)　//去掉?号
+        var str = url.substr(1);　//去掉?号
         strs = str.split("&");
         for(var i=0;i<strs.length;i++) {
             Request[strs[i ].split("=")[0]]=unescape(strs[ i].split("=")[1]);
@@ -658,13 +658,13 @@
                                 <select class="form-control" name="enterpriseType" id="enterpriseType" required></select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="operationType" class="col-sm-4 control-label">经营单位类别 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <select class="form-control" name="operationType" id="operationType" required></select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="operationRecord" class="col-sm-4 control-label">危废经营记录情况 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <select class="form-control" name="operationRecord" id="operationRecord" required></select>
@@ -702,7 +702,7 @@
                                 <select class="form-control" name="operationMode" id="operationMode" required></select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group hidden">
                             <label for="contingencyPlan" class="col-sm-4 control-label">事故防范和应急预案 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
                                 <select class="form-control" name="contingencyPlan" id="contingencyPlan" required></select>
@@ -760,7 +760,7 @@
                         <div class="form-group">
                             <label for="processDesp" class="col-sm-2 control-label">工艺描述 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-8">
-                                <textarea class="form-control " id="processDesp" name="processDesp" rows="4" style="max-width: 90%;min-width: 90%;" required></textarea>
+                                <textarea class="form-control " id="processDesp" name="processDesp" rows="4" style="max-width: 90%;min-width: 90%;"></textarea>
                             </div>
                         </div>
                     </div>
@@ -798,7 +798,7 @@
                         <div class="form-group">
                             <label for="email" class="col-sm-4 control-label">邮箱 <sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                             <div class="col-xs-5">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="" required>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -903,18 +903,18 @@
                                         <input type="text" class="form-control focus" id="modal3_enterpriseType" name="enterpriseType">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationType" class="col-sm-4 control-label">经营单位类别 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_operationType" name="operationType">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal3_operationRecord" class="col-sm-4 control-label">危废经营记录情况 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_operationRecord" name="operationRecord">
-                                    </div>
-                                </div>
+                                <!--<div class="form-group hidden" >-->
+                                    <!--<label for="modal3_operationType" class="col-sm-4 control-label">经营单位类别 </label>-->
+                                    <!--<div class="col-xs-5">-->
+                                        <!--<input type="text" class="form-control focus" id="modal3_operationType" name="operationType">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="form-group hidden" >-->
+                                    <!--<label for="modal3_operationRecord" class="col-sm-4 control-label">危废经营记录情况 </label>-->
+                                    <!--<div class="col-xs-5">-->
+                                        <!--<input type="text" class="form-control focus" id="modal3_operationRecord" name="operationRecord">-->
+                                    <!--</div>-->
+                                <!--</div>-->
                                 <div class="form-group">
                                     <label for="modal3_street" class="col-sm-4 control-label">所属街道 </label>
                                     <div class="col-xs-5">
@@ -953,12 +953,12 @@
                                         <input type="text" class="form-control focus" id="modal3_operationMode" name="operationMode">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="modal3_contingencyPlan" class="col-sm-4 control-label">事故防范应急预案 </label>
-                                    <div class="col-xs-5">
-                                        <input type="text" class="form-control focus" id="modal3_contingencyPlan" name="contingencyPlan">
-                                    </div>
-                                </div>
+                                <!--<div class="form-group hidden" >-->
+                                    <!--<label for="modal3_contingencyPlan" class="col-sm-4 control-label">事故防范应急预案 </label>-->
+                                    <!--<div class="col-xs-5">-->
+                                        <!--<input type="text" class="form-control focus" id="modal3_contingencyPlan" name="contingencyPlan">-->
+                                    <!--</div>-->
+                                <!--</div>-->
                                 <div class="form-group">
                                     <label for="modal3_applicationStatus" class="col-sm-4 control-label">申报状态 </label>
                                     <div class="col-xs-5">
