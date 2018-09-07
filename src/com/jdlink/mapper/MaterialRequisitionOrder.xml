@@ -94,7 +94,9 @@
          processWay=(select t_pl_batchingorder.processWay from t_pl_batchingorder where  t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
          wasteCategory=(select  wasteCategory from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
          remarks=(select  remarks from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
-         laboratoryTestId=(select laboratoryTestId from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId)
+         laboratoryTestId=(select laboratoryTestId from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
+         packageType=(select packageType from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId),
+         formType=(select  formType from t_pl_batchingorder where t_pl_batchingorder.batchingOrderId=t_pl_materialrequisitionorder.batchingOrderId);
 
 </update>
     <!--更新特有结构人-->

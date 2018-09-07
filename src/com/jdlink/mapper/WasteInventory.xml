@@ -154,7 +154,9 @@
         processWay=(select processWay from t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         wasteCategory=(select  wastesCategory from  t_pl_wasteinventory where  t_pl_batchingorder.inboundOrderItemId=t_pl_wasteinventory.inboundOrderItemId),
         remarks=(select  remarks from  t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId),
-        laboratoryTestId=( select laboratoryTestId from t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId)
+        laboratoryTestId=( select laboratoryTestId from t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId),
+        packageType=(select  packageType from t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId),
+        formType=(select  formType from t_pl_wasteinventory where t_pl_wasteinventory.inboundOrderItemId=t_pl_batchingorder.inboundOrderItemId);
 
 </update>
     <!--更新废物类别-->
