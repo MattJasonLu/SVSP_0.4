@@ -23,4 +23,9 @@ public class EquimentServiceImpl implements EquipmentService {
     public List<EquipmentDate> listEquipment() {
         return equipmentMapper.listEquipment();
     }
+
+    @Override
+    public void addEquipment(EquipmentDate equipmentDate) {
+
+    }
 }
