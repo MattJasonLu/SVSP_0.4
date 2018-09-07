@@ -65,6 +65,33 @@ public class OutboundOrder {
     private String wasteCategory;
      private String guardian;
      private String deputyGeneral;
+     private String inboundOrderItemId;
+    private PackageType packageType;
+    private FormType formType;
+
+    public PackageType getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
+    }
+
+    public FormType getFormType() {
+        return formType;
+    }
+
+    public void setFormType(FormType formType) {
+        this.formType = formType;
+    }
+
+    public String getInboundOrderItemId() {
+        return inboundOrderItemId;
+    }
+
+    public void setInboundOrderItemId(String inboundOrderItemId) {
+        this.inboundOrderItemId = inboundOrderItemId;
+    }
 
     public String getDeputyGeneral() {
         return deputyGeneral;

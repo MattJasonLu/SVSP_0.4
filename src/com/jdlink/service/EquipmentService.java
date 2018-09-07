@@ -23,4 +23,8 @@ public interface EquipmentService {
      */
     List<EquipmentDate> listEquipment();
 
+    /**
+     * 新增设备
+     */
+    void addEquipment(EquipmentDate equipmentDate);
 }

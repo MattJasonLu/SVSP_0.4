@@ -13,12 +13,12 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/sewageAnalysis.js"></script>
+    <script src="js/produce/wastesAnalysis.js"></script>
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');     //当前页数
 </script>
-<body >
+<body onload="secondaryAnalysis();" >
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -116,7 +116,7 @@
             </div>
             <br>
             <table class="table table-bordered">
-                <tbody>
+                <thead>
                     <tr>
                         <td class="text-center">序号</td>
                         <td class="text-center">收样日期</td>
@@ -125,7 +125,9 @@
                         <td class="text-center">水分%</td>
                         <td class="text-center">备注</td>
                     </tr>
-                    <tr>
+                </thead>
+                <tbody>
+                    <tr id="cloneTr" class="myclass">
                         <td class="text-center">日邦树脂(无锡)有限公司</td>
                         <td class="text-center">锁定</td>
                         <td class="text-center">asd</td>

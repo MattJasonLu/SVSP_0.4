@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>处置单位备案</title>
+    <title>单位备案</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -23,7 +23,7 @@
         else $("input[name='select']").prop('checked',false);
     }
     /**
-     * 获取处置单位的编号
+     * 获取单位的编号
      * @param item
      * @returns {string}
      */
@@ -31,12 +31,12 @@
         return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
     }
     /**
-     * 审核处置单位
-     * @param item 处置单位
+     * 审核单位
+     * @param item 单位
      */
     function examineSupplier(item) {
         var id = getSupplierId(item);
-        // 添加处置单位信息
+        // 添加单位信息
         $.ajax({
             type: "POST",                       // 方法类型
             url: "listSupplierById",                   // url
@@ -98,8 +98,8 @@
         $('#examineModal').modal('show');
     }
     /**
-     * 提交处置单位
-     * @param item 处置单位
+     * 提交单位
+     * @param item 单位
      */
     function commitSupplier(item) {
         var id = getSupplierId(item);
@@ -134,8 +134,8 @@
         }
     }
     /**
-     * 禁用处置单位
-     * @param item 处置单位
+     * 禁用单位
+     * @param item 单位
      */
     function disableSupplier(item) {
         var id = getSupplierId(item);
@@ -169,8 +169,8 @@
         }
     }
     /**
-     * 启用处置单位
-     * @param item 处置单位
+     * 启用单位
+     * @param item 单位
      */
     function enableSupplier(item) {
         var id = getSupplierId(item);
@@ -245,9 +245,9 @@
                         </ul>
                     </li>
                     <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">单位管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
+                            <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">单位备案</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -304,7 +304,7 @@
                     <li><a class="withripple" href="receiveManagement.html"id="function_4" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="storageManagement.html"id="function_5" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="preprocessingManagement.html"id="function_6" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                    <li><a class="withripple" href="dispositionManagement.html"id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="dispositionManagement.html"id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="secondaryManagement.html"id="function_8" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="procurementManagement.html"id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
                     <li><a class="withripple" href="reportManagement.html"id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
@@ -319,11 +319,11 @@
             <div>
                 <ol class="breadcrumb">
                     <li><a href="businessModel.html">商务管理</a></li>
-                    <li><a href="#">处置单位管理</a></li>
-                    <li class="active">处置单位备案</li>
+                    <li><a href="#">单位管理</a></li>
+                    <li class="active">单位备案</li>
                 </ol>
             </div>
-            <h4 class="sub-header">处置单位列表</h4>
+            <h4 class="sub-header">单位列表</h4>
             <div class="row">
                 <div>
                     <!--操作按钮-->
@@ -348,7 +348,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-supplierId" class="col-sm-5 control-label">处置单位编号</label>
+                                <label for="search-supplierId" class="col-sm-5 control-label">单位编号</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-supplierId" name="search-supplierId" placeholder="">
                                 </div>
@@ -363,14 +363,14 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-companyName" class="col-sm-5 control-label">处置单位名称</label>
+                                <label for="search-companyName" class="col-sm-5 control-label">单位名称</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="search-supplierType" class="col-sm-5 control-label">处置单位类型</label>
+                                <label for="search-supplierType" class="col-sm-5 control-label">单位类型</label>
                                 <div class="col-xs-7">
                                     <select class="form-control" id="search-supplierType" name="search-supplierType"></select>
                                 </div>
@@ -386,7 +386,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="search-checkState" class="col-sm-5 control-label">处置单位状态</label>
+                                <label for="search-checkState" class="col-sm-5 control-label">单位状态</label>
                                 <div class="col-xs-7">
                                     <select class="form-control" id="search-checkState" name="search-checkState"></select>
                                 </div>
@@ -412,10 +412,10 @@
                                     <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                                 </label>
                             </th>
-                            <th class="text-center">处置单位编号</th>
-                            <th class="text-center" style="width: 300px;">处置单位名称</th>
-                            <th class="text-center">处置单位类型</th>
-                            <th class="text-center">处置单位状态</th>
+                            <th class="text-center">单位编号</th>
+                            <th class="text-center" style="width: 300px;">单位名称</th>
+                            <th class="text-center">单位类型</th>
+                            <th class="text-center">单位状态</th>
                             <th class="text-center">账号状态</th>
                             <th class="text-center">联系人</th>
                             <th class="text-center">联系方式</th>
@@ -440,7 +440,7 @@
                                 <a href="#" id="function_132" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSupplier(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                 <a href="#" id="function_133" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustSupplier(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                                 <a href="#" id="function_134" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; deleteSupplier(e);}" title="删除"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                                <a href="#" id="function_135" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examineSupplier(e);}" title="审批"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                                <!--<a href="#" id="function_135" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examineSupplier(e);}" title="审批"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                                 <a href="#" id="function_136" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; commitSupplier(e);}" title="提交"><span class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>
                                 <a href="#" id="function_137" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; disableSupplier(e);}" title="禁用"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                                 <a href="#" id="function_138" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; enableSupplier(e);}" title="启用"><span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
@@ -489,29 +489,27 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h4 class="sub-header">处置单位信息</h4>
+                    <h4 class="sub-header">单位信息</h4>
                     <form method="post" id="clientInfoForm" enctype="multipart/form-data">
                         <h4 class="text-info">基本信息</h4>
                         <div class="row">
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>处置单位名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
-                                <p class="text-left"><b>处置单位类型&nbsp;&nbsp;</b><span id="modal3_supplierType"></span></p>
+                                <p class="text-left"><b>单位名称&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>
+                                <p class="text-left"><b>单位类型&nbsp;&nbsp;</b><span id="modal3_supplierType"></span></p>
                                 <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal3_licenseCode"></span></p>
                                 <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal3_postCode"></span></p>
                                 <p class="text-left"><b>组织机构代码证号&nbsp;&nbsp;</b><span id="modal3_organizationCode"></span></p>
                                 <p class="text-left"><b>税务登记证号&nbsp;&nbsp;</b><span id="modal3_taxNumber"></span></p>
                                 <p class="text-left"><b>企业类型&nbsp;&nbsp;</b><span id="modal3_enterpriseType"></span></p>
                                 <p class="text-left"><b>企业所在地&nbsp;&nbsp;</b><span id="modal3_location"></span></p>
-                                <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal3_expirationDate"></span></p>
                             </div>
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>处置单位编码&nbsp;&nbsp;</b><span id="modal3_supplierId"></span></p>
+                                <p class="text-left"><b>单位编码&nbsp;&nbsp;</b><span id="modal3_supplierId"></span></p>
+                                <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal3_expirationDate"></span></p>
                                 <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal3_representative"></span></p>
                                 <p class="text-left"><b>注册资本&nbsp;&nbsp;</b><span id="modal3_registeredCapital"></span></p>
                                 <p class="text-left"><b>成立日期&nbsp;&nbsp;</b><span id="modal3_createDate"></span></p>
                                 <p class="text-left"><b>营业期限&nbsp;&nbsp;</b><span id="modal3_businessLimit"></span></p>
-                                <p class="text-left"><b>经营范围&nbsp;&nbsp;</b><span id="modal3_operationType"></span></p>
-                                <p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal3_operationRecord"></span></p>
                                 <p class="text-left"><b>道路运输许可证号&nbsp;&nbsp;</b><span id="modal3_transportLicense"></span></p>
                             </div>
                         </div>
@@ -559,30 +557,28 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="client_style">
-                    <h4 class="sub-header">处置单位审批</h4>
+                    <h4 class="sub-header">单位审批</h4>
                     <form method="post" id="clientInfoForm1" enctype="multipart/form-data">
                         <h4 class="text-info">审批</h4>
                         <h4 class="text-info">基本信息</h4>
                         <div class="row">
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>处置单位名称&nbsp;&nbsp;</b><span id="modal4_companyName"></span></p>
-                                <p class="text-left"><b>处置单位类型&nbsp;&nbsp;</b><span id="modal4_supplierType"></span></p>
+                                <p class="text-left"><b>单位名称&nbsp;&nbsp;</b><span id="modal4_companyName"></span></p>
+                                <p class="text-left"><b>单位类型&nbsp;&nbsp;</b><span id="modal4_supplierType"></span></p>
                                 <p class="text-left"><b>营业执照注册号&nbsp;&nbsp;</b><span id="modal4_licenseCode"></span></p>
                                 <p class="text-left"><b>工商注册地邮编&nbsp;&nbsp;</b><span id="modal4_postCode"></span></p>
                                 <p class="text-left"><b>组织机构代码证号&nbsp;&nbsp;</b><span id="modal4_organizationCode"></span></p>
                                 <p class="text-left"><b>税务登记证号&nbsp;&nbsp;</b><span id="modal4_taxNumber"></span></p>
                                 <p class="text-left"><b>企业类型&nbsp;&nbsp;</b><span id="modal4_enterpriseType"></span></p>
                                 <p class="text-left"><b>企业所在地&nbsp;&nbsp;</b><span id="modal4_location"></span></p>
-                                <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal4_expirationDate"></span></p>
                             </div>
                             <div class="form-horizontal col-md-6">
-                                <p class="text-left"><b>处置单位编码&nbsp;&nbsp;</b><span id="modal4_supplierId"></span></p>
+                                <p class="text-left"><b>单位编码&nbsp;&nbsp;</b><span id="modal4_supplierId"></span></p>
+                                <p class="text-left"><b>证件有效期&nbsp;&nbsp;</b><span id="modal4_expirationDate"></span></p>
                                 <p class="text-left"><b>法人代表&nbsp;&nbsp;</b><span id="modal4_representative"></span></p>
                                 <p class="text-left"><b>注册资本&nbsp;&nbsp;</b><span id="modal4_registeredCapital"></span></p>
                                 <p class="text-left"><b>成立日期&nbsp;&nbsp;</b><span id="modal4_createDate"></span></p>
                                 <p class="text-left"><b>营业期限&nbsp;&nbsp;</b><span id="modal4_businessLimit"></span></p>
-                                <p class="text-left"><b>经营范围&nbsp;&nbsp;</b><span id="modal4_operationType"></span></p>
-                                <p class="text-left"><b>危废经营记录情况&nbsp;&nbsp;</b><span id="modal4_operationRecord"></span></p>
                                 <p class="text-left"><b>道路运输许可证号&nbsp;&nbsp;</b><span id="modal4_transportLicense"></span></p>
                             </div>
                         </div>
@@ -818,7 +814,7 @@
     }
     function deleteSupplier(item) {
         var id = getId(item);
-        var r = confirm("是否删除该处置单位？");
+        var r = confirm("是否删除该单位？");
         if (r == true) {
             $.ajax({
                 type: "POST",                       // 方法类型
@@ -847,7 +843,7 @@
         }
     }
     /**
-     * 提交处置单位的信息
+     * 提交单位的信息
      */
     function submitSuppliers() {
         var items = $("input[type='checkbox']:checked");

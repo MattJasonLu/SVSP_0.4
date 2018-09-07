@@ -12,4 +12,10 @@
     <select id="listEquipment" resultType="EquipmentDate">
         select distinct documentNumber,creator,dayTime,createDept,editor,editTime,note from t_rp_equipment;
     </select>
+
+    <!--新增设备-->
+    <insert id="addEquipment" parameterType="EquipmentDate">
+        insert into t_rp_equipment (documentNumber,equipment,runningTime,stopResult,stopTime,note,dayTime,creator,createDept,editTime,editor)
+        values (#{documentNumber},#{equipment},#{runningTime},#{stopResult},#{stopTime},#{note},#{dayTime},#{creator},#{createDept},#{editTime},#{editor})
+    </insert>
 </mapper>

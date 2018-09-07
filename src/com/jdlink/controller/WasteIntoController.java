@@ -26,8 +26,32 @@ public class WasteIntoController {
         JSONObject res=new JSONObject();
         try {
             //首先更新
-            wasteIntoService.updateWasteInto();
+            //wasteIntoService.updateWasteInto();
             List<WasteInto> wasteIntoList=wasteIntoService.WasteIntoList();
+            res.put("data",wasteIntoList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString();
+    }
+    /**
+     * 获得次生入场分析日报列表
+     */
+    @RequestMapping("getSecondIntoList")
+    @ResponseBody
+    public String getSecondIntoList(){
+        JSONObject res=new JSONObject();
+        try {
+            //首先更新
+            wasteIntoService.updateWasteInto();
+            List<WasteInto> wasteIntoList=wasteIntoService.SecondIntoList();
             res.put("data",wasteIntoList);
             res.put("status", "success");
             res.put("message", "查询成功");

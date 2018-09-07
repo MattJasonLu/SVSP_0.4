@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -175,6 +176,59 @@ public class InboundController {
     }
 
     /**
+     * 通过日期获取入库单
+     * @param date 时间
+     * @return 入库单信息
+     */
+    @RequestMapping("getInboundOrderByDate")
+    @ResponseBody
+    public String getInboundOrderByDate(Date date) {
+        JSONObject res = new JSONObject();
+        try {
+            JSONObject data = null;
+            // 获取入库单列表
+            List<InboundOrder> inboundOrderList = inboundService.getInboundOrderByRange(date, date);
+            if (inboundOrderList.size() > 0) {
+                InboundOrder inboundOrder = inboundOrderList.get(0);
+                data = JSONObject.fromBean(inboundOrder);
+            }
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 通过日期范围获取入库单列表
+     * @param startDate 起始日期
+     * @param endDate 结束日期
+     * @return 入库单列表
+     */
+    @RequestMapping("getInboundOrderByRange")
+    @ResponseBody
+    public String getInboundOrderByRange(Date startDate, Date endDate) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取入库单列表
+            List<InboundOrder> inboundOrderList = inboundService.getInboundOrderByRange(startDate, endDate);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 作废入库单
      * @param inboundOrderId 入库单编号
      * @return 成功与否
@@ -294,11 +348,20 @@ public class InboundController {
     public String addSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
         JSONObject res = new JSONObject();
         try {
+            //得到一个NumberFormat的实例
+            NumberFormat nf = NumberFormat.getInstance();
+            //设置是否使用分组
+            nf.setGroupingUsed(false);
+            //设置最大整数位数
+            nf.setMaximumIntegerDigits(4);
+            //设置最小整数位数
+            nf.setMinimumIntegerDigits(4);
             inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
             // 获取入库单列表
             inboundOrder.setBoundType(BoundType.SecondaryInbound);
             inboundOrder.setCheckState(CheckState.NewBuild);
             inboundOrder.setRecordState(RecordState.Usable);
+            String labId = laboratoryTestService.getCurrentId();
             for (InboundOrderItem inboundOrderItem : inboundOrder.getInboundOrderItemList()) {
                 inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
                 String companyName = inboundOrderItem.getProduceCompany().getCompanyName();
@@ -312,7 +375,17 @@ public class InboundController {
                     inboundOrderItem.setProduceCompany(produceCompany);
                 }
                 // 设置编号
-                inboundOrderItem.getLaboratoryTest().setLaboratoryTestNumber(laboratoryTestService.getCurrentId());
+                inboundOrderItem.getLaboratoryTest().setLaboratoryTestNumber(labId);
+                inboundOrderItem.getLaboratoryTest().setClient(produceCompany);
+                inboundOrderItem.getLaboratoryTest().setWastesName(inboundOrderItem.getWastes().getName());
+                inboundOrderItem.getLaboratoryTest().setWastesCode(inboundOrderItem.getWastes().getWastesId());
+                // 自增编号
+                int num = Integer.parseInt(labId);
+                do {
+                    num += 1;
+                    labId = nf.format(num);
+                } while (laboratoryTestService.getLaboratoryTestById(labId) != null);
+                labId = nf.format(num);
             }
             inboundService.addSecondInboundOrder(inboundOrder);
             res.put("status", "success");

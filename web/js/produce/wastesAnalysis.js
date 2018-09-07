@@ -299,3 +299,76 @@ function setWasteIntoList(result) {
     });
     tr.hide();
 }
+//加载次生入场分析日报数据列表
+function secondaryAnalysis() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondIntoList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                setSecIntoList(result);
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+//设置次生入场日报数据
+//
+function setSecIntoList(result) {
+    var tr = $("#cloneTr");
+    tr.siblings().remove();
+    $.each(result.data,function (index,item) {
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        clonedTr.children("td").each(function (inner_index) {
+            var obj = eval(item);
+            switch (inner_index) {
+                // 序号
+                case (0):
+                    $(this).html(index+1);
+                    break;
+                // 收样日期
+                case (1):
+                    $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
+                    break;
+                // 废物名称
+                case (2):
+                    if(obj.laboratoryTest.wastesName=='slag'){
+                        $(this).html('炉渣');
+                    }
+                    if(obj.laboratoryTest.wastesName=='ash'){
+                        $(this).html('飞灰');
+                    }
+                    if(obj.laboratoryTest.wastesName=='bucket'){
+                        $(this).html('桶');
+                    }
+                    break;
+                // 热灼减率%
+                case (3):
+                    $(this).html("");
+                    break;
+                // 水分%
+                case (4):
+                    $(this).html(obj.laboratoryTest.waterContentAverage);
+                    break;
+                // 备注
+                case (5):
+                    $(this).html(obj.remarks);
+                    break;
+            }
+        })
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    tr.hide();
+}
