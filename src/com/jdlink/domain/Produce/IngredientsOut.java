@@ -33,6 +33,10 @@ public class IngredientsOut {
      */
     private List<Ingredients> ingredientsList;
     /**
+     * 总出库数量
+     */
+    private float totalAmount;
+    /**
      * 所有辅料/备件 总额
      */
     private float totalPrice;
@@ -60,6 +64,10 @@ public class IngredientsOut {
      * 分页
      */
     private Page page;
+    /**
+     * 模糊查询关键字
+     */
+    private String keywords;
 
     public String getId() {
         return id;
@@ -165,6 +173,22 @@ public class IngredientsOut {
         this.page = page;
     }
 
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(float totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
         return "IngredientsOut{" +
@@ -174,12 +198,15 @@ public class IngredientsOut {
                 ", date='" + date + '\'' +
                 ", fileId='" + fileId + '\'' +
                 ", ingredientsList=" + ingredientsList +
+                ", totalAmount=" + totalAmount +
                 ", totalPrice=" + totalPrice +
                 ", bookkeeper='" + bookkeeper + '\'' +
                 ", approver='" + approver + '\'' +
                 ", keeper='" + keeper + '\'' +
                 ", handlers='" + handlers + '\'' +
+                ", state=" + state +
                 ", page=" + page +
+                ", keywords='" + keywords + '\'' +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package com.jdlink.mapper;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Ingredients;
 import com.jdlink.domain.Produce.IngredientsIn;
+import com.jdlink.domain.Produce.IngredientsOut;
 import com.jdlink.domain.Produce.IngredientsReceive;
 
 import java.util.List;
@@ -31,4 +32,15 @@ public interface IngredientsMapper {
     void invalidReceive(String id);
     void updateReceive(IngredientsReceive ingredientsReceive);
     List<Ingredients> getAmountAndReceive(Ingredients ingredients);
+
+    ///出库单///
+    int countOutById(String id);
+    IngredientsOut getOutById(String id);
+    void addOut(IngredientsOut ingredientsOut);
+    List<IngredientsOut> listPageOut(Page page);
+    int countOut();
+    int searchOutCount(IngredientsOut ingredientsOut);
+    List<IngredientsOut> searchOut(IngredientsOut ingredientsOut);
+    void invalidOut(String id);
+    void updateOut(IngredientsOut ingredientsOut);
 }
