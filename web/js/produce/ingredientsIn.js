@@ -844,8 +844,9 @@ function setProcurementList(result) {
     var tr = $("#cloneTr1");
     tr.siblings().remove();
     $.each(result.data, function (index, item) {
+        console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
-        if (item.procurementCategory == true) {
+        if (item.state == null || item.state.name != "待领料" ) {
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
@@ -1045,7 +1046,6 @@ function confirmInsert() {
         if (isCheck) {
             var procurementId1 = $(this).find("td[name='receiptNumber']").text();
             if ($.inArray(procurementId1, procurementIdArray) == -1) {
-                console.log("OK");
                 procurementIdArray.push(procurementId1);
                 //根据Id查找数据并进行赋值
                 $.ajax({
@@ -1083,6 +1083,8 @@ function confirmInsert() {
             }
         }
     });
+    //保存采购单编号列表
+    ingredientsIn.procurementIdList = procurementIdArray;
     //将数据遍历赋值到入库单中
     var tr = $("#clone3");
     var num = 0;
@@ -1091,21 +1093,25 @@ function confirmInsert() {
         var obj = eval(item);
         var clonedTr = tr.clone();
         //更新id
-        clonedTr.children().find("input").each(function () {
+        clonedTr.children().find("input,span").each(function () {
             var id = $(this).prop('id');
             var newId = id.replace(/[0-9]\d*/, num);
             $(this).prop('id', newId);
+            var name = $(this).prop('name');
+            var newName = id.replace(/[0-9]\d*/, num);
+            $(this).prop('name', newName);
         });
         clonedTr.show();
         clonedTr.find("td[name='serialNumber']").text(obj.serialNumber);
         clonedTr.find("td[name='name']").text(obj.name);
         clonedTr.find("td[name='specification']").text(obj.specification);
         clonedTr.find("td[name='unit']").text(obj.unit);
-        clonedTr.find("td[name='amount']").text(obj.amount);
+        clonedTr.find("span[name='amount']").text(obj.amount);
         clonedTr.find("td[name='remarks']").text(obj.remarks);
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
+        clonedTr.addClass("newLine");
     });
     tr.hide();
     ingredientsIn.ingredientsList = ingredientsList;
@@ -1114,39 +1120,47 @@ function confirmInsert() {
 /**
  * 单价输入框输入完成后自动计算总金额并显示
  */
-$('.clone').bind('input propertychange keyup', function(event) {
-    console.log("click");
-    var item = $(this).parents().parents();
-    var totalPrice = item.find("td[name='amount']").text() * item.find("td[name='unitPrice']").val();
-    item.find("td[name='hundredThousand']").text(Math.floor(totalPrice / 100000));
-    item.find("td[name='tenThousand']").text(Math.floor(totalPrice % 100000 / 10000));
-    item.find("td[name='thousand']").text(Math.floor((totalPrice % 100000) % 10000 / 1000));
-    item.find("td[name='hundred']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
-    item.find("td[name='ten']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
-    item.find("td[name='yuan']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
-    var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-    item.find("td[name='jiao']").text(Math.floor(jiao1));
-    item.find("td[name='fen']").text(Math.floor(jiao1 % 1 * 10));
-});
-// $("").find("td[name='unitPrice']").mouseleave(function(){
-//     var item = $(this).parents().parents();
-//     var totalPrice = item.find("td[name='amount']").text() * item.find("td[name='unitPrice']").val();
-//     item.find("td[name='hundredThousand']").text(Math.floor(totalPrice / 100000));
-//     item.find("td[name='tenThousand']").text(Math.floor(totalPrice % 100000 / 10000));
-//     item.find("td[name='thousand']").text(Math.floor((totalPrice % 100000) % 10000 / 1000));
-//     item.find("td[name='hundred']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
-//     item.find("td[name='ten']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
-//     item.find("td[name='yuan']").text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
-//     var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
-//     item.find("td[name='jiao']").text(Math.floor(jiao1));
-//     item.find("td[name='fen']").text(Math.floor(jiao1 % 1 * 10));
-// });
+function totalCalculate() {
+    var ListCount = $("input[name^='unitPrice']").length;
+    var allTotalPrice = null;
+    for (var i = 1; i < ListCount; i++) {
+        var $i = i;
+        var amount = $("#amount" + $i).text();
+        var unitPrice = $("#unitPrice" + $i).val();
+        if (amount != null && unitPrice != null && amount != "" &&　unitPrice　!= ""){
+            var totalPrice = parseFloat(amount) * parseFloat(unitPrice);
+            $("#hundredThousand" + $i).text(Math.floor(totalPrice / 100000));
+            $("#tenThousand" + $i).text(Math.floor(totalPrice % 100000 / 10000));
+            $("#thousand" + $i).text(Math.floor((totalPrice % 100000) % 10000 / 1000));
+            $("#hundred" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 / 100));
+            $("#ten" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 / 10));
+            $("#yuan" + $i).text(Math.floor((totalPrice % 100000) % 10000 % 1000 % 100 % 10));
+            var jiao1 = totalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+            $("#jiao" + $i).text(Math.floor(jiao1));
+            $("#fen" + $i).text(Math.floor(jiao1 % 1 * 10));
+            allTotalPrice += totalPrice;
+        }
+    }
+    if (allTotalPrice != null && allTotalPrice != undefined && allTotalPrice != NaN && allTotalPrice != "") {
+        $("#total-hundredThousand").text(Math.floor(allTotalPrice / 100000));
+        $("#total-tenThousand").text(Math.floor(allTotalPrice % 100000 / 10000));
+        $("#total-thousand").text(Math.floor((allTotalPrice % 100000) % 10000 / 1000));
+        $("#total-hundred").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 / 100));
+        $("#total-ten").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 / 10));
+        $("#total-yuan").text(Math.floor((allTotalPrice % 100000) % 10000 % 1000 % 100 % 10));
+        var jiao = allTotalPrice % 100000 % 10000 % 1000 % 100 % 10 % 1 * 10;
+        $("#total-jiao").text(Math.floor(jiao));
+        $("#total-fen").text(Math.floor(jiao % 1 * 10));
+    }
+}
 
-function save(){
+function save() {
     //获取输入的数据
     var totalPrice = 0;
-    for(var i = 0; i < ingredientsIn.ingredientsList.length; i++){
-        var $i = i;
+    var wareHouseState = false;
+    var unitPriceState = false;
+    for (var i = 0; i < ingredientsIn.ingredientsList.length; i++) {
+        var $i = i + 1;
         ingredientsIn.ingredientsList[i].unitPrice = $("#unitPrice" + $i).val();
         ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
         ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
@@ -1154,7 +1168,17 @@ function save(){
         // //单位换算成吨
         // if(ingredientsIn.ingredientsList[i].unit === "千克" || ingredientsIn.ingredientsList[i].unit === "kg" ||ingredientsIn.ingredientsList[i].unit === "KG")
         //     ingredientsIn.ingredientsList[i].amount = ingredientsIn.ingredientsList[i].amount / 1000;
+        if($("#wareHouseName" + $i).val() == null || $("#wareHouseName" + $i).val() == "")wareHouseState = true;
+        if($("#unitPrice" + $i).val() == null || $("#unitPrice" + $i).val() == "")unitPriceState = true;
         totalPrice += ingredientsIn.ingredientsList[i].totalPrice;
+    }
+    if(unitPriceState){
+        alert("单价不能为空，请完善数据！");
+        return;
+    }
+    if(wareHouseState){
+        alert("仓库不能为空，请完善数据！");
+        return;
     }
     ingredientsIn.totalPrice = totalPrice;
     ingredientsIn.companyName = $("#companyName").val();
@@ -1177,7 +1201,7 @@ function save(){
         success: function (result) {
             if (result.status == "success") {
                 console.log(result.message);
-                if(confirm("入库单添加成功，是否返回主页面？"))
+                if (confirm("入库单添加成功，是否返回主页面？"))
                     window.location.href = "ingredientsIn.html";
             } else alert(result.message);
         },
@@ -1191,7 +1215,7 @@ function save(){
 /**
  * 重置
  */
-function reset1(){
+function reset1() {
     $("#senior1").find("input").val("");
     $("#senior1").find("select").get(0).selectedIndex = -1;
     $("#searchContent1").val("");
@@ -1200,14 +1224,14 @@ function reset1(){
 /**
  * 新增页面查询功能
  */
-function search1(){
+function search1() {
     var procurement;
     if ($("#senior1").is(':visible')) {
         procurement = {
             receiptNumber: $("#search1-receiptNumber").val(),
-            applyMouth: $("#search1-applyMouth option:selected").text().replace(/[^0-9]/ig,""),
+            applyMouth: $("#search1-applyMouth option:selected").text().replace(/[^0-9]/ig, ""),
             suppliesCategory: $("#search1-suppliesCategory").val(),
-            applyDepartment :$("#search1-applyDepartment").val()
+            applyDepartment: $("#search1-applyDepartment").val()
         };
     } else {
         procurement = {
