@@ -25,7 +25,7 @@ public class OutboundOrder {
 //    }
 
     /*出库单编号*/
-   private String outboundOrderId;
+    private String outboundOrderId;
     /*出库日期*/
     private Date outboundDate;
     /*制单人*/
@@ -46,6 +46,10 @@ public class OutboundOrder {
     private  RecordState recordState;
     private Wastes wastes;
     private Client client;
+    /**
+     * 备注信息
+     */
+    private String remarks;
    /*出库类别*/
     private BoundType boundType;
     /*部门*/
@@ -61,6 +65,33 @@ public class OutboundOrder {
     private String wasteCategory;
      private String guardian;
      private String deputyGeneral;
+     private String inboundOrderItemId;
+    private PackageType packageType;
+    private FormType formType;
+
+    public PackageType getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
+    }
+
+    public FormType getFormType() {
+        return formType;
+    }
+
+    public void setFormType(FormType formType) {
+        this.formType = formType;
+    }
+
+    public String getInboundOrderItemId() {
+        return inboundOrderItemId;
+    }
+
+    public void setInboundOrderItemId(String inboundOrderItemId) {
+        this.inboundOrderItemId = inboundOrderItemId;
+    }
 
     public String getDeputyGeneral() {
         return deputyGeneral;
@@ -132,6 +163,14 @@ public class OutboundOrder {
 
     public float getOutboundNumber() {
         return outboundNumber;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public void setOutboundNumber(float outboundNumber) {

@@ -679,11 +679,12 @@ catch (Exception e){
             outboundOrderService.addSecondary(outboundOrder);
             //添加完进行更新操作 根据入库单号
             //查询后
-             OutboundOrder outboundOrder1=  outboundOrderService.getOutBoundByInId(outboundOrder.getWasteInventory().getInboundOrderId());
+             //OutboundOrder outboundOrder1=  outboundOrderService.getOutBoundByInId(outboundOrder.getWasteInventory().getInboundOrderId());
            //更新危废编号 客户编号 业务员编号 仓库编号
-            outboundOrderService.updateSecOutBoundOrder(outboundOrder1);
+            List<String> outboundOrderId2=outboundOrderService.check();
+            outboundOrderService.updateSecondart(outboundOrder);
             //更新危废库存的数量
-            outboundOrderService.upWastesInventoryNumber(outboundOrder1);
+            outboundOrderService.upWastesInventoryNumber(outboundOrder);
             res.put("status", "success");
             res.put("message", "添加成功");
 

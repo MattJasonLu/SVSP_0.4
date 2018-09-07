@@ -3,15 +3,21 @@ var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
 
-function getDayDate() {
+function getDayDate(date) {
     //获取时间
-    var obj = new Date();
-    var year = obj.getFullYear();
-    var month = obj.getMonth() + 1;
-    var day = obj.getDate();
-    if (day % 7 > 0) var a = 1; else a = 0;
-    var week = parseInt(day / 7) + a;
-    return year + "年" + month + "月" + day + "日";
+    var obj = date;
+    if (obj == null) return "";
+    var year=(parseInt(obj.year)+1900).toString();
+    var mouth=parseInt((obj.month)+1).toString();
+    if(mouth.length!=2){
+        mouth=0+mouth;
+    }
+    var  day=parseInt((obj.date)).toString();
+    if(day.length!=2){
+        day=0+day;
+    }
+    var time1=year+"年"+mouth+"月"+day+"日";
+    return time1;
 }
 
 /**
@@ -91,12 +97,12 @@ function setPageClone(result) {
     $(".beforeClone").remove();
     setList(result);
     var total = totalPage();
-    $("#next1").prev().hide();
+    $("#next").prev().hide();
     var st = "共" + total + "页";
     $("#totalPage").text(st);
     var myArray = new Array();
     for (var i = 0; i < total; i++) {
-        var li = $("#next1").prev();
+        var li = $("#next").prev();
         myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
@@ -184,7 +190,7 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setIngredientsReceiveList(result.data);
+                    setList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -642,7 +648,7 @@ function setViewClone(result) {
             switch (inner_index) {
                 case (0):
                     // 编号
-                    $(this).html(obj.serialNumberIn);
+                    $(this).html(obj.serialNumber);
                     break;
                 case (1):
                     // 物品名称

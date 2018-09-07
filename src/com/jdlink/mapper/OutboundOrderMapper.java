@@ -37,5 +37,6 @@ public interface OutboundOrderMapper {
     void upWastesInventoryNumber(OutboundOrder outboundOrder);
     HandleCategory getHandelCategoryById(String outboundNumber);
     void upHandelCategoryById(String outboundOrderId,String  handelCategory);
+    void  updateSecondart(OutboundOrder outboundOrder);
 
 }

@@ -8,4 +8,5 @@ public interface WasteIntoService {
     List<WasteInto> WasteIntoList();
     void updateWasteInto();
     int countWaste();
+    List<WasteInto> SecondIntoList();
 }
