@@ -153,6 +153,9 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
+                    <a class="btn btn-primary btn-xs" href="#" id="function_" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; add(e);}"><span
+                            class="glyphicon glyphicon-pencil"
+                            aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" href="#" id="function_121" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e);}"><span
                             class="glyphicon glyphicon-pencil"
                             aria-hidden="true"></span> 导入</a>
@@ -289,7 +292,7 @@
                             <a href="#" id="function_123" title="查看" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; toView(e);}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" id="function_124" title="编辑" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; editWayBill(e);}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                             <a href="#" id="function_125" title="提交" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; submit(e);}"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
-                            <a href="#" id="function_126" title="审批" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examination(e);}"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                            <!--<a href="#" id="function_126" title="审批" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examination(e);}"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                             <a href="#" id="function_127" title="作废" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalidWayBill(e);}"><span
                                     class="glyphicon glyphicon-floppy-remove"
                                     aria-hidden="true"></span></a>

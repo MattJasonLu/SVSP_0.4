@@ -53,7 +53,7 @@
     </resultMap>
     <insert id="add" parameterType="Questionnaire" >
         insert into questionnaire ( questionnaireId, clientId, time, author, state, nowTime)
-        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, NOW(),);
+        values ( #{questionnaireId}, #{client.clientId}, #{time}, #{author}, #{applyState}, NOW());
         <if test="rawWastesList.size() > 0">
             <foreach collection="rawWastesList" item="rawWastes" index="index">
             insert into r_questionnaireAndRawWastes (questionnaireId,rawWastesId)
@@ -91,7 +91,7 @@
                 #{deriveWastes.smellType}, #{deriveWastes.smellTypeDetail}, #{deriveWastes.solubility}, #{deriveWastes.solubilityDetail},
                 #{deriveWastes.isLowTemp}, #{deriveWastes.lowTemp}, #{deriveWastes.solubleTemp}, #{deriveWastes.isMixture}, #{deriveWastes.eyeMeasures},
                 #{deriveWastes.skinMeasures}, #{deriveWastes.swallowMeasures}, #{deriveWastes.suctionMeasures}, #{deriveWastes.putOutFireMeasures},
-                #{deriveWastes.leakMeasures}, NOW(),);
+                #{deriveWastes.leakMeasures}, NOW());
                 <if test="deriveWastes.mixingElementList != null and deriveWastes.mixingElementList.size() > 0">
                     <foreach collection="deriveWastes.mixingElementList" item="mixingElement" index="index">
                         insert into r_deriveWastesAndMixingElement (deriveWastesId,mixingElementId)
