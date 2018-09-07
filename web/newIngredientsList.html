@@ -243,6 +243,7 @@
                         <td class="text-center">数量</td>
                         <td class="text-center">剩余数量</td>
                         <td class="text-center">备注</td>
+                        <td class="text-center hidden"></td>
                     </tr>
                     <tr id="cloneTr" class="myclass">
                         <td class="text-center">
@@ -260,6 +261,7 @@
                         <td class="text-right modal-materialForm"></td>
                         <td class="text-right residualQuantity" id="residualQuantity"></td><!--剩余数量-->
                         <td class="text-right modal-packingType"></td>
+                        <td class="text-right modal-packingType hidden"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -334,6 +336,7 @@
                 </div>
                 <br>
                 <table class="table table-bordered">
+                    <thead>
                     <tr>
                         <th class="text-center">入库单号</th>
                         <th class="text-center">仓库号</th>
@@ -344,7 +347,9 @@
                         <th class="text-center">进料方式</th>
                         <th class="text-center">数量</th>
                         <th class="text-center">备注</th>
+                        <th class="text-center hidden"></th>
                     </tr>
+                    </thead>
                     <tbody>
                     <tr id="cloneTr2" name="clone" class="myclass2">
                         <!--<td class="text-center modal-companyName"></td>-->
@@ -359,6 +364,7 @@
                             <input type='text' style='width: 100px;'  name='count' value="" id='input1' onchange='subtraction(this);'>
                         </td>
                         <td class="text-right modal-packingType"></td>
+                        <td class="text-right modal-packingType hidden"></td>
                     </tr>
                     <!--<tr  >-->
                         <!--&lt;!&ndash;<td class="text-center modal-companyName"></td>&ndash;&gt;-->

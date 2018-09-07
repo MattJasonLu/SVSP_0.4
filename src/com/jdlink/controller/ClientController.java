@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -545,22 +544,7 @@ public class ClientController {
     @RequestMapping("getCurrentClientId")
     @ResponseBody
     public String getCurrentClientId() {
-        //得到一个NumberFormat的实例
-        NumberFormat nf = NumberFormat.getInstance();
-        //设置是否使用分组
-        nf.setGroupingUsed(false);
-        //设置最大整数位数
-        nf.setMaximumIntegerDigits(4);
-        //设置最小整数位数
-        nf.setMinimumIntegerDigits(4);
-        // 获取最新编号
-        String id;
-        int index = clientService.total();
-        // 获取唯一的编号
-        do {
-            index += 1;
-            id = nf.format(index);
-        } while (clientService.getByClientId(id) != null);
+        String id = clientService.getCurrentId();
         JSONObject res = new JSONObject();
         res.put("clientId", id);
         return res.toString();

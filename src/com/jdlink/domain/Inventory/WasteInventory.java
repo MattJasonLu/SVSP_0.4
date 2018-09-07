@@ -1,11 +1,8 @@
 package com.jdlink.domain.Inventory;
 
-import com.jdlink.domain.Client;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
-import com.jdlink.domain.Quotation;
-import com.jdlink.domain.QuotationItem;
-import com.jdlink.domain.Wastes;
 
 import java.util.Date;
 
@@ -83,6 +80,50 @@ public class WasteInventory {
      */
     private String   wastesCategory;
     private HandleCategory handleCategory;
+    private String inboundOrderItemId;
+    /**
+     * 类别（危废、次生）
+     */
+    private int category;
+   private String remarks;
+
+    /**
+     * 分页
+     * @return
+     */
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public String getInboundOrderItemId() {
+        return inboundOrderItemId;
+    }
+
+    public void setInboundOrderItemId(String inboundOrderItemId) {
+        this.inboundOrderItemId = inboundOrderItemId;
+    }
 
     public String getWastesCategory() {
         return wastesCategory;

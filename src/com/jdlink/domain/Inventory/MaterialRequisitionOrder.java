@@ -2,6 +2,10 @@ package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Client;
+import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.ProcessWay;
+import com.jdlink.domain.QuotationItem;
 import com.jdlink.domain.Wastes;
 
 
@@ -46,6 +50,60 @@ public class MaterialRequisitionOrder {
     private Wastes wastes;
     /*产废单位*/
     private Client client;
+    private RecordState recordState;
+
+    public RecordState getRecordState() {
+        return recordState;
+    }
+
+    public void setRecordState(RecordState recordState) {
+        this.recordState = recordState;
+    }
+    private LaboratoryTest laboratoryTest;
+    private HandleCategory handelCategory;
+    private ProcessWay processWay;
+    private String wasteCategory;
+    private QuotationItem quotationItem;
+
+    public QuotationItem getQuotationItem() {
+        return quotationItem;
+    }
+
+    public void setQuotationItem(QuotationItem quotationItem) {
+        this.quotationItem = quotationItem;
+    }
+
+    public HandleCategory getHandelCategory() {
+        return handelCategory;
+    }
+
+    public void setHandelCategory(HandleCategory handelCategory) {
+        this.handelCategory = handelCategory;
+    }
+
+    public ProcessWay getProcessWay() {
+        return processWay;
+    }
+
+    public void setProcessWay(ProcessWay processWay) {
+        this.processWay = processWay;
+    }
+
+    public String getWasteCategory() {
+        return wasteCategory;
+    }
+
+    public void setWasteCategory(String wasteCategory) {
+        this.wasteCategory = wasteCategory;
+    }
+
+    public LaboratoryTest getLaboratoryTest() {
+        return laboratoryTest;
+    }
+
+    public void setLaboratoryTest(LaboratoryTest laboratoryTest) {
+        this.laboratoryTest = laboratoryTest;
+    }
 
     public Client getClient() {
         return client;

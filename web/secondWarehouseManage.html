@@ -13,6 +13,7 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
+    <script src="js/produce/secondWarehouseManage.js"></script>
 </head>
 <body onload="loadPageList();">
     <!--导航条-->
@@ -246,7 +247,7 @@
                         <!--<td class="text-center">进料方式</td>-->
                         <!--<td class="text-center">计划数量</td>-->
                         <!--<td class="text-center">危废数量</td>-->
-                        <td class="text-center" name="checkState">单据状态</td>
+                        <td class="text-center" name="recordState">单据状态</td>
                         <td class="text-center" name="creatorId">制单人</td>
                         <td class="text-center" name="keeperId">保管员</td>
                         <td class="text-center" name="directorId">主管</td>
@@ -335,39 +336,55 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">序号</th>
-                                    <!--<th class="text-center">入库计划号</th>-->
-                                    <th class="text-center">转移联单号</th>
-                                    <th class="text-center">产废单位</th>
-                                    <th class="text-center">危废名称</th>
-                                    <th class="text-center">危废代码</th>
-                                    <th class="text-center">危废数量</th>
-                                    <th class="text-center">单价</th>
-                                    <th class="text-center">金额</th>
-                                    <th class="text-center">处理方式</th>
-                                    <th class="text-center">进料方式</th>
-                                    <th class="text-center">备注</th>
-                                    <th class="text-center">库区</th>
-                                    <th class="text-center hidden">编号</th>
-                                    <th class="text-center">操作</th>
+                                <tr>
+                                    <th class="text-center small">序号</th>
+                                    <th class="text-center small">产废单位</th>
+                                    <th class="text-center small">危废名称</th>
+                                    <th class="text-center small">危废代码</th>
+                                    <th class="text-center small">危废数量</th>
+                                    <th class="text-center small">单价</th>
+                                    <th class="text-center small">金额</th>
+                                    <th class="text-center small">处理方式</th>
+                                    <th class="text-center small">进料方式</th>
+                                    <th class="text-center small">物质形态</th>
+                                    <th class="text-center small">包装方式</th>
+                                    <th class="text-center small" style="width: 30px">热值<br>KCal/Kg</th>
+                                    <th class="text-center small">ph</th>
+                                    <th class="text-center small">灰分/%</th>
+                                    <th class="text-center small">水分/%</th>
+                                    <th class="text-center small">氯含量/%</th>
+                                    <th class="text-center small">硫含量/%</th>
+                                    <th class="text-center small">磷含量/%</th>
+                                    <th class="text-center small">氟含量/%</th>
+                                    <th class="text-center small">备注</th>
+                                    <th class="text-center small">库区</th>
+                                    <th class="text-center small">操作</th>
+                                </tr>
                                 </tr>
                                 </thead>
                                 <tbody id="itemData">
                                 <tr id="itemClonedTr" style="display: none;">
-                                    <td class="text-center" name="index">1</td>
-                                    <!--<td class="text-center" name="inboundPlanOrderId">inboundOrderId</td>-->
-                                    <td class="text-center" name="transferDraftId">inboundOrderId</td>
-                                    <td class="text-left" name="produceCompanyName">produceCompanyName</td>
-                                    <td class="text-left" name="wastesName">废液</td>
-                                    <td class="text-center" name="wastesCode">QW10001</td>
-                                    <td class="text-right" name="wastesAmount">5</td>
-                                    <td class="text-right" name="unitPriceTax"></td>
-                                    <td class="text-right" name="totalPrice"></td>
-                                    <td class="text-right" name="processWay"></td>
-                                    <td class="text-right" name="handleCategory"></td>
-                                    <td class="text-right" name="remarks"></td>
-                                    <td class="text-right" name="warehouseArea"></td>
-                                    <td class="text-right hidden" name="inboundOrderItemId"></td>
+                                    <td class="text-center small" name="index"></td>
+                                    <td class="text-center small" name="produceCompanyName"></td>
+                                    <td class="text-center small" name="wastesName"></td>
+                                    <td class="text-center small" name="wastesCode"></td>
+                                    <td class="text-center small" name="wastesAmount"></td>
+                                    <td class="text-center small" name="unitPriceTax"></td>
+                                    <td class="text-center small" name="totalPrice"></td>
+                                    <td class="text-center small" name="processWay"></td>
+                                    <td class="text-center small" name="handleCategory"></td>
+                                    <td class="text-center small" name="formType"></td>
+                                    <td class="text-center small" name="packageType"></td>
+                                    <td class="text-center small" name="heatAverage"></td>
+                                    <td class="text-center small" name="phAverage"></td>
+                                    <td class="text-center small" name="ashAverage"></td>
+                                    <td class="text-center small" name="waterContentAverage"></td>
+                                    <td class="text-center small" name="chlorineContentAverage"></td>
+                                    <td class="text-center small" name="sulfurContentAverage"></td>
+                                    <td class="text-center small" name="phosphorusContentAverage"></td>
+                                    <td class="text-center small" name="fluorineContentAverage"></td>
+                                    <td class="text-center small" name="remarks"></td>
+                                    <td class="text-center small" name="warehouseArea"></td>
                                     <td class="text-right">
                                         <a href="#" onclick="changeAttribute($(this));" title="属性调整"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                                     </td>

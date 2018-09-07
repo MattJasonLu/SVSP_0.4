@@ -1,7 +1,10 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.Client;
+import com.jdlink.domain.FormType;
+import com.jdlink.domain.PackageType;
 import com.jdlink.domain.Produce.HandleCategory;
+import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.Wastes;
 
@@ -55,6 +58,14 @@ public class InboundOrderItem {
      */
     private HandleCategory handleCategory;
     /**
+     * 物质形态
+     */
+    private FormType formType;
+    /**
+     * 包装方式
+     */
+    private PackageType packageType;
+    /**
      * 备注
      */
     private String remarks;
@@ -66,6 +77,10 @@ public class InboundOrderItem {
      * 记录状态
      */
     private RecordState recordState;
+    /**
+     * 化验单
+     */
+    private LaboratoryTest laboratoryTest;
     /**
      * 化验结果是否合格
      */
@@ -189,6 +204,30 @@ public class InboundOrderItem {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public LaboratoryTest getLaboratoryTest() {
+        return laboratoryTest;
+    }
+
+    public void setLaboratoryTest(LaboratoryTest laboratoryTest) {
+        this.laboratoryTest = laboratoryTest;
+    }
+
+    public FormType getFormType() {
+        return formType;
+    }
+
+    public void setFormType(FormType formType) {
+        this.formType = formType;
+    }
+
+    public PackageType getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
     }
 
     @Override

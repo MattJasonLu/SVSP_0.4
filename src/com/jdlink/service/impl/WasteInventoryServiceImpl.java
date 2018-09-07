@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.BatchingOrder;
 import com.jdlink.domain.Inventory.WasteInventory;
+import com.jdlink.domain.Page;
 import com.jdlink.mapper.WasteInventoryMapper;
 import com.jdlink.service.WasteInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,13 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     WasteInventoryMapper wasteInventoryMapper;
 
     @Override
-    public List<WasteInventory> list() {
-        return wasteInventoryMapper.list();
+    public List<WasteInventory> list(Page page) {
+        return wasteInventoryMapper.list(page);
+    }
+
+    @Override
+    public List<WasteInventory> list1() {
+        return wasteInventoryMapper.list1();
     }
 
     @Override
@@ -55,8 +61,8 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     }
 
     @Override
-    public void getWasteInventoryLeftNumber(String inboundOrderId, float number) {
-        wasteInventoryMapper.getWasteInventoryLeftNumber(inboundOrderId,number);
+    public void getWasteInventoryLeftNumber(String inboundOrderItemId, float number) {
+        wasteInventoryMapper.getWasteInventoryLeftNumber(inboundOrderItemId,number);
     }
 
 
@@ -73,6 +79,21 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     @Override
     public void batchingNumber(WasteInventory wasteInventory) {
         wasteInventoryMapper.batchingNumber(wasteInventory);
+    }
+
+    @Override
+    public void updateBatching(BatchingOrder batchingOrder) {
+        wasteInventoryMapper.updateBatching(batchingOrder);
+    }
+
+    @Override
+    public List<BatchingOrder> getBatching() {
+        return wasteInventoryMapper.getBatching();
+    }
+
+    @Override
+    public int countInventory() {
+        return wasteInventoryMapper.countInventory();
     }
 
 

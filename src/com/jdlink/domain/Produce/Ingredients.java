@@ -7,7 +7,11 @@ public class Ingredients {
     /**
      * 辅料、备件ID
      */
-    private int Itemid;
+    private int itemId;
+    /**
+     * 序号/编号
+     */
+    private String serialNumber;
     /**
      * 外键ID
      */
@@ -49,7 +53,7 @@ public class Ingredients {
      */
     private String wareHouseName;
     /**
-     * 已领料数量(已出库)
+     * 已领料数量(已出库数量)
      */
     private float receiveAmount;
     /**
@@ -60,13 +64,21 @@ public class Ingredients {
      * 辅料/备件状态
      */
     private IngredientState ingredientState;
+    /**
+     * 用于储存第二外键Id
+     */
+    private String aid;
+    /**
+     * 用于储存第二序号
+     */
+    private String serialNumberA;
 
-    public int getItemid() {
-        return Itemid;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setItemid(int itemid) {
-        Itemid = itemid;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public String getName() {
@@ -75,6 +87,14 @@ public class Ingredients {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public String getSpecification() {
@@ -173,10 +193,19 @@ public class Ingredients {
         this.ingredientState = ingredientState;
     }
 
+    public String getAid() {
+        return aid;
+    }
+
+    public void setAid(String aid) {
+        this.aid = aid;
+    }
+
     @Override
     public String toString() {
         return "Ingredients{" +
-                "Itemid=" + Itemid +
+                "itemId=" + itemId +
+                ", serialNumber='" + serialNumber + '\'' +
                 ", id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", specification='" + specification + '\'' +
@@ -189,6 +218,7 @@ public class Ingredients {
                 ", wareHouseName='" + wareHouseName + '\'' +
                 ", receiveAmount=" + receiveAmount +
                 ", notReceiveAmount=" + notReceiveAmount +
+                ", ingredientState=" + ingredientState +
                 '}';
     }
 }

@@ -277,6 +277,7 @@ function outBound() {
             //contentType: "application/json; charset=utf-8",
             success:function (result) {
                 if (result != undefined && result.status == "success"){
+                    console.log(result);
                     //设置出库列表
                     if(result.materialRequisitionOrder!=undefined){
                         setOutboutList(result.materialRequisitionOrder,index);
@@ -338,41 +339,39 @@ function setOutboutList(result,index) {
                         break;
                     // 产废单位
                     case (1):
-                        if(obj.client!=null){
                             $(this).html(obj.client.companyName);
-                        }
                         break;
                     // 危废名称
                     case (2):
-                        $(this).html(obj.wastes.name);
+                        $(this).html(obj.laboratoryTest.wastesName);
                         break;
                     // 危废代码
                     case (3):
-                        $(this).html(obj.wastes.wastesId);
+                        $(this).html(obj.laboratoryTest.wastesCode);
                         break;
                     // 出库数量
                     case (4):
-                        $(this).html(obj.batchingOrder.batchingNumber);
+                        $(this).html(obj.recipientsNumber);
                         break;
                     // 单价
                     case (5):
-                        $(this).html(0);
+                        $(this).html(obj.quotationItem.unitPriceTax);
                         break;
                     // 金额
                     case (6):
-                        $(this).html(0);
+                        $(this).html(parseInt(obj.recipientsNumber)*parseInt(obj.quotationItem.unitPriceTax).toFixed(2));
                         break;
                     //处置方式
                     case (7):
-                        $(this).html(obj.wastes.processWay.name);
+                        $(this).html(obj.processWay.name);
                         break;
                     //备注
                     case (8):
-                        $(this).html(obj.wastes.remarks);
+                        $(this).html(obj.remarks);
                         break;
                     //库区
                     case (9):
-                        $(this).html(obj.wareHouse.wareHouseName);
+                        $(this).html("");
                         break;
                     //领料单号
                     case (10):
@@ -412,9 +411,11 @@ function saveOutBound(){
                 outboundDate:outboundDate,
                 creator:creator,
                 auditor:auditor,
+                outboundNumber:$(this).children('td').get(4).innerHTML,
                 materialRequisitionOrder:{materialRequisitionId:materialRequisitionId}
             }
-            addOutBoundOrder(data);
+            //console.log(data);
+           addOutBoundOrder(data);
         });
         window.location.href="warehouseManageOut.html";
     }
@@ -490,10 +491,10 @@ function loadOutBoundList() {
 function setOutBoundList(result) {
     var tr = $("#clonedTr1");
     //console.log(result);
-    //tr.siblings().remove();
+    tr.siblings().remove();
     tr.attr('class','myclass');
     $.each(result, function (index, item) {
-        console.log(item);
+        //console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
         if(item.checkState.name=="已出库"&&item.boundType.name=='危废出库'){
             var clonedTr = tr.clone();
@@ -506,15 +507,15 @@ function setOutBoundList(result) {
                 switch (inner_index) {
                     // 仓库号
                     case (1):
-                        $(this).html(obj.materialRequisitionOrder.wareHouse.wareHouseName);
+                        $(this).html("");
                         break;
                     // 部门
                     case (2):
-                        $(this).html(obj.materialRequisitionOrder.departmentName);
+                        $(this).html(obj.departmentName);
                         break;
                     // 业务员
                     case (3):
-                        $(this).html(obj.materialRequisitionOrder.client.salesman.name);
+                        $(this).html(obj.client.salesman.name);
                         break;
                     // 出库日期
                     case (4):
@@ -533,7 +534,7 @@ function setOutBoundList(result) {
                         break;
                     // 主管
                     case (7):
-                        $(this).html(obj.materialRequisitionOrder.deputyGeneral);
+                        $(this).html("");
                         break;
                     //制单人
                     case (8):
@@ -541,7 +542,7 @@ function setOutBoundList(result) {
                         break;
                     //保管员
                     case (9):
-                        $(this).html(obj.materialRequisitionOrder.guardian);
+                        $(this).html(obj.guardian);
                         break;
                     //审批人
                     case (10):
@@ -549,19 +550,19 @@ function setOutBoundList(result) {
                         break;
                     //计划数量
                     case (11):
-                        $(this).html(obj.materialRequisitionOrder.wastes.wasteAmount);
+                        $(this).html(obj.outboundNumber);
                         break;
                     //危废数量
                     case (12):
-                        $(this).html(obj.materialRequisitionOrder.wastes.wasteAmount);
+                        $(this).html(obj.outboundNumber);
                         break;
                     //进料方式
                     case (13):
-                        $(this).html(obj.materialRequisitionOrder.wastes.handleCategory.name);
+                        $(this).html(obj.handelCategory.name);
                         break;
                         //单据状态
                     case (14):
-                        $(this).html(obj.picker);
+                        $(this).html(obj.recordState.name);
                         break;
                         //审批状态
                     case (15):
@@ -569,11 +570,11 @@ function setOutBoundList(result) {
                         break;
                         //备注
                     case (16):
-                        $(this).html(obj.materialRequisitionOrder.wastes.remarks);
+                        $(this).html("");
                         break;
                         //转移联单号
                     case (17):
-                        $(this).html(obj.picker);
+                        $(this).html(obj.transferDraftId);
                         break;
 
                     //
@@ -607,37 +608,57 @@ function viewOutBound(item) {
                 console.log(result);
                 //赋值
                 //产废单位
-                $("#companyName").text(result.data[0].materialRequisitionOrder.client.companyName);
-                //出库时间
+                $("#companyName").text(result.data[0].client.companyName);
+                // //出库时间
                 $('#outBoundDate').text(getDateStr(result.data[0].outboundDate));
-                //废物名称
-                $('#name').text(result.data[0].materialRequisitionOrder.wastes.name);
-                //废物代码
-                $('#wastesId').text(result.data[0].materialRequisitionOrder.wastes.wastesId);
-                //重量
-                $('#wastesAmount').text(result.data[0].materialRequisitionOrder.wastes.wasteAmount);
-                //物质形态
-                $('#formType').text(result.data[0].materialRequisitionOrder.wastes.formType.name);
-                //包装形式
-                $('#packageType').text(result.data[0].materialRequisitionOrder.wastes.packageType.name);
-                //热值/KCal/Kg
-                $('#KCal').text(result.data[0].materialRequisitionOrder.wastes.calorific);
-                //PH
-                $('#PH').text(result.data[0].materialRequisitionOrder.wastes.ph);
-                //灰分/%
-                $('#ashContent').text(result.data[0].materialRequisitionOrder.wastes.ashPercentage);
-                //水分/%
-                $('#waterContent').text(result.data[0].materialRequisitionOrder.wastes.wetPercentage);
-                //氯含量/%
-                $('#CLContent').text(result.data[0].materialRequisitionOrder.wastes.chlorinePercentage);
-                //硫含量/%
-                $('#SContent').text(result.data[0].materialRequisitionOrder.wastes.sulfurPercentage);
-                //磷含量/%
-                $('#PContent').text(result.data[0].materialRequisitionOrder.wastes.phosphorusPercentage);
-                //氟含量/%
-                $('#FContent').text(result.data[0].materialRequisitionOrder.wastes.fluorinePercentage);
-                //处理方式
-                $('#processingMethod').text(result.data[0].materialRequisitionOrder.wastes.processWay.name);
+                // //废物名称
+                 $('#name').text(result.data[0].laboratoryTest.wastesName);
+                // //废物代码
+                $('#wastesId').text(result.data[0].laboratoryTest.wastesCode);
+                // //重量
+                 $('#wastesAmount').text(result.data[0].outboundNumber);
+                // //物质形态
+                 $('#formType').text(result.data[0].quotationItem.formType.name);
+                // //包装形式
+                $('#packageType').text("");
+                 //热值/KCal/Kg最大
+                $('#kCalMax').text(result.data[0].laboratoryTest.heatMaximum);
+                $('#kCalAvg').text(result.data[0].laboratoryTest.heatAverage);
+                $('#kCalMin').text(result.data[0].laboratoryTest.heatMinimum);
+                // //PH
+                 $('#phMax').text(result.data[0].laboratoryTest.phMaximum);
+                $('#phAvg').text(result.data[0].laboratoryTest.phAverage);
+                $('#phMin').text(result.data[0].laboratoryTest.phMaximum);
+                 //灰分/%
+                 $('#ashMax').text(result.data[0].laboratoryTest.ashMaximum);
+                $('#ashAvg').text(result.data[0].laboratoryTest.ashAverage);
+                $('#ashMin').text(result.data[0].laboratoryTest.ashMinimum);
+                 //水分
+                $('#waterMax').text(result.data[0].laboratoryTest.waterContentMaximum);
+                $('#waterAvg').text(result.data[0].laboratoryTest.waterContentAverage);
+                $('#waterMin').text(result.data[0].laboratoryTest.waterContentMinimum);
+                 //硫含量
+                 $('#sMax').text(result.data[0].laboratoryTest.sulfurContentMaximum);
+                $('#sAvg').text(result.data[0].laboratoryTest.sulfurContentAverage);
+                $('#sMin').text(result.data[0].laboratoryTest.sulfurContentMinimum);
+                //氯含量
+                $('#clMax').text(result.data[0].laboratoryTest.chlorineContentMaximum);
+                $('#clAvg').text(result.data[0].laboratoryTest.chlorineContentAverage);
+                $('#clMin').text(result.data[0].laboratoryTest.chlorineContentMinimum);
+                //磷含量
+                $('#pMax').text(result.data[0].laboratoryTest.phosphorusContentMaximum);
+                $('#pAvg').text(result.data[0].laboratoryTest.phosphorusContentAverage);
+                $('#pMin').text(result.data[0].laboratoryTest.phosphorusContentMinimum);
+                 //氟含量
+                $('#fMax').text(result.data[0].laboratoryTest.fluorineContentMaximum);
+                $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
+                $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
+                 //处理方式
+                $('#processingMethod').text(result.data[0].processWay.name);
+                //进料方式
+                $('#handelCategory').text(result.data[0].handelCategory.name);
+                //入库单号
+                $("#outboundOrderId").val(result.data[0].outboundOrderId);
                 $('#appointModal2').modal('show');
             }
             else {
@@ -649,4 +670,67 @@ function viewOutBound(item) {
         }
 
     }) ;
+}
+//属性调整
+function adjustAttr() {
+
+    //加载进料方式的下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandelCategoryList",                  // url
+        data:{'outboundOrderId':$("#outboundOrderId").val()},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+               index1=result.handelCategory.index;
+                var type=$('#modal-type');
+                type.children().remove();
+                $.each(result.array1,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    type.append(option);
+                })
+                type.get(0).selectedIndex=index1-1;
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+           alert("服务器异常！")
+        },
+
+    });
+    $('#examineModal').modal('show');
+
+}
+//确认修改属性
+function comfirm() {
+    console.log($("#outboundOrderId").val());
+    console.log($('#modal-type').val());
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "upHandelCategoryById",                  // url
+        data:{'outboundOrderId':$("#outboundOrderId").val(),'index':$('#modal-type').val()},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+          alert("服务器异常！")
+        }
+     });
 }

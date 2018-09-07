@@ -94,4 +94,22 @@ public interface InboundService {
      * @return 入库单数量
      */
     int countInboundOrder();
+
+    /**
+     * 计算次生入库单数量
+     * @return 入库单数量
+     */
+    int countSecondInboundOrder();
+
+    /**
+     * 列出次生入库单
+     * @return 次生入库单列表
+     */
+    List<InboundOrder> listSecondInboundOrder(Page page);
+
+    /**
+     * 增加次生危废入库单
+     * @param inboundOrder 入库单
+     */
+    void addSecondInboundOrder(InboundOrder inboundOrder);
 }
