@@ -17,6 +17,7 @@
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/produce/productionDaily.js"></script>
 </head>
 <script type="text/javascript">
     $('.form_datetime1').datetimepicker({
@@ -141,16 +142,36 @@ $('.form_datetime2').datetimepicker({
                         <li class="active">生产日报</li>
                     </ol>
                 </div>
-                <h4 class="sub-header"><span class="months"></span>生产日报列表</h4>
+                <h4 class="sub-header"><span class="months"></span>生产报表</h4>
             </div>
             <!--查询框-->
-            <div class="input-group col-xs-3 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
-                <span class="input-group-btn">
-                    <a class="btn btn-default" onclick="searchClient();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                    <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                    <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置</a>
-                </span>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="#" onclick="addData();"><span
+                                class="glyphicon glyphicon-arrow-plus"
+                                aria-hidden="true"></span> 生成日报</a>
+                        <a class="btn btn-primary btn-xs" href="#" onclick="importExcelChoose();"><span
+                                class="glyphicon glyphicon-arrow-down"
+                                aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
+                                class="glyphicon glyphicon-arrow-up"
+                                aria-hidden="true"></span> 导出</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-xs-3 pull-right">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchData();"><span
+                                    class="glyphicon glyphicon-search"
+                                    aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                                                                                aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
+                </div>
             </div>
             <br>
             <br>
@@ -163,10 +184,8 @@ $('.form_datetime2').datetimepicker({
                                 <label class="col-sm-3 control-label">日报时间 </label>
                                 <div class="input-group date">
                                     <input type="text" class="input-sm form-control form_datetime1" name="beginTime" title=""/>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                    <span class="input-group-addon">to</span>
+                                    <span class="input-group-addon">-</span>
                                     <input type="text" class="input-sm form-control form_datetime2" name="endTime" title=""/>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
                             </div>
                         </div>
@@ -194,11 +213,11 @@ $('.form_datetime2').datetimepicker({
                                 <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                             </label>
                         </td>
-                        <td class="text-center">1月</td>
+                        <td class="text-center">2018-08-08</td>
                         <td class="text-center">日邦树脂(无锡)有限公司</td>
                         <td class="text-center">锁定</td>
-                        <td class="text-center">asd</td>
-                        <td class="text-center">0.004</td>
+                        <td class="text-center">Admin</td>
+                        <td class="text-center">2018-08-08</td>
                         <td class="text-center">
                             <a href="productionDaily1.html" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                             <a href="#" onclick="calculate(this);" title="计算"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></a>
