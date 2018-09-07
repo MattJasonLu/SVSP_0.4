@@ -6,6 +6,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,6 +24,24 @@ public class EquipmentController {
      */
     @Autowired
     EquipmentService equipmentService;
+
+    /**
+     * 新增设备
+     */
+    @RequestMapping("addEquipment")
+    @ResponseBody
+    public void addEquipment(@RequestBody EquipmentDate equipmentDate) {
+        JSONObject res = new JSONObject();
+        try{
+            equipmentService.addEquipment(equipmentDate);
+            res.put("status", "success");
+            res.put("message", "备案成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "信息输入错误，请重试!");
+        }
+    }
 
     /**
      * 通过日期查询设备明细集合
