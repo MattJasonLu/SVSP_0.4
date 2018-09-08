@@ -1093,15 +1093,18 @@ function setOutBoundOrderList(result) {
                     break;
                 case (4):
                     // 仓库号
+                    if(obj.wareHouse != null)
                     $(this).html(obj.wareHouse.wareHouseId);
                     break;
                 case (5):
                     // 记录状态
+                    if(obj.recordState != null)
                     $(this).html(obj.recordState.name);
                     break;
                 case (6):
                     // 单据状态
-                    $(this).html(obj.checkState.name);
+                    if(obj.checkState != null)
+                        $(this).html(obj.checkState.name);
                     break;
                 case (7):
                     // 转移联单号
@@ -1109,10 +1112,12 @@ function setOutBoundOrderList(result) {
                     break;
                 case (8):
                     // 产废单位
+                    if(obj.client != null)
                     $(this).html(obj.client.companyName);
                     break;
                 case (9):
                     // 危废名称
+                    if(obj.laboratoryTest != null)
                     $(this).html(obj.laboratoryTest.wastesName);
                     break;
                 case(10):
@@ -1125,11 +1130,13 @@ function setOutBoundOrderList(result) {
                     break;
                 case(12):
                     // 处置方式
-                    $(this).html(obj.processWay.name);
+                    if(obj.processWay != null)
+                     $(this).html(obj.processWay.name);
                     break;
                 case(13):
                     // 进料方式
-                    $(this).html(obj.handleCategory.name);
+                    if(obj.handelCategory != null)
+                    $(this).html(obj.handelCategory.name);
                     break;
             }
         });
@@ -1184,45 +1191,48 @@ function confirmInsert() {
         var isCheck = $(this).find("input[name='select']").prop('checked');
         if (isCheck) {
             var outBoundOrderId1 = $(this).find("td[name='outBoundOrderId']").text();
+            console.log(outBoundOrderId1);
             if ($.inArray(outBoundOrderId1, outBoundOrderIdArray) == -1) {
                 i++;
                 outBoundOrderIdArray.push(outBoundOrderId1);
                 //根据Id查找数据并进行赋值
                 $.ajax({
                     type: "POST",                       // 方法类型
-                    url: "getOutBoundOrderListById",          // url
+                    url: "getByOutBoundOrderId",          // url
                     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
                     data: {
-                        id: outBoundOrderId1
+                        outboundOrderId: outBoundOrderId1
                     },
                     dataType: "json",
                     success: function (result) {
                         if (result != undefined && result.status == "success") {
                             var data = eval(result.data[0]);
                             //将数据存到数组中，然后统一赋值
+                            console.log("数据为：");
+                            console.log(data);
                             var pretreatmentItem = {};
                             pretreatmentItem.serialNumber = i;
                             pretreatmentItem.pretreatmentId = pretreatment.id;
                             pretreatmentItem.outboundOrderId = outBoundOrderId1;
                             pretreatmentItem.produceCompanyName = data.client.companyName;
-                            weightTotal += data.wastes.weight;          // 总重量累加
+                            weightTotal += data.outboundNumber;          // 总重量累加
                             var wastes = {};
-                            wastes.name = data.wastes.name;
-                            wastes.weight = data.wastes.weight;
-                            wastes.calorific = data.wastes.calorific;
-                            wastes.ashPercentage = data.wastes.ashPercentage;
-                            wastes.wetPercentage = data.wastes.wetPercentage;
-                            wastes.volatileNumber = data.wastes.volatileNumber;
-                            wastes.chlorinePercentage = data.wastes.chlorinePercentage;
-                            wastes.sulfurPercentage = data.wastes.sulfurPercentage;
-                            wastes.ph = data.wastes.ph;
-                            wastes.phosphorusPercentage = data.wastes.phosphorusPercentage;
-                            wastes.fluorinePercentage = data.wastes.fluorinePercentage;
-                            wastes.remarks = data.wastes.remarks;
-                            wastes.handleCategory = data.wastes.handleCategory.index;
-                            wastes.processWay = data.wastes.processWay.index - 1;
-                            nameList.push(data.wastes.handleCategory.name);
-                            nameList.push(data.wastes.processWay.name);
+                            wastes.name = data.laboratoryTest.wastesName;
+                            wastes.weight = data.outboundNumber;
+                            wastes.calorific = data.laboratoryTest.heatAverage;
+                            wastes.ashPercentage = data.laboratoryTest.ashAverage;
+                            wastes.wetPercentage = data.laboratoryTest.waterContentAverage;
+                            wastes.volatileNumber = data.laboratoryTest.volatileNumber;
+                            wastes.chlorinePercentage = data.laboratoryTest.chlorineContentAverage;
+                            wastes.sulfurPercentage = data.laboratoryTest.sulfurContentAverage;
+                            wastes.ph = data.laboratoryTest.phAverage;
+                            wastes.phosphorusPercentage = data.laboratoryTest.phosphorusContentAverage;
+                            wastes.fluorinePercentage = data.laboratoryTest.fluorineContentAverage;
+                            wastes.remarks = data.laboratoryTest.remarks;
+                            wastes.handleCategory = data.handelCategory.index;
+                            wastes.processWay = data.processWay.index - 1;
+                            nameList.push(data.handelCategory.name);
+                            nameList.push(data.processWay.name);
                             pretreatmentItem.wastes = wastes;
                             pretreatmentItemList.push(pretreatmentItem);
                         } else {

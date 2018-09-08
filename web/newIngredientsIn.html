@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>辅料/备件入库</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/jquery.validate.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <link href="css/validation.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
@@ -136,7 +138,7 @@
                             <a class="btn btn-default" onclick="$('#senior1').toggle();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
                             <a class="btn btn-default" onclick="reset1();"><span class="glyphicon glyphicon-cog"
-                                                                                aria-hidden="true"></span> 重置</a>
+                                                                                 aria-hidden="true"></span> 重置</a>
                         </span>
             </div>
         </div>
@@ -148,7 +150,8 @@
                         <div class="form-group">
                             <label for="search1-receiptNumber" class="col-sm-4 control-label">申请单编号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-receiptNumber" name="search1-receiptNumber"
+                                <input type="text" class="form-control" id="search1-receiptNumber"
+                                       name="search1-receiptNumber"
                                        placeholder="">
                             </div>
                         </div>
@@ -201,7 +204,8 @@
             <thead>
             <tr>
                 <th class="text-center" style="width: 40px">
-                    <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();" style="height: 17px;width: 17px">
+                    <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();"
+                           style="height: 17px;width: 17px">
                 </th>
                 <th class="text-center">申请单编号</th>
                 <th class="text-center">申请月份</th>
@@ -233,7 +237,7 @@
                 <td class="text-center" name="suppliesCategory"></td>
                 <td class="text-center">
                     <a href="#" title="查看" onclick="toShowView(this);"><span class="glyphicon glyphicon-search"
-                                                                              aria-hidden="true"></span></a>
+                                                                             aria-hidden="true"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -242,80 +246,89 @@
             <a class="btn btn-primary" onclick="confirmInsert();">确认</a>
         </div>
         <br>
-        <div class="text-center"><span id="date"></span>&nbsp;&nbsp;&nbsp;&nbsp;入库单</div>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th colspan="6" class="text-left">单位:<input class="focus" type="text" title="" id="companyName"></th>
-                <th colspan="6" class="text-center"><span class="text-left" id="creationDate"></span></th>
-                <th colspan="6" class="text-right">文件编号:<input title="" type="text" class="focus" id="fileId"></th>
-            </tr>
-            </thead>
-            <tbody id="tbody1">
-            <tr >
-                <td class="text-center" rowspan="2">编号</td>
-                <td class="text-center" rowspan="2">物品名称</td>
-                <td class="text-center" rowspan="2">规格</td>
-                <td class="text-center" rowspan="2">单位</td>
-                <td class="text-center" rowspan="2">数量</td>
-                <td class="text-center" rowspan="2">单价<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup>
-                <td class="text-center" colspan="8">金额</td>
-                <td class="text-center" rowspan="2">过账</td>
-                <td class="text-center" rowspan="2">附注</td>
-                <td class="text-center" rowspan="2">仓库<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup>
-            </tr>
-            <tr>
-                <td class="text-center">十</td>
-                <td class="text-center">万</td>
-                <td class="text-center">千</td>
-                <td class="text-center">百</td>
-                <td class="text-center">十</td>
-                <td class="text-center">元</td>
-                <td class="text-center">角</td>
-                <td class="text-center">分</td>
-            </tr>
-            <tr id="clone3" class="clone">
-                <td class="text-center" name="serialNumber"></td>
-                <td class="text-center" name="name"></td>
-                <td class="text-center" name="specification"></td>
-                <td class="text-center" name="unit"></td>
-                <td class="text-center" name="amount"></td>
-                <td class="text-center" ><input type="number" class="form-control focus text-center" id="unitPrice0" name="unitPrice" placeholder="" required></td>
-                <td class="text-center" name="hundredThousand"></td>
-                <td class="text-center" name="tenThousand"></td>
-                <td class="text-center" name="thousand"></td>
-                <td class="text-center" name="hundred"></td>
-                <td class="text-center" name="ten"></td>
-                <td class="text-center" name="yuan"></td>
-                <td class="text-center" name="jiao"></td>
-                <td class="text-center" name="fen"></td>
-                <td class="text-center" ><input title="" type="text" class="focus text-center" name="post" id="post0"></td>
-                <td class="text-center" name="remarks"></td>
-                <td class="text-center" ><input type="text" class="form-control focus text-center" id="wareHouseName0" name="wareHouseName" placeholder="" required></td>
-            </tr>
-            <tr>
-                <td colspan="6" class="text-center">合计</td>
-                <td class="text-center" id="total-hundredThousand"></td>
-                <td class="text-center" id="total-tenThousand"></td>
-                <td class="text-center" id="total-thousand"></td>
-                <td class="text-center" id="total-hundred"></td>
-                <td class="text-center" id="total-ten"></td>
-                <td class="text-center" id="total-yuan"></td>
-                <td class="text-center" id="total-jiao"></td>
-                <td class="text-center" id="total-fen"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-            </tr>
-            <tr>
-                <td class="text-left" colspan="4">记账：<input title="" class="focus" type="text" id="bookkeeper"></td>
-                <td class="text-left" colspan="2">审批：<input title="" class="focus" type="text" id="approver"></td>
-                <td class="text-left" colspan="4">保管：<input title="" class="focus" type="text" id="keeper"></td>
-                <td class="text-left" colspan="4">验收：<input title="" class="focus" type="text" id="acceptor"></td>
-                <td class="text-left" colspan="3">经手：<input title="" class="focus" type="text" id="handlers"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;入库单</div>
+        <form method="post" id="ingredientsInForm" enctype="multipart/form-data">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th colspan="6" class="text-left">单位:<input class="focus" type="text" title="" id="companyName">
+                    </th>
+                    <th colspan="6" class="text-center"><span class="text-left" id="creationDate"></span></th>
+                    <th colspan="6" class="text-right">文件编号:<input title="" type="text" class="focus" id="fileId"></th>
+                </tr>
+                </thead>
+                <tbody id="tbody1">
+                <tr>
+                    <td class="text-center" rowspan="2">编号</td>
+                    <td class="text-center" rowspan="2">物品名称</td>
+                    <td class="text-center" rowspan="2">规格</td>
+                    <td class="text-center" rowspan="2">单位</td>
+                    <td class="text-center" rowspan="2">数量</td>
+                    <td class="text-center" rowspan="2">单价<sup><span class="glyphicon glyphicon-asterisk text-danger"
+                                                                     aria-hidden="true"></span></sup>
+                    <td class="text-center" colspan="8">金额</td>
+                    <td class="text-center" rowspan="2">过账</td>
+                    <td class="text-center" rowspan="2">附注</td>
+                    <td class="text-center" rowspan="2">仓库<sup><span class="glyphicon glyphicon-asterisk text-danger"
+                                                                     aria-hidden="true"></span></sup>
+                </tr>
+                <tr>
+                    <td class="text-center">十</td>
+                    <td class="text-center">万</td>
+                    <td class="text-center">千</td>
+                    <td class="text-center">百</td>
+                    <td class="text-center">十</td>
+                    <td class="text-center">元</td>
+                    <td class="text-center">角</td>
+                    <td class="text-center">分</td>
+                </tr>
+                <tr id="clone3" class="clone">
+                    <td class="text-center" name="serialNumber"></td>
+                    <td class="text-center" name="name"></td>
+                    <td class="text-center" name="specification"></td>
+                    <td class="text-center" name="unit"></td>
+                    <td class="text-center" ><span id="amount0" name="amount"></span></td>
+                    <td class="text-center"><input type="number" class="form-control focus text-center change"
+                                                   id="unitPrice0" name="unitPrice" placeholder="" required oninput="totalCalculate()"></td>
+                    <td class="text-center" ><span id="hundredThousand0"></span></td>
+                    <td class="text-center" ><span id="tenThousand0"></span></td>
+                    <td class="text-center" ><span id="thousand0"></span></td>
+                    <td class="text-center" ><span id="hundred0"></span></td>
+                    <td class="text-center" ><span id="ten0"></span></td>
+                    <td class="text-center" ><span id="yuan0"></span></td>
+                    <td class="text-center" ><span id="jiao0"></span></td>
+                    <td class="text-center" ><span id="fen0"></span></td>
+                    <td class="text-center"><input title="" type="text" class="focus text-center" name="post"
+                                                   id="post0"></td>
+                    <td class="text-center" name="remarks"></td>
+                    <td class="text-center"><input type="text" class="form-control focus text-center change"
+                                                   id="wareHouseName0" name="wareHouseName" placeholder="" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="text-center">合计</td>
+                    <td class="text-center" id="total-hundredThousand"></td>
+                    <td class="text-center" id="total-tenThousand"></td>
+                    <td class="text-center" id="total-thousand"></td>
+                    <td class="text-center" id="total-hundred"></td>
+                    <td class="text-center" id="total-ten"></td>
+                    <td class="text-center" id="total-yuan"></td>
+                    <td class="text-center" id="total-jiao"></td>
+                    <td class="text-center" id="total-fen"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                </tr>
+                <tr>
+                    <td class="text-left" colspan="4">记账：<input title="" class="focus" type="text" id="bookkeeper"></td>
+                    <td class="text-left" colspan="2">审批：<input title="" class="focus" type="text" id="approver"></td>
+                    <td class="text-left" colspan="4">保管：<input title="" class="focus" type="text" id="keeper"></td>
+                    <td class="text-left" colspan="4">验收：<input title="" class="focus" type="text" id="acceptor"></td>
+                    <td class="text-left" colspan="3">经手：<input title="" class="focus" type="text" id="handlers"></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
         <div class="row text-center">
             <a class="btn btn-success" onclick="save();">保存</a>
             <a class="btn btn-danger" href="ingredientsIn.html">返回</a>
@@ -365,6 +378,26 @@
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
+    var validator;
+    // 校验表单信息
+    $().ready(function () {
+        validator = $("#ingredientsInForm").validate({
+            // 在失去焦点时验证
+            onfocusout: function (element) {
+                $(element).valid();
+            },
+            rules: {
+                wareHouseName1: {
+                    required: true
+                }
+            },
+            message: {
+                wareHouseName1:{
+                    required: "数据不能为空"
+                }
+            }
+        });
+    });
 </script>
 <style>
     input {

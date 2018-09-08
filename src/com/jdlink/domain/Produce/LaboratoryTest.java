@@ -835,6 +835,10 @@ public class LaboratoryTest {
      * 页码，用于翻页
      */
     private Page page;
+    /**
+     * 挥发份
+     */
+    private float volatileNumber;
 
     public String getLaboratoryTestNumber() {
         return laboratoryTestNumber;

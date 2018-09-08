@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +67,6 @@ public class Procurement {
     private float Id2;
     /**
      *物资需求清单列表
-     *
      */
     List<Material> materialList=new ArrayList<>();
     /**
@@ -76,6 +77,19 @@ public class Procurement {
      * 日期模糊查询
      */
     private String date;
+    /**
+     * 入库状态
+     */
+    private CheckState state;
+
+
+    public CheckState getState() {
+        return state;
+    }
+
+    public void setState(CheckState state) {
+        this.state = state;
+    }
 
     public String getKeywords() {
         return keywords;
