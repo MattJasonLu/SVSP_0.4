@@ -137,6 +137,14 @@
     </update>
 
     <insert id="addIn" parameterType="IngredientsIn">
+        <if test="procurementIdList.size() > 0">
+           <foreach collection="procurementIdList" item="procurementId" index="index">
+               update t_pl_procurement
+               set
+               state = "ToPick"
+               where receiptNumber = #{procurementId};
+           </foreach>
+        </if>
         insert into t_pr_ingredients_in
         (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
         acceptor,handlers,state,nowTime)

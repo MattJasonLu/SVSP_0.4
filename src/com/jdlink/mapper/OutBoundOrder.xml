@@ -11,7 +11,8 @@
     <update id="updateMaterialRequisitionOrderCheck1" parameterType="OutboundOrder">
         update t_pl_materialrequisitionorder set checkState='OutBounded'where materialRequisitionId=#{materialRequisitionOrder.materialRequisitionId}
     </update>
-    <resultMap id="OutBoundRM" type="OutboundOrder">
+    <resultMap id="OutBoundRM" type="OutboundOrder" autoMapping="true">
+        <collection property="wareHouse" column="wareHouseId" select="getWareHouse"/>
         <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
     </resultMap>
@@ -80,7 +81,8 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         select * from t_pl_outboundorder where outboundOrderId=#{outboundOrderId}
     </select>
     <resultMap id="OutBoundRM1" type="OutboundOrder">
-       <collection property="client" column="clientId" select="getClient"></collection>
+       <collection property="wareHouse" column="wareHouseId" select="getWareHouse"/>
+        <collection property="client" column="clientId" select="getClient"></collection>
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
     <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
     </resultMap>

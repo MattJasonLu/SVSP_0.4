@@ -282,7 +282,7 @@
             <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 85%">
                 <div class="modal-content" >
                     <div class="modal-header">
-                        <h4 class="modal-title" id="TitleMyModalLabel">出库计划单</h4>
+                        <h4 class="modal-title" id="TitleMyModalLabel">出库单明细</h4>
                     </div>
                     <div class="modal-body">
                         <table class="table table-bordered">
@@ -295,15 +295,18 @@
                                 <td class="text-center">重量/t</td>
                                 <td class="text-center">物质形态</td>
                                 <td class="text-center">包装形式</td>
-                                <td class="text-center">热值/KCal/Kg</td>
-                                <td class="text-center">PH</td>
-                                <td class="text-center">灰分/%</td>
-                                <td class="text-center">水分/%</td>
-                                <td class="text-center">氯含量/%</td>
-                                <td class="text-center">硫含量/%</td>
-                                <td class="text-center">磷含量/%</td>
-                                <td class="text-center">氟含量/%</td>
+                                <td class="text-center">进料方式</td>
                                 <td class="text-center">处理方式</td>
+                                <td class="text-center">热值最大值/KCal/Kg</td>
+                                <td class="text-center">热值均值/KCal/Kg</td>
+                                <td class="text-center">热值最小值/KCal/Kg</td>
+                                <td class="text-center">PH最大值</td>
+                                <td class="text-center">PH均值</td>
+                                <td class="text-center">PH最小值</td>
+                                <td class="text-center">灰分最大值/%</td>
+                                <td class="text-center">灰分均值/%</td>
+                                <td class="text-center">灰分最小值/%</td>
+
                             </tr>
                             <tr>
                                 <td class="text-center modal-companyName" id="companyName"></td>
@@ -313,15 +316,55 @@
                                 <td class="text-center modal-weight" id="wastesAmount"></td>
                                 <td class="text-center modal-materialForm" id="formType"></td>
                                 <td class="text-center modal-packingType" id="packageType"></td>
-                                <td class="text-center modal-KCal" id="KCal"></td>
-                                <td class="text-center modal-PH" id="PH"></td>
-                                <td class="text-center modal-ashContent" id="ashContent"></td>
-                                <td class="text-center modal-waterContent" id="waterContent"></td>
-                                <td class="text-center modal-CLContent" id="CLContent"></td>
-                                <td class="text-center modal-SContent" id="SContent"></td>
-                                <td class="text-center modal-PContent" id="PContent"></td>
-                                <td class="text-center modal-FContent" id="FContent"></td>
+                                <td class="text-center modal-packingType" id="handelCategory"></td>
                                 <td class="text-center modal-processingMethod" id="processingMethod"></td>
+                                <td class="text-center modal-KCal" id="kCalMax"></td>
+                                <td class="text-center modal-PH" id="kCalAvg"></td>
+                                <td class="text-center modal-ashContent" id="kCalMin"></td>
+                                <td class="text-center modal-waterContent" id="phMax"></td>
+                                <td class="text-center modal-CLContent" id="phAvg"></td>
+                                <td class="text-center modal-SContent" id="phMin"></td>
+                                <td class="text-center modal-PContent" id="ashMax"></td>
+                                <td class="text-center modal-FContent" id="ashAvg"></td>
+                                <td class="text-center modal-FContent" id="ashMin"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">水分最大值/%</td>
+                                <td class="text-center">水分均值/%</td>
+                                <td class="text-center">水分最小值/%</td>
+                                <td class="text-center">氯含量最大值/%</td>
+                                <td class="text-center">氯含量均值/%</td>
+                                <td class="text-center">氯含量最小值/%</td>
+                                <td class="text-center">硫含量最大值/%</td>
+                                <td class="text-center">硫含量均值/%</td>
+                                <td class="text-center">硫含量最小值/%</td>
+                                <td class="text-center">磷含量最大值/%</td>
+                                <td class="text-center">磷含量均值/%</td>
+                                <td class="text-center">磷含量最小值/%</td>
+                                <td class="text-center">氟含量最大值/%</td>
+                                <td class="text-center">氟含量均值/%</td>
+                                <td class="text-center">氟含量最小值/%</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center modal-FContent" id="waterMax"></td>
+                                <td class="text-center modal-FContent" id="waterAvg"></td>
+                                <td class="text-center modal-FContent" id="waterMin"></td>
+                                <td class="text-center modal-FContent" id="clMax"></td>
+                                <td class="text-center modal-FContent" id="clAvg"></td>
+                                <td class="text-center modal-FContent" id="clMin"></td>
+                                <td class="text-center modal-FContent" id="sMax"></td>
+                                <td class="text-center modal-FContent" id="sAvg"></td>
+                                <td class="text-center modal-FContent" id="sMin"></td>
+                                <td class="text-center modal-FContent" id="pMax"></td>
+                                <td class="text-center modal-FContent" id="pAvg"></td>
+                                <td class="text-center modal-FContent" id="pMin"></td>
+                                <td class="text-center modal-FContent" id="fMax"></td>
+                                <td class="text-center modal-FContent" id="fAvg"></td>
+                                <td class="text-center modal-FContent" id="fMin"></td>
+                                <input class="text-center modal-FContent hidden" id="outboundOrderId"></input>
+                            </tr>
+                            <tr>
+                                <a class="btn btn-primary btn-xs" onclick="adjustAttr();"><span class="glyphicon glyphicon-log-out" ></span> 属性调整</a>
                             </tr>
                             </tbody>
                         </table>

@@ -13,6 +13,10 @@ public class IngredientsIn {
      */
     private String id;
     /**
+     * 采购单编号列表
+     */
+    private List<String> procurementIdList;
+    /**
      * 公司名
      */
     private String companyName;
@@ -68,6 +72,14 @@ public class IngredientsIn {
      * 模糊搜索关键字
      */
     private String keywords;
+
+    public List<String> getProcurementIdList() {
+        return procurementIdList;
+    }
+
+    public void setProcurementIdList(List<String> procurementIdList) {
+        this.procurementIdList = procurementIdList;
+    }
 
     public String getKeywords() {
         return keywords;
