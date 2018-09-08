@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Produce.EquipmentDate;
+import com.jdlink.domain.Produce.EquipmentItem;
 
 import java.util.List;
 
@@ -11,10 +12,10 @@ public interface EquipmentMapper {
 
     /**
      * 通过日期查询设备明细集合
-     * @param id 序号
+     * @param documentNumber 单据号
      * @return 设备明细集合
      */
-    List<EquipmentDate> getEquipment(Integer  id);
+    List<EquipmentDate> getEquipment(String documentNumber);
 
     /**
      * 查询设备按日期生成的列表
@@ -26,4 +27,14 @@ public interface EquipmentMapper {
      * 新增设备
      */
     void addEquipment(EquipmentDate equipmentDate);
+
+    /**
+     * 查找最新单据号
+     */
+    List<String> getNewestId();
+
+    /**
+     * 插入设备明细
+     */
+    void addEquipmentItem(EquipmentItem equipmentItem);
 }
