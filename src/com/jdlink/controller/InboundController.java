@@ -176,6 +176,59 @@ public class InboundController {
     }
 
     /**
+     * 通过日期获取入库单
+     * @param date 时间
+     * @return 入库单信息
+     */
+    @RequestMapping("getInboundOrderByDate")
+    @ResponseBody
+    public String getInboundOrderByDate(Date date) {
+        JSONObject res = new JSONObject();
+        try {
+            JSONObject data = null;
+            // 获取入库单列表
+            List<InboundOrder> inboundOrderList = inboundService.getInboundOrderByRange(date, date);
+            if (inboundOrderList.size() > 0) {
+                InboundOrder inboundOrder = inboundOrderList.get(0);
+                data = JSONObject.fromBean(inboundOrder);
+            }
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 通过日期范围获取入库单列表
+     * @param startDate 起始日期
+     * @param endDate 结束日期
+     * @return 入库单列表
+     */
+    @RequestMapping("getInboundOrderByRange")
+    @ResponseBody
+    public String getInboundOrderByRange(Date startDate, Date endDate) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取入库单列表
+            List<InboundOrder> inboundOrderList = inboundService.getInboundOrderByRange(startDate, endDate);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 作废入库单
      * @param inboundOrderId 入库单编号
      * @return 成功与否

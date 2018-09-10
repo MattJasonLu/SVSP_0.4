@@ -4,7 +4,9 @@ import com.jdlink.domain.Inventory.InboundOrder;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.InboundPlanOrder;
 import com.jdlink.domain.Page;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,5 +102,13 @@ public interface InboundMapper {
      * @param inboundOrder 入库单
      */
     void addSecondInboundOrder(InboundOrder inboundOrder);
+
+    /**
+     * 通过日期范围获取入库单
+     * @param startDate 起始日期
+     * @param endDate 结束日期
+     * @return 入库单集合
+     */
+    List<InboundOrder> getInboundOrderByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 }

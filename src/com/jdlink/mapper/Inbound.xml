@@ -135,6 +135,12 @@
         </if>
     </insert>
 
+    <select id="getInboundOrderByRange" resultMap="InboundOrderRM">
+        SELECT * FROM t_pl_inboundorder
+            <![CDATA[WHERE DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>;
+    </select>
+
     <!--增加次生入库单-->
     <insert id="addSecondInboundOrder" parameterType="InboundOrder">
         INSERT INTO t_pl_inboundorder (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,

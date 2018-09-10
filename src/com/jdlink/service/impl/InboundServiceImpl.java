@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -143,6 +144,11 @@ public class InboundServiceImpl implements InboundService {
     @Override
     public void addSecondInboundOrder(InboundOrder inboundOrder) {
         inboundMapper.addSecondInboundOrder(inboundOrder);
+    }
+
+    @Override
+    public List<InboundOrder> getInboundOrderByRange(Date startDate, Date endDate) {
+        return inboundMapper.getInboundOrderByRange(startDate, endDate);
     }
 
 }
