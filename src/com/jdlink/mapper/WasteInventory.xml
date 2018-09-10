@@ -243,4 +243,12 @@
             limit #{page.start}, #{page.count}
         </if>
     </select>
+    <!--通过编号查询入库信息-->
+    <resultMap id="InboundOrderItemIdRM" type="WasteInventory">
+        <collection property="produceCompany" column="=clientId=clientId" select="getClient"></collection>
+   <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
+    </resultMap>
+    <select id="getByInboundOrderItemId"  resultMap="InboundOrderItemIdRM" parameterType="String">
+        select * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
+    </select>
 </mapper>

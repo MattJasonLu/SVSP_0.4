@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -284,13 +285,13 @@ public class WasteInventoryController {
           JSONArray jsonArray=JSONArray.fromObject(list2);
           res.put("jsonArray",materialRequisitionOrderList);
            res.put("status", "success");
-           res.put("message", "查询成功");
+           res.put("message", "分页数据获取成功");
 
        }
        catch (Exception e){
            e.printStackTrace();
            res.put("status", "fail");
-           res.put("message", "查询失败");
+           res.put("message", "分页数据获取失败");
        }
 
 
@@ -815,6 +816,7 @@ catch (Exception e){
             return 0;
         }
     }
+
     /**
      * 配料单页面高价检索
      */
@@ -848,5 +850,39 @@ catch (Exception e){
             return 0;
         }
 
+    }
+    /**
+     * 获得领料单总数
+     *
+     */
+    @RequestMapping("totalMaterialRecord")
+    @ResponseBody
+    public int totalMaterialRecord(){
+        try {
+            return materialRequisitionOrderService.total();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     * 根据编号查询入库信息
+     */
+    @RequestMapping("getByInboundOrderItemId")
+    @ResponseBody
+    public String getByInboundOrderItemId(String inboundOrderItemId){
+        JSONObject res=new JSONObject();
+       try {
+           List<WasteInventory> wasteInventoryList=wasteInventoryService.getByInboundOrderItemId(inboundOrderItemId);
+           res.put("wasteInventoryList", wasteInventoryList);
+           res.put("status", "success");
+           res.put("message", "查询成功");
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "查询失败");
+       }
+        return  res.toString();
     }
 }

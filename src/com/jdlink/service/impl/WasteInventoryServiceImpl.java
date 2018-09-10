@@ -107,5 +107,10 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.searchBatchingTotal(batchingOrder);
     }
 
+    @Override
+    public List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId) {
+        return wasteInventoryMapper.getByInboundOrderItemId(inboundOrderItemId);
+    }
+
 
 }

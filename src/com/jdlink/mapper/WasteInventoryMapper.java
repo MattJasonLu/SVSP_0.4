@@ -25,4 +25,5 @@ public interface WasteInventoryMapper {
    int countInventory();
     List<BatchingOrder> searchBatchingOrder(BatchingOrder batchingOrder);
     int searchBatchingTotal(BatchingOrder batchingOrder);
+    List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId);
 }

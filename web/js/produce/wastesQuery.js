@@ -403,24 +403,27 @@ function setWasteInventoryList(result) {
 
                         break;
                     //危废类型
-                    // case (8):
-                    //     $(this).html(obj.wastesCategory);
-                    //     break;
-                    //数量
                     case (8):
+                        $(this).html(obj.wastesCategory);
+                        break;
+                    //数量
+                    case (9):
                         $(this).html(obj.actualCount);
                         break;
                     //单价
-                    case (9):
-                        $(this).html(obj.unitPriceTax);
+                    case (10):
+                        $(this).html(obj.quotationItem.unitPriceTax);
                         break;
                     //总价
-                    case (10):
-                        $(this).html(parseInt(obj.actualCount)*(obj.unitPriceTax).toFixed(2)  );
+                    case (11):
+                        $(this).html(parseInt(obj.actualCount)*(obj.quotationItem.unitPriceTax).toFixed(2)  );
                         break;
                     //创建时间
-                    case (11):
+                    case (12):
                         $(this).html(getDateStr(obj.creatorDate));
+                        break;
+                    case (13):
+                        $(this).html(obj.inboundOrderItemId);
                         break;
                 }
             });
@@ -450,4 +453,29 @@ function searchWastesInventory() {
             page: page
         };
     }
+}
+//危废库存查看
+function view(item) {
+var inboundOrderItemId=$(item).parent().prev().text();
+console.log(inboundOrderItemId);
+//根据编号查找信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getByInboundOrderItemId",                  // url 计算数据库的总条数
+        data:{'inboundOrderItemId':inboundOrderItemId},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+      alert("服务器异常！")
+        }
+    });
+
 }
