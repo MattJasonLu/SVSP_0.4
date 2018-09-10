@@ -144,7 +144,7 @@
     <!--增加次生入库单-->
     <insert id="addSecondInboundOrder" parameterType="InboundOrder">
         INSERT INTO t_pl_inboundorder (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
-        modifyDate, recordState, category) VALUES (#{inboundOrderId}, NOW(), #{wareHouse.warehouseId}, #{boundType},r
+        modifyDate, recordState, category) VALUES (#{inboundOrderId}, NOW(), #{wareHouse.warehouseId}, #{boundType},
         #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
         #{creatorId}, NOW(), #{departmentId}, #{companyId}, #{modifierId}, NOW(),
         #{recordState}, 1);
@@ -175,9 +175,9 @@
                 insert  into t_pl_wasteinventory(inboundOrderId,actualCount,clientId,wastesCode,inboundDate,processWay,handleCategory,creatorDate,boundType,transferDraftId,inboundOrderItemId,remarks,laboratoryTestId,wastesCategory,unitPriceTax,recordState,formType,packageType)
                 values (#{inboundOrderId},#{inboundOrderItem.wastesAmount}, #{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},NOW(),
                 #{inboundOrderItem.processWay}, #{inboundOrderItem.handleCategory},NOW(),#{boundType},#{inboundOrderItem.transferDraftId},#{inboundOrderItem.inboundOrderItemId},#{inboundOrderItem.remarks},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},
-                #{inboundOrderItem.laboratoryTest.wastesName},#{inboundOrderItem.unitPriceTax},#{recordState});
+                #{inboundOrderItem.laboratoryTest.wastesName},#{inboundOrderItem.unitPriceTax},#{recordState},#{inboundOrderItem.formType},#{inboundOrderItem.packageType});
                 insert into t_pl_secondaryinto(clientId,wastesCode,handleCategory,processWay,remarks,nowTime,transferDraftId,wastesCategory,laboratoryTestId)
-                values(#{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundOrderItem.handleCategory},#{inboundOrderItem.processWay},#{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber},#{inboundOrderItem.formType}, #{inboundOrderItem.packageType});
+                values(#{inboundOrderItem.produceCompany.clientId},#{inboundOrderItem.wastes.wastesId},#{inboundOrderItem.handleCategory},#{inboundOrderItem.processWay},#{inboundOrderItem.remarks},NOW(),#{inboundOrderItem.transferDraftId},#{inboundOrderItem.wastes.category},#{inboundOrderItem.laboratoryTest.laboratoryTestNumber});
             </foreach>
         </if>
 
