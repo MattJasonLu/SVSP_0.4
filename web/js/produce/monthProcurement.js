@@ -12,6 +12,10 @@ function allSelect() {
 }
 //克隆行方法
 function addNewLine() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
     // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -34,7 +38,10 @@ function addNewLine() {
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
-
+      $('.selectpicker').data('selectpicker', null);
+      $('.bootstrap-select').find("button:first").remove();
+      $('.selectpicker').selectpicker();
+      $('.selectpicker').selectpicker('refresh');
 }
 //删除行方法
 function delLine(e) {
@@ -78,7 +85,7 @@ function saveMonth() {
         }
     });
     $('.myclass').each(function () {
-   var suppliesName=$(this).children('td').eq(1).children('input').val();
+   var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
    var specifications=$(this).children('td').eq(2).children('input').val();
    var unit=$(this).children('td').eq(3).children('input').val();
    var inventory=$(this).children('td').eq(4).children('input').val();
@@ -92,6 +99,8 @@ function saveMonth() {
         demandQuantity:demandQuantity,
         note:note,
     }
+    console.log(materialdata);
+        $('.selectpicker').selectpicker('refresh');
     $.ajax({
         type: "POST",                       // 方法类型
         url: "addMaterial",          // url
@@ -113,8 +122,8 @@ function saveMonth() {
 
     });
 
-});
-alert("添加成功！")
+ });
+    alert("添加成功！")
     if(confirm("是否跳转到主页？")){
     window.location.href="monthProcurement.html";
     }
@@ -331,6 +340,44 @@ function searchProcurement() {
         },
         error: function (result) {
             console.log(result);
+        }
+    });
+}
+//加载辅料列表
+function getIngredientsList() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getIngredientsList",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        // data:{'receiptNumber':receiptNumber},
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+               var suppliesName=$('#suppliesName');
+               suppliesName.children().remove();
+               $.each(result.stringList,function (index,item) {
+                   var option = $('<option />');
+                   option.val(item);
+                   option.text(item);
+                   suppliesName.append(option);
+                   $('.selectpicker').selectpicker('refresh');
+               });
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+
+        error:function (result) {
+            alert("服务器异常！");
         }
     });
 }
