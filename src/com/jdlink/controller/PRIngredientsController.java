@@ -645,7 +645,7 @@ public class PRIngredientsController {
      */
     @RequestMapping("searchIngredientsInventory")
     @ResponseBody
-    public String searchIngredientsInventory(Ingredients ingredients){
+    public String searchIngredientsInventory(@RequestBody Ingredients ingredients){
         JSONObject res = new JSONObject();
         try {
             List<Ingredients> ingredientsList = ingredientsService.searchInventory(ingredients);

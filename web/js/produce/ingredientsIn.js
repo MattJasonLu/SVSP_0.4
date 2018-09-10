@@ -1211,28 +1211,28 @@ function save() {
             }
         });
     }
-    //将入库单数据插入到数据库
-    console.log("数据为：");
-    console.log(ingredientsIn);
-    $.ajax({
-        type: "POST",
-        url: "addIngredientsIn",
-        async: false,
-        data: JSON.stringify(ingredientsIn),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result.status == "success") {
+    if(confirm("确认保存？")) {
+        //将入库单数据插入到数据库
+        $.ajax({
+            type: "POST",
+            url: "addIngredientsIn",
+            async: false,
+            data: JSON.stringify(ingredientsIn),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result.status == "success") {
+                    console.log(result.message);
+                    if (confirm("入库单添加成功，是否返回主页面？"))
+                        window.location.href = "ingredientsIn.html";
+                } else alert(result.message);
+            },
+            error: function (result) {
                 console.log(result.message);
-                if (confirm("入库单添加成功，是否返回主页面？"))
-                    window.location.href = "ingredientsIn.html";
-            } else alert(result.message);
-        },
-        error: function (result) {
-            console.log(result.message);
-            alert("入库单添加失败！");
-        }
-    });
+                alert("入库单添加失败！");
+            }
+        });
+    }
 }
 
 /**
