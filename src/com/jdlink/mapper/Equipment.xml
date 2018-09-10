@@ -3,9 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdlink.mapper.EquipmentMapper" >
+    <resultMap id="EquipmentRM" type="Equipment" autoMapping="true">
+        <result property="" column=""></result>
+    </resultMap>
     <!--查询当天的设备运行情况-->
-    <select id="getEquipment" resultType="EquipmentDate">
-        select equipment,runningTime,stopTime,stopResult,note from t_rp_equipment where documentNumber = #{documentNumber};
+    <select id="getEquipment" resultType="EquipmentItem">
+        select equipment,runningTime,stopTime,stopResult,note from t_rp_equipmentchild where documentNumber = #{documentNumber};
     </select>
 
     <!--网页列表数据-->
@@ -15,7 +18,37 @@
 
     <!--新增设备-->
     <insert id="addEquipment" parameterType="EquipmentDate">
-        insert into t_rp_equipment (documentNumber,equipment,runningTime,stopResult,stopTime,note,dayTime,creator,createDept,editTime,editor)
-        values (#{documentNumber},#{equipment},#{runningTime},#{stopResult},#{stopTime},#{note},#{dayTime},#{creator},#{createDept},#{editTime},#{editor})
+        insert into t_rp_equipment (documentNumber,note,dayTime,creator,createDept,editTime,editor)
+        values (#{documentNumber},#{note},#{dayTime},#{creator},#{createDept},#{editTime},#{editor})
     </insert>
+
+    <!--新增设备明细-->
+    <insert id="addEquipmentItem" parameterType="EquipmentItem">
+   insert into t_rp_equipmentchild(equipment, runningTime, stopTime, stopResult, documentNumber) values
+   (#{equipment},#{runningTime},#{stopTime},#{stopResult},#{documentNumber})
+    </insert>
+
+    <!--查找最新的单据号-->
+    <select id="getNewestId" resultType="String">
+        select documentNumber from  t_rp_equipment order by  documentNumber desc ;
+    </select>
+
+    <!--查询设备-->
+    <select id="getEquipmentNameList" parameterType="Equipment" resultMap="EquipmentRM">
+        select * from t_rp_equipment
+        <where>
+            <if test="documentNumber != null and documentNumber != ''">
+                and documentNumber like  "%"#{documentNumber}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like  "%"#{creator}"%"
+            </if>
+            <if test="createDept != null and createDept != ''">
+                and createDept like  "%"#{createDept}"%"
+            </if>
+            <if test="editor != null and editor != ''">
+                and editor like  "%"#{editor}"%"
+            </if>
+        </where>
+    </select>
 </mapper>

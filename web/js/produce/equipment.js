@@ -16,26 +16,24 @@ function reset() {
 }
 
 
-function getId(item) {
-    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+function getDocNumber(e) {
+    return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 /**
  * 模态框数据填充
  */
 function viewEquipment(item) {
-    var number = getId(item);   //number为单据号
-    console.log(number);
+    var number = getDocNumber(item);   //number为单据号
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getEquipment",            // url
         async: false,
         dataType: "json",
         data: {
-            id: number
+            documentNumber: number
         },
         success: function (result) {
             if (result != undefined ) {//&& result.status == "success"
-                console.log(result);
                 viewEquipment1(result.data);
             } else {
                 console.log(result.message);
@@ -60,7 +58,7 @@ function viewEquipment1(data) {
         console.log(obj);
         var clonedTr = tr.clone();
         // 赋值
-        clonedTr.find("td[name='documentNumber']").text(getId(item));//index + 1
+        clonedTr.find("td[name='documentNumber']").text(index+1);//index + 1
         clonedTr.find("td[name='equipment']").text(obj.equipment);
         clonedTr.find("td[name='runningTime']").text(obj.runningTime);
         clonedTr.find("td[name='stopTime']").text(obj.stopTime);
@@ -128,4 +126,169 @@ function setEquipment(data) {
     tr.hide();
 }
 
+// var validator = $("")
+// /**
+//  * 新增数据
+//  */
+// function addEquipment() {
+//     var addType = $("input[name='checkbox1']:checked").val();
+//     if (validator.form()) {
+//         var data = {
+//             id: $("#id").val(),
+//             equipment: $("#equipment").val(),
+//             runningTime: $("#runningTime").val(),
+//             stopTime: $("#stopTime").val(),
+//             reason: $("#reason").val(),
+//             creator: $("#creator").val(),
+//             dayTime: $("#dayTime").val(),
+//             createDept: $("#createDept").val(),
+//             editor: $("#editor").val(),
+//             editTime: $("#editTime").val(),
+//             note: $("#note").val()
+//         };
+//         // 上传用户数据
+//         $.ajax({
+//             type: "POST",                            // 方法类型
+//             url: "addEquipment",                     // url
+//             async: false,                            // 同步：意思是当有返回值以后才会进行后面的js程序
+//             data: JSON.stringify(data),
+//             dataType: "json",
+//             contentType: "application/json; charset=utf-8",
+//             success: function (result) {
+//                 if (result != undefined) {
+//                     if (result.status == "success") {
+//                         alert(result.message);
+//                         if (addType == "continue") window.location.reload();
+//                         else $(location).attr('href', 'equipment.html');//跳转
+//                     } else {
+//                         console.log(result);
+//                         alert(result.message);
+//                     }
+//                 }
+//             },
+//             error: function (result) {
+//                 console.log("error: " + result);
+//                 alert("服务器异常!");
+//             }
+//         });
+//     }
+// }
 
+
+//克隆行方法
+function addNewLine() {
+    // 获取id为cloneTr的tr元素
+    var tr = $("#plusBtn").prev();
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    // 克隆后清空新克隆出的行数据
+    clonedTr.children("td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)").find("input").val("");
+    // 获取编号
+    var id = $("#plusBtn").prev().children().get(0).innerHTML;
+    //console.log(id);
+    var id1=(id.replace(/[^0-9]/ig,""));
+    var num = parseInt(id1);
+    num++;
+    clonedTr.children().get(0).innerHTML = num;
+    clonedTr.children("td:not(0)").find("input,select").each(function () {
+        var name = $(this).prop('name');
+        var newName = name.replace(/[0-9]\d*/, num-1);
+        //console.log(newName);
+        $(this).prop('name', newName);
+    });
+    clonedTr.insertAfter(tr);
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+    clonedTr.children("td:eq(0)").prepend(delBtn);
+
+}
+//删除行方法
+function delLine(e) {
+    var tr = e.parentElement.parentElement;
+    tr.parentNode.removeChild(tr);
+}
+//保存功能
+function addEquipment() {
+    var data = {
+            documentNumber: $("#documentNumber").val(),
+            creator: $("#creator").val(),
+            dayTime: $("#dayTime").val(),
+            createDept: $("#createDept").val(),
+            editor: $("#editor").val(),
+            editTime: $("#editTime").val(),
+            note: $("#note").val()
+        };
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "addEquipment",            // url
+        async: false,
+        data:JSON.stringify(data),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
+    console.log(data);
+   $('.myclass').each(function () {
+       var dataItem={
+           equipment: $(this).children('td').eq(1).children('input').val(),
+           runningTime:$(this).children('td').eq(2).children('input').val(),
+           stopTime:$(this).children('td').eq(3).children('input').val(),
+           stopReason: $(this).children('td').eq(4).children('input').val()
+       };
+       $.ajax({
+           type: "POST",                       // 方法类型
+           url: "addEquipmentItem",            // url
+           async: false,
+           data:JSON.stringify(dataItem),
+           dataType: "json",
+           contentType: 'application/json;charset=utf-8',
+           success: function (result) {
+               if (result != undefined && result.status == "success") {
+                   console.log(result);
+               } else {
+                   console.log(result.message);
+               }
+           },
+           error: function (result) {
+               console.log("error: " + result);
+               console.log("失败");
+           }
+       });
+   });
+}
+//生成单据号
+function createDocNumber() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "createDocNumber",            // url
+        async: false,
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                $('#documentNumber').val(result.DocNumberId);
+
+            } else {
+                console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            console.log("失败");
+        }
+    });
+}
+//查询功能
+function search() {
+
+}
