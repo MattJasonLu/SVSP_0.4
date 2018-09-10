@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.PackageType;
+import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.WastesInfo;
@@ -112,6 +113,27 @@ public class WastesInfoController {
             res.put("status", "fail");
             res.put("message", "获取信息失败");
         }
+        return res.toString();
+    }
+    /**
+     * 设置下拉框数据
+     */
+    @RequestMapping("getEquipmentNameList")
+    @ResponseBody
+    public String getEquipmentNameList() {
+        JSONObject res = new JSONObject();
+        //获取枚举
+        //故障设备名称
+        try{
+            JSONArray equipmentList = JSONArray.fromArray(Equipment.values());
+            res.put("equipmentList",equipmentList);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+        } catch (Exception e){
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+
         return res.toString();
     }
 }

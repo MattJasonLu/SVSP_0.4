@@ -1,7 +1,9 @@
 package com.jdlink.domain.Produce;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EquipmentDate {
     /**
@@ -12,22 +14,6 @@ public class EquipmentDate {
      * 单据号
      */
     private String documentNumber;
-    /**
-     * 故障设备
-     */
-    private String equipment;
-    /**
-     * 运行时间(h)
-     */
-    private float runningTime;
-    /**
-     * 停止时间(h)
-     */
-    private float stopTime;
-    /**
-     * 停止原因
-     */
-    private String stopResult;
     /**
      * 备注
      */
@@ -52,6 +38,10 @@ public class EquipmentDate {
      * 修改日期
      */
     private Date editTime;
+    /**
+     * 明细列表
+     */
+    List<EquipmentItem> equipmentItemList=new ArrayList<>();
 
     public String getCreator() {
         return creator;
@@ -109,38 +99,6 @@ public class EquipmentDate {
         this.dayTime = dayTime;
     }
 
-    public String getEquipment() {
-        return equipment;
-    }
-
-    public void setEquipment(String equipment) {
-        this.equipment = equipment;
-    }
-
-    public float getRunningTime() {
-        return runningTime;
-    }
-
-    public void setRunningTime(float runningTime) {
-        this.runningTime = runningTime;
-    }
-
-    public float getStopTime() {
-        return stopTime;
-    }
-
-    public void setStopTime(float stopTime) {
-        this.stopTime = stopTime;
-    }
-
-    public String getStopResult() {
-        return stopResult;
-    }
-
-    public void setStopResult(String stopResult) {
-        this.stopResult = stopResult;
-    }
-
     public String getNote() {
         return note;
     }
@@ -154,16 +112,13 @@ public class EquipmentDate {
         return "EquipmentDate{" +
                 "id=" + id +
                 ", documentNumber='" + documentNumber + '\'' +
-                ", equipment='" + equipment + '\'' +
-                ", runningTime=" + runningTime +
-                ", stopTime=" + stopTime +
-                ", stopResult='" + stopResult + '\'' +
                 ", note='" + note + '\'' +
                 ", dayTime=" + dayTime +
                 ", creator='" + creator + '\'' +
                 ", createDept='" + createDept + '\'' +
                 ", editor='" + editor + '\'' +
                 ", editTime=" + editTime +
+                ", equipmentItemList=" + equipmentItemList +
                 '}';
     }
 }
