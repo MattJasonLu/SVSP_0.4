@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
 import com.jdlink.mapper.EquipmentMapper;
@@ -38,6 +39,11 @@ public class EquimentServiceImpl implements  EquipmentService {
     @Override
     public void addEquipmentItem(EquipmentItem equipmentItem) {
         equipmentMapper.addEquipmentItem(equipmentItem);
+    }
+
+    @Override
+    public List<Equipment> getEquipmentNameList(Equipment equipment) {
+        return equipmentMapper.getEquipmentNameList(equipment);
     }
 
 }

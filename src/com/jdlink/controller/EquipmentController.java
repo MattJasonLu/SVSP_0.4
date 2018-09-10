@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
 import com.jdlink.service.EquipmentService;
@@ -159,5 +160,6 @@ public class EquipmentController {
         return s;
 
     }
+
 
 }

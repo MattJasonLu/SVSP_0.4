@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
 
@@ -37,4 +38,9 @@ public interface EquipmentMapper {
      * 插入设备明细
      */
     void addEquipmentItem(EquipmentItem equipmentItem);
+
+    /**
+     * 插入设备明细
+     */
+    List<Equipment> getEquipmentNameList(Equipment equipment);
 }

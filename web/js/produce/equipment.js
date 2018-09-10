@@ -288,3 +288,7 @@ function createDocNumber() {
         }
     });
 }
+//查询功能
+function search() {
+
+}

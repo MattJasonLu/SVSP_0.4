@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
 
@@ -38,4 +39,9 @@ public interface EquipmentService {
      * 插入设备明细
      */
     void addEquipmentItem(EquipmentItem equipmentItem);
+
+    /**
+     * 插入设备明细
+     */
+    List<Equipment> getEquipmentNameList(Equipment equipment);
 }
