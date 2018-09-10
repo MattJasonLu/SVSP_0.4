@@ -125,8 +125,8 @@
     </select>
 <!--添加出库单-->
     <insert id="addOutboundOrder" parameterType="OutboundOrder">
-      insert into t_pl_outboundorder(outboundOrderId,outBoundDate,creator,auditor,materialRequisitionId,nowTime,checkState,boundType,outboundNumber)
-      values (#{outboundOrderId},#{outboundDate},#{creator},#{auditor},#{materialRequisitionOrder.materialRequisitionId},NOW(),'OutBounded',#{boundType},#{outboundNumber})
+      insert into t_pl_outboundorder(outboundOrderId,outBoundDate,creator,auditor,materialRequisitionId,nowTime,checkState,boundType,outboundNumber,equipment)
+      values (#{outboundOrderId},#{outboundDate},#{creator},#{auditor},#{materialRequisitionOrder.materialRequisitionId},NOW(),'OutBounded',#{boundType},#{outboundNumber},#{equipment})
     </insert>
 <!--获得最新的领料单对象-->
     <select id="getNew" resultType="MaterialRequisitionOrder">

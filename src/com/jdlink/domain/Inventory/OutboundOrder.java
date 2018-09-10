@@ -1,6 +1,7 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
@@ -68,6 +69,20 @@ public class OutboundOrder {
      private String inboundOrderItemId;
     private PackageType packageType;
     private FormType formType;
+
+    /**
+     * 处置设备
+     * @return
+     */
+    private Equipment equipment;
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
 
     public PackageType getPackageType() {
         return packageType;

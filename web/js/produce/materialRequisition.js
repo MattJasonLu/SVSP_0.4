@@ -195,6 +195,10 @@ function receive() {
 }
 //加载出库增加页面的领料单
 function loadRequisitionList() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getOutBoundList",                  // url
@@ -229,6 +233,34 @@ function loadRequisitionList() {
         error:function (result) {
             alert("服务器异常！")
         }
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var equipment=$("#equipment");
+                equipment.children().remove();
+                $.each(result.equipmentList,function (index,item) {
+                var option=$('<option/>')
+                    option.val(index+1);
+                   option.text(item.name);
+                   equipment.append(option);
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error:function (result) {
+            alert("服务器异常")
+        }
+
     });
     var array=new Array(localStorage['array']);
    // console.log(array[0].length);
