@@ -21,6 +21,8 @@ public interface WasteInventoryService {
     void updateLeftNumber();
     void batchingNumber(WasteInventory wasteInventory);
     void updateBatching(BatchingOrder batchingOrder);
-    List<BatchingOrder>getBatching();
+    List<BatchingOrder>getBatching(Page page);
     int countInventory();
+    List<BatchingOrder> searchBatchingOrder(BatchingOrder batchingOrder);
+    int searchBatchingTotal(BatchingOrder batchingOrder);
 }
