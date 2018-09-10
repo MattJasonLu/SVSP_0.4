@@ -65,13 +65,25 @@ public class Ingredients {
      */
     private IngredientState ingredientState;
     /**
-     * 用于储存第二外键Id
+     * 用于储存第二外键Id/用于判断库存中同种物品同仓库中是否存在
      */
     private String aid;
     /**
      * 用于储存第二序号
      */
     private String serialNumberA;
+    /**
+     * 模糊查询关键字
+     */
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
     public int getItemId() {
         return itemId;

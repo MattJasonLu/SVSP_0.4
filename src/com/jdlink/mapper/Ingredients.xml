@@ -113,6 +113,11 @@
         </where>
     </select>
 
+    <select id="getAmountItems" parameterType="Ingredients" resultType="int">
+        select count(*) from t_pr_ingredients_inventory
+        where name = #{name} and wareHouseName = #{wareHouseName};
+    </select>
+
     <update id="invalidIn" parameterType="String">
         update t_pr_ingredients_in set state = 'Invalid' where id = #{id}
     </update>
@@ -138,12 +143,12 @@
 
     <insert id="addIn" parameterType="IngredientsIn">
         <if test="procurementIdList.size() > 0">
-           <foreach collection="procurementIdList" item="procurementId" index="index">
-               update t_pl_procurement
-               set
-               state = "ToPick"
-               where receiptNumber = #{procurementId};
-           </foreach>
+            <foreach collection="procurementIdList" item="procurementId" index="index">
+                update t_pl_procurement
+                set
+                state = "ToPick"
+                where receiptNumber = #{procurementId};
+            </foreach>
         </if>
         insert into t_pr_ingredients_in
         (id,companyName,creationDate,fileId,totalPrice,bookkeeper,approver,keeper,
@@ -154,16 +159,29 @@
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
-                (inId,serialNumberIn,name,unitPrice,totalPrice,
-                amount,wareHouseName,post,specification,unit,ingredientState,remarks)
+                (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,ingredientState,remarks)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
                 #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks});
+
+                <choose>
+                    <when test="ingredients.aid != 'exist'">
+                        insert into t_pr_ingredients_inventory
+                        (name,wareHouseName,amount,unit,ingredientState,specification)
+                        values
+                        (#{ingredients.name},#{ingredients.wareHouseName},#{ingredients.amount},#{ingredients.unit},'ToReceive',#{ingredients.specification});
+                    </when>
+                    <otherwise>
+                        update t_pr_ingredients_inventory
+                        set
+                        amount = amount + #{ingredients.amount}
+                        where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
+                    </otherwise>
+                </choose>
             </foreach>
         </if>
     </insert>
-
 
     <!--领料单-->
 
@@ -279,6 +297,35 @@
         select amount,receiveAmount from t_pr_ingredients where name=#{name} and wareHouseName=#{wareHouseName};
     </select>
 
+    <select id="getInventoryList" resultType="Ingredients">
+        select * from t_pr_ingredients_inventory;
+    </select>
+
+    <select id="searchInventory" resultType="Ingredients">
+        select * from t_pr_ingredients_inventory
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or itemId = #{keywords}
+                or name like "%"#{keywords}"%"
+                or wareHouseName like "%"#{keywords}"%"
+                or amount = #{keywords}
+                or unit like "%"#{keywords}"%"
+                or ingredientState like "%"#{keywords}"%"
+                or specification like "%"#{keywords}"%"
+            </if>
+            <if test="wareHouseName != null and wareHouseName != ''">
+                wareHouseName like "%"#{wareHouseName}"%"
+            </if>
+            <if test="name != null and name != ''">
+                name like "%"#{name}"%"
+            </if>
+            <if test="amount != null and amount != ''">
+                amount = #{amount}
+            </if>
+        </where>
+
+    </select>
+
     <update id="invalidReceive" parameterType="String">
         update t_pr_ingredients_receive set state = 'Invalid' where id = #{id}
     </update>
@@ -295,7 +342,7 @@
                 set
                 name=#{ingredients.name},amount=0,wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},
                 specification=#{ingredients.specification},unit=#{ingredients.unit},remarks=#{ingredients.remarks},receiveAmount=#{ingredients.receiveAmount},
-                ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartReceived','Received')
+                ingredientState=IF(#{ingredients.notReceiveAmount}>0,'PartReceived','Received')
                 where receiveId = #{ingredients.id} and serialNumberReceive = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -316,36 +363,16 @@
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},
                 #{ingredients.receiveAmount},#{ingredients.wareHouseName},#{ingredients.specification},
-                #{ingredients.unit},#{ingredients.remarks},IF(#{ingredients.notReceiveAmount}=1,'PartReceived','Received'));
+                #{ingredients.unit},#{ingredients.remarks},IF(#{ingredients.notReceiveAmount}>0,'PartReceived','Received'));
+
+                update t_pr_ingredients_inventory
+                set
+                amount =
+                amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
+                where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
             </foreach>
         </if>
     </insert>
-
-
-    <!--<insert id="addReceive" parameterType="IngredientsReceive">-->
-    <!--insert into t_pr_ingredients_receive-->
-    <!--(id, department,creationDate,fileId,totalAmount,vicePresident,wareHouseSupervisor,keeper,-->
-    <!--pickingSupervisor,pickingMan,state,nowTime)-->
-    <!--values-->
-    <!--(#{id},#{department},NOW(),#{fileId},#{totalAmount},#{vicePresident},#{wareHouseSupervisor},#{keeper},-->
-    <!--#{pickingSupervisor},#{pickingMan},'NewBuild',NOW());-->
-    <!--<if test="ingredientsList.size() > 0">-->
-    <!--<foreach collection="ingredientsList" item="ingredients" index="index">-->
-    <!--update t_pr_ingredients-->
-    <!--set-->
-    <!--name=#{ingredients.name},wareHouseName=#{ingredients.wareHouseName},-->
-    <!--specification=#{ingredients.specification},unit=#{ingredients.unit},remarks=#{ingredients.remarks},-->
-    <!--receiveAmount=#{ingredients.receiveAmount},receiveId=#{ingredients.id},serialNumberReceive=#{ingredients.serialNumber}-->
-    <!--<if test="ingredients.receiveAmount < ingredients.amount">&lt;!&ndash;部分领用&ndash;&gt;-->
-    <!--ingredientState = 'PartReceived'-->
-    <!--</if>-->
-    <!--<if test="ingredients.receiveAmount >= ingredients.amount">&lt;!&ndash;已全领用&ndash;&gt;-->
-    <!--ingredientState = 'Received'-->
-    <!--</if>-->
-    <!--where inId = #{ingredients.aid} and serialNumberIn = #{ingredients.serialNumberA};-->
-    <!--</foreach>-->
-    <!--</if>-->
-    <!--</insert>-->
 
     <!-- 出库单-->
     <resultMap id="IngredientsOutRM" type="IngredientsOut" autoMapping="true">
@@ -493,7 +520,7 @@
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
-                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded'),#{ingredients.remarks});
+                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}>0,'PartOutBound','OutBounded'),#{ingredients.remarks});
             </foreach>
         </if>
     </insert>

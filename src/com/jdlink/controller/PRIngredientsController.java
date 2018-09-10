@@ -302,6 +302,30 @@ public class PRIngredientsController {
         res.put("stateList", stateList);
         return res.toString();
     }
+
+
+    /**
+     * 判断库存表中是否有该种物品于同仓库存在
+     *
+     * @return
+     */
+    @RequestMapping("getItemsAmoutsExist")
+    @ResponseBody
+    public String getItemsAmoutsExist(@RequestBody Ingredients ingredients) {
+        JSONObject res = new JSONObject();
+        // 获取枚举
+       try{
+           int count = ingredientsService.getAmountItems(ingredients);
+           res.put("status","success");
+           res.put("message","获取成功！");
+           res.put("data",count);
+       }catch (Exception e){
+           e.printStackTrace();
+           res.put("status","fail");
+           res.put("message","获取失败！");
+       }
+        return res.toString();
+    }
      /////////////领料单//////////////////////
 
     /**
@@ -309,9 +333,9 @@ public class PRIngredientsController {
      *
      * @return
      */
-    @RequestMapping("getCurrentReceivegredientsReceiveId")
+    @RequestMapping("getCurrentIngredientsReceiveId")
     @ResponseBody
-    public String getCurrentReceivegredientsReveiveId() {
+    public String getCurrentIngredientsReceiveId() {
         // 生成焚烧工单号 yyyyMM00000
         Date date = new Date();   //获取当前时间
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMM");
@@ -371,7 +395,7 @@ public class PRIngredientsController {
     public String addIngredientsReceive(@RequestBody IngredientsReceive ingredientsReceive) {
         JSONObject res = new JSONObject();
         try {
-            ingredientsService.addReceive(ingredientsReceive);
+            ingredientsService.addAllReceive(ingredientsReceive);
             res.put("status", "success");
             res.put("message", "新建成功");
         } catch (Exception e) {
@@ -591,6 +615,52 @@ public class PRIngredientsController {
         }
         return res.toString();
     }
+
+    /**
+     * 获取物品库存列表
+     * @return
+     */
+    @RequestMapping("getIngredientsInventoryList")
+    @ResponseBody
+    public String getIngredientsInventoryList() {
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.getInventoryList();
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
+            res.put("data",data);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询库存数据(新增页面查询功能)
+     * @param ingredients
+     * @return
+     */
+    @RequestMapping("searchIngredientsInventory")
+    @ResponseBody
+    public String searchIngredientsInventory(Ingredients ingredients){
+        JSONObject res = new JSONObject();
+        try {
+            List<Ingredients> ingredientsList = ingredientsService.searchInventory(ingredients);
+            JSONArray data = JSONArray.fromArray(ingredientsList.toArray(new Ingredients[ingredientsList.size()]));
+            res.put("data",data);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
 
     /////////////出库单//////////////////////
 
