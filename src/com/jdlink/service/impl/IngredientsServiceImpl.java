@@ -49,6 +49,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public void updateIn(IngredientsIn ingredientsIn){ ingredientsMapper.updateIn(ingredientsIn); }
 
+    @Override
+    public int getAmountItems(Ingredients ingredients){ return ingredientsMapper.getAmountItems(ingredients); }
+
     ///领料单///
     @Override
     public int countReceiveById(String id){ return ingredientsMapper.countReceiveById(id); }
@@ -82,6 +85,12 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     @Override
     public List<Ingredients> getAmountAndReceive(Ingredients ingredients){ return ingredientsMapper.getAmountAndReceive(ingredients); }
+
+    @Override
+    public List<Ingredients> getInventoryList(){ return ingredientsMapper.getInventoryList(); }
+
+    @Override
+    public  List<Ingredients> searchInventory(Ingredients ingredients){ return ingredientsMapper.searchInventory(ingredients); }
 
     ///出库单///
     @Override

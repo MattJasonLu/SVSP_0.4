@@ -1,9 +1,21 @@
 package com.jdlink.domain.Produce;
 
-public enum Equipment {
-    A2("A2设备",1),
-    B2("B2设备",2),
-    Equipment2("备2",3);
+import com.jdlink.util.CodeBaseEnum;
+
+public enum Equipment implements CodeBaseEnum {
+    MedicalCookingSystem("医疗蒸煮系统", 1),
+    A2("A2", 2),
+    B2("B2", 3),
+    SecondaryTwoCombustionChamber("二期二燃室", 4),
+    ThirdPhasePretreatmentSystem("三期预处理系统", 5),
+    Prepare2("备2",6)
+    ;
+
+    @Override
+    public int code() {
+        return index;
+    }
+
     private String name;
     private int index;
     Equipment(String name, int index) {

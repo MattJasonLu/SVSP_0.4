@@ -20,6 +20,7 @@ public interface IngredientsService {
     List<IngredientsIn> searchIn(IngredientsIn ingredientsIn);
     void invalidIn(String id);
     void updateIn(IngredientsIn ingredientsIn);
+    int getAmountItems(Ingredients ingredients);
 
     /////领料单///////
     int countReceiveById(String id);
@@ -33,6 +34,8 @@ public interface IngredientsService {
     void invalidReceive(String id);
     void updateReceive(IngredientsReceive ingredientsReceive);
     List<Ingredients> getAmountAndReceive(Ingredients ingredients);
+    List<Ingredients> getInventoryList();
+    List<Ingredients> searchInventory(Ingredients ingredients);
 
     ///出库单///
     int countOutById(String id);

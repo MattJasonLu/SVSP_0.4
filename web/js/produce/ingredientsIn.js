@@ -1097,9 +1097,6 @@ function confirmInsert() {
             var id = $(this).prop('id');
             var newId = id.replace(/[0-9]\d*/, num);
             $(this).prop('id', newId);
-            var name = $(this).prop('name');
-            var newName = id.replace(/[0-9]\d*/, num);
-            $(this).prop('name', newName);
         });
         clonedTr.show();
         clonedTr.find("td[name='serialNumber']").text(obj.serialNumber);
@@ -1154,6 +1151,10 @@ function totalCalculate() {
     }
 }
 
+
+/**
+ * 保存
+ */
 function save() {
     //获取输入的数据
     var totalPrice = 0;
@@ -1188,6 +1189,28 @@ function save() {
     ingredientsIn.keeper = $("#keeper").val();
     ingredientsIn.acceptor = $("#acceptor").val();
     ingredientsIn.handlers = $("#handlers").val();
+    for (var j = 0; j < ingredientsIn.ingredientsList.length; j++) {
+        var ingredients = ingredientsIn.ingredientsList[j];
+        $.ajax({
+            type: "POST",
+            url: "getItemsAmoutsExist",
+            async: false,
+            data: JSON.stringify(ingredients),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result.status == "success") {
+                    if(result.data != 0)ingredientsIn.ingredientsList[j].aid = "exist";
+                    else ingredientsIn.ingredientsList[j].aid = "notExist";
+                    console.log(ingredientsIn.ingredientsList[j].aid);
+                } else alert(result.message);
+            },
+            error: function (result) {
+                console.log(result.message);
+                alert("服务器错误！");
+            }
+        });
+    }
     //将入库单数据插入到数据库
     console.log("数据为：");
     console.log(ingredientsIn);

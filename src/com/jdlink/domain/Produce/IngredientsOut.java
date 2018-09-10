@@ -68,6 +68,18 @@ public class IngredientsOut {
      * 模糊查询关键字
      */
     private String keywords;
+    /**
+     * 处置设备
+     */
+    private Equipment equipment;
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
 
     public String getId() {
         return id;
