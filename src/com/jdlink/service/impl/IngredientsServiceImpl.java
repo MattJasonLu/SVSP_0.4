@@ -92,6 +92,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public  List<Ingredients> searchInventory(Ingredients ingredients){ return ingredientsMapper.searchInventory(ingredients); }
 
+    @Override
+    public void updateReceiveState(String id){ ingredientsMapper.updateReceiveState(id); }
+
     ///出库单///
     @Override
     public int countOutById(String id){ return ingredientsMapper.countOutById(id); }
