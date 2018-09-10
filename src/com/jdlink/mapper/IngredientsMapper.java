@@ -20,6 +20,13 @@ public interface IngredientsMapper {
     void invalidIn(String id);
     void updateIn(IngredientsIn ingredientsIn);
 
+    /**
+     * 用于判断库存表中该物品在某仓库中是否存在库存
+     * @param ingredients
+     * @return
+     */
+    int getAmountItems(Ingredients ingredients);
+
     /////领料单///////
     int countReceiveById(String id);
     IngredientsReceive getReceiveById(String id);
@@ -32,6 +39,8 @@ public interface IngredientsMapper {
     void invalidReceive(String id);
     void updateReceive(IngredientsReceive ingredientsReceive);
     List<Ingredients> getAmountAndReceive(Ingredients ingredients);
+    List<Ingredients> getInventoryList();
+    List<Ingredients> searchInventory(Ingredients ingredients);
 
     ///出库单///
     int countOutById(String id);
