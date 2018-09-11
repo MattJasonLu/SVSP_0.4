@@ -710,6 +710,9 @@ function setWasteInventoryList1(result) {
                     case (11):
                         $(this).html(getDateStr(obj.creatorDate));
                         break;
+                    case (12):
+                        $(this).html(obj.inboundOrderItemId);
+                        break;
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
@@ -836,4 +839,138 @@ function viewOutBound(item) {
         }
 
     }) ;
+}
+
+//查看出库信息
+function view(item) {
+    var inboundOrderItemId=$(item).parent().prev().html();
+    console.log(inboundOrderItemId);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getByInboundOrderItemId",                  // url 计算数据库的总条数
+        data:{'inboundOrderItemId':inboundOrderItemId},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //危废库存查看，点击查看按钮
+                setByInboundOrderItemId(result);
+                $("#appointModal2").modal('show');
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+//危废库存查看，点击查看按钮
+function setByInboundOrderItemId(result) {
+    var tr=$('#cloneTr3');
+    tr.siblings().remove();
+    $.each(result.wasteInventoryList,function (index,item) {
+        var clonedTr=tr.clone();
+        clonedTr.show();
+        clonedTr.children('td').each(function (inner_index) {
+            var obj = eval(item);
+            switch (inner_index) {
+                case (0):
+                    $(this).html(getDateStr(obj.inboundDate));
+                    break;
+                case (1):
+                    $(this).html(obj.produceCompany.companyName);
+                    break;
+                case (2):
+                    if(obj.laboratoryTest.wastesName=='slag'){
+                        $(this).html('炉渣');
+                    }
+                    if(obj.laboratoryTest.wastesName=='ash'){
+                        $(this).html('飞灰');
+                    }
+                    if(obj.laboratoryTest.wastesName=='bucket'){
+                        $(this).html('桶');
+                    }
+                    break;
+                case (3):
+                    $(this).html(obj.laboratoryTest.wastesCode);
+                    break;
+                case (4):
+                    $(this).html(obj.actualCount);
+                    break;
+                case (5):
+                    $(this).html(obj.handleCategory.name);
+                    break;
+            }
+        })
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+
+    })
+    tr.hide();
+}
+//属性调整
+function adjustAttr() {
+
+    //加载进料方式的下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandelCategoryList",                  // url
+        data:{'outboundOrderId':$("#outboundOrderId").val()},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                index1=result.handelCategory.index;
+                var type=$('#modal-type');
+                type.children().remove();
+                $.each(result.array1,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    type.append(option);
+                })
+                type.get(0).selectedIndex=index1-1;
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        },
+
+    });
+    $('#examineModal').modal('show');
+
+}
+//确认修改属性
+function comfirm() {
+    console.log($("#outboundOrderId").val());
+    console.log($('#modal-type').val());
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "upHandelCategoryById",                  // url
+        data:{'outboundOrderId':$("#outboundOrderId").val(),'index':$('#modal-type').val()},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
 }

@@ -526,6 +526,11 @@ function searchIngredientIn() {
     var state = null;
     if ($("#search-state").val() == 0) state = "NewBuild";//新建
     if ($("#search-state").val() == 1) state = "Invalid";//已作废
+    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
+    var keywords = $("#searchContent").val();
+    //模糊查询状态字段转换
+    if ($("#searchContent").val() === "新建") keywords = "NewBuild";
+    if ($("#searchContent").val() === "已作废" || $("#searchContent").val() === "作废") keywords = "Invalid";
     if ($("#senior").is(':visible')) {
         data1 = {
             date: $("#search-creationDate").val(),
@@ -536,7 +541,7 @@ function searchIngredientIn() {
         };
     } else {
         data1 = {
-            keywords: $("#searchContent").val(),
+            keywords: keywords,
             page: page
         };
     }
@@ -817,8 +822,8 @@ function getcurrentDaydate() {
     return year + "年" + month + "月" + day + "日";
 }
 
-
 function loadProcurementList() {
+    $("#view-id").text(getCurrentIngredientsInId());
     $("#creationDate").text(getcurrentDaydate());
     $.ajax({
         type: "POST",                       // 方法类型

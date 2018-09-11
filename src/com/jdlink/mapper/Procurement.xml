@@ -89,4 +89,8 @@
             </if>
         </where>
     </select>
+<!--加载辅料列表-->
+    <select id="getIngredientsList" resultType="String">
+        select ingredientsName from t_pl_ingredientslist;
+    </select>
 </mapper>

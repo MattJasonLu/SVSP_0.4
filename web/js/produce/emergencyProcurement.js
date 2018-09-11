@@ -12,6 +12,10 @@ function allSelect() {
 }
 //克隆行方法
 function addNewLine() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
     // 获取id为cloneTr的tr元素
     var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
@@ -34,6 +38,10 @@ function addNewLine() {
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+    $('.selectpicker').selectpicker('refresh');
 
 }
 //删除行方法
@@ -76,7 +84,7 @@ function saveEmer() {
         }
     });
     $('.myclass').each(function () {
-        var suppliesName=$(this).children('td').eq(1).children('input').val();
+        var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
         var specifications=$(this).children('td').eq(2).children('input').val();
         var unit=$(this).children('td').eq(3).children('input').val();
         var inventory=$(this).children('td').eq(4).children('input').val();

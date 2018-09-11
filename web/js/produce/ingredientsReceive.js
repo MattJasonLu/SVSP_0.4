@@ -511,6 +511,11 @@ function searchData() {
     var state = null;
     if ($("#search-state").val() == 0) state = "NewBuild";//新建
     if ($("#search-state").val() == 1) state = "Invalid";//已作废
+    if ($("#search-state").val() == 2) state = "OutBounded";//已出库
+    var keywords = $("#searchContent").val();
+    if ($("#searchContent").val() == "新建") keywords = "NewBuild";
+    if ($("#searchContent").val() == "已作废" || $("#searchContent").val() == "作废") keywords = "Invalid";
+    if ($("#searchContent").val() == "已出库" || $("#searchContent").val() == "出库") keywords = "OutBounded";
     if ($("#senior").is(':visible')) {
         data1 = {
             date: $("#search-creationDate").val(),
@@ -521,7 +526,7 @@ function searchData() {
         };
     } else {
         data1 = {
-            keywords: $("#searchContent").val(),
+            keywords: keywords,
             page: page
         };
     }
@@ -758,6 +763,7 @@ function getcurrentDaydate() {
 }
 
 function loadInventoryList() {
+    $("#view-id").text(getCurrentIngredientsReceiveId());
     $("#creationDate").text(getcurrentDaydate());
     $.ajax({
         type: "POST",                       // 方法类型
@@ -864,6 +870,7 @@ function confirmInsert() {
     $(".newLine").remove();
     ingredientsReceive = {};
     ingredientsIdArray = [];
+    totalReceiveAmount = 0;
     var ingredientsList = [];
     ingredientsReceive.id = getCurrentIngredientsReceiveId();
     var i = 0;  //序号
@@ -886,13 +893,14 @@ function confirmInsert() {
                 ingredients.receiveAmount = $(this).find("td[name='amount']").text();
                 ingredientsList.push(ingredients);
                 var receiveAmount = parseFloat(ingredients.receiveAmount);
+                $("#total-unit").text("吨");
                 if (ingredients.unit === "千克" || ingredients.unit === "kg" || ingredients.unit === "KG") {
                     receiveAmount = receiveAmount / 1000; // 单位换算
                     totalReceiveAmount += receiveAmount;
                 } else if (ingredients.unit === "吨" || ingredients.unit === "t" || ingredients.unit === "T")
                     totalReceiveAmount += receiveAmount;
+                }
             }
-        }
     });
     //将数据遍历赋值到领料单中
     ingredientsReceive.totalAmount = totalReceiveAmount;
@@ -926,7 +934,6 @@ function confirmInsert() {
         clonedTr.addClass("newLine");
     });
     $("#total-Amount").text(totalReceiveAmount);
-    $("#total-unit").text(ingredientsList[0].unit);
     tr.hide();
     ingredientsReceive.ingredientsList = ingredientsList;
 }
@@ -941,12 +948,15 @@ function calculateTotalReceiveAmount() {
         var $i = i;
         var receiveAmount = parseFloat($("#receiveAmount" + $i).val());
         ingredientsReceive.ingredientsList[i - 1].receiveAmount = $("#receiveAmount" + $i).val();
-        if ($("#receiveAmount" + $i).val() == ingredientsReceive.ingredientsList[i - 1].amount) ingredientsReceive.ingredientsList[i - 1].notReceiveAmount = 1;
-        if (ingredientsReceive.ingredientsList[i - 1].unit === "千克" || ingredientsReceive.ingredientsList[i - 1].unit === "kg" || ingredientsReceive.ingredientsList[i - 1].unit === "KG") {
-            receiveAmount = receiveAmount / 1000; // 单位换算
-            totalReceiveAmount += receiveAmount;
-        } else if (ingredientsReceive.ingredientsList[i - 1].unit === "吨" || ingredientsReceive.ingredientsList[i - 1].unit === "t" || ingredientsReceive.ingredientsList[i - 1].unit === "T")
-            totalReceiveAmount += receiveAmount;
+        if ($("#receiveAmount" + $i).val() < ingredientsReceive.ingredientsList[i - 1].amount) ingredientsReceive.ingredientsList[i - 1].notReceiveAmount = 1;
+        else if ($("#receiveAmount" + $i).val() == ingredientsReceive.ingredientsList[i - 1].amount) ingredientsReceive.ingredientsList[i - 1].notReceiveAmount = 0;
+        if (ListCount > 2) {
+            if (ingredientsReceive.ingredientsList[i - 1].unit === "千克" || ingredientsReceive.ingredientsList[i - 1].unit === "kg" || ingredientsReceive.ingredientsList[i - 1].unit === "KG") {
+                receiveAmount = receiveAmount / 1000; // 单位换算
+                totalReceiveAmount += receiveAmount;
+            } else if (ingredientsReceive.ingredientsList[i - 1].unit === "吨" || ingredientsReceive.ingredientsList[i - 1].unit === "t" || ingredientsReceive.ingredientsList[i - 1].unit === "T")
+                totalReceiveAmount += receiveAmount;
+        }else totalReceiveAmount += receiveAmount;
         console.log($("#receiveAmount" + $i).val());
         console.log(ingredientsReceive.ingredientsList[i - 1].amount);
         if (parseFloat($("#receiveAmount" + $i).val()) > parseFloat(ingredientsReceive.ingredientsList[i - 1].amount)) {
