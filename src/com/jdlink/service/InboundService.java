@@ -120,5 +120,13 @@ public interface InboundService {
      * @param endDate 结束日期
      * @return 入库单集合
      */
-    List<InboundOrder> getInboundOrderByRange(Date startDate, Date endDate);
+    List<InboundOrderItem> getInboundOrderItemByRange(Date startDate, Date endDate);
+
+    /**
+     * 通过日期范围获取入库单
+     * @param startDate 起始日期
+     * @param endDate 结束日期
+     * @return 入库单集合
+     */
+    List<InboundOrderItem> getSecondInboundOrderItemByRange(Date startDate, Date endDate);
 }

@@ -187,9 +187,9 @@ public class InboundController {
         try {
             JSONObject data = null;
             // 获取入库单列表
-            List<InboundOrder> inboundOrderList = inboundService.getInboundOrderByRange(date, date);
+            List<InboundOrderItem> inboundOrderList = inboundService.getInboundOrderItemByRange(date, date);
             if (inboundOrderList.size() > 0) {
-                InboundOrder inboundOrder = inboundOrderList.get(0);
+                InboundOrderItem inboundOrder = inboundOrderList.get(0);
                 data = JSONObject.fromBean(inboundOrder);
             }
             res.put("status", "success");
@@ -215,8 +215,8 @@ public class InboundController {
         JSONObject res = new JSONObject();
         try {
             // 获取入库单列表
-            List<InboundOrder> inboundOrderList = inboundService.getInboundOrderByRange(startDate, endDate);
-            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            List<InboundOrderItem> inboundOrderList = inboundService.getInboundOrderItemByRange(startDate, endDate);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrderItem[inboundOrderList.size()]));
             res.put("status", "success");
             res.put("message", "获取信息成功");
             res.put("data", data);

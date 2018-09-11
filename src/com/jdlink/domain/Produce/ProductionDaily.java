@@ -29,19 +29,19 @@ public class ProductionDaily {
     /**
      * 本日直接转外处置量
      */
-    private float toDayInboundMedicalWastesDirectDisposal;
+    private float todayInboundMedicalWastesDirectDisposal;
     /**
      * 本日蒸煮医废
      */
-    private float toDayInboundMedicalWastesCooking;
+    private float todayInboundMedicalWastesCooking;
     /**
      * 本日误差量
      */
-    private float toDayInboundMedicalWastesErrorNumber;
+    private float todayInboundMedicalWastesErrorNumber;
     /**
      * 本日蒸煮后重量
      */
-    private float toDayInboundMedicalWastesAfterCooking;
+    private float todayInboundMedicalWastesAfterCooking;
     /**
      * 本日蒸煮后外送量
      */
@@ -103,19 +103,19 @@ public class ProductionDaily {
     /**
      * 本日直接转外处置量
      */
-    private float toDayOutboundMedicalWastesDirectDisposal;
+    private float todayOutboundMedicalWastesDirectDisposal;
     /**
      * 本日蒸煮医废
      */
-    private float toDayOutboundMedicalWastesCooking;
+    private float todayOutboundMedicalWastesCooking;
     /**
      * 本日误差量
      */
-    private float toDayOutboundMedicalWastesErrorNumber;
+    private float todayOutboundMedicalWastesErrorNumber;
     /**
      * 本日蒸煮后重量
      */
-    private float toDayOutboundMedicalWastesAfterCooking;
+    private float todayOutboundMedicalWastesAfterCooking;
     /**
      * 本日蒸煮后外送量
      */
@@ -628,19 +628,19 @@ public class ProductionDaily {
     /**
      * 本日直接转外处置量
      */
-    private float toDayDisposalMedicalWastesDisposalDirect;
+    private float todayDisposalMedicalWastesDisposalDirect;
     /**
      * 本日蒸煮医废
      */
-    private float toDayDisposalMedicalWastesCooking;
+    private float todayDisposalMedicalWastesCooking;
     /**
      * 本日误差量
      */
-    private float toDayDisposalMedicalWastesErrorNumber;
+    private float todayDisposalMedicalWastesErrorNumber;
     /**
      * 本日蒸煮后重量
      */
-    private float toDayDisposalMedicalWastesAfterCooking;
+    private float todayDisposalMedicalWastesAfterCooking;
     /**
      * 本日蒸煮后外送量
      */
@@ -3936,36 +3936,36 @@ public class ProductionDaily {
         this.todayInboundMedicalWastes = todayInboundMedicalWastes;
     }
 
-    public float getToDayInboundMedicalWastesDirectDisposal() {
-        return toDayInboundMedicalWastesDirectDisposal;
+    public float getTodayInboundMedicalWastesDirectDisposal() {
+        return todayInboundMedicalWastesDirectDisposal;
     }
 
-    public void setToDayInboundMedicalWastesDirectDisposal(float toDayInboundMedicalWastesDirectDisposal) {
-        this.toDayInboundMedicalWastesDirectDisposal = toDayInboundMedicalWastesDirectDisposal;
+    public void setTodayInboundMedicalWastesDirectDisposal(float todayInboundMedicalWastesDirectDisposal) {
+        this.todayInboundMedicalWastesDirectDisposal = todayInboundMedicalWastesDirectDisposal;
     }
 
-    public float getToDayInboundMedicalWastesCooking() {
-        return toDayInboundMedicalWastesCooking;
+    public float getTodayInboundMedicalWastesCooking() {
+        return todayInboundMedicalWastesCooking;
     }
 
-    public void setToDayInboundMedicalWastesCooking(float toDayInboundMedicalWastesCooking) {
-        this.toDayInboundMedicalWastesCooking = toDayInboundMedicalWastesCooking;
+    public void setTodayInboundMedicalWastesCooking(float todayInboundMedicalWastesCooking) {
+        this.todayInboundMedicalWastesCooking = todayInboundMedicalWastesCooking;
     }
 
-    public float getToDayInboundMedicalWastesErrorNumber() {
-        return toDayInboundMedicalWastesErrorNumber;
+    public float getTodayInboundMedicalWastesErrorNumber() {
+        return todayInboundMedicalWastesErrorNumber;
     }
 
-    public void setToDayInboundMedicalWastesErrorNumber(float toDayInboundMedicalWastesErrorNumber) {
-        this.toDayInboundMedicalWastesErrorNumber = toDayInboundMedicalWastesErrorNumber;
+    public void setTodayInboundMedicalWastesErrorNumber(float todayInboundMedicalWastesErrorNumber) {
+        this.todayInboundMedicalWastesErrorNumber = todayInboundMedicalWastesErrorNumber;
     }
 
-    public float getToDayInboundMedicalWastesAfterCooking() {
-        return toDayInboundMedicalWastesAfterCooking;
+    public float getTodayInboundMedicalWastesAfterCooking() {
+        return todayInboundMedicalWastesAfterCooking;
     }
 
-    public void setToDayInboundMedicalWastesAfterCooking(float toDayInboundMedicalWastesAfterCooking) {
-        this.toDayInboundMedicalWastesAfterCooking = toDayInboundMedicalWastesAfterCooking;
+    public void setTodayInboundMedicalWastesAfterCooking(float todayInboundMedicalWastesAfterCooking) {
+        this.todayInboundMedicalWastesAfterCooking = todayInboundMedicalWastesAfterCooking;
     }
 
     public float getTodayInboundMedicalWastesAfterCookingSend() {
@@ -4080,36 +4080,36 @@ public class ProductionDaily {
         this.todayOutboundMedicalWastes = todayOutboundMedicalWastes;
     }
 
-    public float getToDayOutboundMedicalWastesDirectDisposal() {
-        return toDayOutboundMedicalWastesDirectDisposal;
+    public float getTodayOutboundMedicalWastesDirectDisposal() {
+        return todayOutboundMedicalWastesDirectDisposal;
     }
 
-    public void setToDayOutboundMedicalWastesDirectDisposal(float toDayOutboundMedicalWastesDirectDisposal) {
-        this.toDayOutboundMedicalWastesDirectDisposal = toDayOutboundMedicalWastesDirectDisposal;
+    public void setTodayOutboundMedicalWastesDirectDisposal(float todayOutboundMedicalWastesDirectDisposal) {
+        this.todayOutboundMedicalWastesDirectDisposal = todayOutboundMedicalWastesDirectDisposal;
     }
 
-    public float getToDayOutboundMedicalWastesCooking() {
-        return toDayOutboundMedicalWastesCooking;
+    public float getTodayOutboundMedicalWastesCooking() {
+        return todayOutboundMedicalWastesCooking;
     }
 
-    public void setToDayOutboundMedicalWastesCooking(float toDayOutboundMedicalWastesCooking) {
-        this.toDayOutboundMedicalWastesCooking = toDayOutboundMedicalWastesCooking;
+    public void setTodayOutboundMedicalWastesCooking(float todayOutboundMedicalWastesCooking) {
+        this.todayOutboundMedicalWastesCooking = todayOutboundMedicalWastesCooking;
     }
 
-    public float getToDayOutboundMedicalWastesErrorNumber() {
-        return toDayOutboundMedicalWastesErrorNumber;
+    public float getTodayOutboundMedicalWastesErrorNumber() {
+        return todayOutboundMedicalWastesErrorNumber;
     }
 
-    public void setToDayOutboundMedicalWastesErrorNumber(float toDayOutboundMedicalWastesErrorNumber) {
-        this.toDayOutboundMedicalWastesErrorNumber = toDayOutboundMedicalWastesErrorNumber;
+    public void setTodayOutboundMedicalWastesErrorNumber(float todayOutboundMedicalWastesErrorNumber) {
+        this.todayOutboundMedicalWastesErrorNumber = todayOutboundMedicalWastesErrorNumber;
     }
 
-    public float getToDayOutboundMedicalWastesAfterCooking() {
-        return toDayOutboundMedicalWastesAfterCooking;
+    public float getTodayOutboundMedicalWastesAfterCooking() {
+        return todayOutboundMedicalWastesAfterCooking;
     }
 
-    public void setToDayOutboundMedicalWastesAfterCooking(float toDayOutboundMedicalWastesAfterCooking) {
-        this.toDayOutboundMedicalWastesAfterCooking = toDayOutboundMedicalWastesAfterCooking;
+    public void setTodayOutboundMedicalWastesAfterCooking(float todayOutboundMedicalWastesAfterCooking) {
+        this.todayOutboundMedicalWastesAfterCooking = todayOutboundMedicalWastesAfterCooking;
     }
 
     public float getTodayOutboundMedicalWastesAfterCookingSend() {
@@ -5088,36 +5088,36 @@ public class ProductionDaily {
         this.todayDisposalMedicalWastes = todayDisposalMedicalWastes;
     }
 
-    public float getToDayDisposalMedicalWastesDisposalDirect() {
-        return toDayDisposalMedicalWastesDisposalDirect;
+    public float getTodayDisposalMedicalWastesDisposalDirect() {
+        return todayDisposalMedicalWastesDisposalDirect;
     }
 
-    public void setToDayDisposalMedicalWastesDisposalDirect(float toDayDisposalMedicalWastesDisposalDirect) {
-        this.toDayDisposalMedicalWastesDisposalDirect = toDayDisposalMedicalWastesDisposalDirect;
+    public void setTodayDisposalMedicalWastesDisposalDirect(float todayDisposalMedicalWastesDisposalDirect) {
+        this.todayDisposalMedicalWastesDisposalDirect = todayDisposalMedicalWastesDisposalDirect;
     }
 
-    public float getToDayDisposalMedicalWastesCooking() {
-        return toDayDisposalMedicalWastesCooking;
+    public float getTodayDisposalMedicalWastesCooking() {
+        return todayDisposalMedicalWastesCooking;
     }
 
-    public void setToDayDisposalMedicalWastesCooking(float toDayDisposalMedicalWastesCooking) {
-        this.toDayDisposalMedicalWastesCooking = toDayDisposalMedicalWastesCooking;
+    public void setTodayDisposalMedicalWastesCooking(float todayDisposalMedicalWastesCooking) {
+        this.todayDisposalMedicalWastesCooking = todayDisposalMedicalWastesCooking;
     }
 
-    public float getToDayDisposalMedicalWastesErrorNumber() {
-        return toDayDisposalMedicalWastesErrorNumber;
+    public float getTodayDisposalMedicalWastesErrorNumber() {
+        return todayDisposalMedicalWastesErrorNumber;
     }
 
-    public void setToDayDisposalMedicalWastesErrorNumber(float toDayDisposalMedicalWastesErrorNumber) {
-        this.toDayDisposalMedicalWastesErrorNumber = toDayDisposalMedicalWastesErrorNumber;
+    public void setTodayDisposalMedicalWastesErrorNumber(float todayDisposalMedicalWastesErrorNumber) {
+        this.todayDisposalMedicalWastesErrorNumber = todayDisposalMedicalWastesErrorNumber;
     }
 
-    public float getToDayDisposalMedicalWastesAfterCooking() {
-        return toDayDisposalMedicalWastesAfterCooking;
+    public float getTodayDisposalMedicalWastesAfterCooking() {
+        return todayDisposalMedicalWastesAfterCooking;
     }
 
-    public void setToDayDisposalMedicalWastesAfterCooking(float toDayDisposalMedicalWastesAfterCooking) {
-        this.toDayDisposalMedicalWastesAfterCooking = toDayDisposalMedicalWastesAfterCooking;
+    public void setTodayDisposalMedicalWastesAfterCooking(float todayDisposalMedicalWastesAfterCooking) {
+        this.todayDisposalMedicalWastesAfterCooking = todayDisposalMedicalWastesAfterCooking;
     }
 
     public float getTodayDisposalMedicalWastesAfterCookingSend() {
