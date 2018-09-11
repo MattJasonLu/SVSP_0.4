@@ -1083,7 +1083,7 @@ function confirmInsert() {
     ingredientsIn.id = getCurrentIngredientsInId();
     var i = 0;  //序号
     // 遍历采购单表格行，获取勾选的计划列表
-    $("#ingredientsInData").children().not("#cloneTr1").each(function () {
+    $("#sampleInfoData").children().not("#cloneTr1").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
         if (isCheck) {
             var procurementId1 = $(this).find("td[name='receiptNumber']").text();
@@ -1267,6 +1267,7 @@ function save() {
                     console.log(result.message);
                     if (confirm("入库单添加成功，是否返回主页面？"))
                         window.location.href = "ingredientsIn.html";
+                    else window.location.reload();
                 } else alert(result.message);
             },
             error: function (result) {

@@ -161,8 +161,6 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="#" onclick="appointModal();"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
-                    <a class="btn btn-primary btn-xs" href="#" onclick="checkModal();"><span
-                            class="glyphicon glyphicon-ok" aria-hidden="true"></span> 确认收样</a>
                     <a class="btn btn-primary btn-xs" onclick="exportExcel()"><span
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
@@ -297,7 +295,7 @@
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="sampleInfoData">
                 <tr id="cloneTr">
                     <td class="text-center">
                         <label>

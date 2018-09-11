@@ -1005,6 +1005,7 @@ function save() {
                     console.log(result.message);
                     if (confirm("领料单添加成功，是否返回主页面？"))
                         window.location.href = "ingredientsReceive.html";
+                    else window.location.reload();
                 } else alert(result.message);
             },
             error: function (result) {

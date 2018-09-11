@@ -113,7 +113,7 @@
         </where>
     </select>
 
-    <select id="getIngredientsInItemByRange" resultMap="IngredientsInRM">
+    <select id="getIngredientsInItemByRange" resultMap="InIngredientsRM">
         select * from t_pr_ingredients
         <where>
             inId in (SELECT id FROM t_pr_ingredients_in
@@ -435,7 +435,7 @@
         </if>
     </select>
 
-    <select id="getIngredientsOutItemByRange" resultMap="IngredientsOutRM">
+    <select id="getIngredientsOutItemByRange" resultMap="OutIngredientsRM">
         SELECT * FROM t_pr_ingredients
         <where>
             outId in (SELECT id FROM t_pr_ingredients_out

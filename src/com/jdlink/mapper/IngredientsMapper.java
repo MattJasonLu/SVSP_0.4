@@ -18,7 +18,7 @@ public interface IngredientsMapper {
     List<IngredientsIn> searchIn(IngredientsIn ingredientsIn);
     void invalidIn(String id);
     void updateIn(IngredientsIn ingredientsIn);
-    List<IngredientsIn> getIngredientsInItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
+    List<Ingredients> getIngredientsInItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
     /**
      * 用于判断库存表中该物品在某仓库中是否存在库存
      * @param ingredients
@@ -53,5 +53,5 @@ public interface IngredientsMapper {
     List<IngredientsOut> searchOut(IngredientsOut ingredientsOut);
     void invalidOut(String id);
     void updateOut(IngredientsOut ingredientsOut);
-    List<IngredientsOut> getIngredientsOutItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
+    List<Ingredients> getIngredientsOutItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
 }
