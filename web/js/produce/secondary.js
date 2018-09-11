@@ -499,7 +499,7 @@ function setOutBoundList(result) {
     //tr.siblings().remove();
     tr.attr('class','myclass');
     $.each(result, function (index, item) {
-        console.log(item);
+       // console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
         if(item.boundType.name=='次生出库'){
             var clonedTr = tr.clone();
@@ -522,7 +522,10 @@ function setOutBoundList(result) {
                         break;
                     // 业务员
                     case (3):
-                        $(this).html(obj.client.salesman.name);
+                        if(obj.client.salesman!=null){
+                            $(this).html(obj.client.salesman.name);
+                        }
+
                         break;
                     // 出库日期
                     case (4):
