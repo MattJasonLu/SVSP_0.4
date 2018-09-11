@@ -31,4 +31,10 @@
         </where>
         order by nowTime desc
     </select>
+<!--通过日期获取医废-->
+    <select id="getMedicalWastesByRange" resultType="MedicalWastes">
+         select * from t_pl_medicalwastes
+         <!--<![CDATA][WHERE DATA_FORMAT() ]-->
+
+    </select>
 </mapper>

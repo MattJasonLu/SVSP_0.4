@@ -1,9 +1,252 @@
 /**加载库存的数据
  * 
  */
+
+var currentPage = 1;                          //当前页数
+var data1;
 var isSearch = false;
 array=[];//数组用来存放入库编号
 array1=[]//数组用来存放剩余量的
+/**
+ * 返回count值
+ * */
+function countValue() {
+    var mySelect = document.getElementById("count");
+    var index = mySelect.selectedIndex;
+    return mySelect.options[index].text;
+}
+/**
+ * 计算总页数
+ * */
+function totalPage() {
+    var totalRecord = 0;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalBatchingRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchBatchingTotal",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
+    var count = countValue();                         // 可选
+    var total = loadPages(totalRecord, count);
+    return total;
+}
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
+ */
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        window.alert("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage(pageNumber) {
+    console.log("当前页：" + pageNumber);
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getBatchOrderList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setBatchingOrderList(result.batchingOrderList);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchBatchOrder",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setBatchingOrderList(result.batchingOrderList);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+}
+/**
+ * 输入页数跳转页面
+ * */
+function inputSwitchPage() {
+    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == null || pageNumber == undefined) {
+        window.alert("跳转页数不能为空！")
+    } else {
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        currentPage = pageNumber;
+        var page = {};
+        page.count = countValue();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getBatchOrderList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                       setBatchingOrderList(result.batchingOrderList);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        } else {
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchBatchOrder",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                         console.log(result);
+                        setBatchingOrderList(result.batchingOrderList);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+    }
+}
 function  batchingList() {
     var page={};
     $.ajax({
@@ -38,7 +281,80 @@ function reset() {
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
 }
+/**
+ * 设置克隆页码
+ * */
+function setPageClone(result) {
+    $(".beforeClone").remove();
+    setBatchingOrderList(result.batchingOrderList);
+    var total = totalPage();
+    $("#next").prev().hide();
+    var st = "共" + total + "页";
+    $("#totalPage").text(st);
+    var myArray = new Array();
+    for (var i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
 
+}
+
+/**
+ * 配料单页面高级查询
+ */
+//查询功能
+function searchBatchOrder() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    if ($("#senior").is(':visible')) {
+        data1 = {
+            laboratoryTest: {wastesName:$("#search-wastesName").val()},
+            produceCompany:{companyName:$("#search-client").val()} ,
+            createDate: $("#search-batchingDate").val(),
+            page: page,
+            processWay:$("#search-processWay").val(),
+        };
+        console.log(data1);
+    }
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchBatchOrder",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                     console.log(result);
+                    setPageClone(result);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+}
 /**设置库存列表数据
  */
 function setWasteInventoryList(result) {
@@ -413,17 +729,31 @@ function save() {
 }
 //配料单显示页面加载
 function loadBatchingOrderList() {
-//1执行ajax取数据
+    var pageNumber = 1;               // 显示首页
+    $("#current").find("a").text("当前页：1");
+    $("#previous").addClass("disabled");
+    $("#firstPage").addClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
+    //1执行ajax取数据
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getBatchOrderList",                  // url
+        data: JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
-               setBatchingOrderList(result.batchingOrderList);
+               //setBatchingOrderList(result.batchingOrderList);
+                setPageClone(result);
             }
             else
                 alert(result.message);
@@ -435,9 +765,41 @@ function loadBatchingOrderList() {
 
 
     });
+    //2加载高级搜岁下拉框
+    setSenierList();
+    isSearch = false;
+}
+//2加载高级搜索下拉框
+function setSenierList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcessWay",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+       // data: JSON.stringify(page),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                var processWay=$('#search-processWay');
+                processWay.children().remove();
+                $.each(result.processWayList,function (index,item) {
+                     var option=$('<option/>');
+                      option.val(index);
+                      option.text(item.name);
+                     processWay.append(option);
+                });
+                processWay.get(0).selectedIndex=-1;
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error:function (result) {
+          alert("服务器异常！")
 
-
-
+        }
+    });
 }
 //加载配料单数据源
 function setBatchingOrderList(result) {

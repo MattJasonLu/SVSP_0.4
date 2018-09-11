@@ -108,7 +108,7 @@
                     <!--<a class="btn btn-primary btn-xs" href="newSecondaryOut.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                    <a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>
+                    <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                 </div>
                 <div class="input-group col-md-3"></div>
                 <!--查询框-->
@@ -234,8 +234,9 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center hidden"></td>
                     <td class="text-center">
-                        <a href="#" onclick="view();" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                        <a href="#" onclick="view(this);" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
                         <a href="#" onclick="cancel();" title="作废"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                         <a href="#" onclick="submit();" title="提交"><span class="glyphicon glyphicon-export" aria-hidden="true"></span></a>
                         <a href="#" onclick="signIn();" title="签收"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
@@ -291,43 +292,48 @@
                     </div>
                     <div class="modal-body">
                         <table class="table table-bordered">
-                            <tbody>
+                            <thead>
                             <tr>
+                                <td class="text-center">入库时间</td>
                                 <td class="text-center">产废单位</td>
-                                <td class="text-center">入场时间</td>
                                 <td class="text-center">废物名称</td>
                                 <td class="text-center">废物代码</td>
                                 <td class="text-center">重量/t</td>
-                                <td class="text-center">物质形态</td>
-                                <td class="text-center">包装形式</td>
-                                <td class="text-center">热值/KCal/Kg</td>
-                                <td class="text-center">PH</td>
-                                <td class="text-center">灰分/%</td>
-                                <td class="text-center">水分/%</td>
-                                <td class="text-center">氯含量/%</td>
-                                <td class="text-center">硫含量/%</td>
-                                <td class="text-center">磷含量/%</td>
-                                <td class="text-center">氟含量/%</td>
-                                <td class="text-center">处理方式</td>
+                                <!--<td class="text-center">物质形态</td>-->
+                                <!--<td class="text-center">危废名称</td>-->
+                                <!--<td class="text-center">热值/KCal/Kg</td>-->
+                                <!--<td class="text-center">PH</td>-->
+                                <!--<td class="text-center">灰分/%</td>-->
+                                <!--<td class="text-center">水分/%</td>-->
+                                <!--<td class="text-center">氯含量/%</td>-->
+                                <!--<td class="text-center">硫含量/%</td>-->
+                                <!--<td class="text-center">磷含量/%</td>-->
+                                <!--<td class="text-center">氟含量/%</td>-->
+                                <!--<td class="text-center">处理方式</td>-->
                                 <td class="text-center">进料方式</td>
                             </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="cloneTr3">
+                                <!--<td class="text-center modal-companyName">1</td>-->
+                                <!--<td class="text-center modal-einlass">2018-08-07</td>-->
+                                <td class="text-center model-wastesName"></td>
+                                <td class="text-center model-wastesCode"></td>
+                                <td class="text-center modal-weight"></td>
+                                <!--<td class="text-center modal-materialForm"></td>-->
+                                <td class="text-center modal-packingType"></td>
+                                <td class="text-center modal-KCal"></td>
+                                <td class="text-center modal-PH"></td>
+                                <!--<td class="text-center modal-ashContent">20</td>-->
+                                <!--<td class="text-center modal-waterContent">10</td>-->
+                                <!--<td class="text-center modal-CLContent">20</td>-->
+                                <!--<td class="text-center modal-SContent">10</td>-->
+                                <!--<td class="text-center modal-PContent">10</td>-->
+                                <!--<td class="text-center modal-FContent">10</td>-->
+                                <!--<td class="text-center modal-processingMethod">焚烧</td>-->
+                            </tr>
                             <tr>
-                                <td class="text-center modal-companyName">1</td>
-                                <td class="text-center modal-einlass">2018-08-07</td>
-                                <td class="text-center model-wastesName">废液</td>
-                                <td class="text-center model-wastesCode">QW10001</td>
-                                <td class="text-center modal-weight">5</td>
-                                <td class="text-center modal-materialForm">液态</td>
-                                <td class="text-center modal-packingType">标准装</td>
-                                <td class="text-center modal-KCal">20</td>
-                                <td class="text-center modal-PH">10</td>
-                                <td class="text-center modal-ashContent">20</td>
-                                <td class="text-center modal-waterContent">10</td>
-                                <td class="text-center modal-CLContent">20</td>
-                                <td class="text-center modal-SContent">10</td>
-                                <td class="text-center modal-PContent">10</td>
-                                <td class="text-center modal-FContent">10</td>
-                                <td class="text-center modal-processingMethod">焚烧</td>
+                                <a class="btn btn-primary btn-xs" onclick="adjustAttr();"><span class="glyphicon glyphicon-log-out" ></span> 属性调整</a>
                             </tr>
                             </tbody>
                         </table>
@@ -335,28 +341,7 @@
                 </div>
             </div>
         </div>
-        <!--属性调整模态框-->
-        <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">属性调整</div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label for="modal-type" class="col-sm-4 control-label">进料方式</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="modal-type" name="modal-type" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="comfirm();">确认</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 <div id="embed"></div>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -179,19 +180,19 @@ public class WasteInventoryController {
     //获得配料单的下拉列表
     @RequestMapping("getBatchOrderList")
     @ResponseBody
-    public String getBatchOrderList(){
+    public String getBatchOrderList(@RequestBody Page page){
         JSONObject res=new JSONObject();
     try {
-        List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatching();
+        List<BatchingOrder> batchingOrderList=wasteInventoryService.getBatching(page);
         JSONArray array=JSONArray.fromObject(batchingOrderList);
         res.put("status", "success");
-        res.put("message", "查询成功");
+        res.put("message", "分页数据获取成功");
         res.put("batchingOrderList",array);
     }
    catch (Exception e){
        e.printStackTrace();
        res.put("status", "fail");
-       res.put("message", "查询失败");
+       res.put("message", "分页数据获取失败");
    }
 
         return res.toString();
@@ -284,13 +285,13 @@ public class WasteInventoryController {
           JSONArray jsonArray=JSONArray.fromObject(list2);
           res.put("jsonArray",materialRequisitionOrderList);
            res.put("status", "success");
-           res.put("message", "查询成功");
+           res.put("message", "分页数据获取成功");
 
        }
        catch (Exception e){
            e.printStackTrace();
            res.put("status", "fail");
-           res.put("message", "查询失败");
+           res.put("message", "分页数据获取失败");
        }
 
 
@@ -802,5 +803,86 @@ catch (Exception e){
 //    public int searchSewageTotal(@RequestBody WasteInventory wasteInventory) {
 //            return 0;
 //    }
+    /**
+     * 获取配料单总数
+     */
+    @RequestMapping("totalBatchingRecord")
+    @ResponseBody
+    public int totalBatchingRecord() {
+        try {
+            return wasteInventoryService.total();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
+    /**
+     * 配料单页面高价检索
+     */
+    @RequestMapping("searchBatchOrder")
+    @ResponseBody
+    public String searchBatchOrder(@RequestBody BatchingOrder batchingOrder){
+        JSONObject res=new JSONObject();
+      try{
+        List<BatchingOrder>  batchingOrderList= wasteInventoryService.searchBatchingOrder(batchingOrder);
+          res.put("status", "success");
+          res.put("message", "高级查询成功");
+          res.put("batchingOrderList", batchingOrderList);
+      }
+      catch (Exception e){
+          e.printStackTrace();
+          res.put("status", "fail");
+          res.put("message", "高级查询失败");
+      }
+        return  res.toString();
+    }
+    /**
+     * 获取配料单高级查询总数
+     */
+    @RequestMapping("searchBatchingTotal")
+    @ResponseBody
+    public int searchBatchingTotal(@RequestBody BatchingOrder batchingOrder){
+        try {
+            return wasteInventoryService.searchBatchingTotal(batchingOrder);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+    /**
+     * 获得领料单总数
+     *
+     */
+    @RequestMapping("totalMaterialRecord")
+    @ResponseBody
+    public int totalMaterialRecord(){
+        try {
+            return materialRequisitionOrderService.total();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     * 根据编号查询入库信息
+     */
+    @RequestMapping("getByInboundOrderItemId")
+    @ResponseBody
+    public String getByInboundOrderItemId(String inboundOrderItemId){
+        JSONObject res=new JSONObject();
+       try {
+           List<WasteInventory> wasteInventoryList=wasteInventoryService.getByInboundOrderItemId(inboundOrderItemId);
+           res.put("wasteInventoryList", wasteInventoryList);
+           res.put("status", "success");
+           res.put("message", "查询成功");
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "查询失败");
+       }
+        return  res.toString();
+    }
 }
