@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
+import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.PackageType;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.HandleCategory;
@@ -138,4 +139,28 @@ public class WastesInfoController {
 
         return res.toString();
     }
+    /**
+     * 仓库借口
+     */
+    @RequestMapping("getWareHouseList")
+    @ResponseBody
+    public String getWareHouseList(){
+        JSONObject res=new JSONObject();
+        try {
+       List<WareHouse> wareHouseList=wastesInfoService.getWareHouseList();
+       JSONArray array=JSONArray.fromObject(wareHouseList);
+            res.put("status", "success");
+            res.put("message", "仓库查询成功");
+            res.put("array", array);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "仓库查询失败");
+        }
+       return  res.toString();
+    }
+
+
+
 }

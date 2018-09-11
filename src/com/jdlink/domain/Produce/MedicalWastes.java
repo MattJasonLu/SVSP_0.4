@@ -67,8 +67,21 @@ public class MedicalWastes {
      */
     private float wetNumber;
 
+    /**
+     * 设备
+     * @return
+     */
+    private Equipment equipment;
     public String getDepartment() {
         return department;
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
     public void setDepartment(String department) {

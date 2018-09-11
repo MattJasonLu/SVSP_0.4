@@ -11,4 +11,5 @@ public interface MedicalWastesMapper {
     List<MedicalWastes> loadMedicalWastesList();
     List<MedicalWastes> searchMedicalWastes(MedicalWastes medicalWastes);
     List<MedicalWastes>  getMedicalWastesByRange(Date startDate, Date endDate);
+    List<MedicalWastes>  getMedicalWastesByDateAndEquipment(Date startDate, Date endDate,String equipment);
 }

@@ -737,3 +737,10 @@ function comfirm() {
         }
      });
 }
+//导出
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_outboundorder';
+    var sqlWords = "select * from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}

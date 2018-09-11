@@ -7,4 +7,8 @@
     <select id="list" resultType="com.jdlink.domain.WastesInfo">
             select t_wastescategory.name as categoryName, t_wasteslist.industry, t_wasteslist.code, t_wasteslist.description, t_wastescharacter.name as characterName from t_wasteslist join t_wastescategory, t_wastescharacter where t_wasteslist.category=t_wastescategory.code and t_wasteslist.wastesCharacter=t_wastescharacter.code;
     </select>
+    <!--查找所有的仓库-->
+    <select id="getWareHouseList" resultType="WareHouse">
+        select * from t_pl_warehouse;
+    </select>
 </mapper>

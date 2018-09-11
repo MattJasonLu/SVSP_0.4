@@ -12,6 +12,8 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/medicalWastes.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
 <body onload="getNewestId()">
 <!--导航条-->
@@ -147,6 +149,8 @@
                         <td class="text-center"><input class="focus" title="" id="errorNumber" readonly></td>
                         <td class="text-center" style="width: 150px;">水分含量</td>
                         <td class="text-center"><input class="focus" title="" id="wetNumber" readonly></td>
+                        <td class="text-center" style="width: 150px;">处置设备</td>
+                        <td> <select data-live-search="true" data-live-search-placeholder="搜索..." class="selectpicker input-xlarge form-control" id="equipment" name="equipment" placeholder=""></select></td>
                     </tr>
                     </tbody>
                 </table>

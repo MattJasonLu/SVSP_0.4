@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.WastesInfo;
 import com.jdlink.mapper.WastesInfoMapper;
 import com.jdlink.service.WastesInfoService;
@@ -16,5 +17,10 @@ public class WastesInfoServiceImpl implements WastesInfoService {
     @Override
     public List<WastesInfo> list() {
         return wastesInfoMapper.list();
+    }
+
+    @Override
+    public List<WareHouse> getWareHouseList() {
+        return wastesInfoMapper.getWareHouseList();
     }
 }
