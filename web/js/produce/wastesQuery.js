@@ -468,6 +468,9 @@ console.log(inboundOrderItemId);
         success: function (result) {
             if (result != undefined && result.status == "success"){
                 console.log(result);
+                //危废库存查看，点击查看按钮
+                setByInboundOrderItemId(result);
+                $("#appointModal2").modal('show');
             }
             else {
                 alert(result.message);
@@ -478,4 +481,55 @@ console.log(inboundOrderItemId);
         }
     });
 
+}
+//双击查看
+function viewWastesIn(item) {
+
+
+
+}
+//危废库存查看，点击查看按钮
+function setByInboundOrderItemId(result) {
+    var tr=$('#cloneTr3');
+    tr.siblings().remove();
+    $.each(result.wasteInventoryList,function (index,item) {
+        var clonedTr=tr.clone();
+        clonedTr.show();
+        clonedTr.children('td').each(function (inner_index) {
+            var obj = eval(item);
+            switch (inner_index) {
+                case (0):
+                    $(this).html(getDateStr(obj.inboundDate));
+                    break;
+                case (1):
+                    $(this).html(obj.produceCompany.companyName);
+                    break;
+                case (2):
+                    $(this).html(obj.laboratoryTest.wastesName);
+                    break;
+                case (3):
+                    $(this).html(obj.laboratoryTest.wastesCode);
+                    break;
+                case (4):
+                    $(this).html(obj.actualCount);
+                    break;
+                case (5):
+                    $(this).html(obj.wastesCategory);
+                    break;
+                case (6):
+                    $(this).html(obj.handleCategory.name);
+                    break;
+                case (7):
+                    $(this).html(obj.wastesCategory);
+                    break;
+                case (8):
+                    $(this).html(obj.handleCategory.name);
+                    break;
+            }
+        })
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+
+    })
+     tr.hide();
 }
