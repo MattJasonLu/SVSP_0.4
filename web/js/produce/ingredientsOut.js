@@ -1404,6 +1404,7 @@ function save() {
                     console.log(result.message);
                     if (confirm("出库单添加成功，是否返回主页面？"))
                         window.location.href = "ingredientsOut.html";
+                    else window.location.reload();
                 } else alert(result.message);
             },
             error: function (result) {

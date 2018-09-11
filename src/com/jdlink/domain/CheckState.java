@@ -24,9 +24,8 @@ public enum CheckState implements CodeBaseEnum{
     ToOutbound("待出库",16),
     ToPick("待领料",17),
     Picked("已领料",18),
-    OutBounded("已出库",19);
-
-
+    OutBounded("已出库",19),
+    Processed("已处理",20)
     ;
 
     private String name;
