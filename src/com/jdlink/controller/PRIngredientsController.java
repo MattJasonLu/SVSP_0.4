@@ -195,9 +195,40 @@ public class PRIngredientsController {
                 ingredients.setSpecification(data[i][13].toString());
                 ingredients.setUnit(data[i][14].toString());
                 ingredients.setRemarks(data[i][15].toString());
+                switch (data[i][16].toString()){
+                    case ("医疗蒸煮系统"):
+                        ingredients.setEquipment(Equipment.MedicalCookingSystem);
+                        break;
+                    case ("医疗蒸煮"):
+                        ingredients.setEquipment(Equipment.MedicalCookingSystem);
+                        break;
+                    case ("A2"):
+                        ingredients.setEquipment(Equipment.A2);
+                        break;
+                    case ("B2"):
+                        ingredients.setEquipment(Equipment.B2);
+                        break;
+                    case ("二期二燃室"):
+                        ingredients.setEquipment(Equipment.SecondaryTwoCombustionChamber);
+                        break;
+                    case ("二期"):
+                        ingredients.setEquipment(Equipment.SecondaryTwoCombustionChamber);
+                        break;
+                    case ("三期预处理系统"):
+                        ingredients.setEquipment(Equipment.ThirdPhasePretreatmentSystem);
+                        break;
+                    case ("三期"):
+                        ingredients.setEquipment(Equipment.ThirdPhasePretreatmentSystem);
+                        break;
+                    case ("备2"):
+                        ingredients.setEquipment(Equipment.Prepare2);
+                        break;
+                }
                 float total = Float.parseFloat(data[i][9].toString()) * Float.parseFloat(data[i][10].toString());
                 ingredients.setTotalPrice(total);
                 ingredients.setId(id);
+                if(ingredientsService.getAmountItems(ingredients) > 0)ingredients.setAid("exist");
+                else ingredients.setAid("notExist");
                 ingredientsList.add(ingredients);
                 map.get(id).setIngredientsList(ingredientsList);
                 totalPrice += total;
@@ -850,23 +881,49 @@ public class PRIngredientsController {
                 ingredients.setSpecification(data[i][12].toString());
                 ingredients.setUnit(data[i][13].toString());
                 ingredients.setRemarks(data[i][14].toString());
+                switch (data[i][15].toString()){
+                    case ("医疗蒸煮系统"):
+                        ingredients.setEquipment(Equipment.MedicalCookingSystem);
+                        break;
+                    case ("医疗蒸煮"):
+                        ingredients.setEquipment(Equipment.MedicalCookingSystem);
+                        break;
+                    case ("A2"):
+                        ingredients.setEquipment(Equipment.A2);
+                        break;
+                    case ("B2"):
+                        ingredients.setEquipment(Equipment.B2);
+                        break;
+                    case ("二期二燃室"):
+                        ingredients.setEquipment(Equipment.SecondaryTwoCombustionChamber);
+                        break;
+                    case ("二期"):
+                        ingredients.setEquipment(Equipment.SecondaryTwoCombustionChamber);
+                        break;
+                    case ("三期预处理系统"):
+                        ingredients.setEquipment(Equipment.ThirdPhasePretreatmentSystem);
+                        break;
+                    case ("三期"):
+                        ingredients.setEquipment(Equipment.ThirdPhasePretreatmentSystem);
+                        break;
+                    case ("备2"):
+                        ingredients.setEquipment(Equipment.Prepare2);
+                        break;
+                }
                 float total = Float.parseFloat(data[i][8].toString()) * Float.parseFloat(data[i][9].toString());
                 ingredients.setTotalPrice(total);
                 ingredients.setId(id);
-                float amount = 0;
-                float receiveAmount = 0;
-                //计算该物品在该仓库的总入库数和总出库数
-                //通过仓库名和物品名查询库存量
-                for(Ingredients ingredients1 : ingredientsService.getAmountAndReceive(ingredients)){
-                    amount += ingredients1.getAmount();
-                    receiveAmount += ingredients1.getReceiveAmount();
+                Ingredients ingredients1 = ingredientsService.getInventoryByNameAndWare(ingredients);
+                if(ingredients1 == null){
+                    res.put("status", "fail");
+                    res.put("message", ingredients.getWareHouseName()+"中"+"没有"+ingredients.getName()+",请重新确认!");
+                    return res.toString();
                 }
-                //总余量=总入库数 - 总出库数
-                float totalUseAmount = amount - receiveAmount;
-                if(ingredients.getReceiveAmount() == totalUseAmount){
+                float amount = ingredients1.getAmount(); // 获取库存量
+                if(ingredients.getReceiveAmount() == amount){
                     //设置可领料数为0，代表全部出库
                     ingredients.setNotReceiveAmount(0);
-                }else if(ingredients.getReceiveAmount() == totalUseAmount){
+                }else if(ingredients.getReceiveAmount() < amount){
                     //设置可领料数为1，代表部分出库
                     ingredients.setNotReceiveAmount(1);
                 }
@@ -881,17 +938,12 @@ public class PRIngredientsController {
                 IngredientsOut ingredientsOut = map.get(key);
                 //计算每单每个物品在各个仓库的领料数是否小于库存量
                 for(Ingredients ingredients : ingredientsOut.getIngredientsList()){
-                    float amount = 0;
                     float receiveAmount = 0;
                     //计算该物品在该仓库的总入库数和总出库数
                     //通过仓库名和物品名查询库存量
-                    for(Ingredients ingredients1 : ingredientsService.getAmountAndReceive(ingredients)){
-                        amount += ingredients1.getAmount();
-                        receiveAmount += ingredients1.getReceiveAmount();
-                    }
-                    //总余量=总入库数 - 总已领取数
-                    float totalUseAmount = amount - receiveAmount;
-                    if(ingredients.getReceiveAmount() > totalUseAmount){
+                    Ingredients ingredients1 = ingredientsService.getInventoryByNameAndWare(ingredients);
+                    float amount = ingredients1.getAmount(); // 获取库存量
+                    if(ingredients.getReceiveAmount() > amount){
                         res.put("status", "fail");
                         res.put("message", ingredients.getWareHouseName()+"中"+ingredients.getName()+"出库数大于库存量,请重新确认出库数量！");
                         return res.toString();

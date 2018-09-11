@@ -41,6 +41,7 @@ public interface IngredientsMapper {
     List<Ingredients> getInventoryList();
     List<Ingredients> searchInventory(Ingredients ingredients);
     void updateReceiveState(String id);
+    Ingredients getInventoryByNameAndWare(Ingredients ingredients);
 
     ///出库单///
     int countOutById(String id);

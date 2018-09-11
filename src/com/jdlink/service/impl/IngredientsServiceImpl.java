@@ -103,6 +103,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public void updateReceiveState(String id){ ingredientsMapper.updateReceiveState(id); }
 
+    @Override
+    public Ingredients getInventoryByNameAndWare(Ingredients ingredients){ return ingredientsMapper.getInventoryByNameAndWare(ingredients); }
+
     ///出库单///
     @Override
     public int countOutById(String id){ return ingredientsMapper.countOutById(id); }
