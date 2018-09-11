@@ -981,54 +981,62 @@ function save() {
         var $i = i + 1;
         ingredientsReceive.ingredientsList[i].remarks = $("#remarks" + $i).val();
     }
-    //将领料单数据插入到数据库
-    console.log("数据为：");
-    console.log(ingredientsReceive);
-    $.ajax({
-        type: "POST",
-        url: "addIngredientsReceive",
-        async: false,
-        data: JSON.stringify(ingredientsReceive),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result.status == "success") {
+    if (confirm("确认保存？")) {
+        //将领料单数据插入到数据库
+        $.ajax({
+            type: "POST",
+            url: "addIngredientsReceive",
+            async: false,
+            data: JSON.stringify(ingredientsReceive),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result.status == "success") {
+                    console.log(result.message);
+                    if (confirm("领料单添加成功，是否返回主页面？"))
+                        window.location.href = "ingredientsReceive.html";
+                } else alert(result.message);
+            },
+            error: function (result) {
                 console.log(result.message);
-                if (confirm("领料单添加成功，是否返回主页面？"))
-                    window.location.href = "ingredientsReceive.html";
-            } else alert(result.message);
-        },
-        error: function (result) {
-            console.log(result.message);
-            alert("领料单添加失败！");
-        }
-    });
+                alert("领料单添加失败！");
+            }
+        });
+    }
+}
+
+/**
+ * 重置功能
+ */
+function reset1() {
+    $("#senior1").find("input").val("");
+    // $("#senior1").find("select").get(0).selectedIndex = -1;
+    $("#searchContent1").val("");
 }
 
 /**
  * 查询功能
  */
 function search1() {
-    isSearch = true;
+    var ingredients;
     if ($("#senior1").is(':visible')) {
-        data1 = {
+        ingredients = {
             amount: $("#search1-amount").val(),
             name: $("#search1-name").val(),
             wareHouseName: $("#search1-wareHouseName").val()
         };
     } else {
-        data1 = {
+        ingredients = {
             keywords: $("#searchContent1").val()
         };
     }
-    console.log(keywords);
-    if (data1 == null) alert("请输入查询内容!");
+    if (ingredients == null) alert("请输入查询内容!");
     else {
         $.ajax({
             type: "POST",                            // 方法类型
             url: "searchIngredientsInventory",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
+            data: JSON.stringify(ingredients),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {

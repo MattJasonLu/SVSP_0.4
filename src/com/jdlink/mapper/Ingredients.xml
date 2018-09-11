@@ -323,7 +323,6 @@
                 amount = #{amount}
             </if>
         </where>
-
     </select>
 
     <update id="invalidReceive" parameterType="String">
