@@ -117,6 +117,10 @@ public class ProductionDailyController {
                         break;
                 }
             }
+            List<MedicalWastes> medicalWastesA2List = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "A2");
+            for (MedicalWastes medicalWastes : medicalWastesA2List) {
+                disposalMedicalWastes += medicalWastes.getWastesAmount();
+            }
 
             productionDaily.setTodayOutboundA2WastesBulk(disposalBulk);
             productionDaily.setTodayOutboundA2WastesCrushing(disposalCrushing);
@@ -125,6 +129,8 @@ public class ProductionDailyController {
             productionDaily.setTodayOutboundA2WastesSuspension(disposalSuspension);
             productionDaily.setTodayOutboundA2WastesWasteLiquid(disposalWasteLiquid);
             productionDaily.setTodayOutboundA2MedicalWastes(disposalMedicalWastes);
+
+
 
             // 备2
             disposalBulk = 0f;
@@ -158,6 +164,10 @@ public class ProductionDailyController {
                         disposalWasteLiquid += outboundOrder.getOutboundNumber();
                         break;
                 }
+            }
+            List<MedicalWastes> medicalWastesPrepare2List = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "Prepare2");
+            for (MedicalWastes medicalWastes : medicalWastesPrepare2List) {
+                disposalMedicalWastes += medicalWastes.getWastesAmount();
             }
 
             productionDaily.setTodayOutboundPrepare2WastesBulk(disposalBulk);
@@ -201,6 +211,10 @@ public class ProductionDailyController {
                         break;
                 }
             }
+            List<MedicalWastes> medicalWastesB2List = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "B2");
+            for (MedicalWastes medicalWastes : medicalWastesB2List) {
+                disposalMedicalWastes += medicalWastes.getWastesAmount();
+            }
 
             productionDaily.setTodayOutboundB2WastesBulk(disposalBulk);
             productionDaily.setTodayOutboundB2WastesCrushing(disposalCrushing);
@@ -243,6 +257,10 @@ public class ProductionDailyController {
                         break;
                 }
             }
+            List<MedicalWastes> medicalWastesThirdPhasePretreatmentSystemList = medicalWastesService.getMedicalWastesBySimpleDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
+            for (MedicalWastes medicalWastes : medicalWastesThirdPhasePretreatmentSystemList) {
+                disposalMedicalWastes += medicalWastes.getWastesAmount();
+            }
 
             productionDaily.setTodayOutboundThirdPretreatmentSystemWastesBulk(disposalBulk);
             productionDaily.setTodayOutboundThirdPretreatmentSystemWastesCrushing(disposalCrushing);
@@ -274,6 +292,7 @@ public class ProductionDailyController {
                     productionDaily.getTodayOutboundWastesSludge() + productionDaily.getTodayOutboundWastesDistillation() + productionDaily.getTodayOutboundWastesSuspension() +
                     productionDaily.getTodayOutboundWastesWasteLiquid());
 
+
             // 获取当天的危废入库信息
             List<InboundOrderItem> inboundOrderItemList = inboundService.getInboundOrderItemByRange(now, now);
 
@@ -292,3 +311,15 @@ public class ProductionDailyController {
     }
 
 }
+
+//
+//   █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
+// ▓██   ▒ ██  ▓██▒▒██▀ ▀█   ██▄█▒        ██╔══██╗██║   ██║██╔════╝
+// ▒████ ░▓██  ▒██░▒▓█    ▄ ▓███▄░        ██████╔╝██║   ██║██║  ███╗
+// ░▓█▒  ░▓▓█  ░██░▒▓▓▄ ▄██▒▓██ █▄        ██╔══██╗██║   ██║██║   ██║
+// ░▒█░   ▒▒█████▓ ▒ ▓███▀ ░▒██▒ █▄       ██████╔╝╚██████╔╝╚██████╔╝
+//  ▒ ░   ░▒▓▒ ▒ ▒ ░ ░▒ ▒  ░▒ ▒▒ ▓▒       ╚═════╝  ╚═════╝  ╚═════╝
+//  ░     ░░▒░ ░ ░   ░  ▒   ░ ░▒ ▒░
+//  ░ ░    ░░░ ░ ░ ░        ░ ░░ ░
+//           ░     ░ ░      ░  ░
+//                 ░
