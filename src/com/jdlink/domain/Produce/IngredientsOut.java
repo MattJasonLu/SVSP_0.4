@@ -69,16 +69,16 @@ public class IngredientsOut {
      */
     private String keywords;
     /**
-     * 处置设备
+     * 领料单Id数组
      */
-    private Equipment equipment;
+    private List<String> receiveIdList;
 
-    public Equipment getEquipment() {
-        return equipment;
+    public List<String> getReceiveIdList() {
+        return receiveIdList;
     }
 
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
+    public void setReceiveIdList(List<String> receiveIdList) {
+        this.receiveIdList = receiveIdList;
     }
 
     public String getId() {

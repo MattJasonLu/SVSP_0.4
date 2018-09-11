@@ -113,6 +113,24 @@
         </where>
     </select>
 
+    <select id="getIngredientsInItemByRange" resultMap="IngredientsInRM">
+        select * from t_pr_ingredients
+        <where>
+            inId in (SELECT id FROM t_pr_ingredients_in
+            <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>)
+            <if test="equipment ！= null and equipment != ''">
+                equipment = #{equipment};
+            </if>
+        </where>
+
+        SELECT * FROM t_pr_ingredients_in
+            <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+
+
+    </select>
+
     <select id="getAmountItems" parameterType="Ingredients" resultType="int">
         select count(*) from t_pr_ingredients_inventory
         where name = #{name} and wareHouseName = #{wareHouseName};
@@ -135,7 +153,7 @@
                 set
                 name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
-                unit=#{ingredients.unit},remarks=#{ingredients.remarks}
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks},equipment=#{ingredients.equipment}
                 where inId = #{ingredients.id} and serialNumberIn = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -159,11 +177,11 @@
         <if test="ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
-                (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,ingredientState,remarks)
+                (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,ingredientState,remarks,equipment)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
-                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks});
+                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks},#{ingredients.equipment});
 
                 <choose>
                     <when test="ingredients.aid != 'exist'">
@@ -220,7 +238,7 @@
     <select id="getReceiveById" parameterType="String" resultMap="IngredientsReceiveRM">
           select * from t_pr_ingredients_receive where id = #{id};
      </select>
-
+    
     <select id="searchReceive" parameterType="IngredientsReceive" resultMap="IngredientsReceiveRM">
         select * from t_pr_ingredients_receive
         <where>
@@ -414,6 +432,18 @@
         </if>
     </select>
 
+    <select id="getIngredientsOutItemByRange" resultMap="IngredientsOutRM">
+        SELECT * FROM t_pr_ingredients
+        <where>
+            outId in (SELECT id FROM t_pr_ingredients_out
+            <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>)
+            <if test="equipment ！= null and equipment != ''">
+                equipment = #{equipment};
+            </if>
+        </where>
+    </select>
+
     <select id="getOutById" parameterType="String" resultMap="IngredientsOutRM">
           select * from t_pr_ingredients_out where id = #{id};
      </select>
@@ -506,7 +536,8 @@
                 set
                 name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
-                unit=#{ingredients.unit},remarks=#{ingredients.remarks},ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded')
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks},ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded'),
+                equipment=#{ingredients.equipment}
                 where outId = #{ingredients.id} and serialNumberOut = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -523,11 +554,11 @@
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
                 (outId,serialNumberOut,name,unitPrice,totalPrice,
-                receiveAmount,wareHouseName,post,specification,unit,ingredientState,remarks)
+                receiveAmount,wareHouseName,post,specification,unit,ingredientState,remarks,equipment)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.wareHouseName},
-                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}>0,'PartOutBound','OutBounded'),#{ingredients.remarks});
+                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}>0,'PartOutBound','OutBounded'),#{ingredients.remarks},#{ingredients.equipment});
             </foreach>
         </if>
     </insert>
