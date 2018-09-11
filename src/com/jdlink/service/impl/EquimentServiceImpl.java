@@ -46,4 +46,9 @@ public class EquimentServiceImpl implements  EquipmentService {
         return equipmentMapper.getEquipmentNameList(equipment);
     }
 
+    @Override
+    public List<EquipmentDate> search(EquipmentDate equipmentDate) {
+        return equipmentMapper.search(equipmentDate);
+    }
+
 }

@@ -41,7 +41,12 @@ public interface EquipmentService {
     void addEquipmentItem(EquipmentItem equipmentItem);
 
     /**
-     * 插入设备明细
+     * 设置下拉框数据
      */
     List<Equipment> getEquipmentNameList(Equipment equipment);
+
+    /**
+     * 查询设备
+     */
+    List<EquipmentDate> search(EquipmentDate equipmentDate);
 }
