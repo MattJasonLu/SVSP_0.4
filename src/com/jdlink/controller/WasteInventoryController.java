@@ -826,9 +826,10 @@ catch (Exception e){
         JSONObject res=new JSONObject();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String nowdayTime = dateFormat.format(batchingOrder.getCreateDate());
-        java.sql.Date sqlDate=java.sql.Date.valueOf(nowdayTime);
-        batchingOrder.setCreateDate(sqlDate);
-        System.out.println(batchingOrder.getCreateDate()+"QQQ");
+        batchingOrder.setTime(nowdayTime);
+//        java.sql.Date sqlDate=java.sql.Date.valueOf(nowdayTime);
+//        batchingOrder.setCreateDate(sqlDate);
+//        System.out.println(batchingOrder.getCreateDate()+"QQQ");
         try{
         List<BatchingOrder>  batchingOrderList= wasteInventoryService.searchBatchingOrder(batchingOrder);
           res.put("status", "success");

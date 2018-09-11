@@ -40,6 +40,15 @@ import java.util.List;
     private String inboundOrderItemId;
    private PackageType packageType;
    private FormType formType;
+  private String time;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     /**
      * 页码

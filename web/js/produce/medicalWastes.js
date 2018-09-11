@@ -24,6 +24,41 @@ function getNewestId() {
             alert("服务器异常！");
         }
     });
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var equipment=$("#equipment");
+                equipment.children().remove();
+                $.each(result.equipmentList,function (index,item) {
+                    var option=$('<option/>')
+                    option.val(index);
+                    option.text(item.name);
+                    equipment.append(option);
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error:function (result) {
+            alert("服务器异常")
+        }
+
+    });
+
+
+
 }
 //保存医废出入库信息
 function saveMedicalWastes() {
@@ -43,6 +78,7 @@ function saveMedicalWastes() {
         thisMonthSendCooking:$('#thisMonthSendCooking').val(),
         errorNumber:$('#errorNumber').val(),
         wetNumber:$('#wetNumber').val(),
+        equipment:$('#equipment').selectpicker('val'),
     }
     $.ajax({
         type: "POST",                            // 方法类型
