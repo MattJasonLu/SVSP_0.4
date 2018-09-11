@@ -76,6 +76,20 @@ public class MedicalWastes {
         return department;
     }
 
+    /**
+     * 危废数量
+     * @return
+     */
+    private float wastesAmount;
+
+    public float getWastesAmount() {
+        return wastesAmount;
+    }
+
+    public void setWastesAmount(float wastesAmount) {
+        this.wastesAmount = wastesAmount;
+    }
+
     public Equipment getEquipment() {
         return equipment;
     }
