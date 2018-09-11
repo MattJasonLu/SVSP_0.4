@@ -108,7 +108,7 @@
                     <!--<a class="btn btn-primary btn-xs" href="newSecondaryOut.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                    <a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>
+                    <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                 </div>
                 <div class="input-group col-md-3"></div>
                 <!--查询框-->
@@ -332,34 +332,16 @@
                                 <!--<td class="text-center modal-FContent">10</td>-->
                                 <!--<td class="text-center modal-processingMethod">焚烧</td>-->
                             </tr>
+                            <tr>
+                                <a class="btn btn-primary btn-xs" onclick="adjustAttr();"><span class="glyphicon glyphicon-log-out" ></span> 属性调整</a>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <!--属性调整模态框-->
-        <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">属性调整</div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label for="modal-type" class="col-sm-4 control-label">进料方式</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="modal-type" name="modal-type" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="comfirm();">确认</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 <div id="embed"></div>

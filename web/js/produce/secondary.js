@@ -911,3 +911,66 @@ function setByInboundOrderItemId(result) {
     })
     tr.hide();
 }
+//属性调整
+function adjustAttr() {
+
+    //加载进料方式的下拉框
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandelCategoryList",                  // url
+        data:{'outboundOrderId':$("#outboundOrderId").val()},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                index1=result.handelCategory.index;
+                var type=$('#modal-type');
+                type.children().remove();
+                $.each(result.array1,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    type.append(option);
+                })
+                type.get(0).selectedIndex=index1-1;
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        },
+
+    });
+    $('#examineModal').modal('show');
+
+}
+//确认修改属性
+function comfirm() {
+    console.log($("#outboundOrderId").val());
+    console.log($('#modal-type').val());
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "upHandelCategoryById",                  // url
+        data:{'outboundOrderId':$("#outboundOrderId").val(),'index':$('#modal-type').val()},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
