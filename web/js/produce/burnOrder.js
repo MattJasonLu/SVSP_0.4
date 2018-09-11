@@ -1110,7 +1110,7 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/焚烧工单模板.xlsx';
+    var filePath = 'Files/Templates/burnOrderMode.xls';
     var r = confirm("是否下载模板?");
     if (r == true) {
         window.open('downloadFile?filePath=' + filePath);
