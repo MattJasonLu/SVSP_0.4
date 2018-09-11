@@ -11,6 +11,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 /**
  * 重置搜索数据
  */
@@ -21,6 +22,7 @@ function reset() {
         $("#senior").find("input").removeAttr("checked")
     }
 }
+
 /**
  * 计算总页数
  * */
@@ -274,7 +276,7 @@ function loadPageSampleInformationList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
-    if(totalPage() == 1){
+    if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
     }
@@ -338,26 +340,26 @@ function setSampleList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 //预约单号
-                case (1):
+                case (0):
                     $(this).html(obj.id);
                     break;
                 // 公司代码
-                case (2):
+                case (1):
                     $(this).html(obj.companyCode);
                     break;
                 //危废代码
-                case (3):
-                    $(this).html(obj.code);
+                case (2):
+                    $(this).html(obj.wastesCode);
                     break;
                 // 样品状态
-                case (4):
+                case (3):
                     if (obj.applyState != null) {
                         obj.name = obj.applyState.name;
                     }
                     $(this).html(obj.name);
                     break;
                 //基础检测项目
-                case (5): {
+                case (4): {
                     var list = [];
                     if (obj.isPH === true) list.push("PH");
                     if (obj.isAsh === true) list.push("灰");
@@ -383,7 +385,7 @@ function setSampleList(result) {
                     $(this).html(obj.basicItems);
                     break;
                 // 增加检测项目
-                case (6): {
+                case (5): {
                     var list1 = [];
                     if (obj.isFlashPoint === true) list1.push("闪点");
                     if (obj.isViscosity === true) list1.push("黏度");
@@ -402,11 +404,11 @@ function setSampleList(result) {
                     $(this).html(obj.addItems);
                     break;
                 // 签收人
-                case (7):
+                case (6):
                     $(this).html(obj.laboratorySigner);
                     break;
-                case (8):
-                   // console.log(getDateStr(obj.samplingDate));
+                case (7):
+                    // console.log(getDateStr(obj.samplingDate));
                     $(this).html(getDateStr(obj.samplingDate));
                     break;
             }
@@ -533,29 +535,46 @@ function addItems(data) {
 }
 
 /**
- * 根据操作菜单获取公司代码
+ * 单击获取Id
  * @param menu
  * @returns {string}
  */
 function getSampleIdByMenu(menu) {
-    return menu.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    return menu.parentElement.parentElement.firstElementChild.innerHTML;
 }
 
 /**
- * 通过勾选框获取到公司代码
- * @param checkbox 勾选框
- * @returns {string} 预约单编号
+ * 双击获取ID
+ * @param menu
+ * @returns {string}
  */
-function getSampleIdByCheckbox(checkbox) {
-    return checkbox.parentElement.parentElement.nextElementSibling.innerHTML;
+function getSampleIdByMenu1(menu) {
+    return menu.firstElementChild.innerHTML;
 }
 
 /**
- * 查看预约登记单
+ * 双击查看
+ * @param menu
+ */
+function viewSample1(menu){
+    sampleId = getSampleIdByMenu1(menu);
+    view(sampleId);
+}
+
+/**
+ * 单击查看
  */
 function viewSample(menu) {
+    sampleId = getSampleIdByMenu(menu);
+    view(sampleId);
+}
+
+/**
+ * 显示查看模态框
+ * @param sampleId
+ */
+function view(sampleId){
     $(".newLine").remove();
-    var sampleId = getSampleIdByMenu(menu);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getSampleInformation",                 // url
@@ -617,9 +636,6 @@ function addLine() {
  * 确认收样
  */
 function confirmCheck() {
-    var items = $("input[type='checkbox']:checked");
-    if (items.length == 1) {
-        var sampleId = getSampleIdByCheckbox(items[0]);
         $.ajax({
             type: "POST",                             // 方法类型
             url: "confirmSampleInformationCheck",                 // url
@@ -641,12 +657,6 @@ function confirmCheck() {
                 alert("服务器异常!");
             }
         });
-
-    } else if (items.length > 1) {
-        alert("请勿选中多个登记单！");
-    } else {
-        alert("未选中登记单！");
-    }
 }
 
 /**
@@ -670,15 +680,15 @@ function addNewLine() {
     clonedTr.insertAfter(tr);
 }
 
+
+var sampleId = "";
 /**
  * 显示确认收样框
  */
-function checkModal() {
+function checkModal(menu) {
     $(".newLine").remove();
-    var items = $("input[type='checkbox']:checked");
-    if (items.length == 1) {
-        var sampleId = getSampleIdByCheckbox(items[0]);
-        // 更新数据
+    sampleId = getSampleIdByMenu(menu);
+    // 更新数据
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getSampleInformation",              // url
@@ -713,11 +723,6 @@ function checkModal() {
         });
         // 显示框体
         $('#checkModal').modal('show');
-    } else if (items.length > 1) {
-        alert("请勿选择多个预约单");
-    } else {
-        alert("未选择任何预约单");
-    }
 }
 
 /**
@@ -1073,11 +1078,11 @@ function deleteSample(menu) {
     }
 }
 
-function allSelect() {
-    var isChecked = $('#allSel').prop('checked');
-    if (isChecked) $("input[name='select']").prop('checked', true);
-    else $("input[name='select']").prop('checked', false);
-}
+// function allSelect() {
+//     var isChecked = $('#allSel').prop('checked');
+//     if (isChecked) $("input[name='select']").prop('checked', true);
+//     else $("input[name='select']").prop('checked', false);
+// }
 
 // 对Date原型进行改造，增加方法format
 Date.prototype.format = function (format) {
