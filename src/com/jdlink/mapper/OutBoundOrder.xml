@@ -257,4 +257,17 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <update id="upHandelCategoryById">
         update t_pl_outboundorder set handelCategory=#{1},nowTime=NOW() WHERE outboundOrderId=#{0};
     </update>
+    <!--根据时间范围查询出库单-->
+    <select id="getOutBoundByRange" resultMap="OutBoundOrderList" >
+            SELECT * FROM t_pl_outboundorder
+            <![CDATA[WHERE DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
+            AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]>;
+       </select>
+    <!--根据时间范围以及设备查询出库单-->
+    <select id="getOutBoundByDateAndEquipment" resultMap="OutBoundOrderList" >
+            SELECT * FROM t_pl_outboundorder
+            <![CDATA[WHERE DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
+            AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]> and equipment=#{3};
+       </select>
+
 </mapper>
