@@ -123,7 +123,6 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
-    console.log("当前页：" + pageNumber);
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -136,24 +135,28 @@ function switchPage(pageNumber) {
     }
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == 1) {
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        $("#next").removeClass("disabled");
-        $("#endPage").removeClass("disabled");
+        $("#previous").attr("disabled","true");
+        $("#firstPage").attr("disabled","true");
+        // $('#previous').removeAttr('href');//去掉a标签中的href属性
+        // $('#firstPage').removeAttr('onclick');//去掉a标签中的onclick事件
+        $("#next").removeAttr("disabled");
+        $("#endPage").removeAttr("disabled");
+        // $("#next").addAttr("href");
+
     }
     if (pageNumber == totalPage()) {
-        $("#next").addClass("disabled");
-        $("#endPage").addClass("disabled");
-        $("#previous").removeClass("disabled");
-        $("#firstPage").removeClass("disabled");
+        $("#next").attr("disabled","true");
+        $("#endPage").attr("disabled","true");
+        $("#previous").removeAttr("disabled");
+        $("#firstPage").removeAttr("disabled");
     }
     if (pageNumber > 1) {
-        $("#previous").removeClass("disabled");
-        $("#firstPage").removeClass("disabled");
+        $("#previous").removeAttr("disabled");
+        $("#firstPage").removeAttr("disabled");
     }
     if (pageNumber < totalPage()) {
-        $("#next").removeClass("disabled");
-        $("#endPage").removeClass("disabled");
+        $("#next").removeAttr("disabled");
+        $("#endPage").removeAttr("disabled");
     }
     var page = {};
     page.count = countValue();                        //可选
@@ -212,25 +215,25 @@ function inputSwitchPage() {
         window.alert("跳转页数不能为空！")
     } else {
         if (pageNumber == 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
+            $("#previous").attr("disabled","true");
+            $("#firstPage").attr("disabled","true");
+            $("#next").removeAttr("disabled");
+            $("#endPage").removeAttr("disabled");
         }
         if (pageNumber == totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
+            $("#next").attr("disabled","true");
+            $("#endPage").attr("disabled","true");
 
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
+            $("#previous").removeAttr("disabled");
+            $("#firstPage").removeAttr("disabled");
         }
         if (pageNumber > 1) {
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
+            $("#previous").removeAttr("disabled");
+            $("#firstPage").removeAttr("disabled");
         }
         if (pageNumber < totalPage()) {
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
+            $("#next").removeAttr("disabled");
+            $("#endPage").removeAttr("disabled");
         }
         currentPage = pageNumber;
         var page = {};
@@ -286,11 +289,11 @@ function inputSwitchPage() {
 function loadPageOutList() {
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
-    $("#previous").addClass("disabled");
-    $("#firstPage").addClass("disabled");
+    $("#previous").attr("disabled","true");
+    $("#firstPage").attr("disabled","true");
     if (totalPage() == 1) {
-        $("#next").addClass("disabled");
-        $("#endPage").addClass("disabled");
+        $("#next").attr("disabled","true");
+        $("#endPage").attr("disabled","true");
     }
     var page = {};
     page.count = countValue();                                 // 可选
