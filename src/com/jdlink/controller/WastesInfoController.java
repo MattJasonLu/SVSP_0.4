@@ -126,6 +126,8 @@ public class WastesInfoController {
         //故障设备名称
         try{
             JSONArray equipmentList = JSONArray.fromArray(Equipment.values());
+//            Equipment[] equipment = new Equipment[]{Equipment.MedicalCookingSystem,Equipment.A2,Equipment.B2,Equipment.SecondaryTwoCombustionChamber,Equipment.ThirdPhasePretreatmentSystem,Equipment.Prepare2};
+//            JSONArray equipmentList = JSONArray.fromArray(equipment);
             res.put("equipmentList",equipmentList);
             res.put("status", "success");
             res.put("message", "获取信息成功");
