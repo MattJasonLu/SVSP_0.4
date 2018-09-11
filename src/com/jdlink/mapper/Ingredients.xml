@@ -212,7 +212,7 @@
 
     <select id="listPageReceive" resultMap="IngredientsReceiveRM">
         select * from t_pr_ingredients_receive order by nowTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -237,6 +237,7 @@
                 or keeper like "%"#{keywords}"%"
                 or pickingSupervisor like "%"#{keywords}"%"
                 or pickingMan like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -254,7 +255,7 @@
             </if>
         </where>
         order by nowTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count};
         </if>
     </select>
@@ -275,6 +276,7 @@
                 or keeper like "%"#{keywords}"%"
                 or pickingSupervisor like "%"#{keywords}"%"
                 or pickingMan like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
             </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
@@ -347,7 +349,14 @@
         </if>
     </update>
 
-    <insert id="addAllReceive" parameterType="IngredientsReceive"><!--导入用-->
+    <update id="updateReceiveState" parameterType="String" >
+        update t_pr_ingredients_receive
+        set
+        state = 'OutBounded'
+        where id = #{id};
+    </update>
+
+    <insert id="addAllReceive" parameterType="IngredientsReceive">
         insert into t_pr_ingredients_receive
         (id, department,creationDate,fileId,totalAmount,vicePresident,warehouseSupervisor,keeper,
         pickingSupervisor,pickingMan,state,nowTime)
@@ -366,8 +375,7 @@
 
                 update t_pr_ingredients_inventory
                 set
-                amount =
-                amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
+                amount = amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
                 where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
             </foreach>
         </if>
@@ -515,10 +523,10 @@
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
                 (outId,serialNumberOut,name,unitPrice,totalPrice,
-                amount,wareHouseName,post,specification,unit,ingredientState,remarks)
+                receiveAmount,wareHouseName,post,specification,unit,ingredientState,remarks)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
-                #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
+                #{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.wareHouseName},
                 #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}>0,'PartOutBound','OutBounded'),#{ingredients.remarks});
             </foreach>
         </if>

@@ -36,6 +36,7 @@ public interface IngredientsService {
     List<Ingredients> getAmountAndReceive(Ingredients ingredients);
     List<Ingredients> getInventoryList();
     List<Ingredients> searchInventory(Ingredients ingredients);
+    void updateReceiveState(String id);
 
     ///出库单///
     int countOutById(String id);

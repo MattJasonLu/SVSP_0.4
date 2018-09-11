@@ -297,7 +297,7 @@ public class PRIngredientsController {
     public String getIngredientsInSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.Invalid};
+        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.Invalid,CheckState.OutBounded};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();
@@ -661,6 +661,26 @@ public class PRIngredientsController {
         return res.toString();
     }
 
+    /**
+     * 更新领料单状态为已出库
+     * @param id
+     * @return
+     */
+    @RequestMapping("updateIngredientsReceiveState")
+    @ResponseBody
+    public String updateIngredientsReceiveState(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            ingredientsService.updateReceiveState(id);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+        return res.toString();
+    }
 
     /////////////出库单//////////////////////
 
@@ -669,7 +689,7 @@ public class PRIngredientsController {
      *
      * @return
      */
-    @RequestMapping("getCurrentReceivegredientsOutId")
+    @RequestMapping("getCurrentIngredientsOutId")
     @ResponseBody
     public String getCurrentReceivegredientsOutId() {
         // 生成焚烧工单号 yyyyMM00000
@@ -957,4 +977,6 @@ public class PRIngredientsController {
         }
         return res.toString();
     }
+
+
 }
