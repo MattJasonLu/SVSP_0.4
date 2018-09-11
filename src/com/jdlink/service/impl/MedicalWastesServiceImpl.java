@@ -6,6 +6,7 @@ import com.jdlink.service.MedicalWastesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,5 +31,15 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     @Override
     public List<MedicalWastes> searchMedicalWastes(MedicalWastes medicalWastes) {
         return medicalWastesMapper.searchMedicalWastes(medicalWastes);
+    }
+
+    @Override
+    public MedicalWastes getMedicalWastesByDate(Date date) {
+        return medicalWastesMapper.getMedicalWastesByRange(date,date).get(0);
+    }
+
+    @Override
+    public List<MedicalWastes> getMedicalWastesByRange(Date startDate, Date endDate) {
+        return medicalWastesMapper.getMedicalWastesByRange(startDate,endDate);
     }
 }
