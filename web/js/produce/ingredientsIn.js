@@ -745,6 +745,10 @@ function setViewIngredientsClone(result) {
                     // 物品状态
                     $(this).html(obj.ingredientState.name);
                     break;
+                case(18):
+                    // 处置设备
+                    $(this).html(obj.equipment.name);
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -840,6 +844,39 @@ function loadProcurementList() {
         error: function (result) {
             console.log("error: " + result);
             console.log("失败");
+        }
+    });
+    setSelectedList();
+}
+
+/**
+ * 为处置设备设置下拉框数据
+ */
+function setSelectedList(){
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var state = $("select[name='equipment']");
+                state.children().remove();
+                $.each(data.equipmentList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    state.append(option);
+                });
+                state.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
         }
     });
 }
@@ -1098,7 +1135,7 @@ function confirmInsert() {
         var obj = eval(item);
         var clonedTr = tr.clone();
         //更新id
-        clonedTr.children().find("input,span").each(function () {
+        clonedTr.children().find("input,span,select").each(function () {
             var id = $(this).prop('id');
             var newId = id.replace(/[0-9]\d*/, num);
             $(this).prop('id', newId);
@@ -1156,7 +1193,6 @@ function totalCalculate() {
     }
 }
 
-
 /**
  * 保存
  */
@@ -1171,6 +1207,7 @@ function save() {
         ingredientsIn.ingredientsList[i].post = $("#post" + $i).val();
         ingredientsIn.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
         ingredientsIn.ingredientsList[i].totalPrice = ingredientsIn.ingredientsList[i].unitPrice * ingredientsIn.ingredientsList[i].amount;
+        ingredientsIn.ingredientsList[i].equipment = $("#equipment" + $i).val();
         // //单位换算成吨
         // if(ingredientsIn.ingredientsList[i].unit === "千克" || ingredientsIn.ingredientsList[i].unit === "kg" ||ingredientsIn.ingredientsList[i].unit === "KG")
         //     ingredientsIn.ingredientsList[i].amount = ingredientsIn.ingredientsList[i].amount / 1000;
@@ -1207,7 +1244,6 @@ function save() {
                 if (result.status == "success") {
                     if(result.data != 0)ingredientsIn.ingredientsList[j].aid = "exist";
                     else ingredientsIn.ingredientsList[j].aid = "notExist";
-                    console.log(ingredientsIn.ingredientsList[j].aid);
                 } else alert(result.message);
             },
             error: function (result) {
@@ -1216,6 +1252,7 @@ function save() {
             }
         });
     }
+    console.log(ingredientsIn);
     if(confirm("确认保存？")) {
         //将入库单数据插入到数据库
         $.ajax({

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 库存控制器
@@ -824,7 +824,12 @@ catch (Exception e){
     @ResponseBody
     public String searchBatchOrder(@RequestBody BatchingOrder batchingOrder){
         JSONObject res=new JSONObject();
-      try{
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String nowdayTime = dateFormat.format(batchingOrder.getCreateDate());
+        java.sql.Date sqlDate=java.sql.Date.valueOf(nowdayTime);
+        batchingOrder.setCreateDate(sqlDate);
+        System.out.println(batchingOrder.getCreateDate()+"QQQ");
+        try{
         List<BatchingOrder>  batchingOrderList= wasteInventoryService.searchBatchingOrder(batchingOrder);
           res.put("status", "success");
           res.put("message", "高级查询成功");

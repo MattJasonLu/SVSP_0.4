@@ -187,6 +187,7 @@
     </select>
     <!--配料单高级查询-->
     <resultMap id="BatchingOrder1" type="BatchingOrder">
+        <result property="createDate" column="createDate" javaType="java.util.Date" jdbcType="DATE"></result>
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
         <collection property="produceCompany" column="clientId=produceCompany" select="getClient"></collection>
     </resultMap>
@@ -207,8 +208,9 @@
                 and t_pl_batchingorder.processWay=#{processWay} and t_pl_batchingorder.produceCompany=client.clientId and t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
             </if>
           <if test="createDate != null and createDate != ''">
-              and (DATE_FORMAT(createDate,'%Y-%m-%d') like "%"#{createDate}"%"
-              or DATE_FORMAT(createDate,'%Y%m%d') like "%"#{createDate}"%")
+
+        and date (createDate)= date (#{createDate,jdbcType=})
+
           </if>
       </where>
             order by createDate desc

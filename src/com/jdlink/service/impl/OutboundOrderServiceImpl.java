@@ -7,6 +7,7 @@ import com.jdlink.service.OutboundOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -90,6 +91,27 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     public void updateSecondart(OutboundOrder outboundOrder) {
         outboundOrderMapper.updateSecondart(outboundOrder);
     }
+
+    @Override
+    public List<OutboundOrder> getOutBoundByRange(Date startDate, Date endDate) {
+        return outboundOrderMapper.getOutBoundByRange(startDate, endDate);
+    }
+
+    @Override
+    public List<OutboundOrder> getOutBoundByDate(Date date) {
+        return outboundOrderMapper.getOutBoundByRange(date,date);
+    }
+
+    @Override
+    public List<OutboundOrder> getOutBoundByDateRangeAndEquipment(Date startDate, Date endDate, String equipment) {
+        return outboundOrderMapper.getOutBoundByDateRangeAndEquipment(startDate,endDate,equipment);
+    }
+
+    @Override
+    public List<OutboundOrder> getOutBoundByDateAndEquipment(Date date, String equipment) {
+        return outboundOrderMapper.getOutBoundByDateRangeAndEquipment(date,date,equipment);
+    }
+
 
     @Override
     public int searchCount(OutboundOrder outboundOrder){ return outboundOrderMapper.searchCount(outboundOrder); }

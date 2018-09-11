@@ -1,11 +1,10 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Ingredients;
-import com.jdlink.domain.Produce.IngredientsIn;
-import com.jdlink.domain.Produce.IngredientsOut;
-import com.jdlink.domain.Produce.IngredientsReceive;
+import com.jdlink.domain.Produce.*;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IngredientsMapper {
@@ -19,7 +18,7 @@ public interface IngredientsMapper {
     List<IngredientsIn> searchIn(IngredientsIn ingredientsIn);
     void invalidIn(String id);
     void updateIn(IngredientsIn ingredientsIn);
-
+    List<IngredientsIn> getIngredientsInItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
     /**
      * 用于判断库存表中该物品在某仓库中是否存在库存
      * @param ingredients
@@ -53,4 +52,5 @@ public interface IngredientsMapper {
     List<IngredientsOut> searchOut(IngredientsOut ingredientsOut);
     void invalidOut(String id);
     void updateOut(IngredientsOut ingredientsOut);
+    List<IngredientsOut> getIngredientsOutItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("equipment")Equipment equipment);
 }
