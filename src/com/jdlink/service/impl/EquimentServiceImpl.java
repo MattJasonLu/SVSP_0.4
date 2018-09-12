@@ -53,7 +53,7 @@ public class EquimentServiceImpl implements  EquipmentService {
     }
 
     @Override
-    public List<EquipmentDate> getEquipmentDataByDate(Date dayTime, Date editTime) {
+    public List<EquipmentItem> getEquipmentDataByDate(Date dayTime, Date editTime) {
         return equipmentMapper.getEquipmentDataByDate(dayTime,editTime);
     }
 
