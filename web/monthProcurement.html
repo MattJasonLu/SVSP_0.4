@@ -104,14 +104,8 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" href="newMonthProcurement.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> 作废</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> 保存</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> 提交</a>
-                        <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> 审批</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
@@ -127,7 +121,7 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
                                 <label for="search-receiptNumber" class="col-sm-4 control-label">申请单编号</label>
                                 <div class="col-xs-7">
@@ -147,7 +141,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
                                 <label for="search-applyMouth" class="col-sm-4 control-label">申请月份</label>
                                 <div class="col-xs-7">
@@ -160,8 +154,14 @@
                                     <input type="text" class="form-control" id="search-purchasingDirector" name="search-purchasingDirector" placeholder="">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="search-applyDepartment" class="col-sm-4 control-label">申请部门</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-applyDepartment" name="search-applyDepartment" placeholder="">
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
                                 <label for="search-demandTime" class="col-sm-4 control-label">需求时间</label>
                                 <div class="col-xs-7">
@@ -174,18 +174,10 @@
                                     <input type="text" class="form-control" id="search-purchasingHead" name="search-purchasingHead" placeholder="">
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
                             <div class="form-group">
                                 <label for="search-generalManager" class="col-sm-4 control-label">总经理</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-generalManager" name="search-generalManager" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-applyDepartment" class="col-sm-4 control-label">申请部门</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-applyDepartment" name="search-applyDepartment" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -205,6 +197,7 @@
                     <th class="text-center">采购部门分管领导</th>
                     <th class="text-center">总经理</th>
                     <th class="text-center">物资类别</th>
+                    <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -219,6 +212,14 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>     <!--时间，精确到秒 下同-->
                     <td class="text-center"></td>
+                    <td class="text-center">
+                        <a class="btn btn-primary btn-xs" href="newMonthProcurement.html" title="新增"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </a>
+                        <a class="btn btn-primary btn-xs" href="#" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
+                        <a class="btn btn-primary btn-xs" href="#" title="作废"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
+                        <a class="btn btn-primary btn-xs" href="#" title="保存"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>
+                        <a class="btn btn-primary btn-xs" href="#" title="提交"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>
+                        <a class="btn btn-primary btn-xs" href="#" title="审批"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

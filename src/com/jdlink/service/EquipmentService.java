@@ -49,4 +49,9 @@ public interface EquipmentService {
      * 查询设备
      */
     List<EquipmentDate> search(EquipmentDate equipmentDate);
+
+    /**
+     * 根据日期查询设备
+     */
+    List<EquipmentItem> getEquipmentDataByDate(Date dayTime,Date editTime);
 }
