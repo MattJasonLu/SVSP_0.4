@@ -891,4 +891,24 @@ catch (Exception e){
        }
         return  res.toString();
     }
+    /**
+     * 作废出库单
+     */
+    @RequestMapping("cancelOutBoundOrder")
+    @ResponseBody
+    public  String cancelOutBoundOrder(String outboundOrderId){
+        JSONObject res=new JSONObject();
+        try {
+          outboundOrderService.cancelOutBoundOrder(outboundOrderId);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+
+        }
+        return  res.toString();
+    }
 }

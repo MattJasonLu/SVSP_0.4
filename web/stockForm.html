@@ -137,23 +137,25 @@
             <div class="row">
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
-                        <label for="proContactName" class="col-sm-4 control-label">产废单位联系人</label>
+                        <label for="proWasteCompany" class="col-sm-4 control-label">产废公司</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" id="proContactName" name="proContactName" placeholder="">
+                            <select type="text" class="selectpicker" id="proWasteCompany"  data-live-search="true" name="proWasteCompany" placeholder=""  data-live-search-placeholder="搜索..." onchange="getClentInfo(this);"></select>
                         </div>
                     </div>
                 </div>
                 <div class="form-horizontal col-md-4">
-                    <label for="proWasteCompany" class="col-sm-4 control-label">产废公司</label>
-                    <div class="col-xs-5">
-                        <input type="text" class="form-control" id="proWasteCompany" name="proWasteCompany" placeholder="">
+                    <div class="form-group">
+                        <label for="proContactName" class="col-sm-4 control-label">产废单位联系人</label>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control" id="proContactName" name="proContactName" placeholder="" readonly>
+                        </div>
                     </div>
                 </div>
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
                         <label for="proTelephone" class="col-sm-4 control-label">产废联系人电话</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" id="proTelephone" name="proTelephone" placeholder="">
+                            <input type="text" class="form-control" id="proTelephone" name="proTelephone" placeholder="" readonly>
                         </div>
                     </div>
                 </div>

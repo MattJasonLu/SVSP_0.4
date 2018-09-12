@@ -112,6 +112,11 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
         return outboundOrderMapper.getOutBoundByDateRangeAndEquipment(date,date,equipment);
     }
 
+    @Override
+    public void cancelOutBoundOrder(String outboundOrderId) {
+        outboundOrderMapper.cancelOutBoundOrder(outboundOrderId);
+    }
+
 
     @Override
     public int searchCount(OutboundOrder outboundOrder){ return outboundOrderMapper.searchCount(outboundOrder); }

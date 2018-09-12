@@ -343,12 +343,20 @@ function setStockList(result) {
                     break;
                 // 产废单位联系人
                 case (2):
-                    $(this).html(obj.proContactName);
+                    if(obj.client!=null){
+                        $(this).html(obj.client.contactName);
+                    }
                     break;
                 // 产废单位联系电话
                 case (3):
-                        $(this).html(obj.proTelephone);
-                    break;
+                    if(obj.client!=null){
+                      if(obj.client.phone!=""){
+                          $(this).html(obj.client.phone);
+                      }
+                      else {
+                          $(this).html(obj.client.mobile);
+                      }
+                    };
                 // 申报状态
                 case (4):
                     if (obj.checkState != null) {
@@ -520,10 +528,11 @@ function searchStock() {
 function init1() {
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        style: 'btn-info',
+        // style: 'btn-info',
         size: 4
-    });//下拉框样式
+    });
     $("#transport1").show();//三个文本框隐藏
+    //下拉框样式危废编码
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getWastesInfoList",              // url
@@ -552,6 +561,70 @@ function init1() {
         },
         error: function (result) {
             console.log(result);
+        }
+    });
+    //下拉框样式产废公司
+     $.ajax({
+         type: "POST",                       // 方法类型
+         url: "getClientListFromStock",              // url
+         cache: false,
+         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+         dataType: "json",
+         contentType: "application/json; charset=utf-8",
+          success:function (result) {
+              if (result != undefined && result.status == "success"){
+                  console.log(result);
+                  var client=$('#proWasteCompany');
+                  client.children().remove();
+                  $.each(result.data,function (index,item) {
+                      var option=$('<option/>');
+                      option.val(item.clientId);
+                      option.text(item.companyName);
+                      client.append(option);
+                  });
+                  $('.selectpicker').selectpicker('refresh');
+
+              }
+              else {
+                  alert(result.message);
+
+              }
+          },
+         error:function (result) {
+             alert("服务器异常！");
+         }
+     });
+     var clientId=$('#proWasteCompany').selectpicker('val');
+     //console.log(clientId);
+      //根据客户编号获得客户信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientByClientId",              // url
+        data:{'clientId':clientId},
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                //1赋值产废单位联系人 产废联系人电话
+                $('#proContactName').val(result.data.contactName);
+                if(result.data.phone!=''){
+                    $('#proTelephone').val(result.data.phone);
+                }
+                else {
+                    $('#proTelephone').val(result.data.mobile);
+                }
+            }
+        else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
         }
     });
 }
@@ -586,8 +659,7 @@ function delLine(e) {
 function save() {
     //收集数据
     var data={
-        'proContactName':$("#proContactName").val(),//产废单位联系人
-        'proTelephone':$("#proTelephone").val(),//产废联系人电话
+        'client':{'clientId':$('#proWasteCompany').selectpicker('val')},
         'transport':$("#transport").val(),//运输公司
         'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
         'plateNumber':$("#plateNumber").val(),//车牌号
@@ -717,7 +789,7 @@ function loadAdjustStock() {
     //获取申报编号
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
-        style: 'btn-info',
+        // style: 'btn-info',
         size: 4
     });//下拉框样式
    var stockId =localStorage['stockId'];
@@ -730,14 +802,12 @@ function loadAdjustStock() {
         data:{'stockId':stockId},
         success:function (result) {
       if(result!=undefined&&result.status=='success'){
-         // console.log(result);
+         console.log(result);
           var obj=eval(result.stock);
           var data=eval(result.data);
+          clientId=result.stock.client.clientId;
           //1开始赋值
           //产废单位联系人
-          $('#proContactName').prop('value',obj.proContactName);
-          //产废联系人电话
-          $('#proTelephone').prop('value',obj.proTelephone);
           //运输公司
           $('#transport').prop('value',obj.transport);
           //运输公司联系电话
@@ -746,8 +816,6 @@ function loadAdjustStock() {
           $('#plateNumber').prop('value',obj.plateNumber);
           //赋值是否自运单位
           $('#selfEmployed').prop('checked',obj.selfEmployed);
-          //产废公司
-          $('#proWasteCompany').prop("value",obj.proWasteCompany);
           if(obj.selfEmployed==true){
               $('#transport1').hide();//是自运公司 隐藏
           }
@@ -790,6 +858,50 @@ function loadAdjustStock() {
               $(".selectpicker[name='wastesList[" + $i + "].code']").selectpicker('val',obj.wastesList[i].code);//默认选中
               $('.selectpicker').selectpicker('refresh');
           }
+
+          var client=$('#proWasteCompany');
+          client.children().remove();
+          $.each(result.clientList,function (index,item) {
+              var option=$('<option/>');
+              option.val(item.clientId);
+              option.text(item.companyName);
+              client.append(option);
+          });
+          $('.selectpicker').selectpicker('refresh');
+          $('#proWasteCompany').selectpicker('val', result.stock.client.clientId);//默认选中
+          var clientId= $('#proWasteCompany').selectpicker('val');
+          console.log(clientId);
+          //根据客户编号获得客户信息
+          $.ajax({
+              type: "POST",                       // 方法类型
+              url: "getClientByClientId",              // url
+              data:{'clientId':clientId},
+              cache: false,
+              async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+              dataType: "json",
+              //contentType: "application/json; charset=utf-8",
+              success:function (result) {
+                  if (result != undefined && result.status == "success") {
+                      //1赋值产废单位联系人 产废联系人电话
+                      $('#proContactName').val(result.data.contactName);
+                      if(result.data.phone!=''){
+                          $('#proTelephone').val(result.data.phone);
+                      }
+                      else {
+                          $('#proTelephone').val(result.data.mobile);
+                      }
+                      console.log(result);
+                  }
+                  else {
+
+                      alert(result.message);
+
+                  }
+              },
+              error:function (result) {
+                  alert("服务器异常！");
+              }
+          });
       }
       else
       {
@@ -800,21 +912,52 @@ function loadAdjustStock() {
             alert("服务器异常！")
         }
     });
-
+    //下拉框样式产废公司
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getClientListFromStock",              // url
+    //     cache: false,
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     contentType: "application/json; charset=utf-8",
+    //     success:function (result) {
+    //         if (result != undefined && result.status == "success"){
+    //            // console.log(result);
+    //             var client=$('#proWasteCompany');
+    //             client.children().remove();
+    //             $.each(result.data,function (index,item) {
+    //                 var option=$('<option/>');
+    //                 option.val(item.clientId);
+    //                 option.text(item.companyName);
+    //                 client.append(option);
+    //             });
+    //             $('.selectpicker').selectpicker('refresh');
+    //
+    //         }
+    //         else {
+    //             alert(result.message);
+    //
+    //         }
+    //     },
+    //     error:function (result) {
+    //         alert("服务器异常！");
+    //     }
+    // });
 
 
 }
 //修改页面方法
 function adjustStock1() {
     var data={
-        'proContactName':$("#proContactName").val(),//产废单位联系人
-        'proTelephone':$("#proTelephone").val(),//产废联系人电话
+        'client':{'clientId':$('#proWasteCompany').selectpicker('val')},
+        // 'proContactName':$("#proContactName").val(),//产废单位联系人
+        // 'proTelephone':$("#proTelephone").val(),//产废联系人电话
         'transport':$("#transport").val(),//运输公司
         'transportTelephone':$("#transportTelephone").val(),//运输公司联系电话
         'plateNumber':$("#plateNumber").val(),//车牌号
         'stockId':$("#stockId").val(),//库存编号
-       'selfEmployed':$('#selfEmployed').prop('checked'),
-        'proWasteCompany':$('#proWasteCompany').val(),
+        'selfEmployed':$('#selfEmployed').prop('checked'),
+        // 'proWasteCompany':$('#proWasteCompany').val(),
     };
     data['wastesList']=[];
     var wastesListCount = $("input[name^='wastesList'][name$='name']").length;
@@ -823,7 +966,7 @@ function adjustStock1() {
         var wastes = {};
         wastes.name = $("input[name='wastesList[" + $i + "].name']").val();
         wastes.code=$("select[name='wastesList[" + $i + "].code']").selectpicker('val');
-        console.log(wastes.code);
+       // console.log(wastes.code);
         wastes.wasteAmount=$("input[name='wastesList[" + $i + "].wasteAmount']").val();
         wastes.component=$("input[name='wastesList[" + $i + "].component']").val();
         wastes.remarks=$("input[name='wastesList[" + $i + "].remarks']").val();
@@ -964,13 +1107,27 @@ function viewStock(item) {
                     $('#transportTelephone').text("");//运输公司联系方式
                 }
                 //赋值产废单位联系人
-                $('#proContactName').text(obj.proContactName);
-                //赋值产废单位电话
-                $('#proTelephone').text(obj.proTelephone);
+                if(obj.client!=null){
+                    $('#proContactName').text(obj.client.contactName);
+                }
+                if(obj.client!=null){
+                    if(obj.client.phone!=''){
+                        //赋值产废单位电话
+                        $('#proTelephone').text(obj.client.phone);
+                    }
+                    else {
+                        $('#proTelephone').text(obj.client.mobile);
+                    }
+
+                }
+
                 //赋值是否自运单位
                 $('#selfEmployed').prop('checked',obj.selfEmployed);
                 //产废公司
-                $('#proWasteCompany').text(obj.proWasteCompany);
+                if(obj.client!=null){
+                    $('#proWasteCompany').text(obj.client.companyName);
+                }
+
                 for(var i=0;i<obj.wastesList.length;i++){
                     if (i > 0) addWastesNewLine();
                     var $i = i;
@@ -1158,5 +1315,41 @@ function back1() {
 }
 function re1(){
     $('.newLine').remove();
+}
+//根据下拉框获取客户信息
+function getClentInfo(item) {
+   var clientId=$(item).selectpicker('val');
+   console.log(clientId);
+    //根据客户编号获得客户信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientByClientId",              // url
+        data:{'clientId':clientId},
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success") {
+             //1赋值产废单位联系人 产废联系人电话
+              $('#proContactName').val(result.data.contactName);
+               if(result.data.phone!=''){
+                   $('#proTelephone').val(result.data.phone);
+               }
+               else {
+                   $('#proTelephone').val(result.data.mobile);
+               }
+                console.log(result);
+            }
+            else {
+
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+    });
 }
 
