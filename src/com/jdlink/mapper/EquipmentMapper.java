@@ -4,6 +4,7 @@ import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,4 +49,9 @@ public interface EquipmentMapper {
      * 查询设备
      */
     List<EquipmentDate> search(EquipmentDate equipmentDate);
+
+    /**
+     * 根据日期查询设备
+     */
+    List<EquipmentDate> getEquipmentDataByDate(Date dayTime,Date editTime);
 }
