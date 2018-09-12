@@ -1996,7 +1996,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float todayDisposalThirdSecondaryAuxiliarySlagBag;
+    private float todayDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2209,7 +2209,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float monthDisposalThirdSecondaryAuxiliarySlagBag;
+    private float monthDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2422,7 +2422,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float yearDisposalThirdSecondaryAuxiliarySlagBag;
+    private float yearDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2635,7 +2635,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float todayAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    private float todayAverageDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2848,7 +2848,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float monthAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    private float monthAverageDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -7784,12 +7784,12 @@ public class ProductionDaily {
         this.todayDisposalThirdAuxiliaryStandardTray_1_2m = todayDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getTodayDisposalThirdSecondaryAuxiliarySlagBag() {
-        return todayDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getTodayDisposalThirdAuxiliarySlagBag() {
+        return todayDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setTodayDisposalThirdSecondaryAuxiliarySlagBag(float todayDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.todayDisposalThirdSecondaryAuxiliarySlagBag = todayDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setTodayDisposalThirdAuxiliarySlagBag(float todayDisposalThirdAuxiliarySlagBag) {
+        this.todayDisposalThirdAuxiliarySlagBag = todayDisposalThirdAuxiliarySlagBag;
     }
 
     public float getTodayDisposalThirdAuxiliaryFlyAshBag() {
@@ -8200,12 +8200,12 @@ public class ProductionDaily {
         this.monthDisposalThirdAuxiliaryStandardTray_1_2m = monthDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getMonthDisposalThirdSecondaryAuxiliarySlagBag() {
-        return monthDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getMonthDisposalThirdAuxiliarySlagBag() {
+        return monthDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setMonthDisposalThirdSecondaryAuxiliarySlagBag(float monthDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.monthDisposalThirdSecondaryAuxiliarySlagBag = monthDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setMonthDisposalThirdAuxiliarySlagBag(float monthDisposalThirdAuxiliarySlagBag) {
+        this.monthDisposalThirdAuxiliarySlagBag = monthDisposalThirdAuxiliarySlagBag;
     }
 
     public float getMonthDisposalThirdAuxiliaryFlyAshBag() {
@@ -8616,12 +8616,12 @@ public class ProductionDaily {
         this.yearDisposalThirdAuxiliaryStandardTray_1_2m = yearDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getYearDisposalThirdSecondaryAuxiliarySlagBag() {
-        return yearDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getYearDisposalThirdAuxiliarySlagBag() {
+        return yearDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setYearDisposalThirdSecondaryAuxiliarySlagBag(float yearDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.yearDisposalThirdSecondaryAuxiliarySlagBag = yearDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setYearDisposalThirdAuxiliarySlagBag(float yearDisposalThirdAuxiliarySlagBag) {
+        this.yearDisposalThirdAuxiliarySlagBag = yearDisposalThirdAuxiliarySlagBag;
     }
 
     public float getYearDisposalThirdAuxiliaryFlyAshBag() {
@@ -9032,12 +9032,12 @@ public class ProductionDaily {
         this.todayAverageDisposalThirdAuxiliaryStandardTray_1_2m = todayAverageDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getTodayAverageDisposalThirdSecondaryAuxiliarySlagBag() {
-        return todayAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getTodayAverageDisposalThirdAuxiliarySlagBag() {
+        return todayAverageDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setTodayAverageDisposalThirdSecondaryAuxiliarySlagBag(float todayAverageDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.todayAverageDisposalThirdSecondaryAuxiliarySlagBag = todayAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setTodayAverageDisposalThirdAuxiliarySlagBag(float todayAverageDisposalThirdAuxiliarySlagBag) {
+        this.todayAverageDisposalThirdAuxiliarySlagBag = todayAverageDisposalThirdAuxiliarySlagBag;
     }
 
     public float getTodayAverageDisposalThirdAuxiliaryFlyAshBag() {
@@ -9448,12 +9448,12 @@ public class ProductionDaily {
         this.monthAverageDisposalThirdAuxiliaryStandardTray_1_2m = monthAverageDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getMonthAverageDisposalThirdSecondaryAuxiliarySlagBag() {
-        return monthAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getMonthAverageDisposalThirdAuxiliarySlagBag() {
+        return monthAverageDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setMonthAverageDisposalThirdSecondaryAuxiliarySlagBag(float monthAverageDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.monthAverageDisposalThirdSecondaryAuxiliarySlagBag = monthAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setMonthAverageDisposalThirdAuxiliarySlagBag(float monthAverageDisposalThirdAuxiliarySlagBag) {
+        this.monthAverageDisposalThirdAuxiliarySlagBag = monthAverageDisposalThirdAuxiliarySlagBag;
     }
 
     public float getMonthAverageDisposalThirdAuxiliaryFlyAshBag() {
