@@ -122,6 +122,7 @@ public class EquipmentController {
     }
 
     /**
+     *
      * 生成单据号
      */
     @RequestMapping("createDocNumber")

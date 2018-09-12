@@ -17,7 +17,7 @@ public interface BurnOrderService {
     int searchCount(BurnOrder burnOrder);
     BurnOrder getById(String id);
     void updateTemporaryAddressById(Pretreatment pretreatment);
-    void insert(BurnOrder burnOrder);
+    void add(BurnOrder burnOrder);
     List<BurnOrder> listPage(Page page);
     List<BurnOrder> search(BurnOrder burnOrder);
     void invalid(String id);
