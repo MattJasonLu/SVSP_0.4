@@ -743,11 +743,13 @@ function setViewIngredientsClone(result) {
                     break;
                 case (17):
                     // 物品状态
-                    $(this).html(obj.ingredientState.name);
+                    if (obj.ingredientState != null)
+                        $(this).html(obj.ingredientState.name);
                     break;
                 case(18):
                     // 处置设备
-                    $(this).html(obj.equipment.name);
+                    if (obj.equipment != null)
+                        $(this).html(obj.equipment.name);
                     break;
             }
         });
@@ -852,7 +854,7 @@ function loadProcurementList() {
 /**
  * 为处置设备设置下拉框数据
  */
-function setSelectedList(){
+function setSelectedList() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getEquipmentNameList",                  // url
@@ -888,7 +890,7 @@ function setProcurementList(result) {
     $.each(result.data, function (index, item) {
         console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
-        if (item.state == null || item.state.name != "待领料" ) {
+        if (item.state == null || item.state.name != "待领料") {
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
@@ -1074,8 +1076,9 @@ var ingredientsIn = {};
 /**
  * 添加入库单
  */
-function confirmInsert() {
+function confirmInsert1() {
 // 定义预处理单，存储勾选出库单
+    console.log("click");
     $(".newLine").remove();
     ingredientsIn = {};
     procurementIdArray = [];
@@ -1083,7 +1086,7 @@ function confirmInsert() {
     ingredientsIn.id = getCurrentIngredientsInId();
     var i = 0;  //序号
     // 遍历采购单表格行，获取勾选的计划列表
-    $("#sampleInfoData").children().not("#cloneTr1").each(function () {
+    $("#ingredientsInData").children().not("#cloneTr1").each(function () {
         var isCheck = $(this).find("input[name='select']").prop('checked');
         if (isCheck) {
             var procurementId1 = $(this).find("td[name='receiptNumber']").text();
@@ -1166,7 +1169,7 @@ function totalCalculate() {
         var $i = i;
         var amount = $("#amount" + $i).text();
         var unitPrice = $("#unitPrice" + $i).val();
-        if (amount != null && unitPrice != null && amount != "" &&　unitPrice　!= ""){
+        if (amount != null && unitPrice != null && amount != "" && unitPrice != "") {
             var totalPrice = parseFloat(amount) * parseFloat(unitPrice);
             $("#hundredThousand" + $i).text(Math.floor(totalPrice / 100000));
             $("#tenThousand" + $i).text(Math.floor(totalPrice % 100000 / 10000));
@@ -1211,15 +1214,15 @@ function save() {
         // //单位换算成吨
         // if(ingredientsIn.ingredientsList[i].unit === "千克" || ingredientsIn.ingredientsList[i].unit === "kg" ||ingredientsIn.ingredientsList[i].unit === "KG")
         //     ingredientsIn.ingredientsList[i].amount = ingredientsIn.ingredientsList[i].amount / 1000;
-        if($("#wareHouseName" + $i).val() == null || $("#wareHouseName" + $i).val() == "")wareHouseState = true;
-        if($("#unitPrice" + $i).val() == null || $("#unitPrice" + $i).val() == "")unitPriceState = true;
+        if ($("#wareHouseName" + $i).val() == null || $("#wareHouseName" + $i).val() == "") wareHouseState = true;
+        if ($("#unitPrice" + $i).val() == null || $("#unitPrice" + $i).val() == "") unitPriceState = true;
         totalPrice += ingredientsIn.ingredientsList[i].totalPrice;
     }
-    if(unitPriceState){
+    if (unitPriceState) {
         alert("单价不能为空，请完善数据！");
         return;
     }
-    if(wareHouseState){
+    if (wareHouseState) {
         alert("仓库不能为空，请完善数据！");
         return;
     }
@@ -1242,7 +1245,7 @@ function save() {
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result.status == "success") {
-                    if(result.data != 0)ingredientsIn.ingredientsList[j].aid = "exist";
+                    if (result.data != 0) ingredientsIn.ingredientsList[j].aid = "exist";
                     else ingredientsIn.ingredientsList[j].aid = "notExist";
                 } else alert(result.message);
             },
@@ -1253,7 +1256,7 @@ function save() {
         });
     }
     console.log(ingredientsIn);
-    if(confirm("确认保存？")) {
+    if (confirm("确认保存？")) {
         //将入库单数据插入到数据库
         $.ajax({
             type: "POST",

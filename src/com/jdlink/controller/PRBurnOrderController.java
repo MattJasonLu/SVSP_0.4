@@ -198,7 +198,6 @@ public class PRBurnOrderController {
         float suspensionProportion = 0;
         int serialNumber = 0;
         List<PretreatmentItem> pretreatmentItemList = new ArrayList<>();
-        System.out.println("长度" + data.length);
         for (int i = 1; i < data.length; i++) {
             //map内不存在即添加公共数据，存在即添加List内数据
             if (!map.keySet().contains(data[i][0].toString())) {

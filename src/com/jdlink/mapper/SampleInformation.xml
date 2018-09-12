@@ -219,7 +219,10 @@
     </select>
 
     <update id="confirmCheck" parameterType="String">
-        UPDATE t_pr_sampleinformation SET applyState = 'SampleTaked',nowTime = NOW(),samplingDate = NOW() WHERE id = #{sampleId}
+        UPDATE t_pr_sampleinformation
+        SET
+        applyState = 'SampleTaked',nowTime = NOW(),samplingDate = NOW()
+        WHERE id = #{sampleId};
     </update>
 
     <update id="update" parameterType="SampleInformation">
