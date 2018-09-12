@@ -53,5 +53,5 @@ public interface EquipmentService {
     /**
      * 根据日期查询设备
      */
-    List<EquipmentDate> getEquipmentDataByDate(Date dayTime,Date editTime);
+    List<EquipmentItem> getEquipmentDataByDate(Date dayTime,Date editTime);
 }
