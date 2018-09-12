@@ -33,7 +33,7 @@ public class MedicalWastes {
      */
     private Date dateTime;
     /**
-     * 本月进厂危废
+     * 本日进厂危废
      */
     private float thisMonthWastes;
     /**
@@ -53,7 +53,7 @@ public class MedicalWastes {
      */
     private  float  afterCookingInbound;
     /**
-     * 本月蒸煮后外送量
+     * 本日蒸煮后外送量
      *
      */
     private float thisMonthSendCooking;

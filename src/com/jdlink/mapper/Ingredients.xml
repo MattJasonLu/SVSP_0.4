@@ -113,6 +113,24 @@
         </where>
     </select>
 
+    <select id="getIngredientsInItemByRange" resultMap="InIngredientsRM">
+        select * from t_pr_ingredients
+        <where>
+            inId in (SELECT id FROM t_pr_ingredients_in
+            <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>)
+            <if test="equipment ！= null and equipment != ''">
+                equipment = #{equipment};
+            </if>
+        </where>
+
+        SELECT * FROM t_pr_ingredients_in
+            <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
+
+
+    </select>
+
     <select id="getAmountItems" parameterType="Ingredients" resultType="int">
         select count(*) from t_pr_ingredients_inventory
         where name = #{name} and wareHouseName = #{wareHouseName};
@@ -129,20 +147,20 @@
         keeper=#{keeper},acceptor=#{acceptor},handlers=#{handlers},nowTime=NOW()
         where id = #{id};
 
-        <if test="ingredientsList.size() > 0">
+        <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 update t_pr_ingredients
                 set
                 name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
-                unit=#{ingredients.unit},remarks=#{ingredients.remarks}
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks},equipment=#{ingredients.equipment}
                 where inId = #{ingredients.id} and serialNumberIn = #{ingredients.serialNumber};
             </foreach>
         </if>
     </update>
 
     <insert id="addIn" parameterType="IngredientsIn">
-        <if test="procurementIdList.size() > 0">
+        <if test="procurementIdList != null and procurementIdList.size() > 0">
             <foreach collection="procurementIdList" item="procurementId" index="index">
                 update t_pl_procurement
                 set
@@ -156,15 +174,14 @@
         values
         (#{id},#{companyName},NOW(),#{fileId},#{totalPrice},#{bookkeeper},#{approver},#{keeper},
         #{acceptor},#{handlers},'NewBuild',NOW());
-        <if test="ingredientsList.size() > 0">
+        <if test="ingredientsList != null and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
-                (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,ingredientState,remarks)
+                (inId,serialNumberIn,name,unitPrice,totalPrice,amount,wareHouseName,post,specification,unit,ingredientState,remarks,equipment)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.amount},#{ingredients.wareHouseName},
-                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks});
-
+                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},'ToReceive',#{ingredients.remarks},#{ingredients.equipment});
                 <choose>
                     <when test="ingredients.aid != 'exist'">
                         insert into t_pr_ingredients_inventory
@@ -220,7 +237,7 @@
     <select id="getReceiveById" parameterType="String" resultMap="IngredientsReceiveRM">
           select * from t_pr_ingredients_receive where id = #{id};
      </select>
-
+    
     <select id="searchReceive" parameterType="IngredientsReceive" resultMap="IngredientsReceiveRM">
         select * from t_pr_ingredients_receive
         <where>
@@ -301,6 +318,10 @@
 
     <select id="getInventoryList" resultType="Ingredients">
         select * from t_pr_ingredients_inventory;
+    </select>
+
+    <select id="getInventoryByNameAndWare" resultType="Ingredients">
+        select * from t_pr_ingredients_inventory where name = #{name} and wareHouseName = #{wareHouseName};
     </select>
 
     <select id="searchInventory" resultType="Ingredients">
@@ -414,6 +435,18 @@
         </if>
     </select>
 
+    <select id="getIngredientsOutItemByRange" resultMap="OutIngredientsRM">
+        SELECT * FROM t_pr_ingredients
+        <where>
+            outId in (SELECT id FROM t_pr_ingredients_out
+            <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>)
+            <if test="equipment ！= null and equipment != ''">
+                equipment = #{equipment};
+            </if>
+        </where>
+    </select>
+
     <select id="getOutById" parameterType="String" resultMap="IngredientsOutRM">
           select * from t_pr_ingredients_out where id = #{id};
      </select>
@@ -500,13 +533,14 @@
         companyName=#{companyName},fileId=#{fileId},totalPrice=#{totalPrice},totalAmount=#{totalAmount},bookkeeper=#{bookkeeper},approver=#{approver},
         keeper=#{keeper},handlers=#{handlers},nowTime=NOW()
         where id = #{id};
-        <if test="ingredientsList.size() > 0">
+        <if test="ingredientsList != null and ingredientsList != '' and ingredientsList.size() > 0">
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 update t_pr_ingredients
                 set
                 name=#{ingredients.name},unitPrice=#{ingredients.unitPrice},totalPrice=#{ingredients.totalPrice},
                 amount=#{ingredients.amount},wareHouseName=#{ingredients.wareHouseName},post=#{ingredients.post},specification=#{ingredients.specification},
-                unit=#{ingredients.unit},remarks=#{ingredients.remarks},ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded')
+                unit=#{ingredients.unit},remarks=#{ingredients.remarks},ingredientState=IF(#{ingredients.notReceiveAmount}=1,'PartOutBound','OutBounded'),
+                equipment=#{ingredients.equipment}
                 where outId = #{ingredients.id} and serialNumberOut = #{ingredients.serialNumber};
             </foreach>
         </if>
@@ -523,11 +557,26 @@
             <foreach collection="ingredientsList" item="ingredients" index="index">
                 insert into t_pr_ingredients
                 (outId,serialNumberOut,name,unitPrice,totalPrice,
-                receiveAmount,wareHouseName,post,specification,unit,ingredientState,remarks)
+                receiveAmount,wareHouseName,post,specification,unit,ingredientState,remarks,equipment)
                 values
                 (#{ingredients.id},#{ingredients.serialNumber},#{ingredients.name},#{ingredients.unitPrice},
                 #{ingredients.totalPrice},#{ingredients.receiveAmount},#{ingredients.wareHouseName},
-                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}>0,'PartOutBound','OutBounded'),#{ingredients.remarks});
+                #{ingredients.post},#{ingredients.specification},#{ingredients.unit},IF(#{ingredients.notReceiveAmount}>0,'PartOutBound','OutBounded'),#{ingredients.remarks},#{ingredients.equipment});
+
+                <if test="receiveIdList == null or receiveIdList.size() == 0">
+                    update t_pr_ingredients_inventory
+                    set
+                    amount = amount-#{ingredients.receiveAmount},ingredientState=IF((amount-#{ingredients.receiveAmount})>0,'PartReceived','Received')
+                    where name=#{ingredients.name} and wareHouseName=#{ingredients.wareHouseName};
+                </if>
+            </foreach>
+        </if>
+        <if test="receiveIdList != null and receiveIdList.size() > 0 ">
+            <foreach collection="receiveIdList" item="receiveId" index="index">
+                update t_pr_ingredients_receive
+                set
+                state = 'OutBounded'
+                where id = #{receiveId};
             </foreach>
         </if>
     </insert>

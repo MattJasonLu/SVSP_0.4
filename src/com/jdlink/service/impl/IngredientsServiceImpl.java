@@ -2,15 +2,14 @@ package com.jdlink.service.impl;
 
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Ingredients;
-import com.jdlink.domain.Produce.IngredientsIn;
-import com.jdlink.domain.Produce.IngredientsOut;
-import com.jdlink.domain.Produce.IngredientsReceive;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.mapper.IngredientsMapper;
 import com.jdlink.service.IngredientsService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -51,6 +50,15 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     @Override
     public int getAmountItems(Ingredients ingredients){ return ingredientsMapper.getAmountItems(ingredients); }
+
+    /**
+     * 根据日期范围获取入库单
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @Override
+    public List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsInItemByRange(startDate,endDate,equipment); }
 
     ///领料单///
     @Override
@@ -95,6 +103,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public void updateReceiveState(String id){ ingredientsMapper.updateReceiveState(id); }
 
+    @Override
+    public Ingredients getInventoryByNameAndWare(Ingredients ingredients){ return ingredientsMapper.getInventoryByNameAndWare(ingredients); }
+
     ///出库单///
     @Override
     public int countOutById(String id){ return ingredientsMapper.countOutById(id); }
@@ -122,4 +133,14 @@ public class IngredientsServiceImpl implements IngredientsService {
 
     @Override
     public void updateOut(IngredientsOut ingredientsOut){ ingredientsMapper.updateOut(ingredientsOut); }
+
+    /**
+     * 根据日期范围获取出库单
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @Override
+    public List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsOutItemByRange(startDate,endDate,equipment); }
+
 }

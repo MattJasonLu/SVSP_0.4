@@ -1,11 +1,10 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.Page;
-import com.jdlink.domain.Produce.Ingredients;
-import com.jdlink.domain.Produce.IngredientsIn;
-import com.jdlink.domain.Produce.IngredientsOut;
-import com.jdlink.domain.Produce.IngredientsReceive;
+import com.jdlink.domain.Produce.*;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IngredientsService {
@@ -21,6 +20,7 @@ public interface IngredientsService {
     void invalidIn(String id);
     void updateIn(IngredientsIn ingredientsIn);
     int getAmountItems(Ingredients ingredients);
+    List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment);
 
     /////领料单///////
     int countReceiveById(String id);
@@ -37,6 +37,7 @@ public interface IngredientsService {
     List<Ingredients> getInventoryList();
     List<Ingredients> searchInventory(Ingredients ingredients);
     void updateReceiveState(String id);
+    Ingredients getInventoryByNameAndWare(Ingredients ingredients);
 
     ///出库单///
     int countOutById(String id);
@@ -48,4 +49,5 @@ public interface IngredientsService {
     List<IngredientsOut> searchOut(IngredientsOut ingredientsOut);
     void invalidOut(String id);
     void updateOut(IngredientsOut ingredientsOut);
+    List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment);
 }

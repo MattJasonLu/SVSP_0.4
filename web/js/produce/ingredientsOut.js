@@ -679,7 +679,7 @@ function setViewClone(result) {
                     break;
                 case (4):
                     // 数量
-                    $(this).html(obj.amount);
+                    $(this).html(obj.receiveAmount);
                     break;
                 case (5):
                     // 单价
@@ -732,6 +732,10 @@ function setViewClone(result) {
                 case (17):
                     // 物品状态
                     $(this).html(obj.ingredientState.name);
+                    break;
+                case (18):
+                    // 处置设备
+                    $(this).html(obj.equipment.name);
                     break;
             }
         });
@@ -845,6 +849,39 @@ function loadIngredientsReceiveList() {
     });
     // 设置高级检索的下拉框数据
     setSeniorSelectedList1();
+    setSelectedList();
+}
+
+/**
+ * 为处置设备设置下拉框数据
+ */
+function setSelectedList(){
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var state = $("select[name='equipment']");
+                state.children().remove();
+                $.each(data.equipmentList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    state.append(option);
+                });
+                state.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 function setReceiveList(result) {
@@ -853,7 +890,7 @@ function setReceiveList(result) {
     tr.siblings().remove();
     var serialNumber = 0;    // 序号
     $.each(result, function (index, item) {
-        if (item.state.name != "已作废") {
+        if (item.state.name !== "已作废" && item.state.name !== "已出库") {
             serialNumber++;
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
@@ -1121,6 +1158,10 @@ function setReiceveViewClone(result) {
                     // 物品状态
                     $(this).html(obj.ingredientState.name);
                     break;
+                case (8):
+                    // 处置设备
+                    $(this).html(obj.equipment.name);
+                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -1226,8 +1267,6 @@ function confirmInsert() {
         }
     });
     //将数据遍历赋值到出库单中
-    console.log("数组数据为");
-    console.log(ingredientsList);
     var num = 0;
     var tr = $("#clone3");
     $.each(ingredientsList, function (index, item) {
@@ -1235,7 +1274,7 @@ function confirmInsert() {
         var obj = eval(item);
         var clonedTr = tr.clone();
         //更新id
-        clonedTr.children().find("input,span").each(function () {
+        clonedTr.children().find("input,span,select").each(function () {
             var id = $(this).prop('id');
             var newId = id.replace(/[0-9]\d*/, num);
             $(this).prop('id', newId);
@@ -1258,6 +1297,7 @@ function confirmInsert() {
         $("#out-receiveAmount" + $j).text(ingredientsList[j].receiveAmount);
     }
     ingredientsOut.ingredientsList = ingredientsList;
+    ingredientsOut.receiveIdList = ingredientsReceiveIdArray;
 }
 
 /**
@@ -1311,6 +1351,7 @@ function save() {
         ingredientsOut.ingredientsList[i].post = $("#post" + $i).val();
         ingredientsOut.ingredientsList[i].wareHouseName = $("#wareHouseName" + $i).val();
         ingredientsOut.ingredientsList[i].totalPrice = parseFloat(ingredientsOut.ingredientsList[i].unitPrice) * parseFloat(ingredientsOut.ingredientsList[i].receiveAmount);
+        ingredientsOut.ingredientsList[i].equipment = $("#equipment" + $i).val();
         if($("#out-unitPrice" + $i).val() == null || $("#out-unitPrice" + $i).val() === "")unitPriceState = true;
         totalPrice += ingredientsOut.ingredientsList[i].totalPrice;
         totalAmount += ingredientsOut.ingredientsList[i].receiveAmount;
@@ -1323,6 +1364,7 @@ function save() {
     ingredientsOut.approver = $("#approver").val();
     ingredientsOut.keeper = $("#keeper").val();
     ingredientsOut.handlers = $("#handlers").val();
+    console.log(ingredientsOut);
     if(unitPriceState){
         if(confirm("单价为空，确定出库？"))
         {//将入库单数据插入到数据库
@@ -1362,6 +1404,7 @@ function save() {
                     console.log(result.message);
                     if (confirm("出库单添加成功，是否返回主页面？"))
                         window.location.href = "ingredientsOut.html";
+                    else window.location.reload();
                 } else alert(result.message);
             },
             error: function (result) {
