@@ -518,7 +518,10 @@ function setOutBoundList(result) {
                         break;
                     // 业务员
                     case (3):
-                        $(this).html(obj.client.salesman.name);
+                        if(obj.client.salesman!=null){
+                            $(this).html(obj.client.salesman.name);
+                        }
+
                         break;
                     // 出库日期
                     case (4):
