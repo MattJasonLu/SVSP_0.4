@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
@@ -61,6 +62,20 @@ public class Stock {
      * 驳回意见
      */
     private  String backContent;
+
+    /**
+     * 产废公司
+     * @return
+     */
+    private Client client;
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
     public String getOpinion() {
         return opinion;

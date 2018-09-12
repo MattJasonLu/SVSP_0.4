@@ -212,7 +212,9 @@ function setMonthProcurementList(result) {
                             break;
                         //物资类别
                         case (9):
-                            $(this).html("");
+                            if(obj.state!=null){
+                                $(this).html(obj.state.name);
+                            }
                             break;
                     }
                 });
@@ -227,6 +229,115 @@ function setMonthProcurementList(result) {
     // 隐藏无数据的tr
     tr.hide();
     tr.removeAttr('class');
+}
+//审批
+function approval(item) {
+    if(confirm("确定审批?")) {
+        //点击确定后操作
+        var receiptNumber = $(item).parent().parent().children('td').eq(0).text();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProcurementListSubmit",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'receiptNumber': receiptNumber},
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常!");
+            }
+        });
+    }
+
+}
+//提交
+function submit(item) {
+    if(confirm("确定提交?")) {
+        //点击确定后操作
+        var receiptNumber = $(item).parent().parent().children('td').eq(0).text();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProcurementListSubmit",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'receiptNumber': receiptNumber},
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常!");
+            }
+        });
+    }
+    }
+//作废
+function cancel(item) {
+    if(confirm("确定作废?")){
+        //点击确定后操作
+        var receiptNumber=$(item).parent().parent().children('td').eq(0).text();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProcurementListCancel",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{'receiptNumber':receiptNumber},
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常!");
+            }
+        });
+
+
+    }
+
+
+}
+//查询
+function view1(item) {
+    var receiptNumber=$(item).parent().parent().children('td').eq(0).text();
+    //console.log(receiptNumber);
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'receiptNumber':receiptNumber},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                setMonthProcurementListModal(result.data[0].materialList);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!");
+        }
+    });
+    $('#appointModal2').modal('show');
 }
 //双击查询
 function view(item) {

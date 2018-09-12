@@ -104,6 +104,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
+                        <a class="btn btn-primary btn-xs" href="newMonthProcurement.html" ><span class="glyphicon glyphicon-plus" aria-hidden="true" >新增</span></a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
@@ -196,7 +197,7 @@
                     <th class="text-center">采购部门负责人</th>
                     <th class="text-center">采购部门分管领导</th>
                     <th class="text-center">总经理</th>
-                    <th class="text-center">物资类别</th>
+                    <th class="text-center">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -213,12 +214,11 @@
                     <td class="text-center"></td>     <!--时间，精确到秒 下同-->
                     <td class="text-center"></td>
                     <td class="text-center">
-                        <a class="btn btn-primary btn-xs" href="newMonthProcurement.html" title="新增"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </a>
-                        <a class="btn btn-primary btn-xs" href="#" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
-                        <a class="btn btn-primary btn-xs" href="#" title="作废"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
-                        <a class="btn btn-primary btn-xs" href="#" title="保存"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>
-                        <a class="btn btn-primary btn-xs" href="#" title="提交"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>
-                        <a class="btn btn-primary btn-xs" href="#" title="审批"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>
+                        <a class="btn btn-primary btn-xs" href="#" title="查看" onclick="view1(this)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
+                        <a class="btn btn-primary btn-xs" href="#" title="作废" onclick="cancel(this)"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
+                        <!--<a class="btn btn-primary btn-xs" href="#" title="保存"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>-->
+                        <a class="btn btn-primary btn-xs" href="#" title="提交" onclick="submit(this)"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>
+                        <!--<a class="btn btn-primary btn-xs" href="#" title="审批" onclick="approval(this)"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>-->
                     </td>
                 </tr>
                 </tbody>

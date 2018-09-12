@@ -13,4 +13,6 @@ public interface ProcurementMapper {
     List<Procurement> getProcurementListById(String receiptNumber);
     List<Procurement> searchProcurement(Procurement procurement);
     List<String> getIngredientsList();
+    void setProcurementListCancel(String receiptNumber);
+    void  setProcurementListSubmit(String receiptNumber);
 }
