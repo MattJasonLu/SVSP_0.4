@@ -256,6 +256,7 @@ function addEquipment() {
            success: function (result) {
                if (result != undefined && result.status == "success") {
                    console.log(result);
+                   window.location.href = "equipment.html";
                } else {
                    console.log(result.message);
                }
@@ -353,7 +354,6 @@ function setSeniorSelectList() {
                 // 高级检索下拉框数据填充
                 var state = $("#equipment");
                 state.children().remove();
-
                 $.each(data.equipmentList, function (index, item) {
                     var option = $('<option />');
                     option.val(index);
