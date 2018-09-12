@@ -42,8 +42,8 @@ public class BurnOrderServiceImpl implements BurnOrderService {
     }
 
     @Override
-    public void insert(BurnOrder burnOrder){
-        burnOrderMapper.insert(burnOrder);
+    public void add(BurnOrder burnOrder){
+        burnOrderMapper.add(burnOrder);
     }
 
     @Override

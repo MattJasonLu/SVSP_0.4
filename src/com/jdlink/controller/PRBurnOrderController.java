@@ -111,7 +111,7 @@ public class PRBurnOrderController {
     public String updateNewBurnOrder(@RequestBody BurnOrder burnOrder) {
         JSONObject res = new JSONObject();
         try {
-            burnOrderService.insert(burnOrder);
+            burnOrderService.add(burnOrder);
             res.put("status", "success");
             res.put("message", "新建焚烧单数据更新成功");
         } catch (Exception e) {
@@ -297,7 +297,7 @@ public class PRBurnOrderController {
             BurnOrder burnOrder = map.get(key);
             if (burnOrder1 == null) {
                 //插入新数据
-                burnOrderService.insert(burnOrder);
+                burnOrderService.add(burnOrder);
             } else {
                 //根据id更新数据
                 burnOrderService.update(burnOrder);
