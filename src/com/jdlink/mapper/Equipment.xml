@@ -51,4 +51,11 @@
             </if>
         </where>
     </select>
+    <!--根据时间范围查询出库单-->
+    <select id="getEquipmentDataByDate" resultType="EquipmentDate" >
+            SELECT * FROM t_rp_equipmentchild where documentNumber in
+            (select * from  t_rp_equipment
+            <![CDATA[WHERE DATE_FORMAT(dayTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
+            AND DATE_FORMAT(editTime '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]>)
+       </select>
 </mapper>
