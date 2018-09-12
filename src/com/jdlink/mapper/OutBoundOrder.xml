@@ -203,8 +203,8 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
 
     <!--添加危废出库单-->
     <insert id="addSecondary" parameterType="OutboundOrder">
-        insert into t_pl_outboundorder(outboundOrderId,outboundNumber,nowTime,checkState,boundType,outboundDate,inboundOrderItemId,creator,departmentName) values
-        (#{outboundOrderId},#{outboundNumber},NOW(),'OutBounded',#{boundType},#{outboundDate},#{inboundOrderItemId},#{creator},#{departmentName});
+        insert into t_pl_outboundorder(outboundOrderId,outboundNumber,nowTime,checkState,boundType,outboundDate,inboundOrderItemId,creator,departmentName,equipment) values
+        (#{outboundOrderId},#{outboundNumber},NOW(),'OutBounded',#{boundType},#{outboundDate},#{inboundOrderItemId},#{creator},#{departmentName},#{equipment});
     </insert>
     <update id="updateSecondart" parameterType="OutboundOrder">
         update t_pl_outboundorder set
@@ -247,7 +247,7 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     </update>
     <update id="upWastesInventoryNumber" parameterType="OutboundOrder">
         update t_pl_wasteinventory set actualCount=actualCount-#{outboundNumber}
-        where t_pl_wasteinventory.inboundOrderItemId=#{wasteInventory.inboundOrderItemId};
+        where t_pl_wasteinventory.inboundOrderItemId=#{inboundOrderItemId};
     </update>
     <!--根据出库单号获取进料方式-->
     <select id="getHandelCategoryById" resultType="HandleCategory" parameterType="String">

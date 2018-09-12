@@ -66,6 +66,10 @@ function totalPage() {
 }
 //加载次生危废列表
 function loadSecondaryList() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
     var page = {};
     $.ajax({
         type: "POST",                       // 方法类型
@@ -124,7 +128,34 @@ function loadSecondaryList() {
         }
 
     });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var equipment=$("#equipment");
+                equipment.children().remove();
+                $.each(result.equipmentList,function (index,item) {
+                    var option=$('<option/>')
+                    option.val(index);
+                    option.text(item.name);
+                    equipment.append(option);
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error:function (result) {
+            alert("服务器异常")
+        }
 
+    });
 }
 
 /**设置库存列表数据
@@ -370,6 +401,7 @@ function save() {
                 boundType:$("#outboundType").val(),
                 creator:$('#creator').val(),
                 departmentName:$('#departmentName').val(),
+                equipment:$('#equipment').selectpicker('val'),
             };
             console.log(data);
             $.ajax({
@@ -467,7 +499,7 @@ function setOutBoundList(result) {
     //tr.siblings().remove();
     tr.attr('class','myclass');
     $.each(result, function (index, item) {
-        console.log(item);
+       // console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
         if(item.boundType.name=='次生出库'){
             var clonedTr = tr.clone();
@@ -490,7 +522,10 @@ function setOutBoundList(result) {
                         break;
                     // 业务员
                     case (3):
-                        $(this).html(obj.client.salesman.name);
+                        if(obj.client.salesman!=null){
+                            $(this).html(obj.client.salesman.name);
+                        }
+
                         break;
                     // 出库日期
                     case (4):
@@ -974,3 +1009,24 @@ function comfirm() {
         }
     });
 }
+//导出
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_outboundorder';
+    var sqlWords = "select * from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
+var text = "";
+//实时筛选，不用点击按钮
+setInterval(function(){
+    text = $('#input').val();//获取文本框输入
+    if($.trim(text) != ""){
+        var tr=$('.myclass');
+        tr.find('td').innerHTML
+       // $("#table tr:not('#theader')").hide().filter(":contains('"+text+"')").show();
+
+
+    }else{
+        $('#table tr').show();//当删除文本框的内容时，又重新显示表格所有内容
+    }
+},100);

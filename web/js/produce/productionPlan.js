@@ -11,6 +11,7 @@ $('#embed').load('embed/loginLogModal.html');
 function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
+    console.log(mySelect.options[index].text);
     return mySelect.options[index].text;
 }
 
@@ -147,7 +148,7 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setSampleList(result.data);
+                    setProductionPlanList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -524,7 +525,7 @@ function getProductionPlanId1(item) {
  * @param item
  */
 function view(item) {
-    if(btn == 'click')productionPlanId = getProductionPlanId(item);
+    if(btn === 'click')productionPlanId = getProductionPlanId(item);
     else productionPlanId = getProductionPlanId1(item);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -546,7 +547,7 @@ function view(item) {
                 $("#view-naclo").text(data.auxiliaryConsumption.naclo);
                 $("#view-activatedCarbon").text(data.auxiliaryConsumption.activatedCarbon);
                 $("#view-standardBox").text(data.auxiliaryConsumption.standardBox);
-                $("#view-activatedCarbonParticles").val(data.auxiliaryConsumption.activatedCarbonParticles);
+                $("#view-activatedCarbonParticles").text(data.auxiliaryConsumption.activatedCarbonParticles);
                 $("#view-woodenPallets").text(data.auxiliaryConsumption.woodenPallets);
                 $("#view-lye").text(data.auxiliaryConsumption.lye);
                 $("#view-standardTray_1m").text(data.auxiliaryConsumption.standardTray_1m);

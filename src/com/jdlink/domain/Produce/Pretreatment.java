@@ -99,6 +99,18 @@ public class Pretreatment {
      * 模糊搜索日期用
      */
     private String searchDate;
+    /**
+     * 出库单Id列表
+     */
+    private List<String> outBoundOrderIdList;
+
+    public List<String> getOutBoundOrderIdList() {
+        return outBoundOrderIdList;
+    }
+
+    public void setOutBoundOrderIdList(List<String> outBoundOrderIdList) {
+        this.outBoundOrderIdList = outBoundOrderIdList;
+    }
 
     public String getId() {
         return id;

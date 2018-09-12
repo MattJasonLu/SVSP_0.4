@@ -93,6 +93,20 @@ public class WasteInventory {
      */
     private Page page;
 
+    /**
+     * 可用状态
+     * @return
+     */
+    private RecordState recordState;
+
+    public RecordState getRecordState() {
+        return recordState;
+    }
+
+    public void setRecordState(RecordState recordState) {
+        this.recordState = recordState;
+    }
+
     public Page getPage() {
         return page;
     }

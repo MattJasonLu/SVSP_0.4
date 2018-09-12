@@ -406,7 +406,7 @@ function confirmInsert() {
             }
         }
     });
-    // 遍历js对象数组列表，循环增加入库单条目列表
+    // 遍历js对象数组列表，循环增加条目列表
     for (var i = 0; i < burnOrderList.length; i++) {
         i1++;
         var tr = $("#burnOrderClonedTr");
@@ -468,6 +468,7 @@ function confirmInsert() {
         clonedTr.removeAttr("id");
         clonedTr.addClass("newLine");
         clonedTr.insertBefore(tr);
+        tr.hide();
     }
 }
 
@@ -493,6 +494,8 @@ function save(){
                 if(result.status == "success"){
                     //将数据转移至焚烧工单数据库
                     var data = eval(result.data);
+                    console.log("预处理单数据:");
+                    console.log(data);
                     burnOrder.remarks = data.remarks;
                     burnOrder.weightTotal = data.weightTotal;
                     burnOrder.calorificTotal = data.calorificTotal;
@@ -531,7 +534,7 @@ function save(){
                         wastes.weight = data.pretreatmentItemList[i].wastes.weight;
                         wastes.volatileNumber = data.pretreatmentItemList[i].wastes.volatileNumber;
                         wastes.handleCategory = data.pretreatmentItemList[i].wastes.handleCategory.index;
-                        wastes.processWay = data.pretreatmentItemList[i].wastes.processWay.index;
+                        wastes.processWay = data.pretreatmentItemList[i].wastes.processWay.index - 1; // ?
                         wastes.name = data.pretreatmentItemList[i].wastes.name;
                         pretreatmentItem.wastes = wastes;
                         pretreatmentItem.proportion = data.pretreatmentItemList[i].proportion ;
@@ -546,6 +549,7 @@ function save(){
             }
         });
         //将焚烧工单数据插入到数据库
+        console.log("焚烧工单数据：");
         console.log(burnOrder);
         $.ajax({
             type: "POST",

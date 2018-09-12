@@ -58,7 +58,7 @@ public class IngredientsServiceImpl implements IngredientsService {
      * @return
      */
     @Override
-    public List<IngredientsIn> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsInItemByRange(startDate,endDate,equipment); }
+    public List<Ingredients> getIngredientsInItemByRange(Date startDate,Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsInItemByRange(startDate,endDate,equipment); }
 
     ///领料单///
     @Override
@@ -103,6 +103,9 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Override
     public void updateReceiveState(String id){ ingredientsMapper.updateReceiveState(id); }
 
+    @Override
+    public Ingredients getInventoryByNameAndWare(Ingredients ingredients){ return ingredientsMapper.getInventoryByNameAndWare(ingredients); }
+
     ///出库单///
     @Override
     public int countOutById(String id){ return ingredientsMapper.countOutById(id); }
@@ -138,6 +141,6 @@ public class IngredientsServiceImpl implements IngredientsService {
      * @return
      */
     @Override
-    public List<IngredientsOut> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsOutItemByRange(startDate,endDate,equipment); }
+    public List<Ingredients> getIngredientsOutItemByRange(Date startDate, Date endDate,Equipment equipment){ return ingredientsMapper.getIngredientsOutItemByRange(startDate,endDate,equipment); }
 
 }

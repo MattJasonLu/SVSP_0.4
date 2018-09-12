@@ -207,9 +207,9 @@
             <if test="processWay!=null and processWay!=''">
                 and t_pl_batchingorder.processWay=#{processWay} and t_pl_batchingorder.produceCompany=client.clientId and t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
             </if>
-          <if test="createDate != null and createDate != ''">
+          <if test="time != null and time != ''">
 
-        and date (createDate)= date (#{createDate,jdbcType=})
+           and  t_pl_batchingorder.createDate=#{time}
 
           </if>
       </where>
@@ -237,7 +237,7 @@
             </if>
             <if test="createDate != null and createDate != ''">
                 and (DATE_FORMAT(createDate,'%Y-%m-%d') like "%"#{createDate}"%"
-                or DATE_FORMAT(createDate,'%Y%m%d') like "%"#{createDate}"%")
+              or DATE_FORMAT(createDate,'%Y%m%d') like "%"#{createDate}"%")
             </if>
             order by createDate desc
         </where>

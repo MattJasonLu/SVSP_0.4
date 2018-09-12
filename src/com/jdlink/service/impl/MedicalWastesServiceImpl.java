@@ -42,4 +42,14 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     public List<MedicalWastes> getMedicalWastesByRange(Date startDate, Date endDate) {
         return medicalWastesMapper.getMedicalWastesByRange(startDate,endDate);
     }
+
+    @Override
+    public List<MedicalWastes> getMedicalWastesByDateAndEquipment(Date startDate, Date endDate, String equipment) {
+        return medicalWastesMapper.getMedicalWastesByDateAndEquipment(startDate, endDate, equipment);
+    }
+
+    @Override
+    public List<MedicalWastes> getMedicalWastesBySimpleDateAndEquipment(Date date, String equipment) {
+        return medicalWastesMapper.getMedicalWastesByDateAndEquipment(date,date,equipment);
+    }
 }

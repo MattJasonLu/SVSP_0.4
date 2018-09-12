@@ -679,7 +679,7 @@ function setViewClone(result) {
                     break;
                 case (4):
                     // 数量
-                    $(this).html(obj.amount);
+                    $(this).html(obj.receiveAmount);
                     break;
                 case (5):
                     // 单价
@@ -732,6 +732,10 @@ function setViewClone(result) {
                 case (17):
                     // 物品状态
                     $(this).html(obj.ingredientState.name);
+                    break;
+                case (18):
+                    // 处置设备
+                    $(this).html(obj.equipment.name);
                     break;
             }
         });
@@ -886,7 +890,7 @@ function setReceiveList(result) {
     tr.siblings().remove();
     var serialNumber = 0;    // 序号
     $.each(result, function (index, item) {
-        if (item.state.name != "已作废") {
+        if (item.state.name !== "已作废" && item.state.name !== "已出库") {
             serialNumber++;
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
@@ -1263,8 +1267,6 @@ function confirmInsert() {
         }
     });
     //将数据遍历赋值到出库单中
-    console.log("数组数据为");
-    console.log(ingredientsList);
     var num = 0;
     var tr = $("#clone3");
     $.each(ingredientsList, function (index, item) {
@@ -1295,6 +1297,7 @@ function confirmInsert() {
         $("#out-receiveAmount" + $j).text(ingredientsList[j].receiveAmount);
     }
     ingredientsOut.ingredientsList = ingredientsList;
+    ingredientsOut.receiveIdList = ingredientsReceiveIdArray;
 }
 
 /**
@@ -1401,6 +1404,7 @@ function save() {
                     console.log(result.message);
                     if (confirm("出库单添加成功，是否返回主页面？"))
                         window.location.href = "ingredientsOut.html";
+                    else window.location.reload();
                 } else alert(result.message);
             },
             error: function (result) {

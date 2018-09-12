@@ -147,8 +147,14 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
-    public List<InboundOrder> getInboundOrderByRange(Date startDate, Date endDate) {
-        return inboundMapper.getInboundOrderByRange(startDate, endDate);
+    public List<InboundOrderItem> getInboundOrderItemByRange(Date startDate, Date endDate) {
+        return inboundMapper.getInboundOrderItemByRange(startDate, endDate);
     }
+
+    @Override
+    public List<InboundOrderItem> getSecondInboundOrderItemByRange(Date startDate, Date endDate) {
+        return inboundMapper.getSecondInboundOrderItemByRange(startDate, endDate);
+    }
+
 
 }

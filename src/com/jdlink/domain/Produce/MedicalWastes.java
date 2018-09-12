@@ -33,7 +33,7 @@ public class MedicalWastes {
      */
     private Date dateTime;
     /**
-     * 本月进厂危废
+     * 本日进厂危废
      */
     private float thisMonthWastes;
     /**
@@ -53,7 +53,7 @@ public class MedicalWastes {
      */
     private  float  afterCookingInbound;
     /**
-     * 本月蒸煮后外送量
+     * 本日蒸煮后外送量
      *
      */
     private float thisMonthSendCooking;
@@ -67,8 +67,35 @@ public class MedicalWastes {
      */
     private float wetNumber;
 
+    /**
+     * 设备
+     * @return
+     */
+    private Equipment equipment;
     public String getDepartment() {
         return department;
+    }
+
+    /**
+     * 危废数量
+     * @return
+     */
+    private float wastesAmount;
+
+    public float getWastesAmount() {
+        return wastesAmount;
+    }
+
+    public void setWastesAmount(float wastesAmount) {
+        this.wastesAmount = wastesAmount;
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
     public void setDepartment(String department) {
