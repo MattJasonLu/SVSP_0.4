@@ -1013,20 +1013,26 @@ function comfirm() {
 function exportExcel() {
     console.log("export");
     var name = 't_pl_outboundorder';
-    var sqlWords = "select * from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
+    var sqlWords = "select * from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound';";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 var text = "";
 //实时筛选，不用点击按钮
-setInterval(function(){
-    text = $('#input').val();//获取文本框输入
-    if($.trim(text) != ""){
-        var tr=$('.myclass');
-        tr.find('td').innerHTML
-       // $("#table tr:not('#theader')").hide().filter(":contains('"+text+"')").show();
+function search1(){
+        text = $('#input').val();//获取文本框输入
+        var tr=$('#cloneTr');
+            // $("#table tr:not('#theader')").hide().filter(":contains('"+text+"')").show();
+       $('.myclass').each(function () {
+           if($(this).children('td').text().indexOf(text)==-1){
+               $(this).hide();
+           }
+       })
 
+}
 
-    }else{
-        $('#table tr').show();//当删除文本框的内容时，又重新显示表格所有内容
-    }
-},100);
+/**
+ *
+ * 导出
+ * @returns {string}
+ */
+
