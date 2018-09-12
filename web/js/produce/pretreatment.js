@@ -908,7 +908,6 @@ function setAdjustClone(result) {
                     break;
             }
         });
-        console.log("num:" + num);
         clonedTr.children().find("select").each(function () {
             var id = $(this).prop('id');
             var newId = id.replace(/[0-9]\d*/, num + 1);
@@ -1068,7 +1067,7 @@ function setOutBoundOrderList(result) {
     tr.siblings().remove();
     $.each(result, function (index, item) {
         //已作废的数据不显示
-        if(item.checkState.name === '已作废'){
+        if(item.checkState.name === '已作废' || item.checkState.name === "已处理"){
             return true;
         }
         // 克隆tr，每次遍历都可以产生新的tr
@@ -1174,7 +1173,7 @@ function getCurrentPretreatmentId() {
 var outBoundOrderIdArray = [];
 
 /**
- * 添加焚烧工单
+ * 添加预处理单
  */
 function confirmInsert() {
 // 定义预处理单，存储勾选出库单
@@ -1228,7 +1227,7 @@ function confirmInsert() {
                             wastes.ph = data.laboratoryTest.phAverage;
                             wastes.phosphorusPercentage = data.laboratoryTest.phosphorusContentAverage;
                             wastes.fluorinePercentage = data.laboratoryTest.fluorineContentAverage;
-                            wastes.remarks = data.laboratoryTest.remarks;
+                            wastes.remarks = data.remarks;
                             wastes.handleCategory = data.handelCategory.index;
                             wastes.processWay = data.processWay.index - 1;
                             nameList.push(data.handelCategory.name);
@@ -1252,6 +1251,7 @@ function confirmInsert() {
     //计算总重量
     num = 0;
     pretreatment.weightTotal = weightTotal;
+    pretreatment.outBoundOrderIdList = outBoundOrderIdArray;
     var volatileNumberTotal = 0;
     var calorificTotal = 0;
     var ashPercentageTotal = 0;
@@ -1436,6 +1436,8 @@ function save() {
         pretreatment.pretreatmentItemList[i].requirements = $("#pretreatment" + $i + "-requirements").val();
     }
     pretreatment.remarks = $("#remarks").val();
+    console.log("要添加的数据为:");
+    console.log(pretreatment);
     //将预处理单数据插入到数据库
     $.ajax({
         type: "POST",
@@ -1447,8 +1449,9 @@ function save() {
         success: function (result) {
             if (result.status == "success") {
                 console.log(result.message);
-                alert("预处理单添加成功！");
-                window.location.href = "pretreatmentList.html";
+                if(confirm("预处理单添加成功，是否返回主页？"))
+                   window.location.href = "pretreatmentList.html";
+                // else window.location.reload();
             } else alert(result.message);
         },
         error: function (result) {

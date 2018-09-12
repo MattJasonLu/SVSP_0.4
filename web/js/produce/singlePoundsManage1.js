@@ -689,7 +689,7 @@ function showPrintModal() {
         success: function (result) {
             if (result != undefined || result.status == "success") {
                 //window.location.reload();
-                console.log("打印时间已更新，请刷新后再打印！");
+                console.log("打印时间已更新");
             } else {
                 console.log(result.message);
             }
@@ -728,7 +728,7 @@ function showPrintModal() {
                 $("#modal2_driver").text(data1.driver);
                 $("#modal2_remarks").text(data1.remarks);
                 $("#modal2_printTime").text(getTimeStr(data1.printTime));
-                $("#modal2_wastesCode").text(getTimeStr(data1.wastesCode));
+                $("#modal2_wastesCode").text(data1.wastesCode);
             } else {
                 console.log(result.message);
             }

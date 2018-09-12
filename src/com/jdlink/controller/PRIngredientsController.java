@@ -938,8 +938,6 @@ public class PRIngredientsController {
                 IngredientsOut ingredientsOut = map.get(key);
                 //计算每单每个物品在各个仓库的领料数是否小于库存量
                 for(Ingredients ingredients : ingredientsOut.getIngredientsList()){
-                    float receiveAmount = 0;
-                    //计算该物品在该仓库的总入库数和总出库数
                     //通过仓库名和物品名查询库存量
                     Ingredients ingredients1 = ingredientsService.getInventoryByNameAndWare(ingredients);
                     float amount = ingredients1.getAmount(); // 获取库存量
@@ -947,7 +945,7 @@ public class PRIngredientsController {
                         res.put("status", "fail");
                         res.put("message", ingredients.getWareHouseName()+"中"+ingredients.getName()+"出库数大于库存量,请重新确认出库数量！");
                         return res.toString();
-                    }
+                }
                 }
                 IngredientsOut ingredientsOut1 = ingredientsService.getOutById(map.get(key).getId());
                 if (ingredientsOut1 == null) {

@@ -181,5 +181,13 @@
                 #{pretreatmentItem.wastes.processWay},#{pretreatmentItem.wastes.handleCategory},#{pretreatmentItem.wastes.name});
             </foreach>
         </if>
+        <if test="outBoundOrderIdList != null and outBoundOrderIdList.size() > 0">
+            <foreach collection="outBoundOrderIdList" item="outBoundOrderId" index="index">
+            update t_pl_outboundorder
+            set
+            checkState = "Processed"
+            where outboundOrderId = #{outBoundOrderId};
+            </foreach>
+        </if>
     </insert>
 </mapper>
