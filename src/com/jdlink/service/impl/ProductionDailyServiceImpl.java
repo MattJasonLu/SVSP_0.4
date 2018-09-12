@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.ProductionDaily;
 import com.jdlink.domain.Produce.Sewage;
 import com.jdlink.domain.Produce.SoftWater;
 import com.jdlink.mapper.ProductionDailyMapper;
@@ -45,5 +46,10 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
 
     @Override
     public void addSoftWater(SoftWater softWater){ productionDailyMapper.addSoftWater(softWater); }
+
+    @Override
+    public void addProductionDaily(ProductionDaily productionDaily) {
+        productionDailyMapper.addProductionDaily(productionDaily);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
+import com.jdlink.domain.Produce.ProductionDaily;
 import com.jdlink.domain.Produce.Sewage;
 import com.jdlink.domain.Produce.SoftWater;
 
@@ -19,4 +20,10 @@ public interface ProductionDailyMapper {
     List<SoftWater> searchSoftWater(SoftWater softWater);
     List<SoftWater> listPageSoftWater(Page page);
     void addSoftWater(SoftWater softWater);
+
+    /**
+     * 增加日报
+     * @param productionDaily 日报对象
+     */
+    void addProductionDaily(ProductionDaily productionDaily);
 }

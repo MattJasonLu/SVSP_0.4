@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Produce.*;
@@ -31,6 +32,8 @@ public class ProductionDailyController {
     IngredientsService ingredientsService;
     @Autowired
     EquipmentService equipmentService;
+    @Autowired
+    ProductionDailyService productionDailyService;
 
     /**
      * 生成当天日报
@@ -96,6 +99,7 @@ public class ProductionDailyController {
             float disposalMedicalWastes = 0f;
             List<OutboundOrder> outboundA2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "A2");
             for (OutboundOrder outboundOrder : outboundA2OrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -144,6 +148,7 @@ public class ProductionDailyController {
 
             List<OutboundOrder> outboundPrepare2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "Prepare2");
             for (OutboundOrder outboundOrder : outboundPrepare2OrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -190,6 +195,7 @@ public class ProductionDailyController {
 
             List<OutboundOrder> outboundB2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "B2");
             for (OutboundOrder outboundOrder : outboundB2OrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -236,6 +242,7 @@ public class ProductionDailyController {
 
             List<OutboundOrder> outboundThirdOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
             for (OutboundOrder outboundOrder : outboundThirdOrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -654,14 +661,71 @@ public class ProductionDailyController {
             productionDaily.setTodayEquipmentPrepare2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentPrepare2RunningTime(), productionDaily.getTodayEquipmentPrepare2StopTime())));
             productionDaily.setTodayEquipmentSecondaryRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentSecondaryRunningTime(), productionDaily.getTodayEquipmentSecondaryStopTime())));
             productionDaily.setTodayEquipmentThirdRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentThirdRunningTime(), productionDaily.getTodayEquipmentThirdStopTime())));
+
             // 获取当天的危废入库信息
             List<InboundOrderItem> inboundOrderItemList = inboundService.getInboundOrderItemByRange(now, now);
+            productionDaily.setInboundOrderItemList(inboundOrderItemList);
 
-            // 获取当天的次生入库信息
-            List<InboundOrderItem> secondInboundOrderItemList = inboundService.getSecondInboundOrderItemByRange(now, now);
+            List<OutboundOrder> outboundOrderA2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "A2");
+            productionDaily.setOutboundOrderA2List(outboundOrderA2List);
+            List<OutboundOrder> outboundOrderB2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "B2");
+            productionDaily.setOutboundOrderB2List(outboundOrderB2List);
+            List<OutboundOrder> outboundOrderPrepare2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "Prepare2");
+            productionDaily.setOutboundOrderPrepare2List(outboundOrderPrepare2List);
+            List<OutboundOrder> outboundOrderThirdList = outboundOrderService.getOutBoundByDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
+            productionDaily.setOutboundOrderThirdList(outboundOrderThirdList);
 
+
+            float secondSlag = 0f;
+            float secondAsh = 0f;
+            for (OutboundOrder outboundOrder : outboundThirdOrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
+                String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
+                switch (wastesName) {
+                    case "slag":
+                        secondSlag += outboundOrder.getOutboundNumber();
+                        break;
+                    case "ash":
+                        secondAsh += outboundOrder.getOutboundNumber();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            productionDaily.setTodayDisposalThirdSlag(secondSlag);
+            productionDaily.setTodayDisposalThirdAsh(secondAsh);
+
+            secondSlag = 0f;
+            secondAsh = 0f;
+            List<OutboundOrder> outboundOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "SecondaryTwoCombustionChamber");
+            for (OutboundOrder outboundOrder : outboundOrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
+                String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
+                switch (wastesName) {
+                    case "slag":
+                        secondSlag += outboundOrder.getOutboundNumber();
+                        break;
+                    case "ash":
+                        secondAsh += outboundOrder.getOutboundNumber();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            productionDaily.setTodayDisposalSecondarySlag(secondSlag);
+            productionDaily.setTodayDisposalSecondaryAsh(secondAsh);
+
+            productionDaily.setTodayInboundSecondWastesSlag(productionDaily.getTodayDisposalSecondarySlag() + productionDaily.getTodayDisposalThirdSlag());
+            productionDaily.setTodayInboundSecondWastesAsh(productionDaily.getTodayDisposalSecondaryAsh() + productionDaily.getTodayDisposalThirdAsh());
+
+
+            // 增加日报
+            productionDailyService.addProductionDaily(productionDaily);
+            // 回送数据
+            JSONObject data = JSONObject.fromBean(productionDaily);
             res.put("status", "success");
             res.put("message", "生成日报成功");
+            res.put("data", data);
         }
         catch (Exception e) {
             e.printStackTrace();

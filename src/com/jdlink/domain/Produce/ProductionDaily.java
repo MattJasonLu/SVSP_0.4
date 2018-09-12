@@ -1,7 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Inventory.InboundOrderItem;
-import com.jdlink.domain.Inventory.WasteInventory;
+import com.jdlink.domain.Inventory.OutboundOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -3906,7 +3906,13 @@ public class ProductionDaily {
     /**
      * 出库危废列表
      */
-    private List<WasteInventory> outboundOrderItemList;
+    private List<OutboundOrder> outboundOrderA2List;
+
+    private List<OutboundOrder> outboundOrderB2List;
+
+    private List<OutboundOrder> outboundOrderPrepare2List;
+
+    private List<OutboundOrder> outboundOrderThirdList;
     /**
      * 作者
      */
@@ -11488,12 +11494,36 @@ public class ProductionDaily {
         this.inboundOrderItemList = inboundOrderItemList;
     }
 
-    public List<WasteInventory> getOutboundOrderItemList() {
-        return outboundOrderItemList;
+    public List<OutboundOrder> getOutboundOrderA2List() {
+        return outboundOrderA2List;
     }
 
-    public void setOutboundOrderItemList(List<WasteInventory> outboundOrderItemList) {
-        this.outboundOrderItemList = outboundOrderItemList;
+    public void setOutboundOrderA2List(List<OutboundOrder> outboundOrderA2List) {
+        this.outboundOrderA2List = outboundOrderA2List;
+    }
+
+    public List<OutboundOrder> getOutboundOrderB2List() {
+        return outboundOrderB2List;
+    }
+
+    public void setOutboundOrderB2List(List<OutboundOrder> outboundOrderB2List) {
+        this.outboundOrderB2List = outboundOrderB2List;
+    }
+
+    public List<OutboundOrder> getOutboundOrderPrepare2List() {
+        return outboundOrderPrepare2List;
+    }
+
+    public void setOutboundOrderPrepare2List(List<OutboundOrder> outboundOrderPrepare2List) {
+        this.outboundOrderPrepare2List = outboundOrderPrepare2List;
+    }
+
+    public List<OutboundOrder> getOutboundOrderThirdList() {
+        return outboundOrderThirdList;
+    }
+
+    public void setOutboundOrderThirdList(List<OutboundOrder> outboundOrderThirdList) {
+        this.outboundOrderThirdList = outboundOrderThirdList;
     }
 
     public String getAuthor() {
