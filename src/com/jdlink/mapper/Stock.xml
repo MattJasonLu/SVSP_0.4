@@ -13,10 +13,14 @@
         <result property="checkState" column="checkState" javaType="CheckState"></result>
         <result property="proWasteCompany" column="proWasteCompany" javaType="String"></result>
         <collection property="wastesList" select="getWastes" column="stockId" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+        <collection property="client" column="clientId" select="getClient"></collection>
     </resultMap>
+    <select id="getClient" resultType="Client">
+        select * from client where clientId=#{clientId};
+    </select>
     <insert id="add" parameterType="Stock">
-insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany)
-values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),#{checkState},#{proWasteCompany});
+insert into t_pr_stock(stockId,proContactName,proTelephone,transport,transportTelephone,plateNumber,selfEmployed,nowTime,checkState,proWasteCompany,clientId)
+values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTelephone},#{plateNumber},#{selfEmployed},NOW(),#{checkState},#{proWasteCompany},#{client.clientId});
         <foreach collection="wastesList"  item="wastes" index="index">
        insert into t_wastes(id,name,code,wasteAmount,component,remarks,stockId) values (#{wastes.id},#{wastes.name},#{wastes.code},#{wastes.wasteAmount},#{wastes.component},#{wastes.remarks},#{stockId});
         </foreach>
@@ -47,7 +51,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         update t_pr_stock set proContactName=#{proContactName},proTelephone=#{proTelephone},
         transport=#{transport},transportTelephone=#{transportTelephone},
         plateNumber=#{plateNumber},selfEmployed=#{selfEmployed},
-        nowTime=NOW() ,proWasteCompany=#{proWasteCompany} where stockId=#{stockId};
+        nowTime=NOW() ,proWasteCompany=#{proWasteCompany},clientId=#{client.clientId} where stockId=#{stockId};
         <!--<if test="wastesList.size()> 0" >-->
         <!--<foreach collection="wastesList"  item="wastes" index="index">-->
             <!--update t_wastes set name=#{wastes.name},code=#{wastes.code},component=#{wastes.component}, wasteAmount=#{wastes.wasteAmount},remarks=#{wastes.remarks} where stockId=#{stockId};-->

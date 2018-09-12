@@ -269,5 +269,9 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
             <![CDATA[WHERE DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
             AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]> and equipment=#{3};
        </select>
+<!--作废出库单-->
+    <select id="cancelOutBoundOrder" parameterType="String">
+        update t_pl_outboundorder set checkState='Invalid',nowTime=NOW() where outboundOrderId=#{outboundOrderId};
 
+    </select>
 </mapper>

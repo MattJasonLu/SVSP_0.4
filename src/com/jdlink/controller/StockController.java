@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.Stock;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.StockService;
 import com.jdlink.service.WastesInfoService;
 import com.jdlink.util.RandomUtil;
@@ -22,7 +23,8 @@ public class StockController {
     StockService stockService;
     @Autowired
     WastesInfoService wastesInfoService;
-
+    @Autowired
+    ClientService clientService;
     //添加申报信息
     @RequestMapping("addStock")
     @ResponseBody
@@ -84,8 +86,10 @@ public class StockController {
             Stock stock=stockService.getById(stockId);
             JSONObject json=JSONObject.fromBean(stock);
             List<WastesInfo> wastesInfoList = wastesInfoService.list();
-          JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
-            res.put("data", data);
+           JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
+            List<Client> clientList = clientService.list();
+            res.put("clientList",clientList);
+             res.put("data", data);
             res.put("stock",json);
             res.put("status", "success");
             res.put("message", "查询成功");
@@ -277,5 +281,46 @@ public class StockController {
             e.printStackTrace();
             return null;
         }
+    }
+    /**
+     * 获得所有的客户信息
+     */
+    @RequestMapping("getClientListFromStock")
+    @ResponseBody
+    public String getClientListFromStock(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Client> clientList = clientService.list();
+            res.put("data", clientList);
+            res.put("status", "success");
+            res.put("message", "客户列表查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "客户列表查询失败");
+        }
+        return  res.toString();
+    }
+    /**
+     * 根据客户编号获得客户
+     */
+    @RequestMapping("getClientByClientId")
+    @ResponseBody
+    public  String getClientByClientId(String clientId){
+        JSONObject res=new JSONObject();
+        try{
+            Client client = clientService.getByClientId(clientId);//获得用户
+            res.put("status", "success");
+            res.put("message", "客户查询成功");
+            res.put("data", client);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "客户查询失败");
+
+        }
+        return  res.toString();
     }
 }
