@@ -11,7 +11,7 @@ public class EquipmentItem {
     /**
      * 故障设备
      */
-    private String equipment;
+    private Equipment equipment;
     /**
      * 运行时间(h)
      */
@@ -34,11 +34,11 @@ public class EquipmentItem {
         this.documentNumber = documentNumber;
     }
 
-    public String getEquipment() {
+    public Equipment getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(String equipment) {
+    public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
 

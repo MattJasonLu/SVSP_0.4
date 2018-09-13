@@ -16,6 +16,8 @@
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/produce/equipment.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
 <script>
     $('.form_datetime').datetimepicker({
@@ -148,7 +150,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">运行时间</label>
                                 <div class="input-group date form_datetime" name="search-faultEquipment">
-                                    <input class="form-control focus" type="text" value="" id="search-faultEquipment" name="search-faultEquipment" title="" readonly>
+                                    <input class="form-control focus" type="number" value="" id="search-faultEquipment" name="search-faultEquipment" title="" readonly>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                                 </div>
                             </div>
@@ -157,7 +159,7 @@
                             <div class="form-group">
                                 <label for="search-stopTime" class="col-sm-4 control-label">停运时间 </label>
                                 <div class="input-group date form_datetime">
-                                    <input type="text" class="input-sm form-control form_datetime2" id="search-stopTime" name="search-stopTime" readonly placeholder=""/>
+                                    <input type="number" class="input-sm form-control form_datetime2" id="search-stopTime" name="search-stopTime" readonly placeholder=""/>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
                             </div>
@@ -212,7 +214,7 @@
                             <option value="1"></option>
                         </select>
                     </td>
-                    <td class="text-center"><input type="text" class="focus" id="runningTime0" name="runningTime" title=""></td>
+                    <td class="text-center"><input type="text" class="focus" onkeyup="stopping()" id="runningTime0" name="runningTime" title=""></td>
                     <td class="text-center"><input type="text" class="focus" id="stopTime0" name="stopTime" title=""></td>
                     <td class="text-center" colspan="2"><input type="text" class="focus " name="stopReason" id="stopReason0" title=""></td>
                 </tr>
