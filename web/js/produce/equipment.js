@@ -240,7 +240,7 @@ function addEquipment() {
     console.log(data);
    $('.myclass').each(function () {
        var dataItem={
-           equipment: parseInt($(this).children('td').eq(1).children('select').val())+1,
+           equipment: $('#equipment').selectpicker('val'),
            runningTime:$(this).children('td').eq(2).children('input').val(),
            stopTime:$(this).children('td').eq(3).children('input').val(),
            stopResult: $(this).children('td').eq(4).children('input').val()
@@ -293,7 +293,14 @@ function createDocNumber() {
     });
     setSeniorSelectList();
 }
-
+function stopping() {
+    var key = parseFloat($("#runningTime0").val());
+    if(key <= 24){
+        $("#stopTime0").val(String(24-key));
+    }else{
+        alert("请输入小于24的小时数！")
+    }
+}
 var isSearch = false;
 //查询功能(精确查询)
 function searchData() {

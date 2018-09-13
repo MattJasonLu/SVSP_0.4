@@ -624,8 +624,8 @@ public class ProductionDailyController {
             float equipmentThirdRunningTime = 0f;
             List<EquipmentItem> equipmentDateList = equipmentService.getEquipmentDataByDate(now, now);
             for (EquipmentItem equipmentItem : equipmentDateList) {
-                String equipmentName = equipmentItem.getEquipment();
-                switch (equipmentName) {
+                Equipment equipmentName = equipmentItem.getEquipment();
+                switch (equipmentName.getName()) {
                     case "A2":
                         equipmentA2RunningTime += equipmentItem.getRunningTime();
                         break;
