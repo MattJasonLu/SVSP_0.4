@@ -33,6 +33,7 @@ function viewEquipment(item) {
         },
         success: function (result) {
             if (result != undefined ) {//&& result.status == "success"
+                console.log(result);
                 viewEquipment1(result.data);
             } else {
                 console.log(result.message);
@@ -58,7 +59,7 @@ function viewEquipment1(data) {
         var clonedTr = tr.clone();
         // 赋值
         clonedTr.find("td[name='documentNumber']").text(index+1);//index + 1
-        clonedTr.find("td[name='equipment']").text(obj.equipment);
+        clonedTr.find("td[name='equipment']").text(obj.equipment.name);
         clonedTr.find("td[name='runningTime']").text(obj.runningTime);
         clonedTr.find("td[name='stopTime']").text(obj.stopTime);
         clonedTr.find("td[name='stopResult']").text(obj.stopResult);
