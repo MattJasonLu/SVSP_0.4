@@ -37,6 +37,8 @@ public interface ClientService {
 
     List<Client> search(Client client);
 
+    List<String> listClientId();
+
     int searchCount(Client client);
 
     int total();

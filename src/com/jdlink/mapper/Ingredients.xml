@@ -256,7 +256,7 @@
                 or pickingMan like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
             </if>
-            <if test="id != '' and id != null">
+            <if test="id != null and id != '' ">
                 and id like "%"#{id}"%"
             </if>
             <if test="state != null and state !=''">

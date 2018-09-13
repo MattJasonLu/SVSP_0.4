@@ -468,10 +468,12 @@ $('.form_datetime').datetimepicker({
 });
 
 /**
- * 显示预约框
+ * 预约登记-显示预约框
  */
 function appointModal() {
     //$('.selectpicker').selectpicker('val', '');
+    $('.selectpicker').selectpicker('refresh');
+    setSelectList();
     $("#appointBtn").text("预约");
     $("#appointBtn").unbind();
     $("#appointBtn").click(function () {
@@ -660,26 +662,87 @@ function confirmCheck() {
 }
 
 /**
+ * 为公司代码和危废代码下拉框填充数据
+ */
+function setSelectList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientAndWastesCodeSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status === "success") {
+                var data = eval(result);
+                console.log("下拉数据为：");
+                console.log(data);
+                // 下拉框数据填充
+                var companyCode = $("#model-companyCode");
+                $.each(data.companyCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item);
+                    companyCode.append(option);
+                });
+                companyCode.selectpicker('val','');
+
+                var wastesCode = $("#wastesList0-wastesCode");
+                $.each(data.wastesCodeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item);
+                    wastesCode.append(option);
+                });
+                wastesCode.selectpicker('val','');
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+}
+var num = 0;
+/**
  * 预约登记-新增样品
  */
 function addNewLine() {
+    num++;
     // 获取id为plusBtn的tr元素
     var tr = $("#addBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    var id = clonedTr.children().find("input:first-child").prop('name').charAt(11);
+    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("input:checkbox").prop('checked', false);
-    clonedTr.children().find("input").each(function () {
+    clonedTr.children().find("select").selectpicker('val','');
+    clonedTr.children().find("input,select").each(function () {
         var name = $(this).prop('name');
-        var newName = name.replace(/[0-9]\d*/, parseInt(id) + 1);
+        var newName = name.replace(/[0-9]\d*/, num);
         $(this).prop('name', newName);
+        var id = $(this).prop('id');
+        var newId = id.replace(/[0-9]\d*/, num);
+        $(this).prop('id', newId);
     });
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+    // var $i = parseInt(num) + 1;
+    // var delBtn = "<div class='row'><a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;</div>";
+    // delBtn.insertBefore(clonedTr);
 }
-
+/**
+ * 删除行
+ */
+function delLine(item){
+    var form = item.parents();
+    form.next().remove();
+    form.remove();
+}
 
 var sampleId = "";
 /**
@@ -750,6 +813,7 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
+    setSelectList();
     $(".newLine").remove();
     var sampleId = getSampleIdByMenu(menu);
     // var appoint = $('#appoint');
@@ -771,12 +835,12 @@ function adjustSample(menu) {
             if (result != undefined) {
                 var data = eval(result.data);
                 if (result.status == "success") {
-                    $("#model-companyCode").val(data.companyCode);
+                    $("#model-companyCode").selectpicker('val',data.companyCode);
                     $("#model-signer").val(data.laboratorySigner);
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addNewLine();
                         var $i = i;
-                        $("input[name='wastesList[" + $i + "].wastesCode']").val(data.wastesList[i].code);
+                        $("#wastesList" + $i + "-wastesCode").selectpicker('val',data.wastesList[i].code);
                         $("input[name='wastesList[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
                         $("input[name='wastesList[" + $i + "].isAsh']").prop('checked', data.wastesList[i].isAsh);
                         $("input[name='wastesList[" + $i + "].isWater']").prop('checked', data.wastesList[i].isWater);
@@ -809,16 +873,17 @@ function adjustSample(menu) {
 //       appoint.appendChild(appointBtn);
 }
 
+
 /**
  * 通过公司代码对预约单进行修改
  */
 function updateAppointBySampleId(sampleId) {
     var sampleInformation = {};
     sampleInformation.id = sampleId;
-    sampleInformation.companyCode = $("#model-companyCode").val();
+    sampleInformation.companyCode = $("#model-companyCode").find("option:selected").text();
     sampleInformation.laboratorySigner = $("#model-signer").val();
     sampleInformation['wastesList'] = [];
-    var lineCount = $("input[name^='wastesList'][name$='wastesCode']").length;
+    var lineCount = $("select[name^='wastesList'][name$='wastesCode']").length;
     for (var i = 0; i < lineCount; i++) {
         var wastes = {};
         var $i = i;
@@ -831,14 +896,16 @@ function updateAppointBySampleId(sampleId) {
                 sampleId: sampleId
             },
             success: function (result) {
-                wastes.id = result.data.wastesList[i].id;
+                if(result.data.wastesList[i] != null)
+                   wastes.id = result.data.wastesList[i].id;
+                else wastes.id = null;
             },
             error: function (result) {
-                console.dir(result);
+                console.log(result);
                 alert("服务器异常!");
             }
         });
-        wastes.code = $("input[name='wastesList[" + $i + "].wastesCode']").val();
+        wastes.code = $("select[name='wastesList[" + $i + "].wastesCode']").find("option:selected").text();
         wastes.isPH = $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastesList[" + $i + "].isAsh']").prop('checked');
         wastes.isWater = $("input[name='wastesList[" + $i + "].isWater']").prop('checked');
@@ -851,6 +918,8 @@ function updateAppointBySampleId(sampleId) {
         wastes.isViscosity = $("input[name='wastesList[" + $i + "].isViscosity']").prop('checked');
         sampleInformation.wastesList.push(wastes);
     }
+    console.log("要更新的数据为:");
+    console.log(sampleInformation);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "updateSampleInformation",                 // url
@@ -864,7 +933,7 @@ function updateAppointBySampleId(sampleId) {
                 var data = eval(result);
                 if (data.status == "success") {
                     alert(data.message);
-                    window.location.reload();
+                   // window.location.reload();
                 } else {
                     alert(data.message);
                     console.log(data.exception);
@@ -930,7 +999,7 @@ function searchSampleInfo() {
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             console.log(result);
-            if (result.data != undefined || resulet.status == "success") {
+            if (result.data != undefined || result.status == "success") {
                 setPageClone(result.data);
             } else {
                 alert(result.message);
@@ -963,12 +1032,11 @@ function addAppoint() {
             alert("服务器异常!");
             console.log(result);
         }
-
     });
-    sampleInformation.companyCode = $("#model-companyCode").val();
+    sampleInformation.companyCode = $("#model-companyCode").find("option:selected").text();
     sampleInformation.laboratorySigner = $("#model-signer").val();
     sampleInformation['wastesList'] = [];
-    var lineCount = $("input[name^='wastesList'][name$='wastesCode']").length;
+    var lineCount = $("select[name^='wastesList'][name$='wastesCode']").length;
     var wastesId = null;
     //获取wastesId
     $.ajax({
@@ -998,7 +1066,7 @@ function addAppoint() {
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: {
-                number: id2,
+                number: id2
             },
             success: function (result) {
                 //alert("wastesId获取成功!");
@@ -1008,7 +1076,7 @@ function addAppoint() {
                 console.log("转换8位字符失败！");
             }
         });
-        wastes.code = $("input[name='wastesList[" + $i + "].wastesCode']").val();
+        wastes.code = $("select[name='wastesList[" + $i + "].wastesCode']").find("option:selected").text();
         wastes.isPH = $("input[name='wastesList[" + $i + "].isPH']").prop('checked');
         wastes.isAsh = $("input[name='wastesList[" + $i + "].isAsh']").prop('checked');
         wastes.isWater = $("input[name='wastesList[" + $i + "].isWater']").prop('checked');
@@ -1021,6 +1089,8 @@ function addAppoint() {
         wastes.isViscosity = $("input[name='wastesList[" + $i + "].isViscosity']").prop('checked');
         sampleInformation.wastesList.push(wastes);
     }
+    console.log("添加的数据为：");
+    console.log(sampleInformation);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "addSampleInfo",                 // url

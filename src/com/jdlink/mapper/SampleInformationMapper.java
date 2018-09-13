@@ -21,4 +21,6 @@ public interface SampleInformationMapper {
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);
     Wastes getByWastesId(String id);
+    List<String> listWastesCode();
+    List<String> listClientId();
 }

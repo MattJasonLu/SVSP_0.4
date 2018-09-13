@@ -57,4 +57,9 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     @Override
     public Wastes getByWastesId(String id){ return sampleInformationMapper.getByWastesId(id); }
 
+    @Override
+    public List<String> listWastesCode(){ return sampleInformationMapper.listWastesCode(); }
+
+    @Override
+    public List<String> listClientId(){ return sampleInformationMapper.listClientId(); }
 }
