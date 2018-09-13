@@ -22,9 +22,26 @@
     <select id="getLaboratoryTest" resultType="LaboratoryTest">
         select * from t_pr_laboratorytest where laboratorytestnumber=#{laboratoryTestId};
     </select>
-    <!--加载出库信息列表-->
+    <!--加载出库信息列表==>接口-->
     <select id="loadOutBoundList" resultMap="OutBoundRM">
-     select  * from  t_pl_outboundorder order  by nowTime desc;
+     select  * from  t_pl_outboundorder  order  by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+    <!--加载出库信息-->
+    <select id="loadWastesOutBoundList" resultMap="OutBoundRM">
+        select  * from  t_pl_outboundorder where  boundType='WasteOutbound' order  by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+    <!--加载次生出库信息-->
+    <select id="loadSecOutBoundList" resultMap="OutBoundRM">
+        select  * from  t_pl_outboundorder where  boundType='SecondaryOutbound' order  by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
     </select>
     <resultMap id="MaterialRequisitionOrderRM" type="MaterialRequisitionOrder">
         <collection property="wareHouse" column="warseHouseId" select="getWareHouse" ofType="WareHouse"></collection>
@@ -46,6 +63,14 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     </select>
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM t_pl_outboundorder;
+    </select>
+    <!--获取危废出库总数-->
+    <select id="totalWastesOutBoundRecord" resultType="int">
+        select Count(*) from t_pl_outboundorder where boundType='WasteOutbound';
+    </select>
+    <!--获取次生出库总数-->
+    <select id="totalSecOutBoundRecord" resultType="int">
+        select COUNT(*) from t_pl_outboundorder where boundType='SecondaryOutbound';
     </select>
     <select id="searchCount" parameterType="OutBoundOrder" resultType="int">
         SELECT COUNT(*) FROM t_pl_outboundorder
@@ -273,5 +298,9 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <select id="cancelOutBoundOrder" parameterType="String">
         update t_pl_outboundorder set checkState='Invalid',nowTime=NOW() where outboundOrderId=#{outboundOrderId};
 
+    </select>
+    <!--取次生库存总记录数-->
+    <select id="totalSecondaryInventory" resultType="int">
+        select count(*) from t_pl_wasteinventory where  boundType='SecondaryInbound';
     </select>
 </mapper>

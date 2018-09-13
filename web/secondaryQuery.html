@@ -12,8 +12,8 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
-    <script src="js/produce/secondary.js"></script>
+    <!--<script src="js/page.js"></script>-->
+    <script src="js/produce/secondaryInventory.js"></script>
 </head>
 <body onload="loadWasteInventoryList()" class="" >
 <!--导航条-->
@@ -110,15 +110,19 @@
                     <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                 </div>
-                <div class="input-group col-md-3">
-                    <input type="text" name="" id="input" value="" placeholder="请输入查询关键字" onkeyup="search1()"/>
-                </div>
+                <!--<div class="input-group col-md-3">-->
+                    <!--<input type="text" name="" id="input" value="" placeholder="请输入查询关键字" onkeyup="search1()"/>-->
+                <!--</div>-->
                 <!--查询框-->
-                <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
-                        <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchWastesInventory();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                <div class="input-group col-xs-3 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="search" onkeyup="search1()">
+                    <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchSec();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-cog"
+                                    aria-hidden="true"></span> 高级查询</a>
+                         <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                                                                             aria-hidden="true"></span> 重置</a>
                         </span>
                 </div>
             </div>
@@ -131,7 +135,7 @@
                         <div class="form-group">
                             <label for="search-inDate" class="col-sm-4 control-label">入库日期</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-inDate" name="search-inDate" placeholder="">
+                                <input type="date" class="form-control" id="search-inDate" name="search-inDate" placeholder="">
                             </div>
                         </div>
 
@@ -147,9 +151,10 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-storageType" class="col-sm-4 control-label">入库日期</label>
+                            <label for="search-type" class="col-sm-4 control-label">进料方式</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-storageType" name="search-storageType" placeholder="">
+                                <select class="form-control" name="search-wastesName" id="search-type">
+                                </select>
                             </div>
                         </div>
                         <!--<div class="form-group">-->
@@ -168,14 +173,7 @@
                         <!--</div>-->
                     </div>
                     <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-type" class="col-sm-4 control-label">进料方式</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" name="search-wastesName" id="search-type">
-                                    <option value="0"></option>
-                                </select>
-                            </div>
-                        </div>
+
                         <!--<div class="form-group">-->
                         <!--<label for="search-numberRange" class="col-sm-4 control-label">数量范围</label>-->
                         <!--<div class="col-xs-7">-->
@@ -277,7 +275,7 @@
                            getWasteInventoryList                        id="pageNumber" title=""></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
-                    <select id="count" onchange="loadPageClientList()" title="">
+                    <select id="count" onchange="loadWasteInventoryList()" title="">
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>
@@ -304,7 +302,7 @@
                                 <!--<td class="text-center">物质形态</td>-->
                                 <!--<td class="text-center">危废名称</td>-->
                                 <!--<td class="text-center">热值/KCal/Kg</td>-->
-                                <!--<td class="text-center">PH</td>-->
+                                <!--<td class="text-center">PH</myclass>-->
                                 <!--<td class="text-center">灰分/%</td>-->
                                 <!--<td class="text-center">水分/%</td>-->
                                 <!--<td class="text-center">氯含量/%</td>-->
@@ -334,9 +332,9 @@
                                 <!--<td class="text-center modal-FContent">10</td>-->
                                 <!--<td class="text-center modal-processingMethod">焚烧</td>-->
                             </tr>
-                            <tr>
-                                <a class="btn btn-primary btn-xs" onclick="adjustAttr();"><span class="glyphicon glyphicon-log-out" ></span> 属性调整</a>
-                            </tr>
+                            <!--<tr>-->
+                                <!--<a class="btn btn-primary btn-xs" onclick="adjustAttr();"><span class="glyphicon glyphicon-log-out" ></span> 属性调整</a>-->
+                            <!--</tr>-->
                             </tbody>
                         </table>
                     </div>

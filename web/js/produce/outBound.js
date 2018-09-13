@@ -18,7 +18,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalOutBoundRecord",                  // url
+            url: "totalWastesOutBoundRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -61,7 +61,22 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
-
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
+ */
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        window.alert("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
 /**
  * 克隆页码
  * @param result
@@ -93,91 +108,91 @@ function setPageClone(result) {
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
  * */
-// function switchPage(pageNumber) {
-//     if (pageNumber == 0) {                 //首页
-//         pageNumber = 1;
-//     }
-//     if (pageNumber == -2) {
-//         pageNumber = totalPage();        //尾页
-//     }
-//     if (pageNumber == null || pageNumber == undefined) {
-//         console.log("参数为空,返回首页!");
-//         pageNumber = 1;
-//     }
-//     $("#current").find("a").text("当前页：" + pageNumber);
-//     if (pageNumber == 1) {
-//         $("#previous").addClass("disabled");
-//         $("#firstPage").addClass("disabled");
-//         $("#next").removeClass("disabled");
-//         $("#endPage").removeClass("disabled");
-//     }
-//     if (pageNumber == totalPage()) {
-//         $("#next").addClass("disabled");
-//         $("#endPage").addClass("disabled");
-//         $("#previous").removeClass("disabled");
-//         $("#firstPage").removeClass("disabled");
-//     }
-//     if (pageNumber > 1) {
-//         $("#previous").removeClass("disabled");
-//         $("#firstPage").removeClass("disabled");
-//     }
-//     if (pageNumber < totalPage()) {
-//         $("#next").removeClass("disabled");
-//         $("#endPage").removeClass("disabled");
-//     }
-//     var page = {};
-//     page.count = countValue();                        //可选
-//     page.pageNumber = pageNumber;
-//     currentPage = pageNumber;          //当前页面
-//     //addClass("active");
-//     page.start = (pageNumber - 1) * page.count;
-//     if (!isSearch) {
-//         $.ajax({
-//             type: "POST",                       // 方法类型
-//             url: "loadPageStockList",         // url
-//             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-//             data: JSON.stringify(page),
-//             dataType: "json",
-//             contentType: 'application/json;charset=utf-8',
-//             success: function (result) {
-//                 if (result != undefined) {
-//                     // console.log(result);
-//                     setStockList(result);
-//                 } else {
-//                     console.log("fail: " + result);
-//                     // setClientList(result);
-//                 }
-//             },
-//             error: function (result) {
-//                 console.log("error: " + result);
-//                 // setClientList(result);
-//             }
-//         });
-//     } else {
-//         data['page'] = page;
-//         $.ajax({
-//             type: "POST",                       // 方法类型
-//             url: "searchClient",         // url
-//             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-//             data: JSON.stringify(data),
-//             dataType: "json",
-//             contentType: 'application/json;charset=utf-8',
-//             success: function (result) {
-//                 if (result != undefined) {
-//                     // console.log(result);
-//                     setClientList(result.data);
-//                 } else {
-//                     console.log("fail: " + result);
-//                     // setClientList(result);
-//                 }
-//             },
-//             error: function (result) {
-//                 console.log("error: " + result);
-//                 // setClientList(result);
-//             }
-//         });
-//     }
-// }
+function switchPage(pageNumber) {
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadWastesOutBoundList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setOutBoundList(result);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchClient",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setClientList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
+    }
+}
 
 /**
  * 输入页数跳转页面
@@ -216,7 +231,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageStockList",         // url
+                url: "loadWastesOutBoundList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -224,7 +239,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setClientList(result);
+                        setOutBoundList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -259,7 +274,50 @@ function inputSwitchPage() {
         }
     }
 }
+/**
+ * 分页 获取首页内容==>危废
+ * */
+function loadOutBoundList() {
+    $("#current").find("a").text("当前页：1");
+    $("#previous").addClass("disabled");
+    $("#firstPage").addClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.count = countValue();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "loadWastesOutBoundList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(page),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //设置下拉列表
+                setPageClone(result.data);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
 
+    }) ;
+    // 设置高级检索的下拉框数据
+    //setSeniorSelectedList();
+    isSearch = false;
+
+
+}
 //点击确认进行出库操作
 function outBound() {
 
@@ -451,45 +509,7 @@ function addOutBoundOrder(data) {
         }
     });
 }
-/**
- * 分页 获取首页内容
- * */
-function loadOutBoundList() {
-    $("#current").find("a").text("当前页：1");
-    $("#previous").addClass("disabled");
-    $("#firstPage").addClass("disabled");
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.count = countValue();                                 // 可选
-    page.pageNumber = pageNumber;
-    page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadOutBoundList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result);
-                //设置下拉列表
-                setPageClone(result.data);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
-        }
 
-    }) ;
-    // 设置高级检索的下拉框数据
-    //setSeniorSelectedList();
-    isSearch = false;
-
-
-}
 //设置出库数据列表
 function setOutBoundList(result) {
     var tr = $("#clonedTr1");
@@ -499,12 +519,11 @@ function setOutBoundList(result) {
     $.each(result, function (index, item) {
         //console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
-        if((item.checkState.name=="已出库"||item.checkState.name=="已作废")&&item.boundType.name=='危废出库'){
+        if(item.boundType.name=='危废出库'){
             var clonedTr = tr.clone();
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
-                //1生成领料单号
                 var obj = eval(item);
                 // 根据索引为部分td赋值
                 switch (inner_index) {

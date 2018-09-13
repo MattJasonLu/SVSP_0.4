@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
 
 import java.util.Date;
@@ -11,10 +12,10 @@ public interface OutboundOrderMapper {
 
     void updateMaterialRequisitionOrderCheck1(OutboundOrder outboundOrder);
 
-    List<OutboundOrder> loadOutBoundList();
-
+    List<OutboundOrder> loadOutBoundList(Page page);
+    List<OutboundOrder>  loadWastesOutBoundList(Page page);
     int total();
-
+    int totalWastesOutBoundRecord();
     int searchCount(OutboundOrder outboundOrder);
 
     List<OutboundOrder> getByOutBoundOrderId(String outboundOrderId);
@@ -42,5 +43,7 @@ public interface OutboundOrderMapper {
      List<OutboundOrder>  getOutBoundByRange(Date startDate, Date endDate);
     List<OutboundOrder>  getOutBoundByDateRangeAndEquipment(Date startDate, Date endDate,String equipment);
     void cancelOutBoundOrder(String outboundOrderId);
-
+   int  totalSecondaryInventory();
+    List<OutboundOrder>  loadSecOutBoundList(Page page);
+    int totalSecOutBoundRecord();
 }

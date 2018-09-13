@@ -320,40 +320,54 @@ function searchBatchOrder() {
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
-    if ($("#senior").is(':visible')) {
-        data1 = {
-            laboratoryTest: {wastesName:$("#search-wastesName").val()},
-            produceCompany:{companyName:$("#search-client").val()} ,
-            createDate: $("#search-batchingDate").val(),
-            page: page,
-            processWay:$("#search-processWay").val(),
-        };
-        console.log(data1);
-    }
-    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
-    else {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "searchBatchOrder",                 // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                console.log(result);
-                if (result.data != undefined || result.status == "success") {
-                     console.log(result);
-                    setPageClone(result);
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器错误！");
-            }
-        });
-    }
+    // if ($("#senior").is(':visible')) {
+    //     data1 = {
+    //         laboratoryTest: {wastesName:$("#search-wastesName").val()},
+    //         produceCompany:{companyName:$("#search-client").val()} ,
+    //         createDate: $("#search-batchingDate").val(),
+    //         page: page,
+    //         processWay:$("#search-processWay").val(),
+    //     };
+    //     console.log(data1);
+    // }
+    // if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    // else {
+    //     $.ajax({
+    //         type: "POST",                            // 方法类型
+    //         url: "searchBatchOrder",                 // url
+    //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         data: JSON.stringify(data1),
+    //         dataType: "json",
+    //         contentType: "application/json; charset=utf-8",
+    //         success: function (result) {
+    //             console.log(result);
+    //             if (result.data != undefined || result.status == "success") {
+    //                  console.log(result);
+    //                 setPageClone(result);
+    //             } else {
+    //                 alert(result.message);
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log(result);
+    //             alert("服务器错误！");
+    //         }
+    //     });
+    // }
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    var batchingDate= $('#search-batchingDate').val()+"";//创建日期
+    var processWay=$("#search-processWay option:selected").text();
+    console.log(batchingDate+"=="+processWay);
+    $('.myclass').each(function () {
+        if(!($(this).children('td').eq(9).text().indexOf(batchingDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1)){
+            $(this).hide();
+        }
+    });
+
+
+
 }
 /**设置库存列表数据
  */
@@ -804,11 +818,13 @@ function setSenierList() {
 //加载配料单数据源
 function setBatchingOrderList(result) {
         var tr = $("#cloneTr3");
+        // tr.attr('class','myclass')
         tr.siblings().remove();
         $.each(result, function (index, item) {
             // 克隆tr，每次遍历都可以产生新的tr
             if(item.checkState.name=='待领料'){
                 var clonedTr = tr.clone();
+                clonedTr.attr('class','myclass');
                 clonedTr.show();
                 // 循环遍历cloneTr的每一个td元素，并赋值
                 clonedTr.children("td").each(function (inner_index) {
@@ -872,6 +888,7 @@ function setBatchingOrderList(result) {
             }
         });
         // 隐藏无数据的tr
+      // tr.removeAttr('class');
         tr.hide();
 }
 //生成领料单
