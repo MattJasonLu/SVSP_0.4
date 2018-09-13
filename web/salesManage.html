@@ -140,7 +140,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left">
-                        <a class="btn btn-primary btn-xs" href="salesInfo.html" id="function_94" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" href="#" id="function_94" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addSalesman(e)}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" id="function_95"  onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ></span> 导入</a>
                         <a class="btn btn-primary btn-xs" id="function_96"  onclick="check(this); function check(e){if(!checkAuthority($(e))) return false;exportExcel(e)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 导出</a>
                     </div>
@@ -346,6 +346,71 @@
             </div>
         </div>
     </div>
+    <!-- 业务员新增模态框 -->
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="sub-header">业务员新增</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="salesmanInfoForm" class="">
+                        <h4 class="text-info">基本信息</h4>
+                        <div class="row middle">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="salesmanId" class="col-sm-4 control-label">业务员编号</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control" id="salesmanId" name="salesmanId" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-4 control-label">姓名</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sex" class="col-sm-4 control-label">性别</label>
+                                    <div class="col-xs-4">
+                                        <select id="sex" name="sex" class="form-control">
+                                            <option value="true">男</option>
+                                            <option value="false">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="age" class="col-sm-4 control-label">年龄</label>
+                                    <div class="col-xs-4">
+                                        <input type="text" class="form-control" id="age" name="age" placeholder="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">保存之后 </label>
+                                    <div class="col-xs-5 radio">
+                                        <label>
+                                            <input type="radio" name="addType" id="addType1" value="continue" checked>
+                                            继续添加
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="addType" id="addType2" value="break">
+                                            返回列表
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center middle">
+                                <a class="btn btn-primary" href="#" onclick="clientSubmit();">提交</a>
+                                <a class="btn btn-warning" onclick="clientReset()">重置</a>
+                                <a class="btn btn-danger" href="salesManage.html">返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
     <div id="embed"></div>
 </body>
 <style type="text/css">
@@ -366,6 +431,135 @@
     }
 </style>
 <script type="text/javascript">
+    function showLog() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getLog",                           // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    if (data.status == "success") {
+                        setDataList(result);
+                        $('#logModal').modal('show');
+                    } else {
+                        alert(data.message);
+                    }
+                }
+            },
+            error:function (result) {
+            }
+        });
+    }
+    function setDataList(result) {
+        // 获取id为cloneTr的tr元素
+        var id = 1;
+        var tr = $("#clonedTr2");
+        $.each(result.data, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            var _index = index;
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    case (0):
+                        $(this).html(id++);
+                        break;
+                    // 样品预约号
+                    case (1):
+                        $(this).html(obj.username);
+                        break;
+                    //样品状态
+                    case (2):
+                        $(this).html(obj.ip);
+                        break;
+                    // 公司名称
+                    case (3):
+                        $(this).html(getTimeStr(obj.time));
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        tr.hide();
+    }
+    function clientSubmit() {
+        var addType = $("input[name='addType']:checked").val();
+        var date = {
+            'salesmanId':$("#salesmanId").val(),
+            'name':$("#name").val(),
+            'sex':$("#sex").val(),
+            'age':$("#age").val()
+        };
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "addSalesman",                     // url
+            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(date),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("success: " + result);
+                    alert("增加成功!");
+                    if(addType == "continue"){
+                        window.location.href = "salesManage.html";
+                    }
+                    else window.location.href = "salesManage.html";
+                } else {
+                    console.log("fail: " + result);
+                    alert("增加失败!");
+                }
+            },
+            error:function (result) {
+                console.log("error: " + result);
+                alert("服务器异常!");
+            }
+        });
+    }
+    /**
+     * 重置产废单位信息
+     */
+    function clientReset() {
+        var r = confirm("是否重置产废单位信息?");
+        if (r == true) {
+            $("#name").val("");
+            $("#sex").get(0).selectedIndex = -1;
+            $("#age").val("");
+        }
+    }
+    /**
+     * 获取数据库中的业务员编号
+     */
+    function getCurrentSalesmanId() {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "getCurrentSalesmanId",                  // url
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    $("#salesmanId").val(data.salesmanId);
+                } else { }
+            },
+            error:function (result) {
+                console.log(result);
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    function addSalesman() {
+        $("#myModal1").modal("show");
+    }
     var salesmanId;
     var clientList1;
     function getId(item) {
