@@ -39,6 +39,8 @@ public interface ClientMapper {
 
     List<Client> list(Page page);
 
+    List<String> listClientId();
+
     int total();
 
     void enableState(String clientId);
