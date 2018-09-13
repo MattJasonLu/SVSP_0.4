@@ -1,5 +1,6 @@
 package com.jdlink.util;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -60,5 +61,17 @@ public class RandomUtil {
      */
     public static String getCheckId(String appointId) {
         return appointId+"R";
+    }
+
+    /**
+     * 获取百分比
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public static String getPercentage(float num1, float num2) {
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(2);
+        return numberFormat.format(num1 / num2 * 100);
     }
 }

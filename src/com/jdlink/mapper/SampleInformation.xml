@@ -18,7 +18,7 @@
         #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine}, #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity}, NOW());
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
-                INSERT INTO t_wastes (id,sampleId,code,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity) VALUES
+                INSERT INTO t_pr_sampleinformationitem (id,sampleId,code,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity) VALUES
                 (#{wastes.id}, #{id}, #{wastes.code},#{wastes.isPH}, #{wastes.isAsh}, #{wastes.isWater}, #{wastes.isHeat},
                 #{wastes.isSulfur}, #{wastes.isChlorine}, #{wastes.isFluorine}, #{wastes.isPhosphorus}, #{wastes.isFlashPoint}, #{wastes.isViscosity});
             </foreach>
@@ -38,11 +38,11 @@
     </select>
 
     <select id="wastesCount" resultType="int">
-        select count(*) from t_wastes;
+        select count(*) from t_pr_sampleinformationitem;
     </select>
 
     <select id="getByWastesId" parameterType="String" resultType="Wastes">
-        SELECT * FROM t_wastes WHERE id = #{id}
+        SELECT * FROM t_pr_sampleinformationitem WHERE id = #{id}
     </select>
 
     <select id="getBySampleInformationId" parameterType="String" resultMap="SampleInformationRM">
@@ -215,7 +215,15 @@
     </select>
 
     <select id="getWastes" resultType="Wastes" parameterType="String">
-        SELECT * FROM t_wastes WHERE sampleId=#{id}
+        SELECT * FROM t_pr_sampleinformationitem WHERE sampleId=#{id}
+    </select>
+
+    <select id="listWastes" resultType="Wastes">
+        select code from t_wasteslist;
+    </select>
+
+    <select id="listClient" resultType="Client">
+        select clientId from client;
     </select>
 
     <update id="confirmCheck" parameterType="String">
@@ -226,17 +234,26 @@
     </update>
 
     <update id="update" parameterType="SampleInformation">
-        UPDATE t_pr_sampleinformation SET wastesCode = #{wastesList[0].code},laboratorySigner = #{laboratorySigner},isPH = #{wastesList[0].isPH},
+        UPDATE t_pr_sampleinformation SET companyCode=#{companyCode },wastesCode = #{wastesList[0].code},laboratorySigner = #{laboratorySigner},isPH = #{wastesList[0].isPH},
         isAsh = #{wastesList[0].isAsh},isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur = #{wastesList[0].isSulfur},isChlorine = #{wastesList[0].isChlorine},
         isFluorine = #{wastesList[0].isFluorine},isPhosphorus = #{wastesList[0].isPhosphorus},isFlashPoint = #{wastesList[0].isFlashPoint},isViscosity = #{wastesList[0].isViscosity},nowTime = NOW()
         WHERE t_pr_sampleinformation.id =#{id};
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
-                UPDATE t_wastes SET code = #{wastes.code},isPH = #{wastes.isPH},
+                <if test="wastes.id != null">
+                UPDATE t_pr_sampleinformationitem SET code = #{wastes.code},isPH = #{wastes.isPH},
                 isAsh =  #{wastes.isAsh},isWater = #{wastes.isWater},isHeat = #{wastes.isHeat},isSulfur = #{wastes.isSulfur},
                 isChlorine = #{wastes.isChlorine},isFluorine = #{wastes.isFluorine},isPhosphorus = #{wastes.isPhosphorus},
                 isFlashPoint = #{wastes.isFlashPoint},isViscosity = #{wastes.isViscosity}
-                WHERE t_wastes.id = #{wastes.id};
+                WHERE id = #{wastes.id};
+                </if>
+                <if test="wastes.id == null">
+                    insert into t_pr_sampleinformationitem
+                    (id,code,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity)
+                    values
+                    (#{wastes.id},#{wastes.code},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},#{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
+                    #{wastes.isFlashPoint},#{wastes.isViscosity});
+                </if>
             </foreach>
         </if>
     </update>

@@ -33,6 +33,7 @@ function viewEquipment(item) {
         },
         success: function (result) {
             if (result != undefined ) {//&& result.status == "success"
+                console.log(result);
                 viewEquipment1(result.data);
             } else {
                 console.log(result.message);
@@ -58,7 +59,7 @@ function viewEquipment1(data) {
         var clonedTr = tr.clone();
         // 赋值
         clonedTr.find("td[name='documentNumber']").text(index+1);//index + 1
-        clonedTr.find("td[name='equipment']").text(obj.equipment);
+        clonedTr.find("td[name='equipment']").text(obj.equipment.name);
         clonedTr.find("td[name='runningTime']").text(obj.runningTime);
         clonedTr.find("td[name='stopTime']").text(obj.stopTime);
         clonedTr.find("td[name='stopResult']").text(obj.stopResult);
@@ -240,7 +241,7 @@ function addEquipment() {
     console.log(data);
    $('.myclass').each(function () {
        var dataItem={
-           equipment: parseInt($(this).children('td').eq(1).children('select').val())+1,
+           equipment: $('#equipment').selectpicker('val'),
            runningTime:$(this).children('td').eq(2).children('input').val(),
            stopTime:$(this).children('td').eq(3).children('input').val(),
            stopResult: $(this).children('td').eq(4).children('input').val()
@@ -293,7 +294,14 @@ function createDocNumber() {
     });
     setSeniorSelectList();
 }
-
+function stopping() {
+    var key = parseFloat($("#runningTime0").val());
+    if(key <= 24){
+        $("#stopTime0").val(String(24-key));
+    }else{
+        alert("请输入小于24的小时数！")
+    }
+}
 var isSearch = false;
 //查询功能(精确查询)
 function searchData() {

@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Wastes;
@@ -20,4 +21,6 @@ public interface SampleInformationService {
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);
     Wastes getByWastesId(String id);
+    List<Wastes> listWastes();
+    List<Client> listClient();
 }

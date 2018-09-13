@@ -86,6 +86,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public List<String> listClientId(){ return clientMapper.listClientId(); }
+
+    @Override
     public int searchCount(Client client) {
         return clientMapper.searchCount(client);
     }

@@ -198,6 +198,10 @@
         SELECT client.*, salesman.name, salesman.age, salesman.sex from client, salesman WHERE client.salesmanId = salesman.salesmanId AND client.salesmanId IS NOT NULL order by nowTime desc;;
     </select>
 
+    <select id="listClientId" resultType="String">
+        select clientId from client;
+    </select>
+
     <select id="listUnallocated" resultMap="ClientRM">
         SELECT client.* from client WHERE client.salesmanId IS NULL order by nowTime desc;;
     </select>
@@ -206,6 +210,5 @@
     </select>
     <update id="deleteSalesId" parameterType="String">
         update client set salesmanId=null where clientId=#{clientId}
-
     </update>
 </mapper>
