@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Sample;
@@ -58,8 +59,8 @@ public class SampleInformationServiceImpl implements SampleInformationService {
     public Wastes getByWastesId(String id){ return sampleInformationMapper.getByWastesId(id); }
 
     @Override
-    public List<String> listWastesCode(){ return sampleInformationMapper.listWastesCode(); }
+    public List<Wastes> listWastes(){ return sampleInformationMapper.listWastes(); }
 
     @Override
-    public List<String> listClientId(){ return sampleInformationMapper.listClientId(); }
+    public List<Client> listClient(){ return sampleInformationMapper.listClient(); }
 }

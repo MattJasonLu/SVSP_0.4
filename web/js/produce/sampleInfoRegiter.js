@@ -680,8 +680,8 @@ function setSelectList() {
                 var companyCode = $("#model-companyCode");
                 $.each(data.companyCodeList, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item);
+                    option.val(parseInt(item.clientId));
+                    option.text(item.clientId);
                     companyCode.append(option);
                 });
                 companyCode.selectpicker('val','');
@@ -689,8 +689,8 @@ function setSelectList() {
                 var wastesCode = $("#wastesList0-wastesCode");
                 $.each(data.wastesCodeList, function (index, item) {
                     var option = $('<option />');
-                    option.val(index);
-                    option.text(item);
+                    option.val(parseInt(item.code.replace(/[^0-9]/ig,"")));
+                    option.text(item.code);
                     wastesCode.append(option);
                 });
                 wastesCode.selectpicker('val','');
@@ -704,7 +704,7 @@ function setSelectList() {
         }
     });
 }
-var num = 0;
+var num =0;
 /**
  * 预约登记-新增样品
  */
@@ -814,6 +814,7 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
+    num = 0;
     setSelectList();
     $(".newLine").remove();
     var sampleId = getSampleIdByMenu(menu);
@@ -836,12 +837,12 @@ function adjustSample(menu) {
             if (result != undefined) {
                 var data = eval(result.data);
                 if (result.status == "success") {
-                    $("#model-companyCode").selectpicker('val',data.companyCode);
+                    $("#model-companyCode").selectpicker('val',parseInt(data.companyCode));
                     $("#model-signer").val(data.laboratorySigner);
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addNewLine();
                         var $i = i;
-                        $("#wastesList" + $i + "-wastesCode").selectpicker('val',data.wastesList[i].code);
+                        $("#wastesList" + $i + "-wastesCode").selectpicker('val',parseInt(data.wastesList[i].code.replace(/[^0-9]/ig,"")));
                         $("input[name='wastesList[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
                         $("input[name='wastesList[" + $i + "].isAsh']").prop('checked', data.wastesList[i].isAsh);
                         $("input[name='wastesList[" + $i + "].isWater']").prop('checked', data.wastesList[i].isWater);
