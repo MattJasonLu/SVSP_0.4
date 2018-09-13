@@ -1,5 +1,6 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
 
@@ -3917,6 +3918,10 @@ public class ProductionDaily {
      * 作者
      */
     private String author;
+    /**
+     * 日报状态
+     */
+    private CheckState checkState;
 
     public int getId() {
         return id;
@@ -11532,5 +11537,13 @@ public class ProductionDaily {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
     }
 }

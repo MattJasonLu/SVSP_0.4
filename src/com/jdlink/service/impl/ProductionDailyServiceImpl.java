@@ -48,6 +48,21 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
     public void addSoftWater(SoftWater softWater){ productionDailyMapper.addSoftWater(softWater); }
 
     @Override
+    public int getProductionDailyId() {
+        return productionDailyMapper.getProductionDailyId() + 1;
+    }
+
+    @Override
+    public int getProductionDailyCount() {
+        return productionDailyMapper.getProductionDailyCount();
+    }
+
+    @Override
+    public List<ProductionDaily> listProductionDailyByPage(Page page) {
+        return productionDailyMapper.listProductionDailyByPage(page);
+    }
+
+    @Override
     public void addProductionDaily(ProductionDaily productionDaily) {
         productionDailyMapper.addProductionDaily(productionDaily);
     }

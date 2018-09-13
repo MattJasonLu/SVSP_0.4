@@ -441,8 +441,8 @@
             outId in (SELECT id FROM t_pr_ingredients_out
             <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
             AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>)
-            <if test="equipment ！= null and equipment != ''">
-                equipment = #{equipment};
+            <if test="equipment != null and equipment != ''">
+                AND equipment = #{equipment};
             </if>
         </where>
     </select>
