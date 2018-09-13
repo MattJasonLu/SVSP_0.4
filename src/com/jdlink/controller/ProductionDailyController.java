@@ -1,12 +1,11 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Produce.*;
-import com.jdlink.service.InboundService;
-import com.jdlink.service.IngredientsService;
-import com.jdlink.service.MedicalWastesService;
-import com.jdlink.service.OutboundOrderService;
+import com.jdlink.service.*;
+import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +30,10 @@ public class ProductionDailyController {
     MedicalWastesService medicalWastesService;
     @Autowired
     IngredientsService ingredientsService;
+    @Autowired
+    EquipmentService equipmentService;
+    @Autowired
+    ProductionDailyService productionDailyService;
 
     /**
      * 生成当天日报
@@ -96,6 +99,7 @@ public class ProductionDailyController {
             float disposalMedicalWastes = 0f;
             List<OutboundOrder> outboundA2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "A2");
             for (OutboundOrder outboundOrder : outboundA2OrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -144,6 +148,7 @@ public class ProductionDailyController {
 
             List<OutboundOrder> outboundPrepare2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "Prepare2");
             for (OutboundOrder outboundOrder : outboundPrepare2OrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -190,6 +195,7 @@ public class ProductionDailyController {
 
             List<OutboundOrder> outboundB2OrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "B2");
             for (OutboundOrder outboundOrder : outboundB2OrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -236,6 +242,7 @@ public class ProductionDailyController {
 
             List<OutboundOrder> outboundThirdOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
             for (OutboundOrder outboundOrder : outboundThirdOrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.WasteOutbound)) continue;
                 HandleCategory handelCategory = outboundOrder.getHandelCategory();
                 switch (handelCategory) {
                     case Bulk:
@@ -348,7 +355,6 @@ public class ProductionDailyController {
             float disposalCalcareousLime = 0f;
             float disposalCommonActivatedCarbon = 0f;
             float disposalActivatedCarbon = 0f;
-            float disposalActivatedCarbonParticles = 0f;
             float disposalLye = 0f;
             float disposalSalt = 0f;
             float disposalSlagBag = 0f;
@@ -409,14 +415,317 @@ public class ProductionDailyController {
             productionDaily.setTodayDisposalSecondaryAuxiliaryElectricQuantity(disposalElectricQuantity);
             productionDaily.setTodayDisposalSecondaryAuxiliaryWoodenPallets(disposalWoodenPallets);
 
+            // 三期
+            disposalCalcareousLime = 0f;
+            disposalCommonActivatedCarbon = 0f;
+            disposalActivatedCarbon = 0f;
+            float disposalActivatedCarbonParticles = 0f;
+            disposalLye = 0f;
+            float disposalCausticSoda = 0f;
+            float disposalUrea = 0f;
+            float disposalHydrochloricAcid = 0f;
+            float disposalNahco3 = 0f;
+            float disposalFlour = 0f;
+            float disposalDefoamer = 0f;
+            float disposalFlocculant = 0f;
+            float disposalSoftWaterReducingAgent = 0f;
+            float disposalSoftWaterScaleInhibitor = 0f;
+            float disposalAmmonia = 0f;
+            float disposalWaterReducingAgent = 0f;
+            float disposalWaterScaleInhibitor = 0f;
+            disposalNaclo = 0f;
+            float disposalStandardBox = 0f;
+            disposalWoodenPallets = 0f;
+            float disposalStandardTray_1m = 0f;
+            float disposalStandardTray_1_2m = 0f;
+            float disposalAuxiliarySlagBag = 0f;
+            disposalFlyAshBag = 0f;
+            float disposalTonBox = 0f;
+            disposalSteam = 0f;
+            disposalDieselOil = 0f;
+            float disposalNaturalGas = 0f;
+            disposalIndustrialWater = 0f;
+            disposalElectricQuantity = 0f;
+            float disposalTapWaterQuantity = 0f;
+            List<Ingredients> ingredientsThirdList = ingredientsService.getIngredientsOutItemByRange(now, now, Equipment.ThirdPhasePretreatmentSystem);
+            for (Ingredients ingredients : ingredientsThirdList) {
+                switch (ingredients.getName()) {
+                    case "消石灰":
+                        disposalCalcareousLime += ingredients.getReceiveAmount();
+                        break;
+                    case "普通活性炭粉":
+                        disposalCommonActivatedCarbon += ingredients.getReceiveAmount();
+                        break;
+                    case "高活性碳粉":
+                        disposalActivatedCarbon += ingredients.getReceiveAmount();
+                        break;
+                    case "活性炭颗粒":
+                        disposalActivatedCarbonParticles += ingredients.getReceiveAmount();
+                        break;
+                    case "碱液":
+                        disposalLye += ingredients.getReceiveAmount();
+                        break;
+                    case "片碱":
+                        disposalCausticSoda += ingredients.getReceiveAmount();
+                        break;
+                    case "尿素":
+                        disposalUrea += ingredients.getReceiveAmount();
+                        break;
+                    case "盐酸":
+                        disposalHydrochloricAcid += ingredients.getReceiveAmount();
+                        break;
+                    case "小苏打(NaHCO3)":
+                        disposalNahco3 += ingredients.getReceiveAmount();
+                        break;
+                    case "面粉":
+                        disposalFlour += ingredients.getReceiveAmount();
+                        break;
+                    case "消泡剂":
+                        disposalDefoamer += ingredients.getReceiveAmount();
+                        break;
+                    case "絮凝剂(聚丙烯酰胺)":
+                        disposalFlocculant += ingredients.getReceiveAmount();
+                        break;
+                    case "软水用还原剂":
+                        disposalSoftWaterReducingAgent += ingredients.getReceiveAmount();
+                        break;
+                    case "软水用阻垢剂":
+                        disposalSoftWaterScaleInhibitor += ingredients.getReceiveAmount();
+                        break;
+                    case "氨水(PH调节剂)":
+                        disposalAmmonia += ingredients.getReceiveAmount();
+                        break;
+                    case "污水用还原剂":
+                        disposalWaterReducingAgent += ingredients.getReceiveAmount();
+                        break;
+                    case "污水用阻垢剂":
+                        disposalWaterScaleInhibitor += ingredients.getReceiveAmount();
+                        break;
+                    case "消毒液(NaCLO)":
+                        disposalNaclo += ingredients.getReceiveAmount();
+                        break;
+                    case "标准箱":
+                        disposalStandardBox += ingredients.getReceiveAmount();
+                        break;
+                    case "木托盘":
+                        disposalWoodenPallets += ingredients.getReceiveAmount();
+                        break;
+                    case "1m标准托盘":
+                        disposalStandardTray_1m += ingredients.getReceiveAmount();
+                        break;
+                    case "1.2m标准托盘":
+                        disposalStandardTray_1_2m += ingredients.getReceiveAmount();
+                        break;
+                    case "炉渣用吨袋":
+                        disposalAuxiliarySlagBag += ingredients.getReceiveAmount();
+                        break;
+                    case "飞灰用吨袋":
+                        disposalFlyAshBag += ingredients.getReceiveAmount();
+                        break;
+                    case "吨箱":
+                        disposalTonBox += ingredients.getReceiveAmount();
+                        break;
+                    case "蒸汽":
+                        disposalSteam += ingredients.getReceiveAmount();
+                        break;
+                    case "柴油":
+                        disposalDieselOil += ingredients.getReceiveAmount();
+                        break;
+                    case "天然气":
+                        disposalNaturalGas += ingredients.getReceiveAmount();
+                        break;
+                    case "电量":
+                        disposalElectricQuantity += ingredients.getReceiveAmount();
+                        break;
+                    case "工业水量":
+                        disposalIndustrialWater += ingredients.getReceiveAmount();
+                        break;
+                    case "自来水量":
+                        disposalTapWaterQuantity += ingredients.getReceiveAmount();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            productionDaily.setTodayDisposalThirdAuxiliaryCalcareousLime(disposalCalcareousLime);
+            productionDaily.setTodayDisposalThirdAuxiliaryCommonActivatedCarbon(disposalCommonActivatedCarbon);
+            productionDaily.setTodayDisposalThirdAuxiliaryActivatedCarbon(disposalActivatedCarbon);
+            productionDaily.setTodayDisposalThirdAuxiliaryActivatedCarbonParticles(disposalActivatedCarbonParticles);
+            productionDaily.setTodayDisposalThirdAuxiliaryLye(disposalLye);
+            productionDaily.setTodayDisposalThirdAuxiliaryCausticSoda(disposalCausticSoda);
+            productionDaily.setTodayDisposalThirdAuxiliaryUrea(disposalUrea);
+            productionDaily.setTodayDisposalThirdAuxiliaryHydrochloricAcid(disposalHydrochloricAcid);
+            productionDaily.setTodayDisposalThirdAuxiliaryNahco3(disposalNahco3);
+            productionDaily.setTodayDisposalThirdAuxiliaryFlour(disposalFlour);
+            productionDaily.setTodayDisposalThirdAuxiliaryDefoamer(disposalDefoamer);
+            productionDaily.setTodayDisposalThirdAuxiliaryFlocculant(disposalFlocculant);
+            productionDaily.setTodayDisposalThirdAuxiliarySoftWaterReducingAgent(disposalSoftWaterReducingAgent);
+            productionDaily.setTodayDisposalThirdAuxiliarySoftWaterScaleInhibitor(disposalSoftWaterScaleInhibitor);
+            productionDaily.setTodayDisposalThirdAuxiliaryAmmonia(disposalAmmonia);
+            productionDaily.setTodayDisposalThirdAuxiliaryWaterReducingAgent(disposalWaterReducingAgent);
+            productionDaily.setTodayDisposalThirdAuxiliaryWaterScaleInhibitor(disposalWaterScaleInhibitor);
+            productionDaily.setTodayDisposalThirdAuxiliaryNaclo(disposalNaclo);
+            productionDaily.setTodayDisposalThirdAuxiliaryStandardBox(disposalStandardBox);
+            productionDaily.setTodayDisposalThirdAuxiliaryWoodenPallets(disposalWoodenPallets);
+            productionDaily.setTodayDisposalThirdAuxiliaryStandardTray_1m(disposalStandardTray_1m);
+            productionDaily.setTodayDisposalThirdAuxiliaryStandardTray_1_2m(disposalStandardTray_1_2m);
+            productionDaily.setTodayDisposalThirdAuxiliarySlagBag(disposalAuxiliarySlagBag);
+            productionDaily.setTodayDisposalThirdAuxiliaryFlyAshBag(disposalFlyAshBag);
+            productionDaily.setTodayDisposalThirdAuxiliaryTonBox(disposalTonBox);
+            productionDaily.setTodayDisposalThirdAuxiliarySteam(disposalSteam);
+            productionDaily.setTodayDisposalThirdAuxiliaryDieselOil(disposalDieselOil);
+            productionDaily.setTodayDisposalThirdAuxiliaryNaturalGas(disposalNaturalGas);
+            productionDaily.setTodayDisposalThirdAuxiliaryIndustrialWater(disposalIndustrialWater);
+            productionDaily.setTodayDisposalThirdAuxiliaryElectricQuantity(disposalElectricQuantity);
+            productionDaily.setTodayDisposalThirdAuxiliaryTapWaterQuantity(disposalTapWaterQuantity);
+
+            // 辅料备件消耗
+            productionDaily.setTodayOutboundAuxiliaryCalcareousLime(productionDaily.getTodayDisposalSecondaryAuxiliaryCalcareousLime() + productionDaily.getTodayDisposalThirdAuxiliaryCalcareousLime());
+            productionDaily.setTodayOutboundAuxiliaryCommonActivatedCarbon(productionDaily.getTodayDisposalSecondaryAuxiliaryCommonActivatedCarbon() + productionDaily.getTodayDisposalThirdAuxiliaryCommonActivatedCarbon());
+            productionDaily.setTodayOutboundAuxiliaryActivatedCarbon(productionDaily.getTodayDisposalSecondaryAuxiliaryActivatedCarbon() + productionDaily.getTodayDisposalThirdAuxiliaryActivatedCarbon());
+            productionDaily.setTodayOutboundAuxiliaryActivatedCarbonParticles(productionDaily.getTodayDisposalThirdAuxiliaryActivatedCarbonParticles());
+            productionDaily.setTodayOutboundAuxiliaryLye(productionDaily.getTodayDisposalSecondaryAuxiliaryLye() + productionDaily.getTodayDisposalThirdAuxiliaryLye());
+            productionDaily.setTodayOutboundAuxiliaryCausticSoda(productionDaily.getTodayDisposalThirdAuxiliaryCausticSoda());
+            productionDaily.setTodayOutboundAuxiliaryUrea(productionDaily.getTodayDisposalThirdAuxiliaryUrea());
+            productionDaily.setTodayOutboundAuxiliaryHydrochloricAcid(productionDaily.getTodayDisposalThirdAuxiliaryHydrochloricAcid());
+            productionDaily.setTodayOutboundAuxiliaryNahco3(productionDaily.getTodayDisposalThirdAuxiliaryNahco3());
+            productionDaily.setTodayOutboundAuxiliaryFlour(productionDaily.getTodayDisposalThirdAuxiliaryFlour());
+            productionDaily.setTodayOutboundAuxiliaryDefoamer(productionDaily.getTodayDisposalThirdAuxiliaryDefoamer());
+            productionDaily.setTodayOutboundAuxiliaryFlocculant(productionDaily.getTodayDisposalThirdAuxiliaryFlocculant());
+            productionDaily.setTodayOutboundAuxiliarySoftWaterReducingAgent(productionDaily.getTodayDisposalThirdAuxiliarySoftWaterReducingAgent());
+            productionDaily.setTodayOutboundAuxiliarySoftWaterScaleInhibitor(productionDaily.getTodayDisposalThirdAuxiliarySoftWaterScaleInhibitor());
+            productionDaily.setTodayOutboundAuxiliaryAmmonia(productionDaily.getTodayDisposalThirdAuxiliaryAmmonia());
+            productionDaily.setTodayOutboundAuxiliaryWaterReducingAgent(productionDaily.getTodayDisposalThirdAuxiliaryWaterReducingAgent());
+            productionDaily.setTodayOutboundAuxiliaryWaterScaleInhibitor(productionDaily.getTodayDisposalThirdAuxiliaryWaterScaleInhibitor());
+            productionDaily.setTodayOutboundAuxiliaryNaclo(productionDaily.getTodayDisposalMedicalAuxiliaryNaclo() + productionDaily.getTodayDisposalThirdAuxiliaryNaclo());
+            productionDaily.setTodayOutboundAuxiliaryDeodorant(productionDaily.getTodayDisposalMedicalAuxiliaryDeodorant());
+            productionDaily.setTodayOutboundAuxiliarySalt(productionDaily.getTodayDisposalSecondaryAuxiliarySalt());
+            productionDaily.setTodayOutboundAuxiliarySlagBag(productionDaily.getTodayDisposalSecondaryAuxiliarySlagBag() + productionDaily.getTodayDisposalThirdAuxiliarySlagBag());
+            productionDaily.setTodayOutboundAuxiliaryFlyAshBag(productionDaily.getTodayDisposalSecondaryAsh() + productionDaily.getTodayDisposalThirdAsh());
+            productionDaily.setTodayOutboundAuxiliaryMedicalWastesBag(productionDaily.getTodayDisposalMedicalAuxiliaryMedicalWastesBag());
+            productionDaily.setTodayOutboundAuxiliaryMedicalPackingPlasticBag(productionDaily.getTodayDisposalMedicalAuxiliaryMedicalPackingPlasticBag());
+            productionDaily.setTodayOutboundAuxiliaryCollectionBox(productionDaily.getTodayDisposalMedicalAuxiliaryCollectionBox());
+            productionDaily.setTodayOutboundAuxiliaryStandardBox(productionDaily.getTodayDisposalThirdAuxiliaryStandardBox());
+            productionDaily.setTodayOutboundAuxiliaryWoodenPallets(productionDaily.getTodayDisposalSecondaryAuxiliaryWoodenPallets() + productionDaily.getTodayDisposalThirdAuxiliaryWoodenPallets());
+            productionDaily.setTodayOutboundAuxiliaryStandardTray_1m(productionDaily.getTodayDisposalThirdAuxiliaryStandardTray_1m());
+            productionDaily.setTodayOutboundAuxiliaryStandardTray_1_2m(productionDaily.getTodayDisposalThirdAuxiliaryStandardTray_1_2m());
+            productionDaily.setTodayOutboundAuxiliaryTonBox(productionDaily.getTodayDisposalThirdAuxiliaryTonBox());
+            productionDaily.setTodayOutboundAuxiliarySteam(productionDaily.getTodayDisposalMedicalAuxiliarySteam());
+            productionDaily.setTodayOutboundAuxiliaryDieselOil(productionDaily.getTodayDisposalSecondaryAuxiliaryDieselOil() + productionDaily.getTodayDisposalMedicalWastesDisposalDirect());
+            productionDaily.setTodayOutboundAuxiliaryNaturalGas(productionDaily.getTodayDisposalThirdAuxiliaryNaturalGas());
+            productionDaily.setTodayOutboundAuxiliaryElectricQuantity(productionDaily.getTodayDisposalMedicalAuxiliaryElectricQuantity() + productionDaily.getTodayDisposalSecondaryAuxiliaryElectricQuantity() +
+                    productionDaily.getTodayDisposalThirdAuxiliaryElectricQuantity() + productionDaily.getTodayDisposalTowerElectricQuantity());
+
+            // 运行情况统计
+            float equipmentA2RunningTime = 0f;
+            float equipmentB2RunningTime = 0f;
+            float equipmentPrepare2RunningTime = 0f;
+            float equipmentSecondRunningTime = 0f;
+            float equipmentThirdRunningTime = 0f;
+            List<EquipmentItem> equipmentDateList = equipmentService.getEquipmentDataByDate(now, now);
+            for (EquipmentItem equipmentItem : equipmentDateList) {
+                String equipmentName = equipmentItem.getEquipment();
+                switch (equipmentName) {
+                    case "A2":
+                        equipmentA2RunningTime += equipmentItem.getRunningTime();
+                        break;
+                    case "B2":
+                        equipmentB2RunningTime += equipmentItem.getRunningTime();
+                        break;
+                    case "Prepare2":
+                        equipmentPrepare2RunningTime += equipmentItem.getRunningTime();
+                        break;
+                    case "SecondaryTwoCombustionChamber":
+                        equipmentSecondRunningTime += equipmentItem.getRunningTime();
+                        break;
+                    case "ThirdPhasePretreatmentSystem":
+                        equipmentThirdRunningTime += equipmentItem.getRunningTime();
+                        break;
+                }
+            }
+            // 运行时间和停止时间
+            productionDaily.setTodayEquipmentA2RunningTime(equipmentA2RunningTime);
+            productionDaily.setTodayEquipmentB2RunningTime(equipmentB2RunningTime);
+            productionDaily.setTodayEquipmentPrepare2RunningTime(equipmentPrepare2RunningTime);
+            productionDaily.setTodayEquipmentSecondaryRunningTime(equipmentSecondRunningTime);
+            productionDaily.setTodayEquipmentThirdRunningTime(equipmentThirdRunningTime);
+
+            productionDaily.setTodayEquipmentA2StopTime(24 - productionDaily.getTodayEquipmentA2RunningTime());
+            productionDaily.setTodayEquipmentB2StopTime(24 - productionDaily.getTodayEquipmentB2RunningTime());
+            productionDaily.setTodayEquipmentPrepare2StopTime(24 - productionDaily.getTodayEquipmentPrepare2StopTime());
+            productionDaily.setTodayEquipmentSecondaryStopTime(24 - productionDaily.getTodayEquipmentSecondaryRunningTime());
+            productionDaily.setTodayEquipmentThirdStopTime(24 - productionDaily.getTodayEquipmentThirdRunningTime());
+            // 运转率
+            productionDaily.setTodayEquipmentA2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentA2RunningTime(), productionDaily.getTodayEquipmentA2StopTime())));
+            productionDaily.setTodayEquipmentB2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentB2RunningTime(), productionDaily.getTodayEquipmentB2StopTime())));
+            productionDaily.setTodayEquipmentPrepare2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentPrepare2RunningTime(), productionDaily.getTodayEquipmentPrepare2StopTime())));
+            productionDaily.setTodayEquipmentSecondaryRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentSecondaryRunningTime(), productionDaily.getTodayEquipmentSecondaryStopTime())));
+            productionDaily.setTodayEquipmentThirdRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getTodayEquipmentThirdRunningTime(), productionDaily.getTodayEquipmentThirdStopTime())));
+
             // 获取当天的危废入库信息
             List<InboundOrderItem> inboundOrderItemList = inboundService.getInboundOrderItemByRange(now, now);
+            productionDaily.setInboundOrderItemList(inboundOrderItemList);
 
-            // 获取当天的次生入库信息
-            List<InboundOrderItem> secondInboundOrderItemList = inboundService.getSecondInboundOrderItemByRange(now, now);
+            List<OutboundOrder> outboundOrderA2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "A2");
+            productionDaily.setOutboundOrderA2List(outboundOrderA2List);
+            List<OutboundOrder> outboundOrderB2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "B2");
+            productionDaily.setOutboundOrderB2List(outboundOrderB2List);
+            List<OutboundOrder> outboundOrderPrepare2List = outboundOrderService.getOutBoundByDateAndEquipment(now, "Prepare2");
+            productionDaily.setOutboundOrderPrepare2List(outboundOrderPrepare2List);
+            List<OutboundOrder> outboundOrderThirdList = outboundOrderService.getOutBoundByDateAndEquipment(now, "ThirdPhasePretreatmentSystem");
+            productionDaily.setOutboundOrderThirdList(outboundOrderThirdList);
 
+
+            float secondSlag = 0f;
+            float secondAsh = 0f;
+            for (OutboundOrder outboundOrder : outboundThirdOrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
+                String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
+                switch (wastesName) {
+                    case "slag":
+                        secondSlag += outboundOrder.getOutboundNumber();
+                        break;
+                    case "ash":
+                        secondAsh += outboundOrder.getOutboundNumber();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            productionDaily.setTodayDisposalThirdSlag(secondSlag);
+            productionDaily.setTodayDisposalThirdAsh(secondAsh);
+
+            secondSlag = 0f;
+            secondAsh = 0f;
+            List<OutboundOrder> outboundOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "SecondaryTwoCombustionChamber");
+            for (OutboundOrder outboundOrder : outboundOrderList) {
+                if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
+                String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
+                switch (wastesName) {
+                    case "slag":
+                        secondSlag += outboundOrder.getOutboundNumber();
+                        break;
+                    case "ash":
+                        secondAsh += outboundOrder.getOutboundNumber();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            productionDaily.setTodayDisposalSecondarySlag(secondSlag);
+            productionDaily.setTodayDisposalSecondaryAsh(secondAsh);
+
+            productionDaily.setTodayInboundSecondWastesSlag(productionDaily.getTodayDisposalSecondarySlag() + productionDaily.getTodayDisposalThirdSlag());
+            productionDaily.setTodayInboundSecondWastesAsh(productionDaily.getTodayDisposalSecondaryAsh() + productionDaily.getTodayDisposalThirdAsh());
+
+
+            // 增加日报
+            productionDailyService.addProductionDaily(productionDaily);
+            // 回送数据
+            JSONObject data = JSONObject.fromBean(productionDaily);
             res.put("status", "success");
             res.put("message", "生成日报成功");
+            res.put("data", data);
         }
         catch (Exception e) {
             e.printStackTrace();

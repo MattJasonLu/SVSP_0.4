@@ -29,7 +29,7 @@ public interface OutboundOrderService {
     List<OutboundOrder> getOutBoundByDate (Date date);
     List<OutboundOrder>  getOutBoundByDateRangeAndEquipment(Date startDate, Date endDate,String equipment);
     List<OutboundOrder> getOutBoundByDateAndEquipment (Date date,String equipment);
-
+    void cancelOutBoundOrder(String outboundOrderId);
 
 
 }

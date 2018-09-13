@@ -166,4 +166,10 @@
         values
         (#{receiveDate},#{name},#{relativeAlkalinity},#{dissolvedSolidForm},#{ph},#{alkalinity},#{hardness},#{electricalConductivity},#{remarks})
     </insert>
+
+
+    <!--增加日报-->
+    <insert id="addProductionDaily" parameterType="ProductionDaily">
+
+    </insert>
 </mapper>

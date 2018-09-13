@@ -41,4 +41,6 @@ public interface OutboundOrderMapper {
     void  updateSecondart(OutboundOrder outboundOrder);
      List<OutboundOrder>  getOutBoundByRange(Date startDate, Date endDate);
     List<OutboundOrder>  getOutBoundByDateRangeAndEquipment(Date startDate, Date endDate,String equipment);
+    void cancelOutBoundOrder(String outboundOrderId);
+
 }
