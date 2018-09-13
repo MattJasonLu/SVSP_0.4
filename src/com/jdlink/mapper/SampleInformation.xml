@@ -218,11 +218,11 @@
         SELECT * FROM t_pr_sampleinformationitem WHERE sampleId=#{id}
     </select>
 
-    <select id="listWastesCode" resultType="String">
+    <select id="listWastes" resultType="Wastes">
         select code from t_wasteslist;
     </select>
 
-    <select id="listClientId" resultType="String">
+    <select id="listClient" resultType="Client">
         select clientId from client;
     </select>
 

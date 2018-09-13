@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.SampleInformation;
 import com.jdlink.domain.Wastes;
@@ -21,6 +22,6 @@ public interface SampleInformationMapper {
     List<SampleInformation> search(SampleInformation sampleInformation);
     SampleInformation getBySampleInformationId(String id);
     Wastes getByWastesId(String id);
-    List<String> listWastesCode();
-    List<String> listClientId();
+    List<Wastes> listWastes();
+    List<Client> listClient();
 }

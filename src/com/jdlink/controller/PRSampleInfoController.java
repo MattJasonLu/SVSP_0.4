@@ -296,14 +296,14 @@ public class PRSampleInfoController {
     public String getClientAndWastesCodeSelectedList(){
         JSONObject res = new JSONObject();
         try {
-            List<String> clientId = sampleInformationService.listClientId();
-            System.out.println(clientId);
-            JSONArray companyCodeList = JSONArray.fromArray(clientId.toArray(new String[clientId.size()]));
-            List<String> wastesCode = sampleInformationService.listWastesCode();
-            System.out.println(wastesCode);
-            JSONArray wastesCodeList = JSONArray.fromArray(wastesCode.toArray(new String[wastesCode.size()]));
-            res.put("companyCodeList", companyCodeList);
-            res.put("wastesCodeList", wastesCodeList);
+            List<Client> client = sampleInformationService.listClient();
+            System.out.println(client);
+            JSONArray companyList = JSONArray.fromArray(client.toArray(new Client[client.size()]));
+            List<Wastes> wastes = sampleInformationService.listWastes();
+            System.out.println(wastes);
+            JSONArray wastesList = JSONArray.fromArray(wastes.toArray(new Wastes[wastes.size()]));
+            res.put("companyCodeList", companyList);
+            res.put("wastesCodeList", wastesList);
             res.put("status","success");
             res.put("message","数据获取成功！");
         }catch (Exception e){
