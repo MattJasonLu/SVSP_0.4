@@ -10,6 +10,7 @@ function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
+
 }
 
 /**
