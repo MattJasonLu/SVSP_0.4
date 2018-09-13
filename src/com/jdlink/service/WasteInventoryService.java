@@ -9,6 +9,7 @@ import java.util.List;
 public interface WasteInventoryService {
     List<WasteInventory> list(Page page);
     List<WasteInventory> list1();
+    List<WasteInventory> list2(Page page);
     List<WasteInventory> getWasteInventoryByInboundOrderId(String InboundOrderId);
     List<String> getBatchingOrderIdList();
     void addBatchingOrder(BatchingOrder batchingOrder);

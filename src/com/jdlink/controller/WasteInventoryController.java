@@ -36,7 +36,7 @@ public class WasteInventoryController {
     OutboundOrderService outboundOrderService;
     @Autowired
     QuotationService quotationService;
-   //获得库存信息（无参数）
+   //获得库存信息==》危废（无参数）
     @RequestMapping("getWasteInventoryList")
     @ResponseBody
     public String getWasteInventoryList(@RequestBody Page page){
@@ -51,6 +51,31 @@ public class WasteInventoryController {
             res.put("status", "success");
             res.put("message", "分页数据获取成功!");
            res.put("data", arrray);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+
+
+        return res.toString();
+    }
+    //获得库存信息==》次生（无参数）
+    @RequestMapping("getSecondaryInventoryList")
+    @ResponseBody
+    public String getSecondaryInventoryList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try{
+            wasteInventoryService.updateLeftNumber();
+
+            List<WasteInventory> wasteInventoryList= wasteInventoryService.list2(page);
+            JSONArray arrray=JSONArray.fromObject(wasteInventoryList);
+            // Quotation quotation=quotationService.getQuotationByWastesCodeAndClientId(wastesCode, clientId);
+            //更新剩余库存量
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+            res.put("data", arrray);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -495,13 +520,13 @@ public class WasteInventoryController {
 
         return res.toString();
     }
-//加载出库信息列表
+//加载出库信息列表==>接口口
     @RequestMapping("loadOutBoundList")
     @ResponseBody
-    public String loadOutBoundList(){
+    public String loadOutBoundList(@RequestBody Page page){
         JSONObject res=new JSONObject();
        try {
-           List<OutboundOrder> outboundOrderList=outboundOrderService.loadOutBoundList();
+           List<OutboundOrder> outboundOrderList=outboundOrderService.loadOutBoundList(page);
            res.put("data",outboundOrderList);
            res.put("status", "success");
            res.put("message", "查询成功");
@@ -518,8 +543,50 @@ catch (Exception e){
 
         return res.toString();
     }
+    //加载危废出库
+    @RequestMapping("loadWastesOutBoundList")
+    @ResponseBody
+    public  String loadWastesOutBoundList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<OutboundOrder> outboundOrderList=outboundOrderService.loadWastesOutBoundList(page);
+            res.put("data",outboundOrderList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+         return  res.toString();
+    }
+    //加载次生出库
+    @RequestMapping("loadSecOutBoundList")
+    @ResponseBody
+    public  String loadSecOutBoundList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<OutboundOrder> outboundOrderList=outboundOrderService.loadSecOutBoundList(page);
+            res.put("data",outboundOrderList);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+
+        return  res.toString();
+    }
     /**
-     * 获取总记录数
+     * 获取出库总记录数
      * @return
      */
     @RequestMapping("totalOutBoundRecord")
@@ -533,7 +600,21 @@ catch (Exception e){
         }
 
     }
+    /**
+     * 获取次生库存总记录数
+     */
+    @RequestMapping("totalSecondaryInventory")
+    @ResponseBody
+    public int totalSecondaryInventory(){
+        try {
+            return outboundOrderService.totalSecondaryInventory();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
 
+    }
+    /**
     /**
      * 搜索总记录数
      * @param outboundOrder
@@ -910,5 +991,32 @@ catch (Exception e){
 
         }
         return  res.toString();
+    }
+    /**
+     * 获取危废出库总数
+     *
+     */
+    @RequestMapping("totalWastesOutBoundRecord")
+    @ResponseBody
+    public int totalWastesOutBoundRecord(){
+        try {
+            return outboundOrderService.totalWastesOutBoundRecord();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    /**
+     * 获得次生出库总记录数
+     */
+    @RequestMapping("totalSecOutBoundRecord")
+    @ResponseBody
+    public int totalSecOutBoundRecord(){
+        try {
+            return outboundOrderService.totalSecOutBoundRecord();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 }
