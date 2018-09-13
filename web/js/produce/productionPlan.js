@@ -482,10 +482,13 @@ function searchProductionPlan() {
         data = {
             id: $("#search-id").val(),
             founder: $("#search-founder").val(),
-            creationDate: $("#search-creationDate").val(),
-            state: state
+            advice: $("#search-creationDate").val(),
+            state: state,
+            page:page
         };
     }
+    console.log("搜索数据为：");
+    console.log(data);
     $.ajax({
         type: "POST",                            // 方法类型
         url: "searchProductionPlan",                 // url

@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.SampleInformation;
+import com.jdlink.service.ClientService;
 import com.jdlink.service.SampleInformationService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -21,6 +22,8 @@ public class PRSampleInfoController {
 
     @Autowired
     SampleInformationService sampleInformationService;
+
+
 
     /**
      * 增加样品登记预约单
@@ -285,6 +288,29 @@ public class PRSampleInfoController {
         ApplyState[] applyStates = new ApplyState[] { ApplyState.Appointed,ApplyState.Canceld,ApplyState.SampleTaked,ApplyState.Invalid };
         JSONArray applyStateList = JSONArray.fromArray(applyStates);
         res.put("applyStateList", applyStateList);
+        return res.toString();
+    }
+
+    @RequestMapping("getClientAndWastesCodeSelectedList")
+    @ResponseBody
+    public String getClientAndWastesCodeSelectedList(){
+        JSONObject res = new JSONObject();
+        try {
+            List<Client> client = sampleInformationService.listClient();
+            System.out.println(client);
+            JSONArray companyList = JSONArray.fromArray(client.toArray(new Client[client.size()]));
+            List<Wastes> wastes = sampleInformationService.listWastes();
+            System.out.println(wastes);
+            JSONArray wastesList = JSONArray.fromArray(wastes.toArray(new Wastes[wastes.size()]));
+            res.put("companyCodeList", companyList);
+            res.put("wastesCodeList", wastesList);
+            res.put("status","success");
+            res.put("message","数据获取成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            res.put("status","fail");
+            res.put("message","数据获取失败！");
+        }
         return res.toString();
     }
 }

@@ -28,38 +28,44 @@
         </if>
     </select>
 
-    <select id="search" resultMap="ProductionPlanRM">
+    <select id="search" parameterType="ProductionPlan" resultMap="ProductionPlanRM">
         select * from t_pr_productionplan
         <where>
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
             </if>
             <if test="founder !=null and founder != ''">
-                and founder like "%"{founder}"%"
+                and founder like "%"#{founder}"%"
             </if>
-            <if test="creationDate != null and creationDate != ''">
-                and creationDate like "%"{creationDate}"%"
+            <if test="advice != null and advice != ''">
+                and ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
+                      or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%")
             </if>
             <if test="state != null and state != ''">
-                and state like "%"{state}"%"
+                and state like "%"#{state}"%"
             </if>
         </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count};
+        </if>
     </select>
 
-    <select id="searchCount" resultType="int">
+    <select id="searchCount" parameterType="ProductionPlan" resultType="int">
         select count(*) from t_pr_productionplan
         <where>
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
             </if>
             <if test="founder !=null and founder != ''">
-                and founder like "%"{founder}"%"
+                and founder like "%"#{founder}"%"
             </if>
-            <if test="creationDate != null and creationDate != ''">
-                and creationDate like "%"{creationDate}"%"
+            <if test="advice != null and advice != ''">
+                and ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%")
             </if>
             <if test="state != null and state != ''">
-                and state like "%"{state}"%"
+                and state like "%"#{state}"%"
             </if>
         </where>
     </select>

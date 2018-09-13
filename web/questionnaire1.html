@@ -307,7 +307,6 @@
     });
     function loadPage1Info() {
         $('.selectpicker').selectpicker('val', '');
-
         if (Request["questionnaireId"] == null || Request["questionnaireId"] == '') {
             $.ajax({
                 type: "POST",

@@ -20,7 +20,7 @@ public interface ProductionPlanMapper{
     int searchCount(ProductionPlan productionPlan);
 
     /**
-     * 搜索分页数据
+     * 查询分页数据
      * @param page
      * @return
      */
