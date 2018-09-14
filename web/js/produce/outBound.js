@@ -515,9 +515,9 @@ function saveOutBound(){
             console.log(data);
            addOutBoundOrder(data);
         });
-        // window.location.href="warehouseManageOut.html";
-    }
 
+    }
+    window.location.href="warehouseManageOut.html";
 
 
 
@@ -951,7 +951,7 @@ function searchWasteOut() {
         switchPage(parseInt(i))
         array.push($('.myclass'));
     }
-
+// console.log(array);
 //1出库日期
     var outBoundDate=$('#search-storageDate').val()+"";
     //2出库数量
