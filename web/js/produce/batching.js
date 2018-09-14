@@ -313,59 +313,108 @@ function setPageClone(result) {
  * 配料单页面高级查询
  */
 //查询功能
+array=[];
+array1=[];
 function searchBatchOrder() {
-    isSearch = true;
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.pageNumber = pageNumber;
-    page.count = countValue();
-    page.start = (pageNumber - 1) * page.count;
-    // if ($("#senior").is(':visible')) {
-    //     data1 = {
-    //         laboratoryTest: {wastesName:$("#search-wastesName").val()},
-    //         produceCompany:{companyName:$("#search-client").val()} ,
-    //         createDate: $("#search-batchingDate").val(),
-    //         page: page,
-    //         processWay:$("#search-processWay").val(),
-    //     };
-    //     console.log(data1);
-    // }
-    // if (data1 == null) alert("请点击'查询设置'输入查询内容!");
-    // else {
-    //     $.ajax({
-    //         type: "POST",                            // 方法类型
-    //         url: "searchBatchOrder",                 // url
-    //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-    //         data: JSON.stringify(data1),
-    //         dataType: "json",
-    //         contentType: "application/json; charset=utf-8",
-    //         success: function (result) {
-    //             console.log(result);
-    //             if (result.data != undefined || result.status == "success") {
-    //                  console.log(result);
-    //                 setPageClone(result);
-    //             } else {
-    //                 alert(result.message);
-    //             }
-    //         },
-    //         error: function (result) {
-    //             console.log(result);
-    //             alert("服务器错误！");
-    //         }
-    //     });
-    // }
+    // isSearch = true;
+    // var page = {};
+    // var pageNumber = 1;                       // 显示首页
+    // page.pageNumber = pageNumber;
+    // page.count = countValue();
+    // page.start = (pageNumber - 1) * page.count;
+    // // if ($("#senior").is(':visible')) {
+    // //     data1 = {
+    // //         laboratoryTest: {wastesName:$("#search-wastesName").val()},
+    // //         produceCompany:{companyName:$("#search-client").val()} ,
+    // //         createDate: $("#search-batchingDate").val(),
+    // //         page: page,
+    // //         processWay:$("#search-processWay").val(),
+    // //     };
+    // //     console.log(data1);
+    // // }
+    // // if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    // // else {
+    // //     $.ajax({
+    // //         type: "POST",                            // 方法类型
+    // //         url: "searchBatchOrder",                 // url
+    // //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+    // //         data: JSON.stringify(data1),
+    // //         dataType: "json",
+    // //         contentType: "application/json; charset=utf-8",
+    // //         success: function (result) {
+    // //             console.log(result);
+    // //             if (result.data != undefined || result.status == "success") {
+    // //                  console.log(result);
+    // //                 setPageClone(result);
+    // //             } else {
+    // //                 alert(result.message);
+    // //             }
+    // //         },
+    // //         error: function (result) {
+    // //             console.log(result);
+    // //             alert("服务器错误！");
+    // //         }
+    // //     });
+    // // }
+    // $('.myclass').each(function () {
+    //     $(this).show();
+    // });
+    // var batchingDate= $('#search-batchingDate').val()+"";//创建日期
+    // var processWay=$("#search-processWay option:selected").text();
+    // console.log(batchingDate+"=="+processWay);
+    // $('.myclass').each(function () {
+    //     if(!($(this).children('td').eq(9).text().indexOf(batchingDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1)){
+    //         $(this).hide();
+    //     }
+    // });
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
     $('.myclass').each(function () {
         $(this).show();
     });
-    var batchingDate= $('#search-batchingDate').val()+"";//创建日期
-    var processWay=$("#search-processWay option:selected").text();
-    console.log(batchingDate+"=="+processWay);
-    $('.myclass').each(function () {
-        if(!($(this).children('td').eq(9).text().indexOf(batchingDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1)){
-            $(this).hide();
-        }
-    });
+    for( var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        $('.myclass').show();
+        array.push($('.myclass'));
+    }
+    //创建日期
+    var createDate=$("#search-batchingDate").val();
+    //处理类别
+    var processWay=$('#search-processWay option:selected').text();
+    //危废名称
+    var wastesName=$("#search-wastesName").val();
+    //产废单位
+    var companyName=$('#search-client').val();
+  console.log(processWay);
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').eq(9).text().indexOf(createDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(7).text().indexOf(companyName)!=-1
+            )){
+                $(this).hide();
+            }
+            if(($(this).children('td').eq(9).text().indexOf(createDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(7).text().indexOf(companyName)!=-1)){
+                array1.push($(this));
+            }
+        });
+    }
 
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+
+    if(createDate.length<=0&&wastesName.length<=0&&processWay.length<=0&&companyName.length<=0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
 
 
 }
@@ -998,10 +1047,11 @@ function add(data) {
 }
 //领料单新增页面预加载
 function loadMaterialRequisitionList(){
-
+    var page={};
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getMaterialRequisitionList",                  // url
+        data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -1043,15 +1093,23 @@ function setMaterialRequisitionList(result) {
                             break;
                         // 厂家
                         case (1):
-                            $(this).html(obj.client.companyName);
+                            if(obj.client!=null){
+                                $(this).html(obj.client.companyName);
+                            }
+
                             break;
                         // 危废名称
                         case (2):
-                            $(this).html(obj.laboratoryTest.wastesName);
+                            if(obj.laboratoryTest!=null){
+                                $(this).html(obj.laboratoryTest.wastesName);
+                            }
                             break;
                         // 危废代码
                         case (3):
-                            $(this).html(obj.laboratoryTest.wastesCode);
+                            if(obj.laboratoryTest!=null){
+                                $(this).html(obj.laboratoryTest.wastesCode);
+                            }
+
                             break;
                         // 危废类别
                         case (4):
@@ -1199,7 +1257,7 @@ function update(data) {
         url: "updateMaterialRequisitionOrder",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data:JSON.stringify(data),
+        //data:JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){

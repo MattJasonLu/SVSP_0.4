@@ -1266,7 +1266,7 @@ function searchSecOutbound() {
            $('#tbody1').append(this) ;
         });
     }
-    if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<0&&outboundOrderId.length<0){
+    if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<=0&&outboundOrderId.length<=0){
         switchPage(1);
         $('.myclass').each(function () {
             $(this).show();
