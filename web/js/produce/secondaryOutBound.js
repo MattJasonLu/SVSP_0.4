@@ -139,6 +139,7 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
+                    console.log(result);
                     setOutBoundList(result.data);
                 } else {
                     console.log("fail: " + result);
