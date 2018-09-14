@@ -292,7 +292,7 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <select id="getOutBoundByDateRangeAndEquipment" resultMap="OutBoundOrderList" >
             SELECT * FROM t_pl_outboundorder
             <![CDATA[WHERE DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
-            AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]> and equipment=#{3};
+            AND DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]> and equipment=#{2};
        </select>
 <!--作废出库单-->
     <select id="cancelOutBoundOrder" parameterType="String">

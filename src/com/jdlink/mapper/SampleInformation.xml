@@ -9,21 +9,29 @@
         <result property="companyCode" column="companyCode"/>
         <result property="applyState" column="applyState"/>
         <result property="laboratorySigner" column="laboratorySigner"/>
-        <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes" javaType="ArrayList"/>
+        <collection property="wastesList" select="getWastes" column="id" ofType="com.jdlink.domain.Wastes"
+                    javaType="ArrayList"/>
     </resultMap>
 
     <insert id="add" parameterType="SampleInformation">
-        INSERT INTO t_pr_sampleinformation (id,companyCode, wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,nowTime)
-        VALUES (#{id},#{companyCode},#{wastesList[0].code},'Appointed',#{laboratorySigner},#{wastesList[0].isPH}, #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
-        #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine}, #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity}, NOW());
+        INSERT INTO t_pr_sampleinformation (id,companyCode,
+        wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,nowTime)
+        VALUES (#{id},#{companyCode},#{wastesList[0].code},'Appointed',#{laboratorySigner},#{wastesList[0].isPH},
+        #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
+        #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
+        #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity}, NOW());
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
-                INSERT INTO t_pr_sampleinformationitem (id,sampleId,code,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity) VALUES
-                (#{wastes.id}, #{id}, #{wastes.code},#{wastes.isPH}, #{wastes.isAsh}, #{wastes.isWater}, #{wastes.isHeat},
-                #{wastes.isSulfur}, #{wastes.isChlorine}, #{wastes.isFluorine}, #{wastes.isPhosphorus}, #{wastes.isFlashPoint}, #{wastes.isViscosity});
+                INSERT INTO t_pr_sampleinformationitem
+                (id,sampleId,code,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity)
+                VALUES
+                (#{wastes.id}, #{id}, #{wastes.code},#{wastes.isPH}, #{wastes.isAsh}, #{wastes.isWater},
+                #{wastes.isHeat},
+                #{wastes.isSulfur}, #{wastes.isChlorine}, #{wastes.isFluorine}, #{wastes.isPhosphorus},
+                #{wastes.isFlashPoint}, #{wastes.isViscosity});
             </foreach>
         </if>
-</insert>
+    </insert>
 
     <select id="listPage" resultType="SampleInformation">
         select *
@@ -57,19 +65,20 @@
         select * from t_pr_sampleinformation
         <where>
             <if test='1 == 1'>
-                companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like "%"#{keyword}"%"
+                companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like
+                "%"#{keyword}"%"
             </if>
             <if test='keyword == "已"'>
                 or applyState = 'SampleTaked' or applyState = 'Appointed'
             </if>
             <if test='keyword == "预约"'>
-                or applyState =  'Appointed' or applyState = 'Canceld'
+                or applyState = 'Appointed' or applyState = 'Canceld'
             </if>
             <if test='keyword == "已取样" || keyword == "取样"'>
                 or applyState = 'SampleTaked'
             </if>
             <if test='keyword== "已预约"'>
-                or applyState =  'Appointed'
+                or applyState = 'Appointed'
             </if>
             <if test='keyword == "预约取消"'>
                 or applyState = 'Canceld'
@@ -82,19 +91,20 @@
         SELECT COUNT(*) FROM t_pr_sampleinformation
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like "%"#{keyword}"%"
+                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like
+                "%"#{keyword}"%"
             </if>
             <if test='keyword == "已"'>
                 or applyState = 'SampleTaked' or applyState = 'Appointed'
             </if>
             <if test='keyword == "预约"'>
-                or applyState =  'Appointed' or applyState = 'Canceld'
+                or applyState = 'Appointed' or applyState = 'Canceld'
             </if>
             <if test='keyword == "已取样" || keyword == "取样"'>
                 or applyState = 'SampleTaked'
             </if>
             <if test='keyword== "已预约"'>
-                or applyState =  'Appointed'
+                or applyState = 'Appointed'
             </if>
             <if test='keyword == "预约取消"'>
                 or applyState = 'Canceld'
@@ -148,19 +158,20 @@
         SELECT * FROM t_pr_sampleinformation
         <where>
             <if test="keyword != null and keyword != ''">
-                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like "%"#{keyword}"%"
+                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like
+                "%"#{keyword}"%"
             </if>
             <if test='keyword == "已"'>
                 or applyState = 'SampleTaked' or applyState = 'Appointed'
             </if>
             <if test='keyword == "预约"'>
-                or applyState =  'Appointed' or applyState = 'Canceld'
+                or applyState = 'Appointed' or applyState = 'Canceld'
             </if>
             <if test='keyword == "已取样" || keyword == "取样"'>
                 or applyState = 'SampleTaked'
             </if>
             <if test='keyword== "已预约"'>
-                or applyState =  'Appointed'
+                or applyState = 'Appointed'
             </if>
             <if test='keyword == "预约取消"'>
                 or applyState = 'Canceld'
@@ -234,34 +245,41 @@
     </update>
 
     <update id="update" parameterType="SampleInformation">
-        UPDATE t_pr_sampleinformation SET companyCode=#{companyCode },wastesCode = #{wastesList[0].code},laboratorySigner = #{laboratorySigner},isPH = #{wastesList[0].isPH},
-        isAsh = #{wastesList[0].isAsh},isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur = #{wastesList[0].isSulfur},isChlorine = #{wastesList[0].isChlorine},
-        isFluorine = #{wastesList[0].isFluorine},isPhosphorus = #{wastesList[0].isPhosphorus},isFlashPoint = #{wastesList[0].isFlashPoint},isViscosity = #{wastesList[0].isViscosity},nowTime = NOW()
+        UPDATE t_pr_sampleinformation
+        SET
+        companyCode=#{companyCode },wastesCode =#{wastesList[0].code},
+        laboratorySigner = #{laboratorySigner},isPH = #{wastesList[0].isPH},isAsh = #{wastesList[0].isAsh},
+        isWater = #{wastesList[0].isWater},isHeat = #{wastesList[0].isHeat},isSulfur =#{wastesList[0].isSulfur},
+        isChlorine = #{wastesList[0].isChlorine},isFluorine = #{wastesList[0].isFluorine},isPhosphorus =
+        #{wastesList[0].isPhosphorus},
+        isFlashPoint =#{wastesList[0].isFlashPoint},isViscosity = #{wastesList[0].isViscosity},nowTime = NOW()
         WHERE t_pr_sampleinformation.id =#{id};
-        <if test="wastesList.size() > 0">
-            <foreach collection="wastesList" item="wastes" index="index">
-                <if test="wastes.id != null">
-                UPDATE t_pr_sampleinformationitem SET code = #{wastes.code},isPH = #{wastes.isPH},
-                isAsh =  #{wastes.isAsh},isWater = #{wastes.isWater},isHeat = #{wastes.isHeat},isSulfur = #{wastes.isSulfur},
-                isChlorine = #{wastes.isChlorine},isFluorine = #{wastes.isFluorine},isPhosphorus = #{wastes.isPhosphorus},
-                isFlashPoint = #{wastes.isFlashPoint},isViscosity = #{wastes.isViscosity}
-                WHERE id = #{wastes.id};
-                </if>
-                <if test="wastes.id == null">
+        <foreach collection="wastesList" item="wastes" index="index">
+            <choose>
+                <when test="wastes.ph == 1">
+                    UPDATE t_pr_sampleinformationitem
+                    SET
+                    code = #{wastes.code},isPH = #{wastes.isPH},isAsh = #{wastes.isAsh},isWater = #{wastes.isWater},
+                    isHeat = #{wastes.isHeat},isSulfur =#{wastes.isSulfur},isChlorine = #{wastes.isChlorine},
+                    isFluorine = #{wastes.isFluorine},isPhosphorus =#{wastes.isPhosphorus}, isFlashPoint =
+                    #{wastes.isFlashPoint},
+                    isViscosity = #{wastes.isViscosity}
+                    WHERE t_pr_sampleinformationitem.id = #{wastes.id};
+                </when>
+                <otherwise>
                     insert into t_pr_sampleinformationitem
-                    (id,code,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity)
+                    (id,sampleId,code,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity)
                     values
-                    (#{wastes.id},#{wastes.code},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},#{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
+                    (#{wastes.id},#{id},#{wastes.code},#{wastes.isPH},#{wastes.isAsh},#{wastes.isWater},#{wastes.isHeat},#{wastes.isSulfur},#{wastes.isChlorine},#{wastes.isFluorine},#{wastes.isPhosphorus},
                     #{wastes.isFlashPoint},#{wastes.isViscosity});
-                </if>
-            </foreach>
-        </if>
+                </otherwise>
+            </choose>
+        </foreach>
     </update>
 
     <update id="updateSampleInfo" parameterType="String">
         update t_pr_sampleinformation set applyState = 'Invalid' where id = #{sampleId}
     </update>
-
 
 
 </mapper>

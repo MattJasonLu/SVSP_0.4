@@ -41,7 +41,7 @@
     <select id="getMedicalWastesByDateAndEquipment" resultType="MedicalWastes">
          SELECT * FROM t_pl_medicalwastes
             <![CDATA[WHERE DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
-            AND DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]> and equipment=#{3};
+            AND DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]> and equipment=#{2};
 
     </select>
 </mapper>
