@@ -405,7 +405,7 @@ function addData() {
                 // 如果查看则跳转页面
                 if (r) {
                     // 数据存放
-                    window.localStorage.productionDaily = result.data;
+                    window.localStorage.productionDailyId = result.data.id;
                     $(location).prop('href', 'productionDaily1.html');
                 } else {
                     // 否则刷新页面
@@ -422,10 +422,51 @@ function addData() {
     });
 }
 
-function viewData(e) {
-    if (window.localStorage.productionDaily != null) {
-        console.log(window.localStorage['productionDaily']);
+/**
+ * 读取数据
+ */
+function loadData() {
+    var id = window.localStorage.productionDailyId;
+    if (id != null) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getProductionDailyById",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result.data);
+                } else {
+                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
     }
+}
+
+/**
+ * 查看数据
+ * @param e
+ */
+function viewData(e) {
+    // 获取编号并存储内存，页面跳转
+    window.localStorage.productionDailyId = getIdByMenu(e);
+    $(location).prop('href', 'productionDaily1.html');
+}
+
+/**
+ * 通过菜单获取编号
+ * @param e
+ * @returns {*}
+ */
+function getIdByMenu(e) {
+    return e.parent().parent().find("td[name='id']").text();
 }
 
 

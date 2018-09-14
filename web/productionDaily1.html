@@ -26,7 +26,7 @@
         vertical-align: middle!important;
     }
 </style>
-<body onload="viewData(null);">
+<body onload="loadData();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -118,9 +118,9 @@
             <br>
             <table class="table" style="border: none">
                 <tr>
-                    <td class="text-left">报表单位：</td>
-                    <td class="text-left">生产技术部</td>
-                    <td class="text-left">报表产生时间：</td>
+                    <td class="text-left">报表单位：常州北控安耐得有限公司</td>
+                    <td class="text-left">报表部门：生产技术部</td>
+                    <td class="text-left">报表产生时间：<span id="date"></span></td>
                     <td class="text-left"><span id="week"></span></td>
                 </tr>
             </table>
@@ -495,8 +495,8 @@
                     <td class="text-center"></td>
                 </tr>
                 <tr>
+                    <td class="text-center" rowspan="2">次生危废</td>
                     <td class="text-center">焚烧后铁桶</td>
-                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -519,7 +519,6 @@
                 </tr>
                 <tr>
                     <td class="text-center">直接转移类铁桶</td>
-                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1103,7 +1102,8 @@
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="3"></td>
-                    <td class="text-center" colspan="2">铁塔电量</td>
+                    <td class="text-center">铁塔电量</td>
+                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1214,12 +1214,12 @@
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
+                    <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="3"></td>
                     <td class="text-center">二期二燃室</td>
-                    <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1243,8 +1243,8 @@
                     <td class="text-center">二期本日合计</td>
                     <td class="text-center">二期月累计</td>
                     <td class="text-center">二期年累计</td>
-                    <td class="text-center">三期</td>
                     <td class="text-center"></td>
+                    <td class="text-center">三期</td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1397,10 +1397,10 @@
                     <td class="text-center">日配料比例</td>
                     <td class="text-center">月配料比例</td>
                     <td class="text-center">年配料比例</td>
+                    <td class="text-center"></td>
                     <td class="text-center">三期</td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-center">破碎料类</td>
@@ -1524,8 +1524,7 @@
                     <td class="text-center"></td>
                 </tr>
                 <tr>
-                    <td class="text-center">三期焚烧系统</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">三期焚烧系统</td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -2406,12 +2405,13 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">填表</td>
-                    <td class="text-center" colspan="2">韩九云</td>
+                    <td class="text-center" colspan="2"></td>
                 </tr>
                 </tbody>
             </table>
 
             <div class="row text-center">
+                <a class="btn btn-primary" href="#">打印</a>
                 <a class="btn btn-danger" href="productionDaily.html">返回</a>
             </div>
         </div>

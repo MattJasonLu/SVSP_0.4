@@ -67,4 +67,9 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
         productionDailyMapper.addProductionDaily(productionDaily);
     }
 
+    @Override
+    public ProductionDaily getProductionDailyById(int id) {
+        return productionDailyMapper.getProductionDailyById(id);
+    }
+
 }

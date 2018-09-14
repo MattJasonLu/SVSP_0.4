@@ -44,4 +44,11 @@ public interface ProductionDailyMapper {
      * @param productionDaily 日报对象
      */
     void addProductionDaily(ProductionDaily productionDaily);
+
+    /**
+     * 通过编号获取日报
+     * @param id 编号
+     * @return 日报
+     */
+    ProductionDaily getProductionDailyById(int id);
 }
