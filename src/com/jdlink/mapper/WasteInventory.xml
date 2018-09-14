@@ -189,7 +189,7 @@
     <select id="getClient2" resultType="Client">
         select * from  client where clientId=#{produceCompany};
     </select>
-    <!--计算总共条数-->
+    <!--计算总共条数==>危废入库-->
     <select id="countInventory" resultType="int">
         select COUNT(*) from t_pl_wasteinventory where boundType='WasteInbound';
     </select>

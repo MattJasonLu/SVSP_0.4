@@ -442,7 +442,7 @@ function search1(){
     // }
 
 }
-
+array1=[];
 //js版本的高级查询==>次生库存
 function searchSec() {
 
@@ -451,9 +451,10 @@ function searchSec() {
     });
     //1分页模糊查询
     array.length=0;//清空数组
-    array.push($('.myclass'));//首先获得当前页面的所有行
-    for(var i=1;i<totalPage();i++){
-        switchPage(parseInt(i)+1)
+    array1.length=0;
+    //array.push($('.myclass'));//首先获得当前页面的所有行
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i))
         array.push($('.myclass'));
     }
     var  inDate=$('#search-inDate').val()+"";
@@ -466,6 +467,14 @@ function searchSec() {
             if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
                 $(this).hide();
             }
+            if(($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
+               array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
         });
     }
     if(inDate.length<=0&&companyName.length<=0&&handelCategory.length<=0){
