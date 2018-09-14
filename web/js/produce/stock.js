@@ -289,6 +289,10 @@ function loadPageStocktList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.count = countValue();                                 // 可选
@@ -330,6 +334,7 @@ function setStockList(result) {
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.attr('class','myclass');
         clonedTr.show();
         var _index = index;
         // 循环遍历cloneTr的每一个td元素，并赋值
@@ -469,59 +474,146 @@ function setSeniorSelectedList() {
         }
     });
 }
-
+array=[];//存放所有的tr
+array1=[];//存放目标的tr
+//危废出库查询
 /**
  * 查找申报信息
  */
 function searchStock() {
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.pageNumber = pageNumber;
-    page.count = countValue();
-    page.start = (pageNumber - 1) * page.count;
-    // 精确查询
-    if ($("#senior").is(':visible')) {
-        data = {
-            stockId: $("#search-stockId").val(),//库存编号
-            proContactName: $("#search-proContactName").val(),//产废单位联系人
-            proTelephone: $("#search-proTelephone").val(),//产废单位联系电话
-            transport: $("#search-transport").val(),//运输公司
-            transportTelephone: $("#search-transportTelephone").val(),//运输公司电话
-            plateNumber: $("#search-plateNumber").val(),//车牌号
-            checkState: $("#search-checkState").val(),//审核状态
-            page: page
-        };
-        console.log(data);
-        // 模糊查询
-    } else {
-        data = {
-            keyword: $("#searchContent").val(),
-            page: page
-        };
-        console.log(data);
-    }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "searchStock",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setPageClone(result.data);
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-        }
+    // var page = {};
+    // var pageNumber = 1;                       // 显示首页
+    // page.pageNumber = pageNumber;
+    // page.count = countValue();
+    // page.start = (pageNumber - 1) * page.count;
+    // // 精确查询
+    // if ($("#senior").is(':visible')) {
+    //     data = {
+    //         stockId: $("#search-stockId").val(),//库存编号
+    //         proContactName: $("#search-proContactName").val(),//产废单位联系人
+    //         proTelephone: $("#search-proTelephone").val(),//产废单位联系电话
+    //         transport: $("#search-transport").val(),//运输公司
+    //         transportTelephone: $("#search-transportTelephone").val(),//运输公司电话
+    //         plateNumber: $("#search-plateNumber").val(),//车牌号
+    //         checkState: $("#search-checkState").val(),//审核状态
+    //         page: page
+    //     };
+    //     console.log(data);
+    //     // 模糊查询
+    // } else {
+    //     data = {
+    //         keyword: $("#searchContent").val(),
+    //         page: page
+    //     };
+    //     console.log(data);
+    // }
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "searchStock",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     data: JSON.stringify(data),
+    //     dataType: "json",
+    //     contentType: "application/json; charset=utf-8",
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //             console.log(result);
+    //             setPageClone(result.data);
+    //         } else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //     }
+    // });
+    // isSearch = true;
+    $('.myclass').each(function () {
+        $(this).show();
     });
-    isSearch = true;
-}
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    //1分页模糊查询
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i))
+        array.push($('.myclass'));
+    }
+    //审核状态
+   var checkState=$('#search-checkState option:selected').text();
+    //产废单位联系人
+    var companyContact=$('#search-proContactName').val();
+    //单位联系电话
+    var phone=$('#search-proTelephone').val();
+    //运输公司
+    var transport=$('#search-transport').val();
 
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1
+            )){
+                $(this).hide();
+            }
+            if(($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
+                &&$(this).children('td').eq(13).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1)){
+                array1.push($(this));
+            }
+        });
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(checkState.length<=0&&phone.length<=0&&companyContact.length<0&&transport.length<0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+
+
+}
+//粗查询
+function searchStock1() {
+    switchPage(1);
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i))
+        array.push($('.myclass'));
+    }
+    var text=$('#searchContent').val();
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+         if($(this).children('td').text().indexOf(text)!=-1){
+             array1.push($(this));
+         }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(text.length<=0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+}
 /**
  * 8位危废代码获取
  */

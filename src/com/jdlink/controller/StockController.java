@@ -59,11 +59,11 @@ public class StockController {
 //获取所欲申报信息
     @RequestMapping("loadPageStocktList")
     @ResponseBody
-    public String loadPageStocktList(){
+    public String loadPageStocktList(@RequestBody Page page){
         JSONObject res = new JSONObject();
      //1查找所有的库存申报信息
         try {
-            List<Stock> stockList=stockService.list();
+            List<Stock> stockList=stockService.list(page);
             JSONArray array = JSONArray.fromArray(stockList.toArray(new Stock[stockList.size()]));
             res.put("status", "success");
             res.put("message", "查询成功");
