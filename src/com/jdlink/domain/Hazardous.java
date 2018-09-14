@@ -5,6 +5,26 @@ package com.jdlink.domain;
  */
 public class Hazardous{
     private String id;
+    /**
+     * 废物名称
+     */
+    private  String name;
+    /**
+    废物数量
+     */
+    private String num;
+    /**
+     * 危废代码(8位)
+     */
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getId() {
         return id;
@@ -14,14 +34,6 @@ public class Hazardous{
         this.id = id;
     }
 
-    /**
-     * 废物名称
-     */
-    private  String name;
-    /**
-    废物数量
-     */
-    private String num;
 
     public String getName() {
         return name;

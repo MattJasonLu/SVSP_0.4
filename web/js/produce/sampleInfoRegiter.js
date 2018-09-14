@@ -572,6 +572,7 @@ function viewSample(menu) {
  */
 function view(sampleId){
     $(".newLine").remove();
+    $("#footer").show();
     $.ajax({
         type: "POST",                            // 方法类型
         url: "getSampleInformation",                 // url
@@ -1211,12 +1212,6 @@ function deleteSample(menu) {
     }
 }
 
-// function allSelect() {
-//     var isChecked = $('#allSel').prop('checked');
-//     if (isChecked) $("input[name='select']").prop('checked', true);
-//     else $("input[name='select']").prop('checked', false);
-// }
-
 // 对Date原型进行改造，增加方法format
 Date.prototype.format = function (format) {
     var o = {
@@ -1253,5 +1248,21 @@ function exportExcel(e) {
 function closeModal(){
     $("#appointModal").hide();
     window.location.reload();
+}
+
+/**
+ * 打印功能
+ */
+function print() {
+    //打印模态框
+    $("#footer").hide();
+    $("#viewModal").printThis({
+        debug: false,             // 调试模式下打印文本的渲染状态
+        importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        copyTagClasses: false
+    });
+
 }
 

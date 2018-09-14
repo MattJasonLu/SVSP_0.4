@@ -153,6 +153,12 @@
         </where>
     </select>
 
+    <select id="getWayBillItemByClientIdAndWastesCode" resultMap="WayBillItemRM">
+        select * from t_pr_waybillitem
+        where wayBillId in ( select id from t_pr_waybill where produceCompanyId=#{clientId})
+        and wastesId in (select id from t_wastes where code=#{code});
+    </select>
+
     <update id="approval" parameterType="WayBill">
         update t_pr_waybill set state = 'Approval',advice = #{advice} where id = #{id}
     </update>
