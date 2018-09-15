@@ -1,6 +1,11 @@
 /*
 *次生出库脚本文件
  */
+function reset() {
+    $("#senior").find("input").val("");
+    $("#searchContent").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
@@ -13,6 +18,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 /**
  * 计算总页数
  * */
@@ -21,7 +27,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalOutBoundRecord",                  // url
+            url: "totalSecOutBoundRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -64,407 +70,189 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
-//加载次生危废列表
-function loadSecondaryList() {
-    $('.selectpicker').selectpicker({
-        language: 'zh_CN',
-        size: 4
-    });
-    var page = {};
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getOutBoundList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result ) {
-            if (result != undefined && result.status == "success"){
-                // console.log(result);
-                //1获得下拉列表
-                var outboundType=$("#outboundType");
-                //2清除子元素
-                outboundType.children().remove();
-                //3遍历获得项来赋值
-                $.each(result.array,function (index,item) {
-                    //4创建选项元素
-                    var option = $('<option />');
-                    //5给option赋值
-                    option.val(index);
-                    option.text(item.name);
-                    //6添加到父节点
-                    outboundType.append(option);
-                });
-                //7初始化选项
-                outboundType.get(0).selectedIndex=-1;
-
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
-        }
-    });
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWasteInventoryList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: JSON.stringify(page),
-        contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if(result != undefined && result.status == "success"){
-                console.log(result);
-                //设置库存列表
-                setWasteInventoryList(result.data);
-            }
-            else {
-                console.log(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
-        }
-
-    });
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getEquipmentNameList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result)
-                var equipment=$("#equipment");
-                equipment.children().remove();
-                $.each(result.equipmentList,function (index,item) {
-                    var option=$('<option/>')
-                    option.val(index);
-                    option.text(item.name);
-                    equipment.append(option);
-                    $('.selectpicker').selectpicker('refresh');
-                });
-            }
-            else {
-                alert(result.message)
-            }
-        },
-        error:function (result) {
-            alert("服务器异常")
-        }
-
-    });
-}
-
-/**设置库存列表数据
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
  */
-function setWasteInventoryList(result) {
-    $(".myclass").hide();
-    var tr = $("#cloneTr");
-    tr.attr('class','myclass')
-    console.log(result);
-    //tr.siblings().remove();
-    $.each(result, function (index, item) {
-        if(item.actualCount>0&&item.boundType.name=='次生入库'){
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-               clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    // 入库编号
-                    case (1):
-                        $(this).html(obj.inboundOrderId);
-                        break;
-                    // 仓库号
-                    case (2):
-                        $(this).html("");
-                        break;
-                    //产废单位
-                    case (3):
-                        $(this).html(obj.produceCompany.companyName);
-                        break;
-                    // 危废名称
-                    case (4):
-                        if(obj.laboratoryTest.wastesName=='slag'){
-                            $(this).html('炉渣');
-                        }
-                        if(obj.laboratoryTest.wastesName=='ash'){
-                            $(this).html('飞灰');
-                        }
-                        if(obj.laboratoryTest.wastesName=='bucket'){
-                            $(this).html('桶');
-                        }
-                        break;
-                    // 危废代码
-                    case (5):
-                        $(this).html(obj.laboratoryTest.wastesCode);
-                        break;
-                    // 产废类别
-                    case (6):
-                        $(this).html(obj.wastesCategory);
-                        break;
-                    // 进料方式
-                    case (7):
-                        if(obj.handleCategory!=null){
-                            $(this).html(obj.handleCategory.name);
-                        }
-
-                        break;
-                    //数量
-                    case (8):
-                        $(this).html(obj.actualCount);
-                        break;
-                    //剩余数量
-                    case (9):
-                        $(this).html(obj.leftNumeber);
-                        break;
-                    case (10):
-                        $(this).html(obj.remarks);
-                        break;
-                    case (11):
-                        $(this).html(obj.inboundOrderItemId);
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        }
-    });
-    // 隐藏无数据的tr
-    tr.hide();
-    tr.removeAttr('class');
-
-    //遍历赋值
-    $(".myclass").each(function(){
-        //1获得入库单号
-        var inboundOrderId=this.firstElementChild.nextElementSibling.innerHTML;
-        //console.log(inboundOrderId);
-        $("#residualQuantity").attr("name",inboundOrderId);
-        $("#residualQuantity").removeAttr('id');
-    });
-
-
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        window.alert("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
 }
-/*出库*/
-function batching() {
-    var items = $("input[name='select']:checked");//判断复选框是否选中
-    items.each(function () {
-        //获得库存Id
-        var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
-        //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage(pageNumber) {
+    console.log("当前页：" + pageNumber);
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getWasteInventoryByInboundOrderId",                  // url
+            url: "loadSecOutBoundList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
             dataType: "json",
-            data:{'inboundOrderItemId':inboundOrderItemId},
-            success:function (result) {
-                if(result != undefined && result.status == "success"){
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
                     console.log(result);
-                    //设置配料列表
-                    setBatchingWList(result.data);
-                }
-                else {
-                    console.log(result.message);
+                    setOutBoundList(result.data);
+                } else {
+                    console.log("fail: " + result);
                 }
             },
-            error:function (result) {
-                alert("服务器异常！")
-            }
-
-        });
-    });
-}
-/**设置配料列表数据
- *
- */
-function setBatchingWList(result) {
-    var tr = $("#cloneTr2");
-    tr.attr('class','myclass2');
-    //tr.siblings().remove();
-    //console.log(result);
-    $.each(result, function (index, item) {
-        // 克隆tr，每次遍历都可以产生新的tr
-        var clonedTr = tr.clone();
-        clonedTr.show();
-        // 循环遍历cloneTr的每一个td元素，并赋值
-        clonedTr.children("td").each(function (inner_index) {
-            var obj=eval(item);
-            // 根据索引为部分td赋值
-            switch (inner_index) {
-                // 入库编号
-                case (0):
-                    $(this).html(obj.inboundOrderId);
-                    break;
-                // 仓库号
-                case (1):
-                        $(this).html("");
-                    break;
-                //产废单位
-                case (2):
-                    $(this).html(obj.produceCompany.companyName);
-                    break;
-                // 危废名称
-                case (3):
-                    if(obj.laboratoryTest.wastesName=='slag'){
-                        $(this).html('炉渣');
-                    }
-                    if(obj.laboratoryTest.wastesName=='ash'){
-                        $(this).html('飞灰');
-                    }
-                    if(obj.laboratoryTest.wastesName=='bucket'){
-                        $(this).html('桶');
-                    }
-                    break;
-                // 危废代码
-                case (4):
-                    $(this).html(obj.laboratoryTest.wastesCode);
-                    break;
-                // 产废类别
-                case (5):
-                    $(this).html("");
-                    break;
-                // 进料方式
-                case (6):
-                    if(obj.handleCategory!=null){
-                        $(this).html(obj.handleCategory.name);
-                    }
-
-                    break;
-                //数量
-                case (7):
-                    $(this).html(obj.actualCount);
-                    break;
-                case (8):
-                    $(this).html(obj.remarks);
-                    break;
-                case (9):
-                    $(this).html(obj.inboundOrderItemId);
-                    break;
+            error: function (result) {
+                console.log("error: " + result);
             }
         });
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
-    });
-    // 隐藏无数据的tr
-    tr.hide();
-    tr.removeAttr('class');
-}
-//数量加减
-function subtraction(item) {
-    //获得相应的入库单号
-    var flag=false;
-    var inboundOrderId = item.parentElement.parentElement.firstElementChild.innerHTML;
-    var number=$(item).val();
-    //1根据入库单号获得总量，然后根据配料量减去得到剩余量
-    setTimeout(time(inboundOrderId,number), 2000);
-    // console.log(array)
-    //进行运算
-}
-function time(inboundOrderId,number) {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getWasteInventoryLeftNumber",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: {'inboundOrderId':inboundOrderId,'number':number},
-        dataType: "json",
-        // contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                $("td[name="+inboundOrderId+"]").html(result.leftNumber);
-            } else {
-                alert(result.message);
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchSewage",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setSewageList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
             }
-        },
-        error: function (result) {
-            alert("服务器异常！")
+        });
+    }
+}
+
+/**
+ * 输入页数跳转页面
+ * */
+function inputSwitchPage() {
+    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == null || pageNumber == undefined) {
+        window.alert("跳转页数不能为空！")
+    } else {
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
         }
-    });
-}
-//保存
-function save() {
-    if(confirm("确定生成出库单?")){
-        //点击确定后操作
-        $(".myclass2").each(function () {
-            var data={
-                inboundOrderItemId:$(this).children('td').last().text(),
-                outboundNumber:$(this).children('td').get(7).innerHTML,
-                outboundDate:$('#date').val(),
-                boundType:$("#outboundType").val(),
-                creator:$('#creator').val(),
-                departmentName:$('#departmentName').val(),
-                equipment:$('#equipment').selectpicker('val'),
-            };
-            console.log(data);
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        currentPage = pageNumber;
+        var page = {};
+        page.count = countValue();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "addSecondary",                  // url
+                url: "loadSecOutBoundList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
+                data: JSON.stringify(page),
                 dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
                         console.log(result);
-                    }
-                    else {
-                        alert(result.message);
-
+                        setOutBoundList(result.data);
+                    } else {
+                        console.log("fail: " + result);
                     }
                 },
-
-                error:function (result) {
-                    alert("服务器异常")
-
+                error: function (result) {
+                    console.log("error: " + result);
                 }
             });
-        });
+        } else {
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchSewage",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setSewageList(result.data);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
     }
-
-      // alert("添加成功！");
-      // window.location.href="secondaryOutbound.html";
 }
 
-//加载次生出库信息
-function onLoadSecondary() {
-    $("#current").find("a").text("当前页：1");
-    $("#previous").addClass("disabled");
-    $("#firstPage").addClass("disabled");
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.count = countValue();                                 // 可选
-    page.pageNumber = pageNumber;
-    page.start = (pageNumber - 1) * page.count;
-$.ajax({
-    type: "POST",                       // 方法类型
-    url: "loadOutBoundList",                  // url
-    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-    dataType: "json",
-    contentType: "application/json; charset=utf-8",
-    success:function (result) {
-        if (result != undefined && result.status == "success"){
-            console.log(result);
-            setPageClone(result.data);
-        }
-        else {
-            alert(result.message);
-
-        }
-    },
-    error:function (result) {
-        alert("服务器异常！")
-    }
-
-});
-}
 /**
  * 克隆页码
  * @param result
@@ -492,14 +280,54 @@ function setPageClone(result) {
         clonedLi.insertAfter(li);
     }
 }
-//设置出库数据列表
+
+//加载次生出库信息==>次生出库页面
+function onLoadSecondary() {
+    $("#current").find("a").text("当前页：1");
+    $("#previous").addClass("disabled");
+    $("#firstPage").addClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.count = countValue();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "loadSecOutBoundList",                  // url
+        data:JSON.stringify(page),
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                setPageClone(result.data);
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+}
+
+//设置出库数据列表==>次生出库页面
 function setOutBoundList(result) {
     var tr = $("#clonedTr1");
+    tr.siblings().remove();
     //console.log(result);
     //tr.siblings().remove();
     tr.attr('class','myclass');
     $.each(result, function (index, item) {
-       // console.log(item);
+        // console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
         if(item.boundType.name=='次生出库'){
             var clonedTr = tr.clone();
@@ -601,37 +429,60 @@ function setOutBoundList(result) {
     tr.removeAttr('class');
 }
 
-/**
- *
- *加载次生数据
- */
-function loadWasteInventoryList() {
-    var pageNumber = 1;               // 显示首页
-    $("#current").find("a").text("当前页：1");
-    $("#previous").addClass("disabled");
-    $("#firstPage").addClass("disabled");
-    if (totalPage() == 1) {
-        $("#next").addClass("disabled");
-        $("#endPage").addClass("disabled");
-    }
+//加载次生列表==>次生出库新增页面
+function loadSecondaryList() {
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
     var page = {};
-    page.count = countValue();                                 // 可选
-    page.pageNumber = pageNumber;
-    page.start = (pageNumber - 1) * page.count;
-    //查询危废仓库信息
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWasteInventoryList", // url
-        data: JSON.stringify(page),
+        url: "getOutBoundList",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result ) {
+            if (result != undefined && result.status == "success"){
+                // console.log(result);
+                //1获得下拉列表
+                var outboundType=$("#outboundType");
+                //2清除子元素
+                outboundType.children().remove();
+                //3遍历获得项来赋值
+                $.each(result.array,function (index,item) {
+                    //4创建选项元素
+                    var option = $('<option />');
+                    //5给option赋值
+                    option.val(index);
+                    option.text(item.name);
+                    //6添加到父节点
+                    outboundType.append(option);
+                });
+                //7初始化选项
+                outboundType.get(0).selectedIndex=-1;
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getSecondaryInventoryList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: JSON.stringify(page),
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if(result != undefined && result.status == "success"){
                 console.log(result);
-                //设置危废查询列表
-                setPageClone1(result.data);
-                //setWasteInventoryList(result.data);
+                //设置库存列表
+                setWasteInventoryList(result.data);
             }
             else {
                 console.log(result.message);
@@ -642,37 +493,312 @@ function loadWasteInventoryList() {
         }
 
     });
-    isSearch = false;
-    //加载进料方式列表
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getHandelCategoryList",                  // url
+        url: "getEquipmentNameList",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        //contentType: "application/json; charset=utf-8",
+        contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                var type=$('#search-type');
-                type.children().remove();
-                $.each(result.array1,function (index,item) {
-                    var option=$('<option/>');
-                    option.val(item.index);
+                console.log(result)
+                var equipment=$("#equipment");
+                equipment.children().remove();
+                $.each(result.equipmentList,function (index,item) {
+                    var option=$('<option/>')
+                    option.val(index);
                     option.text(item.name);
-                    type.append(option);
-                })
-                type.get(0).selectedIndex=-1;
+                    equipment.append(option);
+                    $('.selectpicker').selectpicker('refresh');
+                });
             }
             else {
-                alert(result.message);
-
+                alert(result.message)
             }
         },
         error:function (result) {
-            alert("服务器异常！")
-        },
+            alert("服务器异常")
+        }
 
     });
 }
+
+//设置次生库存列表数据==>次生出库新增页面
+function setWasteInventoryList(result) {
+    $(".myclass").hide();
+    var tr = $("#cloneTr");
+    tr.attr('class','myclass')
+    console.log(result);
+    //tr.siblings().remove();
+    $.each(result, function (index, item) {
+        if(item.actualCount>0&&item.boundType.name=='次生入库'){
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+               clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 入库编号
+                    case (1):
+                        $(this).html(obj.inboundOrderId);
+                        break;
+                    // 仓库号
+                    case (2):
+                        $(this).html("");
+                        break;
+                    //产废单位
+                    case (3):
+                        $(this).html(obj.produceCompany.companyName);
+                        break;
+                    // 危废名称
+                    case (4):
+                        if(obj.laboratoryTest.wastesName=='slag'){
+                            $(this).html('炉渣');
+                        }
+                        if(obj.laboratoryTest.wastesName=='ash'){
+                            $(this).html('飞灰');
+                        }
+                        if(obj.laboratoryTest.wastesName=='bucket'){
+                            $(this).html('桶');
+                        }
+                        break;
+                    // 危废代码
+                    case (5):
+                        $(this).html(obj.laboratoryTest.wastesCode);
+                        break;
+                    // 产废类别
+                    case (6):
+                        $(this).html(obj.wastesCategory);
+                        break;
+                    // 进料方式
+                    case (7):
+                        if(obj.handleCategory!=null){
+                            $(this).html(obj.handleCategory.name);
+                        }
+
+                        break;
+                    //数量
+                    case (8):
+                        $(this).html(obj.actualCount);
+                        break;
+                    //剩余数量
+                    case (9):
+                        $(this).html(obj.leftNumeber);
+                        break;
+                    case (10):
+                        $(this).html(obj.remarks);
+                        break;
+                    case (11):
+                        $(this).html(obj.inboundOrderItemId);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        }
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+
+    //遍历赋值
+    $(".myclass").each(function(){
+        //1获得入库单号
+        var inboundOrderId=this.firstElementChild.nextElementSibling.innerHTML;
+        //console.log(inboundOrderId);
+        $("#residualQuantity").attr("name",inboundOrderId);
+        $("#residualQuantity").removeAttr('id');
+    });
+
+
+}
+
+//次生出库确认按钮==>次生出库新增页面
+function batching() {
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+    items.each(function () {
+        //获得库存Id
+        var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
+        //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getWasteInventoryByInboundOrderId",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{'inboundOrderItemId':inboundOrderItemId},
+            success:function (result) {
+                if(result != undefined && result.status == "success"){
+                    console.log(result);
+                    //设置配料列表
+                    setBatchingWList(result.data);
+                }
+                else {
+                    console.log(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+
+        });
+    });
+}
+
+//设置配料列表数据==>次生出库新增页面
+function setBatchingWList(result) {
+    var tr = $("#cloneTr2");
+    tr.attr('class','myclass2');
+    //tr.siblings().remove();
+    //console.log(result);
+    $.each(result, function (index, item) {
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            var obj=eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 入库编号
+                case (0):
+                    $(this).html(obj.inboundOrderId);
+                    break;
+                // 仓库号
+                case (1):
+                        $(this).html("");
+                    break;
+                //产废单位
+                case (2):
+                    $(this).html(obj.produceCompany.companyName);
+                    break;
+                // 危废名称
+                case (3):
+                    if(obj.laboratoryTest.wastesName=='slag'){
+                        $(this).html('炉渣');
+                    }
+                    if(obj.laboratoryTest.wastesName=='ash'){
+                        $(this).html('飞灰');
+                    }
+                    if(obj.laboratoryTest.wastesName=='bucket'){
+                        $(this).html('桶');
+                    }
+                    break;
+                // 危废代码
+                case (4):
+                    $(this).html(obj.laboratoryTest.wastesCode);
+                    break;
+                // 产废类别
+                case (5):
+                    $(this).html("");
+                    break;
+                // 进料方式
+                case (6):
+                    if(obj.handleCategory!=null){
+                        $(this).html(obj.handleCategory.name);
+                    }
+
+                    break;
+                //数量
+                case (7):
+                    $(this).html(obj.actualCount);
+                    break;
+                case (8):
+                    $(this).html(obj.remarks);
+                    break;
+                case (9):
+                    $(this).html(obj.inboundOrderItemId);
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+}
+
+//数量加减==>次生出库新增页面
+function subtraction(item) {
+    //获得相应的入库单号
+    var flag=false;
+    var inboundOrderId = item.parentElement.parentElement.firstElementChild.innerHTML;
+    var number=$(item).val();
+    //1根据入库单号获得总量，然后根据配料量减去得到剩余量
+    setTimeout(time(inboundOrderId,number), 2000);
+    // console.log(array)
+    //进行运算
+}
+//==>次生出库新增页面
+function time(inboundOrderId,number) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWasteInventoryLeftNumber",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {'inboundOrderId':inboundOrderId,'number':number},
+        dataType: "json",
+        // contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                $("td[name="+inboundOrderId+"]").html(result.leftNumber);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
+//保存==>次生出库新增页面
+function save() {
+    if(confirm("确定生成出库单?")){
+        //点击确定后操作
+        $(".myclass2").each(function () {
+            var data={
+                inboundOrderItemId:$(this).children('td').last().text(),
+                outboundNumber:$(this).children('td').get(7).innerHTML,
+                outboundDate:$('#date').val(),
+                boundType:$("#outboundType").val(),
+                creator:$('#creator').val(),
+                departmentName:$('#departmentName').val(),
+                equipment:$('#equipment').selectpicker('val'),
+            };
+            console.log(data);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "addSecondary",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        console.log(result);
+                    }
+                    else {
+                        alert(result.message);
+
+                    }
+                },
+
+                error:function (result) {
+                    alert("服务器异常")
+
+                }
+            });
+        });
+    }
+
+      // alert("添加成功！");
+      // window.location.href="secondaryOutbound.html";
+}
+
 //设置危废查询列表
 function setWasteInventoryList1(result) {
     var tr=$('#cloneTr');
@@ -759,9 +885,7 @@ function setWasteInventoryList1(result) {
     tr.removeAttr('class');
 }
 
-/**
- * 设置克隆页码
- * */
+//设置克隆页码==>次生出库和库存页面
 function setPageClone1(result) {
     $(".beforeClone").remove();
     setWasteInventoryList1(result);
@@ -786,7 +910,8 @@ function setPageClone1(result) {
     }
 
 }
-//双击查看出库单明细
+
+//双击查看出库单明细==>次生出库
 function viewOutBound(item) {
     var outboundOrderId=$(item).children().get(5).innerHTML;
     //根据出库单号查询结果
@@ -876,77 +1001,7 @@ function viewOutBound(item) {
     }) ;
 }
 
-//查看出库信息
-function view(item) {
-    var inboundOrderItemId=$(item).parent().prev().html();
-    console.log(inboundOrderItemId);
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getByInboundOrderItemId",                  // url 计算数据库的总条数
-        data:{'inboundOrderItemId':inboundOrderItemId},
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result);
-                //危废库存查看，点击查看按钮
-                setByInboundOrderItemId(result);
-                $("#appointModal2").modal('show');
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
-    });
-}
-//危废库存查看，点击查看按钮
-function setByInboundOrderItemId(result) {
-    var tr=$('#cloneTr3');
-    tr.siblings().remove();
-    $.each(result.wasteInventoryList,function (index,item) {
-        var clonedTr=tr.clone();
-        clonedTr.show();
-        clonedTr.children('td').each(function (inner_index) {
-            var obj = eval(item);
-            switch (inner_index) {
-                case (0):
-                    $(this).html(getDateStr(obj.inboundDate));
-                    break;
-                case (1):
-                    $(this).html(obj.produceCompany.companyName);
-                    break;
-                case (2):
-                    if(obj.laboratoryTest.wastesName=='slag'){
-                        $(this).html('炉渣');
-                    }
-                    if(obj.laboratoryTest.wastesName=='ash'){
-                        $(this).html('飞灰');
-                    }
-                    if(obj.laboratoryTest.wastesName=='bucket'){
-                        $(this).html('桶');
-                    }
-                    break;
-                case (3):
-                    $(this).html(obj.laboratoryTest.wastesCode);
-                    break;
-                case (4):
-                    $(this).html(obj.actualCount);
-                    break;
-                case (5):
-                    $(this).html(obj.handleCategory.name);
-                    break;
-            }
-        })
-        clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
-
-    })
-    tr.hide();
-}
-//属性调整
+//属性调整==>次生出库
 function adjustAttr() {
 
     //加载进料方式的下拉框
@@ -983,6 +1038,7 @@ function adjustAttr() {
     $('#examineModal').modal('show');
 
 }
+
 //确认修改属性
 function comfirm() {
     console.log($("#outboundOrderId").val());
@@ -1009,6 +1065,7 @@ function comfirm() {
         }
     });
 }
+
 //导出
 function exportExcel() {
     console.log("export");
@@ -1016,21 +1073,8 @@ function exportExcel() {
     var sqlWords = "select * from t_pl_outboundorder  join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber and t_pl_outboundorder.boundType='SecondaryOutbound';";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
-var text = "";
-//实时筛选，不用点击按钮
-function search1(){
-        text = $('#input').val();//获取文本框输入
-        var tr=$('#cloneTr');
-            // $("#table tr:not('#theader')").hide().filter(":contains('"+text+"')").show();
-       $('.myclass').each(function () {
-           if($(this).children('td').text().indexOf(text)==-1){
-               $(this).hide();
-           }
-       })
 
-}
-
-//查看
+//查看==>次生出库
 function view1(item) {
     var outboundOrderId=$(item).parent().parent().children('td').get(5).innerHTML;
     //根据出库单号查询结果
@@ -1146,4 +1190,26 @@ function cancel(item) {
         });
     }
 
+}
+
+function searchSec() {
+    $('.myclass').each(function () {
+        $(this).show();
+    })
+    var  inDate=$('#search-inDate').val()+"";
+
+    var  companyName=$('#search-client').val();
+    var options=$("#search-type option:selected");
+    var handelCategory=options.text();
+    console.log(handelCategory);
+    $('.myclass').each(function () {
+        if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
+       $(this).hide();
+        }
+    });
+    // if(inDate==''&&companyName==''&&handelCategory==''){
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     });
+   // }
 }

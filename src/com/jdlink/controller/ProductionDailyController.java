@@ -3,12 +3,15 @@ package com.jdlink.controller;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
 import com.jdlink.util.RandomUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,6 +38,67 @@ public class ProductionDailyController {
     @Autowired
     ProductionDailyService productionDailyService;
 
+
+    /**
+     * 获取总记录数
+     * @return 总记录数
+     */
+    @RequestMapping("getProductionDailyCount")
+    @ResponseBody
+    public int getProductionDailyCount(){
+        try {
+            return productionDailyService.getProductionDailyCount();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 通过页数获取日报页数
+     * @return 成功与否
+     */
+    @RequestMapping("listProductionDailyByPage")
+    @ResponseBody
+    public String listProductionDailyByPage(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<ProductionDaily> productionDailyList = productionDailyService.listProductionDailyByPage(page);
+            JSONArray data = JSONArray.fromArray(productionDailyList.toArray(new ProductionDaily[productionDailyList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 通过编号获取日报
+     * @param id 编号
+     * @return 日报
+     */
+    @RequestMapping("getProductionDailyById")
+    @ResponseBody
+    public String getProductionDailyById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            ProductionDaily productionDaily = productionDailyService.getProductionDailyById(Integer.parseInt(id));
+            JSONObject data = JSONObject.fromBean(productionDaily);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
     /**
      * 生成当天日报
      * @return 生成的日报数据
@@ -47,6 +111,8 @@ public class ProductionDailyController {
         Date now = new Date();
         // 创建一个新的生产日报
         ProductionDaily productionDaily = new ProductionDaily();
+        // 设置编号
+        productionDaily.setId(productionDailyService.getProductionDailyId());
         // 设置时间
         productionDaily.setDate(now);
         try {

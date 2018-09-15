@@ -98,26 +98,35 @@ public class PRSampleInfoController {
     @RequestMapping("getCurrentWastesId")
     @ResponseBody
     public String getCurrentWastesId() {
-        // 得到一个NumberFormat的实例
-        NumberFormat nf = NumberFormat.getInstance();
-        //设置是否使用分组
-        nf.setGroupingUsed(false);
-        //设置最大整数位数
-        nf.setMaximumIntegerDigits(8);
-        //设置最小整数位数
-        nf.setMinimumIntegerDigits(8);
-        // 获取最新编号
         String id;
         int index = sampleInformationService.wastesCount();
         // 获取唯一的编号
         do {
             index += 1;
-            id = nf.format(index);
+            id = index + "";
         } while (sampleInformationService.getByWastesId(id) != null);
         JSONObject res = new JSONObject();
         res.put("id", id);
         return res.toString();
     }
+
+    @RequestMapping("getWastesByWastesId")
+    @ResponseBody
+    public String getWastesByWastesId(String id){
+        JSONObject res = new JSONObject();
+        try {
+            Wastes wastes = sampleInformationService.getByWastesId(id);
+            res.put("data",wastes);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
 
     /**
      * 获取总记录数
@@ -197,6 +206,9 @@ public class PRSampleInfoController {
         JSONObject res = new JSONObject();
         try{
             sampleInformationService.update(sampleInformation);
+            System.out.println("更新的数据为：");
+            System.out.println(sampleInformation.getWastesList().size());
+            System.out.println(sampleInformation);
             res.put("status","success");
             res.put("message","登记单修改成功！");
         }catch (Exception e){

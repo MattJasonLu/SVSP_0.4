@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.mapper.OutboundOrderMapper;
 import com.jdlink.service.OutboundOrderService;
@@ -25,8 +26,8 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     }
 
     @Override
-    public List<OutboundOrder> loadOutBoundList() {
-        return outboundOrderMapper.loadOutBoundList();
+    public List<OutboundOrder> loadOutBoundList(Page page) {
+        return outboundOrderMapper.loadOutBoundList(page);
     }
 
     @Override
@@ -115,6 +116,31 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
     @Override
     public void cancelOutBoundOrder(String outboundOrderId) {
         outboundOrderMapper.cancelOutBoundOrder(outboundOrderId);
+    }
+
+    @Override
+    public int totalSecondaryInventory() {
+        return outboundOrderMapper.totalSecondaryInventory();
+    }
+
+    @Override
+    public List<OutboundOrder> loadWastesOutBoundList(Page page) {
+        return outboundOrderMapper.loadWastesOutBoundList(page);
+    }
+
+    @Override
+    public int totalWastesOutBoundRecord() {
+        return outboundOrderMapper.totalWastesOutBoundRecord();
+    }
+
+    @Override
+    public List<OutboundOrder> loadSecOutBoundList(Page page) {
+        return outboundOrderMapper.loadSecOutBoundList(page);
+    }
+
+    @Override
+    public int totalSecOutBoundRecord() {
+        return outboundOrderMapper.totalSecOutBoundRecord();
     }
 
 

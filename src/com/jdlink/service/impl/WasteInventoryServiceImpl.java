@@ -26,6 +26,11 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     }
 
     @Override
+    public List<WasteInventory> list2(Page page) {
+        return wasteInventoryMapper.list2(page);
+    }
+
+    @Override
     public List<WasteInventory> getWasteInventoryByInboundOrderId(String InboundOrderId) {
         return wasteInventoryMapper.getWasteInventoryByInboundOrderId(InboundOrderId);
     }

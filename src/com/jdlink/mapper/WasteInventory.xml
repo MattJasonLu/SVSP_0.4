@@ -33,13 +33,21 @@
     <resultMap id="WasteInventoryRM1" type="WasteInventory" autoMapping="true">
         <collection property="wastes" column="id" select="getWastes1" ofType="Wastes"></collection>
     </resultMap>
-    <!--查询库存信息-->
+    <!--查询危废库存信息-->
     <select id="list" resultMap="WasteInventoryRM">
-        select * from t_pl_wasteinventory order  by nowTime desc
+        select * from t_pl_wasteinventory  where boundType='WasteInbound' order  by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
+    <!--查看次生库存信息-->
+    <select id="list2" resultMap="WasteInventoryRM">
+        select * from t_pl_wasteinventory  where boundType='SecondaryInbound' order  by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <select id="list1" resultMap="WasteInventoryRM">
         select * from t_pl_wasteinventory order  by nowTime desc;
     </select>
@@ -183,7 +191,7 @@
     </select>
     <!--计算总共条数-->
     <select id="countInventory" resultType="int">
-        select COUNT(*) from t_pl_wasteinventory;
+        select COUNT(*) from t_pl_wasteinventory where boundType='WasteInbound';
     </select>
     <!--配料单高级查询-->
     <resultMap id="BatchingOrder1" type="BatchingOrder">
