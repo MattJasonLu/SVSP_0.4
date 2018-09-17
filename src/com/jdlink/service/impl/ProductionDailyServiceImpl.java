@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ProductionDaily;
 import com.jdlink.domain.Produce.Sewage;
@@ -83,5 +84,8 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
         return productionDailyMapper.getProductionDailyByDateRangeCount(beginTime, endTime);
     }
 
-
+    @Override
+    public void setProductionDailyState(int id, CheckState checkState) {
+        productionDailyMapper.setProductionDailyState(id, checkState);
+    }
 }

@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ProductionDaily;
 import com.jdlink.domain.Produce.Sewage;
@@ -69,4 +70,11 @@ public interface ProductionDailyMapper {
      * @return 生产日报集合
      */
     int getProductionDailyByDateRangeCount(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
+
+    /**
+     * 设置生产日报的状态
+     * @param id 编号
+     * @param checkState 校验状态
+     */
+    void setProductionDailyState(@Param("id") int id, @Param("checkState") CheckState checkState);
 }

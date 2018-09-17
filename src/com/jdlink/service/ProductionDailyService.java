@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ProductionDaily;
 import com.jdlink.domain.Produce.Sewage;
@@ -70,4 +71,11 @@ public interface ProductionDailyService {
      * @return 生产日报集合
      */
     int getProductionDailyByDateRangeCount(Date beginTime, Date endTime);
+
+    /**
+     * 设置生产日报的状态
+     * @param id 编号
+     * @param checkState 校验状态
+     */
+    void setProductionDailyState(int id, CheckState checkState);
 }

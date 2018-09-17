@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -38,7 +39,6 @@ public class ProductionDailyController {
     @Autowired
     ProductionDailyService productionDailyService;
 
-
     /**
      * 获取总记录数
      * @return 总记录数
@@ -54,6 +54,12 @@ public class ProductionDailyController {
         }
     }
 
+    /**
+     * 获取日期范围数量
+     * @param beginTime 起始日期
+     * @param endTime 结束日期
+     * @return 数量
+     */
     @RequestMapping("getProductionDailyByDateRangeCount")
     @ResponseBody
     public int getProductionDailyByDateRangeCount(Date beginTime, Date endTime) {
@@ -63,6 +69,28 @@ public class ProductionDailyController {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 设置日报的状态
+     * @param id 编号
+     * @param checkState 审批状态
+     * @return 成功与否
+     */
+    @RequestMapping("setProductionDailyState")
+    @ResponseBody
+    public String setProductionDailyState(int id, CheckState checkState) {
+        JSONObject res = new JSONObject();
+        try {
+            productionDailyService.setProductionDailyState(id, checkState);
+            res.put("status", "success");
+            res.put("message", "设置状态成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "设置状态失败");
+        }
+        return res.toString();
     }
 
     /**
