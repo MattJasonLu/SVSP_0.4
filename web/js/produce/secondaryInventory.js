@@ -8,6 +8,7 @@ var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
 var array=[];
+var array1=[];
 /**
  * 返回count值
  * */
@@ -397,49 +398,49 @@ function setByInboundOrderItemId(result) {
 
 //实时筛选，不用点击按钮==>次生库存
 function search1(){
+    switchPage(1);
     $('.myclass').each(function () {
         $(this).show();
     })
     //1分页模糊查询
+    //1分页模糊查询
     array.length=0;//清空数组
-    array.push($('.myclass'));//首先获得当前页面的所有行
-    //console.log(totalPage());
-    for(var i=1;i<totalPage();i++){
-        switchPage(parseInt(i)+1)
-         array.push($('.myclass'));
+
+    array1.length=0;
+
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i))
+        array.push($('.myclass'));
     }
+
      var text = $('#search').val();//获取文本框输入
-    console.log(array);
-   for(var j=0;j<array.length;j++){
-       $.each(array[j],function () {
-           //console.log(this);
-           if($(this).children('td').text().indexOf(text)==-1){
-               $(this).hide();
-           }
-       });
-   }
-    if(text==''||text.length<=0){
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').text().indexOf(text)!=-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)==-1){
+                array1.push($(this));
+            }
+
+
+        });
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(text.length<=0){
         switchPage(1);
         $('.myclass').each(function () {
             $(this).show();
         })
     }
-    // var text = $('#search').val();//获取文本框输入
-    //
-    // $('.myclass').each(function () {
-    //     $(this).show();
-    // })
-    // // $("#table tr:not('#theader')").hide().filter(":contains('"+text+"')").show();
-    // $('.myclass').each(function () {
-    //     if($(this).children('td').text().indexOf(text)==-1){
-    //         $(this).hide();
-    //     }
-    // })
-    // if(text==''||text.length<=0){
-    //     $('.myclass').each(function () {
-    //         $(this).show();
-    //     })
-    // }
 
 }
 
@@ -451,9 +452,10 @@ function searchSec() {
     });
     //1分页模糊查询
     array.length=0;//清空数组
-    array.push($('.myclass'));//首先获得当前页面的所有行
-    for(var i=1;i<totalPage();i++){
-        switchPage(parseInt(i)+1)
+    array1.length=0;
+    //array.push($('.myclass'));//首先获得当前页面的所有行
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i))
         array.push($('.myclass'));
     }
     var  inDate=$('#search-inDate').val()+"";
@@ -466,6 +468,14 @@ function searchSec() {
             if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
                 $(this).hide();
             }
+            if(($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
+               array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
         });
     }
     if(inDate.length<=0&&companyName.length<=0&&handelCategory.length<=0){

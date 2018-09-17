@@ -65,4 +65,5 @@ public interface ContractService {
     List<Contract> getContractBySalesman(String salesmanId, Page page);
     List<Contract> search(Contract contract);
     List<Contract> searchModel(Contract contract);
+    List<Contract> getContractList();
 }

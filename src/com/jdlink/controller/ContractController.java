@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.*;
 import com.jdlink.util.RandomUtil;
 import com.jdlink.util.UpdateVersion;
@@ -35,6 +36,8 @@ public class ContractController {
     SupplierService supplierService;
     @Autowired
     LaboratoryTestService laboratoryTestService;
+    @Autowired
+    WayBillService wayBillService;
 
     @RequestMapping("listContract")
     @ResponseBody
@@ -934,25 +937,37 @@ public class ContractController {
     public String getContractBySalesman(String salesmanId, Page page) {
         JSONObject res = new JSONObject();
         try {
+            page = null;   // 分页暂时不用
             // 获取该业务员名下所有合同
             List<Contract> contractList = contractService.getContractBySalesman(salesmanId, page);
             // 危废信息
-            Map<String, List<Wastes>> map = new HashMap<>();
+            Map<String, LaboratoryTest> map = new HashMap<>();
             // 客户联系信息
             Map<String, String> map2 = new HashMap<>();
-            // 遍历合同列表，获取每个合同对应客户的
+            //接运单明细数据
+            Map<String, List<WayBillItem>> map3 = new HashMap<>();
+            // 遍历合同列表，获取每个合同对应信息
             for (Contract contract : contractList) {
                 String clientId = contract.getClientId();
                 LaboratoryTest laboratoryTest = laboratoryTestService.getRecentLaboratoryTestByClientId(clientId);
-//                if (laboratoryTest != null) map.put(clientId, laboratoryTest.getWastesList());
-//                else map.put(clientId, new ArrayList<Wastes>());
+                map.put(clientId,laboratoryTest);
                 Client client = clientService.getByClientId(clientId);
                 String contactInfo = client.getContactName() + "-" + client.getPhone();
                 map2.put(clientId, contactInfo);
+                List<Hazardous> hazardousList = contract.getHazardousList();
+                List<WayBillItem> wayBillItemList = new ArrayList<>();
+               //获取接运单明细数据
+                for(Hazardous hazardous : hazardousList){
+                    String code = hazardous.getCode();
+                    WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId,code);
+                    wayBillItemList.add(wayBillItem);
+                }
+                map3.put(clientId,wayBillItemList);
             }
             // map转json
             JSONObject jMap = JSONObject.fromMap(map);
             JSONObject jMap2 = JSONObject.fromMap(map2);
+            JSONObject jMap3 = JSONObject.fromMap(map3);
             JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
             // 赋值
             res.put("status", "success");

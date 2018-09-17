@@ -150,7 +150,7 @@
                 </div>
                 <!--查询框-->
                 <div class="input-group col-xs-3 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeyup="searchStock1()">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchStock();"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -163,20 +163,26 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-stockId" class="col-sm-4 control-label">库存编号</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-stockId" name="search-stockId"
-                                       placeholder="">
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="search-stockId" class="col-sm-4 control-label">库存编号</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<input type="text" class="form-control" id="search-stockId" name="search-stockId"-->
+                                       <!--placeholder="">-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class="form-group">
                             <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-checkState" name="search-checkState"></select>
                             </div>
                         </div>
-
+                        <!--<div class="form-group">-->
+                            <!--<label for="search-transportTelephone" class="col-sm-4 control-label">公司联系电话</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<input type="text" class="form-control" id="search-transportTelephone" name="search-transportTelephone"-->
+                                       <!--placeholder="">-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
@@ -186,13 +192,13 @@
                                        name="search-proContactName" placeholder="">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="search-plateNumber" class="col-sm-4 control-label">运输车车牌号</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-plateNumber"
-                                name="search-plateNumber" placeholder="">
-                            </div>
-                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="search-plateNumber" class="col-sm-4 control-label">运输车车牌号</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<input type="text" class="form-control" id="search-plateNumber"-->
+                                <!--name="search-plateNumber" placeholder="">-->
+                            <!--</div>-->
+                        <!--</div>-->
 
                     </div>
                     <div class="form-horizontal col-md-3">
@@ -204,13 +210,7 @@
                                        name="search-proTelephone" placeholder="">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="search-transportTelephone" class="col-sm-4 control-label">公司联系电话</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-transportTelephone" name="search-transportTelephone"
-                                       placeholder="">
-                            </div>
-                        </div>
+
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
@@ -244,7 +244,7 @@
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody1">
                 <tr id="cloneTr">
                     <td class="text-center">
                         <label>
@@ -294,7 +294,7 @@
                 <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
-                    <select id="count" onchange="loadPageClientList();">
+                    <select id="count" onchange="loadPageStocktList();">
                         <option>5</option>
                         <option selected>15</option>
                         <option>50</option>

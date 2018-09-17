@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.WasteInto;
 import com.jdlink.mapper.WasteIntoMapper;
 import com.jdlink.service.WasteIntoService;
@@ -15,8 +16,8 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     WasteIntoMapper wasteIntoMapper;
 
     @Override
-    public List<WasteInto> WasteIntoList() {
-        return wasteIntoMapper.WasteIntoList();
+    public List<WasteInto> WasteIntoList(Page page) {
+        return wasteIntoMapper.WasteIntoList(page);
     }
 
     @Override
@@ -30,7 +31,12 @@ public class WasteIntoServiceImpl implements WasteIntoService {
     }
 
     @Override
-    public List<WasteInto> SecondIntoList() {
-        return wasteIntoMapper.SecondIntoList();
+    public List<WasteInto> SecondIntoList(Page page) {
+        return wasteIntoMapper.SecondIntoList(page);
+    }
+
+    @Override
+    public int countSec() {
+        return wasteIntoMapper.countSec();
     }
 }

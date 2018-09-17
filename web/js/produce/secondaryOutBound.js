@@ -9,6 +9,7 @@ function reset() {
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
+
 /**********************出库部分**********************/
 /**
  * 返回count值
@@ -316,6 +317,37 @@ function onLoadSecondary() {
             alert("服务器异常！")
         }
 
+    });
+    //进料方式高级检索
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandleCategory",                  // url
+       // data:JSON.stringify(page),
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                var processWay=$('#search-materialForm');
+                processWay.children().remove();
+                $.each(result.handleCategoryList,function (index,item) {
+                    var option=$('<option/>')
+                    option.val(index);
+                    option.text(item.name);
+                    processWay.append(option);
+                })
+                processWay.get(0).selectedIndex=-1;
+            }
+        else {
+                alert(result.message);
+            }
+
+
+        },
+        error:function (result) {
+            alert("服务器异常")
+        }
     });
 }
 
@@ -1191,25 +1223,53 @@ function cancel(item) {
     }
 
 }
-
-function searchSec() {
+array=[];
+array1=[];
+//次生出库信息高级查询
+function searchSecOutbound() {
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
     $('.myclass').each(function () {
         $(this).show();
-    })
-    var  inDate=$('#search-inDate').val()+"";
-
-    var  companyName=$('#search-client').val();
-    var options=$("#search-type option:selected");
-    var handelCategory=options.text();
-    console.log(handelCategory);
-    $('.myclass').each(function () {
-        if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
-       $(this).hide();
-        }
     });
-    // if(inDate==''&&companyName==''&&handelCategory==''){
-    //     $('.myclass').each(function () {
-    //         $(this).show();
-    //     });
-   // }
+    for( var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        $('.myclass').show();
+        array.push($('.myclass'));
+    }
+    //1出库日期
+    var outBoundDate=$('#search-storageDate').val()+"";
+    //2出库数量
+    var outBoundNumber=$('#search-storageQuantity').val();
+    //3出库单号
+    var outboundOrderId =$('#search-storageNumber').val();
+    //4进料方式
+    var processWay=$('#search-materialForm option:selected').text();
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1
+            &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
+            )){
+                $(this).hide();
+           }
+            if(($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1)){
+               array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+           $('#tbody1').append(this) ;
+        });
+    }
+    if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<=0&&outboundOrderId.length<=0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
 }

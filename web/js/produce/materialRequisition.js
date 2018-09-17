@@ -36,28 +36,28 @@ function totalPage() {
             }
         });
     } else {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchMaterialTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                    console.log("总记录数为:" + result);
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "searchMaterialTotal",                  // url
+        //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     data: JSON.stringify(data1),
+        //     dataType: "json",
+        //     contentType: "application/json; charset=utf-8",
+        //     success: function (result) {
+        //         // console.log(result);
+        //         if (result > 0) {
+        //             totalRecord = result;
+        //             console.log("总记录数为:" + result);
+        //         } else {
+        //             console.log("fail: " + result);
+        //             totalRecord = 0;
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log("error: " + result);
+        //         totalRecord = 0;
+        //     }
+        // });
     }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -125,7 +125,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getMaterialRequisitionList",         // url
+            url: "getMaterialByToOut",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -202,7 +202,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getMaterialRequisitionList",         // url
+                url: "getMaterialByToOut",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -257,10 +257,12 @@ function LoadMaterialRequisitionOrder() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    console.log(page);
     //1通过ajax获取领料单数据
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getMaterialRequisitionList",                  // url
+        url: "getMaterialByToOut",                  // url
+        data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: "application/json; charset=utf-8",
@@ -316,6 +318,7 @@ function setPageClone(result) {
 //设置领料单列表
 function setMaterialRequisitionList(result) {
     var tr = $("#cloneTr4");
+    tr.siblings().remove();
     tr.attr('class','myclass');
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
@@ -684,3 +687,61 @@ $('#number').on('blur','[contenteditable="true"]',function(){
     //saveData(data);
 
 })
+
+array=[];
+array1=[];
+//领料单高级查询
+function searchMaterial() {
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    for( var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        $('.myclass').show();
+        array.push($('.myclass'));
+    }
+    //1厂家
+    var companyName=$('#search-Id').val();
+    //2危废代码
+    var wastesCode=$('#search-wastesCode').val();
+    //危废类别
+    var wastesCategory=$('#search-wastesType').val();
+    //领用数量
+    var number=$('#search-company').val();
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCode)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1&&$(this).children('td').eq(8).text().indexOf(number)!=-1
+            )){
+                $(this).hide();
+            }
+            if(($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCode)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1&&$(this).children('td').eq(8).text().indexOf(number)!=-1)){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(companyName.length<=0&&wastesCategory.length<=0&&wastesCode.length<=0&&number.length<=0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+}
+//重置
+function reset() {
+    $("#senior").find("input").val("");
+    $("#searchContent").val("");
+  //  $("#senior").find("select").get(0).selectedIndex = -1;
+}

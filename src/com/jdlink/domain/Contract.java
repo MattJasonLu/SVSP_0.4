@@ -76,27 +76,148 @@ public class Contract implements Serializable {
      * 省市地区
      */
     private Province province;
-    private  String city;
+    private String city;
     /**
      * 预约处置费
      */
-private  String order1;
+    private String order1;
     /**
      * 是否包含运费
      */
-    private  boolean isFreight;
+    private boolean isFreight;
     /**
      * 客户列表(数据库存在)
      */
-    private  String clientId;
+    private String clientId;
     /**
      * 开户行名称
      */
-    private  String bankName;
+    private String bankName;
     /**
      * 开户行账号
      */
-    private  String bankAccount;
+    private String bankAccount;
+    /**
+     * 关键字
+     */
+    private String key;
+    /**
+     * 开票税率1
+     */
+    private TicketRate1 ticketRate1;
+    /**
+     * 开票税率2
+     */
+    private TicketRate2 ticketRate2;
+    /**
+     * Logistics qualification物流公司资质
+     */
+    private String logisticsQualification;
+    /**
+     * Qualification资质有效期
+     */
+    private Date beginQualification;
+    private Date endQualification;
+    /**
+     * 危险废物名称
+     */
+    private List<String> wasteName;
+    /**
+     * 危废代码
+     */
+    private List<String> wastesCodeList;
+    /**
+     * 危险废物数量 吨每年
+     */
+    private List<String> tonNumber;
+    /**
+     * 甲方法定代表人
+     */
+    private String companyLegal;
+    /**
+     * 甲方委托代理人
+     */
+    private String companyAgent;
+
+    /**
+     * 乙方法定代表人
+     */
+    private String clientLegal;
+
+    /**
+     * 乙方委托代理人
+     */
+    private String clientAgent;
+    /**
+     * 模板
+     */
+    private String modelName;
+    /**
+     * 年份
+     */
+    private String year;
+    /**
+     * 适用期限
+     */
+    private String period;
+    private String contractContent;
+    /**
+     * 单位地址
+     */
+    private String address;
+    /**
+     * 委托事项
+     */
+    private String thing;
+    /**
+     * 模板版本
+     */
+    private String modelVersion;
+
+    /**
+     * 审批意见
+     */
+    private String opinion;
+    /**
+     * 驳回意见
+     */
+    private String backContent;
+    private String keyword;
+    /**
+     * 废物名称及数量
+     */
+    private List<Hazardous> hazardousList = new ArrayList<>();
+    /**
+     * 合同正文
+     */
+    private String content;
+    /**
+     * 合同总价款
+     */
+    private String totalPrice;
+    /**
+     * 供应商名称
+     */
+    private String suppier;
+    /**
+     * Page
+     */
+    private Page page;
+    /**
+     * 当前时间
+     */
+    private String nowTime;
+    private String company1;
+
+    private String suppierName;
+
+    public List<String> getWastesCodeList() {
+        return wastesCodeList;
+    }
+
+    public void setWastesCodeList(List<String> wastesCodeList) {
+        this.wastesCodeList = wastesCodeList;
+    }
 
     public String getKey() {
         return key;
@@ -106,11 +227,6 @@ private  String order1;
         this.key = key;
     }
 
-    /**
-     * 关键字
-     */
-
-    private  String key;
     public String getBankAccount() {
         return bankAccount;
     }
@@ -122,10 +238,6 @@ private  String order1;
     public String getBankName() {
         return bankName;
     }
-/**
-* 开票税率1
-*/
-private  TicketRate1 ticketRate1;
 
     public TicketRate1 getTicketRate1() {
         return ticketRate1;
@@ -143,115 +255,6 @@ private  TicketRate1 ticketRate1;
         this.ticketRate2 = ticketRate2;
     }
 
-    /**
-     * 开票税率2
-     */
-    private  TicketRate2 ticketRate2;
-
-
-    /**
-     *
-     * Logistics qualification物流公司资质
-     */
-    private  String logisticsQualification;
-
-    /**
-     * Qualification资质有效期
-     * @return
-     */
-    private Date beginQualification;
-    private Date endQualification;
-    /**
-     * 危险废物名称
-     *
-     */
-    private List<String> wasteName;
-
-    /**
-     * 危险废物数量 吨每年
-     *
-     */
-    private  List<String> tonNumber;
-    /**
-     *甲方法定代表人
-     */
-    private String companyLegal;
-    /**
-     *甲方委托代理人
-     */
-    private String companyAgent;
-
-    /**
-     *
-     * 乙方法定代表人
-     */
-      private String clientLegal;
-
-    /**
-     *
-     * 乙方委托代理人
-     */
-    private String clientAgent;
-    /**
-     * 模板
-     */
-
-    private String modelName;
-    /**
-     * 年份
-     */
-    private String year;
-    /**
-     * 适用期限
-     */
-    private String period;
-    private String contractContent;
-
-    /**
-     * 单位地址
-     */
-    private String address;
-    /**
-     * 委托事项
-     */
-    private String thing;
-
-    /**
-     * 模板版本
-
-     */
-    private String modelVersion;
-
-    /**
-     * 审批意见
-     */
-    private String opinion;
-    /**
-     * 驳回意见
-     */
-    private String backContent;
-    private String keyword;
-
-    /**
-     * 废物名称及数量
-     */
-    private  List<Hazardous> hazardousList=new ArrayList<>();
-
-    /**
-     *
-     * 合同总价款
-     */
-    private String totalPrice;
-    /*
-    *供应商名称 */
-private  String suppier;
-
-    /**
-     * Page
-     * @return
-     */
-    private Page page;
-
     public boolean isCompanyContract() {
         return isCompanyContract;
     }
@@ -267,7 +270,6 @@ private  String suppier;
     public String getSuppier() {
         return suppier;
     }
-  private  String suppierName;
 
     public String getSuppierName() {
         return suppierName;
@@ -288,13 +290,6 @@ private  String suppier;
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
     }
-
-    /**
-     *
-     * 当前时间
-     */
-    private String nowTime;
-    private  String company1;
 
     public String getCompany1() {
         return company1;
@@ -352,7 +347,7 @@ private  String suppier;
         this.modelVersion = modelVersion;
     }
 
-    private  String addType;
+    private String addType;
 
     public String getAddType() {
         return addType;
@@ -481,10 +476,6 @@ private  String suppier;
     public void setLogisticsQualification(String logisticsQualification) {
         this.logisticsQualification = logisticsQualification;
     }
-/**
- * 合同正文
- */
-private String content;
 
     public String getContent() {
         return content;
@@ -542,6 +533,7 @@ private String content;
     public void setCompanyContract(boolean companyContract) {
         isCompanyContract = companyContract;
     }
+
     public ContractVersion getContractVersion() {
         return contractVersion;
     }

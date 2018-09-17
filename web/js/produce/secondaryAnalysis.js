@@ -1,5 +1,5 @@
 /**
- * 危废入场分析日报
+ * 次生入场分析日报
  * */
 function reset() {
     $("#senior").find("input").val("");
@@ -16,7 +16,7 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalWasteIntoRecord",                  // url
+            url: "totalSecIntoRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
@@ -60,12 +60,13 @@ function totalPage() {
     var total = loadPages(totalRecord, count);
     return total;
 }
+
 /**
  * 设置克隆页码
  * */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setWasteIntoList(result);
+    setSecIntoList(result);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -87,6 +88,7 @@ function setPageClone(result) {
     }
 
 }
+
 /**
  * 返回count值
  * */
@@ -95,6 +97,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
@@ -141,7 +144,7 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getWasteIntoList",                  // url
+            url: "getSecondIntoList",                  // url
             data:JSON.stringify(page),
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
@@ -149,7 +152,7 @@ function switchPage(pageNumber) {
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     console.log(result);
-                    setWasteIntoList(result);
+                    setSecIntoList(result);
                 }
                 else {
                     alert(result.message);
@@ -183,6 +186,7 @@ function switchPage(pageNumber) {
         });
     }
 }
+
 /**
  * 输入页数跳转页面
  * */
@@ -221,15 +225,15 @@ function inputSwitchPage()  {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getWasteIntoList",         // url
+                url: "getSecondIntoList",                  // url
+                data:JSON.stringify(page),// url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setWasteIntoList(result.data);
+                        setSecIntoList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -262,6 +266,7 @@ function inputSwitchPage()  {
         }
     }
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -278,8 +283,9 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
-//加载危废入场分析日报数据列表
-function loadWasteIntoList() {
+
+//加载次生入场分析日报数据列表
+function secondaryAnalysis() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -294,7 +300,7 @@ function loadWasteIntoList() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getWasteIntoList",                  // url
+        url: "getSecondIntoList",                  // url
         data:JSON.stringify(page),
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
@@ -303,7 +309,6 @@ function loadWasteIntoList() {
             if (result != undefined && result.status == "success"){
                 console.log(result);
                 setPageClone(result);
-                //setWasteIntoList(result);
             }
             else {
                 alert(result.message);
@@ -311,12 +316,14 @@ function loadWasteIntoList() {
             }
         },
         error:function (result) {
-             alert("服务器异常！")
+            alert("服务器异常！")
         }
     });
 }
-//设置危废入场分析日报数据
-function setWasteIntoList(result) {
+
+//设置次生入场日报数据
+//
+function setSecIntoList(result) {
     var tr = $("#cloneTr");
     tr.siblings().remove();
     $.each(result.data,function (index,item) {
@@ -331,74 +338,38 @@ function setWasteIntoList(result) {
                     break;
                 // 收样日期
                 case (1):
-                    $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
-                    break;
-                // 联单号码
-                case (2):
-                    $(this).html(obj.transferDraftId);
-                    break;
-                // 产废单位
-                case (3):
-                        $(this).html(obj.client.companyName);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
+                    }
                     break;
                 // 废物名称
+                case (2):
+                    if(obj.laboratoryTest!=null){
+                        if(obj.laboratoryTest.wastesName=='slag'){
+                            $(this).html('炉渣');
+                        }
+                        if(obj.laboratoryTest.wastesName=='ash'){
+                            $(this).html('飞灰');
+                        }
+                        if(obj.laboratoryTest.wastesName=='bucket'){
+                            $(this).html('桶');
+                        }
+                    }
+
+                    break;
+                // 热灼减率%
+                case (3):
+                    $(this).html("");
+                    break;
+                // 水分%
                 case (4):
-                        $(this).html(obj.laboratoryTest.wastesName);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.waterContentAverage);
+                    }
+
                     break;
-                // 废物类别
+                // 备注
                 case (5):
-                        $(this).html(obj.wastesCategory);
-                    break;
-                // 废物形态
-                case (6):
-                   $(this).html(obj.handleCategory.name);
-                    break;
-                    //PH
-                case (7):
-                        $(this).html(obj.laboratoryTest.phAverage);
-                    break;
-                    //热值
-                case (8):
-                    $(this).html(obj.laboratoryTest.heatAverage);
-                    break;
-                    //水分
-                case (9):
-                    $(this).html(obj.laboratoryTest.waterContentAverage);
-                    break;
-                    //灰分
-                case (10):
-                    $(this).html(obj.laboratoryTest.ashAverage);
-                    break;
-                    //氟含量
-                case (11):
-                    $(this).html(obj.laboratoryTest.fluorineContentAverage);
-                    break;
-                    //氯含量
-                case (12):
-                    $(this).html(obj.laboratoryTest.chlorineContentAverage);
-                    break;
-                    //硫含量
-                case (13):
-                    $(this).html(obj.laboratoryTest.sulfurContentAverage);
-                    break;
-                    //磷含量
-                case (14):
-                    $(this).html(obj.laboratoryTest.phosphorusContentAverage);
-                    break;
-                    //闪点
-                case (15):
-                    $(this).html(obj.laboratoryTest.flashPointAverage);
-                    break;
-                    //粘度
-                case (16):
-                    $(this).html(obj.laboratoryTest.viscosityAverage);
-                    break;
-                    //熔融温度
-                case (17):
-                    $(this).html(obj.laboratoryTest.meltingPointAverage);
-                    break;
-                    //备注
-                case (18):
                     $(this).html(obj.remarks);
                     break;
             }
@@ -406,41 +377,43 @@ function setWasteIntoList(result) {
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
+        tr.hide();
     });
-    tr.hide();
+
 }
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
-//危废入场的高级查询
-function searchWasteInto() {
+//次生入场高级查询
+function searchSecInto() {
 
     $('.myclass').each(function () {
         $(this).show();
     });
     array.length=0;//清空数组
     array1.length=0;//清空数组
+
     //1分页模糊查询
     for(var i=1;i<=totalPage();i++){
         switchPage(parseInt(i))
         array.push($('.myclass'));
     }
-    //1产废单位
-    var companyName=$('#search-receiveDate').val();
-    //2收样日期
+    //1收样日期
     var date=$('#search-sewageName').val();
-    //3联单号码
-    var number=$('#search-remarks').val();
+    //2废物名称
+    var wastesName=$('#search-receiveDate').val();
+    //3备注
+    var remarks=$('#search-remarks').val();
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
-            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
-                &&$(this).children('td').eq(2).text().indexOf(number)!=-1
+            if(!($(this).children('td').eq(2).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
-                &&$(this).children('td').eq(2).text().indexOf(number)!=-1)){
+            if(($(this).children('td').eq(2).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1)){
                 array1.push($(this));
             }
         });
@@ -452,12 +425,13 @@ function searchWasteInto() {
         });
     }
 
-    if(companyName.length<=0&&date.length<=0&&number.length<0){
+    if(wastesName.length<=0&&remarks.length<=0&&date.length<0){
         switchPage(1);
         $('.myclass').each(function () {
             $(this).show();
         })
     }
+
 
 
 }
