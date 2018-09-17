@@ -354,10 +354,12 @@ function setPoundsList(result) {
                     break;
                 case (6):
                     //发货单位
-                    $(this).html(obj.deliveryCompany.companyName);
+                    if (obj.deliveryCompany != null)
+                        $(this).html(obj.deliveryCompany.companyName);
                     break;
                 case (7):
                     //收货单位
+                    if (obj.receiveCompany != null)
                     $(this).html(obj.receiveCompany.companyName);
                     break;
                 case (8):
@@ -370,10 +372,8 @@ function setPoundsList(result) {
                     break;
                 case(10):
                     //状态
-                    if (obj.state != null) {
-                        obj.name = obj.state.name;
-                    }
-                    $(this).html(obj.name);
+                    if (obj.state != null)
+                    $(this).html(obj.state.name);
                     break;
                 case(11):
                     //备注
@@ -665,7 +665,7 @@ function loadPoundsItems() {
                 $("#modal1_driver").text(data.driver);
                 $("#modal1_remarks").text(data.remarks);
                 $("#modal1_wastesCode").text(data.wastesCode);
-              //  $("#modal1_printTime").text(getTimeStr(data.printTime));
+                //  $("#modal1_printTime").text(getTimeStr(data.printTime));
             } else {
                 console.log(result.message);
             }
@@ -676,6 +676,7 @@ function loadPoundsItems() {
         }
     });
 }
+
 function showPrintModal() {
     //更新打印时间
     $.ajax({
@@ -700,7 +701,7 @@ function showPrintModal() {
         }
     });
     //获取模态框数据
-   // console.log(localStorage.id);
+    // console.log(localStorage.id);
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getPounds",          // url
@@ -767,11 +768,19 @@ function print() {
     //打印模态框
     $("#footer").hide();
     $("#print1").printThis({
-        debug:true,             // 调试模式下打印文本的渲染状态
-        importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
-        importStyle:false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
-        printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
-        copyTagClasses: false
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: true,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: false
+        debug: false,
+        importCSS: false,
+        importStyle: true,
+        printContainer: true,
+        removeInline: false,
+        printDelay: 333,
+        header: null,
+        formValues: false
     });
 
 }
@@ -779,7 +788,7 @@ function print() {
 /**
  * 打印取消
  */
-function cancel(){
+function cancel() {
 //更新打印时间
     $.ajax({
         type: "POST",                       // 方法类型

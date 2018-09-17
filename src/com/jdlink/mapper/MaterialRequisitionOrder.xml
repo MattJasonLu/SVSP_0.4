@@ -16,7 +16,7 @@
         update t_pl_materialrequisitionorder set checkState='Picked'  where materialRequisitionId=#{materialRequisitionId};
     </update>
     <select id="total" resultType="int">
-    select count(*) from t_pl_materialrequisitionorder;
+    select count(*) from t_pl_materialrequisitionorder where checkState='ToOutbound';
 </select>
     <select id="getMaterialRequisitionOrderList" resultType="String">
         select materialRequisitionId from t_pl_materialrequisitionorder order by materialRequisitionId desc ;
@@ -68,8 +68,16 @@
     </select>
     <!--取得领料单对象-->
     <select id="list" resultMap="MaterialRequisitionOrderRM" >
-    select * from t_pl_materialrequisitionorder;
+    select * from t_pl_materialrequisitionorder
     </select>
+    <!--获取待出库的领料单-->
+    <select id="list2" resultMap="MaterialRequisitionOrderRM" >
+        select * from t_pl_materialrequisitionorder where checkState='ToOutbound'
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
     <update id="updateMaterialRequisitionOrderOnId" parameterType="MaterialRequisitionOrder">
         update t_pl_materialrequisitionorder set id=#{batchingOrder.wasteInventory.wastes.id},warseHouseId=#{batchingOrder.wasteInventory.wareHouse.wareHouseId},clientId=#{batchingOrder.wasteInventory.wastes.client.clientId} where batchingOrderId=#{batchingOrder.batchingOrderId};
     </update>

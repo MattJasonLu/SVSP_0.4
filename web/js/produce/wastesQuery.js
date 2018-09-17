@@ -75,7 +75,7 @@ function totalPage() {
  * */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setWasteInventoryList(result);
+    setWasteInventoryList(result.data);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -313,7 +313,7 @@ function loadWasteInventoryList() {
             if(result != undefined && result.status == "success"){
                 console.log(result);
                 //设置危废查询列表
-                setPageClone(result.data);
+                setPageClone(result);
                 //setWasteInventoryList(result.data);
             }
             else {
@@ -436,22 +436,66 @@ function setWasteInventoryList(result) {
     tr.removeAttr('class');
 }
 
-
+array=[];
+array1=[];
 //危废库存查询功能
 function searchWastesInventory() {
-    isSearch = true;
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.pageNumber = pageNumber;
-    page.count = countValue();
-    page.start = (pageNumber - 1) * page.count;
-    if ($("#senior").is(':visible')) {
-        data1 = {
-            date: $("#search-receiveDate").val(),
-            name: $("#search-sewageName").val(),
-            remarks: $("#search-remarks").val(),
-            page: page
-        };
+    // isSearch = true;
+    // var page = {};
+    // var pageNumber = 1;                       // 显示首页
+    // page.pageNumber = pageNumber;
+    // page.count = countValue();
+    // page.start = (pageNumber - 1) * page.count;
+    // if ($("#senior").is(':visible')) {
+    //     data1 = {
+    //         date: $("#search-receiveDate").val(),
+    //         name: $("#search-sewageName").val(),
+    //         remarks: $("#search-remarks").val(),
+    //         page: page
+    //     };
+    // }
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    for( var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        $('.myclass').show();
+        array.push($('.myclass'));
+    }
+    //1入库日期
+    var  inboundOrderId =$('#search-inDate').val();
+
+    //2产废单位
+    var client=$('#search-client').val();
+    //3进料方式
+    var handelCategory=$('#search-type option:selected').text();
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').eq(2).text().indexOf(inboundOrderId)!=-1&&$(this).children('td').eq(3).text().indexOf(client)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+            )){
+                $(this).hide();
+            }
+            if(($(this).children('td').eq(2).text().indexOf(inboundOrderId)!=-1&&$(this).children('td').eq(3).text().indexOf(client)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+    if(inboundOrderId.length<=0&&client.length<=0&&handelCategory.length<0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
     }
 }
 //危废库存查看

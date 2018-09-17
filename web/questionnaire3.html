@@ -10,6 +10,7 @@
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -315,7 +316,13 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">合同列表</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                                    <li><a href="experienceContract.html" id="function_336" onclick="checkAuthority($(this))">经营合同列表</a></li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                         </ul>

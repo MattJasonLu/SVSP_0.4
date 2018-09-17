@@ -200,5 +200,6 @@ contractMapper.updateFreight2(id);
         return contractMapper.searchModel(contract);
     }
 
-
+    @Override
+    public List<Contract> getContractList(){ return contractMapper.getContractList(); }
 }

@@ -57,7 +57,7 @@
                             <li><a href="summaryTable.html">危废预准入分析汇总表</a></li>
                         </ul>
                     </li>
-                    <li><a href="assessment1.html">业务员考核</a></li>
+                    <li><a href="assessment.html">业务员考核</a></li>
                     <li><a href="salesmanContract1.html" id="function_56" onclick="checkAuthority($(this))">业务员管理报表</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
@@ -115,10 +115,10 @@
                 <h4 class="sub-header"><span class="months"></span>危废入场分析日报</h4>
             </div>
             <!--查询框-->
-            <div class="input-group col-xs-5 pull-right" style="margin-right: 23px;">
-                <input type="text" class="form-control" size="5" placeholder="搜索..." id="searchContent" name="searchContent">
+            <div class="input-group col-xs-5 pull-right" style="margin-right: -400px;">
+                <!--<input type="text" class="form-control"  onkeyup="search()" size="5" placeholder="搜索..." id="searchContent" name="searchContent">-->
                 <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchSewage();"><span
+                            <a class="btn btn-default" onclick="searchWasteInto();"><span
                                     class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
@@ -146,7 +146,7 @@
                             <div class="form-group">
                                 <label for="search-sewageName" class="col-sm-4 control-label">收样日期</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-sewageName" name="search-sewageName"
+                                    <input type="date" class="form-control" id="search-sewageName" name="search-sewageName"
                                            placeholder="">
                                 </div>
                             </div>
@@ -188,7 +188,7 @@
                         <td class="text-center">备注</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody1">
                     <tr id="cloneTr" class="myclass">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -215,6 +215,43 @@
             <!--分页-->
         </div>
     </div>
+    <!--分页1-->
+    <nav aria-label="Page navigation" class="text-center">
+        <ol class="pagination" style="width: 800px;">
+            <li id="current"><a href='#'>当前页:</a>
+            <li id="firstPage">
+                <a href='#' onclick="switchPage(0)">首 页</a>
+            </li>
+            <li id="previous">
+                <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li id="next">
+                <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                </a>
+            </li>
+            <li id="endPage">
+                <a href='#' onclick="switchPage(-2)">尾 页</a>
+            </li>
+            <li><a id="totalPage"></a></li>
+            <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+            <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                       id="pageNumber" title=""></li>
+            <li class="showLi">每页显示:</li>
+            <li class="selectLi">
+                <select id="count" onchange="loadWasteIntoList()" title="">
+                    <option>5</option>
+                    <option selected>15</option>
+                    <option>50</option>
+                </select>
+            </li>
+        </ol>
+    </nav>
     <div id="embed"></div>
 </body>
 </html>

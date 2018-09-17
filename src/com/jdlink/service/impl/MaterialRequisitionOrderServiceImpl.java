@@ -2,6 +2,7 @@ package com.jdlink.service.impl;
 
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Page;
 import com.jdlink.mapper.MaterialRequisitionOrderMapper;
 import com.jdlink.service.MaterialRequisitionOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionO
     public List<MaterialRequisitionOrder> list() {
         return materialRequisitionOrderMapper.list();
     }
+
 
     @Override
     public void updateMaterialRequisitionOrderOnId(MaterialRequisitionOrder materialRequisitionOrder) {
@@ -84,6 +86,11 @@ public class MaterialRequisitionOrderServiceImpl implements MaterialRequisitionO
     @Override
     public void updateMaterialRequisitionOrder1(MaterialRequisitionOrder materialRequisitionOrder) {
         materialRequisitionOrderMapper.updateMaterialRequisitionOrder1(materialRequisitionOrder);
+    }
+
+    @Override
+    public List<MaterialRequisitionOrder> list2(Page page) {
+        return materialRequisitionOrderMapper.list2(page);
     }
 
 
