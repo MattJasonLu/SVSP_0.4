@@ -40,4 +40,10 @@ public interface WayBillService  {
 
     String getWastesId();
 
+    /**
+     * 根据客户Id和危废编码获取接运单明细数据
+     */
+    WayBillItem getWayBillItemByClientIdAndWastesCode(String clientId, String code);
+
+
 }

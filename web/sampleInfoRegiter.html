@@ -14,6 +14,7 @@
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
@@ -376,7 +377,8 @@
                             <div class="form-group col-md-5">
                                 <label for="model-companyCode" class="col-sm-5 control-label">公司代码</label>
                                 <div class="col-sm-7">
-                                    <select class="selectpicker form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="model-companyCode"
+                                    <select class="selectpicker form-control" data-live-search="true"
+                                            data-live-search-placeholder="搜索..." id="model-companyCode"
                                             name="model-companyCode">
                                     </select>
                                 </div>
@@ -393,7 +395,8 @@
                             <div class="row">
                                 <label class="col-sm-2 control-label">危废代码</label>
                                 <div class="col-sm-10">
-                                    <select class="selectpicker form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
+                                    <select class="selectpicker form-control" data-live-search="true"
+                                            data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
                                             name="wastesList[0].wastesCode">
                                     </select>
                                 </div>
@@ -477,7 +480,8 @@
                             <div class="form-group col-md-5">
                                 <label for="model3-companyCode" class="col-sm-5 control-label">公司代码</label>
                                 <div class="col-sm-7">
-                                    <select class="selectpicker form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="model3-companyCode"
+                                    <select class="selectpicker form-control" data-live-search="true"
+                                            data-live-search-placeholder="搜索..." id="model3-companyCode"
                                             name="model-companyCode">
                                     </select>
                                 </div>
@@ -494,7 +498,8 @@
                             <div class="row">
                                 <label class="col-sm-2 control-label">危废代码</label>
                                 <div class="col-sm-10">
-                                    <select class="selectpicker form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="wastes0-wastesCode"
+                                    <select class="selectpicker form-control" data-live-search="true"
+                                            data-live-search-placeholder="搜索..." id="wastes0-wastesCode"
                                             name="wastes[0].wastesCode">
                                     </select>
                                 </div>
@@ -566,47 +571,48 @@
         <!-- 查看预约信息模态框 -->
         <div class="modal fade" id="viewAppointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode"
-                                                                                       name="model1-companyCode"></span>
-                            </p>
-                            <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                    id="model1-signer" name="model1-signer"></span></p>
-
+                <div class="modal-content" id="viewModal">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
                         </div>
-                        <div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode"
+                                                                                           name="model1-companyCode"></span>
+                                </p>
+                                <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
+                                        id="model1-signer" name="model1-signer"></span></p>
+
+                            </div>
                             <div>
-                                <div class="col-sm-12 row">
-                                    <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span id="model[0].wastesCode"></span>
-                                    </p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span
-                                                id="model[0].basicItems"></span></p>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span id="model[0].addItems"></span>
+                                <div>
+                                    <div class="col-sm-12 row">
+                                        <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span
+                                                id="model[0].wastesCode"></span>
                                         </p>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span
+                                                    id="model[0].basicItems"></span></p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span
+                                                    id="model[0].addItems"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="cloneBefore">
                                 </div>
                             </div>
-                            <div id="cloneBefore">
-                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="printBtn">打印</button>
-                    </div>
+                        <div class="modal-footer" id="footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="print();">打印</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
