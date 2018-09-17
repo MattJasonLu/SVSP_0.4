@@ -325,7 +325,7 @@ public class WasteInventoryController {
 //更新领料单单号
     @RequestMapping("updateMaterialRequisitionId")
     @ResponseBody
-    public String updateMaterialRequisitionId(){
+    public String updateMaterialRequisitionId(@RequestBody Page page){
         JSONObject res=new JSONObject();
         Calendar cal = Calendar.getInstance();
         //获取年
@@ -1018,5 +1018,55 @@ catch (Exception e){
             e.printStackTrace();
             return 0;
         }
+    }
+    //获取待出库的领料单列表
+    @RequestMapping("getMaterialByToOut")
+    @ResponseBody
+    public String getMaterialByToOut(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try{
+            List<MaterialRequisitionOrder> materialRequisitionOrderList= materialRequisitionOrderService.list2(page);
+            //1遍历materialRequisitionOrderList 如果不为空添加
+            List<MaterialRequisitionOrder> list=new ArrayList<>();
+            for (int i=0;i<materialRequisitionOrderList.size();i++){
+                if(materialRequisitionOrderList.get(i).getBatchingOrder()!=null){
+                    list.add(materialRequisitionOrderList.get(i));
+                }
+            }
+            Calendar cal = Calendar.getInstance();
+            //获取年
+            String year = String.valueOf(cal.get(Calendar.YEAR));
+            //获取月
+            String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
+            //序列号
+            String number = "00001";
+            // for (int i=0;i<list.size();i++){
+            //materialRequisitionOrderService.updateMaterialRequisitionOrderOnId(list.get(i));//更新危废主键和仓库编码和库户编号
+            //materialRequisitionOrderService.updateBatchingOrderCheck(list.get(i));//更新配料单的状态
+            //更新仓库编号
+            //materialRequisitionOrderService.updateMaterialRequisitionOrderCheck(list.get(i));//更新领料单的状态
+            //}
+            List<MaterialRequisitionOrder> materialRequisitionOrderList1= materialRequisitionOrderService.list2(page);
+            List<MaterialRequisitionOrder> list2=new ArrayList<>();
+            for (int i=0;i<materialRequisitionOrderList1.size();i++){
+                if(materialRequisitionOrderList1.get(i).getBatchingOrder()!=null){
+                    list2.add(materialRequisitionOrderList1.get(i));
+                }
+            }
+            JSONArray jsonArray=JSONArray.fromObject(list2);
+            res.put("jsonArray",materialRequisitionOrderList);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败");
+        }
+
+
+        return res.toString();
+
     }
 }

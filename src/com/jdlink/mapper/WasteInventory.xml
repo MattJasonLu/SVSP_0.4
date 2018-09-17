@@ -66,11 +66,11 @@
         select * from  client where clientId=#{clientId};
     </select>
     <select id="getBatchingOrderIdList" resultType="String"  >
-        select batchingOrderId from t_pl_batchingorder order by batchingOrderId desc ;
+        select batchingOrderId from t_pl_batchingorder  where checkState='ToPick' order by batchingOrderId desc ;
 
     </select>
     <select id="total" resultType="int">
-    select count(*) from t_pl_batchingorder;
+    select count(*) from t_pl_batchingorder where checkState='ToPick';
 </select>
     <insert id="addBatchingOrder" parameterType="BatchingOrder">
         insert into t_pl_batchingorder(batchingOrderId, batchingDate, createDate, remarks, wareHouseId,  recordstate,  batchingNumber,  nowTime, inboundOrderId,creator,checkState,inboundOrderItemId)
@@ -189,7 +189,7 @@
     <select id="getClient2" resultType="Client">
         select * from  client where clientId=#{produceCompany};
     </select>
-    <!--计算总共条数-->
+    <!--计算总共条数==>危废入库-->
     <select id="countInventory" resultType="int">
         select COUNT(*) from t_pl_wasteinventory where boundType='WasteInbound';
     </select>

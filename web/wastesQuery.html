@@ -136,7 +136,7 @@
                             <div class="form-group">
                                 <label for="search-inDate" class="col-sm-4 control-label">入库日期</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-inDate" name="search-inDate" placeholder="">
+                                    <input type="date" class="form-control" id="search-inDate" name="search-inDate" placeholder="">
                                 </div>
                             </div>
 
@@ -152,7 +152,7 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-storageType" class="col-sm-4 control-label">入库日期</label>
+                                <label for="search-storageType" class="col-sm-4 control-label">仓库名称</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-storageType" name="search-storageType" placeholder="">
                                 </div>
@@ -223,7 +223,7 @@
                         <!--<th class="text-center hidden"></th>-->
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody1">
                     <tr id="cloneTr" class="myclass" ondblclick="viewWastesIn(this);">
                         <td class="text-center">
                             <label>

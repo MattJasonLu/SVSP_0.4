@@ -2,6 +2,7 @@ package com.jdlink.service;
 
 import com.jdlink.domain.Inventory.MaterialRequisitionOrder;
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.MaterialRequire;
 
 import java.util.List;
@@ -21,5 +22,5 @@ public interface MaterialRequisitionOrderService {
     void addOutboundOrder(OutboundOrder outboundOrder);
     List<MaterialRequisitionOrder>getNew();
     void updateMaterialRequisitionOrder1(MaterialRequisitionOrder materialRequisitionOrder);
-
+    List<MaterialRequisitionOrder> list2(Page page);
 }
