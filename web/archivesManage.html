@@ -228,7 +228,7 @@
             <br>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">送样/抽检单统计(<a href="#" onclick="">详情</a>)</td>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">送样/抽检单统计(<a href="#" id="detail1" onclick="viewData1()">详情</a>)</td>
                 </tr>
             </table>
             <br>
@@ -259,7 +259,7 @@
             <br>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">经营合同统计(<a href="#" onclick="">详情</a>)</td>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">经营合同统计(<a href="#" id="detail2" onclick="viewData2()">详情</a>)</td>
                 </tr>
             </table>
             <br>
@@ -312,7 +312,7 @@
             </table>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">派车统计(<a href="#" onclick="">详情</a>)</td>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">派车统计(<a href="#" id="detail3" onclick="viewData3()">详情</a>)</td>
                 </tr>
             </table>
             <br>
@@ -335,21 +335,21 @@
                 <div class="col-md-4">
                     <table class="table table-bordered" style="background-color: #caf8ff">
                         <tr>
-                            <td class="text-center">暂无信息(危废接收<a href="#" onclick="">详情</a>)</td>
+                            <td class="text-center">暂无信息(危废接收<a href="#" id="detail4" onclick="viewData4()">详情</a>)</td>
                         </tr>
                     </table>
                 </div>
                 <div class="col-md-4">
                     <table class="table table-bordered" style="background-color: #caf8ff">
                         <tr>
-                            <td class="text-center">暂无信息(危废处置<a href="#" onclick="">详情</a>)</td>
+                            <td class="text-center">暂无信息(危废处置<a href="#" id="detail5" onclick="viewData5()">详情</a>)</td>
                         </tr>
                     </table>
                 </div>
                 <div class="col-md-4">
                     <table class="table table-bordered" style="background-color: #caf8ff">
                         <tr>
-                            <td class="text-center">暂无信息(企业相关附件列表<a href="#" onclick="">详情</a>)</td>
+                            <td class="text-center">暂无信息(企业相关附件列表<a href="#" id="detail6" onclick="viewData6()">详情</a>)</td>
                         </tr>
                     </table>
                 </div>
@@ -392,12 +392,430 @@
         <!--</nav>-->
     </div>
 </div>
+<div class="modal fade bs-example-modal-lg" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print1" style="width: 85%">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <p><b>送样/检样详情</b></p>
+                <!--<div class="alert alert-success alert-dismissable" id="close1" >-->
+                    <!--<button type="button" class="close" onclick="close1()" title="close it">-->
+                        <!--&times;-->
+                    <!--</button>-->
+                <!--</div>-->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p class="text-left">产废单位: <span id="modal1_companyName"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <div class="input-group date">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                &nbsp;至&nbsp;
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">送样/检样单统计</div>
+                <table class="table" style="border: transparent solid 3px">
+                    <tr>
+                        <td class="text-center">送样次数：</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">送样分析单数量：</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">送样分析通过数量：</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">送样分析未通过数量：</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">抽检次数：</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">抽检分析单数量：</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">抽检分析通过数量：</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">抽检分析未通过数量：</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                </table>
+                <div class="panel-footer text-center">送样/检样单列表</div>
+                <table class="table">
+                    <tr>
+                        <td class="text-center">序号</td>
+                        <td class="text-center">送样单位</td>
+                        <td class="text-center">单据类型</td>
+                        <td class="text-center">单据号</td>
+                        <td class="text-center">八位码</td>
+                        <td class="text-center">危废俗称</td>
+                        <td class="text-center">负责人</td>
+                        <td class="text-center">送样日期</td>
+                        <td class="text-center">来源单据类型</td>
+                        <td class="text-center">单据状态</td>
+                        <td class="text-center">送样类型</td>
+                        <td class="text-center">对应分析单单据号</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="print1-1">打印</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print2" style="width: 85%">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <p><b>经营合同统计详情</b></p>
+                <!--<div class="alert alert-success alert-dismissable" id="close1" >-->
+                <!--<button type="button" class="close" onclick="close1()" title="close it">-->
+                <!--&times;-->
+                <!--</button>-->
+                <!--</div>-->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p class="text-left">产废单位: <span id="modal2_companyName"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <div class="input-group date">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                &nbsp;至&nbsp;
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <tr>
+                        <td class="text-center">序号</td>
+                        <td class="text-center">经营合同状态</td>
+                        <td class="text-center">合同编号</td>
+                        <td class="text-center">开始日期</td>
+                        <td class="text-center">截止日期</td>
+                        <td class="text-center">业务员</td>
+                        <td class="text-center">备注</td>
+                        <td class="text-center">整单金额</td>
+                        <td class="text-center">合同附件名</td>
+                        <td class="text-center">经营合同详情</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center">
+                            <select class="state" title="">
+                                <option value="0"></option>
+                            </select>
+                        </td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="print2-1">打印</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="modal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print3" style="width: 85%">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <p><b>派车统计详情</b></p>
+                <!--<div class="alert alert-success alert-dismissable" id="close1" >-->
+                <!--<button type="button" class="close" onclick="close1()" title="close it">-->
+                <!--&times;-->
+                <!--</button>-->
+                <!--</div>-->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p class="text-left">产废单位: <span id="modal3_companyName"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">运输日期： </label>
+                            <div class="input-group date">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                &nbsp;至&nbsp;
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">派车统计</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p class="text-left">派车总次数: <span id="modal3_carNumber"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-left">派车总里程: <span id="modal3_carMileage"></span></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-left">派车总时间: <span id="modal3_carTime"></span></p>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">派车单列表</div>
+                <table class="table">
+                    <tr>
+                        <td class="text-center">序号</td>
+                        <td class="text-center">单据号</td>
+                        <td class="text-center">派车方式</td>
+                        <td class="text-center">区域</td>
+                        <td class="text-center">动输单位</td>
+                        <td class="text-center">车牌号</td>
+                        <td class="text-center">驾驶员</td>
+                        <td class="text-center">押运员</td>
+                        <td class="text-center">运输开始时间</td>
+                        <td class="text-center">运输结束时间</td>
+                        <td class="text-center">派车单详情</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="print3-1">打印</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="modal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print4" style="width: 85%">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <p><b>危废接收详情</b></p>
+                <!--<div class="alert alert-success alert-dismissable" id="close1" >-->
+                <!--<button type="button" class="close" onclick="close1()" title="close it">-->
+                <!--&times;-->
+                <!--</button>-->
+                <!--</div>-->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p class="text-left">产废单位: <span id="modal4_companyName"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <div class="input-group date">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                &nbsp;至&nbsp;
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">危废出库记录</div>
+                <table class="table">
+                    <tr>
+                        <td class="text-center">八位码</td>
+                        <td class="text-center">危废名称</td>
+                        <td class="text-center">包装类型</td>
+                        <td class="text-center">数量</td>
+                        <td class="text-center">单位</td>
+                        <td class="text-center">转移联单号</td>
+                        <td class="text-center">出库时间</td>
+                        <td class="text-center">生命周期</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="print4-1">打印</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="modal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print5" style="width: 85%">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <p><b>危废处置统计详情</b></p>
+                <!--<div class="alert alert-success alert-dismissable" id="close1" >-->
+                <!--<button type="button" class="close" onclick="close1()" title="close it">-->
+                <!--&times;-->
+                <!--</button>-->
+                <!--</div>-->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p class="text-left">产废单位: <span id="modal5_companyName"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <div class="input-group date">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                &nbsp;至&nbsp;
+                                <i class="glyphicon glyphicon-calendar"></i>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer text-center">危废出库记录</div>
+                <table class="table">
+                    <tr>
+                        <td class="text-center">八位码</td>
+                        <td class="text-center">危废名称</td>
+                        <td class="text-center">包装类型</td>
+                        <td class="text-center">数量</td>
+                        <td class="text-center">单位</td>
+                        <td class="text-center">转移联单号</td>
+                        <td class="text-center">出库时间</td>
+                        <td class="text-center">生命周期</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="print5-1">打印</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" id="modal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" id="print6">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <p><b>危废接收详情</b></p>
+                <!--<div class="alert alert-success alert-dismissable" id="close1" >-->
+                <!--<butaton type="button" class="close" onclick="close1()" title="close it">-->
+                <!--&times;-->
+                <!--</button>-->
+                <!--</div>-->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <p class="text-left">产废单位: <span id="modal6_companyName"></span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        上传附件
+                    </div>
+                </div>
+                <table class="table">
+                    <tr>
+                        <td class="text-center">序号</td>
+                        <td class="text-center">文件名称</td>
+                        <td class="text-center">上传日期</td>
+                        <td class="text-center">文件类型</td>
+                        <td class="text-center">上传人</td>
+                        <td class="text-center">文件详情</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary hidden-print" onclick="" id="print6-1">打印</a>
+                <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="embed"></div>
 </body>
 <!--分页格式-->
 <style type="text/css">
     .pagination > li {
         display: inline;
+    }
+    i {
+        color: #ff6d5e;
     }
     .inputText { float:left;
     }
@@ -412,9 +830,10 @@
         line-height: 38px;
     }
 </style>
-
 <script type="text/javascript">
-
+    function close1(){
+        $("close1").remove();
+    }
     $('.form_datetime1').datetimepicker({
         format: 'yyyy-mm-dd',
         language:  'zh-CN',
