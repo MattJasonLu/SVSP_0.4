@@ -54,6 +54,17 @@ public class ProductionDailyController {
         }
     }
 
+    @RequestMapping("getProductionDailyByDateRangeCount")
+    @ResponseBody
+    public int getProductionDailyByDateRangeCount(Date beginTime, Date endTime) {
+        try {
+            return productionDailyService.getProductionDailyByDateRangeCount(beginTime, endTime);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     /**
      * 通过页数获取日报页数
      * @return 成功与否
@@ -64,6 +75,24 @@ public class ProductionDailyController {
         JSONObject res = new JSONObject();
         try {
             List<ProductionDaily> productionDailyList = productionDailyService.listProductionDailyByPage(page);
+            JSONArray data = JSONArray.fromArray(productionDailyList.toArray(new ProductionDaily[productionDailyList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("searchProductionDaily")
+    @ResponseBody
+    public String searchProductionDaily(Date beginTime, Date endTime, Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<ProductionDaily> productionDailyList = productionDailyService.getProductionDailyByDateRange(beginTime, endTime, page);
             JSONArray data = JSONArray.fromArray(productionDailyList.toArray(new ProductionDaily[productionDailyList.size()]));
             res.put("status", "success");
             res.put("message", "获取信息成功");
@@ -766,6 +795,7 @@ public class ProductionDailyController {
             List<OutboundOrder> outboundOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "SecondaryTwoCombustionChamber");
             for (OutboundOrder outboundOrder : outboundOrderList) {
                 if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
+                if (outboundOrder.getLaboratoryTest() == null) continue;
                 String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
                 switch (wastesName) {
                     case "slag":

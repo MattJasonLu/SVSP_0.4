@@ -9,6 +9,7 @@ import com.jdlink.service.ProductionDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -71,5 +72,16 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
     public ProductionDaily getProductionDailyById(int id) {
         return productionDailyMapper.getProductionDailyById(id);
     }
+
+    @Override
+    public List<ProductionDaily> getProductionDailyByDateRange(Date beginTime, Date endTime, Page page) {
+        return productionDailyMapper.getProductionDailyByDateRange(beginTime, endTime, page);
+    }
+
+    @Override
+    public int getProductionDailyByDateRangeCount(Date beginTime, Date endTime) {
+        return productionDailyMapper.getProductionDailyByDateRangeCount(beginTime, endTime);
+    }
+
 
 }

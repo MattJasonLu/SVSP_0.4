@@ -41,11 +41,10 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchTransferDraftTotal",                  // url
+            url: "getProductionDailyByDateRangeCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
+            data: data,
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result > 0) {
                     totalRecord = result;
@@ -173,11 +172,10 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchTransferDraft",         // url
+            url: "searchProductionDaily",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
+            data: data,
             dataType: "json",
-            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
@@ -250,11 +248,10 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchTransferDraft",         // url
+                url: "searchProductionDaily",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
+                data: data,
                 dataType: "json",
-                contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result !== undefined && result.status === "success") {
                         // console.log(result);
@@ -320,6 +317,7 @@ function setDataList(result) {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.find("td[name='id']").text(index + 1);
         clonedTr.find("td[name='date']").text(getDateStr(obj.date));
         if (obj.checkState != null) clonedTr.find("td[name='checkState']").text(obj.checkState.name);
         clonedTr.find("td[name='author']").text(obj.author);
@@ -343,20 +341,8 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-draftId").val(),
-            checkState: $("#search-checkState").val(),
-            produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
-            },
-            transportCompany: {
-                companyName: $("#search-transportCompanyName").val()
-            },
-            acceptCompany: {
-                companyName: $("#search-acceptCompanyName").val()
-            },
-            dispatcher: $("#search-dispatcher").val(),
-            destination: $("#search-destination").val(),
-            transferTime: $("#search-transferTime").val(),
+            beginTime: $("#beginTime").val(),
+            endTime: $("#endTime").val(),
             page: page
         };
         console.log(data);
@@ -369,11 +355,10 @@ function searchData() {
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchTransferDraft",                  // url
+        url: "searchProductionDaily",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
+        data: data,
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);

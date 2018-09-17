@@ -310,4 +310,27 @@
             </foreach>
         </if>
     </insert>
+
+    <!--通过日期范围获取生产日报-->
+    <select id="getProductionDailyByDateRange" resultType="ProductionDaily">
+        select * from t_rp_productiondaily
+        <![CDATA[
+            WHERE DATE_FORMAT(date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(date, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        ]]>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--通过日期范围获取生产日报-->
+    <select id="getProductionDailyByDateRangeCount" resultType="int">
+        select COUNT(*) from t_rp_productiondaily
+        <![CDATA[
+            WHERE DATE_FORMAT(date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(date, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        ]]>;
+    </select>
+    
 </mapper>
