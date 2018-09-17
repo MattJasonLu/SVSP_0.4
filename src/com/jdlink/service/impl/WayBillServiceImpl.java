@@ -136,4 +136,8 @@ public class WayBillServiceImpl implements WayBillService {
 
     @Override
     public void addSingleItem(WayBillItem wayBillItem){ wayBillMapper.addSingleItem(wayBillItem); }
+
+    @Override
+    public WayBillItem getWayBillItemByClientIdAndWastesCode(String clientId, String code){ return wayBillMapper.getWayBillItemByClientIdAndWastesCode(clientId,code); }
+
 }

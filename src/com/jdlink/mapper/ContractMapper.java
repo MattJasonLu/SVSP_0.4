@@ -67,9 +67,12 @@ public interface ContractMapper {
      */
     List<Contract> getContractBySalesman(String salesmanId, @Param("page") Page page);
     /**
+     * 获取合同列表数据
+     * @return
+     */
+    List<Contract> getContractList();
+    /**
      * 合同列表的高级查询
-     *
-     *
      */
     List<Contract> search(Contract contract);
     List<Contract> searchModel(Contract contract);

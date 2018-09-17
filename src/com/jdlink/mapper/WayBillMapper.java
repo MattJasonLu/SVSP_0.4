@@ -3,6 +3,8 @@ package com.jdlink.mapper;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -29,5 +31,6 @@ public interface WayBillMapper {
     void update(WayBill wayBill);
     WayBill getByName(String name);
     void addSingleItem(WayBillItem wayBillItem);
+    WayBillItem getWayBillItemByClientIdAndWastesCode(@Param("clientId")String clientId, @Param("code")String code);
 }
 
