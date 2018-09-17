@@ -6,7 +6,6 @@
 <mapper namespace="com.jdlink.mapper.WayBillMapper">
     <resultMap id="WayBillRM" type="WayBill" autoMapping="true">
         <id column="id" property="id"/>
-        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
         <collection property="wayBillItemList" select="getItems" column="id"
                     ofType="com.jdlink.domain.Produce.WayBillItem"
                     javaType="ArrayList"/>
@@ -14,28 +13,10 @@
 
     <resultMap id="WayBillItemRM" type="WayBillItem" autoMapping="true">
         <id property="itemId" column="itemId"/>
-        <association property="wastes" column="wastesId" select="getWastes"/>
-        <association property="receiveCompany" column="receiveCompanyId" select="getReceiveCompany"/>
-        <association property="salesman" column="salesmanId" select="getSalesman"/>
     </resultMap>
 
     <select id="getItems" parameterType="String" resultMap="WayBillItemRM">
         select  * from t_pr_waybillitem where wayBillId = #{id};
-    </select>
-    <select id="getProduceCompany" parameterType="String" resultType="Client">
-        SELECT * FROM client WHERE clientId=#{produceCompanyId};
-    </select>
-
-    <select id="getReceiveCompany" parameterType="String" resultType="Client">
-        SELECT * FROM client WHERE clientId=#{receiveCompanyId};
-    </select>
-
-    <select id="getWastes" parameterType="String" resultType="Wastes">
-        select * from t_wastes where id = #{wastesId};
-    </select>
-
-    <select id="getSalesman" parameterType="String" resultType="Salesman">
-        select * from salesman where salesmanId = #{salesmanId};
     </select>
 
     <select id="count" resultType="int">
@@ -74,8 +55,8 @@
         select t_wastes.id from t_wastes where name = #{name};
     </select>
 
-    <select id="getWastesById" parameterType="String" resultType="String">
-        select t_wastes.id from t_wastes where id = #{id};
+    <select id="getWastesById" parameterType="String" resultType="Wastes">
+        select * from t_wastes where id = #{id};
     </select>
 
     <select id="getByName" parameterType="String" resultMap="WayBillRM">
@@ -95,8 +76,8 @@
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
-            <if test="produceCompany != null and produceCompany !=''">
-                and produceCompanyName like "%"#{produceCompany.companyName}"%"
+            <if test="produceCompanyName != null and produceCompanyName !=''">
+                and produceCompanyName like "%"#{produceCompanyName}"%"
             </if>
             <if test="total != null and total !=''">
                 and total = #{total}
@@ -129,8 +110,8 @@
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
-            <if test="produceCompany.companyName != null and produceCompany.companyName !=''">
-                and produceCompanyName like "%"#{produceCompany.companyName}"%"
+            <if test="produceCompanyName != null and produceCompanyName !=''">
+                and produceCompanyName like "%"#{produceCompanyName}"%"
             </if>
             <if test="total != null and total !=''">
                 and total = #{total}
@@ -156,7 +137,7 @@
     <select id="getWayBillItemByClientIdAndWastesCode" resultMap="WayBillItemRM">
         select * from t_pr_waybillitem
         where wayBillId in ( select id from t_pr_waybill where produceCompanyId=#{clientId})
-        and wastesId in (select id from t_wastes where code=#{code});
+        and wastesCode =#{code};
     </select>
 
     <update id="approval" parameterType="WayBill">
@@ -177,66 +158,47 @@
 
     <update id="update" parameterType="WayBill">
         update t_pr_waybill
-        set total=#{total},freight=#{freight},remarks=#{remarks},wayBillDate=NOW(),produceCompanyId=#{produceCompany.clientId},
-        nowTime=NOW(),produceCompanyOperator=#{produceCompanyOperator},produceCompanyName=#{produceCompany.companyName},
+        set total=#{total},freight=#{freight},remarks=#{remarks},wayBillDate=NOW(),produceCompanyId=#{produceCompanyId},
+        nowTime=NOW(),produceCompanyOperator=#{produceCompanyOperator},produceCompanyName=#{produceCompanyName},
         founder=#{founder}
         where id = #{id};
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             update t_pr_waybillitem
             set itemId=#{wayBillItem.itemId},receiveDate=#{wayBillItem.receiveDate},
             receiveCompanyOperator=#{wayBillItem.receiveCompanyOperator},invoiceNumber=#{wayBillItem.invoiceNumber},
-            invoiceDate=#{wayBillItem.invoiceDate},salesmanId=#{wayBillItem.salesman.salesmanId},
-            receiveCompanyId=#{wayBillItem.receiveCompany.clientId},wastesId=#{wayBillItem.wastes.id}
+            invoiceDate=#{wayBillItem.invoiceDate},salesmanName=#{wayBillItem.salesmanName},
+            receiveCompanyName=#{wayBillItem.receiveCompanyName},wastesId=#{wayBillItem.wastesId},
+            wastesCode =#{wayBillItem.wastesCode},wastesAmount=#{wayBillItem.wastesAmount},wastesName=#{wayBillItem.wastesName},
+            wastesPrice=#{wayBillItem.wastesPrice},wastesTotalPrice=#{wayBillItem.wastesTotalPrice}
             where wayBillId=#{id};
-
-            update t_wastes
-            set  name=#{wayBillItem.wastes.name},unitPriceTax=#{wayBillItem.wastes.unitPriceTax},wasteAmount=#{wayBillItem.wastes.wasteAmount},wastesTotal=#{wayBillItem.wastes.wastesTotal}
-            where id = #{wayBillItem.wastes.id}
         </foreach>
     </update>
 
     <insert id="addItem" parameterType="WayBill">
     <foreach collection="wayBillItemList" index="index" item="wayBillItem">
         insert into t_pr_waybillitem
-        (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
+        (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)
         values
-        (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
-
-        insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount)
-        values
-        (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wastesTotal},#{wayBillItem.wastes.wasteAmount});
+        (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesmanName},#{wayBillItem.receiveCompanyName},#{wayBillItem.wastesId},
+        #{wayBillItem.wastesCode},#{wayBillItem.wastesPrice},#{wayBillItem.wastesName},#{wayBillItem.wastesAmount},#{wayBillItem.wastesTotalPrice});
     </foreach>
 </insert>
-
-    <insert id="addSingleItem" parameterType="WayBillItem">
-            insert into t_pr_waybillitem
-            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
-            values
-            (#{itemId},#{wayBillId},#{receiveDate},#{receiveCompanyOperator},
-            #{invoiceNumber},#{invoiceDate},#{salesman.salesmanId},
-            #{receiveCompany.clientId},#{wastes.id});
-
-            insert into t_wastes (id,name,unitPriceTax,wastesTotal,wasteAmount)
-            values
-            (#{wastes.id},#{wastes.name},#{wastes.unitPriceTax},#{wastes.wastesTotal},#{wastes.wasteAmount});
-    </insert>
 
     <insert id="addWayBill" parameterType="WayBill">
         insert into t_pr_waybill
         (id,total,freight,remarks,wayBillDate,produceCompanyId,nowTime,produceCompanyOperator,state,produceCompanyName,founder)
         values
-        (#{id},#{total},#{freight},#{remarks},NOW(),#{produceCompany.clientId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompany.companyName},#{founder});
+        (#{id},#{total},#{freight},#{remarks},NOW(),#{produceCompanyId},NOW(),#{produceCompanyOperator},'NewBuild',#{produceCompanyName},#{founder});
         <foreach collection="wayBillItemList" index="index" item="wayBillItem">
             insert into t_pr_waybillitem
-            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanId,receiveCompanyId,wastesId)
+            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)
             values
-            (#{wayBillItem.itemId},#{id},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesman.salesmanId},#{wayBillItem.receiveCompany.clientId},#{wayBillItem.wastes.id});
-
-            insert into t_wastes
-            (id,name,unitPriceTax,wasteAmount,wastesTotal)
-            values
-            (#{wayBillItem.wastes.id},#{wayBillItem.wastes.name},#{wayBillItem.wastes.unitPriceTax},#{wayBillItem.wastes.wasteAmount},#{wayBillItem.wastes.wastesTotal})
+            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesmanName},#{wayBillItem.receiveCompanyName},#{wayBillItem.wastesId},
+            #{wayBillItem.wastesCode},#{wayBillItem.wastesPrice},#{wayBillItem.wastesName},#{wayBillItem.wastesAmount},#{wayBillItem.wastesTotalPrice});
         </foreach>
     </insert>
 
+    <select id="getWayBillById" parameterType="String" resultMap="WayBillRM">
+        select * from t_pr_waybill where id =#{id};
+    </select>
 </mapper>

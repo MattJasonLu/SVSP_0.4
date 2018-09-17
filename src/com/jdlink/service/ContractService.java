@@ -57,13 +57,13 @@ public interface ContractService {
     int countSalesmanByContract();
 
     /**
-     * 根据业务员的编号筛选出所有的合同
+     * 根据业务员的编号和年月份筛选出所有的合同
      * @param salesmanId 业务员编号
-     * @param page 页码
      * @return 合同列表
      */
-    List<Contract> getContractBySalesman(String salesmanId, Page page);
+    List<Contract> getContractBySalesman(String salesmanId,String month);
     List<Contract> search(Contract contract);
     List<Contract> searchModel(Contract contract);
-    List<Contract> getContractList();
+    List<Contract> getContractList(String year);
+    List<Contract> getContractListByMonth(String month);
 }

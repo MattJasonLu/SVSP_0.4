@@ -3,6 +3,7 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.WayBillMapper;
 import com.jdlink.service.WayBillService;
 import com.jdlink.util.RandomUtil;
@@ -70,7 +71,7 @@ public class WayBillServiceImpl implements WayBillService {
     public int countWastes(){ return wayBillMapper.countWastes();}
 
     @Override
-    public String getWastesById(String id){ return wayBillMapper.getWastesById(id); }
+    public Wastes getWastesById(String id){ return wayBillMapper.getWastesById(id); }
 
     @Override
     public String getCurrentWayBillId() {
@@ -135,9 +136,9 @@ public class WayBillServiceImpl implements WayBillService {
     public void update(WayBill wayBill){ wayBillMapper.update(wayBill); }
 
     @Override
-    public void addSingleItem(WayBillItem wayBillItem){ wayBillMapper.addSingleItem(wayBillItem); }
+    public WayBillItem getWayBillItemByClientIdAndWastesCode(String clientId, String code){ return wayBillMapper.getWayBillItemByClientIdAndWastesCode(clientId,code); }
 
     @Override
-    public WayBillItem getWayBillItemByClientIdAndWastesCode(String clientId, String code){ return wayBillMapper.getWayBillItemByClientIdAndWastesCode(clientId,code); }
+    public WayBill getWayBillById(String id){ return wayBillMapper.getWayBillById(id); }
 
 }

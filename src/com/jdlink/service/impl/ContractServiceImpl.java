@@ -186,8 +186,8 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public List<Contract> getContractBySalesman(String salesmanId, Page page) {
-        return contractMapper.getContractBySalesman(salesmanId, page);
+    public List<Contract> getContractBySalesman(String salesmanId,String month) {
+        return contractMapper.getContractBySalesman(salesmanId,month);
     }
 
     @Override
@@ -201,5 +201,8 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public List<Contract> getContractList(){ return contractMapper.getContractList(); }
+    public List<Contract> getContractList(String year){ return contractMapper.getContractList(year); }
+
+    @Override
+    public List<Contract> getContractListByMonth(String month){ return contractMapper.getContractListByMonth(month); }
 }

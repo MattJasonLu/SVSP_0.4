@@ -210,6 +210,30 @@ public class Contract implements Serializable {
     private String company1;
 
     private String suppierName;
+    /**
+     * 业务员ID
+     */
+    private String salesmanId;
+    /**
+     * 业务员姓名
+     */
+    private String salesmanName;
+
+    public String getSalesmanName() {
+        return salesmanName;
+    }
+
+    public void setSalesmanName(String salesmanName) {
+        this.salesmanName = salesmanName;
+    }
+
+    public String getSalesmanId() {
+        return salesmanId;
+    }
+
+    public void setSalesmanId(String salesmanId) {
+        this.salesmanId = salesmanId;
+    }
 
     public List<String> getWastesCodeList() {
         return wastesCodeList;

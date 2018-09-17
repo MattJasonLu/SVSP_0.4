@@ -148,35 +148,26 @@ public class PRWayBillController {
                 WayBillItem wayBillItem = new WayBillItem();
                 wayBillItem.setItemId(wayBillService.getItemId());
                 wayBillItem.setWayBillId(id.toString());
-                Client receiveCompany = new Client();
-                receiveCompany.setCompanyName(data[i][6].toString());
-                receiveCompany.setClientId(wayBillService.getClientIdByName(data[i][6].toString()));
-                wayBillItem.setReceiveCompany(receiveCompany);
+                wayBillItem.setReceiveCompanyName(data[i][6].toString());
                 wayBillItem.setReceiveCompanyOperator(data[i][7].toString());
                 wayBillItem.setReceiveDate(DateUtil.getDateFromStr(data[i][8].toString()));
-                Salesman salesman = new Salesman();
-                salesman.setName(data[i][9].toString());
-                salesman.setSalesmanId(wayBillService.getSalesmanIdByName(data[i][9].toString()));
-                wayBillItem.setSalesman(salesman);
-                Wastes wastes = new Wastes();
-                wastes.setId(wayBillService.getWastesId());
-                wastes.setName(data[i][10].toString());
-                wastes.setWasteAmount(Float.parseFloat(data[i][11].toString()));
-                wastes.setUnitPriceTax(Float.parseFloat(data[i][12].toString()));
+                wayBillItem.setSalesmanName(data[i][9].toString());
+                wayBillItem.setWastesName(data[i][10].toString());
+                wayBillItem.setWastesAmount(Float.parseFloat(data[i][11].toString()));
+                wayBillItem.setWastesPrice(Float.parseFloat(data[i][12].toString()));
+                wayBillItem.setWastesCode(data[i][13].toString());
                 float wastesTotal = Float.parseFloat(data[i][12].toString()) * Float.parseFloat(data[i][11].toString());
-                wastes.setWastesTotal(wastesTotal);
-                wayBillItem.setWastes(wastes);
-                wayBillItem.setInvoiceDate(DateUtil.getDateFromStr(data[i][13].toString()));
-                BigDecimal invoiceNumber = new BigDecimal(data[i][14].toString());
+                wayBillItem.setWastesTotalPrice(wastesTotal);
+                wayBillItem.setInvoiceDate(DateUtil.getDateFromStr(data[i][14].toString()));
+                BigDecimal invoiceNumber = new BigDecimal(data[i][15].toString());
                 wayBillItem.setInvoiceNumber(invoiceNumber.toString());
                 //map内不存在即添加公共数据，存在即添加List内数据
                 if (!map.keySet().contains(id.toString())) {
                     map.put(id.toString(), new WayBill());
                     map.get(id.toString()).setId(id.toString());
-                    Client produceCompany = new Client();
-                    produceCompany.setCompanyName(data[i][1].toString());
-                    produceCompany.setClientId(wayBillService.getClientIdByName(data[i][1].toString()));
-                    map.get(id.toString()).setProduceCompany(produceCompany);
+                    String produceCompanyId = wayBillService.getClientIdByName(data[i][1].toString());
+                    map.get(id.toString()).setProduceCompanyId(produceCompanyId);
+                    map.get(id.toString()).setProduceCompanyName(data[i][1].toString());
                     map.get(id.toString()).setFounder(data[i][2].toString());
                     map.get(id.toString()).setRemarks(data[i][3].toString());
                     map.get(id.toString()).setProduceCompanyOperator(data[i][4].toString());
@@ -328,7 +319,6 @@ public class PRWayBillController {
 
     /**
      * 作废
-     *
      * @param id
      * @return
      */

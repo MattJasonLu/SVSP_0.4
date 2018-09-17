@@ -252,7 +252,8 @@ public class TransportPlanController {
                 // 设置接运单的编号
                 wayBill.setId(wayBillService.getCurrentWayBillId());
                 // 设置接运单中的生产公司
-                wayBill.setProduceCompany(itemList.get(0).getProduceCompany());
+                wayBill.setProduceCompanyId(itemList.get(0).getProduceCompany().getClientId());
+                wayBill.setProduceCompanyName(itemList.get(0).getProduceCompany().getCompanyName());
                 wayBill.setWayBillDate(new Date());
                 wayBill.setFounder("管理员");
                 wayBill.setProduceCompanyOperator("管理员");
@@ -271,13 +272,18 @@ public class TransportPlanController {
                     // 设置接运单条目的编号
                     wayBillItem.setItemId(String.valueOf(itemId));
                     // 设置接运单条目的危废
-                    wayBillItem.setWastes(transportPlanItem.getWastes());
+                    wayBillItem.setWastesId(transportPlanItem.getWastes().getId());
+                    wayBillItem.setWastesCode(transportPlanItem.getWastes().getName());
+                    wayBillItem.setWastesAmount((float)transportPlanItem.getWastes().getWasteAmount());
+                    wayBillItem.setWastesPrice(transportPlanItem.getWastes().getUnitPriceTax());
+                    wayBillItem.setWastesName(transportPlanItem.getWastes().getName());
+                    wayBillItem.setWastesTotalPrice(wayBillItem.getWastesPrice() * wayBillItem.getWastesAmount());
                     // 设置接运单条目的业务员
-                    wayBillItem.setSalesman(salesman);
+                    wayBillItem.setSalesmanName(salesman.getName());
                     // 设置接运单条目的接运单日期
                     wayBillItem.setReceiveDate(transportPlanItem.getApproachTime());
                     // 设置接收单位
-                    wayBillItem.setReceiveCompany(reveiveClient);
+                    wayBillItem.setReceiveCompanyName(reveiveClient.getCompanyName());
                     wayBillItem.setReceiveCompanyOperator("管理员");
                     // 增加接运单条目
                     wayBillItemList.add(wayBillItem);
