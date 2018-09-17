@@ -26,7 +26,7 @@
         vertical-align: middle!important;
     }
 </style>
-<body onload="viewData(null);">
+<body onload="loadData();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -118,9 +118,9 @@
             <br>
             <table class="table" style="border: none">
                 <tr>
-                    <td class="text-left">报表单位：</td>
-                    <td class="text-left">生产技术部</td>
-                    <td class="text-left">报表产生时间：</td>
+                    <td class="text-left">报表单位：常州北控安耐得有限公司</td>
+                    <td class="text-left">报表部门：生产技术部</td>
+                    <td class="text-left">报表产生时间：<span id="date"></span></td>
                     <td class="text-left"><span id="week"></span></td>
                 </tr>
             </table>
@@ -162,383 +162,402 @@
                 <tr>
                     <td class="text-center" rowspan="8">医疗废物</td>
                     <td class="text-center">进厂医废(接运单)</td>
+                    <td class="text-center" id="todayInboundMedicalWastes"></td>
+                    <td class="text-center" id="monthInboundMedicalWastes"></td>
+                    <td class="text-center" id="yearInboundMedicalWastes"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastes"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastes"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastes"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastes"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastes"></td>
                     <td class="text-center">消毒液(NaCLO)</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliaryNaclo"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliaryNaclo"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliaryNaclo"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliaryNaclo"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliaryNaclo"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliaryNaclo"></td>
                 </tr>
                 <tr>
                     <td class="text-center">直接委外医废</td>
+                    <td class="text-center" id="todayInboundMedicalWastesDirectDisposal"></td>
+                    <td class="text-center" id="monthInboundMedicalWastesDirectDisposal"></td>
+                    <td class="text-center" id="yearInboundMedicalWastesDirectDisposal"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastesDirectDisposal"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastesDirectDisposal"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastesDirectDisposal"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastesDirectDisposal"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastesDirectDisposal"></td>
                     <td class="text-center">除臭剂</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliaryDeodorant"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliaryDeodorant"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliaryDeodorant"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliaryDeodorant"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliaryDeodorant"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliaryDeodorant"></td>
                 </tr>
                 <tr>
                     <td class="text-center">蒸煮医废(过磅量)</td>
+                    <td class="text-center" id="todayInboundMedicalWastesCooking"></td>
+                    <td class="text-center" id="monthInboundMedicalWastesCooking"></td>
+                    <td class="text-center" id="yearInboundMedicalWastesCooking"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastesCooking"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastesCooking"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastesCooking"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastesCooking"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastesCooking"></td>
                     <td class="text-center">医废吨袋</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliaryMedicalWastesBag"></td>
                 </tr>
                 <tr>
                     <td class="text-center">误差量</td>
+                    <td class="text-center" id="todayInboundMedicalWastesErrorNumber"></td>
+                    <td class="text-center" id="monthInboundMedicalWastesErrorNumber"></td>
+                    <td class="text-center" id="yearInboundMedicalWastesErrorNumber"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastesErrorNumber"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastesErrorNumber"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastesErrorNumber"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastesErrorNumber"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastesErrorNumber"></td>
                     <td class="text-center">医废包装塑料袋</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliaryMedicalPackingPlasticBag"></td>
                 </tr>
                 <tr>
                     <td class="text-center">蒸煮后医废</td>
+                    <td class="text-center" id="todayInboundMedicalWastesAfterCooking"></td>
+                    <td class="text-center" id="monthInboundMedicalWastesAfterCooking"></td>
+                    <td class="text-center" id="yearInboundMedicalWastesAfterCooking"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastesAfterCooking"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastesAfterCooking"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastesAfterCooking"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastesAfterCooking"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastesAfterCooking"></td>
                     <td class="text-center">收集转运箱</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliaryCollectionBox"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliaryCollectionBox"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliaryCollectionBox"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliaryCollectionBox"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliaryCollectionBox"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliaryCollectionBox"></td>
                 </tr>
                 <tr>
                     <td class="text-center">外送蒸煮后医废</td>
+                    <td class="text-center" id="todayInboundMedicalWastesAfterCookingSend"></td>
+                    <td class="text-center" id="monthInboundMedicalWastesAfterCookingSend"></td>
+                    <td class="text-center" id="yearInboundMedicalWastesAfterCookingSend"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastesAfterCookingSend"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastesAfterCookingSend"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastesAfterCookingSend"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastesAfterCookingSend"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastesAfterCookingSend"></td>
                     <td class="text-center">蒸汽</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliarySteam"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliarySteam"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliarySteam"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliarySteam"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliarySteam"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliarySteam"></td>
                 </tr>
                 <tr>
                     <td class="text-center">2#库医废(准备焚烧)</td>
+                    <td class="text-center" id="todayInboundMedicalWastesAfterCookingInbound"></td>
+                    <td class="text-center" id="monthInboundMedicalWastesAfterCookingInbound"></td>
+                    <td class="text-center" id="yearInboundMedicalWastesAfterCookingInbound"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastesAfterCookingInbound"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastesAfterCookingInbound"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastesAfterCookingInbound"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastesAfterCookingInbound"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastesAfterCookingInbound"></td>
                     <td class="text-center">工业水量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliaryIndustrialWater"></td>
                 </tr>
                 <tr>
                     <td class="text-center">废水量</td>
+                    <td class="text-center" id="todayInboundMedicalWastesWetNumber"></td>
+                    <td class="text-center" id="monthInboundMedicalWastesWetNumber"></td>
+                    <td class="text-center" id="yearInboundMedicalWastesWetNumber"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundMedicalWastesWetNumber"></td>
+                    <td class="text-center" id="monthOutboundMedicalWastesWetNumber"></td>
+                    <td class="text-center" id="yearOutboundMedicalWastesWetNumber"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceMedicalWastesWetNumber"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryMedicalWastesWetNumber"></td>
                     <td class="text-center">电量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalMedicalAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="monthDisposalMedicalAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="yearDisposalMedicalAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="todayAverageDisposalMedicalAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="monthAverageDisposalMedicalAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="limitDisposalMedicalAuxiliaryElectricQuantity"></td>
                 </tr>
                 <tr>
-                    <td class="text-center" rowspan="8">工废</td>
+                    <td class="text-center" rowspan="7">工废</td>
                     <td class="text-center">散料</td>
+                    <td class="text-center" id="todayInboundWastesBulk"></td>
+                    <td class="text-center" id="monthInboundWastesBulk"></td>
+                    <td class="text-center" id="yearInboundWastesBulk"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundWastesBulk"></td>
+                    <td class="text-center" id="monthOutboundWastesBulk"></td>
+                    <td class="text-center" id="yearOutboundWastesBulk"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" rowspan="6"></td>
-                    <td class="text-center" rowspan="6"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" rowspan="6"></td>
-                    <td class="text-center" rowspan="6"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceWastesBulk"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryWastesBulk"></td>
                     <td class="text-center" rowspan="11">二期</td>
                     <td class="text-center">消石灰</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryCalcareousLime"></td>
                 </tr>
                 <tr>
                     <td class="text-center">破碎</td>
+                    <td class="text-center" id="todayInboundWastesCrushing"></td>
+                    <td class="text-center" id="monthInboundWastesCrushing"></td>
+                    <td class="text-center" id="yearInboundWastesCrushing"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundWastesCrushing"></td>
+                    <td class="text-center" id="monthOutboundWastesCrushing"></td>
+                    <td class="text-center" id="yearOutboundWastesCrushing"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceWastesCrushing"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryWastesCrushing"></td>
                     <td class="text-center">普通活性炭粉</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryCommonActivatedCarbon"></td>
                 </tr>
                 <tr>
                     <td class="text-center">污垢</td>
+                    <td class="text-center" id="todayInboundWastesSludge"></td>
+                    <td class="text-center" id="monthInboundWastesSludge"></td>
+                    <td class="text-center" id="yearInboundWastesSludge"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundWastesSludge"></td>
+                    <td class="text-center" id="monthOutboundWastesSludge"></td>
+                    <td class="text-center" id="yearOutboundWastesSludge"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceWastesSludge"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryWastesSludge"></td>
                     <td class="text-center">高活性活性炭粉</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryActivatedCarbon"></td>
                 </tr>
                 <tr>
                     <td class="text-center">精蒸馏</td>
+                    <td class="text-center" id="todayInboundWastesDistillation"></td>
+                    <td class="text-center" id="monthInboundWastesDistillation"></td>
+                    <td class="text-center" id="yearInboundWastesDistillation"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundWastesDistillation"></td>
+                    <td class="text-center" id="monthOutboundWastesDistillation"></td>
+                    <td class="text-center" id="yearOutboundWastesDistillation"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceWastesDistillation"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryWastesDistillation"></td>
                     <td class="text-center">碱液</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryLye"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryLye"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryLye"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryLye"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryLye"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryLye"></td>
                 </tr>
                 <tr>
                     <td class="text-center">悬挂链</td>
+                    <td class="text-center" id="todayInboundWastesSuspension"></td>
+                    <td class="text-center" id="monthInboundWastesSuspension"></td>
+                    <td class="text-center" id="yearInboundWastesSuspension"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundWastesSuspension"></td>
+                    <td class="text-center" id="monthOutboundWastesSuspension"></td>
+                    <td class="text-center" id="yearOutboundWastesSuspension"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceWastesSuspension"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryWastesSuspension"></td>
                     <td class="text-center">盐</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliarySalt"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliarySalt"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliarySalt"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliarySalt"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliarySalt"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliarySalt"></td>
                 </tr>
                 <tr>
                     <td class="text-center">废液</td>
+                    <td class="text-center" id="todayInboundWastesWasteLiquid"></td>
+                    <td class="text-center" id="monthInboundWastesWasteLiquid"></td>
+                    <td class="text-center" id="yearInboundWastesWasteLiquid"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundWastesWasteLiquid"></td>
+                    <td class="text-center" id="monthOutboundWastesWasteLiquid"></td>
+                    <td class="text-center" id="yearOutboundWastesWasteLiquid"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceWastesWasteLiquid"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryWastesWasteLiquid"></td>
                     <td class="text-center">炉渣用吨袋</td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliarySlagBag"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliarySlagBag"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliarySlagBag"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliarySlagBag"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliarySlagBag"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliarySlagBag"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">工费合计</td>
+                    <td class="text-center" id="todayInboundWastesTotal"></td>
+                    <td class="text-center" id="monthInboundWastesTotal"></td>
+                    <td class="text-center" id="yearInboundWastesTotal"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundWastesTotal"></td>
+                    <td class="text-center" id="monthOutboundWastesTotal"></td>
+                    <td class="text-center" id="yearOutboundWastesTotal"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="monthBalanceWastesTotal"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryWastesTotal"></td>
+                    <td class="text-center">飞灰用吨袋</td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryFlyAshBag"></td>
+                </tr>
+                <tr>
+                    <td class="text-center" rowspan="3">次生危废</td>
+                    <td class="text-center">飞灰</td>
+                    <td class="text-center" id="todayInboundSecondWastesSlag"></td>
+                    <td class="text-center" id="monthInboundSecondWastesSlag"></td>
+                    <td class="text-center" id="yearInboundSecondWastesSlag"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundSecondWastesSlag"></td>
+                    <td class="text-center" id="monthOutboundSecondWastesSlag"></td>
+                    <td class="text-center" id="yearOutboundSecondWastesSlag"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" id="monthBalanceSecondWastesSlag"></td>
+                    <td class="text-center" colspan="3" id="todayInventorySecondWastesSlag"></td>
+                    <td class="text-center">柴油</td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryDieselOil"></td>
                 </tr>
                 <tr>
                     <td class="text-center">炉渣</td>
+                    <td class="text-center" id="todayInboundSecondWastesAsh"></td>
+                    <td class="text-center" id="monthInboundSecondWastesAsh"></td>
+                    <td class="text-center" id="yearInboundSecondWastesAsh"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundSecondWastesAsh"></td>
+                    <td class="text-center" id="monthOutboundSecondWastesAsh"></td>
+                    <td class="text-center" id="yearOutboundSecondWastesAsh"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">飞灰用吨袋</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                </tr>
-                <tr>
-                    <td class="text-center">飞灰</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">柴油</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                </tr>
-                <tr>
-                    <td class="text-center">焚烧后铁桶</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceSecondWastesAsh"></td>
+                    <td class="text-center" colspan="3" id="todayInventorySecondWastesAsh"></td>
                     <td class="text-center">电量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryElectricQuantity"></td>
                 </tr>
                 <tr>
                     <td class="text-center">直接转移类铁桶</td>
+                    <td class="text-center" id="todayInboundSecondWastesBucket"></td>
+                    <td class="text-center" id="monthInboundSecondWastesBucket"></td>
+                    <td class="text-center" id="yearInboundSecondWastesBucket"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundSecondWastesBucket"></td>
+                    <td class="text-center" id="monthOutboundSecondWastesBucket"></td>
+                    <td class="text-center" id="yearOutboundSecondWastesBucket"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" id="monthBalanceSecondWastesBucket"></td>
+                    <td class="text-center" colspan="3" id="todayInventorySecondWastesBucket"></td>
                     <td class="text-center">工业水量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryIndustrialWater"></td>
                 </tr>
                 <tr>
                     <td class="text-center" colspan="2" rowspan="2">名称</td>
@@ -547,12 +566,12 @@
                     <td class="text-center" rowspan="2">初期结余</td>
                     <td class="text-center" rowspan="2" colspan="3">本日库存</td>
                     <td class="text-center">木托盘</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="monthDisposalSecondaryAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="yearDisposalSecondaryAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="todayAverageDisposalSecondaryAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="monthAverageDisposalSecondaryAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="limitDisposalSecondaryAuxiliaryWoodenPallets"></td>
                 </tr>
                 <tr>
                     <td class="text-center">本日</td>
@@ -563,600 +582,601 @@
                     <td class="text-center" colspan="2">年累计</td>
                     <td class="text-center" rowspan="31">三期</td>
                     <td class="text-center">消石灰</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryCalcareousLime"></td>
                 </tr>
                 <tr>
                     <td class="text-center" rowspan="36">辅材、能源</td>
                     <td class="text-center">消石灰</td>
+                    <td class="text-center" id="todayInboundAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryCalcareousLime"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryCalcareousLime"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryCalcareousLime"></td>
                     <td class="text-center">普通活性碳粉</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryCommonActivatedCarbon"></td>
                 </tr>
                 <tr>
                     <td class="text-center">普通活性炭粉</td>
+                    <td class="text-center" id="todayInboundAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryCommonActivatedCarbon"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">普通活性碳粉</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryCommonActivatedCarbon"></td>
+                    <td class="text-center">高活性活性炭粉</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryActivatedCarbon"></td>
                 </tr>
                 <tr>
                     <td class="text-center">高活性活性炭粉</td>
+                    <td class="text-center" id="todayInboundAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryActivatedCarbon"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryActivatedCarbon"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryActivatedCarbon"></td>
                     <td class="text-center">活性碳颗粒</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryActivatedCarbonParticles"></td>
                 </tr>
                 <tr>
                     <td class="text-center">活性炭颗粒</td>
+                    <td class="text-center" id="todayInboundAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryActivatedCarbonParticles"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryActivatedCarbonParticles"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryActivatedCarbonParticles"></td>
                     <td class="text-center">碱液</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryLye"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryLye"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryLye"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryLye"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryLye"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryLye"></td>
                 </tr>
                 <tr>
                     <td class="text-center">碱液</td>
+                    <td class="text-center" id="todayInboundAuxiliaryLye"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryLye"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryLye"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryLye"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryLye"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryLye"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryLye"></td>
                     <td class="text-center">片碱</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryCausticSoda"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryCausticSoda"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryCausticSoda"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryCausticSoda"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryCausticSoda"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryCausticSoda"></td>
                 </tr>
                 <tr>
                     <td class="text-center">片碱</td>
+                    <td class="text-center" id="todayInboundAuxiliaryCausticSoda"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryCausticSoda"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryCausticSoda"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryCausticSoda"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryCausticSoda"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryCausticSoda"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryCausticSoda"></td>
                     <td class="text-center">尿素</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryUrea"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryUrea"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryUrea"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryUrea"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryUrea"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryUrea"></td>
                 </tr>
                 <tr>
                     <td class="text-center">尿素</td>
+                    <td class="text-center" id="todayInboundAuxiliaryUrea"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryUrea"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryUrea"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryUrea"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryUrea"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryUrea"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryUrea"></td>
                     <td class="text-center">盐酸</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryHydrochloricAcid"></td>
                 </tr>
                 <tr>
                     <td class="text-center">盐酸</td>
+                    <td class="text-center" id="todayInboundAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryHydrochloricAcid"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryHydrochloricAcid"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryHydrochloricAcid"></td>
                     <td class="text-center">小苏打(NaHCO3)</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryNahco3"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryNahco3"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryNahco3"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryNahco3"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryNahco3"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryNahco3"></td>
                 </tr>
                 <tr>
                     <td class="text-center">小苏打(NaHCO3)</td>
+                    <td class="text-center" id="todayInboundAuxiliaryNahco3"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryNahco3"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryNahco3"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryNahco3"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryNahco3"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryNahco3"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryNahco3"></td>
                     <td class="text-center">面粉</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryFlour"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryFlour"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryFlour"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryFlour"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryFlour"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryFlour"></td>
                 </tr>
                 <tr>
                     <td class="text-center">面粉</td>
+                    <td class="text-center" id="todayInboundAuxiliaryFlour"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryFlour"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryFlour"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryFlour"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryFlour"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryFlour"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryFlour"></td>
                     <td class="text-center">清泡剂</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryDefoamer"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryDefoamer"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryDefoamer"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryDefoamer"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryDefoamer"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryDefoamer"></td>
                 </tr>
                 <tr>
                     <td class="text-center">清泡剂</td>
+                    <td class="text-center" id="todayInboundAuxiliaryDefoamer"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryDefoamer"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryDefoamer"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryDefoamer"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryDefoamer"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryDefoamer"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryDefoamer"></td>
                     <td class="text-center">絮凝剂(聚丙烯酰胺)</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryFlocculant"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryFlocculant"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryFlocculant"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryFlocculant"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryFlocculant"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryFlocculant"></td>
                 </tr>
                 <tr>
                     <td class="text-center">絮凝剂(聚丙烯酰胺)</td>
+                    <td class="text-center" id="todayInboundAuxiliaryFlocculant"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryFlocculant"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryFlocculant"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryFlocculant"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryFlocculant"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryFlocculant"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryFlocculant"></td>
                     <td class="text-center">软水用还原剂</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliarySoftWaterReducingAgent"></td>
                 </tr>
                 <tr>
                     <td class="text-center">软水用还原剂</td>
+                    <td class="text-center" id="todayInboundAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" id="todayOutboundAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliarySoftWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliarySoftWaterReducingAgent"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliarySoftWaterReducingAgent"></td>
                     <td class="text-center">软水用阻垢剂</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliarySoftWaterScaleInhibitor"></td>
                 </tr>
                 <tr>
                     <td class="text-center">软水用阻垢剂</td>
+                    <td class="text-center" id="todayInboundAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" id="todayOutboundAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliarySoftWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliarySoftWaterScaleInhibitor"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliarySoftWaterScaleInhibitor"></td>
                     <td class="text-center">氨水(PH调节剂)</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryAmmonia"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryAmmonia"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryAmmonia"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryAmmonia"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryAmmonia"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryAmmonia"></td>
                 </tr>
                 <tr>
                     <td class="text-center">氨水(PH调节剂)</td>
+                    <td class="text-center" id="todayInboundAuxiliaryAmmonia"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryAmmonia"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryAmmonia"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryAmmonia"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryAmmonia"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryAmmonia"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryAmmonia"></td>
                     <td class="text-center">污水用还原剂</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryWaterReducingAgent"></td>
+                </tr>
+                <tr>
+                    <td class="text-center">污水用还原剂</td>
+                    <td class="text-center" id="todayInboundAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryWaterReducingAgent"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryWaterReducingAgent"></td>
+                    <td class="text-center">消毒液(NaClO)</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryNaclo"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryNaclo"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryNaclo"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryNaclo"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryNaclo"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryNaclo"></td>
                 </tr>
                 <tr>
                     <td class="text-center">污水用阻垢剂</td>
+                    <td class="text-center" id="todayInboundAuxiliaryWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryWaterScaleInhibitor"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryWaterScaleInhibitor"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryWaterScaleInhibitor"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">消毒液(NaClO)</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryWaterScaleInhibitor"></td>
+                    <td class="text-center">标准箱</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryStandardBox"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryStandardBox"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryStandardBox"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryStandardBox"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryStandardBox"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryStandardBox"></td>
                 </tr>
                 <tr>
                     <td class="text-center">消毒液(NaClO)</td>
+                    <td class="text-center" id="todayInboundAuxiliaryNaclo"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryNaclo"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryNaclo"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryNaclo"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryNaclo"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryNaclo"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">标准箱</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryNaclo"></td>
+                    <td class="text-center">木托盘</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryWoodenPallets"></td>
                 </tr>
                 <tr>
                     <td class="text-center">除臭剂</td>
+                    <td class="text-center" id="todayInboundAuxiliaryDeodorant"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryDeodorant"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryDeodorant"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryDeodorant"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryDeodorant"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryDeodorant"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">木托盘</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryDeodorant"></td>
+                    <td class="text-center">1m标准托盘</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryStandardTray_1m"></td>
                 </tr>
                 <tr>
                     <td class="text-center">盐</td>
+                    <td class="text-center" id="todayInboundAuxiliarySalt"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliarySalt"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliarySalt"></td>
+                    <td class="text-center" id="todayOutboundAuxiliarySalt"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliarySalt"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliarySalt"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">1m标准托盘</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliarySalt"></td>
+                    <td class="text-center">1.2m标准托盘</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryStandardTray_1_2m"></td>
                 </tr>
                 <tr>
                     <td class="text-center">炉渣用吨袋</td>
+                    <td class="text-center" id="todayInboundAuxiliarySlagBag"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliarySlagBag"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliarySlagBag"></td>
+                    <td class="text-center" id="todayOutboundAuxiliarySlagBag"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliarySlagBag"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliarySlagBag"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">1.2m标准托盘</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliarySlagBag"></td>
+                    <td class="text-center">炉渣用吨袋</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliarySlagBag"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliarySlagBag"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliarySlagBag"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliarySlagBag"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliarySlagBag"></td>
+                    <td class="text-center" id="limitDisposalThirdSecondaryAuxiliarySlagBag"></td>
                 </tr>
                 <tr>
                     <td class="text-center">飞灰用吨袋</td>
+                    <td class="text-center" id="todayInboundAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryFlyAshBag"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">炉渣用吨袋</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryFlyAshBag"></td>
+                    <td class="text-center">飞灰用吨袋</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryFlyAshBag"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryFlyAshBag"></td>
                 </tr>
                 <tr>
                     <td class="text-center">医废用吨袋</td>
+                    <td class="text-center" id="todayInboundAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryMedicalWastesBag"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">飞灰用吨袋</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryMedicalWastesBag"></td>
+                    <td class="text-center">吨箱</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryTonBox"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryTonBox"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryTonBox"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryTonBox"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryTonBox"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryTonBox"></td>
                 </tr>
                 <tr>
                     <td class="text-center">医废包装塑料袋</td>
+                    <td class="text-center" id="todayInboundAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryMedicalPackingPlasticBag"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">吨箱</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryMedicalPackingPlasticBag"></td>
+                    <td class="text-center">蒸汽</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliarySteam"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliarySteam"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliarySteam"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliarySteam"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliarySteam"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliarySteam"></td>
                 </tr>
                 <tr>
                     <td class="text-center">收集转运箱</td>
+                    <td class="text-center" id="todayInboundAuxiliaryCollectionBox"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryCollectionBox"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryCollectionBox"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryCollectionBox"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryCollectionBox"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryCollectionBox"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">蒸汽</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryCollectionBox"></td>
+                    <td class="text-center">柴油</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryDieselOil"></td>
                 </tr>
                 <tr>
                     <td class="text-center">标准箱</td>
+                    <td class="text-center" id="todayInboundAuxiliaryStandardBox"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryStandardBox"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryStandardBox"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryStandardBox"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryStandardBox"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryStandardBox"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">柴油</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryStandardBox"></td>
+                    <td class="text-center">天然气</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryNaturalGas"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryNaturalGas"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryNaturalGas"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryNaturalGas"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryNaturalGas"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryNaturalGas"></td>
                 </tr>
                 <tr>
                     <td class="text-center">木托盘</td>
+                    <td class="text-center" id="todayInboundAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryWoodenPallets"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryWoodenPallets"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">天然气</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryWoodenPallets"></td>
+                    <td class="text-center">电量</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryElectricQuantity"></td>
                 </tr>
                 <tr>
                     <td class="text-center">1m标准托盘(铁)</td>
+                    <td class="text-center" id="todayInboundAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryStandardTray_1m"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">电量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryStandardTray_1m"></td>
+                    <td class="text-center">工业水量</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryIndustrialWater"></td>
                 </tr>
                 <tr>
                     <td class="text-center">1.2m标准托盘(铁)</td>
+                    <td class="text-center" id="todayInboundAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryStandardTray_1_2m"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">工业水量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryStandardTray_1_2m"></td>
+                    <td class="text-center">自来水量</td>
+                    <td class="text-center" id="todayDisposalThirdAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" id="monthDisposalThirdAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" id="yearDisposalThirdAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" id="todayAverageDisposalThirdAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" id="monthAverageDisposalThirdAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" id="limitDisposalThirdAuxiliaryTapWaterQuantity"></td>
                 </tr>
                 <tr>
                     <td class="text-center">吨箱</td>
+                    <td class="text-center" id="todayInboundAuxiliaryTonBox"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryTonBox"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryTonBox"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryTonBox"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryTonBox"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryTonBox"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center">自来水量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryTonBox"></td>
+                    <td class="text-center">铁塔电量</td>
+                    <td class="text-center" id="todayDisposalTowerElectricQuantity"></td>
+                    <td class="text-center" id="monthDisposalTowerElectricQuantity"></td>
+                    <td class="text-center" id="yearDisposalTowerElectricQuantity"></td>
+                    <td class="text-center" id="todayAverageDisposalTowerElectricQuantity"></td>
+                    <td class="text-center" id="monthAverageDisposalTowerElectricQuantity"></td>
+                    <td class="text-center" id="limitDisposalTowerElectricQuantity"></td>
                 </tr>
                 <tr>
                     <td class="text-center">蒸汽</td>
+                    <td class="text-center" id="todayInboundAuxiliarySteam"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliarySteam"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliarySteam"></td>
+                    <td class="text-center" id="todayOutboundAuxiliarySteam"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliarySteam"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliarySteam"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
-                    <td class="text-center" colspan="2">铁塔电量</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                </tr>
-                <tr>
-                    <td class="text-center">柴油</td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliarySteam"></td>
                     <td class="text-center" colspan="8" rowspan="2">运行情况统计</td>
                 </tr>
                 <tr>
-                    <td class="text-center">天然气</td>
+                    <td class="text-center">柴油</td>
+                    <td class="text-center" id="todayInboundAuxiliaryDieselOil"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryDieselOil"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryDieselOil"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryDieselOil"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryDieselOil"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryDieselOil"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryDieselOil"></td>
                 </tr>
                 <tr>
-                    <td class="text-center">电量</td>
+                    <td class="text-center">天然气</td>
+                    <td class="text-center" id="todayInboundAuxiliaryNaturalGas"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryNaturalGas"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryNaturalGas"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryNaturalGas"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryNaturalGas"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryNaturalGas"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryNaturalGas"></td>
                     <td class="text-center" rowspan="2">设备名称</td>
                     <td class="text-center" colspan="3">停机时间</td>
                     <td class="text-center" colspan="4">运转时间</td>
                 </tr>
                 <tr>
-                    <td class="text-center">工业水量</td>
+                    <td class="text-center">电量</td>
+                    <td class="text-center" id="todayInboundAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryElectricQuantity"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryElectricQuantity"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryElectricQuantity"></td>
                     <td class="text-center">本日</td>
                     <td class="text-center">月累计</td>
                     <td class="text-center">年累计</td>
@@ -1165,30 +1185,38 @@
                     <td class="text-center" colspan="2">年累计</td>
                 </tr>
                 <tr>
-                    <td class="text-center">自来水量</td>
+                    <td class="text-center">工业水量</td>
+                    <td class="text-center" id="todayInboundAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryIndustrialWater"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryIndustrialWater"></td>
                     <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryIndustrialWater"></td>
                     <td class="text-center">A2</td>
+                    <td class="text-center" id="todayEquipmentA2StopTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentA2RunningTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
-                    <td class="text-center" colspan="15"></td>
+                    <td class="text-center">自来水量</td>
+                    <td class="text-center" id="todayInboundAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" colspan="2" id="monthInboundAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" colspan="2" id="yearInboundAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" id="todayOutboundAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" colspan="2" id="monthOutboundAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center" colspan="2" id="yearOutboundAuxiliaryTapWaterQuantity"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center" colspan="3" id="todayInventoryAuxiliaryTapWaterQuantity"></td>
                     <td class="text-center">B2</td>
+                    <td class="text-center" id="todayEquipmentB2StopTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentB2RunningTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
@@ -1203,27 +1231,27 @@
                     <td class="text-center">误差量</td>
                     <td class="text-center" colspan="3">水分含量</td>
                     <td class="text-center">备2</td>
+                    <td class="text-center" id="todayEquipmentPrepare2StopTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentPrepare2RunningTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center" colspan="2"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="3"></td>
+                    <td class="text-center" colspan="2" id="todayDisposalMedicalWastes"></td>
+                    <td class="text-center" id="todayDisposalMedicalWastesDisposalDirect"></td>
+                    <td class="text-center" colspan="2" id="todayDisposalMedicalWastesCooking"></td>
+                    <td class="text-center" id="todayDisposalMedicalWastesErrorNumber"></td>
+                    <td class="text-center" colspan="2" id="todayDisposalMedicalWastesAfterCooking"></td>
+                    <td class="text-center" colspan="2" id="todayDisposalMedicalWastesAfterCookingSend"></td>
+                    <td class="text-center" id="todayDisposalMedicalWastesAfterCookingInbound"></td>
+                    <td class="text-center" colspan="3" id="todayDisposalMedicalWastesWetNumber"></td>
                     <td class="text-center">二期二燃室</td>
+                    <td class="text-center" id="todayEquipmentSecondaryStopTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentSecondaryRunningTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
@@ -1235,6 +1263,7 @@
                     <td class="text-center">月累计</td>
                     <td class="text-center">年累计</td>
                     <td class="text-center">配料比例</td>
+                    <td class="text-center"></td>
                     <td class="text-center">类别</td>
                     <td class="text-center">本日处置数量</td>
                     <td class="text-center">月累计</td>
@@ -1244,24 +1273,23 @@
                     <td class="text-center">二期月累计</td>
                     <td class="text-center">二期年累计</td>
                     <td class="text-center">三期</td>
+                    <td class="text-center" id="todayEquipmentThirdStopTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentThirdRunningTime"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-center" rowspan="7">A2</td>
                     <td class="text-center">散料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundA2WastesBulk"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center" rowspan="7">B2</td>
                     <td class="text-center">散料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundB2WastesBulk"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1273,12 +1301,12 @@
                 </tr>
                 <tr>
                     <td class="text-center">破碎料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundA2WastesCrushing"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">破碎料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundB2WastesCrushing"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1289,12 +1317,12 @@
                 </tr>
                 <tr>
                     <td class="text-center">污泥烘干类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundA2WastesSludge"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">污泥烘干类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundB2WastesSludge"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1308,12 +1336,12 @@
                 </tr>
                 <tr>
                     <td class="text-center">精蒸馏脱桶类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundA2WastesDistillation"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">精蒸馏脱桶类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundB2WastesDistillation"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1321,18 +1349,18 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">A2</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentA2RunningRate"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-center">悬挂链类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundA2WastesSuspension"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">悬挂链类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundB2WastesSuspension"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1340,18 +1368,18 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">B2</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentB2RunningRate"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-center">废液类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundA2WastesWasteLiquid"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">废液类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundB2WastesWasteLiquid"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1359,18 +1387,18 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">备2</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentPrepare2RunningRate"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-center">医疗</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundA2MedicalWastes"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">医疗</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundB2MedicalWastes"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1378,14 +1406,14 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">二期二燃室</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayEquipmentSecondaryRunningRate"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-center" rowspan="7">备2</td>
                     <td class="text-center">散料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundPrepare2WastesBulk"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1397,19 +1425,19 @@
                     <td class="text-center">日配料比例</td>
                     <td class="text-center">月配料比例</td>
                     <td class="text-center">年配料比例</td>
+                    <td class="text-center"></td>
                     <td class="text-center">三期</td>
+                    <td class="text-center" id="todayEquipmentThirdRunningRate"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center" colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="text-center">破碎料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundPrepare2WastesCrushing"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">散料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundThirdPretreatmentSystemWastesBulk"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1419,12 +1447,12 @@
                 </tr>
                 <tr>
                     <td class="text-center">污泥烘干类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundPrepare2WastesSludge"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">破碎料类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundThirdPretreatmentSystemWastesCrushing"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1433,12 +1461,12 @@
                 </tr>
                 <tr>
                     <td class="text-center">精蒸馏脱桶类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundPrepare2WastesDistillation"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">污泥烘干类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundThirdPretreatmentSystemWastesSludge"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1451,12 +1479,12 @@
                 </tr>
                 <tr>
                     <td class="text-center">悬挂链类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundPrepare2WastesSuspension"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">精蒸馏脱桶类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundThirdPretreatmentSystemWastesDistillation"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1464,36 +1492,36 @@
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center" rowspan="2">二期</td>
                     <td class="text-center">炉渣产生量</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondarySlag"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                 </tr>
                 <tr>
                     <td class="text-center">废液类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundPrepare2WastesWasteLiquid"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">悬挂链类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundThirdPretreatmentSystemWastesSuspension"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center">飞灰产生量</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalSecondaryAsh"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                 </tr>
                 <tr>
                     <td class="text-center">医疗</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundPrepare2MedicalWastes"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">废液类</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundThirdPretreatmentSystemWastesWasteLiquid"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -1501,7 +1529,7 @@
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center" rowspan="2">三期</td>
                     <td class="text-center">炉渣产生量</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdSlag"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                 </tr>
@@ -1512,20 +1540,19 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">医疗</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayOutboundThirdPretreatmentSystemMedicalWastes"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center" colspan="2"></td>
                     <td class="text-center">飞灰产生量</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" id="todayDisposalThirdAsh"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                 </tr>
                 <tr>
-                    <td class="text-center">三期焚烧系统</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" colspan="2">三期焚烧系统</td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -2406,12 +2433,13 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center">填表</td>
-                    <td class="text-center" colspan="2">韩九云</td>
+                    <td class="text-center" colspan="2"></td>
                 </tr>
                 </tbody>
             </table>
 
             <div class="row text-center">
+                <a class="btn btn-primary" href="#">打印</a>
                 <a class="btn btn-danger" href="productionDaily.html">返回</a>
             </div>
         </div>

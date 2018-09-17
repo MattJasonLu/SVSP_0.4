@@ -192,6 +192,11 @@
         </if>
     </select>
 
+    <!--通过编号获取日报-->
+    <select id="getProductionDailyById" resultType="ProductionDaily">
+        SELECT * FROM t_rp_productiondaily WHERE id=#{id};
+    </select>
+
     <!--增加日报-->
     <insert id="addProductionDaily" parameterType="ProductionDaily">
         INSERT INTO t_rp_productiondaily (id, date, todayDisposalMedicalWastes, todayDisposalMedicalWastesDisposalDirect, todayDisposalMedicalWastesCooking,

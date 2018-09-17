@@ -77,6 +77,29 @@ public class ProductionDailyController {
     }
 
     /**
+     * 通过编号获取日报
+     * @param id 编号
+     * @return 日报
+     */
+    @RequestMapping("getProductionDailyById")
+    @ResponseBody
+    public String getProductionDailyById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            ProductionDaily productionDaily = productionDailyService.getProductionDailyById(Integer.parseInt(id));
+            JSONObject data = JSONObject.fromBean(productionDaily);
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 生成当天日报
      * @return 生成的日报数据
      */
