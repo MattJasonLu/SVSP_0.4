@@ -70,7 +70,13 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">合同列表</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                                <li><a href="experienceContract.html" id="function_336" onclick="checkAuthority($(this))">经营合同列表</a></li>
+                            </ul>
+                        </li>
                         <li role="separator" class="divider"></li>
                         <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                     </ul>
@@ -195,7 +201,7 @@
         <div class="table">
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">企业信息(详情)</td>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">企业信息</td>
                 </tr>
             </table>
             <br>
@@ -222,7 +228,7 @@
             <br>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">送样/抽检单统计(详情)</td>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">送样/抽检单统计(<a href="#" onclick="">详情</a>)</td>
                 </tr>
             </table>
             <br>
@@ -253,7 +259,7 @@
             <br>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">经营合同统计(详情)</td>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">经营合同统计(<a href="#" onclick="">详情</a>)</td>
                 </tr>
             </table>
             <br>
@@ -306,7 +312,7 @@
             </table>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">派车统计(详情)</td>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">派车统计(<a href="#" onclick="">详情</a>)</td>
                 </tr>
             </table>
             <br>
@@ -320,41 +326,70 @@
                     <td class="text-center"></td>
                 </tr>
             </table>
+            <table class="table table-bordered">
+                <tr>
+                    <td class="text-center" colspan="6" style="background-color: #caf8ff;border: 3px solid transparent">危废接收、处置统计及其他附件</td>
+                </tr>
+            </table>
+            <div class="row" style="height: 20%;">
+                <div class="col-md-4">
+                    <table class="table table-bordered" style="background-color: #caf8ff">
+                        <tr>
+                            <td class="text-center">暂无信息(危废接收<a href="#" onclick="">详情</a>)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <table class="table table-bordered" style="background-color: #caf8ff">
+                        <tr>
+                            <td class="text-center">暂无信息(危废处置<a href="#" onclick="">详情</a>)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <table class="table table-bordered" style="background-color: #caf8ff">
+                        <tr>
+                            <td class="text-center">暂无信息(企业相关附件列表<a href="#" onclick="">详情</a>)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
+        <div class="panel-footer text-center">版权所有：************&nbsp;备案编号：*************</div>
         <!--分页-->
-        <nav aria-label="Page navigation" style="text-align: center">
-            <ol class="pagination" style="width: 900px;">
-                <li id="current"><a href="#"></a> </li>
-                <li id="firstPage">
-                    <a href='#' onclick="switchPage(0)">首 页</a>
-                </li>
-                <li id="previous">
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
-                    </a>
-                </li>
-                <li><a href="#">1</a></li>
-                <li id="next">
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
-                    </a>
-                </li>
-                <li id="endPage">
-                    <a href='#' onclick="switchPage(-2)">尾 页</a>
-                </li>
-                <li ><a id="totalPage"></a></li>
-                <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
-                <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
-                <li class="showLi">每页显示:</li>
-                <li class="selectLi">
-                    <select id="count" onchange="loadPageClientList();">
-                        <option>5</option>
-                        <option selected>15</option>
-                        <option>50</option>
-                    </select>
-                </li>
-            </ol>
-        </nav>
+        <!--<nav aria-label="Page navigation" style="text-align: center">-->
+            <!--<ol class="pagination" style="width: 900px;">-->
+                <!--<li id="current"><a href="#"></a> </li>-->
+                <!--<li id="firstPage">-->
+                    <!--<a href='#' onclick="switchPage(0)">首 页</a>-->
+                <!--</li>-->
+                <!--<li id="previous">-->
+                    <!--<a href="#" aria-label="Previous">-->
+                        <!--<span aria-hidden="true" onclick="switchPage(parseInt(currentPage)-1);"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">1</a></li>-->
+                <!--<li id="next">-->
+                    <!--<a href="#" aria-label="Next">-->
+                        <!--<span aria-hidden="true" onclick="switchPage(parseInt(currentPage)+1);"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <!--<li id="endPage">-->
+                    <!--<a href='#' onclick="switchPage(-2)">尾 页</a>-->
+                <!--</li>-->
+                <!--<li ><a id="totalPage"></a></li>-->
+                <!--<li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>-->
+                <!--<li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>-->
+                <!--<li class="showLi">每页显示:</li>-->
+                <!--<li class="selectLi">-->
+                    <!--<select id="count" onchange="loadPageClientList();">-->
+                        <!--<option>5</option>-->
+                        <!--<option selected>15</option>-->
+                        <!--<option>50</option>-->
+                    <!--</select>-->
+                <!--</li>-->
+            <!--</ol>-->
+        <!--</nav>-->
     </div>
 </div>
 <div id="embed"></div>
