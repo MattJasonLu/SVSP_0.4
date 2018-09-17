@@ -359,7 +359,9 @@ function setSecIntoList(result) {
                     break;
                 // 热灼减率%
                 case (3):
-                    $(this).html("");
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.heatAverage);
+                    }
                     break;
                 // 水分%
                 case (4):

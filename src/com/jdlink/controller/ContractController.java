@@ -242,6 +242,7 @@ public class ContractController {
     @RequestMapping("saveContract")
     @ResponseBody
     public String  saveContract(@RequestBody Contract contract) {
+        JSONObject res1=new JSONObject();
         //1.获取合同ID
         List<String> list= contractService.getContractIdList();//合同id集合
         if(list.size()<=0){
@@ -262,8 +263,6 @@ public class ContractController {
             String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
             contract.setContractId(newId);
         }
-
-        System.out.println("当前合同编号:"+contract.getContractId());
         contract.setCheckState(CheckState.ToSubmit);//设置为待提交
         //设置时间
         //生成日期对象
@@ -280,25 +279,18 @@ public class ContractController {
             System.out.println(contract.getModelVersion()+"CCC");
         }
         JSONObject res = JSONObject.fromBean(contract);
-        System.out.println(res.toString());
-
-        // 通过客户名称搜索到客户id
-        String companyName = contract.getCompany1();
-        Client client = clientService.getByName(companyName);
-        if (client != null) contract.setClientId(client.getClientId());
-
         //给予合同的状态
         try{
             contractService.add(contract);
-            res.put("status", "success");
-            res.put("message", "添加成功");
+            res1.put("status", "success");
+            res1.put("message", "添加成功");
         }
         catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "创建合同失败，请完善信息!");
+            res1.put("status", "fail");
+            res1.put("message", "创建合同失败，请完善信息!");
         }
-        return  res.toString();
+        return  res1.toString();
     }
 
     @RequestMapping("submitContract")
@@ -981,6 +973,25 @@ public class ContractController {
             res.put("message", "获取失败");
         }
         return res.toString();
+    }
+    //根据客户编号获取编号
+    @RequestMapping("getClientListById")
+    @ResponseBody
+    public String getClientListById(String clientId){
+        JSONObject res=new JSONObject();
+        try {
+            Client client = contractService.getByClientId(clientId);//获得用户
+            res.put("client",client);
+            res.put("status", "success");
+            res.put("message", "查询客户成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询客户失败");
+        }
+        return  res.toString();
     }
 }
 

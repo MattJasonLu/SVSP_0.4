@@ -503,3 +503,10 @@ function getDateOfWeek() {
         }
     }
 }
+
+/**
+ * 字符串转日期
+ */
+function getDateByStr(str) {
+    return new Date(Date.parse(str));
+}

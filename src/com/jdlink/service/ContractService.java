@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Contract;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
@@ -43,7 +44,7 @@ public interface ContractService {
     void back(String contractId,String backContent,String nowTime);
     void opinion(String contractId,String opinion,String nowTime);
     String getContent(String contractId);
-
+    Client getByClientId(String clientId);
     /**
      * 根据合同中的客户信息筛选出业务员列表
      * @return 业务员列表
