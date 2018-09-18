@@ -50,7 +50,7 @@ public class QuotationItem {
     /**
      * 处置金额
      */
-    private float totalPriec;
+    private float totalPrice;
     /**
      * 税率
      */
@@ -116,6 +116,34 @@ public class QuotationItem {
      */
     private String util;
 
+    /**
+     *
+     * @return
+     */
+    private String contractId;
+
+    /**
+     * 供应商作为绑定
+     * @return
+     */
+    private Supplier supplier;
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
+
     public String getUtil() {
         return util;
     }
@@ -125,12 +153,12 @@ public class QuotationItem {
     }
 
 
-    public float getTotalPriec() {
-        return totalPriec;
+    public float getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setTotalPriec(float totalPriec) {
-        this.totalPriec = totalPriec;
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public PackageType getPackageType() {

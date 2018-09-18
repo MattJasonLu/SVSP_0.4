@@ -1,9 +1,6 @@
 package com.jdlink.service;
 
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Contract;
-import com.jdlink.domain.Page;
-import com.jdlink.domain.Salesman;
+import com.jdlink.domain.*;
 
 import java.util.List;
 
@@ -45,6 +42,8 @@ public interface ContractService {
     void opinion(String contractId,String opinion,String nowTime);
     String getContent(String contractId);
     Client getByClientId(String clientId);
+    List<String> getNewestContractId();
+    Supplier  getSupplierListById(String supplierId);
     /**
      * 根据合同中的客户信息筛选出业务员列表
      * @return 业务员列表
@@ -67,4 +66,5 @@ public interface ContractService {
     List<Contract> search(Contract contract);
     List<Contract> searchModel(Contract contract);
     List<Contract> getContractList();
+    void addQuotationItem(QuotationItem quotationItem);
 }

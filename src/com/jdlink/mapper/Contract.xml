@@ -38,10 +38,10 @@
     <insert id="add" parameterType="Contract">
         insert into t_contract (contractId,contractType, companyName, clientId, contractVersion,
         checkState, beginTime, endTime, agreedQuantity,contactName,telephone,reviewer,reviewDepartment,
-        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,suppierName,company1,content)
-        values (#{contractId},#{contractType}, #{companyName}, #{clientId}, #{contractVersion},
+        reviewDate,isFreight,order1,province,city,bankName,bankAccount,ticketRate1,ticketRate2,logisticsQualification,beginQualification,endQualification,modelName,year,period,contractContent,contractName,modelVersion,nowTime,company1,content,suppierId)
+        values (#{contractId},#{contractType}, #{companyName}, #{client.clientId}, #{contractVersion},
         #{checkState}, #{beginTime}, #{endTime}, #{agreedQuantity}, #{contactName}, #{telephone}, #{reviewer},
-        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{suppierName},#{company1},#{content})
+        #{reviewDepartment}, #{reviewDate},#{isFreight},#{order1},#{province},#{city},#{bankName},#{bankAccount},#{ticketRate1},#{ticketRate2},#{logisticsQualification},#{beginQualification},#{endQualification},#{modelName},#{year},#{period},#{contractContent},#{contractName},#{modelVersion},NOW(),#{company1},#{content},#{supplier.supplierId})
     </insert>
     <insert id="addEm" parameterType="Contract">
      insert into t_contract(contractId,contractType, companyName,checkState,telephone,bankName,bankAccount,area,companyLegal,companyAgent,clientLegal,clientAgent,address,thing,province,beginTime,nowTime,ticketRate1,contractVersion,city,endTime,modelName,company1,contactName,contractName)
@@ -293,5 +293,18 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
 
     <select id="getByClientId" parameterType="String" resultType="Client">
         select * from  client where clientId=#{clientId};
+    </select>
+    <!--查询最新的非模板合同编号-->
+    <select id="getNewestContractId" resultType="String">
+        select contractId from  t_contract where  content is null order by nowTime desc;
+    </select>
+    <!--添加合同中的报价单明细-->
+    <insert id="addQuotationItem" parameterType="QuotationItem">
+        insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId) values
+         (#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId});
+    </insert>
+    <!--根据供应商编号查询供应商-->
+    <select id="getSupplierListById" parameterType="String" resultType="Supplier">
+        select * from t_supplier where supplierId=#{supplierId};
     </select>
 </mapper>

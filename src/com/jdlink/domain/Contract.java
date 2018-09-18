@@ -198,7 +198,7 @@ public class Contract implements Serializable {
     /**
      * 供应商名称
      */
-    private String suppier;
+    private Supplier supplier;
     /**
      * Page
      */
@@ -211,7 +211,20 @@ public class Contract implements Serializable {
     /**
      * 报价单明细
      */
+    /**
+     * 客户对象
+     */
+    private Client client;
+
     private List<QuotationItem> quotationItemList=new ArrayList<>();
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
     public List<QuotationItem> getQuotationItemList() {
         return quotationItemList;
@@ -220,8 +233,6 @@ public class Contract implements Serializable {
     public void setQuotationItemList(List<QuotationItem> quotationItemList) {
         this.quotationItemList = quotationItemList;
     }
-
-    private String suppierName;
 
     public List<String> getWastesCodeList() {
         return wastesCodeList;
@@ -277,22 +288,6 @@ public class Contract implements Serializable {
 
     public void setPage(Page page) {
         this.page = page;
-    }
-
-    public String getSuppier() {
-        return suppier;
-    }
-
-    public String getSuppierName() {
-        return suppierName;
-    }
-
-    public void setSuppierName(String suppierName) {
-        this.suppierName = suppierName;
-    }
-
-    public void setSuppier(String suppier) {
-        this.suppier = suppier;
     }
 
     public String getTotalPrice() {
@@ -674,6 +669,14 @@ public class Contract implements Serializable {
         this.contractType = contractType;
     }
 
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
     @Override
     public String toString() {
         return "Contract{" +
@@ -724,9 +727,7 @@ public class Contract implements Serializable {
                 ", keyword='" + keyword + '\'' +
                 ", hazardousList=" + hazardousList +
                 ", totalPrice='" + totalPrice + '\'' +
-                ", suppier='" + suppier + '\'' +
                 ", page=" + page +
-                ", suppierName='" + suppierName + '\'' +
                 ", nowTime='" + nowTime + '\'' +
                 ", company1='" + company1 + '\'' +
                 ", addType='" + addType + '\'' +
