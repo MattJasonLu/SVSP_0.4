@@ -4,6 +4,7 @@ import com.jdlink.domain.Inventory.BatchingOrder;
 import com.jdlink.domain.Inventory.WasteInventory;
 import com.jdlink.domain.Page;
 
+import java.util.Date;
 import java.util.List;
 
 public interface WasteInventoryMapper {
@@ -27,4 +28,5 @@ public interface WasteInventoryMapper {
     List<BatchingOrder> searchBatchingOrder(BatchingOrder batchingOrder);
     int searchBatchingTotal(BatchingOrder batchingOrder);
     List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId);
+    List<Date> getNewestInBoundDate();
 }

@@ -46,4 +46,5 @@ public interface OutboundOrderMapper {
    int  totalSecondaryInventory();
     List<OutboundOrder>  loadSecOutBoundList(Page page);
     int totalSecOutBoundRecord();
+    List<Date>getNewestDate();
 }

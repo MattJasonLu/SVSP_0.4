@@ -143,6 +143,11 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
         return outboundOrderMapper.totalSecOutBoundRecord();
     }
 
+    @Override
+    public List<Date> getNewestDate() {
+        return outboundOrderMapper.getNewestDate();
+    }
+
 
     @Override
     public int searchCount(OutboundOrder outboundOrder){ return outboundOrderMapper.searchCount(outboundOrder); }

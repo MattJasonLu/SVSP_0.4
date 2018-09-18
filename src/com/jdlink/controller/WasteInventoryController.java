@@ -1069,4 +1069,40 @@ catch (Exception e){
         return res.toString();
 
     }
+    //获取最早的出库日期
+    @RequestMapping("getNewestDate")
+    @ResponseBody
+    public String getNewestDate(){
+        JSONObject res=new JSONObject();
+     try {
+      List<Date> dateList=outboundOrderService.getNewestDate();
+         res.put("status", "success");
+         res.put("message", "查询最早出库时间成功");
+         res.put("dateList", dateList);
+     }
+     catch (Exception e){
+         e.printStackTrace();
+         res.put("status", "fail");
+         res.put("message", "查询最早出库时间失败");
+     }
+       return  res.toString();
+    }
+    //获取最早的入库日期
+    @RequestMapping("getNewestInBoundDate")
+    @ResponseBody
+    public String getNewestInBoundDate(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Date> dateList=wasteInventoryService.getNewestInBoundDate();
+            res.put("status", "success");
+            res.put("message", "查询最早出库时间成功");
+            res.put("dateList", dateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早出库时间失败");
+        }
+        return  res.toString();
+    }
 }

@@ -1,13 +1,10 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.FormType;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Inventory.WareHouse;
-import com.jdlink.domain.PackageType;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
-import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.WastesInfoService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -161,6 +158,25 @@ public class WastesInfoController {
        return  res.toString();
     }
 
+    /**
+     * 获取运输方式
+     */
+    @RequestMapping("getTransportTypeList")
+    @ResponseBody
+    public String getTransportTypeList(){
+        JSONObject res = new JSONObject();
+        try {
+            JSONArray transportTypeList = JSONArray.fromArray(TransportType.values());
+            res.put("transportTypeList",transportTypeList);
+            res.put("status", "success");
+            res.put("message", "获取运输方式成功");
+        }
+        catch (Exception e){
+            res.put("status", "fail");
+            res.put("message", "获取运输方式失败");
+        }
 
+         return  res.toString();
+    }
 
 }

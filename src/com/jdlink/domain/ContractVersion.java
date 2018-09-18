@@ -2,7 +2,7 @@ package com.jdlink.domain;
 
 public enum ContractVersion {
     companyContract("公司合同",1),
-    customerContract("客户合同",2);
+    customerContract("产废单位合同",2);
     private String name;
     private int index;
     ContractVersion(String name, int index) {
