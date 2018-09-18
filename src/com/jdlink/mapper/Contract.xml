@@ -29,7 +29,19 @@
                     ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
         <collection property="quotationItemList" select="getQuotationItem" column="contractId"
                     ofType="com.jdlink.domain.QuotationItem" javaType="ArrayList"/>
+        <collection property="client" select="getClient" column="clientId"
+                    ofType="com.jdlink.domain.Client" javaType="Client"/>
+        <collection property="supplier" select="getSupplier" column="suppierId"
+                    ofType="com.jdlink.domain.Supplier" javaType="Supplier"/>
     </resultMap>
+    <!--查询客户-->
+    <select id="getClient" resultType="Client">
+        select companyName from  client where clientId=#{clientId};
+    </select>
+    <!--查询供应商-->
+    <select id="getSupplier" resultType="Supplier">
+      select companyName from  t_supplier where supplierId=#{suppierId};
+    </select>
 <!--通过报价单查询危废信息-->
     <select id="getQuotationItem" resultType="QuotationItem">
         select * from t_quotationitem where t_quotationitem.contractId=#{contractId};
