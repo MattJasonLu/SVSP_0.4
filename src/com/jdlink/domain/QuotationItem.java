@@ -115,6 +115,46 @@ public class QuotationItem {
      * 计量单位
      */
     private String util;
+    /**
+     *
+     * @return
+     */
+    private String contractId;
+
+    /**
+     * 供应商作为绑定
+     * @return
+     */
+    private Supplier supplier;
+
+    /**
+     * 处置金额
+     */
+    private float totalPrice;
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
 
     public String getUtil() {
         return util;

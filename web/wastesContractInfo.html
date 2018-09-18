@@ -210,88 +210,88 @@ $.ajax({
         </div>
         <h4 class="sub-header">危废合同申请表</h4>
         <table class="table table-bordered">
-            <tbody>
-            <tr>
-                <td class="text-center">送审人员</td>
-                <td class="text-center" colspan="1"><input type="text" class="focus"   value="***" readonly>
-                    </input></td>
-                <td class="text-center">送审日期</td>
-                <td class="text-center" colspan="1"> <input type="text" class="focus"   value="***" readonly>
-                    </input></td>
-                <td class="text-center">送审部门</td>
-                <td class="text-center" colspan="1"> <input type="text" class="focus"   value="***" readonly>
-                    </input></td>
-            </tr>
-            <tr>
-                <td class="text-center">产废单位</td>
-                <td class="text-center">
-                    <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
-                    </select>
-                </td>
-                <td class="text-center" >合同版本</td>     <!--时间，精确到秒 下同-->
-                <td class="text-center" colspan="1"><label class="radio-inline">
-                    <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
-                </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 产废单位合同
-                    </label></td>     <!--时间，精确到秒 下同-->
-                <td class="text-center">合同有效期</td>
-                <td class="text-center form-inline"  colspan="1">
-                    <div class="input-group ">
+        <tbody>
+        <tr>
+            <td class="text-center">送审人员</td>
+            <td class="text-center" colspan="1"><input type="text" class="focus"   value="***" readonly>
+                </input></td>
+            <td class="text-center">送审日期</td>
+            <td class="text-center" colspan="1"> <input type="text" class="focus"   value="***" readonly>
+                </input></td>
+            <td class="text-center">送审部门</td>
+            <td class="text-center" colspan="1"> <input type="text" class="focus"   value="***" readonly>
+                </input></td>
+        </tr>
+        <tr>
+            <td class="text-center">产废单位</td>
+            <td class="text-center">
+                <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
+                </select>
+            </td>
+            <td class="text-center" >合同版本</td>     <!--时间，精确到秒 下同-->
+            <td class="text-center" colspan="1"><label class="radio-inline">
+                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
+            </label>
+                <label class="radio-inline">
+                    <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 产废单位合同
+                </label></td>     <!--时间，精确到秒 下同-->
+            <td class="text-center">合同有效期</td>
+            <td class="text-center form-inline"  colspan="1">
+                <div class="input-group ">
                     <input type="date" class=" form-control" name="beginTime" id="beginTime">
-                    </div>
-                    <span >to</span>
-                    <div class="input-group ">
+                </div>
+                <span >to</span>
+                <div class="input-group ">
                     <input type="date" class=" form-control" name="endTime" id="endTime" />
-                    </div>
-                   </td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">合同名称</td>
-                <td class="text-left">
-                    <div class="col-xs-12" id="contractName1" >
-                        <input type="text" class="focus" id="contractName" name="contractName">
-                    </div>
-                    <div class="col-xs-12 form-inline" id="contractType2">
-                        <select class="form-control"  type="text" id="contractType1" name="modelName"  >
-                        </select>
-                        <input type="button" class="form-control" value="查看" onclick="check1(this)">
-                    </div>
-                </td>
-                <td class="text-center" style="width: 150px;">联系电话</td>
-                <td class="text-left"> <input type="text" class="focus" id="telephone" name="telephone" ></td>
-                <td class="text-center">联系人</td>
-                <td class="text-left">
-                    <input type="text" class="focus" id="contactName" name="contactName" placeholder="">
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center" style="width: 150px;">开户行名称</td>
-                <td class="text-left"><input type="text" class="focus" id="bankName" name="bankName" placeholder="">
-                </td>
-                <td class="text-center" style="width: 150px;">开户行账号</td>
-                <td class="text-left"> <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder=""></td>
-                <td class="text-center" style="width: 150px;">开票税率</td>
-                <td class="text-center">  <select class="form-control" id="taxRate1" name="ticketRate1">
-                </select></td>
-            </tr>
-            <tr>
-                <td colspan="3">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center" style="width: 150px;">合同名称</td>
+            <td class="text-left">
+                <div class="col-xs-12" id="contractName1" >
+                    <input type="text" class="focus" id="contractName" name="contractName">
+                </div>
+                <div class="col-xs-12 form-inline" id="contractType2">
+                    <select class="form-control"  type="text" id="contractType1" name="modelName"  >
+                    </select>
+                    <input type="button" class="form-control" value="查看" onclick="check1(this)">
+                </div>
+            </td>
+            <td class="text-center" style="width: 150px;">联系电话</td>
+            <td class="text-left"> <input type="text" class="focus" id="telephone" name="telephone" ></td>
+            <td class="text-center">联系人</td>
+            <td class="text-left">
+                <input type="text" class="focus" id="contactName" name="contactName" placeholder="">
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center" style="width: 150px;">开户行名称</td>
+            <td class="text-left"><input type="text" class="focus" id="bankName" name="bankName" placeholder="">
+            </td>
+            <td class="text-center" style="width: 150px;">开户行账号</td>
+            <td class="text-left"> <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder=""></td>
+            <td class="text-center" style="width: 150px;">开票税率</td>
+            <td class="text-center">  <select class="form-control" id="taxRate1" name="ticketRate1">
+            </select></td>
+        </tr>
+        <tr>
+            <td colspan="3">
                 <label class="col-sm-2 control-label sr-only" > 1111111</label>
                 <label class="checkbox-inline col-xs-5" for="isFreight">
                     是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="freight" value="true">
                 </label>
-                </td>
-                <td class="hidden">
-                    <div class="col-xs-5">
-                        <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
-                        </input>
-                    </div>
-                </td>
-                <td colspan="2"></td>
-            </tr>
-            </tbody>
-        </table>
+            </td>
+            <td class="hidden">
+                <div class="col-xs-5">
+                    <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
+                    </input>
+                </div>
+            </td>
+            <td colspan="2"></td>
+        </tr>
+        </tbody>
+    </table>
         <table class="table table-bordered" style="width: 50%">
             <thead>
             <tr>
