@@ -3395,87 +3395,15 @@ public class ProductionDaily {
     /**
      * 二期处置的散料
      */
-    private float todayOutboundSecondPretreatmentWastesBulk;
-    /**
-     * 二期处置的破碎料
-     */
-    private float todayOutboundSecondPretreatmentWastesCrushing;
-    /**
-     * 二期处置的污泥
-     */
-    private float todayOutboundSecondPretreatmentWastesSludge;
-    /**
-     * 二期处置的精馏残渣
-     */
-    private float todayOutboundSecondPretreatmentWastesDistillation;
-    /**
-     * 二期处置的悬挂连
-     */
-    private float todayOutboundSecondPretreatmentWastesSuspension;
-    /**
-     * 二期处置的废液
-     */
-    private float todayOutboundSecondPretreatmentWastesWasteLiquid;
-    /**
-     * 二期处置的医废
-     */
-    private float todayOutboundSecondPretreatmentMedicalWastes;
+    private float todayOutboundSecondPretreatmentWastes;
     /**
      * 二期处置的散料
      */
-    private float monthOutboundSecondPretreatmentWastesBulk;
-    /**
-     * 二期处置的破碎料
-     */
-    private float monthOutboundSecondPretreatmentWastesCrushing;
-    /**
-     * 二期处置的污泥
-     */
-    private float monthOutboundSecondPretreatmentWastesSludge;
-    /**
-     * 二期处置的精馏残渣
-     */
-    private float monthOutboundSecondPretreatmentWastesDistillation;
-    /**
-     * 二期处置的悬挂连
-     */
-    private float monthOutboundSecondPretreatmentWastesSuspension;
-    /**
-     * 二期处置的废液
-     */
-    private float monthOutboundSecondPretreatmentWastesWasteLiquid;
-    /**
-     * 二期处置的医废
-     */
-    private float monthOutboundSecondPretreatmentMedicalWastes;
+    private float monthOutboundSecondPretreatmentWastes;
     /**
      * 二期处置的散料
      */
-    private float yearOutboundSecondPretreatmentWastesBulk;
-    /**
-     * 二期处置的破碎料
-     */
-    private float yearOutboundSecondPretreatmentWastesCrushing;
-    /**
-     * 二期处置的污泥
-     */
-    private float yearOutboundSecondPretreatmentWastesSludge;
-    /**
-     * 二期处置的精馏残渣
-     */
-    private float yearOutboundSecondPretreatmentWastesDistillation;
-    /**
-     * 二期处置的悬挂连
-     */
-    private float yearOutboundSecondPretreatmentWastesSuspension;
-    /**
-     * 二期处置的废液
-     */
-    private float yearOutboundSecondPretreatmentWastesWasteLiquid;
-    /**
-     * 二期处置的医废
-     */
-    private float yearOutboundSecondPretreatmentMedicalWastes;
+    private float yearOutboundSecondPretreatmentWastes;
 
     /**
      * 三期处置的散料
@@ -10515,172 +10443,28 @@ public class ProductionDaily {
         this.todayOutboundB2RateMedicalWastes = todayOutboundB2RateMedicalWastes;
     }
 
-    public float getTodayOutboundSecondPretreatmentWastesBulk() {
-        return todayOutboundSecondPretreatmentWastesBulk;
+    public float getTodayOutboundSecondPretreatmentWastes() {
+        return todayOutboundSecondPretreatmentWastes;
     }
 
-    public void setTodayOutboundSecondPretreatmentWastesBulk(float todayOutboundSecondPretreatmentWastesBulk) {
-        this.todayOutboundSecondPretreatmentWastesBulk = todayOutboundSecondPretreatmentWastesBulk;
+    public void setTodayOutboundSecondPretreatmentWastes(float todayOutboundSecondPretreatmentWastes) {
+        this.todayOutboundSecondPretreatmentWastes = todayOutboundSecondPretreatmentWastes;
     }
 
-    public float getTodayOutboundSecondPretreatmentWastesCrushing() {
-        return todayOutboundSecondPretreatmentWastesCrushing;
+    public float getMonthOutboundSecondPretreatmentWastes() {
+        return monthOutboundSecondPretreatmentWastes;
     }
 
-    public void setTodayOutboundSecondPretreatmentWastesCrushing(float todayOutboundSecondPretreatmentWastesCrushing) {
-        this.todayOutboundSecondPretreatmentWastesCrushing = todayOutboundSecondPretreatmentWastesCrushing;
+    public void setMonthOutboundSecondPretreatmentWastes(float monthOutboundSecondPretreatmentWastes) {
+        this.monthOutboundSecondPretreatmentWastes = monthOutboundSecondPretreatmentWastes;
     }
 
-    public float getTodayOutboundSecondPretreatmentWastesSludge() {
-        return todayOutboundSecondPretreatmentWastesSludge;
+    public float getYearOutboundSecondPretreatmentWastes() {
+        return yearOutboundSecondPretreatmentWastes;
     }
 
-    public void setTodayOutboundSecondPretreatmentWastesSludge(float todayOutboundSecondPretreatmentWastesSludge) {
-        this.todayOutboundSecondPretreatmentWastesSludge = todayOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public float getTodayOutboundSecondPretreatmentWastesDistillation() {
-        return todayOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public void setTodayOutboundSecondPretreatmentWastesDistillation(float todayOutboundSecondPretreatmentWastesDistillation) {
-        this.todayOutboundSecondPretreatmentWastesDistillation = todayOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public float getTodayOutboundSecondPretreatmentWastesSuspension() {
-        return todayOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public void setTodayOutboundSecondPretreatmentWastesSuspension(float todayOutboundSecondPretreatmentWastesSuspension) {
-        this.todayOutboundSecondPretreatmentWastesSuspension = todayOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public float getTodayOutboundSecondPretreatmentWastesWasteLiquid() {
-        return todayOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public void setTodayOutboundSecondPretreatmentWastesWasteLiquid(float todayOutboundSecondPretreatmentWastesWasteLiquid) {
-        this.todayOutboundSecondPretreatmentWastesWasteLiquid = todayOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public float getTodayOutboundSecondPretreatmentMedicalWastes() {
-        return todayOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public void setTodayOutboundSecondPretreatmentMedicalWastes(float todayOutboundSecondPretreatmentMedicalWastes) {
-        this.todayOutboundSecondPretreatmentMedicalWastes = todayOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesBulk() {
-        return monthOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesBulk(float monthOutboundSecondPretreatmentWastesBulk) {
-        this.monthOutboundSecondPretreatmentWastesBulk = monthOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesCrushing() {
-        return monthOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesCrushing(float monthOutboundSecondPretreatmentWastesCrushing) {
-        this.monthOutboundSecondPretreatmentWastesCrushing = monthOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesSludge() {
-        return monthOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesSludge(float monthOutboundSecondPretreatmentWastesSludge) {
-        this.monthOutboundSecondPretreatmentWastesSludge = monthOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesDistillation() {
-        return monthOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesDistillation(float monthOutboundSecondPretreatmentWastesDistillation) {
-        this.monthOutboundSecondPretreatmentWastesDistillation = monthOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesSuspension() {
-        return monthOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesSuspension(float monthOutboundSecondPretreatmentWastesSuspension) {
-        this.monthOutboundSecondPretreatmentWastesSuspension = monthOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesWasteLiquid() {
-        return monthOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesWasteLiquid(float monthOutboundSecondPretreatmentWastesWasteLiquid) {
-        this.monthOutboundSecondPretreatmentWastesWasteLiquid = monthOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public float getMonthOutboundSecondPretreatmentMedicalWastes() {
-        return monthOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public void setMonthOutboundSecondPretreatmentMedicalWastes(float monthOutboundSecondPretreatmentMedicalWastes) {
-        this.monthOutboundSecondPretreatmentMedicalWastes = monthOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesBulk() {
-        return yearOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesBulk(float yearOutboundSecondPretreatmentWastesBulk) {
-        this.yearOutboundSecondPretreatmentWastesBulk = yearOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesCrushing() {
-        return yearOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesCrushing(float yearOutboundSecondPretreatmentWastesCrushing) {
-        this.yearOutboundSecondPretreatmentWastesCrushing = yearOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesSludge() {
-        return yearOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesSludge(float yearOutboundSecondPretreatmentWastesSludge) {
-        this.yearOutboundSecondPretreatmentWastesSludge = yearOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesDistillation() {
-        return yearOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesDistillation(float yearOutboundSecondPretreatmentWastesDistillation) {
-        this.yearOutboundSecondPretreatmentWastesDistillation = yearOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesSuspension() {
-        return yearOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesSuspension(float yearOutboundSecondPretreatmentWastesSuspension) {
-        this.yearOutboundSecondPretreatmentWastesSuspension = yearOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesWasteLiquid() {
-        return yearOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesWasteLiquid(float yearOutboundSecondPretreatmentWastesWasteLiquid) {
-        this.yearOutboundSecondPretreatmentWastesWasteLiquid = yearOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public float getYearOutboundSecondPretreatmentMedicalWastes() {
-        return yearOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public void setYearOutboundSecondPretreatmentMedicalWastes(float yearOutboundSecondPretreatmentMedicalWastes) {
-        this.yearOutboundSecondPretreatmentMedicalWastes = yearOutboundSecondPretreatmentMedicalWastes;
+    public void setYearOutboundSecondPretreatmentWastes(float yearOutboundSecondPretreatmentWastes) {
+        this.yearOutboundSecondPretreatmentWastes = yearOutboundSecondPretreatmentWastes;
     }
 
     public float getTodayOutboundThirdPretreatmentSystemWastesBulk() {

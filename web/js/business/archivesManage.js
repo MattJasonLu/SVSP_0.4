@@ -332,3 +332,45 @@ function searchData() {
     });
     isSearch = true;
 }
+/**
+ * 详情1
+ */
+function viewData1() {
+    // $("#detail1").preventDefault();
+    $("#modal1").modal("show")
+}
+/**
+ * 详情2
+ */
+function viewData2() {
+    // $("#detail2").preventDefault();
+    $("#modal2").modal("show")
+}
+/**
+ * 详情3
+ */
+function viewData3() {
+    // $("#detail3").preventDefault();
+    $("#modal3").modal("show")
+}
+/**
+ * 详情4
+ */
+function viewData4() {
+    // $("#detail4").preventDefault();
+    $("#modal4").modal("show")
+}
+/**
+ * 详情5
+ */
+function viewData5() {
+    // $("#detail5").preventDefault();
+    $("#modal5").modal("show")
+}
+/**
+ * 详情6
+ */
+function viewData6() {
+    // $("#detail6").preventDefault();
+    $("#modal6").modal("show")
+}

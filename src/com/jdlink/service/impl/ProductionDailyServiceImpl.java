@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ProductionDaily;
 import com.jdlink.domain.Produce.Sewage;
@@ -9,6 +10,7 @@ import com.jdlink.service.ProductionDailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -72,4 +74,18 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
         return productionDailyMapper.getProductionDailyById(id);
     }
 
+    @Override
+    public List<ProductionDaily> getProductionDailyByDateRange(Date beginTime, Date endTime, Page page) {
+        return productionDailyMapper.getProductionDailyByDateRange(beginTime, endTime, page);
+    }
+
+    @Override
+    public int getProductionDailyByDateRangeCount(Date beginTime, Date endTime) {
+        return productionDailyMapper.getProductionDailyByDateRangeCount(beginTime, endTime);
+    }
+
+    @Override
+    public void setProductionDailyState(int id, CheckState checkState) {
+        productionDailyMapper.setProductionDailyState(id, checkState);
+    }
 }

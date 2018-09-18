@@ -2,6 +2,7 @@ package com.jdlink.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -91,6 +92,16 @@ public class DateUtil {
         }
         return time;
     }
+
+    /**
+     * 取得月份天数
+     * */
+    public static int getDaysOfMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
+
 
 
 }

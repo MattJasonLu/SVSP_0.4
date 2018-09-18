@@ -41,11 +41,10 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchTransferDraftTotal",                  // url
+            url: "getProductionDailyByDateRangeCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
+            data: data,
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result > 0) {
                     totalRecord = result;
@@ -173,11 +172,10 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchTransferDraft",         // url
+            url: "searchProductionDaily",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
+            data: data,
             dataType: "json",
-            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
@@ -250,11 +248,10 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchTransferDraft",         // url
+                url: "searchProductionDaily",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
+                data: data,
                 dataType: "json",
-                contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result !== undefined && result.status === "success") {
                         // console.log(result);
@@ -320,6 +317,8 @@ function setDataList(result) {
         var clonedTr = tr.clone();
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.find("td[name='index']").text(index + 1);
+        clonedTr.find("td[name='id']").text(obj.id);
         clonedTr.find("td[name='date']").text(getDateStr(obj.date));
         if (obj.checkState != null) clonedTr.find("td[name='checkState']").text(obj.checkState.name);
         clonedTr.find("td[name='author']").text(obj.author);
@@ -343,20 +342,8 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-draftId").val(),
-            checkState: $("#search-checkState").val(),
-            produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
-            },
-            transportCompany: {
-                companyName: $("#search-transportCompanyName").val()
-            },
-            acceptCompany: {
-                companyName: $("#search-acceptCompanyName").val()
-            },
-            dispatcher: $("#search-dispatcher").val(),
-            destination: $("#search-destination").val(),
-            transferTime: $("#search-transferTime").val(),
+            beginTime: $("#beginTime").val(),
+            endTime: $("#endTime").val(),
             page: page
         };
         console.log(data);
@@ -369,11 +356,10 @@ function searchData() {
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchTransferDraft",                  // url
+        url: "searchProductionDaily",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
+        data: data,
         dataType: "json",
-        contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
@@ -456,6 +442,7 @@ function loadData() {
      */
     function setData(data) {
         var obj = eval(data);
+        $("#date").text(getDateStr(obj.date));
         $("#todayInboundMedicalWastes").text(obj.todayInboundMedicalWastes);
         $("#todayOutboundMedicalWastes").text(obj.todayOutboundMedicalWastes);
         $("#todayInventoryMedicalWastes").text(obj.todayInventoryMedicalWastes);
@@ -1207,6 +1194,129 @@ function loadData() {
         $("#yearInboundAuxiliaryTapWaterQuantity").text(obj.yearInboundAuxiliaryTapWaterQuantity);
         $("#monthOutboundAuxiliaryTapWaterQuantity").text(obj.monthOutboundAuxiliaryTapWaterQuantity);
         $("#yearOutboundAuxiliaryTapWaterQuantity").text(obj.yearOutboundAuxiliaryTapWaterQuantity);
+        $("#monthOutboundA2WastesBulk").text(obj.monthOutboundA2WastesBulk);
+        $("#yearOutboundA2WastesBulk").text(obj.yearOutboundA2WastesBulk);
+        $("#monthOutboundB2WastesBulk").text(obj.monthOutboundB2WastesBulk);
+        $("#yearOutboundB2WastesBulk").text(obj.yearOutboundB2WastesBulk);
+        $("#todayOutboundB2RateWastesBulk").text(obj.todayOutboundB2RateWastesBulk);
+        $("#monthOutboundA2WastesCrushing").text(obj.monthOutboundA2WastesCrushing);
+        $("#yearOutboundA2WastesCrushing").text(obj.yearOutboundA2WastesCrushing);
+        $("#monthOutboundB2WastesCrushing").text(obj.monthOutboundB2WastesCrushing);
+        $("#yearOutboundB2WastesCrushing").text(obj.yearOutboundB2WastesCrushing);
+        $("#todayOutboundB2RateWastesCrushing").text(obj.todayOutboundB2RateWastesCrushing);
+        $("#monthOutboundA2WastesSludge").text(obj.monthOutboundA2WastesSludge);
+        $("#yearOutboundA2WastesSludge").text(obj.yearOutboundA2WastesSludge);
+        $("#monthOutboundB2WastesSludge").text(obj.monthOutboundB2WastesSludge);
+        $("#yearOutboundB2WastesSludge").text(obj.yearOutboundB2WastesSludge);
+        $("#todayOutboundB2RateWastesSludge").text(obj.todayOutboundB2RateWastesSludge);
+        $("#monthOutboundA2WastesDistillation").text(obj.monthOutboundA2WastesDistillation);
+        $("#yearOutboundA2WastesDistillation").text(obj.yearOutboundA2WastesDistillation);
+        $("#monthOutboundB2WastesDistillation").text(obj.monthOutboundB2WastesDistillation);
+        $("#yearOutboundB2WastesDistillation").text(obj.yearOutboundB2WastesDistillation);
+        $("#todayOutboundB2RateWastesDistillation").text(obj.todayOutboundB2RateWastesDistillation);
+        $("#monthOutboundA2WastesSuspension").text(obj.monthOutboundA2WastesSuspension);
+        $("#yearOutboundA2WastesSuspension").text(obj.yearOutboundA2WastesSuspension);
+        $("#monthOutboundB2WastesSuspension").text(obj.monthOutboundB2WastesSuspension);
+        $("#yearOutboundB2WastesSuspension").text(obj.yearOutboundB2WastesSuspension);
+        $("#todayOutboundB2RateWastesSuspension").text(obj.todayOutboundB2RateWastesSuspension);
+        $("#monthOutboundA2WastesWasteLiquid").text(obj.monthOutboundA2WastesWasteLiquid);
+        $("#yearOutboundA2WastesWasteLiquid").text(obj.yearOutboundA2WastesWasteLiquid);
+        $("#monthOutboundB2WastesWasteLiquid").text(obj.monthOutboundB2WastesWasteLiquid);
+        $("#yearOutboundB2WastesWasteLiquid").text(obj.yearOutboundB2WastesWasteLiquid);
+        $("#todayOutboundB2RateWastesWasteLiquid").text(obj.todayOutboundB2RateWastesWasteLiquid);
+        $("#monthOutboundA2MedicalWastes").text(obj.monthOutboundA2MedicalWastes);
+        $("#yearOutboundA2MedicalWastes").text(obj.yearOutboundA2MedicalWastes);
+        $("#monthOutboundB2MedicalWastes").text(obj.monthOutboundB2MedicalWastes);
+        $("#yearOutboundB2MedicalWastes").text(obj.yearOutboundB2MedicalWastes);
+        $("#todayOutboundB2RateMedicalWastes").text(obj.todayOutboundB2RateMedicalWastes);
+        $("#monthOutboundPrepare2WastesBulk").text(obj.monthOutboundPrepare2WastesBulk);
+        $("#yearOutboundPrepare2WastesBulk").text(obj.yearOutboundPrepare2WastesBulk);
+        $("#monthOutboundPrepare2WastesCrushing").text(obj.monthOutboundPrepare2WastesCrushing);
+        $("#yearOutboundPrepare2WastesCrushing").text(obj.yearOutboundPrepare2WastesCrushing);
+        $("#monthOutboundThirdPretreatmentSystemWastesBulk").text(obj.monthOutboundThirdPretreatmentSystemWastesBulk);
+        $("#yearOutboundThirdPretreatmentSystemWastesBulk").text(obj.yearOutboundThirdPretreatmentSystemWastesBulk);
+        $("#todayOutboundThirdPretreatmentSystemRateWastesBulk").text(obj.todayOutboundThirdPretreatmentSystemRateWastesBulk);
+        $("#monthOutboundThirdPretreatmentSystemRateWastesBulk").text(obj.monthOutboundThirdPretreatmentSystemRateWastesBulk);
+        $("#yearOutboundThirdPretreatmentSystemRateWastesBulk").text(obj.yearOutboundThirdPretreatmentSystemRateWastesBulk);
+        $("#monthOutboundPrepare2WastesSludge").text(obj.monthOutboundPrepare2WastesSludge);
+        $("#yearOutboundPrepare2WastesSludge").text(obj.yearOutboundPrepare2WastesSludge);
+        $("#monthOutboundThirdPretreatmentSystemWastesCrushing").text(obj.monthOutboundThirdPretreatmentSystemWastesCrushing);
+        $("#yearOutboundThirdPretreatmentSystemWastesCrushing").text(obj.yearOutboundThirdPretreatmentSystemWastesCrushing);
+        $("#todayOutboundThirdPretreatmentSystemRateWastesCrushing").text(obj.todayOutboundThirdPretreatmentSystemRateWastesCrushing);
+        $("#monthOutboundThirdPretreatmentSystemRateWastesCrushing").text(obj.monthOutboundThirdPretreatmentSystemRateWastesCrushing);
+        $("#yearOutboundThirdPretreatmentSystemRateWastesCrushing").text(obj.yearOutboundThirdPretreatmentSystemRateWastesCrushing);
+        $("#monthOutboundPrepare2WastesDistillation").text(obj.monthOutboundPrepare2WastesDistillation);
+        $("#yearOutboundPrepare2WastesDistillation").text(obj.yearOutboundPrepare2WastesDistillation);
+        $("#monthOutboundThirdPretreatmentSystemWastesSludge").text(obj.monthOutboundThirdPretreatmentSystemWastesSludge);
+        $("#yearOutboundThirdPretreatmentSystemWastesSludge").text(obj.yearOutboundThirdPretreatmentSystemWastesSludge);
+        $("#todayOutboundThirdPretreatmentSystemRateWastesSludge").text(obj.todayOutboundThirdPretreatmentSystemRateWastesSludge);
+        $("#monthOutboundThirdPretreatmentSystemRateWastesSludge").text(obj.monthOutboundThirdPretreatmentSystemRateWastesSludge);
+        $("#yearOutboundThirdPretreatmentSystemRateWastesSludge").text(obj.yearOutboundThirdPretreatmentSystemRateWastesSludge);
+        $("#monthOutboundPrepare2WastesSuspension").text(obj.monthOutboundPrepare2WastesSuspension);
+        $("#yearOutboundPrepare2WastesSuspension").text(obj.yearOutboundPrepare2WastesSuspension);
+        $("#monthOutboundThirdPretreatmentSystemWastesDistillation").text(obj.monthOutboundThirdPretreatmentSystemWastesDistillation);
+        $("#yearOutboundThirdPretreatmentSystemWastesDistillation").text(obj.yearOutboundThirdPretreatmentSystemWastesDistillation);
+        $("#todayOutboundThirdPretreatmentSystemRateWastesDistillation").text(obj.todayOutboundThirdPretreatmentSystemRateWastesDistillation);
+        $("#monthOutboundThirdPretreatmentSystemRateWastesDistillation").text(obj.monthOutboundThirdPretreatmentSystemRateWastesDistillation);
+        $("#yearOutboundThirdPretreatmentSystemRateWastesDistillation").text(obj.yearOutboundThirdPretreatmentSystemRateWastesDistillation);
+        $("#monthOutboundPrepare2WastesWasteLiquid").text(obj.monthOutboundPrepare2WastesWasteLiquid);
+        $("#yearOutboundPrepare2WastesWasteLiquid").text(obj.yearOutboundPrepare2WastesWasteLiquid);
+        $("#monthOutboundThirdPretreatmentSystemWastesSuspension").text(obj.monthOutboundThirdPretreatmentSystemWastesSuspension);
+        $("#yearOutboundThirdPretreatmentSystemWastesSuspension").text(obj.yearOutboundThirdPretreatmentSystemWastesSuspension);
+        $("#todayOutboundThirdPretreatmentSystemRateWastesSuspension").text(obj.todayOutboundThirdPretreatmentSystemRateWastesSuspension);
+        $("#monthOutboundThirdPretreatmentSystemRateWastesSuspension").text(obj.monthOutboundThirdPretreatmentSystemRateWastesSuspension);
+        $("#yearOutboundThirdPretreatmentSystemRateWastesSuspension").text(obj.yearOutboundThirdPretreatmentSystemRateWastesSuspension);
+        $("#monthOutboundPrepare2MedicalWastes").text(obj.monthOutboundPrepare2MedicalWastes);
+        $("#yearOutboundPrepare2MedicalWastes").text(obj.yearOutboundPrepare2MedicalWastes);
+        $("#monthOutboundThirdPretreatmentSystemWastesWasteLiquid").text(obj.monthOutboundThirdPretreatmentSystemWastesWasteLiquid);
+        $("#yearOutboundThirdPretreatmentSystemWastesWasteLiquid").text(obj.yearOutboundThirdPretreatmentSystemWastesWasteLiquid);
+        $("#todayOutboundThirdPretreatmentSystemRateWastesWasteLiquid").text(obj.todayOutboundThirdPretreatmentSystemRateWastesWasteLiquid);
+        $("#monthOutboundThirdPretreatmentSystemRateWastesWasteLiquid").text(obj.monthOutboundThirdPretreatmentSystemRateWastesWasteLiquid);
+        $("#yearOutboundThirdPretreatmentSystemRateWastesWasteLiquid").text(obj.yearOutboundThirdPretreatmentSystemRateWastesWasteLiquid);
+        $("#monthOutboundSecondPretreatmentWastes").text(obj.monthOutboundSecondPretreatmentWastes);
+        $("#yearOutboundSecondPretreatmentWastes").text(obj.yearOutboundSecondPretreatmentWastes);
+        $("#monthOutboundThirdPretreatmentSystemMedicalWastes").text(obj.monthOutboundThirdPretreatmentSystemMedicalWastes);
+        $("#yearOutboundThirdPretreatmentSystemMedicalWastes").text(obj.yearOutboundThirdPretreatmentSystemMedicalWastes);
+        $("#todayOutboundThirdPretreatmentSystemRateMedicalWastes").text(obj.todayOutboundThirdPretreatmentSystemRateMedicalWastes);
+        $("#monthOutboundThirdPretreatmentSystemRateMedicalWastes").text(obj.monthOutboundThirdPretreatmentSystemRateMedicalWastes);
+        $("#yearOutboundThirdPretreatmentSystemRateMedicalWastes").text(obj.yearOutboundThirdPretreatmentSystemRateMedicalWastes);
+        $("#monthEquipmentA2StopTime").text(obj.monthEquipmentA2StopTime);
+        $("#yearEquipmentA2StopTime").text(obj.yearEquipmentA2StopTime);
+        $("#monthEquipmentB2StopTime").text(obj.monthEquipmentB2StopTime);
+        $("#yearEquipmentB2StopTime").text(obj.yearEquipmentB2StopTime);
+        $("#monthEquipmentPrepare2StopTime").text(obj.monthEquipmentPrepare2StopTime);
+        $("#yearEquipmentPrepare2StopTime").text(obj.yearEquipmentPrepare2StopTime);
+        $("#monthEquipmentSecondaryStopTime").text(obj.monthEquipmentSecondaryStopTime);
+        $("#yearEquipmentSecondaryStopTime").text(obj.yearEquipmentSecondaryStopTime);
+        $("#monthEquipmentThirdStopTime").text(obj.monthEquipmentThirdStopTime);
+        $("#yearEquipmentThirdStopTime").text(obj.yearEquipmentThirdStopTime);
+        $("#monthEquipmentA2RunningTime").text(obj.monthEquipmentA2RunningTime);
+        $("#yearEquipmentA2RunningTime").text(obj.yearEquipmentA2RunningTime);
+        $("#monthEquipmentB2RunningTime").text(obj.monthEquipmentB2RunningTime);
+        $("#yearEquipmentB2RunningTime").text(obj.yearEquipmentB2RunningTime);
+        $("#monthEquipmentPrepare2RunningTime").text(obj.monthEquipmentPrepare2RunningTime);
+        $("#yearEquipmentPrepare2RunningTime").text(obj.yearEquipmentPrepare2RunningTime);
+        $("#monthEquipmentSecondaryRunningTime").text(obj.monthEquipmentSecondaryRunningTime);
+        $("#yearEquipmentSecondaryRunningTime").text(obj.yearEquipmentSecondaryRunningTime);
+        $("#monthEquipmentThirdRunningTime").text(obj.monthEquipmentThirdRunningTime);
+        $("#yearEquipmentThirdRunningTime").text(obj.yearEquipmentThirdRunningTime);
+        $("#monthEquipmentA2RunningRate").text(obj.monthEquipmentA2RunningRate);
+        $("#yearEquipmentA2RunningRate").text(obj.yearEquipmentA2RunningRate);
+        $("#monthEquipmentB2RunningRate").text(obj.monthEquipmentB2RunningRate);
+        $("#yearEquipmentB2RunningRate").text(obj.yearEquipmentB2RunningRate);
+        $("#monthEquipmentPrepare2RunningRate").text(obj.monthEquipmentPrepare2RunningRate);
+        $("#yearEquipmentPrepare2RunningRate").text(obj.yearEquipmentPrepare2RunningRate);
+        $("#monthEquipmentSecondaryRunningRate").text(obj.monthEquipmentSecondaryRunningRate);
+        $("#yearEquipmentSecondaryRunningRate").text(obj.yearEquipmentSecondaryRunningRate);
+        $("#monthEquipmentThirdRunningRate").text(obj.monthEquipmentThirdRunningRate);
+        $("#monthDisposalSecondarySlag").text(obj.monthDisposalSecondarySlag);
+        $("#yearDisposalSecondarySlag").text(obj.yearDisposalSecondarySlag);
+        $("#monthDisposalSecondaryAsh").text(obj.monthDisposalSecondaryAsh);
+        $("#yearDisposalSecondaryAsh").text(obj.yearDisposalSecondaryAsh);
+        $("#monthDisposalThirdSlag").text(obj.monthDisposalThirdSlag);
+        $("#yearDisposalThirdSlag").text(obj.yearDisposalThirdSlag);
+        $("#monthDisposalThirdAsh").text(obj.monthDisposalThirdAsh);
+        $("#yearDisposalThirdAsh").text(obj.yearDisposalThirdAsh);
     }
 }
 
@@ -1218,6 +1328,70 @@ function viewData(e) {
     // 获取编号并存储内存，页面跳转
     window.localStorage.productionDailyId = getIdByMenu(e);
     $(location).prop('href', 'productionDaily1.html');
+}
+
+/**
+ * 设置状态失效
+ * @param e
+ */
+function setInvalid(e) {
+    var r = confirm("确认作废该日报？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProductionDailyState",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                id: id,
+                checkState: 'Invalid'
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+}
+
+/**
+ * 设置状态失效
+ * @param e
+ */
+function setLocked(e) {
+    var r = confirm("确认锁定该日报？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProductionDailyState",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                id: id,
+                checkState: 'Locked'
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
 }
 
 /**
