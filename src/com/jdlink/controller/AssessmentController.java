@@ -57,9 +57,11 @@ public class AssessmentController {
                     String code = quotationItem.getWastesCode();
                     if (code != null) {
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
-                        wayBillItemList.add(wayBillItem);
-                        wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                        wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
+                        if(wayBillItem != null) {
+                            wayBillItemList.add(wayBillItem);
+                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
+                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
+                        }
                     }
                 }
                 Date beginDate = contract.getBeginTime();
@@ -148,9 +150,11 @@ public class AssessmentController {
                     String code = quotationItem.getWastesCode();
                     if (code != null) {
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
-                        wayBillItemList.add(wayBillItem);
-                        wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                        wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
+                        if(wayBillItem != null) {
+                            wayBillItemList.add(wayBillItem);
+                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
+                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
+                        }
                     }
                 }
                 if (!map.keySet().contains(salesmanId)) {          // 没有该业务员就添加，并初始化累加数据
@@ -233,10 +237,12 @@ public class AssessmentController {
                     String code = quotationItem.getWastesCode();
                     if (code != null) {
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
-                        wayBillItemList.add(wayBillItem);
-                        wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                        wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
-                        wayBillId = wayBillItem.getWayBillId();                           // 根据最后一个wayBillItem获取wayBillId
+                        if(wayBillItem != null) {
+                            wayBillItemList.add(wayBillItem);
+                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
+                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
+                            wayBillId = wayBillItem.getWayBillId();                           // 根据最后一个wayBillItem获取wayBillId
+                        }
                     }
                 }
                 // 获取接运单日期和备注
@@ -262,7 +268,6 @@ public class AssessmentController {
                 map3.get(clientId).setCompanyName(companyName);
                 // 设置map4
                 if (!map4.keySet().contains(clientId)) {
-                    map4.put(clientId, new WayBill());
                     if (wayBill != null)
                         map4.put(clientId, wayBill);
                 }

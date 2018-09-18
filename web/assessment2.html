@@ -145,9 +145,10 @@
         </div>
         <br>
         <!--查询框-->
-        <div class="input-group col-xs-4 pull-right">
-            <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
-            <span class="input-group-btn">
+        <div class="row">
+            <div class="input-group col-xs-4 pull-right">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent2">
+                <span class="input-group-btn">
                     <a class="btn btn-default" onclick="search2();"><span class="glyphicon glyphicon-search"
                                                                           aria-hidden="true"></span> 查询</a>
                     <a class="btn btn-default" onclick="$('#senior2').toggle();"><span class="glyphicon glyphicon-cog"
@@ -155,15 +156,32 @@
                     <a class="btn btn-default" onclick="reset2();"><span class="glyphicon glyphicon-repeat"
                                                                          aria-hidden="true"></span> 重置</a>
                 </span>
+            </div>
         </div>
         <div class="panel panel-default" id="senior2" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-6" style="margin-left: -10px;">
+                    <div class="form-horizontal col-md-4" style="margin-left: -10px;">
                         <div class="form-group" style="margin-left: -10px;">
-                            <label class="col-sm-3 control-label">业务员</label>
+                            <label class="col-sm-3 control-label">产废单位</label>
                             <div class="input-group date">
-                                <input type="text" id="search2-salesman"/>
+                                <input type="text" id="search2-produceCompanyName"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4" style="margin-left: -10px;">
+                        <div class="form-group" style="margin-left: -10px;">
+                            <label class="col-sm-3 control-label">到账日期</label>
+                            <div class="input-group date">
+                                <input type="text" id="search2-accountDate"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4" style="margin-left: -10px;">
+                        <div class="form-group" style="margin-left: -10px;">
+                            <label class="col-sm-3 control-label">备注</label>
+                            <div class="input-group date">
+                                <input type="text" id="search2-remarks"/>
                             </div>
                         </div>
                     </div>
@@ -187,10 +205,10 @@
                 <td class="text-center">当月发放金额</td>
                 <td class="text-center">未发放金额</td>
                 <td class="text-center">备注</td>
-                <td class="text-center">操作</td>
+                <!--<td class="text-center">操作</td>-->
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody2">
             <tr id="clone2" ondblclick="toViewItems1();">
                 <td class="text-center"></td>
                 <td class="text-center"></td>
@@ -206,9 +224,9 @@
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
-                <td class="text-center">
-                    <a onclick="toViewItems(this)" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                </td>
+                <!--<td class="text-center">-->
+                <!--<a onclick="toViewItems(this)" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>-->
+                <!--</td>-->
             </tr>
             </tbody>
         </table>

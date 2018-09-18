@@ -534,7 +534,7 @@ function searchStock() {
     array1.length=0;//清空数组
     //1分页模糊查询
     for(var i=1;i<=totalPage();i++){
-        switchPage(parseInt(i))
+        switchPage(parseInt(i));
         array.push($('.myclass'));
     }
     //审核状态
@@ -550,12 +550,12 @@ function searchStock() {
         $.each(array[j],function () {
             //console.log(this);
             if(!($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
-                &&$(this).children('td').eq(13).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1)){
+                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1)){
                 array1.push($(this));
             }
         });
@@ -586,7 +586,7 @@ function searchStock1() {
     array.length=0;//清空数组
     array1.length=0;
     for(var i=1;i<=totalPage();i++){
-        switchPage(parseInt(i))
+        switchPage(parseInt(i));
         array.push($('.myclass'));
     }
     var text=$('#searchContent').val();
