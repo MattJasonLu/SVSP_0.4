@@ -937,6 +937,48 @@ public class ContractController {
         }
         return  res.toString();
     }
+    //添加报价单明细
+    @RequestMapping("addQuotationItem")
+    @ResponseBody
+    public String addQuotationItem(@RequestBody QuotationItem quotationItem){
+        JSONObject res=new JSONObject();
+        try{
+            //首先查询最新的非模板合同编号
+            List<String> contractIdList=contractService.getNewestContractId();
+            quotationItem.setContractId(contractIdList.get(0));
+            contractService.addQuotationItem(quotationItem);
+            res.put("status", "success");
+            res.put("message", "合同报价单明细添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "合同报价单明细添加失败");
+
+        }
+        return  res.toString();
+    }
+
+    //根据供应商编号获取
+    @RequestMapping("getSupplierListById")
+    @ResponseBody
+    public String getSupplierListById(String supplierId){
+        JSONObject res=new JSONObject();
+        try {
+            Supplier supplier=contractService.getSupplierListById(supplierId);
+            res.put("status", "success");
+            res.put("message", "供应商查询成功");
+            res.put("supplier", supplier);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "供应商查询失败");
+        }
+        return  res.toString();
+
+
+    }
 }
 
 

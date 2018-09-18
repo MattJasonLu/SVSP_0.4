@@ -798,6 +798,53 @@
                             </p>
                         </div>
                     </div>
+                    <table class="table table-bordered" style="width: 50%">
+                        <thead>
+                        <tr>
+                            <td colspan="13" class="text-center"><h3>报价单明细</h3></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center" >八位码</th>
+                            <th class="text-center" >危废名称</th>
+                            <th class="text-center">包装类型</th>
+                            <th class="text-center" >单位</th>
+                            <th class="text-center" >处置单价</th>
+                            <th class="text-center">合约量</th>
+                            <th class="text-center" >处置金额</th>
+                            <th class="text-center">运输方式</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr  class="myclass">
+                            <td class="text-center"><input class="focus" title="" name="0">1</td>
+                            <td class="text-center" >
+                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode"></select>
+                            </td>
+                            <td class="text-center" ><input class="focus" title=""></td>
+                            <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
+                            <td class="text-center"><input class="focus" title=""></td>
+                            <td class="text-center"><input class="focus" title=""></td>
+                            <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
+                            <td class="text-center"><input class="focus" title=""readonly></td>
+                            <td class="text-center"><select class="focus" title="" id="transportType" >
+                                <option value="0">0</option>
+                            </select></td>
+
+                        </tr>
+                        <tr id="plusBtn">
+                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                            <td></td>
+                            <td ></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td ></td>
+                            <td ></td>
+                            <td ></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <br> <br>
                     <div class="row text-center">
                         <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
