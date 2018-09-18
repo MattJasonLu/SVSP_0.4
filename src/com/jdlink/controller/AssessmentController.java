@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+
 import com.jdlink.domain.Client;
 import com.jdlink.domain.Contract;
 import com.jdlink.domain.Hazardous;
@@ -51,13 +52,14 @@ public class AssessmentController {
             for (Contract contract : contractList) {
                 String clientId = contract.getClientId();
                 //map.put(clientId,laboratoryTest);
-                List<Hazardous> hazardousList = contract.getHazardousList();
+                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;
                 float wayBillWastesAmount = 0;
                 //获取接运单明细数据
-                for (Hazardous hazardous : hazardousList) {
-                    String code = hazardous.getCode();
+
+                for (QuotationItem quotationItem : quotationItemList) {
+                    String code = quotationItem.getWastesCode();
                     if (code != null) {
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
                         wayBillItemList.add(wayBillItem);
@@ -142,13 +144,15 @@ public class AssessmentController {
                 contract.setSalesmanId(salesmanId);
                 contract.setSalesmanName(salesmanName);
                 //map.put(clientId,laboratoryTest);
+
+                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
                 List<Hazardous> hazardousList = contract.getHazardousList();
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;           // 接运单总额
                 float wayBillWastesAmount = 0;     // 接运单危废总数量
                 //获取接运单明细数据
-                for (Hazardous hazardous : hazardousList) {
-                    String code = hazardous.getCode();
+                for (QuotationItem quotationItem : quotationItemList) {
+                    String code = quotationItem.getWastesCode();
                     if (code != null) {
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
                         wayBillItemList.add(wayBillItem);
@@ -226,14 +230,14 @@ public class AssessmentController {
                 String contactInfo = client.getContactName() + "-" + client.getPhone();
                 map2.put(clientId, contactInfo);
                 // 设置map3
-                List<Hazardous> hazardousList = contract.getHazardousList();
+                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
                 float wayBillPrice = 0;           // 接运单总额
                 float wayBillWastesAmount = 0;     // 接运单危废总数量
                 //获取接运单明细数据
                 String wayBillId = "";
-                for (Hazardous hazardous : hazardousList) {
-                    String code = hazardous.getCode();
+                for (QuotationItem quotationItem : quotationItemList) {
+                    String code = quotationItem.getWastesCode();
                     if (code != null) {
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
                         wayBillItemList.add(wayBillItem);
