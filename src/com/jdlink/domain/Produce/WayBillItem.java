@@ -63,7 +63,9 @@ public class WayBillItem{
      * 处置单位/接收单位经手人
      */
     private String receiveCompanyOperator;
-
+    /**
+     * 接运单日期
+     */
     private Date receiveDate;
 
     public Date getReceiveDate() {

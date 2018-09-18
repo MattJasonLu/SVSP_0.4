@@ -160,8 +160,7 @@ function addNewItemLine() {
     var num = clonedTr.children().find("span:first").prop('id').charAt(6);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("select").selectpicker('val', '');
-    clonedTr.children().find("button:eq(0)").remove();
-    clonedTr.children().find("button:eq(1)").remove();
+    $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
     clonedTr.children().find("input,select,span").each(function () {
         var id = $(this).prop('id');

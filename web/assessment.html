@@ -146,32 +146,6 @@
             </div>
             <h4 class="sub-header"><span class="months"></span>月份考核</h4>
         </div>
-        <!--查询框-->
-        <div class="input-group col-xs-4 pull-right">
-            <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
-            <span class="input-group-btn">
-                    <a class="btn btn-default" onclick="searchClient();"><span class="glyphicon glyphicon-search"
-                                                                               aria-hidden="true"></span> 查询</a>
-                    <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog"
-                                                                                      aria-hidden="true"></span> 高级查询</a>
-                    <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-repeat"
-                                                                        aria-hidden="true"></span> 重置</a>
-                </span>
-        </div>
-        <div class="panel panel-default" id="senior" style="display: none;">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="form-horizontal col-md-6" style="margin-left: -10px;">
-                        <div class="form-group" style="margin-left: -10px;">
-                            <label class="col-sm-3 control-label">业务员</label>
-                            <div class="input-group date">
-                                <input type="text" id="search-salesman"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <table class="table table-striped table-hover table-condensed">
             <thead>
             <tr>
@@ -187,7 +161,7 @@
                 <td class="text-center">操作</td>
             </tr>
             </thead>
-            <tbody>
+            <tbody >
             <tr ondblclick="toView1(this)" id="clone">
                 <td class="text-center"></td>
                 <td class="text-center"></td>
