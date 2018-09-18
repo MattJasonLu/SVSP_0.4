@@ -1,5 +1,6 @@
 package com.jdlink.util;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,5 +74,18 @@ public class RandomUtil {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(2);
         return numberFormat.format(num1 / num2 * 100);
+    }
+
+    /**
+     * 除法获取结果
+     * @param a 被除数
+     * @param b 除数
+     * @return 除得结果
+     */
+    public static float divideTwoNumber(float a, float b) {
+        if (b == 0) return 0;
+        DecimalFormat df=new DecimalFormat("0.00");
+        String res =  df.format(a / b);
+        return Float.parseFloat(res);
     }
 }

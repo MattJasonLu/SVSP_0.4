@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -177,6 +178,135 @@ public class WastesInfoController {
         }
 
          return  res.toString();
+    }
+
+
+    /**
+     * 你可以url中打love试下
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("love")
+    @ResponseBody
+    public void getLove(HttpServletResponse response) throws Exception {
+        response.setContentType("text/html;charset=utf-8");
+        String data = printLove();
+        for (int i = 0; i < data.length(); i++) {
+            write(response,data.charAt(i) + "");
+            Thread.sleep(10);
+        }
+
+        response.getWriter().close();
+    }
+
+    private void write(HttpServletResponse response,String content) throws Exception {
+        response.getWriter().write(content);
+        response.flushBuffer();
+        response.getWriter().flush();
+    }
+
+    public String printLove() {
+        StringBuilder love = new StringBuilder();
+        // 分三个大部分 上中下
+        for (int i = 0, k = 0; i < 14; i++) {// 打印行
+
+            // 上部分 上分为 四个部分
+
+            if (i < 3) {
+
+                for (int j = 0; j < 5 - 2 * i; j++) {// 1、空心
+
+//                    System.out.print(" ");
+                    love.append("&nbsp;&nbsp;");
+
+                }
+
+                if (i == 2) {// 2、*
+
+                    for (int j = 0; j < 6 + 4 * i - 1; j++) {
+
+//                        System.out.print("*");
+                        love.append("*");
+                    }
+
+                    for (int j = 0; j < 7 - 4 * i + 2; j++) {// 3、空心
+
+                        love.append("&nbsp;&nbsp;");
+
+                    }
+
+                    for (int j = 0; j < 6 + 4 * i - 1; j++) {// 4、*
+
+                        love.append("*");
+
+                    }
+
+                } else {
+
+                    for (int j = 0; j < 6 + 4 * i; j++) {// 2、*
+
+                        love.append("*");
+
+                    }
+
+                    for (int j = 0; j < 7 - 4 * i; j++) {// 3、空心
+
+                        love.append("&nbsp;&nbsp;");
+
+                    }
+
+                    for (int j = 0; j < 6 + 4 * i; j++) {// 4、*
+
+                        love.append("*");
+
+                    }
+
+                }
+
+            } else if (i < 6) {// 中间
+
+                for (int j = 0; j < 29; j++) {
+
+                    love.append("*");
+
+                }
+
+            } else {// 下部分 6
+
+                if (i == 13) {
+
+                    for (int j = 0; j < 2 * (i - 6); j++) {// 打印空格
+
+                        love.append("&nbsp;&nbsp;");
+
+                    }
+
+                    love.append("*");
+
+                } else {
+
+                    for (int j = 0; j < 2 * (i - 6) + 1; j++) {// 打印空格
+
+                        love.append("&nbsp;&nbsp;");
+
+                    }
+
+                    for (int j = 1; j < 28 - 4 * k; j++) {
+
+                        love.append("*");
+
+                    }
+
+                    k++;
+
+                }
+
+            }
+
+            love.append("<br>");
+
+        }
+        return love.toString();
     }
 
 }
