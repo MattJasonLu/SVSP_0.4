@@ -974,6 +974,7 @@ public class ContractController {
         }
         return res.toString();
     }
+  
     //根据客户编号获取编号
     @RequestMapping("getClientListById")
     @ResponseBody

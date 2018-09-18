@@ -8,11 +8,11 @@ public class Assessment {
     /**
      * 月份
      */
-     private String month;
+    private String month;
     /**
      * 接运单总金额
      */
-     private Float wayBillTotalPrice;
+    private Float wayBillTotalPrice;
     /**
      * 接运单危废总数量
      */
@@ -20,27 +20,75 @@ public class Assessment {
     /**
      * 到账总金额
      */
-     private Float accountTotalPrice;
+    private Float accountTotalPrice;
     /**
      * 有效总金额
      */
-     private Float effectiveTotalPrice;
+    private Float effectiveTotalPrice;
     /**
      * 总提成
      */
-     private Double totalCommission;
+    private Double totalCommission;
     /**
      * 当月发放总金额
      */
-     private Float monthSendedTotalPrice;
+    private Float monthSendedTotalPrice;
     /**
      * 当月未发放总金额
      */
-     private Float monthNotSendTotalPrice;
+    private Float monthNotSendTotalPrice;
     /**
      * 备注
      */
-     private String remarks;
+    private String remarks;
+    /**
+     * 业务员ID
+     */
+    private String salesmanId;
+    /**
+     * 业务员姓名
+     */
+    private String salesmanName;
+    /**
+     * 系数
+     */
+    private String coefficient;
+    /**
+     * 公司名
+     */
+    private String companyName;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCoefficient() {
+        return coefficient;
+    }
+
+    public void setCoefficient(String coefficient) {
+        this.coefficient = coefficient;
+    }
+
+    public String getSalesmanId() {
+        return salesmanId;
+    }
+
+    public void setSalesmanId(String salesmanId) {
+        this.salesmanId = salesmanId;
+    }
+
+    public String getSalesmanName() {
+        return salesmanName;
+    }
+
+    public void setSalesmanName(String salesmanName) {
+        this.salesmanName = salesmanName;
+    }
 
     public String getMonth() {
         return month;

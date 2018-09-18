@@ -3,6 +3,7 @@ package com.jdlink.service;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
+import com.jdlink.domain.Wastes;
 
 import java.util.List;
 
@@ -24,12 +25,10 @@ public interface WayBillService  {
     String getClientIdByName(String name);
     String getWastesIdByName(String name);
     int countWastes();
-    String getWastesById(String id);
+    Wastes getWastesById(String id);
     void addWayBill(WayBill wayBill);
     WayBill getByName(String name);
     void update(WayBill wayBill);
-    void addSingleItem(WayBillItem wayBillItem);
-
     /**
      * 获得当前接运单的序列号
      * @return 序列号
@@ -44,6 +43,6 @@ public interface WayBillService  {
      * 根据客户Id和危废编码获取接运单明细数据
      */
     WayBillItem getWayBillItemByClientIdAndWastesCode(String clientId, String code);
-
+    WayBill getWayBillById(String id);
 
 }

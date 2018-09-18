@@ -209,20 +209,30 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             )
         );
     </select>
+    <!--获取所有合同数据-->
+    <select id="getContractList" parameterType="String" resultMap="ContractRM">
+        select * from t_contract where contractType='Wastes' and (DATE_FORMAT(beginTime,'%Y-%m-%d') like "%"#{year}"%"
+        or DATE_FORMAT(beginTime,'%Y%m%d') like "%"#{year}"%")
+        order by beginTime asc;
+    </select>
 
-    <select id="getContractList" resultMap="ContractRM">
-        select * from t_contract where contractType='Wastes'
+    <!--根据月份获取合同数据-->
+    <select id="getContractListByMonth" parameterType="String" resultMap="ContractRM">
+        select * from t_contract
+        where
+        contractType='Wastes' and  (DATE_FORMAT(beginTime,'%Y-%m-%d') like "%"#{month}"%"
+        or DATE_FORMAT(beginTime,'%Y%m%d') like "%"#{month}"%")
         order by beginTime asc;
     </select>
 
     <!--通过业务员编号读取对应的合同列表-->
     <select id="getContractBySalesman" parameterType="String" resultMap="ContractRM">
-        SELECT * FROM t_contract WHERE clientId in (
-          SELECT clientId FROM client WHERE salesmanId=#{salesmanId} and contractType='Wastes'
-        )
-        <if test="page.start != null and page.count != null">
-            limit #{page.start}, #{page.count}
-        </if>
+        SELECT * FROM t_contract
+        WHERE
+        clientId in (SELECT clientId FROM client WHERE salesmanId=#{salesmanId} and contractType='Wastes')
+        AND (DATE_FORMAT(beginTime,'%Y-%m-%d') like "%"#{month}"%"
+        or DATE_FORMAT(beginTime,'%Y%m%d') like "%"#{month}"%")
+        order by beginTime asc;
     </select>
 <!--高级查询-->
     <select id="search" parameterType="Contract" resultType="Contract">

@@ -26,7 +26,7 @@
         resize: none;
     }
 </style>
-<body >
+<body onload="loadMonthSalesmanData();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -149,7 +149,7 @@
             <tr>
                 <td class="text-center">业务员编号</td>
                 <td class="text-center">业务员</td>
-                <td class="text-center">月份</td>
+                <td class="text-center">年月份</td>
                 <td class="text-center">系数</td>
                 <td class="text-center">接运单金额</td>
                 <td class="text-center">到账金额</td>
@@ -161,17 +161,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr onclick="toViewSalesman1(this)">
-                <td class="text-center">0001</td>
-                <td class="text-center">王二</td>
-                <td class="text-center">1月</td>
-                <td class="text-center">0.4</td>
-                <td class="text-center">21313</td>
-                <td class="text-center">28930</td>
-                <td class="text-center">30000.00</td>
-                <td class="text-center">28930.00</td>
-                <td class="text-center">115.72</td>
-                <td class="text-center">23123</td>
+            <tr onclick="toViewSalesman1(this)" id="clone1">
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
                 <td class="text-center">
                     <a onclick="toViewSalesman(this)" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                 </td>

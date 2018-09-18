@@ -1,4 +1,3 @@
-
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data;
@@ -267,7 +266,7 @@ function loadPageWayBillList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
-    if(totalPage() == 1){
+    if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
     }
@@ -336,14 +335,14 @@ function setWayBillList(result) {
                     break;
                 case (1):
                     // 废物生产单位
-                    $(this).html(obj.produceCompany.companyName);
+                    $(this).html(obj.produceCompanyName);
                     break;
                 case (2):
                     //总额
                 {
                     var total = 0;
-                    for(var i = 0;i < obj.wayBillItemList.length;i++){
-                        total += obj.wayBillItemList[i].wastes.wastesTotal;
+                    for (var i = 0; i < obj.wayBillItemList.length; i++) {
+                        total += obj.wayBillItemList[i].wastesTotalPrice;
                     }
                     //减去总运费
                     obj.total = total - obj.freight;
@@ -373,10 +372,9 @@ function setWayBillList(result) {
                 case (8):
                     //接运单状态
                     if (obj.state != null) {
-                        obj.name = obj.state.name;
+                        $(this).html(obj.state.name);
+                        break;
                     }
-                    $(this).html(obj.name);
-                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -508,13 +506,10 @@ function searchWayBill() {
     if ($("#search-wayBillState").val() == 3) state = "Approval";//审批通过
     if ($("#search-wayBillState").val() == 4) state = "Backed";//驳回
     if ($("#senior").is(':visible')) {
-        var produceCompany = {};
-        produceCompany.companyName = $("#search-companyName").val();
-        var receiveCompany = {};
-        receiveCompany.companyName = $("#search-companyName").val();
         data = {
             id: $("#search-id").val(),
-            produceCompany: produceCompany,
+            produceCompanyName:  $("#search-companyName").val(),
+            receiveCompanyName: $("#search-companyName").val(),
             total: $("#search-total").val(),
             freight: $("#search-freight").val(),
             founder: $("#search-founder").val(),
@@ -523,9 +518,8 @@ function searchWayBill() {
             state: state,
             page: page
         };
-        //console.log(data);
     }
-    if(data ==  null) alert("请点击'查询设置'输入查询内容!");
+    if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({
             type: "POST",                            // 方法类型
@@ -558,12 +552,13 @@ function getWayBillId(item) {
  * 双击编辑
  * @param item
  */
-function editWayBill1(item){
+function editWayBill1(item) {
     var id = item.firstElementChild.innerHTML;
     localStorage.id = id;
     localStorage.add = 1;
     location.href = "wayBill.html";
 }
+
 /**
  * 查看功能
  */
@@ -627,9 +622,8 @@ function examination(item) {
         },
         dataType: "json",
         success: function (result) {
-            if (result.data != undefined || result.status == "success" || result.data  != null) {
+            if (result.data != undefined || result.status == "success" || result.data != null) {
                 var data = eval(result.data);
-                console.log(data.state);
                 if (data.state.name != '审批中') alert("请提交后再进行审批操作！");
                 else $('#examinationModal').modal('show');//手动触发模态框弹出
             } else {
@@ -655,7 +649,6 @@ function reject() {
 
 /**
  * 审批通过
- *
  * */
 function approval1() {
     console.log($("#advice").val());
@@ -754,7 +747,7 @@ function invalidWayBill(item) {
     });
 }
 
-function addWayBillModal(){
+function addWayBillModal() {
     $("#wayBillModal").modal('show');
 }
 

@@ -13,7 +13,11 @@ public class WayBill {
     /**
      * 产生单位/委托单位
      */
-    private Client produceCompany;
+    private String produceCompanyName;
+    /**
+     * 委托单位ID
+     */
+    private String produceCompanyId;
     /**
      * 总额
      */
@@ -87,6 +91,14 @@ public class WayBill {
         this.wayBillDate = wayBillDate;
     }
 
+    public String getProduceCompanyId() {
+        return produceCompanyId;
+    }
+
+    public void setProduceCompanyId(String produceCompanyId) {
+        this.produceCompanyId = produceCompanyId;
+    }
+
     public String getRemarks() {
         return remarks;
     }
@@ -103,12 +115,12 @@ public class WayBill {
         this.produceCompanyOperator = produceCompanyOperator;
     }
 
-    public Client getProduceCompany() {
-        return produceCompany;
+    public String getProduceCompanyName() {
+        return produceCompanyName;
     }
 
-    public void setProduceCompany(Client produceCompany) {
-        this.produceCompany = produceCompany;
+    public void setProduceCompanyName(String produceCompanyName) {
+        this.produceCompanyName = produceCompanyName;
     }
 
     public CheckState getState() {
@@ -155,7 +167,7 @@ public class WayBill {
     public String toString() {
         return "WayBill{" +
                 "id='" + id + '\'' +
-                ", produceCompany=" + produceCompany +
+                ", produceCompanyName='" + produceCompanyName + '\'' +
                 ", total=" + total +
                 ", freight=" + freight +
                 ", founder='" + founder + '\'' +
