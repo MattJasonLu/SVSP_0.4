@@ -918,63 +918,6 @@ public class ContractController {
         return count;
     }
 
-    /**
-     * 根据业务员的编号筛选出所有的合同
-     * @param salesmanId 业务员编号
-     * @param page 页码
-     * @return 合同列表
-     */
-    @RequestMapping("getContractBySalesman")
-    @ResponseBody
-    public String getContractBySalesman(String salesmanId, Page page) {
-        JSONObject res = new JSONObject();
-        try {
-            page = null;   // 分页暂时不用
-            // 获取该业务员名下所有合同
-            List<Contract> contractList = contractService.getContractBySalesman(salesmanId, page);
-            // 危废信息
-            Map<String, LaboratoryTest> map = new HashMap<>();
-            // 客户联系信息
-            Map<String, String> map2 = new HashMap<>();
-            //接运单明细数据
-            Map<String, List<WayBillItem>> map3 = new HashMap<>();
-            // 遍历合同列表，获取每个合同对应信息
-            for (Contract contract : contractList) {
-                String clientId = contract.getClientId();
-                LaboratoryTest laboratoryTest = laboratoryTestService.getRecentLaboratoryTestByClientId(clientId);
-                map.put(clientId,laboratoryTest);
-                Client client = clientService.getByClientId(clientId);
-                String contactInfo = client.getContactName() + "-" + client.getPhone();
-                map2.put(clientId, contactInfo);
-                List<Hazardous> hazardousList = contract.getHazardousList();
-                List<WayBillItem> wayBillItemList = new ArrayList<>();
-               //获取接运单明细数据
-                for(Hazardous hazardous : hazardousList){
-                    String code = hazardous.getCode();
-                    WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId,code);
-                    wayBillItemList.add(wayBillItem);
-                }
-                map3.put(clientId,wayBillItemList);
-            }
-            // map转json
-            JSONObject jMap = JSONObject.fromMap(map);
-            JSONObject jMap2 = JSONObject.fromMap(map2);
-            JSONObject jMap3 = JSONObject.fromMap(map3);
-            JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
-            // 赋值
-            res.put("status", "success");
-            res.put("message", "获取成功");
-            res.put("data", data);
-            res.put("map", jMap);
-            res.put("contactInfo", jMap2);
-        } catch (Exception e) {
-            e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "获取失败");
-        }
-        return res.toString();
-    }
-  
     //根据客户编号获取编号
     @RequestMapping("getClientListById")
     @ResponseBody
