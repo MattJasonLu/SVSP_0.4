@@ -12,6 +12,8 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/produce/medicalWastes.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
 <body onload="getNewestId()">
 <!--导航条-->
@@ -127,26 +129,28 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-center" style="width: 150px;">本月进厂危废</td>
-                        <td class="text-center"><input class="focus" title="" id="thisMonthWastes" ></td>
+                        <td class="text-center" style="width: 150px;">本日进厂危废</td>
+                        <td class="text-center"><input class="focus" title="" id="thisMonthWastes" onblur="geterrorNumberByWastes()"></td>
                         <td class="text-center" style="width: 150px;">本日直接转外处置量</td>
-                        <td class="text-center"><input class="focus" title="" id="directDisposal"></td>
+                        <td class="text-center"><input class="focus" title="" id="directDisposal" onblur="geterrorNumberByDisposal()"></td>
                         <td class="text-center" style="width: 150px;">本日蒸煮医废(过磅)</td>
-                        <td class="text-center"><input class="focus" title="" id="cookingWastes"></td>
+                        <td class="text-center"><input class="focus" title="" id="cookingWastes" onblur="geterrorNumberByCook()"></td>
                     </tr>
                     <tr>
                         <td class="text-center" style="width: 150px;">蒸煮后重量</td>
-                        <td class="text-center"><input class="focus" title="" id="afterCookingNumber"></td>
+                        <td class="text-center"><input class="focus" title="" id="afterCookingNumber" onblur="getWaterByCooking()"></td>
                         <td class="text-center" style="width: 150px;">蒸煮后入库量</td>
                         <td class="text-center"><input class="focus" title="" id="afterCookingInbound"></td>
-                        <td class="text-center" style="width: 150px;">本月蒸煮后外送量</td>
+                        <td class="text-center" style="width: 150px;">本日蒸煮后外送量</td>
                         <td class="text-center"><input class="focus" title="" id="thisMonthSendCooking"></td>
                     </tr>
                     <tr>
                         <td class="text-center" style="width: 150px;">误差量</td>
-                        <td class="text-center"><input class="focus" title="" id="errorNumber"></td>
+                        <td class="text-center"><input class="focus" title="" id="errorNumber" readonly></td>
                         <td class="text-center" style="width: 150px;">水分含量</td>
-                        <td class="text-center"><input class="focus" title="" id="wetNumber"></td>
+                        <td class="text-center"><input class="focus" title="" id="wetNumber" readonly></td>
+                        <td class="text-center" style="width: 150px;">处置设备</td>
+                        <td> <select data-live-search="true" data-live-search-placeholder="搜索..." class="selectpicker input-xlarge form-control" id="equipment" name="equipment" placeholder=""></select></td>
                     </tr>
                     </tbody>
                 </table>

@@ -122,6 +122,7 @@ public class EquipmentController {
     }
 
     /**
+     *
      * 生成单据号
      */
     @RequestMapping("createDocNumber")
@@ -161,5 +162,26 @@ public class EquipmentController {
 
     }
 
-
+    /**
+     * 高级查询
+     */
+    @RequestMapping("searchEquipment")
+    @ResponseBody
+    public String searchEquipment(@RequestBody EquipmentDate equipmentDate){
+        //System.out.println(Equipment.getKeyword()+"YH");
+        JSONObject res = new JSONObject();
+        try {
+            List<EquipmentDate> equipmentList = equipmentService.search(equipmentDate);
+            JSONArray data = JSONArray.fromArray(equipmentList.toArray(new EquipmentDate[equipmentList.size()]));
+            res.put("length",equipmentList.size());
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return  res.toString();
+    }
 }

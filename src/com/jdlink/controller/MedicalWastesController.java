@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -137,5 +138,50 @@ public class MedicalWastesController {
             mouth="0"+mouth;
         }
         return mouth;
+    }
+
+    /**
+     * 通过日期获取
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    @RequestMapping("getMedicalWastesByRange")
+    @ResponseBody
+    public String getMedicalWastesByRange(Date startDate, Date endDate){
+        JSONObject res=new JSONObject();
+        try{
+            List<MedicalWastes> medicalWastesList=medicalWastesService.getMedicalWastesByRange(startDate, endDate);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", medicalWastesList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return  res.toString();
+
+    }
+    /**
+     * 通过日期和设备
+     */
+    @RequestMapping("getMedicalWastesByDateAndEquipment")
+    @ResponseBody
+    public String getMedicalWastesByDateAndEquipment(Date startDate, Date endDate,String equipment){
+        JSONObject res=new JSONObject();
+        try{
+            List<MedicalWastes> medicalWastesList=medicalWastesService.getMedicalWastesByDateAndEquipment(startDate, endDate,equipment);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", medicalWastesList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return  res.toString();
     }
 }

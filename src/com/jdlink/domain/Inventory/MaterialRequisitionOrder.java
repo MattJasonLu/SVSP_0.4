@@ -50,6 +50,15 @@ public class MaterialRequisitionOrder {
     private RecordState recordState;
     private PackageType packageType;
     private FormType formType;
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public PackageType getPackageType() {
         return packageType;

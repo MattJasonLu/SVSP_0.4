@@ -153,4 +153,68 @@ public class ProcurementController {
         }
         return s1;
     }
+    /**
+     * 获得辅料物品列表
+     */
+    @RequestMapping("getIngredientsList")
+    @ResponseBody
+    public String getIngredientsList(){
+        JSONObject res=new JSONObject();
+       try {
+           List<String> stringList=procurementService.getIngredientsList();
+           res.put("stringList",stringList);
+           res.put("status", "success");
+           res.put("message", "更新成功");
+       }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+           }
+
+
+         return  res.toString();
+    }
+    /**
+     * 作废
+     */
+    @RequestMapping("setProcurementListCancel")
+    @ResponseBody
+    public String setProcurementListCancel(String receiptNumber){
+        JSONObject res=new JSONObject();
+       try {
+        procurementService.setProcurementListCancel(receiptNumber);
+           res.put("status", "success");
+           res.put("message", "作废成功");
+
+       }
+       catch (Exception e){
+           e.printStackTrace();
+           res.put("status", "fail");
+           res.put("message", "作废失败");
+       }
+        return res.toString();
+
+    }
+    /**
+     * 提交
+     */
+    @RequestMapping("setProcurementListSubmit")
+    @ResponseBody
+    public String setProcurementListSubmit(String receiptNumber){
+        JSONObject res=new JSONObject();
+        try {
+            procurementService.setProcurementListSubmit(receiptNumber);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+        return res.toString();
+
+    }
 }

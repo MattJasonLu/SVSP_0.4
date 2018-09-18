@@ -135,10 +135,26 @@
         </if>
     </insert>
 
-    <select id="getInboundOrderByRange" resultMap="InboundOrderRM">
-        SELECT * FROM t_pl_inboundorder
-            <![CDATA[WHERE DATE_FORMAT(inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
-            AND DATE_FORMAT(inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>;
+    <!--获取日期范围内的危废入库明细-->
+    <select id="getInboundOrderItemByRange" resultMap="InboundOrderItemRM">
+        SELECT * FROM t_pl_inboundorderitem WHERE t_pl_inboundorderitem.inboundOrderId IN
+        (SELECT inboundOrderId FROM t_pl_inboundorder
+            <![CDATA[
+            WHERE DATE_FORMAT(t_pl_inboundorder.inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(t_pl_inboundorder.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+            AND t_pl_inboundorder.boundType='WasteInbound'
+            ]]>);
+    </select>
+
+    <!--获取日期范围内的次生入库明细-->
+    <select id="getSecondInboundOrderItemByRange" resultMap="InboundOrderItemRM">
+        SELECT * FROM t_pl_inboundorderitem WHERE t_pl_inboundorderitem.inboundOrderId IN
+        (SELECT inboundOrderId FROM t_pl_inboundorder
+        <![CDATA[
+            WHERE DATE_FORMAT(t_pl_inboundorder.inboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+            AND DATE_FORMAT(t_pl_inboundorder.inboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+            AND t_pl_inboundorder.boundType='SecondaryInbound'
+            ]]>);
     </select>
 
     <!--增加次生入库单-->

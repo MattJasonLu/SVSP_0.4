@@ -69,7 +69,13 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">合同列表</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                                    <li><a href="experienceContract.html" id="function_336" onclick="checkAuthority($(this))">经营合同列表</a></li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                         </ul>

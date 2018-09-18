@@ -2,6 +2,7 @@ package com.jdlink.service;
 
 import com.jdlink.domain.Produce.MedicalWastes;
 
+import java.util.Date;
 import java.util.List;
 
 public interface MedicalWastesService {
@@ -9,4 +10,8 @@ public interface MedicalWastesService {
     void addMedicalWastes(MedicalWastes medicalWastes);
     List<MedicalWastes> loadMedicalWastesList();
     List<MedicalWastes> searchMedicalWastes(MedicalWastes medicalWastes);
+    MedicalWastes getMedicalWastesByDate(Date date);
+    List<MedicalWastes>  getMedicalWastesByRange(Date startDate, Date endDate);
+    List<MedicalWastes>  getMedicalWastesByDateAndEquipment(Date startDate, Date endDate,String equipment);
+    List<MedicalWastes>  getMedicalWastesBySimpleDateAndEquipment(Date date,String equipment);
 }

@@ -294,4 +294,8 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             limit #{page.start}, #{page.count}
         </if>
     </select>
+
+    <select id="getByClientId" parameterType="String" resultType="Client">
+        select * from  client where clientId=#{clientId};
+    </select>
 </mapper>

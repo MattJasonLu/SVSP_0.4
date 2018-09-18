@@ -30,11 +30,11 @@
 
     <!--查找最新的单据号-->
     <select id="getNewestId" resultType="String">
-        select documentNumber from  t_rp_equipment order by  documentNumber desc ;
+        select documentNumber from t_rp_equipment order by  documentNumber desc ;
     </select>
 
     <!--查询设备-->
-    <select id="getEquipmentNameList" parameterType="Equipment" resultMap="EquipmentRM">
+    <select id="search" parameterType="EquipmentDate" resultType="EquipmentDate">
         select * from t_rp_equipment
         <where>
             <if test="documentNumber != null and documentNumber != ''">
@@ -44,11 +44,18 @@
                 and creator like  "%"#{creator}"%"
             </if>
             <if test="createDept != null and createDept != ''">
-                and createDept like  "%"#{createDept}"%"
+                and createDept like  "%"#{createDept}" %"
             </if>
             <if test="editor != null and editor != ''">
                 and editor like  "%"#{editor}"%"
             </if>
         </where>
     </select>
+    <!--根据时间范围查询出库单-->
+    <select id="getEquipmentDataByDate" resultType="EquipmentItem" >
+            SELECT * FROM t_rp_equipmentchild where documentNumber in
+            (select t_rp_equipment.documentNumber from  t_rp_equipment
+            <![CDATA[WHERE DATE_FORMAT(dayTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
+            AND DATE_FORMAT(dayTime, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]>);
+       </select>
 </mapper>

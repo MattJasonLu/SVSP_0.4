@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合同列表</title>
+    <script src="js/ckeditor/ckeditor.js"></script>
+    <script src="js/ckeditor/config.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
+    <link href="css/a.css" rel="stylesheet">
+    <script language="javascript" src="js/canvas2image.js"></script>
+    <script language="javascript" src="js/util.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <script language="javascript" src="js/business/contract.js"></script>
+    <script src="js/util.js"></script>
+</head>
+<style>
+    p {
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+</style>
+<body onload="">
+<!--导航条-->
+<nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+    <div class="main-title">
+        <ul class="nav navbar-nav navbar-left navbar-side">
+            <li>
+                <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="container navbar-left" style="width: 900px;">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+            <ul class="nav navbar-nav">
+                <li><a href="businessModel.html">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">业务员分配管理</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="salesManage.html" id="function_80" onclick="checkAuthority($(this))">业务员管理</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="clientSalesManage.html" id="function_81" onclick="checkAuthority($(this))">产废单位分配管理</a></li>
+                            </ul>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="sampleManage.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#">合同列表</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                                <li><a href="experienceContract.html" id="function_336" onclick="checkAuthority($(this))">经营合同列表</a></li>
+                            </ul>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
+                    </ul>
+                </li>
+                <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
+                <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#">个人信息</a></li>
+                <li><a href="#">待办事项</a></li>
+                <li><a href="#" onclick="showLog();">登录日志</a></li>
+                <li><a href="index.html">注销</a></li>
+            </ul>
+        </li>
+    </ul>
+
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="sidebar">
+            <!--<h4>博客管理系统(四月)</h4>-->
+            <!--<div class="cover">-->
+            <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
+            <!--<b>Hi~ 小主</b>-->
+            <!--<p>超级管理员</p>-->
+            <!--</div>-->
+            <ul class="sidenav animated fadeInUp">
+                <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                <li><a class="withripple" href="wastesPlatform.html"id="function_1" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                <li class="active"><a class="withripple" href="businessModel.html"id="function_2" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"id="function_3" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="receiveManagement.html"id="function_4" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"id="function_5" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"id="function_6" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"id="function_8" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html" id="function_11" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--面包屑导航-->
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="businessModel.html">商务管理</a></li>
+                    <li><a href="#">合同管理</a></li>
+                    <li class="active">合同列表</li>
+                </ol>
+            </div>
+            <h4 class="sub-header">合同列表</h4>
+            <div class="row">
+                <div>
+                    <!--操作按钮-->
+                    <div class="pull-left col-md-6 boo">
+                        <a class="btn btn-primary btn-xs" id="function_347" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 变更</a>
+                    </div>
+                    <!--查询框-->
+                    <div class="input-group col-xs-3 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="search">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        <br>
+        <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-contractId" class="col-sm-4 control-label">合同编号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-contractId" name="search-contractId"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">审核状态</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" id="search-checkState" name="search-checkState"></select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName"
+                                           name="search-companyName" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-search-suppierName" class="col-sm-4 control-label">处置单位名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-search-suppierName"
+                                           name="search-search-suppierName" placeholder="">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-contractName"
+                                       class="col-sm-4 control-label">合同名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-contractName"
+                                           name="search-contractName" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-contactName" class="col-sm-4 control-label">联系人</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-contactName" name="search-contactName"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-telephone" class="col-sm-4 control-label">联系方式</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-telephone" name="search-telephone"
+                                           placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-beginTime" class="col-sm-4 control-label">签订日期</label>
+                                <div class="col-xs-7">
+                                    <input type="date" class="form-control" id="search-beginTime" name="search-beginTime"
+                                           placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="navbar navbar-default" id="navbar2">
+            <div style="height:500px;background-color: transparent">
+                <div class="table-responsive" style="height:500px;background-color: transparent">
+                        <table class="table table-striped table-hover table-condensed">
+                            <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <label>
+                                        <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                                    </label>
+                                </th>
+                                <th class="text-center">经营合同状态</th>
+                                <th class="text-center">合同编号</th>
+                                <th class="text-center">产废单位</th>
+                                <th class="text-center">联系人</th>
+                                <th class="text-center">开始日期</th>
+                                <th class="text-center">截止日期</th>
+                                <th class="text-center">业务员</th>
+                                <th class="text-center">是否正单金额</th>
+                                <th class="text-center">合同附件</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="cloneTr1" name="clone" ondblclick="checkdb(this)">
+                                <td class="text-center">
+                                    <label>
+                                        <input class="checkbox" type="checkbox" id="blankCheckbox"  name="blankCheckbox"  value="option1" aria-label="...">
+                                    </label>
+                                </td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center">
+                                    <a href="#" id="function_348" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_349" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}" title="提交"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_350" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustContract(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_351" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
+                                    <a href="#" id="function_352" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--分页-->
+            <nav aria-label="Page navigation" style="text-align: center">
+                <ol class="pagination" style="width: 900px;">
+                    <li id="current"><a href="#"></a></li>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchPage(0)">首 页</a>
+                    </li>
+                    <li id="previous">
+                        <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
+                        <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li id="endPage">
+                        <a href='#' onclick="switchPage(-2)">尾 页</a>
+                    </li>
+                    <li><a id="totalPage"></a></li>
+                    <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                    <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                               id="pageNumber"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count" onchange="loadPageContractManageList();">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                        </select>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+<!--查看页面-->
+<div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width:700px">
+        <div class="modal-content">
+            <div class="client_style">
+                <h4 class="sub-header text-center">合同信息</h4>
+                <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
+                    <div class="row form-inline" id="print1">
+                        <div class="form-horizontal col-md-6 form-inline">
+                            <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
+                            <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
+                            <p class="text-left"><b>合同版本&nbsp;&nbsp;</b><span id="modal3_contractVersion"></span></p>
+                            <!--<p class="text-left"><b>产废单位名称&nbsp;&nbsp;&nbsp;</b><span id="modal3_companyName"></span></p>-->
+                            <p class="text-left"><b>开户行名称&nbsp;&nbsp;</b><span id="modal3_bankName"></span></p>
+                            <p class="text-left"><b>开票税率&nbsp;&nbsp;</b><span id="modal3_ticketRate1"></span></p>
+                            <!--  <p class="text-left"><b>开票税率2&nbsp;&nbsp;</b><span id="modal3_ticketRate2"></span></p>-->
+                            <p class="text-left"><b>联系人&nbsp;&nbsp;</b><span id="modal3_contactName"></span></p>
+                            <!--<p class="text-left"><b>物流公司资质&nbsp;&nbsp;</b><span id="modal3_logisticsQualification"></span></p>-->
+                            <p class="text-left"><b>是否包含运费&nbsp;&nbsp;</b> <input type="checkbox" id="modal3_freight"
+                                                                                  disabled="disabled"></p>
+                            <!--<div class="form-group">
+                                <label for="modal3_freight" class="col-sm-4 control-label">是否包含运费 </label>
+                                   <div class="col-xs-8">
+                                   </div>
+                                <input type="checkbox" class="col-xs-1" id="modal3_freight" name="freight" disabled="disabled" >
+                            </div>-->
+                        </div>
+                        <div class="form-horizontal col-md-6 form-inline">
+                            <p class="text-left"><b>合同编号&nbsp;&nbsp;</b><span id="modal3_contractId"></span></p>
+                            <p class="text-left"><b id="name1">处置单位名称&nbsp;&nbsp;</b><span
+                                    id="modal3_suppierName"></span></p>
+                            <p class="text-left"><b>签订日期&nbsp;&nbsp;</b><span id="modal3_beginTime"></span></p>
+                            <p class="text-left"><b>截止日期&nbsp;&nbsp;</b><span id="modal3_endTime"></span></p>
+                            <!--<p class="text-left"><b>资质开始日期&nbsp;&nbsp;</b><span id="modal3_beginQualification"></span></p>-->
+                            <!--<p class="text-left"><b>资质结束日期&nbsp;&nbsp;</b><span id="modal3_endQualification"></span></p>-->
+                            <p class="text-left"><b>开户行账号&nbsp;&nbsp;</b><span id="modal3_bankAccout"></span></p>
+                            <!--<p class="text-left"><b>所属区域&nbsp;&nbsp;</b><span id="modal3_area"></span></p>-->
+                            <p class="text-left"><b>联系方式&nbsp;&nbsp;</b><span id="modal3_telephone"></span></p>
+                            <p class="text-left"><b>预计处置费&nbsp;&nbsp;</b><span id="modal3_order"></span><span>元</span>
+                            </p>
+                        </div>
+                    </div>
+                    <br> <br>
+                    <div class="row text-center">
+                        <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
+                        <a class="btn btn-primary hidden-print" onclick="" id="print">打印</a>
+                        <a class="btn btn-danger hidden-print" id="back"></a>
+                        <a class="btn btn-danger hidden-print" data-dismiss="modal" id="close">关闭</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--审批页面-->
+<div class="modal fade" id="contractInfoForm2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">审批意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">
+                    确认审批
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="file" name="excelPath" id="idExcel" style="display:none">
+<!--驳回页面-->
+<div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">驳回意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--合同正文查看模态框-->
+<div class="modal fade bs-example-modal-lg" id="viewModal" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="client_style">
+                <h4 class="sub-header">合同正文</h4>
+                <div class="row">
+                    <div class="form-horizontal col-md-12">
+                        <textarea id="TextArea1" cols="110" rows="25"  name="contractContent" class="ckeditor" wrap="hard"></textarea>
+                    </div>
+                </div>
+                    <div class="row text-center">
+                        <a class="btn btn-primary hidden-print" onclick="">打印</a>
+                        <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+<div id="pic" style="border: 0;">
+</div>
+</body>
+<!--分页格式-->
+<style type="text/css">
+    .pagination > li {
+        display: inline;
+    }
+
+    .inputText {
+        float: left;
+    }
+
+    .showLi {
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .selectLi {
+        float: left;
+        height: 38px;
+        line-height: 38px;
+    }
+</style>
+<script>
+    CKEDITOR.replace('TextArea1',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
+    function wastes() {
+        var id = $("ul#myTab li.active").attr("id");
+        if (id === "1") {
+            $(location).attr("href", "wastesContractInfo.html");    //危废合同
+        } else if (id === "2") {
+            $(location).attr("href", "urgentContractInfo.html"); //应急处置意向书
+        } else if (id === "3") {
+            $(location).attr("href", "logisticsContractInfo.html"); //物流合同
+        } else if (id === "4") {
+            $(location).attr("href", "secondaryContractInfo.html"); //次生合同
+        }
+    }
+
+    // $('.form_datetime1').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: 1,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+    // $('.form_datetime2').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: true,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+    // $('.form_datetime3').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: 1,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+    // $('.form_datetime4').datetimepicker({
+    //     format: 'yyyy-mm-dd',
+    //     language:  'zh-CN',
+    //     weekStart: 1,
+    //     todayBtn:  1,
+    //     autoclose: true,
+    //     todayHighlight: 1,
+    //     startView: 2,
+    //     minView: 2,
+    //     forceParse: 0
+    // });
+    function  ContractListByName(item) {
+        currentPage = 1;                   //在onload之后执行
+        $('#state').get(0).selectedIndex = 0;
+        nameBykey = item.innerHTML;
+        if (item.innerHTML == '危废合同') {
+            contractIndex = 0;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $('#toggleName').text("产废单位名称");
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (item.innerHTML == "应急处置合同") {
+            contractIndex = 1;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = pageNumber;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $('#toggleName').text("产废单位名称");
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                contentType: "application/json; charset=gbk",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (item.innerHTML == "物流合同") {
+            //列表切换
+            contractIndex = 2;
+            var page = {};
+            var pageNumber = 1;
+            page.count = countValue();                                 // 可选
+            page.pageNumber = 1;
+            page.start = (pageNumber - 1) * page.count;
+            page.contractIndex = contractIndex;
+            $('#toggleName').text("处置单位名称");
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: JSON.stringify(page),
+                contentType: "application/json; charset=gbk",
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (item.innerHTML == "次生合同") {
+            //console.log(name);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: JSON.stringify(page),
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (item.innerHTML == "采购合同") {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Purchase"},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+    }
+
+    function cancel(item) {
+        //查看合同编号
+        var contractId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        var name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+        var r = confirm("是否作废该合同？");
+        if (r == true) {
+            $.ajax({
+                type: "POST",
+                url: "cancelContract",
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"contractId": contractId},
+                success: function (result) {
+                    var obj = eval(result);
+                    if (obj.state == "success") {
+                        alert("作废成功！");
+                        if (name1.indexOf("物流") != -1) {
+                            var name2 = "Logistics";
+                        }
+                        if (name1.indexOf("危废") != -1) {
+                            var name2 = "Wastes";
+                        }
+                        if (name1.indexOf("次生") != -1) {
+                            var name2 = "Derive";
+                        }
+                        if (name1.indexOf("采购") != -1) {
+                            var name2 = "Purchase";
+                        }
+                        if (name1.indexOf("应急") != -1) {
+                            var name2 = "Emergency";
+                        }
+                        $(location).attr('href', 'contractManage.html');
+                        localStorage.name = name2;
+                        location.href = "contractManage.html";
+
+
+                    }
+                    else {
+                        alert("作废失败")
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！")
+                }
+            });
+        }
+        else {
+        }
+    }
+
+    function approval(item) {
+        //出现模态框和查看一个效果
+        contractId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+        name1 = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getContractId",                   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'contractId': contractId
+            },
+            success: function (result) {
+                // console.log(result);
+                if (result != undefined) {
+                    var data = eval(result);
+                    console.log(data);
+                    if (data.beginTime != null) {
+                        var begin = gettime(data.beginTime);
+                    }
+                    else {
+                        var begin = "";
+                    }
+                    if (data.endTime != null) {
+                        var end = gettime(data.endTime);
+                    }
+                    else {
+                        var end = "";
+                    }
+                    $("#modal3_contractName").text(data.contractName + data.contractType.name);//合同名称
+                    $("#modal3_contractState").text(data.checkState.name);
+                    $("#modal3_contractVersion").text(data.contractVersion.name);
+                    //$("#modal3_companyName").text(data.companyName);
+                    $("#modal3_contactName").text(data.contactName);
+                    $("#modal3_contractId").text(data.contractId);
+                    $("#modal3_beginTime").text(begin);
+                    $("#modal3_endTime").text(end);
+                    //$("#modal3_area").text(data.province.name + "" + data.city);
+                    $("#modal3_telephone").text(data.telephone);
+                    $("#modal3_order").text(data.order1);
+                    if (data.contractType.name == '物流合同') {
+                        $('#name1').html("处置单位名称&nbsp;&nbsp;");
+                        $("#modal3_suppierName").text(data.suppierName);
+                    }
+                    else {
+                        $('#name1').html("产废单位名称&nbsp;&nbsp;");
+                        $("#modal3_companyName").text(data.company1);//公司名称
+                    }
+                    //开票税率1
+                    if (data.ticketRate1 == null) {
+                        $('#modal3_ticketRate1').text(" ");
+                    }
+                    else {
+                        $('#modal3_ticketRate1').text(data.ticketRate1.name);
+                    }
+                    //资质开始日期
+                    // if (data.beginQualification == null) {
+                    //     $('#modal3_beginQualification').text(" ");
+                    // }
+                    // else {
+                    //     var begin1 = gettime(data.beginQualification);
+                    //     $('#modal3_beginQualification').text(begin1);
+                    // }
+                    //资质结束日期
+                    // if (data.endQualification == null) {
+                    //     $('#modal3_endQualification').text(" ");
+                    // }
+                    // else {
+                    //     var end1 = gettime(data.endQualification);
+                    //     $('#modal3_endQualification').text(end1);
+                    // }
+                    //物流公司资质
+                    // $('#modal3_logisticsQualification').text(data.logisticsQualification);
+                    //开户行名称
+                    $('#modal3_bankName').text(data.bankName);
+                    //开户行账号
+                    $('#modal3_bankAccout').text(data.bankAccount);
+                    if (data.freight == true) {//需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                        $('#modal3_freight').prop("checked", true);
+                    }
+                    if (data.freight == false) {//不需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                    }
+                    $('#advice').text(data.opinion);
+                    $('#backContent').text(data.backContent);
+                } else {
+                    $("#modal3_contactName").text("");
+                    $("#modal3_contractState").text("");
+                    $("#modal3_contractVersion").text("");
+                    $("#modal3_companyName").text("");
+                    $("#modal3_contactName").text("");
+                    $("#modal3_contractId").text("");
+                    $("#modal3_beginTime").text("");
+                    $("#modal3_endTime").text("");
+                    $("#modal3_area").text("");
+                    $("#modal3_telephone").text("");
+                    $("#modal3_order").text("");
+                }
+            },
+            error: function (result) {
+                console.log(result);
+
+            }
+        });
+        $('#close').show();
+        $('#back').show();//驳回显示
+        $('#btn').show()//审批显示
+        $('#back').text('驳回');//设置驳回字样
+        $('#print').hide();//打印隐藏
+        $('#contractInfoForm').modal('show');//出现第一个模态框
+    }
+
+    $('#btn').click(function () {
+        $('#contractInfoForm2').modal('show');
+    });
+
+    $('#back').click(function () {
+        //设置状态驳回
+        // $.ajax({
+        //     type:"POST",
+        //     url:"backContract",
+        //     async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data:{"contractId":contractId},
+        //     success:function (result) {
+        //         var obj=eval(result);
+        //         if(obj.state=="success"){
+        //             alert("已驳回！");
+        //             if(name1.indexOf("物流")!=-1){
+        //                 var name2="Logistics";
+        //             }
+        //             if(name1.indexOf("危废")!=-1){
+        //                 var name2="Wastes";
+        //             }
+        //             if(name1.indexOf("次生")!=-1){
+        //                 var name2="Derive";
+        //             }
+        //             if(name1.indexOf("采购")!=-1){
+        //                 var name2="Purchase";
+        //             }
+        //             if(name1.indexOf('应急')!=-1){
+        //                 var name2="Emergency";
+        //             }
+        //             $(location).attr('href', 'contractManage.html');
+        //             localStorage.name=name2;
+        //             location.href="contractManage.html";
+        //         }
+        //         else {
+        //             alert("审批失败")
+        //         }
+        //     },
+        //     error:function (result) {
+        //         alert("服务器异常！")
+        //     }
+        // });
+        $('#contractInfoForm3').modal('show');
+    });
+
+    //把按钮功能分出来做这个是审批
+    function confirm1() {
+        opinion = $('#advice').val();
+        //console.log(opinion);
+        //1获取文本框的值
+        $.ajax({
+            type: "POST",
+            url: "approvalContract",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'contractId': contractId, 'opinion': opinion,},
+            success: function (result) {
+                var obj = eval(result);
+                if (obj.state == "success") {
+                    alert("审批成功!")
+                    if (name1.indexOf("物流") != -1) {
+                        var name2 = "Logistics";
+                    }
+                    if (name1.indexOf("危废") != -1) {
+                        var name2 = "Wastes";
+                    }
+                    if (name1.indexOf("次生") != -1) {
+                        var name2 = "Derive";
+                    }
+                    if (name1.indexOf("采购") != -1) {
+                        var name2 = "Purchase";
+                    }
+                    if (name1.indexOf('应急') != -1) {
+                        var name2 = "Emergency";
+                    }
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name = name2;
+                    location.href = "contractManage.html";
+                }
+                else {
+                    alert("审批失败")
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+
+    function back1() {
+        backContent = $('#backContent').val();
+        //设置状态驳回
+        $.ajax({
+            type: "POST",
+            url: "backContract",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'contractId': contractId, 'backContent': backContent},
+            success: function (result) {
+                var obj = eval(result);
+                if (obj.state == "success") {
+                    alert("已驳回！");
+                    if (name1.indexOf("物流") != -1) {
+                        var name2 = "Logistics";
+                    }
+                    if (name1.indexOf("危废") != -1) {
+                        var name2 = "Wastes";
+                    }
+                    if (name1.indexOf("次生") != -1) {
+                        var name2 = "Derive";
+                    }
+                    if (name1.indexOf("采购") != -1) {
+                        var name2 = "Purchase";
+                    }
+                    if (name1.indexOf('应急') != -1) {
+                        var name2 = "Emergency";
+                    }
+                    $(location).attr('href', 'contractManage.html');
+                    localStorage.name = name2;
+                    location.href = "contractManage.html";
+                }
+                else {
+                    alert("审批失败")
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+    }
+
+
+
+    /**
+     * 导出excel
+     * @param e
+     */
+    function exportExcel(e) {
+
+        if(contractIndex == 0) {
+            var sqlWords = "select contractId,companyName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Wastes'";
+            var name = 't_contract_Wastes';
+        }
+        if(contractIndex == 1) {
+             var sqlWords = "select contractId,companyName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Emergency'";
+             var name = 't_contract_Emergency';
+        }
+        if(contractIndex == 2) {
+            var sqlWords = "select contractId,suppierName,modelName,checkState,agreedQuantity,contractName,telephone,beginTime,endTime from t_contract where contractType = 'Logistics'";
+            var name = 't_contract_Logistics';
+        }
+        window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    }
+    /**
+     * 导入excel
+     *
+     */
+    function importExcel() {
+        document.getElementById("idExcel").click();
+        document.getElementById("idExcel").addEventListener("change", function () {
+            console.log("change");
+            var eFile = document.getElementById("idExcel").files[0];
+            var formFile = new FormData();
+            formFile.append("excelFile", eFile);
+            formFile.append("tableName", 't_contract');
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "importExcel",              // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: formFile,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        if (result.status == "success") {
+                            alert(result.message);
+                            window.location.reload();         //刷新
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        });
+
+    }
+
+    function checkdb(item) {
+        var contractId = item.firstElementChild.nextElementSibling.innerHTML;
+        var contractType = item.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML;
+        //console.log(contractId+contractType);
+        //取得合同编号
+        // if (contractType.indexOf('应急') != -1) {
+        //     //做跳转
+        //     // window.location.href = "emergency?contractId="+contractId;
+        //     //换成html方式
+        //     localStorage.name1 = contractId;
+        //     location.href = "showemergency.html";
+        // }
+        $('#btn').hide();//审批隐藏
+        $('#print').show();//打印显示
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getContractId",                   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'contractId': contractId
+            },
+            success: function (result) {
+                var obj = eval(result);
+                console.log(obj);
+                //开始赋值
+                if (obj.contractVersion.name == '公司合同') {
+                    text=obj.content;
+                    matchStringByIndexOf(text, 'contractName', obj.modelName);
+                    //合同编号
+                    matchStringByIndexOf(text, 'contractId', obj.contractId);
+                    //合同状态
+                    matchStringByIndexOf(text, 'checkState', obj.checkState.name);
+                    //产废单位名称
+                    matchStringByIndexOf(text, 'company1', obj.company1);
+                    //合同版本
+                    matchStringByIndexOf(text, 'contractVersion', obj.contractVersion.name);
+                    //签订日期
+                    if (obj.beginTime != null) {
+                        var beginTime = gettime(obj.beginTime);
+                        matchStringByIndexOf(text, 'beginTime', beginTime.toString());
+                    }
+                    if (obj.beginTime == null) {
+                        matchStringByIndexOf(text, 'beginTime', "");
+                    }
+                    //截止日期
+                    if (obj.endTime != null) {
+                        var endTime = gettime(obj.endTime);
+                        matchStringByIndexOf(text, 'endTime', endTime.toString());
+                    }
+                    else {
+                        matchStringByIndexOf(text, 'endTime', "");
+                    }
+                    //开户行名称
+                    matchStringByIndexOf(text, 'bankName', obj.bankName);
+                    //开户行账号
+                    matchStringByIndexOf(text, 'bankAccount', obj.bankAccount);
+                    //开票税率
+                    if (obj.ticketRate1 != null) {
+                        matchStringByIndexOf(text, 'ticketRate', obj.ticketRate1.name);
+                    }
+                    else {
+                        matchStringByIndexOf(text, 'ticketRate', "");
+                    }
+                    //联系人
+                    matchStringByIndexOf(text, 'contactName', obj.contactName);
+                    //联系方式
+                    matchStringByIndexOf(text, 'telephone', obj.telephone);
+                    //是否包含运费
+                    if (obj.freight == false) {
+                        matchStringByIndexOf(text, 'freight', "否");
+                    }
+                    if (obj.freight == true) {
+                        matchStringByIndexOf(text, 'freight', "是");
+                    }
+                    //预计处置费
+                    matchStringByIndexOf(text, 'order1', obj.order1);
+                    CKEDITOR.instances.TextArea1.setData(text);//获取值
+                    $('#viewModal').modal('show');
+                }
+                if (obj.contractVersion.name == '产废单位合同') {
+                    // alert("其他形式")
+                    if (obj.beginTime != null) {
+                        var begin = gettime(obj.beginTime);
+                    }
+                    else {
+                        var begin = "";
+                    }
+                    if (obj.endTime != null) {
+                        var end = gettime(obj.endTime);
+                    }
+                    else {
+                        var end = "";
+                    }
+                    if (obj.checkState != null) {
+                        $("#modal3_contractState").text(obj.checkState.name);
+                    }
+                    else
+                        $("#modal3_contractState").text("");
+                    $("#modal3_contractVersion").text(obj.contractVersion.name);
+                    $("#modal3_companyName").text(obj.companyName);
+                    if (obj.contractVersion.name == "公司合同") {
+                        $("#modal3_contractName").text(obj.modelName);//合同名称
+                    }
+                    if (obj.contractVersion.name == "产废单位合同") {
+                        $("#modal3_contractName").text(obj.contractName + obj.contractType.name);//合同名称
+                    }
+                    $("#modal3_contactName").text(obj.contactName);
+                    $("#modal3_contractId").text(obj.contractId);
+                    $("#modal3_beginTime").text(begin);
+                    $("#modal3_endTime").text(end);
+                    if(obj.province!=null){
+                        $("#modal3_area").text(obj.province.name + "" + obj.city);
+                    }
+
+                    $("#modal3_telephone").text(obj.telephone);
+                    $("#modal3_order").text(obj.order1);
+                    // 开票税率1
+                    if (obj.ticketRate1 == null) {
+                        $('#modal3_ticketRate1').text(" ");
+                    }
+                    else {
+                        $('#modal3_ticketRate1').text(obj.ticketRate1.name);
+                    }
+                    //开票税率2
+                    if (obj.ticketRate2 == null) {
+                        $('#modal3_ticketRate2').text(" ");
+                    }
+                    else {
+                        $('#modal3_ticketRate2').text(obj.ticketRate2.name);
+                    }
+                    // 开户行名称
+                    $('#modal3_bankName').text(obj.bankName);
+                    // 开户行账号
+                    $('#modal3_bankAccout').text(obj.bankAccount);
+                    if (obj.freight == true) {//需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                        $('#modal3_freight').prop("checked", true);
+                    }
+                    if (obj.freight == false) {//不需要运费
+                        $('#modal3_freight').removeAttr("checked");
+                    }
+                    // 供用商姓名
+                    if (obj.contractType.name == '物流合同') {
+                        $('#name1').html("处置单位名称&nbsp;&nbsp;");
+                        $("#modal3_suppierName").text(obj.suppierName);
+                    }
+                    else {
+                        $('#name1').html("产废单位名称&nbsp;&nbsp;");
+                        $("#modal3_suppierName").text(obj.company1);//公司名称
+                    }
+                    $('#search').prop("readonly", false);
+                    $('#contractInfoForm').modal('show');
+                }
+            },
+
+            error: function (result) {
+
+            }
+        });
+        $('#back').hide();
+
+
+    }
+
+    //     $("#print").click(function() {
+    //         /* Act on the event */
+    //         $("#contractInfoForm").printThis({
+    //             //importCSS: true,
+    //             importStyle:true,
+    //           //importJs:true,
+    //             //printContainer: true,
+    //             loadCSS: [ "css/a.css","css/bootstrap/3.3.6/bootstrap.min.css"],
+    //             //loadJs:["/js/bootstrap/3.3.6/bootstrap.min.js","js/jquery/2.0.0/jquery.min.js","js/bootstrap/navbar.js"],
+    //            // pageTitle: "二维码",
+    //             //removeInline: false,
+    //             printDelay: 333,
+    //             copyTagClasses: false,
+    //             //解决多页打印
+    //             //header: null,
+    //             //formValues: false,
+    //             //removeScripts:true
+    //         });
+    // //		alert("等待打印");
+    //     });
+    //     $('#print').click(function () {
+    //         $('#print1').print({
+    //         globalStyles: true,
+    //         mediaPrint: false,
+    //         stylesheet: null,
+    //         noPrintSelector: ".no-print",
+    //         iframe: true,
+    //         append: null,
+    //         prepend: null,
+    //         manuallyCopyFormValues: true,
+    //         deferred: $.Deferred()
+    //     });
+    //     //$("#print1").printAreas();
+    // });
+    // $(function () {
+    //     //打印初始化
+    //     // $("#print").click(function () {
+    //     //     $("#print1").jqprint({
+    //     //     importStyle:true,
+    //     //     //printContainer: true,
+    //     //     loadCSS: [ "css/bootstrap/3.3.6/bootstrap.min.css","css/a.css","css/dashboard.css","css/bootstrap/navbar.css","css/bootstrap/bootstrap-datetimepicker.min.css"],
+    //     //    // pageTitle: "二维码",
+    //     //     //removeInline: false,
+    //     //     printDelay: 333,
+    //     //     //header: null,
+    //     //     //formValues: false,
+    //     //     //removeScripts:true
+    //     //     });
+    //     // })
+    // })
+
+    //     function preview(oper)
+    //     {
+    //         if (oper < 10){
+    //             bdhtml=window.document.body.innerHTML;//获取当前页的html代码
+    //             sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域
+    //             eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域
+    //             prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html
+    //             prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+    //             window.document.body.innerHTML=prnhtml;
+    //             window.print();
+    //             window.document.body.innerHTML=bdhtml;
+    //         } else {
+    //             window.print();
+    //         }
+    //     }
+    //     function print1() {
+    //         $('#print1').jqprint({
+    //             debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
+    //             importCSS: true, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
+    //             printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
+    //             //表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
+    //         });
+    //     }
+    $('#print').click(function () {
+        $('#print').hide();
+        $('#close').hide();
+        $('#pic').show();
+        html2canvas(document.querySelector("#print1")).then(function (canvas) {
+            // document.body.appendChild(canvas);//得到图片
+            $("#pic").css("visibility", "visible");
+            var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
+            var newImg = document.createElement("img");//创建img对象
+            newImg.style.width = "1200px";
+            newImg.style.height = "600px";
+            newImg.src = dataUrl;//将canvas图形url赋给img对象
+            //  canvas.style.width = newImg.width+ "px";
+            //  canvas.style.height = newImg.height+ "px";
+            // var context = canvas.getContext("2d");
+            //然后将画布缩放，将图像放大两倍画到画布上
+            $('#pic').append(newImg).printThis({
+                //保留BASE标记或接受URL
+            });//打印img，注意不能直接打印img对象，需要包裹一层div
+            $('#close').show();
+            $('#print').show();
+            //$('#pic').html(''); //打印完毕释放包裹层内容（图像）
+            //
+            // var pic=$('#pic');
+            // pic[0].appendChild(canvas);
+            // convertCanvasToImage(canvas);
+            //Canvas2Image.saveAsImage(canvas);
+        });
+        // $('#contractInfoForm').modal('show');
+        // $('#contractInfoForm').modal('show');
+        $('#pic').html('');//打印完毕释放包裹层内容（图像)
+    });
+
+    $('#close').click(function () {
+        $('#pic').hide();
+        //ContractListByName1(nameBykey);
+    });
+
+    function ContractListByName1(nameBykey) {
+        if (nameBykey == '危废合同') {
+            $('#Wa').click();
+        }
+        if (nameBykey == '物流合同') {
+            $('#Lo').click();
+        }
+        if (nameBykey == '应急处置合同') {
+            $('#Em').click();
+        }
+        if (name == "Derive") {
+            $('#De').click();
+            //name="Wastes";
+
+            // $.ajax({
+            //     type: "POST",                       // 方法类型
+            //     url: "listContractByName",                  // url
+            //     async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            //     dataType: "json",
+            //     data:{"name":name},
+            //     success: function (result) {
+            //         if (result != undefined) {
+            //             //alert(result);
+            //             //console.log(result);
+            //             setContractList(result);
+            //         } else {
+            //             console.log("fail: " + result);
+            //         }
+            //     },
+            //     error:function (result) {
+            //         console.log("error: " + result);
+            //     }
+            // });
+            //localStorage.clear();
+        }
+
+
+        // if(name=="Purchase"){
+        //
+        //  }
+    }
+
+    function convertCanvasToImage(canvas) {
+
+        //新Image对象,可以理解为DOM;
+        var image = new Image();
+        //canvas.toDataURL返回的是一串Base64编码的URL,当然,浏览器自己肯定支持
+        //指定格式PNG
+        image.src = canvas.toDataURL("image/png");
+        return image;
+
+    }
+
+    /**
+     * 根据状态获得列表
+     * @param index
+     */
+
+    function getstate(item) {
+        var state = $('#state').find("option:selected").text();
+        index = "";
+        if (state == '未作废') {
+            index = 0;
+        }
+        if (state == '待审批') {
+            index = 5;
+        }
+        if (state == '审批中') {
+            index = 1;
+        }
+        if (state == '已作废') {
+            index = 7;
+        }
+        if (state == '已驳回') {
+            index = 4;
+        }
+        if (state == '履约中') {
+            index = 6;
+        }
+        ContractListByName1(nameBykey, index);
+    }
+
+    function ContractListByName1(nameBykey, index) {
+        if (nameBykey == '危废合同') {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Wastes", "index": index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "应急处置合同") {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Emergency", "index": index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList1(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "物流合同") {
+
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Logistics", "index": index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "次生合同") {
+            //console.log(name);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Derive", "index": index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+        if (nameBykey == "采购合同") {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "listContractByName1",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                dataType: "json",
+                data: {"name": "Purchase", "index": index},
+                success: function (result) {
+                    if (result != undefined) {
+                        //alert(result);
+                        //console.log(result);
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+    }
+    function matchStringByIndexOf(parent,child,str)//总字符串 要找的字符串
+    {
+        index = 0;
+        if( ( index = parent.indexOf(child,index)) != -1 )
+        {
+            index = index+child.length;
+            console.log(index);
+            console.log(parent.substring(index+1,index+2));
+            // target=parent.substring(index+1,index+10);//改变后的字符
+            if(str!=""){
+                text=(changeStr(text,index+2,index+2," "," "+"value="+str+" style='border:none; font-size:26px'"));
+            }
+            if(str==""){
+                text=(changeStr(text,index+2,index+2," "," "+"value=' '"+" style='border:none; font-size:26px'"));
+            }
+
+        }
+        //结果输出
+    }
+    function changeStr(allstr,start,end,str,changeStr){ //allstr:原始字符串，start,开始位置,end：结束位  置,str：要改变的字，changeStr:改变后的字
+        if(allstr.substring(start-1,end) == str){
+            return allstr.substring(0,start-1)+changeStr+allstr.substring(end,allstr.length);
+        }else{
+            return allstr;
+        }
+    }
+</script>
+</html>

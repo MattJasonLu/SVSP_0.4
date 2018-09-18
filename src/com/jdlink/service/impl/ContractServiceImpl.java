@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Contract;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Salesman;
@@ -173,6 +174,11 @@ contractMapper.updateFreight2(id);
     @Override
     public String getContent(String contractId) {
         return contractMapper.getContent(contractId);
+    }
+
+    @Override
+    public Client getByClientId(String clientId) {
+        return contractMapper.getByClientId(clientId);
     }
 
     @Override

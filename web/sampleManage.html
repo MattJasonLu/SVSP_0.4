@@ -434,7 +434,13 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                            <li class="dropdown-submenu">
+                                <a href="#">合同列表</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                                    <li><a href="experienceContract.html" id="function_336" onclick="checkAuthority($(this))">经营合同列表</a></li>
+                                </ul>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                         </ul>
@@ -698,6 +704,12 @@
                                         <input type="text" class="form-control" id="model-contactName" name="contactName" required>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="model-contactCompany" class="col-sm-5 control-label">快递公司<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="model-contactCompany" name="contactCompany" required>
+                                </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -713,6 +725,12 @@
                                     <label for="model-telephone" class="col-sm-5 control-label">联系电话<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control" id="model-telephone" name="telephone" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="model-contactNumber" class="col-sm-5 control-label">快递单号<sup><span class="glyphicon glyphicon-asterisk text-danger" aria-hidden="true"></span></sup></label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" id="model-contactNumber" name="contactNumber" required>
                                     </div>
                                 </div>
                             </div>

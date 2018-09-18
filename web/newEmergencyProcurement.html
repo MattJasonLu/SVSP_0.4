@@ -11,9 +11,12 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/produce/emergencyProcurement.js"></script>
+    <script src="js/produce/monthProcurement.js"></script>
     <script src="js/util.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
 </head>
-<body>
+<body onload="getIngredientsList()">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -134,7 +137,9 @@
                         </tr>
                         <tr id="cloneTr1" class="myclass" >
                             <td class="text-center">1<input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title="" id="suppliesName"></td>
+                            <td class="text-center" >
+                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="suppliesName" id="suppliesName"></select>
+                            </td>
                             <td class="text-center"><input class="focus" title="" id="specifications"></td>
                             <td class="text-center"><input class="focus" title="" id="unit"></td>
                             <td class="text-center"><input class="focus" title="" id="inventory"></td>
@@ -181,6 +186,7 @@
             </div>
         </div>
     </div>
+
     <div id="embed"></div>
 </body>
 <style type="text/css">

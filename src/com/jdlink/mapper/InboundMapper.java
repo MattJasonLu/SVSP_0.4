@@ -109,6 +109,15 @@ public interface InboundMapper {
      * @param endDate 结束日期
      * @return 入库单集合
      */
-    List<InboundOrder> getInboundOrderByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    List<InboundOrderItem> getInboundOrderItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    /**
+     * 通过日期范围获取入库单
+     * @param startDate 起始日期
+     * @param endDate 结束日期
+     * @return 入库单集合
+     */
+    List<InboundOrderItem> getSecondInboundOrderItemByRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
 
 }

@@ -42,6 +42,10 @@
             });
         }
 
+        function keyLogin(){
+            if (event.keyCode==13)  //回车键的键值为13
+                document.getElementById("input1").click(); //调用登录按钮的登录事件
+        }
 
         $('#embed').load('embed/loginLogModal.html');
     </script>
@@ -51,7 +55,7 @@
         margin-top: 10%;
     }
 </style>
-<body>
+<body onkeydown="keyLogin();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -116,7 +120,7 @@
                 <input type="checkbox" value="remember-me"> 记住我
             </label>
         </div>
-        <button type="button" class="btn btn-lg btn-primary btn-block" onclick="login()">登录</button>
+        <button type="button" class="btn btn-lg btn-primary btn-block" id="input1" onclick="login()">登录</button>
         <span>还没有账号？<a class="text-primary" href="signup.html">注册</a></span>
     </form>
     <div id="embed"></div>

@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Client;
 import com.jdlink.domain.PackageType;
+import com.jdlink.domain.Page;
 
 /**
  * 危废入场报告
@@ -45,6 +46,20 @@ public class WasteInto {
      * @return
      */
     private String wastesCategory;
+
+    /**
+     * 分页
+     * @return
+     */
+    private Page page;
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getWastesCategory() {
         return wastesCategory;

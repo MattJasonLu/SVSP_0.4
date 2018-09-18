@@ -75,7 +75,7 @@ function totalPage() {
  * */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setWasteInventoryList(result);
+    setWasteInventoryList(result.data);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -313,7 +313,7 @@ function loadWasteInventoryList() {
             if(result != undefined && result.status == "success"){
                 console.log(result);
                 //设置危废查询列表
-                setPageClone(result.data);
+                setPageClone(result);
                 //setWasteInventoryList(result.data);
             }
             else {
@@ -403,24 +403,27 @@ function setWasteInventoryList(result) {
 
                         break;
                     //危废类型
-                    // case (8):
-                    //     $(this).html(obj.wastesCategory);
-                    //     break;
-                    //数量
                     case (8):
+                        $(this).html(obj.wastesCategory);
+                        break;
+                    //数量
+                    case (9):
                         $(this).html(obj.actualCount);
                         break;
                     //单价
-                    case (9):
-                        $(this).html(obj.unitPriceTax);
+                    case (10):
+                        $(this).html(obj.quotationItem.unitPriceTax);
                         break;
                     //总价
-                    case (10):
-                        $(this).html(parseInt(obj.actualCount)*(obj.unitPriceTax).toFixed(2)  );
+                    case (11):
+                        $(this).html(parseInt(obj.actualCount)*(obj.quotationItem.unitPriceTax).toFixed(2)  );
                         break;
                     //创建时间
-                    case (11):
+                    case (12):
                         $(this).html(getDateStr(obj.creatorDate));
+                        break;
+                    case (13):
+                        $(this).html(obj.inboundOrderItemId);
                         break;
                 }
             });
@@ -433,21 +436,175 @@ function setWasteInventoryList(result) {
     tr.removeAttr('class');
 }
 
-
+array=[];
+array1=[];
 //危废库存查询功能
 function searchWastesInventory() {
-    isSearch = true;
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.pageNumber = pageNumber;
-    page.count = countValue();
-    page.start = (pageNumber - 1) * page.count;
-    if ($("#senior").is(':visible')) {
-        data1 = {
-            date: $("#search-receiveDate").val(),
-            name: $("#search-sewageName").val(),
-            remarks: $("#search-remarks").val(),
-            page: page
-        };
+    //如果需要按日期范围查询 寻找最早入库的日期
+    var date;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestInBoundDate",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                date=getDateStr(result.dateList[0]);
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+
+    });
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    for( var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        $('.myclass').show();
+        array.push($('.myclass'));
     }
+    //1入库日期
+    var  inboundOrderId =$('#search-inDate').val();
+    var endDate=$('#search-endDate').val();
+    //2产废单位
+    var client=$('#search-client').val();
+    //3进料方式
+    var handelCategory=$('#search-type option:selected').text();
+    var startDate=getDateByStr(inboundOrderId);
+    var endDate=getDateByStr(endDate);
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            if(startDate.toString()=='Invalid Date'){
+                startDate=getDateByStr(date);
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=new Date();
+            }
+            //console.log(this);
+            if(!($(this).children('td').eq(3).text().indexOf(client)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
+            )){
+                $(this).hide();
+            }
+            if(($(this).children('td').eq(3).text().indexOf(client)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
+            )){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+    if(inboundOrderId.length<=0&&client.length<=0&&handelCategory.length<0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+}
+//危废库存查看
+function view(item) {
+var inboundOrderItemId=$(item).parent().prev().text();
+console.log(inboundOrderItemId);
+//根据编号查找信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getByInboundOrderItemId",                  // url 计算数据库的总条数
+        data:{'inboundOrderItemId':inboundOrderItemId},
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //危废库存查看，点击查看按钮
+                setByInboundOrderItemId(result);
+                $("#appointModal2").modal('show');
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+      alert("服务器异常！")
+        }
+    });
+
+}
+//双击查看
+function viewWastesIn(item) {
+
+
+
+}
+//危废库存查看，点击查看按钮
+function setByInboundOrderItemId(result) {
+    var tr=$('#cloneTr3');
+    tr.siblings().remove();
+    $.each(result.wasteInventoryList,function (index,item) {
+        var clonedTr=tr.clone();
+        clonedTr.show();
+        clonedTr.children('td').each(function (inner_index) {
+            var obj = eval(item);
+            switch (inner_index) {
+                case (0):
+                    $(this).html(getDateStr(obj.inboundDate));
+                    break;
+                case (1):
+                    $(this).html(obj.produceCompany.companyName);
+                    break;
+                case (2):
+                    $(this).html(obj.laboratoryTest.wastesName);
+                    break;
+                case (3):
+                    $(this).html(obj.laboratoryTest.wastesCode);
+                    break;
+                case (4):
+                    $(this).html(obj.actualCount);
+                    break;
+                case (5):
+                    $(this).html(obj.wastesCategory);
+                    break;
+                case (6):
+                    $(this).html(obj.handleCategory.name);
+                    break;
+                case (7):
+                    $(this).html(obj.wastesCategory);
+                    break;
+                case (8):
+                    $(this).html(obj.handleCategory.name);
+                    break;
+            }
+        })
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+
+    })
+     tr.hide();
+}
+/**
+ *
+ * 导出
+ * @returns {string}
+ */
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_wasteinventory';
+    var sqlWords = "select * from t_pl_wasteinventory left join t_pr_laboratorytest on t_pl_wasteinventory.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }

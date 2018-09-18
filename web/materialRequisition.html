@@ -116,21 +116,21 @@
             <div class="row">
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                    <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <a class="btn btn-primary btn-xs" href="materialRequisition1.html"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>
+                    <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 修改</a>-->
                     <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查询</a>-->
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>
-                    <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>
+                    <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 查看</a>-->
+                    <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 作废</a>-->
+                    <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 提交</a>-->
+                    <!--<a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 审批</a>-->
                     <a class="btn btn-primary btn-xs" href="#" onclick="receive()"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ></span> 领用</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
                     <span class="input-group-btn">
-                        <a class="btn btn-default" onclick="search();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-default" onclick="searchMaterial();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                         <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                     </span>
@@ -142,7 +142,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-Id" class="col-sm-4 control-label">编号</label>
+                                <label for="search-Id" class="col-sm-4 control-label">厂家</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="">
                                 </div>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-wastesType" class="col-sm-4 control-label">危废列别</label>
+                                <label for="search-wastesType" class="col-sm-4 control-label">危废类别</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-wastesType" name="search-wastesType" placeholder="">
                                 </div>
@@ -166,7 +166,7 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-company" class="col-sm-4 control-label">单位</label>
+                                <label for="search-company" class="col-sm-4 control-label">领用数量</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-company" name="search-company" placeholder="">
                                 </div>
@@ -178,7 +178,7 @@
             <div class="row">
                 <div class="form-horizontal col-md-12">
                     <table class="table table-striped table-hover table-condensed">
-                        <tbody>
+                        <thead>
                         <tr>
                             <th class="text-center">
                                 <label>
@@ -201,8 +201,8 @@
                             <th class="text-center">领料部门主管</th>
                             <th class="text-center">领料人</th>
                         </tr>
-                        </tbody>
-                        <tbody>
+                        </thead>
+                        <tbody id="tbody1">
                         <tr id="cloneTr4" class="myclass">
                             <td class="text-center">
                                 <label>
@@ -232,6 +232,43 @@
             <!--分页-->
         </div>
     </div>
+    <!--分页1-->
+    <nav aria-label="Page navigation" class="text-center">
+        <ol class="pagination" style="width: 800px;">
+            <li id="current"><a href='#'>当前页:</a>
+            <li id="firstPage">
+                <a href='#' onclick="switchPage(0)">首 页</a>
+            </li>
+            <li id="previous">
+                <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li id="next">
+                <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                </a>
+            </li>
+            <li id="endPage">
+                <a href='#' onclick="switchPage(-2)">尾 页</a>
+            </li>
+            <li><a id="totalPage"></a></li>
+            <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+            <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                       id="pageNumber" title=""></li>
+            <li class="showLi">每页显示:</li>
+            <li class="selectLi">
+                <select id="count" onchange="LoadMaterialRequisitionOrder()" title="">
+                    <option>5</option>
+                    <option selected>15</option>
+                    <option>50</option>
+                </select>
+            </li>
+        </ol>
+    </nav>
     <div id="embed"></div>
 </body>
 </html>

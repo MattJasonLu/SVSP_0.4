@@ -208,6 +208,18 @@ public class Contract implements Serializable {
      */
     private String nowTime;
     private String company1;
+    /**
+     * 报价单明细
+     */
+    private List<QuotationItem> quotationItemList=new ArrayList<>();
+
+    public List<QuotationItem> getQuotationItemList() {
+        return quotationItemList;
+    }
+
+    public void setQuotationItemList(List<QuotationItem> quotationItemList) {
+        this.quotationItemList = quotationItemList;
+    }
 
     private String suppierName;
     /**

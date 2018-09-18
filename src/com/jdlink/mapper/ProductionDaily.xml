@@ -4,6 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jdlink.mapper.ProductionDailyMapper">
+
+    <!--ProductionDaily映射集-->
+    <resultMap id="ProductionDailyRM" type="ProductionDaily" autoMapping="true">
+        <id property="id" column="id"/>
+
+    </resultMap>
+
     <select id="countSewage" resultType="int">
           select count(*) from t_pr_sewage;
     </select>
@@ -166,4 +173,168 @@
         values
         (#{receiveDate},#{name},#{relativeAlkalinity},#{dissolvedSolidForm},#{ph},#{alkalinity},#{hardness},#{electricalConductivity},#{remarks})
     </insert>
+
+    <!--获取日报的编号-->
+    <select id="getProductionDailyId" resultType="int">
+        SELECT MAX(id) FROM t_rp_productiondaily;
+    </select>
+
+    <!--获取日报的数量-->
+    <select id="getProductionDailyCount" resultType="int">
+        SELECT COUNT(*) FROM t_rp_productiondaily;
+    </select>
+
+    <!--获取日报的分页数据-->
+    <select id="listProductionDailyByPage" resultType="ProductionDaily">
+        SELECT * FROM t_rp_productiondaily ORDER BY nowTime DESC
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--通过编号获取日报-->
+    <select id="getProductionDailyById" resultType="ProductionDaily">
+        SELECT * FROM t_rp_productiondaily WHERE id=#{id};
+    </select>
+
+    <!--增加日报-->
+    <insert id="addProductionDaily" parameterType="ProductionDaily">
+        INSERT INTO t_rp_productiondaily (id, date, checkState, todayDisposalMedicalWastes, todayDisposalMedicalWastesDisposalDirect, todayDisposalMedicalWastesCooking,
+        todayDisposalMedicalWastesAfterCooking, todayDisposalMedicalWastesAfterCookingInbound, todayDisposalMedicalWastesAfterCookingSend,
+        todayDisposalMedicalWastesErrorNumber, todayDisposalMedicalWastesWetNumber, todayInboundMedicalWastes, todayInboundMedicalWastesCooking,
+        todayInboundMedicalWastesErrorNumber, todayInboundMedicalWastesAfterCooking, todayInboundMedicalWastesAfterCookingInbound, todayInboundMedicalWastesWetNumber,
+        todayOutboundMedicalWastes, todayOutboundMedicalWastesDirectDisposal, todayOutboundMedicalWastesCooking, todayOutboundMedicalWastesAfterCooking,
+        todayOutboundA2WastesBulk, todayOutboundA2WastesCrushing, todayOutboundA2WastesSludge, todayOutboundA2WastesDistillation, todayOutboundA2WastesSuspension,
+        todayOutboundA2WastesWasteLiquid, todayOutboundA2MedicalWastes, todayOutboundPrepare2WastesBulk, todayOutboundPrepare2WastesCrushing, todayOutboundPrepare2WastesSludge,
+        todayOutboundPrepare2WastesSuspension, todayOutboundPrepare2WastesWasteLiquid, todayOutboundPrepare2MedicalWastes, todayOutboundB2WastesBulk, todayOutboundB2WastesCrushing,
+        todayOutboundB2WastesSludge, todayOutboundB2WastesDistillation, todayOutboundB2WastesSuspension, todayOutboundB2WastesWasteLiquid, todayOutboundB2MedicalWastes,
+        todayOutboundThirdPretreatmentSystemWastesBulk, todayOutboundThirdPretreatmentSystemWastesCrushing, todayOutboundThirdPretreatmentSystemWastesSludge,
+        todayOutboundThirdPretreatmentSystemWastesDistillation, todayOutboundThirdPretreatmentSystemWastesSuspension, todayOutboundThirdPretreatmentSystemWastesWasteLiquid,
+        todayOutboundThirdPretreatmentSystemMedicalWastes, todayOutboundWastesBulk, todayOutboundWastesCrushing, todayOutboundWastesSludge, todayOutboundWastesDistillation,
+        todayOutboundWastesSuspension, todayOutboundWastesWasteLiquid, todayOutboundWastesTotal, todayDisposalMedicalAuxiliaryNaclo, todayDisposalMedicalAuxiliaryDeodorant,
+        todayDisposalMedicalAuxiliaryMedicalWastesBag, todayDisposalMedicalAuxiliaryMedicalPackingPlasticBag, todayDisposalMedicalAuxiliaryCollectionBox, todayDisposalMedicalAuxiliarySteam,
+        todayDisposalMedicalAuxiliaryIndustrialWater, todayDisposalMedicalAuxiliaryElectricQuantity, todayDisposalSecondaryAuxiliaryCalcareousLime, todayDisposalSecondaryAuxiliaryCommonActivatedCarbon,
+        todayDisposalSecondaryAuxiliaryActivatedCarbon, todayDisposalSecondaryAuxiliaryLye, todayDisposalSecondaryAuxiliarySalt, todayDisposalSecondaryAuxiliarySlagBag, todayDisposalSecondaryAuxiliaryFlyAshBag,
+        todayDisposalSecondaryAuxiliaryDieselOil, todayDisposalSecondaryAuxiliaryIndustrialWater, todayDisposalSecondaryAuxiliaryElectricQuantity, todayDisposalSecondaryAuxiliaryWoodenPallets,
+        todayDisposalThirdAuxiliaryCalcareousLime, todayDisposalThirdAuxiliaryCommonActivatedCarbon, todayDisposalThirdAuxiliaryActivatedCarbon, todayDisposalThirdAuxiliaryActivatedCarbonParticles,
+        todayDisposalThirdAuxiliaryLye, todayDisposalThirdAuxiliaryCausticSoda, todayDisposalThirdAuxiliaryUrea, todayDisposalThirdAuxiliaryHydrochloricAcid, todayDisposalThirdAuxiliaryNahco3,
+        todayDisposalThirdAuxiliaryFlour, todayDisposalThirdAuxiliaryDefoamer, todayDisposalThirdAuxiliaryFlocculant, todayDisposalThirdAuxiliarySoftWaterReducingAgent,
+        todayDisposalThirdAuxiliarySoftWaterScaleInhibitor, todayDisposalThirdAuxiliaryAmmonia, todayDisposalThirdAuxiliaryWaterReducingAgent, todayDisposalThirdAuxiliaryWaterScaleInhibitor,
+        todayDisposalThirdAuxiliaryNaclo, todayDisposalThirdAuxiliaryStandardBox, todayDisposalThirdAuxiliaryWoodenPallets, todayDisposalThirdAuxiliaryStandardTray_1m,
+        todayDisposalThirdAuxiliaryStandardTray_1_2m, todayDisposalThirdAuxiliarySlagBag, todayDisposalThirdAuxiliaryFlyAshBag, todayDisposalThirdAuxiliaryTonBox,
+        todayDisposalThirdAuxiliarySteam, todayDisposalThirdAuxiliaryDieselOil, todayDisposalThirdAuxiliaryNaturalGas, todayDisposalThirdAuxiliaryIndustrialWater,
+        todayDisposalThirdAuxiliaryElectricQuantity, todayDisposalThirdAuxiliaryTapWaterQuantity, todayOutboundAuxiliaryCalcareousLime, todayOutboundAuxiliaryCommonActivatedCarbon,
+        todayOutboundAuxiliaryActivatedCarbon, todayOutboundAuxiliaryActivatedCarbonParticles, todayOutboundAuxiliaryLye, todayOutboundAuxiliaryCausticSoda, todayOutboundAuxiliaryUrea,
+        todayOutboundAuxiliaryHydrochloricAcid, todayOutboundAuxiliaryNahco3, todayOutboundAuxiliaryFlour, todayOutboundAuxiliaryDefoamer, todayOutboundAuxiliaryFlocculant,
+        todayOutboundAuxiliarySoftWaterReducingAgent, todayOutboundAuxiliaryWaterScaleInhibitor, todayOutboundAuxiliaryNaclo, todayOutboundAuxiliaryDeodorant, todayOutboundAuxiliarySalt,
+        todayOutboundAuxiliarySlagBag, todayOutboundAuxiliaryFlyAshBag, todayOutboundAuxiliaryMedicalWastesBag, todayOutboundAuxiliaryMedicalPackingPlasticBag, todayOutboundAuxiliaryCollectionBox,
+        todayOutboundAuxiliaryStandardBox, todayOutboundAuxiliaryWoodenPallets, todayOutboundAuxiliaryStandardTray_1m, todayOutboundAuxiliaryStandardTray_1_2m,
+        todayOutboundAuxiliaryTonBox, todayOutboundAuxiliarySteam, todayOutboundAuxiliaryDieselOil, todayOutboundAuxiliaryNaturalGas, todayOutboundAuxiliaryElectricQuantity,
+        todayEquipmentA2RunningTime, todayEquipmentB2RunningTime, todayEquipmentPrepare2RunningTime, todayEquipmentSecondaryRunningTime, todayEquipmentThirdRunningTime,
+        todayEquipmentA2StopTime, todayEquipmentB2StopTime, todayEquipmentPrepare2StopTime, todayEquipmentSecondaryStopTime, todayEquipmentThirdStopTime, todayEquipmentA2RunningRate,
+        todayEquipmentB2RunningRate, todayEquipmentPrepare2RunningRate, todayEquipmentSecondaryRunningRate, todayEquipmentThirdRunningRate, todayDisposalSecondarySlag, todayDisposalSecondaryAsh,
+        todayDisposalThirdSlag, todayDisposalThirdAsh, todayInboundSecondWastesSlag, todayInboundSecondWastesAsh)
+        VALUES (#{id}, #{date}, #{checkState}, #{todayDisposalMedicalWastes},
+        #{todayDisposalMedicalWastesDisposalDirect}, #{todayDisposalMedicalWastesCooking}, #{todayDisposalMedicalWastesAfterCooking},
+        #{todayDisposalMedicalWastesAfterCookingInbound}, #{todayDisposalMedicalWastesAfterCookingSend}, #{todayDisposalMedicalWastesErrorNumber},
+        #{todayDisposalMedicalWastesWetNumber}, #{todayInboundMedicalWastes}, #{todayInboundMedicalWastesCooking}, #{todayInboundMedicalWastesErrorNumber},
+        #{todayInboundMedicalWastesAfterCooking}, #{todayInboundMedicalWastesAfterCookingInbound}, #{todayInboundMedicalWastesWetNumber}, #{todayOutboundMedicalWastes},
+        #{todayOutboundMedicalWastesDirectDisposal}, #{todayOutboundMedicalWastesCooking}, #{todayOutboundMedicalWastesAfterCooking}, #{todayOutboundA2WastesBulk},
+        #{todayOutboundA2WastesCrushing}, #{todayOutboundA2WastesSludge}, #{todayOutboundA2WastesDistillation}, #{todayOutboundA2WastesSuspension},
+        #{todayOutboundWastesWasteLiquid}, #{todayOutboundA2MedicalWastes}, #{todayOutboundPrepare2WastesBulk}, #{todayOutboundPrepare2WastesCrushing},
+        #{todayOutboundPrepare2WastesSludge}, #{todayOutboundPrepare2WastesSuspension}, #{todayOutboundPrepare2WastesWasteLiquid}, #{todayOutboundPrepare2MedicalWastes},
+        #{todayOutboundB2WastesBulk}, #{todayOutboundB2WastesCrushing}, #{todayOutboundB2WastesSludge}, #{todayOutboundB2WastesDistillation}, #{todayOutboundB2WastesSuspension},
+        #{todayOutboundB2WastesWasteLiquid}, #{todayOutboundB2MedicalWastes}, #{todayOutboundThirdPretreatmentSystemWastesBulk}, #{todayOutboundThirdPretreatmentSystemWastesCrushing},
+        #{todayOutboundThirdPretreatmentSystemWastesSludge}, #{todayOutboundThirdPretreatmentSystemWastesDistillation}, #{todayOutboundThirdPretreatmentSystemWastesSuspension},
+        #{todayOutboundThirdPretreatmentSystemWastesWasteLiquid}, #{todayOutboundThirdPretreatmentSystemMedicalWastes}, #{todayOutboundWastesBulk}, #{todayOutboundWastesCrushing},
+        #{todayOutboundWastesSludge}, #{todayOutboundWastesDistillation}, #{todayOutboundWastesSuspension}, #{todayOutboundWastesWasteLiquid}, #{todayOutboundWastesTotal},
+        #{todayDisposalMedicalAuxiliaryNaclo}, #{todayDisposalMedicalAuxiliaryDeodorant}, #{todayDisposalMedicalAuxiliaryMedicalWastesBag}, #{todayDisposalMedicalAuxiliaryMedicalPackingPlasticBag},
+        #{todayDisposalMedicalAuxiliaryCollectionBox}, #{todayDisposalMedicalAuxiliarySteam}, #{todayDisposalMedicalAuxiliaryIndustrialWater}, #{todayDisposalMedicalAuxiliaryElectricQuantity},
+        #{todayDisposalSecondaryAuxiliaryCalcareousLime}, #{todayDisposalSecondaryAuxiliaryCommonActivatedCarbon}, #{todayDisposalSecondaryAuxiliaryActivatedCarbon},
+        #{todayDisposalSecondaryAuxiliaryLye}, #{todayDisposalSecondaryAuxiliarySalt}, #{todayDisposalSecondaryAuxiliarySlagBag}, #{todayDisposalSecondaryAuxiliaryFlyAshBag},
+        #{todayDisposalSecondaryAuxiliaryDieselOil}, #{todayDisposalSecondaryAuxiliaryIndustrialWater}, #{todayDisposalSecondaryAuxiliaryElectricQuantity},
+        #{todayDisposalSecondaryAuxiliaryWoodenPallets}, #{todayDisposalThirdAuxiliaryCalcareousLime}, #{todayDisposalThirdAuxiliaryCommonActivatedCarbon},
+        #{todayDisposalThirdAuxiliaryActivatedCarbon}, #{todayDisposalThirdAuxiliaryActivatedCarbonParticles}, #{todayDisposalThirdAuxiliaryLye}, #{todayDisposalThirdAuxiliaryCausticSoda},
+        #{todayDisposalThirdAuxiliaryUrea}, #{todayDisposalThirdAuxiliaryHydrochloricAcid}, #{todayDisposalThirdAuxiliaryNahco3}, #{todayDisposalThirdAuxiliaryFlour},
+        #{todayDisposalThirdAuxiliaryDefoamer}, #{todayDisposalThirdAuxiliaryFlocculant}, #{todayDisposalThirdAuxiliarySoftWaterReducingAgent},
+        #{todayDisposalThirdAuxiliarySoftWaterScaleInhibitor}, #{todayDisposalThirdAuxiliaryAmmonia}, #{todayDisposalThirdAuxiliaryWaterReducingAgent},
+        #{todayDisposalThirdAuxiliaryWaterScaleInhibitor}, #{todayDisposalThirdAuxiliaryNaclo}, #{todayDisposalThirdAuxiliaryStandardBox}, #{todayDisposalThirdAuxiliaryWoodenPallets},
+        #{todayDisposalThirdAuxiliaryStandardTray_1m}, #{todayDisposalThirdAuxiliaryStandardTray_1_2m}, #{todayDisposalThirdAuxiliarySlagBag},
+        #{todayDisposalThirdAuxiliaryFlyAshBag}, #{todayDisposalThirdAuxiliaryTonBox}, #{todayDisposalThirdAuxiliarySteam}, #{todayDisposalThirdAuxiliaryDieselOil},
+        #{todayDisposalThirdAuxiliaryNaturalGas}, #{todayDisposalThirdAuxiliaryIndustrialWater}, #{todayDisposalThirdAuxiliaryElectricQuantity}, #{todayDisposalThirdAuxiliaryTapWaterQuantity},
+        #{todayOutboundAuxiliaryCalcareousLime}, #{todayOutboundAuxiliaryCommonActivatedCarbon}, #{todayOutboundAuxiliaryActivatedCarbon}, #{todayOutboundAuxiliaryActivatedCarbonParticles},
+        #{todayOutboundAuxiliaryLye}, #{todayOutboundAuxiliaryCausticSoda}, #{todayOutboundAuxiliaryUrea}, #{todayOutboundAuxiliaryHydrochloricAcid}, #{todayOutboundAuxiliaryNahco3},
+        #{todayOutboundAuxiliaryFlour}, #{todayOutboundAuxiliaryDefoamer}, #{todayOutboundAuxiliaryFlocculant}, #{todayOutboundAuxiliarySoftWaterReducingAgent},
+        #{todayOutboundAuxiliaryWaterScaleInhibitor}, #{todayOutboundAuxiliaryNaclo}, #{todayOutboundAuxiliaryDeodorant}, #{todayOutboundAuxiliarySalt}, #{todayOutboundAuxiliarySlagBag},
+        #{todayOutboundAuxiliaryFlyAshBag}, #{todayOutboundAuxiliaryMedicalWastesBag}, #{todayOutboundAuxiliaryMedicalPackingPlasticBag}, #{todayOutboundAuxiliaryCollectionBox},
+        #{todayOutboundAuxiliaryStandardBox}, #{todayOutboundAuxiliaryWoodenPallets}, #{todayOutboundAuxiliaryStandardTray_1m}, #{todayOutboundAuxiliaryStandardTray_1_2m},
+        #{todayOutboundAuxiliaryTonBox}, #{todayOutboundAuxiliarySteam}, #{todayOutboundAuxiliaryDieselOil}, #{todayOutboundAuxiliaryNaturalGas}, #{todayOutboundAuxiliaryElectricQuantity},
+        #{todayEquipmentA2RunningTime}, #{todayEquipmentB2RunningTime}, #{todayEquipmentPrepare2RunningTime}, #{todayEquipmentSecondaryRunningTime}, #{todayEquipmentThirdRunningTime},
+        #{todayEquipmentA2StopTime}, #{todayEquipmentB2StopTime}, #{todayEquipmentPrepare2StopTime}, #{todayEquipmentSecondaryStopTime}, #{todayEquipmentThirdStopTime},
+        #{todayEquipmentA2RunningRate}, #{todayEquipmentB2RunningRate}, #{todayEquipmentPrepare2RunningRate}, #{todayEquipmentSecondaryRunningRate}, #{todayEquipmentThirdRunningRate},
+        #{todayDisposalSecondarySlag}, #{todayDisposalSecondaryAsh}, #{todayDisposalThirdSlag}, #{todayDisposalThirdAsh}, #{todayInboundSecondWastesSlag}, #{todayInboundSecondWastesAsh});
+
+        <if test="inboundOrderItemList.size() > 0">
+            <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
+                INSERT INTO t_rp_productiondaily_inbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory) VALUES
+                (#{id}, #{inboundOrderItem.wastes.name}, #{inboundOrderItem.wastes.wastesId}, #{inboundOrderItem.produceCompany.clientId}, #{inboundOrderItem.wastesAmount}, #{inboundOrderItem.handleCategory});
+            </foreach>
+        </if>
+
+        <if test="outboundOrderA2List.size() > 0">
+            <foreach collection="outboundOrderA2List" item="outboundOrderA2" index="index">
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderA2.laboratoryTest.wastesName}, #{outboundOrderA2.laboratoryTest.wastesCode}, #{outboundOrderA2.laboratoryTest.client.clientId},
+                #{outboundOrderA2.outboundNumber}, #{outboundOrderA2.handelCategory}, #{outboundOrderA2.equipment});
+            </foreach>
+        </if>
+        <if test="outboundOrderB2List.size() > 0">
+            <foreach collection="outboundOrderB2List" item="outboundOrderB2" index="index">
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderB2.laboratoryTest.wastesName}, #{outboundOrderB2.laboratoryTest.wastesCode}, #{outboundOrderB2.laboratoryTest.client.clientId},
+                #{outboundOrderB2.outboundNumber}, #{outboundOrderB2.handelCategory}, #{outboundOrderB2.equipment});
+            </foreach>
+        </if>
+        <if test="outboundOrderPrepare2List.size() > 0">
+            <foreach collection="outboundOrderPrepare2List" item="outboundOrderPrepare2" index="index">
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderPrepare2.laboratoryTest.wastesName}, #{outboundOrderPrepare2.laboratoryTest.wastesCode}, #{outboundOrderPrepare2.laboratoryTest.client.clientId},
+                #{outboundOrderPrepare2.outboundNumber}, #{outboundOrderPrepare2.handelCategory}, #{outboundOrderPrepare2.equipment});
+            </foreach>
+        </if>
+        <if test="outboundOrderThirdList.size() > 0">
+            <foreach collection="outboundOrderThirdList" item="outboundOrderThird" index="index">
+                INSERT INTO t_rp_productiondaily_outbounditem (productionDailyId, wastesName, wastesCode, clientId, wastesAmount, wastesHandleCategory, disposalEquipment) VALUES
+                (#{id}, #{outboundOrderThird.laboratoryTest.wastesName}, #{outboundOrderThird.laboratoryTest.wastesCode}, #{outboundOrderThird.laboratoryTest.client.clientId},
+                #{outboundOrderThird.outboundNumber}, #{outboundOrderThird.handelCategory}, #{outboundOrderThird.equipment});
+            </foreach>
+        </if>
+    </insert>
+
+    <!--通过日期范围获取生产日报-->
+    <select id="getProductionDailyByDateRange" resultType="ProductionDaily">
+        select * from t_rp_productiondaily
+        <![CDATA[
+            WHERE DATE_FORMAT(date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(date, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        ]]>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--通过日期范围获取生产日报-->
+    <select id="getProductionDailyByDateRangeCount" resultType="int">
+        select COUNT(*) from t_rp_productiondaily
+        <![CDATA[
+            WHERE DATE_FORMAT(date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(date, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        ]]>;
+    </select>
+
+    <!--更改日报的状态-->
+    <update id="setProductionDailyState">
+        update t_rp_productiondaily set checkState=#{checkState} where id=#{id};
+    </update>
 </mapper>

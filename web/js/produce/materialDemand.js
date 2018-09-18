@@ -389,8 +389,12 @@ function setMaterialList(obj,n) {
     $("#phmaxTotal").text(phmaxTotal);
     $("#phminTotal").text(phminTotal);
 }
+//导入数据
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
 /*导入物料需求*/
-function importMaExcel() {
+function importExcel() {
     document.getElementById("idExcel").click();
     document.getElementById("idExcel").addEventListener("change", function () {
         var eFile = document.getElementById("idExcel").files[0];
@@ -420,6 +424,27 @@ function importMaExcel() {
             }
         });
     });
+}
+/**
+ * 下载模板
+ * */
+function downloadModal() {
+    var filePath = 'model/materialDemand.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+/**
+ *
+ * 导出
+ * @returns {string}
+ */
+function exportExcel() {
+    console.log("export");
+    var name = 't_pr_materialrequire';
+    var sqlWords = "select * from t_pr_materialrequire;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 /*
 * 操作行选定*/
@@ -592,7 +617,7 @@ function getWeekDate() {
     }else {
         week = parseInt(day / 7) + a;
     }
-    return "第" + week + "周";
+    return year + "年" + month + "月第" + week + "周";
 }
 
 /*提交功能*/

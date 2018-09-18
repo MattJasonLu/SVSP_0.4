@@ -1,7 +1,8 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Inventory.InboundOrderItem;
-import com.jdlink.domain.Inventory.WasteInventory;
+import com.jdlink.domain.Inventory.OutboundOrder;
 
 import java.util.Date;
 import java.util.List;
@@ -29,19 +30,19 @@ public class ProductionDaily {
     /**
      * 本日直接转外处置量
      */
-    private float toDayInboundMedicalWastesDirectDisposal;
+    private float todayInboundMedicalWastesDirectDisposal;
     /**
      * 本日蒸煮医废
      */
-    private float toDayInboundMedicalWastesCooking;
+    private float todayInboundMedicalWastesCooking;
     /**
      * 本日误差量
      */
-    private float toDayInboundMedicalWastesErrorNumber;
+    private float todayInboundMedicalWastesErrorNumber;
     /**
      * 本日蒸煮后重量
      */
-    private float toDayInboundMedicalWastesAfterCooking;
+    private float todayInboundMedicalWastesAfterCooking;
     /**
      * 本日蒸煮后外送量
      */
@@ -103,19 +104,19 @@ public class ProductionDaily {
     /**
      * 本日直接转外处置量
      */
-    private float toDayOutboundMedicalWastesDirectDisposal;
+    private float todayOutboundMedicalWastesDirectDisposal;
     /**
      * 本日蒸煮医废
      */
-    private float toDayOutboundMedicalWastesCooking;
+    private float todayOutboundMedicalWastesCooking;
     /**
      * 本日误差量
      */
-    private float toDayOutboundMedicalWastesErrorNumber;
+    private float todayOutboundMedicalWastesErrorNumber;
     /**
      * 本日蒸煮后重量
      */
-    private float toDayOutboundMedicalWastesAfterCooking;
+    private float todayOutboundMedicalWastesAfterCooking;
     /**
      * 本日蒸煮后外送量
      */
@@ -628,19 +629,19 @@ public class ProductionDaily {
     /**
      * 本日直接转外处置量
      */
-    private float toDayDisposalMedicalWastesDisposalDirect;
+    private float todayDisposalMedicalWastesDisposalDirect;
     /**
      * 本日蒸煮医废
      */
-    private float toDayDisposalMedicalWastesCooking;
+    private float todayDisposalMedicalWastesCooking;
     /**
      * 本日误差量
      */
-    private float toDayDisposalMedicalWastesErrorNumber;
+    private float todayDisposalMedicalWastesErrorNumber;
     /**
      * 本日蒸煮后重量
      */
-    private float toDayDisposalMedicalWastesAfterCooking;
+    private float todayDisposalMedicalWastesAfterCooking;
     /**
      * 本日蒸煮后外送量
      */
@@ -1996,7 +1997,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float todayDisposalThirdSecondaryAuxiliarySlagBag;
+    private float todayDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2209,7 +2210,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float monthDisposalThirdSecondaryAuxiliarySlagBag;
+    private float monthDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2422,7 +2423,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float yearDisposalThirdSecondaryAuxiliarySlagBag;
+    private float yearDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2635,7 +2636,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float todayAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    private float todayAverageDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -2848,7 +2849,7 @@ public class ProductionDaily {
     /**
      * 炉渣用吨袋
      */
-    private float monthAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    private float monthAverageDisposalThirdAuxiliarySlagBag;
     /**
      * 飞灰用吨袋
      */
@@ -3394,87 +3395,15 @@ public class ProductionDaily {
     /**
      * 二期处置的散料
      */
-    private float todayOutboundSecondPretreatmentWastesBulk;
-    /**
-     * 二期处置的破碎料
-     */
-    private float todayOutboundSecondPretreatmentWastesCrushing;
-    /**
-     * 二期处置的污泥
-     */
-    private float todayOutboundSecondPretreatmentWastesSludge;
-    /**
-     * 二期处置的精馏残渣
-     */
-    private float todayOutboundSecondPretreatmentWastesDistillation;
-    /**
-     * 二期处置的悬挂连
-     */
-    private float todayOutboundSecondPretreatmentWastesSuspension;
-    /**
-     * 二期处置的废液
-     */
-    private float todayOutboundSecondPretreatmentWastesWasteLiquid;
-    /**
-     * 二期处置的医废
-     */
-    private float todayOutboundSecondPretreatmentMedicalWastes;
+    private float todayOutboundSecondPretreatmentWastes;
     /**
      * 二期处置的散料
      */
-    private float monthOutboundSecondPretreatmentWastesBulk;
-    /**
-     * 二期处置的破碎料
-     */
-    private float monthOutboundSecondPretreatmentWastesCrushing;
-    /**
-     * 二期处置的污泥
-     */
-    private float monthOutboundSecondPretreatmentWastesSludge;
-    /**
-     * 二期处置的精馏残渣
-     */
-    private float monthOutboundSecondPretreatmentWastesDistillation;
-    /**
-     * 二期处置的悬挂连
-     */
-    private float monthOutboundSecondPretreatmentWastesSuspension;
-    /**
-     * 二期处置的废液
-     */
-    private float monthOutboundSecondPretreatmentWastesWasteLiquid;
-    /**
-     * 二期处置的医废
-     */
-    private float monthOutboundSecondPretreatmentMedicalWastes;
+    private float monthOutboundSecondPretreatmentWastes;
     /**
      * 二期处置的散料
      */
-    private float yearOutboundSecondPretreatmentWastesBulk;
-    /**
-     * 二期处置的破碎料
-     */
-    private float yearOutboundSecondPretreatmentWastesCrushing;
-    /**
-     * 二期处置的污泥
-     */
-    private float yearOutboundSecondPretreatmentWastesSludge;
-    /**
-     * 二期处置的精馏残渣
-     */
-    private float yearOutboundSecondPretreatmentWastesDistillation;
-    /**
-     * 二期处置的悬挂连
-     */
-    private float yearOutboundSecondPretreatmentWastesSuspension;
-    /**
-     * 二期处置的废液
-     */
-    private float yearOutboundSecondPretreatmentWastesWasteLiquid;
-    /**
-     * 二期处置的医废
-     */
-    private float yearOutboundSecondPretreatmentMedicalWastes;
+    private float yearOutboundSecondPretreatmentWastes;
 
     /**
      * 三期处置的散料
@@ -3906,11 +3835,21 @@ public class ProductionDaily {
     /**
      * 出库危废列表
      */
-    private List<WasteInventory> outboundOrderItemList;
+    private List<OutboundOrder> outboundOrderA2List;
+
+    private List<OutboundOrder> outboundOrderB2List;
+
+    private List<OutboundOrder> outboundOrderPrepare2List;
+
+    private List<OutboundOrder> outboundOrderThirdList;
     /**
      * 作者
      */
     private String author;
+    /**
+     * 日报状态
+     */
+    private CheckState checkState;
 
     public int getId() {
         return id;
@@ -3936,36 +3875,36 @@ public class ProductionDaily {
         this.todayInboundMedicalWastes = todayInboundMedicalWastes;
     }
 
-    public float getToDayInboundMedicalWastesDirectDisposal() {
-        return toDayInboundMedicalWastesDirectDisposal;
+    public float getTodayInboundMedicalWastesDirectDisposal() {
+        return todayInboundMedicalWastesDirectDisposal;
     }
 
-    public void setToDayInboundMedicalWastesDirectDisposal(float toDayInboundMedicalWastesDirectDisposal) {
-        this.toDayInboundMedicalWastesDirectDisposal = toDayInboundMedicalWastesDirectDisposal;
+    public void setTodayInboundMedicalWastesDirectDisposal(float todayInboundMedicalWastesDirectDisposal) {
+        this.todayInboundMedicalWastesDirectDisposal = todayInboundMedicalWastesDirectDisposal;
     }
 
-    public float getToDayInboundMedicalWastesCooking() {
-        return toDayInboundMedicalWastesCooking;
+    public float getTodayInboundMedicalWastesCooking() {
+        return todayInboundMedicalWastesCooking;
     }
 
-    public void setToDayInboundMedicalWastesCooking(float toDayInboundMedicalWastesCooking) {
-        this.toDayInboundMedicalWastesCooking = toDayInboundMedicalWastesCooking;
+    public void setTodayInboundMedicalWastesCooking(float todayInboundMedicalWastesCooking) {
+        this.todayInboundMedicalWastesCooking = todayInboundMedicalWastesCooking;
     }
 
-    public float getToDayInboundMedicalWastesErrorNumber() {
-        return toDayInboundMedicalWastesErrorNumber;
+    public float getTodayInboundMedicalWastesErrorNumber() {
+        return todayInboundMedicalWastesErrorNumber;
     }
 
-    public void setToDayInboundMedicalWastesErrorNumber(float toDayInboundMedicalWastesErrorNumber) {
-        this.toDayInboundMedicalWastesErrorNumber = toDayInboundMedicalWastesErrorNumber;
+    public void setTodayInboundMedicalWastesErrorNumber(float todayInboundMedicalWastesErrorNumber) {
+        this.todayInboundMedicalWastesErrorNumber = todayInboundMedicalWastesErrorNumber;
     }
 
-    public float getToDayInboundMedicalWastesAfterCooking() {
-        return toDayInboundMedicalWastesAfterCooking;
+    public float getTodayInboundMedicalWastesAfterCooking() {
+        return todayInboundMedicalWastesAfterCooking;
     }
 
-    public void setToDayInboundMedicalWastesAfterCooking(float toDayInboundMedicalWastesAfterCooking) {
-        this.toDayInboundMedicalWastesAfterCooking = toDayInboundMedicalWastesAfterCooking;
+    public void setTodayInboundMedicalWastesAfterCooking(float todayInboundMedicalWastesAfterCooking) {
+        this.todayInboundMedicalWastesAfterCooking = todayInboundMedicalWastesAfterCooking;
     }
 
     public float getTodayInboundMedicalWastesAfterCookingSend() {
@@ -4080,36 +4019,36 @@ public class ProductionDaily {
         this.todayOutboundMedicalWastes = todayOutboundMedicalWastes;
     }
 
-    public float getToDayOutboundMedicalWastesDirectDisposal() {
-        return toDayOutboundMedicalWastesDirectDisposal;
+    public float getTodayOutboundMedicalWastesDirectDisposal() {
+        return todayOutboundMedicalWastesDirectDisposal;
     }
 
-    public void setToDayOutboundMedicalWastesDirectDisposal(float toDayOutboundMedicalWastesDirectDisposal) {
-        this.toDayOutboundMedicalWastesDirectDisposal = toDayOutboundMedicalWastesDirectDisposal;
+    public void setTodayOutboundMedicalWastesDirectDisposal(float todayOutboundMedicalWastesDirectDisposal) {
+        this.todayOutboundMedicalWastesDirectDisposal = todayOutboundMedicalWastesDirectDisposal;
     }
 
-    public float getToDayOutboundMedicalWastesCooking() {
-        return toDayOutboundMedicalWastesCooking;
+    public float getTodayOutboundMedicalWastesCooking() {
+        return todayOutboundMedicalWastesCooking;
     }
 
-    public void setToDayOutboundMedicalWastesCooking(float toDayOutboundMedicalWastesCooking) {
-        this.toDayOutboundMedicalWastesCooking = toDayOutboundMedicalWastesCooking;
+    public void setTodayOutboundMedicalWastesCooking(float todayOutboundMedicalWastesCooking) {
+        this.todayOutboundMedicalWastesCooking = todayOutboundMedicalWastesCooking;
     }
 
-    public float getToDayOutboundMedicalWastesErrorNumber() {
-        return toDayOutboundMedicalWastesErrorNumber;
+    public float getTodayOutboundMedicalWastesErrorNumber() {
+        return todayOutboundMedicalWastesErrorNumber;
     }
 
-    public void setToDayOutboundMedicalWastesErrorNumber(float toDayOutboundMedicalWastesErrorNumber) {
-        this.toDayOutboundMedicalWastesErrorNumber = toDayOutboundMedicalWastesErrorNumber;
+    public void setTodayOutboundMedicalWastesErrorNumber(float todayOutboundMedicalWastesErrorNumber) {
+        this.todayOutboundMedicalWastesErrorNumber = todayOutboundMedicalWastesErrorNumber;
     }
 
-    public float getToDayOutboundMedicalWastesAfterCooking() {
-        return toDayOutboundMedicalWastesAfterCooking;
+    public float getTodayOutboundMedicalWastesAfterCooking() {
+        return todayOutboundMedicalWastesAfterCooking;
     }
 
-    public void setToDayOutboundMedicalWastesAfterCooking(float toDayOutboundMedicalWastesAfterCooking) {
-        this.toDayOutboundMedicalWastesAfterCooking = toDayOutboundMedicalWastesAfterCooking;
+    public void setTodayOutboundMedicalWastesAfterCooking(float todayOutboundMedicalWastesAfterCooking) {
+        this.todayOutboundMedicalWastesAfterCooking = todayOutboundMedicalWastesAfterCooking;
     }
 
     public float getTodayOutboundMedicalWastesAfterCookingSend() {
@@ -5088,36 +5027,36 @@ public class ProductionDaily {
         this.todayDisposalMedicalWastes = todayDisposalMedicalWastes;
     }
 
-    public float getToDayDisposalMedicalWastesDisposalDirect() {
-        return toDayDisposalMedicalWastesDisposalDirect;
+    public float getTodayDisposalMedicalWastesDisposalDirect() {
+        return todayDisposalMedicalWastesDisposalDirect;
     }
 
-    public void setToDayDisposalMedicalWastesDisposalDirect(float toDayDisposalMedicalWastesDisposalDirect) {
-        this.toDayDisposalMedicalWastesDisposalDirect = toDayDisposalMedicalWastesDisposalDirect;
+    public void setTodayDisposalMedicalWastesDisposalDirect(float todayDisposalMedicalWastesDisposalDirect) {
+        this.todayDisposalMedicalWastesDisposalDirect = todayDisposalMedicalWastesDisposalDirect;
     }
 
-    public float getToDayDisposalMedicalWastesCooking() {
-        return toDayDisposalMedicalWastesCooking;
+    public float getTodayDisposalMedicalWastesCooking() {
+        return todayDisposalMedicalWastesCooking;
     }
 
-    public void setToDayDisposalMedicalWastesCooking(float toDayDisposalMedicalWastesCooking) {
-        this.toDayDisposalMedicalWastesCooking = toDayDisposalMedicalWastesCooking;
+    public void setTodayDisposalMedicalWastesCooking(float todayDisposalMedicalWastesCooking) {
+        this.todayDisposalMedicalWastesCooking = todayDisposalMedicalWastesCooking;
     }
 
-    public float getToDayDisposalMedicalWastesErrorNumber() {
-        return toDayDisposalMedicalWastesErrorNumber;
+    public float getTodayDisposalMedicalWastesErrorNumber() {
+        return todayDisposalMedicalWastesErrorNumber;
     }
 
-    public void setToDayDisposalMedicalWastesErrorNumber(float toDayDisposalMedicalWastesErrorNumber) {
-        this.toDayDisposalMedicalWastesErrorNumber = toDayDisposalMedicalWastesErrorNumber;
+    public void setTodayDisposalMedicalWastesErrorNumber(float todayDisposalMedicalWastesErrorNumber) {
+        this.todayDisposalMedicalWastesErrorNumber = todayDisposalMedicalWastesErrorNumber;
     }
 
-    public float getToDayDisposalMedicalWastesAfterCooking() {
-        return toDayDisposalMedicalWastesAfterCooking;
+    public float getTodayDisposalMedicalWastesAfterCooking() {
+        return todayDisposalMedicalWastesAfterCooking;
     }
 
-    public void setToDayDisposalMedicalWastesAfterCooking(float toDayDisposalMedicalWastesAfterCooking) {
-        this.toDayDisposalMedicalWastesAfterCooking = toDayDisposalMedicalWastesAfterCooking;
+    public void setTodayDisposalMedicalWastesAfterCooking(float todayDisposalMedicalWastesAfterCooking) {
+        this.todayDisposalMedicalWastesAfterCooking = todayDisposalMedicalWastesAfterCooking;
     }
 
     public float getTodayDisposalMedicalWastesAfterCookingSend() {
@@ -7784,12 +7723,12 @@ public class ProductionDaily {
         this.todayDisposalThirdAuxiliaryStandardTray_1_2m = todayDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getTodayDisposalThirdSecondaryAuxiliarySlagBag() {
-        return todayDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getTodayDisposalThirdAuxiliarySlagBag() {
+        return todayDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setTodayDisposalThirdSecondaryAuxiliarySlagBag(float todayDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.todayDisposalThirdSecondaryAuxiliarySlagBag = todayDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setTodayDisposalThirdAuxiliarySlagBag(float todayDisposalThirdAuxiliarySlagBag) {
+        this.todayDisposalThirdAuxiliarySlagBag = todayDisposalThirdAuxiliarySlagBag;
     }
 
     public float getTodayDisposalThirdAuxiliaryFlyAshBag() {
@@ -8200,12 +8139,12 @@ public class ProductionDaily {
         this.monthDisposalThirdAuxiliaryStandardTray_1_2m = monthDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getMonthDisposalThirdSecondaryAuxiliarySlagBag() {
-        return monthDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getMonthDisposalThirdAuxiliarySlagBag() {
+        return monthDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setMonthDisposalThirdSecondaryAuxiliarySlagBag(float monthDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.monthDisposalThirdSecondaryAuxiliarySlagBag = monthDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setMonthDisposalThirdAuxiliarySlagBag(float monthDisposalThirdAuxiliarySlagBag) {
+        this.monthDisposalThirdAuxiliarySlagBag = monthDisposalThirdAuxiliarySlagBag;
     }
 
     public float getMonthDisposalThirdAuxiliaryFlyAshBag() {
@@ -8616,12 +8555,12 @@ public class ProductionDaily {
         this.yearDisposalThirdAuxiliaryStandardTray_1_2m = yearDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getYearDisposalThirdSecondaryAuxiliarySlagBag() {
-        return yearDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getYearDisposalThirdAuxiliarySlagBag() {
+        return yearDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setYearDisposalThirdSecondaryAuxiliarySlagBag(float yearDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.yearDisposalThirdSecondaryAuxiliarySlagBag = yearDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setYearDisposalThirdAuxiliarySlagBag(float yearDisposalThirdAuxiliarySlagBag) {
+        this.yearDisposalThirdAuxiliarySlagBag = yearDisposalThirdAuxiliarySlagBag;
     }
 
     public float getYearDisposalThirdAuxiliaryFlyAshBag() {
@@ -9032,12 +8971,12 @@ public class ProductionDaily {
         this.todayAverageDisposalThirdAuxiliaryStandardTray_1_2m = todayAverageDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getTodayAverageDisposalThirdSecondaryAuxiliarySlagBag() {
-        return todayAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getTodayAverageDisposalThirdAuxiliarySlagBag() {
+        return todayAverageDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setTodayAverageDisposalThirdSecondaryAuxiliarySlagBag(float todayAverageDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.todayAverageDisposalThirdSecondaryAuxiliarySlagBag = todayAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setTodayAverageDisposalThirdAuxiliarySlagBag(float todayAverageDisposalThirdAuxiliarySlagBag) {
+        this.todayAverageDisposalThirdAuxiliarySlagBag = todayAverageDisposalThirdAuxiliarySlagBag;
     }
 
     public float getTodayAverageDisposalThirdAuxiliaryFlyAshBag() {
@@ -9448,12 +9387,12 @@ public class ProductionDaily {
         this.monthAverageDisposalThirdAuxiliaryStandardTray_1_2m = monthAverageDisposalThirdAuxiliaryStandardTray_1_2m;
     }
 
-    public float getMonthAverageDisposalThirdSecondaryAuxiliarySlagBag() {
-        return monthAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public float getMonthAverageDisposalThirdAuxiliarySlagBag() {
+        return monthAverageDisposalThirdAuxiliarySlagBag;
     }
 
-    public void setMonthAverageDisposalThirdSecondaryAuxiliarySlagBag(float monthAverageDisposalThirdSecondaryAuxiliarySlagBag) {
-        this.monthAverageDisposalThirdSecondaryAuxiliarySlagBag = monthAverageDisposalThirdSecondaryAuxiliarySlagBag;
+    public void setMonthAverageDisposalThirdAuxiliarySlagBag(float monthAverageDisposalThirdAuxiliarySlagBag) {
+        this.monthAverageDisposalThirdAuxiliarySlagBag = monthAverageDisposalThirdAuxiliarySlagBag;
     }
 
     public float getMonthAverageDisposalThirdAuxiliaryFlyAshBag() {
@@ -10504,172 +10443,28 @@ public class ProductionDaily {
         this.todayOutboundB2RateMedicalWastes = todayOutboundB2RateMedicalWastes;
     }
 
-    public float getTodayOutboundSecondPretreatmentWastesBulk() {
-        return todayOutboundSecondPretreatmentWastesBulk;
+    public float getTodayOutboundSecondPretreatmentWastes() {
+        return todayOutboundSecondPretreatmentWastes;
     }
 
-    public void setTodayOutboundSecondPretreatmentWastesBulk(float todayOutboundSecondPretreatmentWastesBulk) {
-        this.todayOutboundSecondPretreatmentWastesBulk = todayOutboundSecondPretreatmentWastesBulk;
+    public void setTodayOutboundSecondPretreatmentWastes(float todayOutboundSecondPretreatmentWastes) {
+        this.todayOutboundSecondPretreatmentWastes = todayOutboundSecondPretreatmentWastes;
     }
 
-    public float getTodayOutboundSecondPretreatmentWastesCrushing() {
-        return todayOutboundSecondPretreatmentWastesCrushing;
+    public float getMonthOutboundSecondPretreatmentWastes() {
+        return monthOutboundSecondPretreatmentWastes;
     }
 
-    public void setTodayOutboundSecondPretreatmentWastesCrushing(float todayOutboundSecondPretreatmentWastesCrushing) {
-        this.todayOutboundSecondPretreatmentWastesCrushing = todayOutboundSecondPretreatmentWastesCrushing;
+    public void setMonthOutboundSecondPretreatmentWastes(float monthOutboundSecondPretreatmentWastes) {
+        this.monthOutboundSecondPretreatmentWastes = monthOutboundSecondPretreatmentWastes;
     }
 
-    public float getTodayOutboundSecondPretreatmentWastesSludge() {
-        return todayOutboundSecondPretreatmentWastesSludge;
+    public float getYearOutboundSecondPretreatmentWastes() {
+        return yearOutboundSecondPretreatmentWastes;
     }
 
-    public void setTodayOutboundSecondPretreatmentWastesSludge(float todayOutboundSecondPretreatmentWastesSludge) {
-        this.todayOutboundSecondPretreatmentWastesSludge = todayOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public float getTodayOutboundSecondPretreatmentWastesDistillation() {
-        return todayOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public void setTodayOutboundSecondPretreatmentWastesDistillation(float todayOutboundSecondPretreatmentWastesDistillation) {
-        this.todayOutboundSecondPretreatmentWastesDistillation = todayOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public float getTodayOutboundSecondPretreatmentWastesSuspension() {
-        return todayOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public void setTodayOutboundSecondPretreatmentWastesSuspension(float todayOutboundSecondPretreatmentWastesSuspension) {
-        this.todayOutboundSecondPretreatmentWastesSuspension = todayOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public float getTodayOutboundSecondPretreatmentWastesWasteLiquid() {
-        return todayOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public void setTodayOutboundSecondPretreatmentWastesWasteLiquid(float todayOutboundSecondPretreatmentWastesWasteLiquid) {
-        this.todayOutboundSecondPretreatmentWastesWasteLiquid = todayOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public float getTodayOutboundSecondPretreatmentMedicalWastes() {
-        return todayOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public void setTodayOutboundSecondPretreatmentMedicalWastes(float todayOutboundSecondPretreatmentMedicalWastes) {
-        this.todayOutboundSecondPretreatmentMedicalWastes = todayOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesBulk() {
-        return monthOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesBulk(float monthOutboundSecondPretreatmentWastesBulk) {
-        this.monthOutboundSecondPretreatmentWastesBulk = monthOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesCrushing() {
-        return monthOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesCrushing(float monthOutboundSecondPretreatmentWastesCrushing) {
-        this.monthOutboundSecondPretreatmentWastesCrushing = monthOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesSludge() {
-        return monthOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesSludge(float monthOutboundSecondPretreatmentWastesSludge) {
-        this.monthOutboundSecondPretreatmentWastesSludge = monthOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesDistillation() {
-        return monthOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesDistillation(float monthOutboundSecondPretreatmentWastesDistillation) {
-        this.monthOutboundSecondPretreatmentWastesDistillation = monthOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesSuspension() {
-        return monthOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesSuspension(float monthOutboundSecondPretreatmentWastesSuspension) {
-        this.monthOutboundSecondPretreatmentWastesSuspension = monthOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public float getMonthOutboundSecondPretreatmentWastesWasteLiquid() {
-        return monthOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public void setMonthOutboundSecondPretreatmentWastesWasteLiquid(float monthOutboundSecondPretreatmentWastesWasteLiquid) {
-        this.monthOutboundSecondPretreatmentWastesWasteLiquid = monthOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public float getMonthOutboundSecondPretreatmentMedicalWastes() {
-        return monthOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public void setMonthOutboundSecondPretreatmentMedicalWastes(float monthOutboundSecondPretreatmentMedicalWastes) {
-        this.monthOutboundSecondPretreatmentMedicalWastes = monthOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesBulk() {
-        return yearOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesBulk(float yearOutboundSecondPretreatmentWastesBulk) {
-        this.yearOutboundSecondPretreatmentWastesBulk = yearOutboundSecondPretreatmentWastesBulk;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesCrushing() {
-        return yearOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesCrushing(float yearOutboundSecondPretreatmentWastesCrushing) {
-        this.yearOutboundSecondPretreatmentWastesCrushing = yearOutboundSecondPretreatmentWastesCrushing;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesSludge() {
-        return yearOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesSludge(float yearOutboundSecondPretreatmentWastesSludge) {
-        this.yearOutboundSecondPretreatmentWastesSludge = yearOutboundSecondPretreatmentWastesSludge;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesDistillation() {
-        return yearOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesDistillation(float yearOutboundSecondPretreatmentWastesDistillation) {
-        this.yearOutboundSecondPretreatmentWastesDistillation = yearOutboundSecondPretreatmentWastesDistillation;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesSuspension() {
-        return yearOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesSuspension(float yearOutboundSecondPretreatmentWastesSuspension) {
-        this.yearOutboundSecondPretreatmentWastesSuspension = yearOutboundSecondPretreatmentWastesSuspension;
-    }
-
-    public float getYearOutboundSecondPretreatmentWastesWasteLiquid() {
-        return yearOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public void setYearOutboundSecondPretreatmentWastesWasteLiquid(float yearOutboundSecondPretreatmentWastesWasteLiquid) {
-        this.yearOutboundSecondPretreatmentWastesWasteLiquid = yearOutboundSecondPretreatmentWastesWasteLiquid;
-    }
-
-    public float getYearOutboundSecondPretreatmentMedicalWastes() {
-        return yearOutboundSecondPretreatmentMedicalWastes;
-    }
-
-    public void setYearOutboundSecondPretreatmentMedicalWastes(float yearOutboundSecondPretreatmentMedicalWastes) {
-        this.yearOutboundSecondPretreatmentMedicalWastes = yearOutboundSecondPretreatmentMedicalWastes;
+    public void setYearOutboundSecondPretreatmentWastes(float yearOutboundSecondPretreatmentWastes) {
+        this.yearOutboundSecondPretreatmentWastes = yearOutboundSecondPretreatmentWastes;
     }
 
     public float getTodayOutboundThirdPretreatmentSystemWastesBulk() {
@@ -11488,12 +11283,36 @@ public class ProductionDaily {
         this.inboundOrderItemList = inboundOrderItemList;
     }
 
-    public List<WasteInventory> getOutboundOrderItemList() {
-        return outboundOrderItemList;
+    public List<OutboundOrder> getOutboundOrderA2List() {
+        return outboundOrderA2List;
     }
 
-    public void setOutboundOrderItemList(List<WasteInventory> outboundOrderItemList) {
-        this.outboundOrderItemList = outboundOrderItemList;
+    public void setOutboundOrderA2List(List<OutboundOrder> outboundOrderA2List) {
+        this.outboundOrderA2List = outboundOrderA2List;
+    }
+
+    public List<OutboundOrder> getOutboundOrderB2List() {
+        return outboundOrderB2List;
+    }
+
+    public void setOutboundOrderB2List(List<OutboundOrder> outboundOrderB2List) {
+        this.outboundOrderB2List = outboundOrderB2List;
+    }
+
+    public List<OutboundOrder> getOutboundOrderPrepare2List() {
+        return outboundOrderPrepare2List;
+    }
+
+    public void setOutboundOrderPrepare2List(List<OutboundOrder> outboundOrderPrepare2List) {
+        this.outboundOrderPrepare2List = outboundOrderPrepare2List;
+    }
+
+    public List<OutboundOrder> getOutboundOrderThirdList() {
+        return outboundOrderThirdList;
+    }
+
+    public void setOutboundOrderThirdList(List<OutboundOrder> outboundOrderThirdList) {
+        this.outboundOrderThirdList = outboundOrderThirdList;
     }
 
     public String getAuthor() {
@@ -11502,5 +11321,13 @@ public class ProductionDaily {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public CheckState getCheckState() {
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
     }
 }

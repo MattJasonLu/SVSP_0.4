@@ -1,12 +1,10 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.FormType;
-import com.jdlink.domain.PackageType;
+import com.jdlink.domain.*;
+import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.HandleCategory;
 import com.jdlink.domain.Produce.ProcessWay;
-import com.jdlink.domain.WastesInfo;
 import com.jdlink.service.WastesInfoService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -126,6 +124,8 @@ public class WastesInfoController {
         //故障设备名称
         try{
             JSONArray equipmentList = JSONArray.fromArray(Equipment.values());
+//            Equipment[] equipment = new Equipment[]{Equipment.MedicalCookingSystem,Equipment.A2,Equipment.B2,Equipment.SecondaryTwoCombustionChamber,Equipment.ThirdPhasePretreatmentSystem,Equipment.Prepare2};
+//            JSONArray equipmentList = JSONArray.fromArray(equipment);
             res.put("equipmentList",equipmentList);
             res.put("status", "success");
             res.put("message", "获取信息成功");
@@ -136,4 +136,47 @@ public class WastesInfoController {
 
         return res.toString();
     }
+    /**
+     * 仓库借口
+     */
+    @RequestMapping("getWareHouseList")
+    @ResponseBody
+    public String getWareHouseList(){
+        JSONObject res=new JSONObject();
+        try {
+       List<WareHouse> wareHouseList=wastesInfoService.getWareHouseList();
+       JSONArray array=JSONArray.fromObject(wareHouseList);
+            res.put("status", "success");
+            res.put("message", "仓库查询成功");
+            res.put("array", array);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "仓库查询失败");
+        }
+       return  res.toString();
+    }
+
+    /**
+     * 获取运输方式
+     */
+    @RequestMapping("getTransportTypeList")
+    @ResponseBody
+    public String getTransportTypeList(){
+        JSONObject res = new JSONObject();
+        try {
+            JSONArray transportTypeList = JSONArray.fromArray(TransportType.values());
+            res.put("transportTypeList",transportTypeList);
+            res.put("status", "success");
+            res.put("message", "获取运输方式成功");
+        }
+        catch (Exception e){
+            res.put("status", "fail");
+            res.put("message", "获取运输方式失败");
+        }
+
+         return  res.toString();
+    }
+
 }

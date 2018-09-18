@@ -8,6 +8,7 @@ import com.jdlink.service.WasteInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,6 +24,11 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     @Override
     public List<WasteInventory> list1() {
         return wasteInventoryMapper.list1();
+    }
+
+    @Override
+    public List<WasteInventory> list2(Page page) {
+        return wasteInventoryMapper.list2(page);
     }
 
     @Override
@@ -87,13 +93,34 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     }
 
     @Override
-    public List<BatchingOrder> getBatching() {
-        return wasteInventoryMapper.getBatching();
+    public List<BatchingOrder> getBatching(Page page) {
+        return wasteInventoryMapper.getBatching(page);
     }
 
     @Override
     public int countInventory() {
         return wasteInventoryMapper.countInventory();
+    }
+
+    @Override
+    public List<BatchingOrder> searchBatchingOrder(BatchingOrder batchingOrder) {
+       return wasteInventoryMapper.searchBatchingOrder(batchingOrder);
+
+    }
+
+    @Override
+    public int searchBatchingTotal(BatchingOrder batchingOrder) {
+        return wasteInventoryMapper.searchBatchingTotal(batchingOrder);
+    }
+
+    @Override
+    public List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId) {
+        return wasteInventoryMapper.getByInboundOrderItemId(inboundOrderItemId);
+    }
+
+    @Override
+    public List<Date> getNewestInBoundDate() {
+        return wasteInventoryMapper.getNewestInBoundDate();
     }
 
 

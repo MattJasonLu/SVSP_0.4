@@ -42,4 +42,20 @@ public class ProcurementServiceImpl implements ProcurementService {
     public List<Procurement> searchProcurement(Procurement procurement) {
         return procurementMapper.searchProcurement(procurement);
     }
+
+    @Override
+    public List<String> getIngredientsList() {
+      return   procurementMapper.getIngredientsList();
+
+    }
+
+    @Override
+    public void setProcurementListCancel(String receiptNumber) {
+        procurementMapper.setProcurementListCancel(receiptNumber);
+    }
+
+    @Override
+    public void setProcurementListSubmit(String receiptNumber) {
+        procurementMapper.setProcurementListSubmit(receiptNumber);
+    }
 }

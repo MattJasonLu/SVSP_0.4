@@ -40,6 +40,30 @@ import java.util.List;
     private String inboundOrderItemId;
    private PackageType packageType;
    private FormType formType;
+  private String time;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    /**
+     * 页码
+     * @return
+     */
+    private Page page;
+
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public PackageType getPackageType() {
         return packageType;

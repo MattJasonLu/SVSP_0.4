@@ -8,8 +8,8 @@
         select medicalWastesId from t_pl_medicalwastes order by medicalWastesId desc ;
     </select>
     <insert id="addMedicalWastes" parameterType="MedicalWastes">
-        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime)
-        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW())
+        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime,equipment)
+        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment})
     </insert>
     <select id="loadMedicalWastesList" resultType="MedicalWastes">
         select  * from t_pl_medicalwastes  order by nowTime desc;
@@ -30,5 +30,18 @@
 
         </where>
         order by nowTime desc
+    </select>
+<!--通过日期获取医废-->
+    <select id="getMedicalWastesByRange" resultType="MedicalWastes">
+        SELECT * FROM t_pl_medicalwastes
+            <![CDATA[WHERE DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
+            AND DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]>;
+    </select>
+    <!--通过日期和处置设备-->
+    <select id="getMedicalWastesByDateAndEquipment" resultType="MedicalWastes">
+         SELECT * FROM t_pl_medicalwastes
+            <![CDATA[WHERE DATE_FORMAT(dateTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
+            AND DATE_FORMAT(dateTime, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]> and equipment=#{2};
+
     </select>
 </mapper>

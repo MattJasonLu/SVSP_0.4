@@ -24,6 +24,41 @@ function getNewestId() {
             alert("服务器异常！");
         }
     });
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getEquipmentNameList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                var equipment=$("#equipment");
+                equipment.children().remove();
+                $.each(result.equipmentList,function (index,item) {
+                    var option=$('<option/>')
+                    option.val(index);
+                    option.text(item.name);
+                    equipment.append(option);
+                    $('.selectpicker').selectpicker('refresh');
+                });
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error:function (result) {
+            alert("服务器异常")
+        }
+
+    });
+
+
+
 }
 //保存医废出入库信息
 function saveMedicalWastes() {
@@ -43,6 +78,7 @@ function saveMedicalWastes() {
         thisMonthSendCooking:$('#thisMonthSendCooking').val(),
         errorNumber:$('#errorNumber').val(),
         wetNumber:$('#wetNumber').val(),
+        equipment:$('#equipment').selectpicker('val'),
     }
     $.ajax({
         type: "POST",                            // 方法类型
@@ -205,4 +241,76 @@ function searchMedicalWastes() {
             console.log(result);
         }
     });
+}
+//误差量计算
+//医废-误差量计算公式：误差量=本日进厂医废（接运单）-本日直接转外处置量-本日蒸煮医废（过磅量）
+function geterrorNumberByWastes() {
+    thisMonthWastes = $('#thisMonthWastes').val();
+    if($('#thisMonthWastes').val()==null||$('#thisMonthWastes').val()==''){
+        thisMonthWastes=0;
+    }
+    directDisposal=$('#directDisposal').val();
+    if($('#directDisposal').val()==null||$('#directDisposal').val()==''||$('#directDisposal').val().length<=0){
+        directDisposal=0;
+    }
+    cookingWastes=$('#cookingWastes').val();
+    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
+        cookingWastes=0;
+    }
+    $("#errorNumber").val(parseInt(thisMonthWastes)-parseInt(directDisposal)-parseInt(cookingWastes));
+}
+
+function geterrorNumberByDisposal() {
+    thisMonthWastes = $('#thisMonthWastes').val();
+    if($('#thisMonthWastes').val()==null||$('#thisMonthWastes').val()==''){
+        thisMonthWastes=0;
+    }
+    directDisposal=$('#directDisposal').val();
+    if($('#directDisposal').val()==null||$('#directDisposal').val()==''||$('#directDisposal').val().length<=0){
+        directDisposal=0;
+    }
+    cookingWastes=$('#cookingWastes').val();
+    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
+        cookingWastes=0;
+    }
+    $("#errorNumber").val(parseInt(thisMonthWastes)-parseInt(directDisposal)-parseInt(cookingWastes));
+
+
+}
+
+
+function geterrorNumberByCook() {
+    thisMonthWastes = $('#thisMonthWastes').val();
+    if($('#thisMonthWastes').val()==null||$('#thisMonthWastes').val()==''){
+        thisMonthWastes=0;
+    }
+    directDisposal=$('#directDisposal').val();
+    if($('#directDisposal').val()==null||$('#directDisposal').val()==''||$('#directDisposal').val().length<=0){
+        directDisposal=0;
+    }
+    cookingWastes=$('#cookingWastes').val();
+    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
+        cookingWastes=0;
+    }
+    afterCookingNumber=$('#afterCookingNumber').val();
+    if($('#afterCookingNumber').val()==null||$('#afterCookingNumber').val()==''||$('#afterCookingNumber').val().length<=0){
+        afterCookingNumber=0;
+    }
+    $("#wetNumber").val(parseInt(cookingWastes)-parseInt(afterCookingNumber));
+    $("#errorNumber").val(parseInt(thisMonthWastes)-parseInt(directDisposal)-parseInt(cookingWastes));
+}
+
+//水分含量计算
+//医废-水分含量计算公式：水份含量=本日蒸煮医废（过磅量）-蒸煮后重量
+function getWaterByCooking() {
+    cookingWastes=$('#cookingWastes').val();
+    if($('#cookingWastes').val()==null||$('#cookingWastes').val()==''||$('#cookingWastes').val().length<=0){
+        cookingWastes=0;
+    }
+    afterCookingNumber=$('#afterCookingNumber').val();
+    if($('#afterCookingNumber').val()==null||$('#afterCookingNumber').val()==''||$('#afterCookingNumber').val().length<=0){
+        afterCookingNumber=0;
+    }
+    $("#wetNumber").val(parseInt(cookingWastes)-parseInt(afterCookingNumber));
+
 }
