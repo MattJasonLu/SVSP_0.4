@@ -458,7 +458,6 @@ function setSeniorSelectedList() {
 
 }
 //合同列表高级查询
-
 function searchContract() {
     array.length=0;//清空数组
     array1.length=0;
@@ -1088,6 +1087,7 @@ function viewContract(item) {
         success: function (result) {
             //console.log(result);
             if (result != undefined) {
+                console.log(result);
                 var data = eval(result);
                 //开始日期
                 if (data.beginTime != null) {
@@ -1187,7 +1187,8 @@ function viewContract(item) {
                     $('#modal3_freight').removeAttr("checked");
                 }
 
-
+                //赋值报价单明细
+                setContractListModal(data.quotationItemList);
 
 
 
@@ -1219,6 +1220,68 @@ function viewContract(item) {
     $('#print').show();//打印显示
 }
 
+//设置克隆行的数据合同查看功能
+function setContractListModal(result) {
+    //$('.myclass1').hide();
+    var tr = $("#cloneTr");
+    tr.siblings().remove();
+    tr.attr('class','myclass1');
+    $.each(result, function (index, item) {
+        //console.log(item);
+        // 克隆tr，每次遍历都可以产生新的tr
+        var clonedTr = tr.clone();
+        clonedTr.show();
+        // 循环遍历cloneTr的每一个td元素，并赋值
+        clonedTr.children("td").each(function (inner_index) {
+            //1生成领料单号
+            var obj = eval(item);
+            // 根据索引为部分td赋值
+            switch (inner_index) {
+                // 序号
+                case (0):
+                    $(this).html(index+1);
+                    break;
+                // 八位码
+                case (1):
+                    $(this).html(obj.wastesCode);
+                    break;
+                // 单位
+                case (2):
+                    $(this).html(obj.wastesName);
+                    break;
+                // 库存量
+                case (3):
+                    $(this).html(obj.packageType.name);
+                    break;
+                // 需求数量
+                case (4):
+                    $(this).html(obj.util);
+                    break;
+                // 备注
+                case (5):
+                    $(this).html(obj.unitPriceTax);
+                    break;
+                case (6):
+                    $(this).html(obj.contractAmount);
+                    break;
+                case (7):
+                    $(this).html(obj.totalPrice);
+                    break;
+                case (8):
+                    $(this).html(obj.transport.name);
+                    break;
+            }
+        });
+        // 把克隆好的tr追加到原来的tr前面
+        clonedTr.removeAttr("id");
+        clonedTr.insertBefore(tr);
+
+
+    });
+    // 隐藏无数据的tr
+    tr.hide();
+    tr.removeAttr('class');
+}
 /***
  * 查看合同2
  */
@@ -1587,7 +1650,7 @@ function loadWastesContractSelectList() {
                     option.text(item.name);
                     transportType.append(option);
                 });
-                transportType.get(0).selectedIndex=-1;
+                transportType.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -1615,7 +1678,7 @@ function loadWastesContractSelectList() {
                     option.text(item.name);
                     packageType.append(option);
                 });
-                packageType.get(0).selectedIndex=-1;
+                packageType.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -2147,7 +2210,7 @@ function loadEmSelectList() {
                     option.text(item.name);
                     transportType.append(option);
                 });
-                transportType.get(0).selectedIndex=-1;
+                transportType.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -2175,7 +2238,7 @@ function loadEmSelectList() {
                     option.text(item.name);
                     packageType.append(option);
                 });
-                packageType.get(0).selectedIndex=-1;
+                packageType.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -2553,7 +2616,7 @@ function loadLogicContractSelectList() {
                     option.text(item.name);
                     transportType.append(option);
                 });
-                transportType.get(0).selectedIndex=-1;
+                transportType.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);
@@ -2581,7 +2644,7 @@ function loadLogicContractSelectList() {
                     option.text(item.name);
                     packageType.append(option);
                 });
-                packageType.get(0).selectedIndex=-1;
+                packageType.get(0).selectedIndex=0;
             }
             else {
                 alert(result.message);

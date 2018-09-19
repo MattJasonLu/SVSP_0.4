@@ -705,13 +705,16 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center">
-                                    <a href="#" id="function_144" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_144" onclick="viewContract(this);" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                     <a href="#" id="function_145" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustContract(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                                     <a href="#" id="function_146" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                                     <a href="#" id="function_147" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 </td>
                             </tr>
+                               <!--
+                               check(this); function check(e){if(!checkAuthority($(e))) return false;}
 
+                               -->
                         </tbody>
                     </table>
                 </div>
@@ -757,11 +760,11 @@
 <!--查看页面-->
 <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog"
      aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document" style="width:700px">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="client_style">
                 <h4 class="sub-header text-center">合同信息</h4>
-                <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
+                <form method="post" id="contractInfoForm1" enctype="multipart/form-data" style="margin-left: -10px">
                     <div class="row form-inline" id="print1">
                         <div class="form-horizontal col-md-6 form-inline">
                             <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
@@ -797,10 +800,10 @@
                             </p>
                         </div>
                     </div>
-                    <table class="table table-bordered" style="width: 50%">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <td colspan="13" class="text-center"><h3>报价单明细</h3></td>
+                            <th colspan="9" class="text-center"><h3>报价单明细</h3></th>
                         </tr>
                         <tr>
                             <th class="text-center">序号</th>
@@ -815,32 +818,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr  class="myclass">
-                            <td class="text-center"><input class="focus" title="" name="0">1</td>
-                            <td class="text-center" >
-                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode"></select>
-                            </td>
-                            <td class="text-center" ><input class="focus" title=""></td>
-                            <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title=""></td>
-                            <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
-                            <td class="text-center"><input class="focus" title=""readonly></td>
-                            <td class="text-center"><select class="focus" title="" id="transportType" >
-                                <option value="0">0</option>
-                            </select></td>
-
-                        </tr>
-                        <tr id="plusBtn">
-                            <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
-                            <td></td>
-                            <td ></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td ></td>
-                            <td ></td>
-                            <td ></td>
+                        <tr id="cloneTr">
+                            <td class="text-center"></td>
+                            <td class="text-center"> </td>
+                            <td class="text-center" ></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                         </tr>
                         </tbody>
                     </table>
