@@ -24,7 +24,8 @@
         <result property="companyName " column="companyName " javaType="String"></result>
         <result property="province" column="province " javaType="com.jdlink.domain.Province"></result>
         <result property="contactName" column="contactName" javaType="String"></result>
-        <result property="telephone" column="telephone " javaType="String"></result>
+        <result property="telephone" column="telephone" javaType="String"></result>
+        <result property="clientId" column="clientId" javaType="String"></result>
         <collection property="hazardousList" select="getHazardous" column="contractId"
                     ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
         <collection property="quotationItemList" select="getQuotationItem" column="contractId"

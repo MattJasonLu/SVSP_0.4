@@ -87,19 +87,19 @@ function setContractList(result) {
                     case (9):
                         // 合约量(t)
                         if (result.contractInfo[index] != null){
-                            var contractAmount = result.contractInfo[index].quotationItemList[i].contractAmount;
-                            $(this).html(contractAmount);
+                            $(this).html(result.contractInfo[index].quotationItemList[i].contractAmount);
                         }
                         break;
                     case (10):
                         // 单价
                         if (result.contractInfo[index] != null){
-                            var unitPriceTax = result.contractInfo[index].quotationItemList[i].unitPriceTax;
-                            $(this).html(unitPriceTax);
+                            $(this).html(result.contractInfo[index].quotationItemList[i].unitPriceTax);
                         }
                         break;
                     case (11):
                         // 总价
+                        var unitPriceTax = result.contractInfo[index].quotationItemList[i].unitPriceTax;
+                        var contractAmount = result.contractInfo[index].quotationItemList[i].contractAmount;
                         if (result.contractInfo[index] != null)
                             $(this).html(parseFloat(contractAmount) * parseFloat(unitPriceTax));
                         break;

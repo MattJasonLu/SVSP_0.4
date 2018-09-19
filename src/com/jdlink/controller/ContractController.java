@@ -978,12 +978,12 @@ public class ContractController {
                     String code = quotationItem.getWastesCode();
                     if (code != null) {
                         // 获取化验单
-                        LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(code,clientId);
+                        LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(code, clientId);
                         laboratoryTestList.add(laboratoryTest);
                     }
                 }
                 // 设置map
-                map.put(serialNumber,laboratoryTestList);
+                map.put(serialNumber, laboratoryTestList);
                 serialNumber++;
             }
             // map转json
@@ -1002,7 +1002,7 @@ public class ContractController {
             res.put("message", "获取失败");
         }
         return res.toString();
-
+    }
     //添加报价单明细
     @RequestMapping("addQuotationItem")
     @ResponseBody
@@ -1084,9 +1084,7 @@ public class ContractController {
              res.put("status", "fail");
              res.put("message", "子表更新失败");
          }
-
         return  res.toString();
-
     }
 }
 
