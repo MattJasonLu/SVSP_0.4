@@ -80,7 +80,7 @@ public class Contract implements Serializable {
     /**
      * 预约处置费
      */
-    private String order1;
+    private float order1;
     /**
      * 是否包含运费
      */
@@ -200,6 +200,10 @@ public class Contract implements Serializable {
      */
     private String suppier;
     /**
+     * 供应商名称
+     */
+    private Supplier supplier;
+    /**
      * Page
      */
     private Page page;
@@ -226,10 +230,32 @@ public class Contract implements Serializable {
      * 业务员ID
      */
     private String salesmanId;
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     /**
      * 业务员姓名
      */
+
     private String salesmanName;
+    /**
+     * 客户对象
+     */
+    private Client client;
 
     public String getSalesmanName() {
         return salesmanName;
@@ -534,11 +560,9 @@ public class Contract implements Serializable {
         this.clientId = clientId;
     }
 
-    public String getOrder1() {
-        return order1;
-    }
 
-    public void setOrder1(String order1) {
+
+    public void setOrder1(float order1) {
         this.order1 = order1;
     }
 

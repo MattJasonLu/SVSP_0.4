@@ -14,7 +14,12 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
-
+//重置
+function reset() {
+    $("#senior").find("input").val("");
+    $("#searchContent").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
 /**
  * 计算总页数
  * */
@@ -362,6 +367,7 @@ function setStockList(result) {
                           $(this).html(obj.client.mobile);
                       }
                     };
+                    break;
                 // 申报状态
                 case (4):
                     if (obj.checkState != null) {
@@ -437,7 +443,7 @@ function setStockList(result) {
         });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
+        clonedTr.insertAfter(tr);
     });
     // 隐藏无数据的tr
     tr.hide();
@@ -879,7 +885,7 @@ function adjustStock(item){
 //修改页面的初始
 function loadAdjustStock() {
     //获取申报编号
-    $('.selectpicker').selectpicker({
+    $('.selectpicker').selectpicker( {
         language: 'zh_CN',
         // style: 'btn-info',
         size: 4

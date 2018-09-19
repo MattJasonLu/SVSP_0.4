@@ -52,8 +52,6 @@
         config.pasteFromWordRemoveFontStyles = false;
         config.pasteFromWordRemoveStyles = false;
     };
-    var currentPage = 1;                          //当前页数
-    var contractIndex = 0;                        //合同索引值
     function loadContractList1(index) {
         //localStorage.clear();
         $('#back').hide();
@@ -540,12 +538,13 @@
                     </div>
                     <!--查询框-->
                     <div class="input-group col-xs-3 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="search">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
                         <span class="input-group-btn">
-                            <a class="btn btn-default" onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default"  onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                     class="glyphicon glyphicon-cog"
                                     aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
                 </div>
             </div>
@@ -579,10 +578,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-search-suppierName" class="col-sm-4 control-label">处置单位名称</label>
+                                <label for="search-suppierName" class="col-sm-4 control-label">处置单位名称</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-search-suppierName"
-                                           name="search-search-suppierName" placeholder="">
+                                    <input type="text" class="form-control" id="search-suppierName"
+                                           name="search-suppierName" placeholder="">
                                 </div>
                             </div>
 
@@ -689,7 +688,7 @@
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody  id="tbody1">
                             <tr id="cloneTr1" name="clone" ondblclick="checkdb(this)">
                                 <td class="text-center">
                                     <label>
@@ -706,13 +705,16 @@
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center">
-                                    <a href="#" id="function_144" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_144" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
                                     <a href="#" id="function_145" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustContract(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                                     <a href="#" id="function_146" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                                     <a href="#" id="function_147" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 </td>
                             </tr>
+                               <!--
+                              }
 
+                               -->
                         </tbody>
                     </table>
                 </div>
@@ -758,11 +760,11 @@
 <!--查看页面-->
 <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog"
      aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document" style="width:700px">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="client_style">
                 <h4 class="sub-header text-center">合同信息</h4>
-                <form method="post" id="contractInfoForm1" enctype="multipart/form-data">
+                <form method="post" id="contractInfoForm1" enctype="multipart/form-data" style="margin-left: -10px">
                     <div class="row form-inline" id="print1">
                         <div class="form-horizontal col-md-6 form-inline">
                             <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
@@ -798,6 +800,37 @@
                             </p>
                         </div>
                     </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th colspan="9" class="text-center"><h3>报价单明细</h3></th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">序号</th>
+                            <th class="text-center" >八位码</th>
+                            <th class="text-center" >危废名称</th>
+                            <th class="text-center">包装类型</th>
+                            <th class="text-center" >单位</th>
+                            <th class="text-center" >处置单价</th>
+                            <th class="text-center">合约量</th>
+                            <th class="text-center" >处置金额</th>
+                            <th class="text-center">运输方式</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr id="cloneTr">
+                            <td class="text-center"></td>
+                            <td class="text-center"> </td>
+                            <td class="text-center" ></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                        </tr>
+                        </tbody>
+                    </table>
                     <br> <br>
                     <div class="row text-center">
                         <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
@@ -958,145 +991,7 @@
     //     minView: 2,
     //     forceParse: 0
     // });
-    function  ContractListByName(item) {
-        currentPage = 1;                   //在onload之后执行
-        $('#state').get(0).selectedIndex = 0;
-        nameBykey = item.innerHTML;
-        if (item.innerHTML == '危废合同') {
-            contractIndex = 0;
-            var page = {};
-            var pageNumber = 1;
-            page.count = countValue();                                 // 可选
-            page.pageNumber = pageNumber;
-            page.start = (pageNumber - 1) * page.count;
-            page.contractIndex = contractIndex;
-            $('#toggleName').text("产废单位名称");
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageContractManageList",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                contentType: "application/json; charset=gbk",
-                data: JSON.stringify(page),
-                success: function (result) {
-                    if (result != undefined) {
-                        //alert(result);
-                        //console.log(result);
-                        setContractList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-        }
-        if (item.innerHTML == "应急处置合同") {
-            contractIndex = 1;
-            var page = {};
-            var pageNumber = 1;
-            page.count = countValue();                                 // 可选
-            page.pageNumber = pageNumber;
-            page.start = (pageNumber - 1) * page.count;
-            page.contractIndex = contractIndex;
-            $('#toggleName').text("产废单位名称");
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageContractManageList",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                contentType: "application/json; charset=gbk",
-                data: JSON.stringify(page),
-                success: function (result) {
-                    if (result != undefined) {
-                        //alert(result);
-                        //console.log(result);
-                        setContractList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-        }
-        if (item.innerHTML == "物流合同") {
-            //列表切换
-            contractIndex = 2;
-            var page = {};
-            var pageNumber = 1;
-            page.count = countValue();                                 // 可选
-            page.pageNumber = 1;
-            page.start = (pageNumber - 1) * page.count;
-            page.contractIndex = contractIndex;
-            $('#toggleName').text("处置单位名称");
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageContractManageList",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: JSON.stringify(page),
-                contentType: "application/json; charset=gbk",
-                success: function (result) {
-                    if (result != undefined) {
-                        //alert(result);
-                        //console.log(result);
-                        setContractList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-        }
-        if (item.innerHTML == "次生合同") {
-            //console.log(name);
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "listContractByName",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: JSON.stringify(page),
-                success: function (result) {
-                    if (result != undefined) {
-                        //alert(result);
-                        //console.log(result);
-                        setContractList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-        }
-        if (item.innerHTML == "采购合同") {
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "listContractByName",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                data: {"name": "Purchase"},
-                success: function (result) {
-                    if (result != undefined) {
-                        //alert(result);
-                        //console.log(result);
-                        setContractList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-        }
-    }
+
 
     function cancel(item) {
         //查看合同编号

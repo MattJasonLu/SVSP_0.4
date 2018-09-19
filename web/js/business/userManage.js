@@ -326,6 +326,10 @@ function loadRoleAndFunction() {
  * @param e
  */
 function showAuthorityById(e) {
+    setTimeout(function () {
+        $("#span_content").text("数据处理中...").show(1500);
+    }, 0);
+    //$("#span_content").text("数据处理中...");
     roleId = e.prop('id');
     $.ajax({
         type: "POST",
@@ -335,9 +339,13 @@ function showAuthorityById(e) {
         data: { 
             roleId: roleId 
         },
+        //beforeSend: function(){},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setFunctionChecked(result.data);
+                setTimeout(function () {
+                    $("#span_content").text("数据处理完成").delay(1500).hide(0);
+                }, 0);
             } else {
                 console.log(result);
             }
