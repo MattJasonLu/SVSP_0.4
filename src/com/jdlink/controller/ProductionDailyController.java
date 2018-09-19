@@ -210,6 +210,7 @@ public class ProductionDailyController {
             ProductionDaily newProductionDaily = new ProductionDaily();
             newProductionDaily.setId(productionDaily.getId());
             newProductionDaily.setDate(productionDaily.getDate());
+            newProductionDaily.setCheckState(CheckState.NewBuild);
             calculateProductionDaily(productionDaily.getDate(), newProductionDaily);
             // 删除日报
             productionDailyService.deleteProductionDaily(id);
