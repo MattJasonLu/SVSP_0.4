@@ -165,6 +165,7 @@ function toView1(item) {
 //-----------------------业务员列表页面-----------------
 function reset1() {
     $("#senior1").find("input").val("");
+    $("#searchContent1").val("");
 }
 
 function loadMonthSalesmanData() {
@@ -201,6 +202,7 @@ function setSalesmanMonthDataList(result) {
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.addClass('myclass');
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -276,9 +278,79 @@ function toViewSalesman1(item) {
     location.href = "assessment2.html";
 }
 
+var array = [];//存放所有的tr
+var array1 = [];//存放目标的tr
+/**
+ * 月度考核业务员列表查询功能
+ */
+function search1() {
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    array = [];//清空数组
+    array1 = [];
+    array.push($('.myclass'));
+    if ($("#senior1").is(':visible')) {// 高级查询
+        //搜索关键字
+        var salesmanId = $('#search1-salesmanId').val();
+        var salesmanName = $('#search1-salesmanName').val();
+        var wayBillTotalPrice = $('#search1-wayBillTotalPrice').val();
+        for (var j = 0; j < array.length; j++) {
+            $.each(array[j], function () {
+                //console.log(this);
+                if (!($(this).children('td').eq(0).text().indexOf(salesmanId) != -1 && $(this).children('td').eq(1).text().indexOf(salesmanName) != -1
+                    && $(this).children('td').eq(4).text().indexOf(wayBillTotalPrice) != -1)) {
+                    $(this).hide();
+                }
+                if (($(this).children('td').eq(0).text().indexOf(salesmanId) != -1 && $(this).children('td').eq(1).text().indexOf(salesmanName) != -1
+                    && $(this).children('td').eq(4).text().indexOf(wayBillTotalPrice) != -1)) {
+                    array1.push($(this));
+                }
+            });
+        }
+
+        for (var i = 0; i < array1.length; i++) {
+            $.each(array1[i], function () {
+                $('#tbody1').append(this);
+            });
+        }
+
+        if (salesmanId.length <= 0 && salesmanName.length <= 0 && wayBillTotalPrice.length < 0) {
+            $('.myclass').each(function () {
+                $(this).show();
+            })
+        }
+    } else {
+        // 模糊查询
+        var text = $('#searchContent1').val();
+        for (var j = 0; j < array.length; j++) {
+            $.each(array[j], function () {
+                if (($(this).children('td').text().indexOf(text) == -1)) {
+                    $(this).hide();
+                }
+                if ($(this).children('td').text().indexOf(text) != -1) {
+                    array1.push($(this));
+                }
+            });
+        }
+        for (var i = 0; i < array1.length; i++) {
+            $.each(array1[i], function () {
+                $('#tbody1').append(this);
+            });
+        }
+
+        if (text.length <= 0) {
+            $('.myclass').each(function () {
+                $(this).show();
+            })
+        }
+    }
+}
+
 //---------------------------合同明细页面---------------
 function reset2() {
     $("#senior2").find("input").val("");
+    $("#searchContent2").val("");
 }
 
 function loadContractListData() {
@@ -314,6 +386,7 @@ function setContractList(result) {
     $.each(result.assessmentInfo, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.addClass('myClass2');
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -376,8 +449,8 @@ function setContractList(result) {
                     break;
                 case (13):
                     // 备注
-                    if(result.wayBillInfo[index] != null)
-                    $(this).html(result.wayBillInfo[index].remarks);
+                    if (result.wayBillInfo[index] != null)
+                        $(this).html(result.wayBillInfo[index].remarks);
                     break;
             }
         });
@@ -399,5 +472,71 @@ function toViewItems(item) {
 
 function toViewItems1(item) {
     salesmanId = getSalesmanId1(item);
+}
 
+/**
+ * 月度考核合同明细列表查询功能
+ */
+function search2() {
+    $('.myClass2').each(function () {
+        $(this).show();
+    });
+    array = [];//清空数组
+    array1 = [];
+    array.push($('.myClass2'));
+    if ($("#senior2").is(':visible')) {// 高级查询
+        //搜索关键字
+        var produceCompanyName = $('#search2-produceCompanyName').val();
+        var accountDate = $('#search2-accountDate').val();
+        var remarks = $('#search2-remarks').val();
+        for (var j = 0; j < array.length; j++) {
+            $.each(array[j], function () {
+                //console.log(this);
+                if (!($(this).children('td').eq(2).text().indexOf(produceCompanyName) != -1 && $(this).children('td').eq(3).text().indexOf(accountDate) != -1
+                    && $(this).children('td').eq(13).text().indexOf(remarks) != -1)) {
+                    $(this).hide();
+                }
+                if (($(this).children('td').eq(2).text().indexOf(produceCompanyName) != -1 && $(this).children('td').eq(3).text().indexOf(accountDate) != -1
+                    && $(this).children('td').eq(13).text().indexOf(remarks) != -1)) {
+                    array1.push($(this));
+                }
+            });
+        }
+
+        for (var i = 0; i < array1.length; i++) {
+            $.each(array1[i], function () {
+                $('#tbody2').append(this);
+            });
+        }
+
+        if (produceCompanyName.length <= 0 && accountDate.length <= 0 && remarks.length < 0) {
+            $('.myClass2').each(function () {
+                $(this).show();
+            })
+        }
+    } else {
+        // 模糊查询
+        var text = $('#searchContent2').val();
+        for (var j = 0; j < array.length; j++) {
+            $.each(array[j], function () {
+                if (($(this).children('td').text().indexOf(text) == -1)) {
+                    $(this).hide();
+                }
+                if ($(this).children('td').text().indexOf(text) != -1) {
+                    array1.push($(this));
+                }
+            });
+        }
+        for (var i = 0; i < array1.length; i++) {
+            $.each(array1[i], function () {
+                $('#tbody2').append(this);
+            });
+        }
+
+        if (text.length <= 0) {
+            $('.myClass2').each(function () {
+                $(this).show();
+            })
+        }
+    }
 }

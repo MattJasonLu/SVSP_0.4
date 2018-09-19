@@ -112,7 +112,7 @@ public class PRWayBillController {
     @RequestMapping("getCurrentWayBillId")
     @ResponseBody
     public String getCurrentWayBillId() {
-        String id = getCurrentWayBillId();
+        String id = wayBillService.getCurrentWayBillId();
         JSONObject res = new JSONObject();
         res.put("id", id);
         return res.toString();
