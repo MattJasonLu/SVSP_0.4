@@ -132,10 +132,10 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         <collection property="salesman" column="salesmanId" select="getSalesMan" ofType="Salesman"></collection>
     </resultMap>
     <select id="getClient1" resultType="Client">
-        select * from client where clientId=#{clientId}
+        select * from client where clientId=#{clientId};
     </select>
     <select id="getSalesMan" resultType="Salesman">
-        select * from salesman where salesmanId=#{salesmanId}
+        select * from salesman where salesmanId=#{salesmanId};
     </select>
     <!--更新出库单的数据-->
     <update id="updateOutBoundOrder" parameterType="String">
@@ -176,6 +176,7 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         <collection property="wareHouse" column="wareHouseId" select="getWareHouse" ofType="WareHouse"></collection>
         <collection property="wasteInventory" column="inboundOrderId" select="getWasteInventory"
                     ofType="WasteInventory"></collection>
+        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
     </resultMap>
     <!--获取领料单信息-->
     <select id="getMaterialRequisitionOrder" resultType="MaterialRequisitionOrder" parameterType="String">
