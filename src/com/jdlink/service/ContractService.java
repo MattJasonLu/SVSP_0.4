@@ -66,7 +66,11 @@ public interface ContractService {
     List<Contract> searchModel(Contract contract);
     List<Contract> getContractList(String year);
     List<Contract> getContractListByMonth(String month);
+
+    List<Contract> getAllContractBySalesmanId(String salesmanId);
+
     void addQuotationItem(QuotationItem quotationItem);
     void updateContract(Contract contract);
     void deleteQuotationItem(String contractId);
+
 }
