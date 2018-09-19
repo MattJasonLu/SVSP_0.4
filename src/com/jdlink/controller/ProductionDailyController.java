@@ -1,20 +1,25 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
+import com.jdlink.util.DateUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +43,6 @@ public class ProductionDailyController {
     @Autowired
     ProductionDailyService productionDailyService;
 
-
     /**
      * 获取总记录数
      * @return 总记录数
@@ -55,6 +59,45 @@ public class ProductionDailyController {
     }
 
     /**
+     * 获取日期范围数量
+     * @param beginTime 起始日期
+     * @param endTime 结束日期
+     * @return 数量
+     */
+    @RequestMapping("getProductionDailyByDateRangeCount")
+    @ResponseBody
+    public int getProductionDailyByDateRangeCount(Date beginTime, Date endTime) {
+        try {
+            return productionDailyService.getProductionDailyByDateRangeCount(beginTime, endTime);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 设置日报的状态
+     * @param id 编号
+     * @param checkState 审批状态
+     * @return 成功与否
+     */
+    @RequestMapping("setProductionDailyState")
+    @ResponseBody
+    public String setProductionDailyState(int id, CheckState checkState) {
+        JSONObject res = new JSONObject();
+        try {
+            productionDailyService.setProductionDailyState(id, checkState);
+            res.put("status", "success");
+            res.put("message", "设置状态成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "设置状态失败");
+        }
+        return res.toString();
+    }
+
+    /**
      * 通过页数获取日报页数
      * @return 成功与否
      */
@@ -64,6 +107,24 @@ public class ProductionDailyController {
         JSONObject res = new JSONObject();
         try {
             List<ProductionDaily> productionDailyList = productionDailyService.listProductionDailyByPage(page);
+            JSONArray data = JSONArray.fromArray(productionDailyList.toArray(new ProductionDaily[productionDailyList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("searchProductionDaily")
+    @ResponseBody
+    public String searchProductionDaily(Date beginTime, Date endTime, Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<ProductionDaily> productionDailyList = productionDailyService.getProductionDailyByDateRange(beginTime, endTime, page);
             JSONArray data = JSONArray.fromArray(productionDailyList.toArray(new ProductionDaily[productionDailyList.size()]));
             res.put("status", "success");
             res.put("message", "获取信息成功");
@@ -98,6 +159,8 @@ public class ProductionDailyController {
         }
         return res.toString();
     }
+
+
 
     /**
      * 生成当天日报
@@ -766,6 +829,7 @@ public class ProductionDailyController {
             List<OutboundOrder> outboundOrderList = outboundOrderService.getOutBoundByDateAndEquipment(now, "SecondaryTwoCombustionChamber");
             for (OutboundOrder outboundOrder : outboundOrderList) {
                 if (!outboundOrder.getBoundType().equals(BoundType.SecondaryOutbound)) continue;
+                if (outboundOrder.getLaboratoryTest() == null) continue;
                 String wastesName = outboundOrder.getLaboratoryTest().getWastesName();
                 switch (wastesName) {
                     case "slag":
@@ -784,6 +848,869 @@ public class ProductionDailyController {
             productionDaily.setTodayInboundSecondWastesSlag(productionDaily.getTodayDisposalSecondarySlag() + productionDaily.getTodayDisposalThirdSlag());
             productionDaily.setTodayInboundSecondWastesAsh(productionDaily.getTodayDisposalSecondaryAsh() + productionDaily.getTodayDisposalThirdAsh());
 
+            // 获取三期消耗
+            float todayOutboundThird = productionDaily.getTodayOutboundThirdPretreatmentSystemWastesBulk() + productionDaily.getTodayOutboundThirdPretreatmentSystemWastesCrushing() +
+                    productionDaily.getTodayOutboundThirdPretreatmentSystemWastesSludge() + productionDaily.getTodayOutboundThirdPretreatmentSystemWastesDistillation() +
+                    productionDaily.getTodayOutboundThirdPretreatmentSystemWastesSuspension() + productionDaily.getTodayOutboundThirdPretreatmentSystemWastesWasteLiquid();
+
+            // 辅料备件日平均
+            productionDaily.setTodayAverageDisposalMedicalAuxiliaryNaclo(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliaryNaclo(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalMedicalAuxiliaryDeodorant(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliaryDeodorant(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalMedicalAuxiliaryMedicalWastesBag(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliaryMedicalWastesBag(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalMedicalAuxiliaryMedicalPackingPlasticBag(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliaryMedicalPackingPlasticBag(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalMedicalAuxiliaryCollectionBox(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliaryCollectionBox(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalMedicalAuxiliarySteam(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliarySteam(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalMedicalAuxiliaryIndustrialWater(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliaryIndustrialWater(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalMedicalAuxiliaryElectricQuantity(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalMedicalAuxiliaryElectricQuantity(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryCalcareousLime(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryCalcareousLime(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryCommonActivatedCarbon(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryCommonActivatedCarbon(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryActivatedCarbon(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryActivatedCarbon(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryActivatedCarbonParticles(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryActivatedCarbonParticles(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryLye(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryLye(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliarySalt(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliarySalt(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliarySlagBag(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliarySlagBag(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryFlyAshBag(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryFlyAshBag(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryDieselOil(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryDieselOil(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryIndustrialWater(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryIndustrialWater(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryElectricQuantity(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryElectricQuantity(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalSecondaryAuxiliaryWoodenPallets(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalSecondaryAuxiliaryWoodenPallets(), productionDaily.getTodayOutboundMedicalWastes()));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryCalcareousLime(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryCalcareousLime(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryCommonActivatedCarbon(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryCommonActivatedCarbon(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryActivatedCarbon(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryActivatedCarbon(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryActivatedCarbonParticles(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryActivatedCarbonParticles(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryLye(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryLye(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryCausticSoda(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryCausticSoda(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryUrea(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryUrea(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryHydrochloricAcid(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryHydrochloricAcid(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryNahco3(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryNahco3(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryFlour(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryFlour(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryDefoamer(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryDefoamer(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryFlocculant(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryFlocculant(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliarySoftWaterReducingAgent(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliarySoftWaterReducingAgent(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliarySoftWaterScaleInhibitor(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliarySoftWaterScaleInhibitor(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryAmmonia(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryAmmonia(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryWaterReducingAgent(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryWaterReducingAgent(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryWaterScaleInhibitor(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryWaterScaleInhibitor(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryNaclo(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryNaclo(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryStandardBox(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryStandardBox(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryWoodenPallets(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryWoodenPallets(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryStandardTray_1m(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryStandardTray_1m(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryStandardTray_1_2m(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryStandardTray_1_2m(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliarySlagBag(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliarySlagBag(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryFlyAshBag(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryFlyAshBag(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryTonBox(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryTonBox(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliarySteam(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliarySteam(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryDieselOil(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryDieselOil(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryNaturalGas(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryNaturalGas(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryIndustrialWater(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryIndustrialWater(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryElectricQuantity(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryElectricQuantity(), todayOutboundThird));
+            productionDaily.setTodayAverageDisposalThirdAuxiliaryTapWaterQuantity(RandomUtil.divideTwoNumber(productionDaily.getTodayDisposalThirdAuxiliaryTapWaterQuantity(), todayOutboundThird));
+
+            // 年份
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+            String year = yearFormat.format(now);
+            Date yearFirstDay = DateUtil.getDateFromStr(year + "-01-01");
+            Date yearEndDay = DateUtil.getDateFromStr(year + "-12-31");
+            // 月份
+            SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+            String month = monthFormat.format(now);
+            Date monthFirstDay = DateUtil.getDateFromStr(year + "-" + month + "-01");
+            int endDay = DateUtil.getDaysOfMonth(monthFirstDay);
+            Date monthEndDay = DateUtil.getDateFromStr(year + "-" + month + "-" + endDay);
+
+            // 获取日报所在月份的所有日报
+            List<ProductionDaily> productionDailyMonthList = productionDailyService.getProductionDailyByDateRange(monthFirstDay, monthEndDay, null);
+
+            // 月份的初始数据
+            float monthInboundMedicalWastes = 0f;
+            float monthInboundMedicalWastesDirectDisposal = 0f;
+            float monthInboundMedicalWastesCooking = 0f;
+            float monthInboundMedicalWastesErrorNumber = 0f;
+            float monthInboundMedicalWastesAfterCooking = 0f;
+            float monthInboundMedicalWastesAfterCookingSend = 0f;
+            float monthInboundMedicalWastesAfterCookingInbound = 0f;
+            float monthInboundMedicalWastesWetNumber = 0f;
+            float monthInboundWastesBulk = 0f;
+            float monthInboundWastesCrushing = 0f;
+            float monthInboundWastesSludge = 0f;
+            float monthInboundWastesDistillation = 0f;
+            float monthInboundWastesSuspension = 0f;
+            float monthInboundWastesWasteLiquid = 0f;
+            float monthInboundWastesTotal = 0f;
+            float monthInboundSecondWastesSlag = 0f;
+            float monthInboundSecondWastesAsh = 0f;
+            float monthInboundSecondWastesBucket = 0f;
+            float monthOutboundMedicalWastes = 0f;
+            float monthOutboundMedicalWastesDirectDisposal = 0f;
+            float monthOutboundMedicalWastesCooking = 0f;
+            float monthOutboundMedicalWastesErrorNumber = 0f;
+            float monthOutboundMedicalWastesAfterCooking = 0f;
+            float monthOutboundMedicalWastesAfterCookingSend = 0f;
+            float monthOutboundMedicalWastesAfterCookingInbound = 0f;
+            float monthOutboundMedicalWastesWetNumber = 0f;
+            float monthOutboundWastesBulk = 0f;
+            float monthOutboundWastesCrushing = 0f;
+            float monthOutboundWastesSludge = 0f;
+            float monthOutboundWastesDistillation = 0f;
+            float monthOutboundWastesSuspension = 0f;
+            float monthOutboundWastesWasteLiquid = 0f;
+            float monthOutboundWastesTotal = 0f;
+            float monthOutboundSecondWastesSlag = 0f;
+            float monthOutboundSecondWastesAsh = 0f;
+            float monthOutboundSecondWastesBucket = 0f;
+            // 本月辅料进场
+            float monthInboundAuxiliaryCalcareousLime = 0f;
+            float monthInboundAuxiliaryCommonActivatedCarbon = 0f;
+            float monthInboundAuxiliaryActivatedCarbon = 0f;
+            float monthInboundAuxiliaryActivatedCarbonParticles = 0f;
+            float monthInboundAuxiliaryLye = 0f;
+            float monthInboundAuxiliaryCausticSoda = 0f;
+            float monthInboundAuxiliaryUrea = 0f;
+            float monthInboundAuxiliaryHydrochloricAcid = 0f;
+            float monthInboundAuxiliaryNahco3 = 0f;
+            float monthInboundAuxiliaryFlour = 0f;
+            float monthInboundAuxiliaryDefoamer = 0f;
+            float monthInboundAuxiliaryFlocculant = 0f;
+            float monthInboundAuxiliarySoftWaterReducingAgent = 0f;
+            float monthInboundAuxiliarySoftWaterScaleInhibitor = 0f;
+            float monthInboundAuxiliaryAmmonia = 0f;
+            float monthInboundAuxiliaryWaterReducingAgent = 0f;
+            float monthInboundAuxiliaryWaterScaleInhibitor = 0f;
+            float monthInboundAuxiliaryNaclo = 0f;
+            float monthInboundAuxiliaryDeodorant = 0f;
+            float monthInboundAuxiliarySalt = 0f;
+            float monthInboundAuxiliarySlagBag = 0f;
+            float monthInboundAuxiliaryFlyAshBag = 0f;
+            float monthInboundAuxiliaryMedicalWastesBag = 0f;
+            float monthInboundAuxiliaryMedicalPackingPlasticBag = 0f;
+            float monthInboundAuxiliaryCollectionBox = 0f;
+            float monthInboundAuxiliaryStandardBox = 0f;
+            float monthInboundAuxiliaryWoodenPallets = 0f;
+            float monthInboundAuxiliaryStandardTray_1m = 0f;
+            float monthInboundAuxiliaryStandardTray_1_2m = 0f;
+            float monthInboundAuxiliaryTonBox = 0f;
+            float monthInboundAuxiliarySteam = 0f;
+            float monthInboundAuxiliaryDieselOil = 0f;
+            float monthInboundAuxiliaryNaturalGas = 0f;
+            float monthInboundAuxiliaryElectricQuantity = 0f;
+            float monthInboundAuxiliaryIndustrialWater = 0f;
+            float monthInboundAuxiliaryTapWaterQuantity = 0f;
+            // 本月辅料备件出库
+            float monthOutboundAuxiliaryCalcareousLime = 0f;
+            float monthOutboundAuxiliaryCommonActivatedCarbon = 0f;
+            float monthOutboundAuxiliaryActivatedCarbon = 0f;
+            float monthOutboundAuxiliaryActivatedCarbonParticles = 0f;
+            float monthOutboundAuxiliaryLye = 0f;
+            float monthOutboundAuxiliaryCausticSoda = 0f;
+            float monthOutboundAuxiliaryUrea = 0f;
+            float monthOutboundAuxiliaryHydrochloricAcid = 0f;
+            float monthOutboundAuxiliaryNahco3 = 0f;
+            float monthOutboundAuxiliaryFlour = 0f;
+            float monthOutboundAuxiliaryDefoamer = 0f;
+            float monthOutboundAuxiliaryFlocculant = 0f;
+            float monthOutboundAuxiliarySoftWaterReducingAgent = 0f;
+            float monthOutboundAuxiliarySoftWaterScaleInhibitor = 0f;
+            float monthOutboundAuxiliaryAmmonia = 0f;
+            float monthOutboundAuxiliaryWaterReducingAgent = 0f;
+            float monthOutboundAuxiliaryWaterScaleInhibitor = 0f;
+            float monthOutboundAuxiliaryNaclo = 0f;
+            float monthOutboundAuxiliaryDeodorant = 0f;
+            float monthOutboundAuxiliarySalt = 0f;
+            float monthOutboundAuxiliarySlagBag = 0f;
+            float monthOutboundAuxiliaryFlyAshBag = 0f;
+            float monthOutboundAuxiliaryMedicalWastesBag = 0f;
+            float monthOutboundAuxiliaryMedicalPackingPlasticBag = 0f;
+            float monthOutboundAuxiliaryCollectionBox = 0f;
+            float monthOutboundAuxiliaryStandardBox = 0f;
+            float monthOutboundAuxiliaryWoodenPallets = 0f;
+            float monthOutboundAuxiliaryStandardTray_1m = 0f;
+            float monthOutboundAuxiliaryStandardTray_1_2m = 0f;
+            float monthOutboundAuxiliaryTonBox = 0f;
+            float monthOutboundAuxiliarySteam = 0f;
+            float monthOutboundAuxiliaryDieselOil = 0f;
+            float monthOutboundAuxiliaryNaturalGas = 0f;
+            float monthOutboundAuxiliaryElectricQuantity = 0f;
+            float monthOutboundAuxiliaryIndustrialWater = 0f;
+            float monthOutboundAuxiliaryTapWaterQuantity = 0f;
+            // 月累计辅料消耗
+            float monthDisposalMedicalAuxiliaryNaclo = 0f;
+            float monthDisposalMedicalAuxiliaryDeodorant = 0f;
+            float monthDisposalMedicalAuxiliaryMedicalWastesBag = 0f;
+            float monthDisposalMedicalAuxiliaryMedicalPackingPlasticBag = 0f;
+            float monthDisposalMedicalAuxiliaryCollectionBox = 0f;
+            float monthDisposalMedicalAuxiliarySteam = 0f;
+            float monthDisposalMedicalAuxiliaryIndustrialWater = 0f;
+            float monthDisposalMedicalAuxiliaryElectricQuantity = 0f;
+            float monthDisposalSecondaryAuxiliaryCalcareousLime = 0f;
+            float monthDisposalSecondaryAuxiliaryCommonActivatedCarbon = 0f;
+            float monthDisposalSecondaryAuxiliaryActivatedCarbon = 0f;
+            float monthDisposalSecondaryAuxiliaryActivatedCarbonParticles = 0f;
+            float monthDisposalSecondaryAuxiliaryLye = 0f;
+            float monthDisposalSecondaryAuxiliarySalt = 0f;
+            float monthDisposalSecondaryAuxiliarySlagBag = 0f;
+            float monthDisposalSecondaryAuxiliaryFlyAshBag = 0f;
+            float monthDisposalSecondaryAuxiliaryDieselOil = 0f;
+            float monthDisposalSecondaryAuxiliaryIndustrialWater = 0f;
+            float monthDisposalSecondaryAuxiliaryElectricQuantity = 0f;
+            float monthDisposalSecondaryAuxiliaryWoodenPallets = 0f;
+            float monthDisposalThirdAuxiliaryCalcareousLime = 0f;
+            float monthDisposalThirdAuxiliaryCommonActivatedCarbon = 0f;
+            float monthDisposalThirdAuxiliaryActivatedCarbon = 0f;
+            float monthDisposalThirdAuxiliaryActivatedCarbonParticles = 0f;
+            float monthDisposalThirdAuxiliaryLye = 0f;
+            float monthDisposalThirdAuxiliaryCausticSoda = 0f;
+            float monthDisposalThirdAuxiliaryUrea = 0f;
+            float monthDisposalThirdAuxiliaryHydrochloricAcid = 0f;
+            float monthDisposalThirdAuxiliaryNahco3 = 0f;
+            float monthDisposalThirdAuxiliaryFlour = 0f;
+            float monthDisposalThirdAuxiliaryDefoamer = 0f;
+            float monthDisposalThirdAuxiliaryFlocculant = 0f;
+            float monthDisposalThirdAuxiliarySoftWaterReducingAgent = 0f;
+            float monthDisposalThirdAuxiliarySoftWaterScaleInhibitor = 0f;
+            float monthDisposalThirdAuxiliaryAmmonia = 0f;
+            float monthDisposalThirdAuxiliaryWaterReducingAgent = 0f;
+            float monthDisposalThirdAuxiliaryWaterScaleInhibitor = 0f;
+            float monthDisposalThirdAuxiliaryNaclo = 0f;
+            float monthDisposalThirdAuxiliaryStandardBox = 0f;
+            float monthDisposalThirdAuxiliaryWoodenPallets = 0f;
+            float monthDisposalThirdAuxiliaryStandardTray_1m = 0f;
+            float monthDisposalThirdAuxiliaryStandardTray_1_2m = 0f;
+            float monthDisposalThirdAuxiliarySlagBag = 0f;
+            float monthDisposalThirdAuxiliaryFlyAshBag = 0f;
+            float monthDisposalThirdAuxiliaryTonBox = 0f;
+            float monthDisposalThirdAuxiliarySteam = 0f;
+            float monthDisposalThirdAuxiliaryDieselOil = 0f;
+            float monthDisposalThirdAuxiliaryNaturalGas = 0f;
+            float monthDisposalThirdAuxiliaryIndustrialWater = 0f;
+            float monthDisposalThirdAuxiliaryElectricQuantity = 0f;
+            float monthDisposalThirdAuxiliaryTapWaterQuantity = 0f;
+            float monthDisposalTowerElectricQuantity = 0f;
+
+            // 工废处置
+            float monthOutboundA2WastesBulk = 0f;
+            float monthOutboundA2WastesCrushing = 0f;
+            float monthOutboundA2WastesSludge = 0f;
+            float monthOutboundA2WastesDistillation = 0f;
+            float monthOutboundA2WastesSuspension = 0f;
+            float monthOutboundA2WastesWasteLiquid = 0f;
+            float monthOutboundA2MedicalWastes = 0f;
+
+            float monthOutboundPrepare2WastesBulk = 0f;
+            float monthOutboundPrepare2WastesCrushing = 0f;
+            float monthOutboundPrepare2WastesSludge = 0f;
+            float monthOutboundPrepare2WastesDistillation = 0f;
+            float monthOutboundPrepare2WastesSuspension = 0f;
+            float monthOutboundPrepare2WastesWasteLiquid = 0f;
+            float monthOutboundPrepare2MedicalWastes = 0f;
+
+            float monthOutboundB2WastesBulk = 0f;
+            float monthOutboundB2WastesCrushing = 0f;
+            float monthOutboundB2WastesSludge = 0f;
+            float monthOutboundB2WastesDistillation = 0f;
+            float monthOutboundB2WastesSuspension = 0f;
+            float monthOutboundB2WastesWasteLiquid = 0f;
+            float monthOutboundB2MedicalWastes = 0f;
+
+            float monthOutboundThirdPretreatmentSystemWastesBulk = 0f;
+            float monthOutboundThirdPretreatmentSystemWastesCrushing = 0f;
+            float monthOutboundThirdPretreatmentSystemWastesSludge = 0f;
+            float monthOutboundThirdPretreatmentSystemWastesDistillation = 0f;
+            float monthOutboundThirdPretreatmentSystemWastesSuspension = 0f;
+            float monthOutboundThirdPretreatmentSystemWastesWasteLiquid = 0f;
+            float monthOutboundThirdPretreatmentSystemMedicalWastes = 0f;
+
+            float monthEquipmentA2StopTime = 0f;
+            float monthEquipmentB2StopTime = 0f;
+            float monthEquipmentPrepare2StopTime = 0f;
+            float monthEquipmentSecondaryStopTime = 0f;
+            float monthEquipmentThirdStopTime = 0f;
+
+            float monthEquipmentA2RunningTime = 0f;
+            float monthEquipmentB2RunningTime = 0f;
+            float monthEquipmentPrepare2RunningTime = 0f;
+            float monthEquipmentSecondaryRunningTime = 0f;
+            float monthEquipmentThirdRunningTime = 0f;
+
+            float monthDisposalSecondarySlag = 0f;
+            float monthDisposalSecondaryAsh = 0f;
+            float monthDisposalThirdSlag = 0f;
+            float monthDisposalThirdAsh = 0f;
+
+            // 遍历月份信息
+            for (ProductionDaily daily : productionDailyMonthList) {
+                monthInboundMedicalWastes += daily.getTodayInboundMedicalWastes();
+                monthInboundMedicalWastesDirectDisposal += daily.getTodayInboundMedicalWastesDirectDisposal();
+                monthInboundMedicalWastesCooking += daily.getTodayInboundMedicalWastesCooking();
+                monthInboundMedicalWastesErrorNumber += daily.getTodayInboundMedicalWastesCooking();
+                monthInboundMedicalWastesAfterCooking += daily.getTodayInboundMedicalWastesAfterCooking();
+                monthInboundMedicalWastesAfterCookingSend += daily.getTodayInboundMedicalWastesAfterCookingSend();
+                monthInboundMedicalWastesAfterCookingInbound += daily.getTodayInboundMedicalWastesAfterCookingInbound();
+                monthInboundMedicalWastesWetNumber += daily.getTodayInboundMedicalWastesWetNumber();
+                monthInboundWastesBulk += daily.getTodayInboundWastesBulk();
+                monthInboundWastesCrushing += daily.getTodayInboundWastesCrushing();
+                monthInboundWastesSludge += daily.getTodayInboundWastesSludge();
+                monthInboundWastesDistillation += daily.getTodayInboundWastesDistillation();
+                monthInboundWastesSuspension += daily.getTodayInboundWastesSuspension();
+                monthInboundWastesWasteLiquid += daily.getTodayInboundWastesWasteLiquid();
+                monthInboundWastesTotal += daily.getTodayInboundWastesTotal();
+                monthInboundSecondWastesSlag += daily.getTodayInboundSecondWastesSlag();
+                monthInboundSecondWastesAsh += daily.getTodayInboundSecondWastesAsh();
+                monthInboundSecondWastesBucket += daily.getTodayInboundSecondWastesBucket();
+                monthOutboundMedicalWastes += daily.getTodayOutboundMedicalWastes();
+                monthOutboundMedicalWastesDirectDisposal += daily.getTodayOutboundMedicalWastesDirectDisposal();
+                monthOutboundMedicalWastesCooking += daily.getTodayOutboundMedicalWastesCooking();
+                monthOutboundMedicalWastesErrorNumber += daily.getTodayOutboundMedicalWastesErrorNumber();
+                monthOutboundMedicalWastesAfterCooking += daily.getTodayOutboundMedicalWastesAfterCooking();
+                monthOutboundMedicalWastesAfterCookingSend += daily.getTodayOutboundMedicalWastesAfterCookingSend();
+                monthOutboundMedicalWastesAfterCookingInbound += daily.getTodayOutboundMedicalWastesAfterCookingInbound();
+                monthOutboundMedicalWastesWetNumber += daily.getTodayOutboundMedicalWastesWetNumber();
+                monthOutboundWastesBulk += daily.getTodayOutboundWastesBulk();
+                monthOutboundWastesCrushing += daily.getTodayOutboundWastesCrushing();
+                monthOutboundWastesSludge += daily.getTodayOutboundWastesSludge();
+                monthOutboundWastesDistillation += daily.getTodayOutboundWastesDistillation();
+                monthOutboundWastesSuspension += daily.getTodayOutboundWastesSuspension();
+                monthOutboundWastesWasteLiquid += daily.getTodayOutboundWastesWasteLiquid();
+                monthOutboundWastesTotal += daily.getTodayOutboundWastesTotal();
+                monthOutboundSecondWastesSlag += daily.getTodayOutboundSecondWastesSlag();
+                monthOutboundSecondWastesAsh += daily.getTodayOutboundSecondWastesAsh();
+                monthOutboundSecondWastesBucket += daily.getTodayOutboundSecondWastesBucket();
+                monthInboundAuxiliaryCalcareousLime += daily.getTodayInboundAuxiliaryCalcareousLime();
+                monthInboundAuxiliaryCommonActivatedCarbon += daily.getTodayInboundAuxiliaryCommonActivatedCarbon();
+                monthInboundAuxiliaryActivatedCarbon += daily.getTodayInboundAuxiliaryActivatedCarbon();
+                monthInboundAuxiliaryActivatedCarbonParticles += daily.getTodayInboundAuxiliaryActivatedCarbonParticles();
+                monthInboundAuxiliaryNahco3 += daily.getTodayInboundAuxiliaryNahco3();
+                monthInboundAuxiliaryFlour += daily.getTodayInboundAuxiliaryFlour();
+                monthInboundAuxiliaryDefoamer += daily.getTodayInboundAuxiliaryDefoamer();
+                monthInboundAuxiliaryFlocculant += daily.getTodayInboundAuxiliaryFlocculant();
+                monthInboundAuxiliarySoftWaterReducingAgent += daily.getTodayInboundAuxiliarySoftWaterReducingAgent();
+                monthInboundAuxiliarySoftWaterScaleInhibitor += daily.getTodayInboundAuxiliaryWaterScaleInhibitor();
+                monthInboundAuxiliaryAmmonia += daily.getTodayInboundAuxiliaryAmmonia();
+                monthInboundAuxiliaryWaterReducingAgent += daily.getTodayInboundAuxiliaryWaterReducingAgent();
+                monthInboundAuxiliaryWaterScaleInhibitor += daily.getTodayInboundAuxiliaryWaterScaleInhibitor();
+                monthInboundAuxiliaryNaclo += daily.getTodayInboundAuxiliaryNaclo();
+                monthInboundAuxiliaryDeodorant += daily.getTodayInboundAuxiliaryDeodorant();
+                monthInboundAuxiliarySalt += daily.getTodayInboundAuxiliarySalt();
+                monthInboundAuxiliaryFlyAshBag += daily.getTodayInboundAuxiliaryFlyAshBag();
+                monthInboundAuxiliaryMedicalWastesBag += daily.getTodayInboundAuxiliaryMedicalWastesBag();
+                monthInboundAuxiliaryMedicalPackingPlasticBag += daily.getTodayInboundAuxiliaryMedicalPackingPlasticBag();
+                monthInboundAuxiliaryCollectionBox += daily.getTodayInboundAuxiliaryCollectionBox();
+                monthInboundAuxiliaryStandardBox += daily.getTodayInboundAuxiliaryWoodenPallets();
+                monthInboundAuxiliaryStandardTray_1m += daily.getTodayInboundAuxiliaryStandardTray_1m();
+                monthInboundAuxiliaryStandardTray_1_2m += daily.getTodayInboundAuxiliaryStandardTray_1_2m();
+                monthInboundAuxiliaryTonBox += daily.getTodayInboundAuxiliaryTonBox();
+                monthInboundAuxiliarySteam += daily.getTodayInboundAuxiliarySteam();
+                monthInboundAuxiliaryDieselOil += daily.getTodayInboundAuxiliaryDieselOil();
+                monthInboundAuxiliaryNaturalGas += daily.getTodayInboundAuxiliaryNaturalGas();
+                monthInboundAuxiliaryElectricQuantity += daily.getTodayInboundAuxiliaryElectricQuantity();
+                monthInboundAuxiliaryIndustrialWater += daily.getTodayInboundAuxiliaryIndustrialWater();
+                monthInboundAuxiliaryTapWaterQuantity += daily.getTodayInboundAuxiliaryTapWaterQuantity();
+                monthOutboundAuxiliaryCalcareousLime += daily.getTodayOutboundAuxiliaryCalcareousLime();
+                monthOutboundAuxiliaryCommonActivatedCarbon += daily.getTodayOutboundAuxiliaryCommonActivatedCarbon();
+                monthOutboundAuxiliaryActivatedCarbon += daily.getTodayOutboundAuxiliaryActivatedCarbon();
+                monthOutboundAuxiliaryActivatedCarbonParticles += daily.getTodayOutboundAuxiliaryActivatedCarbonParticles();
+                monthOutboundAuxiliaryLye += daily.getTodayOutboundAuxiliaryLye();
+                monthOutboundAuxiliaryCausticSoda += daily.getTodayOutboundAuxiliaryCausticSoda();
+                monthOutboundAuxiliaryUrea += daily.getTodayOutboundAuxiliaryUrea();
+                monthOutboundAuxiliaryHydrochloricAcid += daily.getTodayOutboundAuxiliaryHydrochloricAcid();
+                monthOutboundAuxiliaryNahco3 += daily.getTodayOutboundAuxiliaryNahco3();
+                monthOutboundAuxiliaryFlour += daily.getTodayOutboundAuxiliaryFlour();
+                monthOutboundAuxiliaryDefoamer += daily.getTodayOutboundAuxiliaryDefoamer();
+                monthOutboundAuxiliaryFlocculant += daily.getTodayOutboundAuxiliaryFlocculant();
+                monthOutboundAuxiliarySoftWaterReducingAgent += daily.getTodayOutboundAuxiliarySoftWaterReducingAgent();
+                monthOutboundAuxiliarySoftWaterScaleInhibitor += daily.getTodayOutboundAuxiliarySoftWaterScaleInhibitor();
+                monthOutboundAuxiliaryAmmonia += daily.getTodayOutboundAuxiliaryAmmonia();
+                monthOutboundAuxiliaryWaterReducingAgent += daily.getTodayOutboundAuxiliaryWaterReducingAgent();
+                monthOutboundAuxiliaryWaterScaleInhibitor += daily.getTodayOutboundAuxiliaryWaterScaleInhibitor();
+                monthOutboundAuxiliaryNaclo += daily.getTodayOutboundAuxiliaryNaclo();
+                monthOutboundAuxiliaryDeodorant += daily.getTodayOutboundAuxiliaryDeodorant();
+                monthOutboundAuxiliarySalt += daily.getTodayOutboundAuxiliarySalt();
+                monthOutboundAuxiliarySlagBag += daily.getTodayOutboundAuxiliarySlagBag();
+                monthOutboundAuxiliaryFlyAshBag += daily.getTodayOutboundAuxiliaryFlyAshBag();
+                monthOutboundAuxiliaryMedicalWastesBag += daily.getTodayOutboundAuxiliaryMedicalPackingPlasticBag();
+                monthOutboundAuxiliaryCollectionBox += daily.getTodayOutboundAuxiliaryCollectionBox();
+                monthOutboundAuxiliaryStandardBox += daily.getTodayOutboundAuxiliaryStandardBox();
+                monthOutboundAuxiliaryWoodenPallets += daily.getTodayOutboundAuxiliaryWoodenPallets();
+                monthOutboundAuxiliaryStandardTray_1m += daily.getTodayOutboundAuxiliaryStandardTray_1m();
+                monthOutboundAuxiliaryStandardTray_1_2m += daily.getTodayOutboundAuxiliaryStandardTray_1_2m();
+                monthOutboundAuxiliaryTonBox += daily.getTodayOutboundAuxiliaryTonBox();
+                monthOutboundAuxiliarySteam += daily.getTodayOutboundAuxiliarySteam();
+                monthOutboundAuxiliaryDieselOil += daily.getTodayOutboundAuxiliaryDieselOil();
+                monthOutboundAuxiliaryNaturalGas += daily.getTodayOutboundAuxiliaryNaturalGas();
+                monthOutboundAuxiliaryElectricQuantity += daily.getTodayOutboundAuxiliaryElectricQuantity();
+                monthOutboundAuxiliaryIndustrialWater += daily.getTodayOutboundAuxiliaryIndustrialWater();
+                monthOutboundAuxiliaryTapWaterQuantity += daily.getTodayOutboundAuxiliaryTapWaterQuantity();
+                monthDisposalMedicalAuxiliaryNaclo += daily.getTodayDisposalMedicalAuxiliaryNaclo();
+                monthDisposalMedicalAuxiliaryDeodorant += daily.getTodayDisposalMedicalAuxiliaryDeodorant();
+                monthDisposalMedicalAuxiliaryMedicalWastesBag += daily.getTodayDisposalMedicalAuxiliaryMedicalWastesBag();
+                monthDisposalMedicalAuxiliaryMedicalPackingPlasticBag += daily.getTodayDisposalMedicalAuxiliaryMedicalPackingPlasticBag();
+                monthDisposalMedicalAuxiliaryCollectionBox += daily.getTodayDisposalMedicalAuxiliaryCollectionBox();
+                monthDisposalMedicalAuxiliarySteam += daily.getTodayDisposalMedicalAuxiliarySteam();
+                monthDisposalMedicalAuxiliaryIndustrialWater += daily.getTodayDisposalMedicalAuxiliaryIndustrialWater();
+                monthDisposalMedicalAuxiliaryElectricQuantity += daily.getTodayDisposalMedicalAuxiliaryElectricQuantity();
+                monthDisposalSecondaryAuxiliaryCalcareousLime += daily.getTodayDisposalSecondaryAuxiliaryCalcareousLime();
+                monthDisposalSecondaryAuxiliaryCommonActivatedCarbon += daily.getTodayDisposalSecondaryAuxiliaryCommonActivatedCarbon();
+                monthDisposalSecondaryAuxiliaryActivatedCarbon += daily.getTodayDisposalSecondaryAuxiliaryActivatedCarbon();
+                monthDisposalSecondaryAuxiliaryActivatedCarbonParticles += daily.getTodayDisposalSecondaryAuxiliaryActivatedCarbonParticles();
+                monthDisposalSecondaryAuxiliaryLye += daily.getTodayDisposalSecondaryAuxiliaryLye();
+                monthDisposalSecondaryAuxiliarySalt += daily.getTodayDisposalSecondaryAuxiliarySalt();
+                monthDisposalSecondaryAuxiliarySlagBag += daily.getTodayDisposalSecondaryAuxiliarySlagBag();
+                monthDisposalSecondaryAuxiliaryFlyAshBag += daily.getTodayDisposalSecondaryAuxiliaryFlyAshBag();
+                monthDisposalSecondaryAuxiliaryDieselOil += daily.getTodayDisposalSecondaryAuxiliaryDieselOil();
+                monthDisposalSecondaryAuxiliaryIndustrialWater += daily.getTodayDisposalSecondaryAuxiliaryIndustrialWater();
+                monthDisposalSecondaryAuxiliaryElectricQuantity += daily.getTodayDisposalSecondaryAuxiliaryElectricQuantity();
+                monthDisposalSecondaryAuxiliaryWoodenPallets += daily.getTodayDisposalSecondaryAuxiliaryWoodenPallets();
+                monthDisposalThirdAuxiliaryCalcareousLime += daily.getTodayDisposalThirdAuxiliaryCalcareousLime();
+                monthDisposalThirdAuxiliaryCommonActivatedCarbon += daily.getTodayDisposalThirdAuxiliaryCommonActivatedCarbon();
+                monthDisposalThirdAuxiliaryActivatedCarbon += daily.getTodayDisposalThirdAuxiliaryActivatedCarbon();
+                monthDisposalThirdAuxiliaryActivatedCarbonParticles += daily.getTodayDisposalThirdAuxiliaryActivatedCarbonParticles();
+                monthDisposalThirdAuxiliaryLye += daily.getTodayDisposalThirdAuxiliaryLye();
+                monthDisposalThirdAuxiliaryCausticSoda += daily.getTodayDisposalThirdAuxiliaryCausticSoda();
+                monthDisposalThirdAuxiliaryUrea += daily.getTodayDisposalThirdAuxiliaryUrea();
+                monthDisposalThirdAuxiliaryHydrochloricAcid += daily.getTodayDisposalThirdAuxiliaryHydrochloricAcid();
+                monthDisposalThirdAuxiliaryNahco3 += daily.getTodayDisposalThirdAuxiliaryNahco3();
+                monthDisposalThirdAuxiliaryFlour += daily.getTodayDisposalThirdAuxiliaryFlour();
+                monthDisposalThirdAuxiliaryDefoamer += daily.getTodayDisposalThirdAuxiliaryDefoamer();
+                monthDisposalThirdAuxiliaryFlocculant += daily.getTodayDisposalThirdAuxiliaryFlocculant();
+                monthDisposalThirdAuxiliarySoftWaterReducingAgent += daily.getTodayDisposalThirdAuxiliarySoftWaterReducingAgent();
+                monthDisposalThirdAuxiliarySoftWaterScaleInhibitor += daily.getTodayDisposalThirdAuxiliarySoftWaterScaleInhibitor();
+                monthDisposalThirdAuxiliaryAmmonia += daily.getTodayDisposalThirdAuxiliaryAmmonia();
+                monthDisposalThirdAuxiliaryWaterReducingAgent += daily.getTodayDisposalThirdAuxiliaryWaterReducingAgent();
+                monthDisposalThirdAuxiliaryWaterScaleInhibitor += daily.getTodayDisposalThirdAuxiliaryWaterScaleInhibitor();
+                monthDisposalThirdAuxiliaryNaclo += daily.getTodayDisposalThirdAuxiliaryNaclo();
+                monthDisposalThirdAuxiliaryStandardBox += daily.getTodayDisposalThirdAuxiliaryStandardBox();
+                monthDisposalThirdAuxiliaryWoodenPallets += daily.getTodayDisposalThirdAuxiliaryWoodenPallets();
+                monthDisposalThirdAuxiliaryStandardTray_1m += daily.getTodayDisposalThirdAuxiliaryStandardTray_1m();
+                monthDisposalThirdAuxiliaryStandardTray_1_2m += daily.getTodayDisposalThirdAuxiliaryStandardTray_1_2m();
+                monthDisposalThirdAuxiliarySlagBag += daily.getTodayDisposalThirdAuxiliarySlagBag();
+                monthDisposalThirdAuxiliaryFlyAshBag += daily.getTodayDisposalThirdAuxiliaryFlyAshBag();
+                monthDisposalThirdAuxiliaryTonBox += daily.getTodayDisposalThirdAuxiliaryTonBox();
+                monthDisposalThirdAuxiliarySteam += daily.getTodayDisposalThirdAuxiliarySteam();
+                monthDisposalThirdAuxiliaryDieselOil += daily.getTodayDisposalThirdAuxiliaryDieselOil();
+                monthDisposalThirdAuxiliaryNaturalGas += daily.getTodayDisposalThirdAuxiliaryNaturalGas();
+                monthDisposalThirdAuxiliaryIndustrialWater += daily.getTodayDisposalThirdAuxiliaryIndustrialWater();
+                monthDisposalThirdAuxiliaryElectricQuantity += daily.getTodayDisposalThirdAuxiliaryElectricQuantity();
+                monthDisposalThirdAuxiliaryTapWaterQuantity += daily.getTodayDisposalThirdAuxiliaryTapWaterQuantity();
+                monthDisposalTowerElectricQuantity += daily.getTodayDisposalTowerElectricQuantity();
+
+                monthOutboundA2WastesBulk += daily.getTodayOutboundA2WastesBulk();
+                monthOutboundA2WastesCrushing += daily.getTodayOutboundA2WastesCrushing();
+                monthOutboundA2WastesSludge += daily.getTodayOutboundA2WastesSludge();
+                monthOutboundA2WastesDistillation += daily.getTodayOutboundA2WastesDistillation();
+                monthOutboundA2WastesSuspension += daily.getTodayOutboundA2WastesSuspension();
+                monthOutboundA2WastesWasteLiquid += daily.getTodayOutboundA2WastesWasteLiquid();
+                monthOutboundA2MedicalWastes += daily.getTodayOutboundA2MedicalWastes();
+
+                monthOutboundPrepare2WastesBulk += daily.getTodayOutboundPrepare2WastesBulk();
+                monthOutboundPrepare2WastesCrushing += daily.getTodayOutboundPrepare2WastesCrushing();
+                monthOutboundPrepare2WastesSludge += daily.getTodayOutboundPrepare2WastesSludge();
+                monthOutboundPrepare2WastesDistillation += daily.getTodayOutboundPrepare2WastesDistillation();
+                monthOutboundPrepare2WastesSuspension += daily.getTodayOutboundPrepare2WastesSuspension();
+                monthOutboundPrepare2WastesWasteLiquid += daily.getTodayOutboundPrepare2WastesWasteLiquid();
+                monthOutboundPrepare2MedicalWastes += daily.getTodayOutboundPrepare2MedicalWastes();
+
+                monthOutboundB2WastesBulk += daily.getTodayOutboundB2WastesBulk();
+                monthOutboundB2WastesCrushing += daily.getTodayOutboundB2WastesCrushing();
+                monthOutboundB2WastesSludge += daily.getTodayOutboundB2WastesSludge();
+                monthOutboundB2WastesDistillation += daily.getTodayOutboundB2WastesDistillation();
+                monthOutboundB2WastesSuspension += daily.getTodayOutboundB2WastesSuspension();
+                monthOutboundB2WastesWasteLiquid += daily.getTodayOutboundB2WastesWasteLiquid();
+                monthOutboundB2MedicalWastes += daily.getTodayOutboundB2MedicalWastes();
+
+                monthOutboundThirdPretreatmentSystemWastesBulk += daily.getTodayOutboundThirdPretreatmentSystemWastesBulk();
+                monthOutboundThirdPretreatmentSystemWastesCrushing += daily.getTodayOutboundThirdPretreatmentSystemWastesCrushing();
+                monthOutboundThirdPretreatmentSystemWastesSludge += daily.getTodayOutboundThirdPretreatmentSystemWastesSludge();
+                monthOutboundThirdPretreatmentSystemWastesDistillation += daily.getTodayOutboundThirdPretreatmentSystemWastesDistillation();
+                monthOutboundThirdPretreatmentSystemWastesSuspension += daily.getTodayOutboundThirdPretreatmentSystemWastesSuspension();
+                monthOutboundThirdPretreatmentSystemWastesWasteLiquid += daily.getTodayOutboundThirdPretreatmentSystemWastesWasteLiquid();
+                monthOutboundThirdPretreatmentSystemMedicalWastes += daily.getTodayOutboundThirdPretreatmentSystemMedicalWastes();
+
+                monthEquipmentA2StopTime += daily.getTodayEquipmentA2StopTime();
+                monthEquipmentB2StopTime += daily.getTodayEquipmentB2StopTime();
+                monthEquipmentPrepare2StopTime += daily.getTodayEquipmentPrepare2StopTime();
+                monthEquipmentSecondaryStopTime += daily.getTodayEquipmentSecondaryStopTime();
+                monthEquipmentThirdStopTime += daily.getTodayEquipmentThirdStopTime();
+
+                monthEquipmentA2RunningTime += daily.getTodayEquipmentA2RunningTime();
+                monthEquipmentB2RunningTime += daily.getTodayEquipmentB2RunningTime();
+                monthEquipmentPrepare2RunningTime += daily.getTodayEquipmentPrepare2RunningTime();
+                monthEquipmentSecondaryRunningTime += daily.getTodayEquipmentSecondaryRunningTime();
+                monthEquipmentThirdRunningTime += daily.getTodayEquipmentThirdRunningTime();
+
+                monthDisposalSecondarySlag += daily.getTodayDisposalSecondarySlag();
+                monthDisposalSecondaryAsh += daily.getTodayDisposalSecondaryAsh();
+                monthDisposalThirdSlag += daily.getTodayDisposalThirdSlag();
+                monthDisposalThirdAsh += daily.getTodayDisposalThirdAsh();
+            }
+            // 设置月份的数值
+            productionDaily.setMonthInboundMedicalWastes(monthInboundMedicalWastes);
+            productionDaily.setMonthInboundMedicalWastesDirectDisposal(monthInboundMedicalWastesDirectDisposal);
+            productionDaily.setMonthInboundMedicalWastesCooking(monthInboundMedicalWastesCooking);
+            productionDaily.setMonthInboundMedicalWastesErrorNumber(monthInboundMedicalWastesErrorNumber);
+            productionDaily.setMonthInboundMedicalWastesAfterCooking(monthInboundMedicalWastesAfterCooking);
+            productionDaily.setMonthInboundMedicalWastesAfterCookingSend(monthInboundMedicalWastesAfterCookingSend);
+            productionDaily.setMonthInboundMedicalWastesAfterCookingInbound(monthInboundMedicalWastesAfterCookingInbound);
+            productionDaily.setMonthInboundMedicalWastesWetNumber(monthInboundMedicalWastesWetNumber);
+            productionDaily.setMonthInboundWastesBulk(monthInboundWastesBulk);
+            productionDaily.setMonthInboundWastesCrushing(monthInboundWastesCrushing);
+            productionDaily.setMonthInboundWastesSludge(monthInboundWastesSludge);
+            productionDaily.setMonthInboundWastesDistillation(monthInboundWastesDistillation);
+            productionDaily.setMonthInboundWastesSuspension(monthInboundWastesSuspension);
+            productionDaily.setMonthInboundWastesWasteLiquid(monthInboundWastesWasteLiquid);
+            productionDaily.setMonthInboundWastesTotal(monthInboundWastesTotal);
+            productionDaily.setMonthInboundSecondWastesSlag(monthInboundSecondWastesSlag);
+            productionDaily.setMonthInboundSecondWastesAsh(monthInboundSecondWastesAsh);
+            productionDaily.setMonthInboundSecondWastesBucket(monthInboundSecondWastesBucket);
+            productionDaily.setMonthOutboundMedicalWastes(monthOutboundMedicalWastes);
+            productionDaily.setMonthOutboundMedicalWastesDirectDisposal(monthOutboundMedicalWastesDirectDisposal);
+            productionDaily.setMonthOutboundMedicalWastesCooking(monthOutboundMedicalWastesCooking);
+            productionDaily.setMonthOutboundMedicalWastesErrorNumber(monthOutboundMedicalWastesErrorNumber);
+            productionDaily.setMonthOutboundMedicalWastesAfterCooking(monthOutboundMedicalWastesAfterCooking);
+            productionDaily.setMonthOutboundMedicalWastesAfterCookingSend(monthOutboundMedicalWastesAfterCookingSend);
+            productionDaily.setMonthOutboundMedicalWastesAfterCookingInbound(monthOutboundMedicalWastesAfterCookingInbound);
+            productionDaily.setMonthOutboundMedicalWastesWetNumber(monthOutboundMedicalWastesWetNumber);
+            productionDaily.setMonthOutboundWastesBulk(monthOutboundWastesBulk);
+            productionDaily.setMonthOutboundWastesCrushing(monthOutboundWastesCrushing);
+            productionDaily.setMonthOutboundWastesSludge(monthOutboundWastesSludge);
+            productionDaily.setMonthOutboundWastesDistillation(monthOutboundWastesDistillation);
+            productionDaily.setMonthOutboundWastesSuspension(monthOutboundWastesSuspension);
+            productionDaily.setMonthOutboundWastesWasteLiquid(monthOutboundWastesWasteLiquid);
+            productionDaily.setMonthOutboundWastesTotal(monthOutboundWastesTotal);
+            productionDaily.setMonthOutboundSecondWastesSlag(monthOutboundSecondWastesSlag);
+            productionDaily.setMonthOutboundSecondWastesAsh(monthOutboundSecondWastesAsh);
+            productionDaily.setMonthOutboundSecondWastesBucket(monthOutboundSecondWastesBucket);
+            productionDaily.setMonthInboundAuxiliaryCalcareousLime(monthInboundAuxiliaryCalcareousLime);
+            productionDaily.setMonthInboundAuxiliaryCommonActivatedCarbon(monthInboundAuxiliaryCommonActivatedCarbon);
+            productionDaily.setMonthInboundAuxiliaryActivatedCarbon(monthInboundAuxiliaryActivatedCarbon);
+            productionDaily.setMonthInboundAuxiliaryActivatedCarbonParticles(monthInboundAuxiliaryActivatedCarbonParticles);
+            productionDaily.setMonthInboundAuxiliaryLye(monthInboundAuxiliaryLye);
+            productionDaily.setMonthInboundAuxiliaryCausticSoda(monthInboundAuxiliaryCausticSoda);
+            productionDaily.setMonthInboundAuxiliaryUrea(monthInboundAuxiliaryUrea);
+            productionDaily.setMonthInboundAuxiliaryHydrochloricAcid(monthInboundAuxiliaryHydrochloricAcid);
+            productionDaily.setMonthInboundAuxiliaryNahco3(monthInboundAuxiliaryNahco3);
+            productionDaily.setMonthInboundAuxiliaryFlour(monthInboundAuxiliaryFlour);
+            productionDaily.setMonthInboundAuxiliaryDefoamer(monthInboundAuxiliaryDefoamer);
+            productionDaily.setMonthInboundAuxiliaryFlocculant(monthInboundAuxiliaryFlocculant);
+            productionDaily.setMonthInboundAuxiliarySoftWaterReducingAgent(monthInboundAuxiliarySoftWaterReducingAgent);
+            productionDaily.setMonthInboundAuxiliarySoftWaterScaleInhibitor(monthInboundAuxiliarySoftWaterScaleInhibitor);
+            productionDaily.setMonthInboundAuxiliaryAmmonia(monthInboundAuxiliaryAmmonia);
+            productionDaily.setMonthInboundAuxiliaryWaterReducingAgent(monthInboundAuxiliaryWaterReducingAgent);
+            productionDaily.setMonthInboundAuxiliaryWaterScaleInhibitor(monthInboundAuxiliaryWaterScaleInhibitor);
+            productionDaily.setMonthInboundAuxiliaryNaclo(monthInboundAuxiliaryNaclo);
+            productionDaily.setMonthInboundAuxiliaryDeodorant(monthInboundAuxiliaryDeodorant);
+            productionDaily.setMonthInboundAuxiliarySalt(monthInboundAuxiliarySalt);
+            productionDaily.setMonthInboundAuxiliarySlagBag(monthInboundAuxiliarySlagBag);
+            productionDaily.setMonthInboundAuxiliaryFlyAshBag(monthInboundAuxiliaryFlyAshBag);
+            productionDaily.setMonthInboundAuxiliaryMedicalWastesBag(monthInboundAuxiliaryMedicalWastesBag);
+            productionDaily.setMonthInboundAuxiliaryMedicalPackingPlasticBag(monthInboundAuxiliaryMedicalPackingPlasticBag);
+            productionDaily.setMonthInboundAuxiliaryCollectionBox(monthInboundAuxiliaryCollectionBox);
+            productionDaily.setMonthInboundAuxiliaryStandardBox(monthInboundAuxiliaryStandardBox);
+            productionDaily.setMonthInboundAuxiliaryWoodenPallets(monthInboundAuxiliaryWoodenPallets);
+            productionDaily.setMonthInboundAuxiliaryStandardTray_1m(monthInboundAuxiliaryStandardTray_1m);
+            productionDaily.setMonthInboundAuxiliaryStandardTray_1_2m(monthInboundAuxiliaryStandardTray_1_2m);
+            productionDaily.setMonthInboundAuxiliaryTonBox(monthInboundAuxiliaryTonBox);
+            productionDaily.setMonthInboundAuxiliarySteam(monthInboundAuxiliarySteam);
+            productionDaily.setMonthInboundAuxiliaryDieselOil(monthInboundAuxiliaryDieselOil);
+            productionDaily.setMonthInboundAuxiliaryNaturalGas(monthInboundAuxiliaryNaturalGas);
+            productionDaily.setMonthInboundAuxiliaryElectricQuantity(monthInboundAuxiliaryElectricQuantity);
+            productionDaily.setMonthInboundAuxiliaryIndustrialWater(monthInboundAuxiliaryIndustrialWater);
+            productionDaily.setMonthInboundAuxiliaryTapWaterQuantity(monthInboundAuxiliaryTapWaterQuantity);
+            productionDaily.setMonthOutboundAuxiliaryCalcareousLime(monthOutboundAuxiliaryCalcareousLime);
+            productionDaily.setMonthOutboundAuxiliaryCommonActivatedCarbon(monthOutboundAuxiliaryCommonActivatedCarbon);
+            productionDaily.setMonthOutboundAuxiliaryActivatedCarbon(monthOutboundAuxiliaryActivatedCarbon);
+            productionDaily.setMonthOutboundAuxiliaryActivatedCarbonParticles(monthOutboundAuxiliaryActivatedCarbonParticles);
+            productionDaily.setMonthOutboundAuxiliaryLye(monthOutboundAuxiliaryLye);
+            productionDaily.setMonthOutboundAuxiliaryCausticSoda(monthOutboundAuxiliaryCausticSoda);
+            productionDaily.setMonthOutboundAuxiliaryUrea(monthOutboundAuxiliaryUrea);
+            productionDaily.setMonthOutboundAuxiliaryHydrochloricAcid(monthOutboundAuxiliaryHydrochloricAcid);
+            productionDaily.setMonthOutboundAuxiliaryNahco3(monthOutboundAuxiliaryNahco3);
+            productionDaily.setMonthOutboundAuxiliaryFlour(monthOutboundAuxiliaryFlour);
+            productionDaily.setMonthOutboundAuxiliaryDefoamer(monthOutboundAuxiliaryDefoamer);
+            productionDaily.setMonthOutboundAuxiliaryFlocculant(monthOutboundAuxiliaryFlocculant);
+            productionDaily.setMonthOutboundAuxiliarySoftWaterReducingAgent(monthOutboundAuxiliarySoftWaterReducingAgent);
+            productionDaily.setMonthOutboundAuxiliarySoftWaterScaleInhibitor(monthOutboundAuxiliarySoftWaterScaleInhibitor);
+            productionDaily.setMonthOutboundAuxiliaryAmmonia(monthOutboundAuxiliaryAmmonia);
+            productionDaily.setMonthOutboundAuxiliaryWaterReducingAgent(monthOutboundAuxiliaryWaterReducingAgent);
+            productionDaily.setMonthOutboundAuxiliaryWaterScaleInhibitor(monthOutboundAuxiliaryWaterScaleInhibitor);
+            productionDaily.setMonthOutboundAuxiliaryNaclo(monthOutboundAuxiliaryNaclo);
+            productionDaily.setMonthOutboundAuxiliaryDeodorant(monthOutboundAuxiliaryDeodorant);
+            productionDaily.setMonthOutboundAuxiliarySalt(monthOutboundAuxiliarySalt);
+            productionDaily.setMonthOutboundAuxiliarySlagBag(monthOutboundAuxiliarySlagBag);
+            productionDaily.setMonthOutboundAuxiliaryFlyAshBag(monthOutboundAuxiliaryFlyAshBag);
+            productionDaily.setMonthOutboundAuxiliaryMedicalWastesBag(monthOutboundAuxiliaryMedicalWastesBag);
+            productionDaily.setMonthOutboundAuxiliaryMedicalPackingPlasticBag(monthOutboundAuxiliaryMedicalPackingPlasticBag);
+            productionDaily.setMonthOutboundAuxiliaryWoodenPallets(monthOutboundAuxiliaryWoodenPallets);
+            productionDaily.setMonthOutboundAuxiliaryStandardBox(monthOutboundAuxiliaryCollectionBox);
+            productionDaily.setMonthOutboundAuxiliaryStandardBox(monthOutboundAuxiliaryStandardBox);
+            productionDaily.setMonthOutboundAuxiliaryStandardTray_1m(monthOutboundAuxiliaryStandardTray_1m);
+            productionDaily.setMonthOutboundAuxiliaryStandardTray_1_2m(monthOutboundAuxiliaryStandardTray_1_2m);
+            productionDaily.setMonthOutboundAuxiliaryTonBox(monthOutboundAuxiliaryTonBox);
+            productionDaily.setMonthOutboundAuxiliarySteam(monthOutboundAuxiliarySteam);
+            productionDaily.setMonthOutboundAuxiliaryDieselOil(monthOutboundAuxiliaryDieselOil);
+            productionDaily.setMonthOutboundAuxiliaryNaturalGas(monthOutboundAuxiliaryNaturalGas);
+            productionDaily.setMonthOutboundAuxiliaryElectricQuantity(monthOutboundAuxiliaryElectricQuantity);
+            productionDaily.setMonthOutboundAuxiliaryIndustrialWater(monthOutboundAuxiliaryIndustrialWater);
+            productionDaily.setMonthOutboundAuxiliaryTapWaterQuantity(monthOutboundAuxiliaryTapWaterQuantity);
+            productionDaily.setMonthDisposalMedicalAuxiliaryNaclo(monthDisposalMedicalAuxiliaryNaclo);
+            productionDaily.setMonthDisposalMedicalAuxiliaryDeodorant(monthDisposalMedicalAuxiliaryDeodorant);
+            productionDaily.setMonthDisposalMedicalAuxiliaryMedicalWastesBag(monthDisposalMedicalAuxiliaryMedicalWastesBag);
+            productionDaily.setMonthDisposalMedicalAuxiliaryMedicalPackingPlasticBag(monthDisposalMedicalAuxiliaryMedicalPackingPlasticBag);
+            productionDaily.setMonthDisposalMedicalAuxiliaryCollectionBox(monthDisposalMedicalAuxiliaryCollectionBox);
+            productionDaily.setMonthDisposalMedicalAuxiliarySteam(monthDisposalMedicalAuxiliarySteam);
+            productionDaily.setMonthDisposalMedicalAuxiliaryIndustrialWater(monthDisposalMedicalAuxiliaryIndustrialWater);
+            productionDaily.setMonthDisposalMedicalAuxiliaryElectricQuantity(monthDisposalMedicalAuxiliaryElectricQuantity);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryCalcareousLime(monthDisposalSecondaryAuxiliaryCalcareousLime);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryCommonActivatedCarbon(monthDisposalSecondaryAuxiliaryCommonActivatedCarbon);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryActivatedCarbon(monthDisposalSecondaryAuxiliaryActivatedCarbon);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryActivatedCarbonParticles(monthDisposalSecondaryAuxiliaryActivatedCarbonParticles);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryLye(monthDisposalSecondaryAuxiliaryLye);
+            productionDaily.setMonthDisposalSecondaryAuxiliarySalt(monthDisposalSecondaryAuxiliarySalt);
+            productionDaily.setMonthDisposalSecondaryAuxiliarySlagBag(monthDisposalSecondaryAuxiliarySlagBag);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryFlyAshBag(monthDisposalSecondaryAuxiliaryFlyAshBag);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryDieselOil(monthDisposalSecondaryAuxiliaryDieselOil);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryIndustrialWater(monthDisposalSecondaryAuxiliaryIndustrialWater);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryElectricQuantity(monthDisposalSecondaryAuxiliaryElectricQuantity);
+            productionDaily.setMonthDisposalSecondaryAuxiliaryWoodenPallets(monthDisposalSecondaryAuxiliaryWoodenPallets);
+            productionDaily.setMonthDisposalThirdAuxiliaryCalcareousLime(monthDisposalThirdAuxiliaryCalcareousLime);
+            productionDaily.setMonthDisposalThirdAuxiliaryCommonActivatedCarbon(monthDisposalThirdAuxiliaryCommonActivatedCarbon);
+            productionDaily.setMonthDisposalThirdAuxiliaryActivatedCarbon(monthDisposalThirdAuxiliaryActivatedCarbon);
+            productionDaily.setMonthDisposalThirdAuxiliaryActivatedCarbonParticles(monthDisposalThirdAuxiliaryActivatedCarbonParticles);
+            productionDaily.setMonthDisposalThirdAuxiliaryLye(monthDisposalThirdAuxiliaryLye);
+            productionDaily.setMonthDisposalThirdAuxiliaryCausticSoda(monthDisposalThirdAuxiliaryCausticSoda);
+            productionDaily.setMonthDisposalThirdAuxiliaryUrea(monthDisposalThirdAuxiliaryUrea);
+            productionDaily.setMonthDisposalThirdAuxiliaryHydrochloricAcid(monthDisposalThirdAuxiliaryHydrochloricAcid);
+            productionDaily.setMonthDisposalThirdAuxiliaryNahco3(monthDisposalThirdAuxiliaryNahco3);
+            productionDaily.setMonthDisposalThirdAuxiliaryFlour(monthDisposalThirdAuxiliaryFlour);
+            productionDaily.setMonthDisposalThirdAuxiliaryDefoamer(monthDisposalThirdAuxiliaryDefoamer);
+            productionDaily.setMonthDisposalThirdAuxiliaryFlocculant(monthDisposalThirdAuxiliaryFlocculant);
+            productionDaily.setMonthDisposalThirdAuxiliarySoftWaterReducingAgent(monthDisposalThirdAuxiliarySoftWaterReducingAgent);
+            productionDaily.setMonthDisposalThirdAuxiliarySoftWaterScaleInhibitor(monthDisposalThirdAuxiliarySoftWaterScaleInhibitor);
+            productionDaily.setMonthDisposalThirdAuxiliaryAmmonia(monthDisposalThirdAuxiliaryAmmonia);
+            productionDaily.setMonthDisposalThirdAuxiliaryWaterReducingAgent(monthDisposalThirdAuxiliaryWaterReducingAgent);
+            productionDaily.setMonthDisposalThirdAuxiliaryWaterScaleInhibitor(monthDisposalThirdAuxiliaryWaterScaleInhibitor);
+            productionDaily.setMonthDisposalThirdAuxiliaryNaclo(monthDisposalThirdAuxiliaryNaclo);
+            productionDaily.setMonthDisposalThirdAuxiliaryStandardBox(monthDisposalThirdAuxiliaryStandardBox);
+            productionDaily.setMonthDisposalThirdAuxiliaryWoodenPallets(monthDisposalThirdAuxiliaryWoodenPallets);
+            productionDaily.setMonthDisposalThirdAuxiliaryStandardTray_1m(monthDisposalThirdAuxiliaryStandardTray_1m);
+            productionDaily.setMonthDisposalThirdAuxiliaryStandardTray_1_2m(monthDisposalThirdAuxiliaryStandardTray_1_2m);
+            productionDaily.setMonthDisposalThirdAuxiliarySlagBag(monthDisposalThirdAuxiliarySlagBag);
+            productionDaily.setMonthDisposalThirdAuxiliaryFlyAshBag(monthDisposalThirdAuxiliaryFlyAshBag);
+            productionDaily.setMonthDisposalThirdAuxiliaryTonBox(monthDisposalThirdAuxiliaryTonBox);
+            productionDaily.setMonthDisposalThirdAuxiliarySteam(monthDisposalThirdAuxiliarySteam);
+            productionDaily.setMonthDisposalThirdAuxiliaryDieselOil(monthDisposalThirdAuxiliaryDieselOil);
+            productionDaily.setMonthDisposalThirdAuxiliaryNaturalGas(monthDisposalThirdAuxiliaryNaturalGas);
+            productionDaily.setMonthDisposalThirdAuxiliaryIndustrialWater(monthDisposalThirdAuxiliaryIndustrialWater);
+            productionDaily.setMonthDisposalThirdAuxiliaryElectricQuantity(monthDisposalThirdAuxiliaryElectricQuantity);
+            productionDaily.setMonthDisposalThirdAuxiliaryTapWaterQuantity(monthDisposalThirdAuxiliaryTapWaterQuantity);
+            productionDaily.setMonthDisposalTowerElectricQuantity(monthDisposalTowerElectricQuantity);
+
+            productionDaily.setMonthOutboundA2WastesBulk(monthOutboundA2WastesBulk);
+            productionDaily.setMonthOutboundA2WastesCrushing(monthOutboundA2WastesCrushing);
+            productionDaily.setMonthOutboundA2WastesSludge(monthOutboundA2WastesSludge);
+            productionDaily.setMonthOutboundA2WastesDistillation(monthOutboundA2WastesDistillation);
+            productionDaily.setMonthOutboundA2WastesSuspension(monthOutboundA2WastesSuspension);
+            productionDaily.setMonthOutboundA2WastesWasteLiquid(monthOutboundA2WastesWasteLiquid);
+            productionDaily.setMonthOutboundA2MedicalWastes(monthOutboundA2MedicalWastes);
+
+            productionDaily.setMonthOutboundPrepare2WastesBulk(monthOutboundPrepare2WastesBulk);
+            productionDaily.setMonthOutboundPrepare2WastesCrushing(monthOutboundPrepare2WastesCrushing);
+            productionDaily.setMonthOutboundPrepare2WastesSludge(monthOutboundPrepare2WastesSludge);
+            productionDaily.setMonthOutboundPrepare2WastesDistillation(monthOutboundPrepare2WastesDistillation);
+            productionDaily.setMonthOutboundPrepare2WastesSuspension(monthOutboundPrepare2WastesSuspension);
+            productionDaily.setMonthOutboundPrepare2WastesWasteLiquid(monthOutboundPrepare2WastesWasteLiquid);
+            productionDaily.setMonthOutboundPrepare2MedicalWastes(monthOutboundPrepare2MedicalWastes);
+
+            productionDaily.setMonthOutboundB2WastesBulk(monthOutboundB2WastesBulk);
+            productionDaily.setMonthOutboundB2WastesCrushing(monthOutboundB2WastesCrushing);
+            productionDaily.setMonthOutboundB2WastesSludge(monthOutboundB2WastesSludge);
+            productionDaily.setMonthOutboundB2WastesDistillation(monthOutboundB2WastesDistillation);
+            productionDaily.setMonthOutboundB2WastesSuspension(monthOutboundB2WastesSuspension);
+            productionDaily.setMonthOutboundB2WastesWasteLiquid(monthOutboundB2WastesWasteLiquid);
+            productionDaily.setMonthOutboundB2MedicalWastes(monthOutboundB2MedicalWastes);
+
+            productionDaily.setMonthOutboundThirdPretreatmentSystemWastesBulk(monthOutboundThirdPretreatmentSystemWastesBulk);
+            productionDaily.setMonthOutboundThirdPretreatmentSystemWastesCrushing(monthOutboundThirdPretreatmentSystemWastesCrushing);
+            productionDaily.setMonthOutboundThirdPretreatmentSystemWastesSludge(monthOutboundThirdPretreatmentSystemWastesSludge);
+            productionDaily.setMonthOutboundThirdPretreatmentSystemWastesDistillation(monthOutboundThirdPretreatmentSystemWastesDistillation);
+            productionDaily.setMonthOutboundThirdPretreatmentSystemWastesSuspension(monthOutboundThirdPretreatmentSystemWastesSuspension);
+            productionDaily.setMonthOutboundThirdPretreatmentSystemWastesWasteLiquid(monthOutboundThirdPretreatmentSystemWastesWasteLiquid);
+            productionDaily.setMonthOutboundThirdPretreatmentSystemMedicalWastes(monthOutboundThirdPretreatmentSystemMedicalWastes);
+
+            productionDaily.setMonthEquipmentA2StopTime(monthEquipmentA2StopTime);
+            productionDaily.setMonthEquipmentB2StopTime(monthEquipmentB2StopTime);
+            productionDaily.setMonthEquipmentPrepare2StopTime(monthEquipmentPrepare2StopTime);
+            productionDaily.setMonthEquipmentSecondaryStopTime(monthEquipmentSecondaryStopTime);
+            productionDaily.setMonthEquipmentThirdStopTime(monthEquipmentThirdStopTime);
+
+            productionDaily.setMonthEquipmentA2RunningTime(monthEquipmentA2RunningTime);
+            productionDaily.setMonthEquipmentB2RunningTime(monthEquipmentB2RunningTime);
+            productionDaily.setMonthEquipmentPrepare2RunningTime(monthEquipmentPrepare2RunningTime);
+            productionDaily.setMonthEquipmentSecondaryRunningTime(monthEquipmentSecondaryRunningTime);
+            productionDaily.setMonthEquipmentThirdRunningTime(monthEquipmentThirdRunningTime);
+
+            productionDaily.setMonthEquipmentA2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentA2RunningTime(), productionDaily.getMonthEquipmentA2StopTime())));
+            productionDaily.setMonthEquipmentB2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentB2RunningTime(), productionDaily.getMonthEquipmentB2StopTime())));
+            productionDaily.setMonthEquipmentPrepare2RunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentPrepare2RunningTime(), productionDaily.getMonthEquipmentPrepare2StopTime())));
+            productionDaily.setMonthEquipmentSecondaryRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentSecondaryRunningTime(), productionDaily.getMonthEquipmentSecondaryStopTime())));
+            productionDaily.setMonthEquipmentThirdRunningRate(Float.parseFloat(RandomUtil.getPercentage(productionDaily.getMonthEquipmentThirdRunningTime(), productionDaily.getMonthEquipmentThirdStopTime())));
+
+            productionDaily.setMonthDisposalSecondarySlag(monthDisposalSecondarySlag);
+            productionDaily.setMonthDisposalSecondaryAsh(monthDisposalSecondaryAsh);
+            productionDaily.setMonthDisposalThirdSlag(monthDisposalThirdSlag);
+            productionDaily.setMonthDisposalThirdAsh(monthDisposalThirdAsh);
+
+
+            // 年份数据
+            float yearInboundMedicalWastes = 0f;
+            float yearInboundMedicalWastesDirectDisposal = 0f;
+            float yearInboundMedicalWastesCooking = 0f;
+            float yearInboundMedicalWastesErrorNumber = 0f;
+            float yearInboundMedicalWastesAfterCooking = 0f;
+            float yearInboundMedicalWastesAfterCookingSend = 0f;
+            float yearInboundMedicalWastesAfterCookingInbound = 0f;
+            float yearInboundMedicalWastesWetNumber = 0f;
+            float yearInboundWastesBulk = 0f;
+            float yearInboundWastesCrushing = 0f;
+            float yearInboundWastesSludge = 0f;
+            float yearInboundWastesDistillation = 0f;
+            float yearInboundWastesSuspension = 0f;
+            float yearInboundWastesWasteLiquid = 0f;
+            float yearInboundWastesTotal = 0f;
+            float yearInboundSecondWastesSlag = 0f;
+            float yearInboundSecondWastesAsh = 0f;
+            float yearInboundSecondWastesBucket = 0f;
+            float yearOutboundMedicalWastes = 0f;
+            float yearOutboundMedicalWastesDirectDisposal = 0f;
+            float yearOutboundMedicalWastesCooking = 0f;
+            float yearOutboundMedicalWastesErrorNumber = 0f;
+            float yearOutboundMedicalWastesAfterCooking = 0f;
+            float yearOutboundMedicalWastesAfterCookingSend = 0f;
+            float yearOutboundMedicalWastesAfterCookingInbound = 0f;
+            float yearOutboundMedicalWastesWetNumber = 0f;
+            float yearOutboundWastesBulk = 0f;
+            float yearOutboundWastesCrushing = 0f;
+            float yearOutboundWastesSludge = 0f;
+            float yearOutboundWastesDistillation = 0f;
+            float yearOutboundWastesSuspension = 0f;
+            float yearOutboundWastesWasteLiquid = 0f;
+            float yearOutboundWastesTotal = 0f;
+            float yearOutboundSecondWastesSlag = 0f;
+            float yearOutboundSecondWastesAsh = 0f;
+            float yearOutboundSecondWastesBucket = 0f;
+
+            // 获取日报所在年份的所有日报
+            List<ProductionDaily> productionDailyYearList = productionDailyService.getProductionDailyByDateRange(yearFirstDay, yearEndDay, null);
+            for (ProductionDaily daily : productionDailyYearList) {
+                yearInboundMedicalWastes += daily.getTodayInboundMedicalWastes();
+                yearInboundMedicalWastesDirectDisposal += daily.getTodayInboundMedicalWastesDirectDisposal();
+                yearInboundMedicalWastesCooking += daily.getTodayInboundMedicalWastesCooking();
+                yearInboundMedicalWastesErrorNumber += daily.getTodayInboundMedicalWastesErrorNumber();
+                yearInboundMedicalWastesAfterCooking += daily.getTodayInboundMedicalWastesAfterCooking();
+                yearInboundMedicalWastesAfterCookingSend += daily.getTodayInboundMedicalWastesAfterCookingSend();
+                yearInboundMedicalWastesAfterCookingInbound += daily.getTodayInboundMedicalWastesAfterCookingInbound();
+                yearInboundMedicalWastesWetNumber += daily.getTodayInboundMedicalWastesWetNumber();
+                yearInboundWastesBulk += daily.getTodayInboundWastesBulk();
+                yearInboundWastesCrushing += daily.getTodayInboundWastesCrushing();
+                yearInboundWastesSludge += daily.getTodayInboundWastesSludge();
+                yearInboundWastesDistillation += daily.getTodayInboundWastesDistillation();
+                yearInboundWastesSuspension += daily.getTodayInboundWastesSuspension();
+                yearInboundWastesWasteLiquid += daily.getTodayInboundWastesWasteLiquid();
+                yearInboundWastesTotal += daily.getTodayInboundWastesTotal();
+                yearInboundSecondWastesSlag += daily.getTodayInboundSecondWastesSlag();
+                yearInboundSecondWastesAsh += daily.getTodayInboundSecondWastesAsh();
+                yearInboundSecondWastesBucket += daily.getTodayInboundSecondWastesBucket();
+                yearOutboundMedicalWastes += daily.getTodayOutboundMedicalWastes();
+                yearOutboundMedicalWastesDirectDisposal += daily.getTodayOutboundMedicalWastesDirectDisposal();
+                yearOutboundMedicalWastesCooking += daily.getTodayOutboundMedicalWastesCooking();
+                yearOutboundMedicalWastesErrorNumber += daily.getTodayOutboundMedicalWastesErrorNumber();
+                yearOutboundMedicalWastesAfterCooking += daily.getTodayOutboundMedicalWastesAfterCooking();
+                yearOutboundMedicalWastesAfterCookingSend += daily.getTodayOutboundMedicalWastesAfterCookingSend();
+                yearOutboundMedicalWastesAfterCookingInbound += daily.getTodayOutboundMedicalWastesAfterCookingInbound();
+                yearOutboundMedicalWastesWetNumber += daily.getTodayOutboundMedicalWastesWetNumber();
+                yearOutboundWastesBulk += daily.getTodayOutboundWastesBulk();
+                yearOutboundWastesCrushing += daily.getTodayOutboundWastesCrushing();
+                yearOutboundWastesSludge += daily.getTodayOutboundWastesSludge();
+                yearOutboundWastesDistillation += daily.getTodayOutboundWastesDistillation();
+                yearOutboundWastesSuspension += daily.getTodayOutboundWastesSuspension();
+                yearOutboundWastesWasteLiquid += daily.getTodayOutboundWastesWasteLiquid();
+                yearOutboundWastesTotal += daily.getTodayOutboundWastesTotal();
+                yearOutboundSecondWastesSlag += daily.getTodayOutboundSecondWastesSlag();
+                yearOutboundSecondWastesAsh += daily.getTodayOutboundSecondWastesAsh();
+                yearOutboundSecondWastesBucket += daily.getTodayOutboundSecondWastesBucket();
+                yearInboundMedicalWastes += daily.getTodayInboundMedicalWastes();
+                yearInboundMedicalWastesDirectDisposal += daily.getTodayInboundMedicalWastesDirectDisposal();
+                yearInboundMedicalWastesCooking += daily.getTodayInboundMedicalWastesCooking();
+                yearInboundMedicalWastesErrorNumber += daily.getTodayInboundMedicalWastesErrorNumber();
+                yearInboundMedicalWastesAfterCooking += daily.getTodayInboundMedicalWastesAfterCooking();
+                yearInboundMedicalWastesAfterCookingSend += daily.getTodayInboundMedicalWastesAfterCookingSend();
+                yearInboundMedicalWastesAfterCookingInbound += daily.getTodayInboundMedicalWastesAfterCookingInbound();
+                yearInboundMedicalWastesWetNumber += daily.getTodayInboundMedicalWastesWetNumber();
+                yearInboundWastesBulk += daily.getTodayInboundWastesBulk();
+                yearInboundWastesCrushing += daily.getTodayInboundWastesCrushing();
+                yearInboundWastesSludge += daily.getTodayInboundWastesSludge();
+                yearInboundWastesDistillation += daily.getTodayInboundWastesDistillation();
+                yearInboundWastesSuspension += daily.getTodayInboundWastesSuspension();
+                yearInboundWastesWasteLiquid += daily.getTodayInboundWastesWasteLiquid();
+                yearInboundWastesTotal += daily.getTodayInboundWastesTotal();
+                yearInboundSecondWastesSlag += daily.getTodayInboundSecondWastesSlag();
+                yearInboundSecondWastesAsh += daily.getTodayInboundSecondWastesAsh();
+                yearInboundSecondWastesBucket += daily.getTodayInboundSecondWastesBucket();
+                yearOutboundMedicalWastes += daily.getTodayOutboundMedicalWastes();
+                yearOutboundMedicalWastesDirectDisposal += daily.getTodayOutboundMedicalWastesDirectDisposal();
+                yearOutboundMedicalWastesCooking += daily.getTodayOutboundMedicalWastesCooking();
+                yearOutboundMedicalWastesErrorNumber += daily.getTodayOutboundMedicalWastesErrorNumber();
+                yearOutboundMedicalWastesAfterCooking += daily.getTodayOutboundMedicalWastesAfterCooking();
+                yearOutboundMedicalWastesAfterCookingSend += daily.getTodayOutboundMedicalWastesAfterCookingSend();
+                yearOutboundMedicalWastesAfterCookingInbound += daily.getTodayOutboundMedicalWastesAfterCookingInbound();
+                yearOutboundMedicalWastesWetNumber += daily.getTodayOutboundMedicalWastesWetNumber();
+                yearOutboundWastesBulk += daily.getTodayOutboundWastesBulk();
+                yearOutboundWastesCrushing += daily.getTodayOutboundWastesCrushing();
+                yearOutboundWastesSludge += daily.getTodayOutboundWastesSludge();
+                yearOutboundWastesDistillation += daily.getTodayOutboundWastesDistillation();
+                yearOutboundWastesSuspension += daily.getTodayOutboundWastesSuspension();
+                yearOutboundWastesWasteLiquid += daily.getTodayOutboundWastesWasteLiquid();
+                yearOutboundWastesTotal += daily.getTodayOutboundWastesTotal();
+                yearOutboundSecondWastesSlag += daily.getTodayOutboundSecondWastesSlag();
+                yearOutboundSecondWastesAsh += daily.getTodayOutboundSecondWastesAsh();
+                yearOutboundSecondWastesBucket += daily.getTodayOutboundSecondWastesBucket();
+            }
+
+            productionDaily.setYearInboundMedicalWastes(yearInboundMedicalWastes);
+            productionDaily.setYearInboundMedicalWastesDirectDisposal(yearInboundMedicalWastesDirectDisposal);
+            productionDaily.setYearInboundMedicalWastesCooking(yearInboundMedicalWastesCooking);
+            productionDaily.setYearInboundMedicalWastesErrorNumber(yearInboundMedicalWastesErrorNumber);
+            productionDaily.setYearInboundMedicalWastesAfterCooking(yearInboundMedicalWastesAfterCooking);
+            productionDaily.setYearInboundMedicalWastesAfterCookingSend(yearInboundMedicalWastesAfterCookingSend);
+            productionDaily.setYearInboundMedicalWastesAfterCookingInbound(yearInboundMedicalWastesAfterCookingInbound);
+            productionDaily.setYearInboundMedicalWastesWetNumber(yearInboundMedicalWastesWetNumber);
+            productionDaily.setYearInboundWastesBulk(yearInboundWastesBulk);
+            productionDaily.setYearInboundWastesCrushing(yearInboundWastesCrushing);
+            productionDaily.setYearInboundWastesSludge(yearInboundWastesSludge);
+            productionDaily.setYearInboundWastesDistillation(yearInboundWastesDistillation);
+            productionDaily.setYearInboundWastesSuspension(yearInboundWastesSuspension);
+            productionDaily.setYearInboundWastesWasteLiquid(yearInboundWastesWasteLiquid);
+            productionDaily.setYearInboundWastesTotal(yearInboundWastesTotal);
+            productionDaily.setYearInboundSecondWastesSlag(yearInboundSecondWastesSlag);
+            productionDaily.setYearInboundSecondWastesAsh(yearInboundSecondWastesAsh);
+            productionDaily.setYearInboundSecondWastesBucket(yearInboundSecondWastesBucket);
+            productionDaily.setYearOutboundMedicalWastes(yearOutboundMedicalWastes);
+            productionDaily.setYearOutboundMedicalWastesDirectDisposal(yearOutboundMedicalWastesDirectDisposal);
+            productionDaily.setYearOutboundMedicalWastesCooking(yearOutboundMedicalWastesCooking);
+            productionDaily.setYearOutboundMedicalWastesErrorNumber(yearOutboundMedicalWastesErrorNumber);
+            productionDaily.setYearOutboundMedicalWastesAfterCooking(yearOutboundMedicalWastesAfterCooking);
+            productionDaily.setYearOutboundMedicalWastesAfterCookingSend(yearOutboundMedicalWastesAfterCookingSend);
+            productionDaily.setYearOutboundMedicalWastesAfterCookingInbound(yearOutboundMedicalWastesAfterCookingInbound);
+            productionDaily.setYearOutboundMedicalWastesWetNumber(yearOutboundMedicalWastesWetNumber);
+            productionDaily.setYearOutboundWastesBulk(yearOutboundWastesBulk);
+            productionDaily.setYearOutboundWastesCrushing(yearOutboundWastesCrushing);
+            productionDaily.setYearOutboundWastesSludge(yearOutboundWastesSludge);
+            productionDaily.setYearOutboundWastesDistillation(yearOutboundWastesDistillation);
+            productionDaily.setYearOutboundWastesSuspension(yearOutboundWastesSuspension);
+            productionDaily.setYearOutboundWastesWasteLiquid(yearOutboundWastesWasteLiquid);
+            productionDaily.setYearOutboundWastesTotal(yearOutboundWastesTotal);
+            productionDaily.setYearOutboundSecondWastesSlag(yearOutboundSecondWastesSlag);
+            productionDaily.setYearOutboundSecondWastesAsh(yearOutboundSecondWastesAsh);
+            productionDaily.setYearOutboundSecondWastesBucket(yearOutboundSecondWastesBucket);
 
             // 增加日报
             productionDailyService.addProductionDaily(productionDaily);

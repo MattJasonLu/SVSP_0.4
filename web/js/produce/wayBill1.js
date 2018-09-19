@@ -1,4 +1,3 @@
-
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data;
@@ -267,7 +266,7 @@ function loadPageWayBillList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
-    if(totalPage() == 1){
+    if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
     }
@@ -336,14 +335,14 @@ function setWayBillList(result) {
                     break;
                 case (1):
                     // 废物生产单位
-                    $(this).html(obj.produceCompany.companyName);
+                    $(this).html(obj.produceCompanyName);
                     break;
                 case (2):
                     //总额
                 {
                     var total = 0;
-                    for(var i = 0;i < obj.wayBillItemList.length;i++){
-                        total += obj.wayBillItemList[i].wastes.wastesTotal;
+                    for (var i = 0; i < obj.wayBillItemList.length; i++) {
+                        total += obj.wayBillItemList[i].wastesTotalPrice;
                     }
                     //减去总运费
                     obj.total = total - obj.freight;
@@ -373,10 +372,9 @@ function setWayBillList(result) {
                 case (8):
                     //接运单状态
                     if (obj.state != null) {
-                        obj.name = obj.state.name;
+                        $(this).html(obj.state.name);
+                        break;
                     }
-                    $(this).html(obj.name);
-                    break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -508,13 +506,10 @@ function searchWayBill() {
     if ($("#search-wayBillState").val() == 3) state = "Approval";//审批通过
     if ($("#search-wayBillState").val() == 4) state = "Backed";//驳回
     if ($("#senior").is(':visible')) {
-        var produceCompany = {};
-        produceCompany.companyName = $("#search-companyName").val();
-        var receiveCompany = {};
-        receiveCompany.companyName = $("#search-companyName").val();
         data = {
             id: $("#search-id").val(),
-            produceCompany: produceCompany,
+            produceCompanyName:  $("#search-companyName").val(),
+            receiveCompanyName: $("#search-companyName").val(),
             total: $("#search-total").val(),
             freight: $("#search-freight").val(),
             founder: $("#search-founder").val(),
@@ -523,9 +518,8 @@ function searchWayBill() {
             state: state,
             page: page
         };
-        //console.log(data);
     }
-    if(data ==  null) alert("请点击'查询设置'输入查询内容!");
+    if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({
             type: "POST",                            // 方法类型
@@ -558,12 +552,13 @@ function getWayBillId(item) {
  * 双击编辑
  * @param item
  */
-function editWayBill1(item){
+function editWayBill1(item) {
     var id = item.firstElementChild.innerHTML;
     localStorage.id = id;
     localStorage.add = 1;
     location.href = "wayBill.html";
 }
+
 /**
  * 查看功能
  */
@@ -627,9 +622,8 @@ function examination(item) {
         },
         dataType: "json",
         success: function (result) {
-            if (result.data != undefined || result.status == "success" || result.data  != null) {
+            if (result.data != undefined || result.status == "success" || result.data != null) {
                 var data = eval(result.data);
-                console.log(data.state);
                 if (data.state.name != '审批中') alert("请提交后再进行审批操作！");
                 else $('#examinationModal').modal('show');//手动触发模态框弹出
             } else {
@@ -655,7 +649,6 @@ function reject() {
 
 /**
  * 审批通过
- *
  * */
 function approval1() {
     console.log($("#advice").val());
@@ -754,32 +747,406 @@ function invalidWayBill(item) {
     });
 }
 
-function addWayBillModal(){
-    $("#wayBillModal").modal('show');
+/**
+ * 获取当前时间
+ * @returns {string}
+ */
+function getcurrentDaydate() {
+    //获取时间
+    var obj = new Date();
+    var year = obj.getFullYear();
+    var month = obj.getMonth() + 1;
+    var day = obj.getDate();
+    if (day % 7 > 0) var a = 1; else a = 0;
+    return year + "年" + month + "月" + day + "日";
 }
 
 /**
- * 新增详细项数据
+ * 获取接运单id
+ */
+function getCurrentWayBillId(){
+    $.ajax({
+        type: "POST",
+        url: "getCurrentWayBillId",
+        async: false,
+        dataType: "json",
+        success: function (result) {
+            if (result != null) {
+                 wayBillId = result.id;
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
+}
+/**
+ * 显示接运单新增页面
+ */
+function addWayBillModal(){
+    window.location.href="wayBillAdd.html";
+}
+
+/**
+ * 加载接运单新增页面数据
+ */
+function showAddData() {
+    getCurrentWayBillId();
+    $("#modal-id").text(wayBillId);
+    $("#modal-creationDate").text(getcurrentDaydate());
+}
+
+/**
+ * 页面准备完成后载入新增模态框下拉框信息
+ */
+$(document).ready(function () {
+    var lineCount = $("select[id^='modal'][id$='receiveCompany']").length;
+    //添加产废单位信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getAllClients",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 各下拉框数据填充
+                var clientList = $("#modal-produceCompanyName");
+                // 清空遗留元素
+                clientList.children().first().siblings().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    clientList.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+//                    console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    for (var i = 0; i < lineCount; i++) {
+        var $i = i;
+        // 添加单位信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getAllClients",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var clientList = $("#modal" + $i + "-receiveCompany");
+                    // 清空遗留元素
+                    clientList.children().first().siblings().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.clientId);
+                        option.text(item.companyName);
+                        clientList.append(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+//                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        // 添加业务员信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getAllSalesman",              // url
+            cache: false,
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined) {
+                    var data = eval(result);
+                    // 各下拉框数据填充
+                    var clientList = $("#modal" + $i + "-salesman");
+                    // 清空遗留元素
+                    clientList.children().first().siblings().remove();
+                    $.each(data, function (index, item) {
+                        var option = $('<option />');
+                        option.val(item.salesmanId);
+                        option.text(item.name);
+                        clientList.append(option);
+                    });
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+//                    console.log(result);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+        // 添加危废代码信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getClientAndWastesCodeSelectedList",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined && result.status === "success") {
+                    var data = eval(result);
+                    console.log("下拉数据为：");
+                    console.log(data);
+                    // 下拉框数据填充
+                    var wastesCode = $("#modal" + $i + "-wastesCode");
+                    $.each(data.wastesCodeList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(parseInt(item.code.replace(/[^0-9]/ig,"")));
+                        option.text(item.code);
+                        wastesCode.append(option);
+                    });
+                    //刷新下拉数据
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+});
+
+/**
+ * 接运单新增模态框新增条目按钮
  */
 function addNewItemLine() {
     // 获取id为plusBtn的tr元素
-    var tr = $("#addBtn1").prev();
+    var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    var num = clonedTr.children().find("span:first").prop('id').charAt(6);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("select").selectpicker('val', '');
-    clonedTr.children().find("button:eq(0)").remove();
-    clonedTr.children().find("button:eq(1)").remove();
-    $('.selectpicker').selectpicker();
-    $()
+    // 获取编号
+    var serialNumber = $("#plusBtn").prev().children().get(0).innerHTML;
+    var id1=(serialNumber.replace(/[^0-9]/ig,""));
+    var num = parseInt(id1);
+    num++;
+    clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("input,select,span").each(function () {
+        //id更新
         var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
+        var newId = id.replace(/[0-9]\d*/, num-1);
         $(this).prop('id', newId);
     });
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
+   // tr.hide();
+    var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+    clonedTr.children("td:eq(0)").prepend(delBtn);
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $('.selectpicker').data('selectpicker', null);
+    $('.bootstrap-select').find("button:first").remove();
+    $('.selectpicker').selectpicker();
+    $('.selectpicker').selectpicker('refresh');
+}
 
+/**
+ * 删除行
+ * @param e
+ */
+function delLine(e) {
+    var tr = e.parentElement.parentElement;
+    tr.parentNode.removeChild(tr);
+}
+
+/**
+ * 确认新增-将数据存到数据库
+ */
+function addWayBill(){
+    //获取数据
+    var wayBill = {};
+    wayBill.produceCompanyName = $("#modal-produceCompanyName option:selected").text();
+    wayBill.produceCompanyId = getClientIdByName(wayBill.produceCompanyName);
+    wayBill.founder = $("#modal-founder").val();
+    wayBill.id = $("#modal-id").text();
+    wayBill.freight = $("#modal-freight").val();
+    wayBill.produceCompanyOperator = $("#modal-produceCompanyOperator").val();
+    wayBill.remarks = $("#modal-remarks").val();
+    var lineCount = $("select[id^='modal'][id$='receiveCompany']").length;
+    var total = 0;
+    var wayBillItemList = [];
+    var ItemId = getCurrentItemId();
+    var wastesId = parseInt(getCurrentWastesId());
+    for(var i = 0; i < lineCount; i++){
+        var $i = i;
+        var wayBillItem = {};
+        wayBillItem.salesmanName = $("#modal" + $i + "-salesman option:selected").text();
+        wayBillItem.receiveCompanyName = $("#modal" + $i + "-receiveCompany option:selected").text();
+        wayBillItem.wastesId = conversionIdFormat(wastesId);
+        wayBillItem.wastesName = $("#modal" + $i + "-wastesName").val();
+        wayBillItem.wastesAmount = $("#modal" + $i + "-wasteAmount").val();
+        wayBillItem.wastesCode = $("#modal" + $i + "-wastesCode option:selected").text();
+        wayBillItem.wastesPrice = $("#modal" + $i + "-wastesPrice").val();
+        wayBillItem.wastesTotalPrice = parseFloat(wayBillItem.wastesAmount) * parseFloat(wayBillItem.wastesPrice);
+        wayBillItem.itemId = ItemId.toString();
+        wayBillItem.invoiceDate = $("#modal" + $i + "-invoiceDate").val();
+        wayBillItem.receiveDate = $("#modal" + $i + "-receiveDate").val();
+        wayBillItem.invoiceNumber = $("#modal" + $i + "-invoiceNumber").val();
+        wayBillItem.receiveCompanyOperator = $("#modal" + $i + "-receiveCompanyOperator").val();
+        wayBillItem.wayBillId = $("#modal-id").text();
+        wayBillItemList.push(wayBillItem);
+        wastesId++;
+        ItemId++;
+        total += wayBillItem.wastesTotalPrice;
+    }
+    wayBill.total = total;
+    wayBill.wayBillItemList = wayBillItemList;
+    console.log("添加的数据为：");
+    console.log(wayBill);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "addWayBill",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(wayBill),
+        dataType: "json",
+        contentType: 'application/json;charset=utf-8',
+        success: function (result) {
+            console.log(result);
+            if (result != undefined) {
+                var data = eval(result);
+                if (data.status == "success") {
+                    if(confirm("添加成功，是否返回主页?")){
+                        window.location.href="wayBill1.html";
+                    }else window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            }
+        },
+        error: function (result) {
+            console.dir(result);
+            alert("服务器异常!");
+        }
+    });
+}
+
+/**
+ * 根据公司名获取ID
+ * @param name
+ * @returns {*}
+ */
+function getClientIdByName(name) {
+    //接收公司名转ID
+    var id = null;
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getClientIdByName",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            name: name
+        },
+        dataType: "json",
+        success: function (result) {
+            id = result.id;
+        },
+        error: function (result) {
+            alert("服务器异常!");
+            console.log(result);
+        }
+    });
+    return id;
+}
+
+/**
+ * 获取当前接运单条目ID
+ * @returns {number}
+ */
+function getCurrentItemId() {
+    //获取详细项目序列号
+    var ItemId = 0;
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getCurrentItemId",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            //alert("数据获取成功！");
+            ItemId = parseInt(result.id);
+        },
+        error: function (result) {
+            alert("服务器异常!");
+            console.log(result);
+        }
+    });
+    return ItemId;
+}
+
+/**
+ * 获取当前危废ID
+ * @returns {*}
+ */
+function getCurrentWastesId() {
+    //获取当前危废编号
+    var id = null;
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getCurrentItemWastesId",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            id = result.id;
+        },
+        error: function (result) {
+            alert("服务器异常!");
+            console.log(result);
+        }
+    });
+    return id;
+}
+/**
+* 规范wastesId格式
+* @param id
+* @returns {string}
+*/
+function conversionIdFormat(id) {
+    var aid = "";
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "changeWastesIdFormat",             // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            //alert("数据获取成功！");
+            aid = result.id;
+        },
+        error: function (result) {
+            alert("服务器异常!");
+            console.log(result);
+        }
+    });
+    return aid;
 }

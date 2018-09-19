@@ -1,10 +1,13 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.ProductionDaily;
 import com.jdlink.domain.Produce.Sewage;
 import com.jdlink.domain.Produce.SoftWater;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ProductionDailyMapper {
@@ -51,4 +54,27 @@ public interface ProductionDailyMapper {
      * @return 日报
      */
     ProductionDaily getProductionDailyById(int id);
+
+    /**
+     * 通过日期范围来获取生产日报的集合
+     * @param beginTime 起始日期
+     * @param endTime 结束日期
+     * @return 生产日报的集合
+     */
+    List<ProductionDaily> getProductionDailyByDateRange(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("page") Page page);
+
+    /**
+     * 通过起始日期和结束日期获取生产日报
+     * @param beginTime 起始日期
+     * @param endTime 结束日期
+     * @return 生产日报集合
+     */
+    int getProductionDailyByDateRangeCount(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
+
+    /**
+     * 设置生产日报的状态
+     * @param id 编号
+     * @param checkState 校验状态
+     */
+    void setProductionDailyState(@Param("id") int id, @Param("checkState") CheckState checkState);
 }

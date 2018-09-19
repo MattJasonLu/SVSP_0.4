@@ -26,7 +26,7 @@
         resize: none;
     }
 </style>
-<body >
+<body onload="loadMonthSalesmanData();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
@@ -74,7 +74,8 @@
         <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
         <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="#">个人信息</a></li>
                 <li><a href="#">待办事项</a></li>
@@ -95,18 +96,42 @@
             <!--</div>-->
             <ul class="sidenav animated fadeInUp">
                 <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
-                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
-                <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li class="active"><a class="withripple" href="receiveManagement.html"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="preprocessingManagement.html"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="procurementManagement.html"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
-                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list"
+                                                                           aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span
+                        class="sr-only">(current)</span></a></li>
+                <li><a class="withripple" href="businessModel.html"><span class="glyphicon glyphicon-user"
+                                                                          aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="compatibilityPlan.html"><span class="glyphicon glyphicon-list"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li class="active"><a class="withripple" href="receiveManagement.html"><span
+                        class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="storageManagement.html"><span class="glyphicon glyphicon-save"
+                                                                              aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="preprocessingManagement.html"><span
+                        class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="dispositionManagement.html"><span class="glyphicon glyphicon-retweet"
+                                                                                  aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="secondaryManagement.html"><span class="glyphicon glyphicon-tags"
+                                                                                aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="procurementManagement.html"><span
+                        class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="reportManagement.html"><span class="glyphicon glyphicon-edit"
+                                                                             aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="basicData.html"><span class="glyphicon glyphicon-signal"
+                                                                      aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span
+                        class="iright pull-right">&gt;</span></a></li>
+                <li><a class="withripple" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span
+                        class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
             </ul>
         </div>
     </div>
@@ -122,22 +147,43 @@
             <h4 class="sub-header"><span class="months"></span>月份考核-业务员列表</h4>
         </div>
         <!--查询框-->
-        <div class="input-group col-xs-4 pull-right">
-            <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
-            <span class="input-group-btn">
-                    <a class="btn btn-default" onclick="search1();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                    <a class="btn btn-default" onclick="$('#senior1').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
-                    <a class="btn btn-default" onclick="reset1();"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置</a>
+        <div class="row">
+            <div class="input-group col-xs-4 pull-right">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1">
+                <span class="input-group-btn">
+                    <a class="btn btn-default" onclick="search1();"><span class="glyphicon glyphicon-search"
+                                                                          aria-hidden="true"></span> 查询</a>
+                    <a class="btn btn-default" onclick="$('#senior1').toggle();"><span class="glyphicon glyphicon-cog"
+                                                                                       aria-hidden="true"></span> 高级查询</a>
+                    <a class="btn btn-default" onclick="reset1();"><span class="glyphicon glyphicon-repeat"
+                                                                         aria-hidden="true"></span> 重置</a>
                 </span>
+            </div>
         </div>
         <div class="panel panel-default" id="senior1" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-6" style="margin-left: -10px;">
+                    <div class="form-horizontal col-md-4" style="margin-left: -10px;">
                         <div class="form-group" style="margin-left: -10px;">
-                            <label class="col-sm-3 control-label">业务员</label>
+                            <label class="col-sm-4 control-label">业务员编号</label>
                             <div class="input-group date">
-                                <input type="text"  id="search1-salesman"/>
+                                <input type="text" id="search1-salesmanId"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4" style="margin-left: -10px;">
+                        <div class="form-group" style="margin-left: -10px;">
+                            <label class="col-sm-4 control-label">业务员</label>
+                            <div class="input-group date">
+                                <input type="text" id="search1-salesmanName"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-4" style="margin-left: -10px;">
+                        <div class="form-group" style="margin-left: -10px;">
+                            <label class="col-sm-4 control-label">接运单金额</label>
+                            <div class="input-group date">
+                                <input type="text" id="search1-wayBillTotalPrice"/>
                             </div>
                         </div>
                     </div>
@@ -149,7 +195,7 @@
             <tr>
                 <td class="text-center">业务员编号</td>
                 <td class="text-center">业务员</td>
-                <td class="text-center">月份</td>
+                <td class="text-center">年月份</td>
                 <td class="text-center">系数</td>
                 <td class="text-center">接运单金额</td>
                 <td class="text-center">到账金额</td>
@@ -160,20 +206,21 @@
                 <td class="text-center">操作</td>
             </tr>
             </thead>
-            <tbody>
-            <tr onclick="toViewSalesman1(this)">
-                <td class="text-center">0001</td>
-                <td class="text-center">王二</td>
-                <td class="text-center">1月</td>
-                <td class="text-center">0.4</td>
-                <td class="text-center">21313</td>
-                <td class="text-center">28930</td>
-                <td class="text-center">30000.00</td>
-                <td class="text-center">28930.00</td>
-                <td class="text-center">115.72</td>
-                <td class="text-center">23123</td>
+            <tbody id="tbody1">
+            <tr onclick="toViewSalesman1(this)" id="clone1">
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
                 <td class="text-center">
-                    <a onclick="toViewSalesman(this)" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                    <a onclick="toViewSalesman(this)" title="查看"><span class="glyphicon glyphicon glyphicon-search"
+                                                                       aria-hidden="true"></span></a>
                 </td>
             </tr>
             </tbody>

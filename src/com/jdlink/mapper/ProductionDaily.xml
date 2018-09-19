@@ -199,7 +199,7 @@
 
     <!--增加日报-->
     <insert id="addProductionDaily" parameterType="ProductionDaily">
-        INSERT INTO t_rp_productiondaily (id, date, todayDisposalMedicalWastes, todayDisposalMedicalWastesDisposalDirect, todayDisposalMedicalWastesCooking,
+        INSERT INTO t_rp_productiondaily (id, date, checkState, todayDisposalMedicalWastes, todayDisposalMedicalWastesDisposalDirect, todayDisposalMedicalWastesCooking,
         todayDisposalMedicalWastesAfterCooking, todayDisposalMedicalWastesAfterCookingInbound, todayDisposalMedicalWastesAfterCookingSend,
         todayDisposalMedicalWastesErrorNumber, todayDisposalMedicalWastesWetNumber, todayInboundMedicalWastes, todayInboundMedicalWastesCooking,
         todayInboundMedicalWastesErrorNumber, todayInboundMedicalWastesAfterCooking, todayInboundMedicalWastesAfterCookingInbound, todayInboundMedicalWastesWetNumber,
@@ -234,7 +234,7 @@
         todayEquipmentA2StopTime, todayEquipmentB2StopTime, todayEquipmentPrepare2StopTime, todayEquipmentSecondaryStopTime, todayEquipmentThirdStopTime, todayEquipmentA2RunningRate,
         todayEquipmentB2RunningRate, todayEquipmentPrepare2RunningRate, todayEquipmentSecondaryRunningRate, todayEquipmentThirdRunningRate, todayDisposalSecondarySlag, todayDisposalSecondaryAsh,
         todayDisposalThirdSlag, todayDisposalThirdAsh, todayInboundSecondWastesSlag, todayInboundSecondWastesAsh)
-        VALUES (#{id}, #{date}, #{todayDisposalMedicalWastes},
+        VALUES (#{id}, #{date}, #{checkState}, #{todayDisposalMedicalWastes},
         #{todayDisposalMedicalWastesDisposalDirect}, #{todayDisposalMedicalWastesCooking}, #{todayDisposalMedicalWastesAfterCooking},
         #{todayDisposalMedicalWastesAfterCookingInbound}, #{todayDisposalMedicalWastesAfterCookingSend}, #{todayDisposalMedicalWastesErrorNumber},
         #{todayDisposalMedicalWastesWetNumber}, #{todayInboundMedicalWastes}, #{todayInboundMedicalWastesCooking}, #{todayInboundMedicalWastesErrorNumber},
@@ -310,4 +310,31 @@
             </foreach>
         </if>
     </insert>
+
+    <!--通过日期范围获取生产日报-->
+    <select id="getProductionDailyByDateRange" resultType="ProductionDaily">
+        select * from t_rp_productiondaily
+        <![CDATA[
+            WHERE DATE_FORMAT(date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(date, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        ]]>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--通过日期范围获取生产日报-->
+    <select id="getProductionDailyByDateRangeCount" resultType="int">
+        select COUNT(*) from t_rp_productiondaily
+        <![CDATA[
+            WHERE DATE_FORMAT(date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            AND DATE_FORMAT(date, '%Y-%m-%d') <=  DATE_FORMAT(#{endTime}, '%Y-%m-%d')
+        ]]>;
+    </select>
+
+    <!--更改日报的状态-->
+    <update id="setProductionDailyState">
+        update t_rp_productiondaily set checkState=#{checkState} where id=#{id};
+    </update>
 </mapper>

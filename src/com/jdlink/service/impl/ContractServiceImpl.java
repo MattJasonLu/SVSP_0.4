@@ -1,8 +1,6 @@
 package com.jdlink.service.impl;
 
-import com.jdlink.domain.Contract;
-import com.jdlink.domain.Page;
-import com.jdlink.domain.Salesman;
+import com.jdlink.domain.*;
 import com.jdlink.mapper.ContractMapper;
 import com.jdlink.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,6 +174,21 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
+    public Client getByClientId(String clientId) {
+        return contractMapper.getByClientId(clientId);
+    }
+
+    @Override
+    public List<String> getNewestContractId() {
+        return contractMapper.getNewestContractId();
+    }
+
+    @Override
+    public Supplier getSupplierListById(String supplierId) {
+        return contractMapper.getSupplierListById(supplierId);
+    }
+
+    @Override
     public List<Salesman> listSalesmanByContract(Page page) {
         return contractMapper.listSalesmanByContract(page);
     }
@@ -186,8 +199,8 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public List<Contract> getContractBySalesman(String salesmanId, Page page) {
-        return contractMapper.getContractBySalesman(salesmanId, page);
+    public List<Contract> getContractBySalesman(String salesmanId,String month) {
+        return contractMapper.getContractBySalesman(salesmanId,month);
     }
 
     @Override
@@ -201,5 +214,13 @@ contractMapper.updateFreight2(id);
     }
 
     @Override
-    public List<Contract> getContractList(){ return contractMapper.getContractList(); }
+    public List<Contract> getContractList(String year){ return contractMapper.getContractList(year); }
+
+    @Override
+    public List<Contract> getContractListByMonth(String month){ return contractMapper.getContractListByMonth(month); }
+
+    @Override
+    public void addQuotationItem(QuotationItem quotationItem) {
+       contractMapper.addQuotationItem(quotationItem);
+    }
 }

@@ -261,4 +261,8 @@
     <select id="getByInboundOrderItemId"  resultMap="InboundOrderItemIdRM" parameterType="String">
         select * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
     </select>
+    <!--寻找最新的入库日期-->
+     <select id="getNewestInBoundDate" resultType="Date">
+         select  inboundDate from t_pl_wasteinventory order  by inboundDate;
+     </select>
 </mapper>

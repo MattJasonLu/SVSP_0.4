@@ -18,15 +18,39 @@ public class WayBillItem{
     /**
      * 接收单位
      */
-    private Client receiveCompany;
+    private String receiveCompanyName;
     /**
-     * 业务员
+     * 业务员姓名
      */
-    private Salesman salesman;
+    private String salesmanName;
     /**
-     * 危废列表
+     * 业务员ID
      */
-    private Wastes wastes;
+    private String salesmanId;
+    /**
+     * 危废名称
+     */
+    private String wastesName;
+    /**
+     * 危废Id
+     */
+    private String wastesId;
+    /**
+     * 危废数量
+     */
+    private float wastesAmount;
+    /**
+     * 危废价格
+     */
+    private float wastesPrice;
+    /**
+     * 危废总额
+     */
+    private float wastesTotalPrice;
+    /**
+     * 危废代码
+     */
+    private String wastesCode;
     /**
      * 开票日期
      */
@@ -39,7 +63,9 @@ public class WayBillItem{
      * 处置单位/接收单位经手人
      */
     private String receiveCompanyOperator;
-
+    /**
+     * 接运单日期
+     */
     private Date receiveDate;
 
     public Date getReceiveDate() {
@@ -58,28 +84,76 @@ public class WayBillItem{
         this.itemId = itemId;
     }
 
-    public Client getReceiveCompany() {
-        return receiveCompany;
+    public String getReceiveCompanyName() {
+        return receiveCompanyName;
     }
 
-    public void setReceiveCompany(Client receiveCompany) {
-        this.receiveCompany = receiveCompany;
+    public void setReceiveCompanyName(String receiveCompanyName) {
+        this.receiveCompanyName = receiveCompanyName;
     }
 
-    public Salesman getSalesman() {
-        return salesman;
+    public String getSalesmanName() {
+        return salesmanName;
     }
 
-    public void setSalesman(Salesman salesman) {
-        this.salesman = salesman;
+    public void setSalesmanName(String salesmanName) {
+        this.salesmanName = salesmanName;
     }
 
-    public Wastes getWastes() {
-        return wastes;
+    public String getSalesmanId() {
+        return salesmanId;
     }
 
-    public void setWastes(Wastes wastes) {
-        this.wastes = wastes;
+    public void setSalesmanId(String salesmanId) {
+        this.salesmanId = salesmanId;
+    }
+
+    public String getWastesName() {
+        return wastesName;
+    }
+
+    public void setWastesName(String wastesName) {
+        this.wastesName = wastesName;
+    }
+
+    public String getWastesId() {
+        return wastesId;
+    }
+
+    public void setWastesId(String wastesId) {
+        this.wastesId = wastesId;
+    }
+
+    public String getWastesCode() {
+        return wastesCode;
+    }
+
+    public void setWastesCode(String wastesCode) {
+        this.wastesCode = wastesCode;
+    }
+
+    public float getWastesAmount() {
+        return wastesAmount;
+    }
+
+    public void setWastesAmount(float wastesAmount) {
+        this.wastesAmount = wastesAmount;
+    }
+
+    public float getWastesPrice() {
+        return wastesPrice;
+    }
+
+    public void setWastesPrice(float wastesPrice) {
+        this.wastesPrice = wastesPrice;
+    }
+
+    public float getWastesTotalPrice() {
+        return wastesTotalPrice;
+    }
+
+    public void setWastesTotalPrice(float wastesTotalPrice) {
+        this.wastesTotalPrice = wastesTotalPrice;
     }
 
     public Date getInvoiceDate() {
@@ -117,12 +191,19 @@ public class WayBillItem{
     @Override
     public String toString() {
         return "WayBillItem{" +
-                "receiveCompany=" + receiveCompany +
-                ", salesman=" + salesman +
-                ", wastesList=" +
+                "itemId='" + itemId + '\'' +
+                ", wayBillId='" + wayBillId + '\'' +
+                ", receiveCompanyName='" + receiveCompanyName + '\'' +
+                ", salesmanName='" + salesmanName + '\'' +
+                ", salesmanId='" + salesmanId + '\'' +
+                ", wastesName='" + wastesName + '\'' +
+                ", wastesId='" + wastesId + '\'' +
+                ", wastesAmount='" + wastesAmount + '\'' +
+                ", wastesPrice='" + wastesPrice + '\'' +
                 ", invoiceDate=" + invoiceDate +
                 ", invoiceNumber='" + invoiceNumber + '\'' +
                 ", receiveCompanyOperator='" + receiveCompanyOperator + '\'' +
+                ", receiveDate=" + receiveDate +
                 '}';
     }
 }

@@ -242,6 +242,7 @@ public class ContractController {
     @RequestMapping("saveContract")
     @ResponseBody
     public String  saveContract(@RequestBody Contract contract) {
+        JSONObject res1=new JSONObject();
         //1.获取合同ID
         List<String> list= contractService.getContractIdList();//合同id集合
         if(list.size()<=0){
@@ -262,8 +263,6 @@ public class ContractController {
             String newId= String.valueOf((list1.get(list1.size()-1)+1)) ;//当前编号
             contract.setContractId(newId);
         }
-
-        System.out.println("当前合同编号:"+contract.getContractId());
         contract.setCheckState(CheckState.ToSubmit);//设置为待提交
         //设置时间
         //生成日期对象
@@ -280,25 +279,18 @@ public class ContractController {
             System.out.println(contract.getModelVersion()+"CCC");
         }
         JSONObject res = JSONObject.fromBean(contract);
-        System.out.println(res.toString());
-
-        // 通过客户名称搜索到客户id
-        String companyName = contract.getCompany1();
-        Client client = clientService.getByName(companyName);
-        if (client != null) contract.setClientId(client.getClientId());
-
         //给予合同的状态
         try{
             contractService.add(contract);
-            res.put("status", "success");
-            res.put("message", "添加成功");
+            res1.put("status", "success");
+            res1.put("message", "添加成功");
         }
         catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "创建合同失败，请完善信息!");
+            res1.put("status", "fail");
+            res1.put("message", "创建合同失败，请完善信息!");
         }
-        return  res.toString();
+        return  res1.toString();
     }
 
     @RequestMapping("submitContract")
@@ -926,61 +918,66 @@ public class ContractController {
         return count;
     }
 
-    /**
-     * 根据业务员的编号筛选出所有的合同
-     * @param salesmanId 业务员编号
-     * @param page 页码
-     * @return 合同列表
-     */
-    @RequestMapping("getContractBySalesman")
+    //根据客户编号获取编号
+    @RequestMapping("getClientListById")
     @ResponseBody
-    public String getContractBySalesman(String salesmanId, Page page) {
-        JSONObject res = new JSONObject();
+    public String getClientListById(String clientId){
+        JSONObject res=new JSONObject();
         try {
-            page = null;   // 分页暂时不用
-            // 获取该业务员名下所有合同
-            List<Contract> contractList = contractService.getContractBySalesman(salesmanId, page);
-            // 危废信息
-            Map<String, LaboratoryTest> map = new HashMap<>();
-            // 客户联系信息
-            Map<String, String> map2 = new HashMap<>();
-            //接运单明细数据
-            Map<String, List<WayBillItem>> map3 = new HashMap<>();
-            // 遍历合同列表，获取每个合同对应信息
-            for (Contract contract : contractList) {
-                String clientId = contract.getClientId();
-                LaboratoryTest laboratoryTest = laboratoryTestService.getRecentLaboratoryTestByClientId(clientId);
-                map.put(clientId,laboratoryTest);
-                Client client = clientService.getByClientId(clientId);
-                String contactInfo = client.getContactName() + "-" + client.getPhone();
-                map2.put(clientId, contactInfo);
-                List<Hazardous> hazardousList = contract.getHazardousList();
-                List<WayBillItem> wayBillItemList = new ArrayList<>();
-               //获取接运单明细数据
-                for(Hazardous hazardous : hazardousList){
-                    String code = hazardous.getCode();
-                    WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId,code);
-                    wayBillItemList.add(wayBillItem);
-                }
-                map3.put(clientId,wayBillItemList);
-            }
-            // map转json
-            JSONObject jMap = JSONObject.fromMap(map);
-            JSONObject jMap2 = JSONObject.fromMap(map2);
-            JSONObject jMap3 = JSONObject.fromMap(map3);
-            JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
-            // 赋值
+            Client client = contractService.getByClientId(clientId);//获得用户
+            res.put("client",client);
             res.put("status", "success");
-            res.put("message", "获取成功");
-            res.put("data", data);
-            res.put("map", jMap);
-            res.put("contactInfo", jMap2);
-        } catch (Exception e) {
+            res.put("message", "查询客户成功");
+
+        }
+        catch (Exception e){
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "获取失败");
+            res.put("message", "查询客户失败");
         }
-        return res.toString();
+        return  res.toString();
+    }
+    //添加报价单明细
+    @RequestMapping("addQuotationItem")
+    @ResponseBody
+    public String addQuotationItem(@RequestBody QuotationItem quotationItem){
+        JSONObject res=new JSONObject();
+        try{
+            //首先查询最新的非模板合同编号
+            List<String> contractIdList=contractService.getNewestContractId();
+            quotationItem.setContractId(contractIdList.get(0));
+            contractService.addQuotationItem(quotationItem);
+            res.put("status", "success");
+            res.put("message", "合同报价单明细添加成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "合同报价单明细添加失败");
+
+        }
+        return  res.toString();
+    }
+
+    //根据供应商编号获取
+    @RequestMapping("getSupplierListById")
+    @ResponseBody
+    public String getSupplierListById(String supplierId){
+        JSONObject res=new JSONObject();
+        try {
+            Supplier supplier=contractService.getSupplierListById(supplierId);
+            res.put("status", "success");
+            res.put("message", "供应商查询成功");
+            res.put("supplier", supplier);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "供应商查询失败");
+        }
+        return  res.toString();
+
+
     }
 }
 

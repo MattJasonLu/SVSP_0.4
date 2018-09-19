@@ -1180,7 +1180,10 @@ function view1(item) {
                     //进料方式
                     $('#handelCategory').text(result.data[0].handelCategory.name);
                 }
-
+                //处置设备
+                if(result.data[0].equipment!=null){
+                    $('#equipment').text(result.data[0].equipment.name);
+                }
                 //入库单号
                 $("#outboundOrderId").val(result.data[0].outboundOrderId);
                 $('#appointModal2').modal('show');

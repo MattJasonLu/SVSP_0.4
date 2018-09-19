@@ -280,6 +280,7 @@ function  batchingList() {
 function reset() {
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+    $("select[name='search-companyName']").selectpicker('val',' ');
 }
 /**
  * 设置克隆页码
@@ -440,39 +441,43 @@ function setWasteInventoryList(result) {
                         case (1):
                             $(this).html(obj.inboundOrderId);
                             break;
-                        // 仓库号
+                            //入库日期
                         case (2):
+                            $(this).html(getDateStr(obj.inboundDate));
+                            break;
+                        // 仓库号
+                        case (3):
                                 $(this).html("");
                             break;
                         //产废单位
-                        case (3):
+                        case (4):
                             $(this).html(obj.produceCompany.companyName);
                             break;
                         // 危废名称
-                        case (4):
+                        case (5):
                             $(this).html(obj.laboratoryTest.wastesName);
                             break;
                         // 危废代码
-                        case (5):
+                        case (6):
                             $(this).html(obj.laboratoryTest.wastesCode);
                             break;
                         // 产废类别
-                        case (6):
+                        case (7):
                             $(this).html(obj.wastesCategory);
                             break;
                         // 进料方式
-                        case (7):
+                        case (8):
                             $(this).html(obj.handleCategory.name);
                             break;
                         //数量
-                        case (8):
+                        case (9):
                             $(this).html(obj.actualCount);
                             break;
                         //剩余数量
-                        case (9):
+                        case (10):
                             $(this).html(obj.leftNumeber);
                             break;
-                        case (10):
+                        case (11):
                             $(this).html(obj.remarks);
                             break;
                         case (11):
@@ -623,27 +628,28 @@ function setSeniorSelectedList() {
                 });
                 handelCategory.get(0).selectedIndex = -1;
                 //危废代码
-                var wastesInfoList = $("#search-wasteId");
-                // 清空遗留元素
-                wastesInfoList.children().remove();
-                $.each(data.data, function (index, item) {
-                    var option = $('<option />');
-                    option.val(item.code);
-                    option.text(item.code);
-                    wastesInfoList.append(option);
-                });
-                wastesInfoList.removeAttr('id');
-                $('.selectpicker').selectpicker('refresh');
+                // var wastesInfoList = $("#search-wasteId");
+                // // 清空遗留元素
+                // wastesInfoList.children().remove();
+                // $.each(data.data, function (index, item) {
+                //     var option = $('<option />');
+                //     option.val(item.code);
+                //     option.text(item.code);
+                //     wastesInfoList.append(option);
+                // });
+                // wastesInfoList.removeAttr('id');
+                // $('.selectpicker').selectpicker('refresh');
                 var companyList=$("#search-companyName");
                 companyList.children().remove();
                 $.each(data.array, function (index, item) {
                     var option = $('<option />');
-                    option.val(item.clientId);
+                    option.val(item.companyName);
                     option.text(item.companyName);
                     companyList.append(option);
                 });
                 companyList.removeAttr('id');
                 $('.selectpicker').selectpicker('refresh');
+                $('.selectpicker').selectpicker('val',"");
             } else {
                 console.log("fail: " + result);
             }
@@ -657,35 +663,57 @@ function setSeniorSelectedList() {
 
 }
 //高级查询功能
+array=[];//存放所有的tr
+array1=[];//存放目标的tr
+//危废出库查询
 function searchInventory() {
-    // 精确查询
-    if ($("#senior").is(':visible')) {
-        data = {
-            inboundDate:$("#search-inboundDate").val(),
-            wastes:{ handleCategory: $("#search-handelCategory").val(), wastesId:$("select[name='search-wasteId']").selectpicker('val')},
-            produceCompany:{companyName:$("select[name='search-companyName']").selectpicker('val')}};
-        };
-        console.log(data);
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "searchInventory",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setWasteInventoryList(result.data);
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-        }
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    $('.selectpicker').selectpicker({
+        language: 'zh_CN',
+        size: 4
+    });//下拉框样式
+    $('.myclass').each(function () {
+        $(this).show();
+        array.push($(this));
     });
-    isSearch = true;
+
+    var inboundDate=$("#search-inboundDate").val();
+
+    var hangdeCategory=$("#search-handelCategory option:selected").text();
+
+    var companyName=$("select[name='search-companyName']").selectpicker('val');
+
+    var wastesCode=$("#search-wasteId").val();
+      console.log(inboundDate);
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').eq(2).text().indexOf(inboundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1
+            )){
+                $(this).hide();
+            }
+            if(($(this).children('td').eq(2).text().indexOf(inboundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1)){
+                array1.push($(this));
+            }
+        });
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(inboundDate.length<=0&&companyName.length<=0&&hangdeCategory.length<0&&transport.length<0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+
 }
 //数量加减
 function adjustNumber(item) {

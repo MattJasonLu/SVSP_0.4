@@ -60,13 +60,11 @@ function setWayBillItemList(result) {
                     break;
                 case (1):
                     // 委托单位/危废生产单位
-                    if (result.produceCompany != null)
-                    $(this).html(result.produceCompany.companyName);
+                    $(this).html(result.produceCompanyName);
                     break;
                 case (2):
                     //接收单位
-                    if (obj.receiveCompany != null)
-                    $(this).html(obj.receiveCompany.companyName);
+                    $(this).html(obj.receiveCompanyName);
                     break;
                 case (3):
                     //接收单位经手人
@@ -78,35 +76,34 @@ function setWayBillItemList(result) {
                     break;
                 case (5):
                     //业务员
-                    if (obj.salesman != null)
-                    $(this).html(obj.salesman.name);
+                    $(this).html(obj.salesmanName);
                     break;
                 case (6):
                     //危废名称
-                    if (obj.wastes != null)
-                    $(this).html(obj.wastes.name);
+                    $(this).html(obj.wastesName);
                     break;
                 case (7):
-                    //危废数量
-                    if (obj.wastes != null)
-                    $(this).html(obj.wastes.wasteAmount);
+                    //危废代码
+                    $(this).html(obj.wastesCode);
                     break;
                 case (8):
-                    //危废含税单价
-                    if (obj.wastes != null)
-                    $(this).html(obj.wastes.unitPriceTax);
+                    //危废数量
+                    $(this).html(obj.wastesAmount);
                     break;
-                case(9):
-                    //危废单个合计
-                    if (obj.wastes != null)
-                    var total = obj.wastes.unitPriceTax * obj.wastes.wasteAmount;
-                    $(this).html(total);
+                case (9):
+                    //危废含税单价
+                    $(this).html(obj.wastesPrice);
                     break;
                 case(10):
+                    //危废单个合计
+                    var total = obj.wastesPrice * obj.wastesAmount;
+                    $(this).html(total);
+                    break;
+                case(11):
                     //开票日期
                     $(this).html(getDateStr(obj.invoiceDate));
                     break;
-                case(11):
+                case(12):
                     //发票号码
                     $(this).html(obj.invoiceNumber);
                     break;
@@ -136,7 +133,7 @@ function showAddModal() {
             if (result != undefined && result.status == "success") {
                 var data = eval(result.data);
                 $("#wastes0-id").text(localStorage.id);
-                $("#wastes0-produceCompany").text(data.produceCompany.companyName);
+                $("#wastes0-produceCompany").text(data.produceCompanyName);
                 $("#wastes0-founder").text(data.founder);
                 $("#wastes0-wayBillDate").text(getDateStr(data.wayBillDate));
             } else {
@@ -163,8 +160,7 @@ function addNewItemLine() {
     var num = clonedTr.children().find("span:first").prop('id').charAt(6);
     clonedTr.children().find("input").val("");
     clonedTr.children().find("select").selectpicker('val', '');
-    clonedTr.children().find("button:eq(0)").remove();
-    clonedTr.children().find("button:eq(1)").remove();
+    $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
     clonedTr.children().find("input,select,span").each(function () {
         var id = $(this).prop('id');
@@ -249,6 +245,11 @@ function getCurrentWastesId() {
     return id;
 }
 
+/**
+ * 规范wastesId格式
+ * @param id
+ * @returns {string}
+ */
 function conversionIdFormat(id) {
     var aid = "";
     $.ajax({
@@ -305,32 +306,23 @@ function addWastes() {
         var ItemId1 = ItemId++;
         var wastesId1 = wastesId++;
         var wayBillItem = {};
-        var wastes = {};
-        var salesman = {};
-        var receiveCompany = {};
         var $i = i;
-        // var name = $("#wastes" + $i + "-salesman option:selected").text();
-        // salesman.salesmanId = getSalesmanIdByName(name);
-        salesman.salesmanId = $("#wastes" + $i + "-salesman option:selected").val();
-        // var companyName = $("#wastes" + $i + "-receiveCompany option:selected").text();
-        // receiveCompany.clientId = getClientIdByName(companyName);
-        receiveCompany.clientId = $("#wastes" + $i + "-receiveCompany option:selected").val();
-        wastes.id = conversionIdFormat(wastesId1);
-        wastes.name = $("#wastes" + $i + "-name").val();
-        wastes.wasteAmount = $("#wastes" + $i + "-wasteAmount").val();
-        wastes.unitPriceTax = $("#wastes" + $i + "-unitPriceTax").val();
-        wastes.wastesTotal = wastes.wasteAmount * wastes.unitPriceTax;
+      //  wayBillItem.salesmanId = $("#wastes" + $i + "-salesman option:selected").val();
+        wayBillItem.salesmanName = $("#wastes" + $i + "-salesman option:selected").text();
+        wayBillItem.receiveCompanyName = $("#wastes" + $i + "-receiveCompany option:selected").text();
+        wayBillItem.wastesId = conversionIdFormat(wastesId1);
+        wayBillItem.wastesName = $("#wastes" + $i + "-name").val();
+        wayBillItem.wastesAmount = $("#wastes" + $i + "-wasteAmount").val();
+        wayBillItem.wastesCode = $("#wastes" + $i + "-wasteCode option:selected").text();
+        wayBillItem.wastesPrice = $("#wastes" + $i + "-unitPriceTax").val();
+        wayBillItem.wastesTotalPrice = parseFloat(wayBillItem.wastesAmount) * parseFloat(wayBillItem.wastesPrice);
         wayBillItem.itemId = ItemId1.toString();
-        wayBillItem.wastes = wastes;
         wayBillItem.invoiceDate = $("#wastes" + $i + "-invoiceDate").val();
         wayBillItem.invoiceNumber = $("#wastes" + $i + "-invoiceNumber").val();
         wayBillItem.receiveCompanyOperator = $("#wastes" + $i + "-receiveCompanyOpterator").val();
-        wayBillItem.receiveCompany = receiveCompany;
         wayBillItem.receiveDate = $("#wastes" + $i + "-receiveDate").val();
-        wayBillItem.salesman = salesman;
         wayBillItem.wayBillId = localStorage.id;
         wayBill.wayBillItemList.push(wayBillItem);
-
     }
     console.log(wayBill);
     $.ajax({
@@ -358,7 +350,6 @@ function addWastes() {
             alert("服务器异常!");
         }
     });
-
     add1 = false;
 }
 
@@ -427,6 +418,35 @@ $(document).ready(function () {
             },
             error: function (result) {
                 console.log(result);
+            }
+        });
+        // 添加危废代码信息
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getClientAndWastesCodeSelectedList",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined && result.status === "success") {
+                    var data = eval(result);
+                    console.log("下拉数据为：");
+                    console.log(data);
+                    // 下拉框数据填充
+                    var wastesCode = $("#wastes" + $i + "-wasteCode");
+                    $.each(data.wastesCodeList, function (index, item) {
+                        var option = $('<option />');
+                        option.val(parseInt(item.code.replace(/[^0-9]/ig,"")));
+                        option.text(item.code);
+                        wastesCode.append(option);
+                    });
+                    //刷新下拉数据
+                    $('.selectpicker').selectpicker('refresh');
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
             }
         });
     }

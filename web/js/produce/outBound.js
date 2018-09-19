@@ -894,6 +894,10 @@ function view1(item){
                 $('#handelCategory').text(result.data[0].handelCategory.name);
                 //入库单号
                 $("#outboundOrderId").val(result.data[0].outboundOrderId);
+                //处置设备
+                if(result.data[0].equipment!=null){
+                    $('#equipment').text(result.data[0].equipment.name);
+                }
                 $('#appointModal2').modal('show');
             }
             else {
@@ -941,6 +945,30 @@ array=[];//存放所有的tr
 array1=[];//存放目标的tr
 //危废出库查询
 function searchWasteOut() {
+    //如果需要按日期范围查询 寻找最早的日期
+    var date;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestDate",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                date=getDateStr(result.dateList[0]);
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+
+    });
+    console.log(date);
     $('.myclass').each(function () {
         $(this).show();
     });
@@ -954,25 +982,39 @@ function searchWasteOut() {
 // console.log(array);
 //1出库日期
     var outBoundDate=$('#search-storageDate').val()+"";
+    var endDate=$('#search-endDate').val();
     //2出库数量
     var outBoundNumber=$('#search-storageQuantity').val();
     //3出库单号
     var outboundOrderId =$('#search-storageNumber').val();
     //4进料方式
     var processWay=$('#search-materialForm option:selected').text();
-   console.log(processWay);
+   var startDate=getDateByStr(outBoundDate);
+   var endDate=getDateByStr(endDate);
+
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
+          if(startDate.toString()=='Invalid Date'){
+              startDate=getDateByStr(date);
+          }
+          if(endDate.toString()=='Invalid Date'){
+              endDate=new Date();
+          }
+                if(!($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1
+                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
+                    &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
+                )){
+                    $(this).hide();
+                }
+                if(($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1
+                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1)
+                    &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
+                ){
+                    array1.push($(this));
+                }
+
             //console.log(this);
-            if(!($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1
-                &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
-            )){
-                $(this).hide();
-            }
-            if(($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1
-                &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1)){
-                array1.push($(this));
-            }
+
         });
     }
 
@@ -991,3 +1033,4 @@ function searchWasteOut() {
 
 
 }
+

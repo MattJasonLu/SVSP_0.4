@@ -36,4 +36,5 @@ public interface OutboundOrderService {
     int totalWastesOutBoundRecord();
     List<OutboundOrder>  loadSecOutBoundList(Page page);
     int totalSecOutBoundRecord();
+    List<Date>getNewestDate();
 }

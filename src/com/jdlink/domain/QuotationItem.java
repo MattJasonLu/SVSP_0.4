@@ -48,6 +48,10 @@ public class QuotationItem {
      */
     private float unitPrice;
     /**
+     * 处置金额
+     */
+    private float totalPriec;
+    /**
      * 税率
      */
     private float taxRate;
@@ -95,6 +99,95 @@ public class QuotationItem {
      * 闪点
      */
     private float flashPoint;
+
+    /**
+     * 包装类型
+     * @return
+     */
+    private PackageType packageType;
+
+    /**
+     * 运输单位
+     * @return
+     */
+    private TransportType transport;
+    /**
+     * 计量单位
+     */
+    private String util;
+    /**
+     *
+     * @return
+     */
+    private String contractId;
+
+    /**
+     * 供应商作为绑定
+     * @return
+     */
+    private Supplier supplier;
+
+    /**
+     * 处置金额
+     */
+    private float totalPrice;
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public String getUtil() {
+        return util;
+    }
+
+    public void setUtil(String util) {
+        this.util = util;
+    }
+
+
+    public float getTotalPriec() {
+        return totalPriec;
+    }
+
+    public void setTotalPriec(float totalPriec) {
+        this.totalPriec = totalPriec;
+    }
+
+    public PackageType getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(PackageType packageType) {
+        this.packageType = packageType;
+    }
+
+    public TransportType getTransport() {
+        return transport;
+    }
+
+    public void setTransport(TransportType transport) {
+        this.transport = transport;
+    }
 
     public int getQuotationItemId() {
         return quotationItemId;

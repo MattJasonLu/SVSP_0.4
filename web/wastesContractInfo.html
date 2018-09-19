@@ -21,6 +21,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/business/contract.js"></script>
 </head>
 <script type="text/javascript">
     CKEDITOR.editorConfig = function( config ) {
@@ -45,157 +46,7 @@
         config.pasteFromWordRemoveStyles = false;
         config.removePlugins='elementspath';
     };
-   function loadContractSelectList() {
-    $('.selectpicker').selectpicker({
-        language: 'zh_CN',
-        size: 4
-    });
-//取得下拉菜单的选项
-    var contractType=$('#contractType');
-    contractType.hide();
-    var contractName1=$('#contractName1');
-    contractName1.hide();
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getContractList",                  // url
-        dataType: "json",
-        data:{"key":"危废"},
-        success: function (result) {
-            if (result != undefined) {
-                var data = eval(result);
-                // 各下拉框数据填充
-                var contractType1 = $("#contractType1");//模板名称下拉框
-                contractType1.children().remove();
-                $.each(data.modelNameList, function (index, item) {
-                    if(item!=null&&item.modelName!=""){
-                        //console.log(item);
-                        var option = $('<option />');
-                        option.val(item.modelName);
-                        option.text(item.modelName);
-                        contractType1.append(option);}
-                });
-                contractType1.get(0).selectedIndex = -1;
-                var province = $("#province");
-                province.children().remove();
-                $.each(data.provinceStrList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    province.append(option);
-                });
-                $('.selectpicker').selectpicker('refresh');
-                //获取相应的市级
-                $.ajax({
-                    type: "POST",                            // 方法类型
-                    url: "getCityList",                  // url
-                    dataType: "json",
-                    data:{
-                        'provinceId': 1
-                    },
-                    success: function (result) {
-                        if (result != undefined) {
-                            var data = eval(result);
-                            //console.log(data);
-                            //var contractName = $("#contractName");
-                            //下拉框填充
-                            var city=$("#city");
-                            city.children().remove();
-                            cityIndex="";
-                            $.each(data, function (index, item) {
-                                //  console.log(item);
-                                var option1 = $('<option />');
-                                option1.val(item.cityname);
-                                option1.text(item.cityname);
-                                if(item.cityname=='${contract.city}'){
-                                    cityIndex=index;
-                                }
-                                city.append(option1);
-                            });
-                            $('.selectpicker').selectpicker('refresh');
 
-
-                        } else {
-                            console.log(result);
-                        }
-                    },
-                    error:function (result) {
-                        console.log(result);
-                    }
-                });
-                var clientName=$('#companyName');
-                clientName.children().remove();
-                $.each(data.companyNameList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.companyName);
-                    clientName.append(option);
-                });
-                //clientName.get(0).selectedIndex = -1;
-                $('.selectpicker').selectpicker('refresh');
-                var options1=$("#companyName option:selected").val(); //获取选中的项
-                var company=data.companyNameList[options1];//取得被选中处置单位的信息
-                //开票税率下拉
-                console.log(company);
-                var taxRate1=$('#taxRate1');
-                i="";
-                taxRate1.children().remove();
-                $.each(data.ticketRateStrList1, function (index, item) {
-                    // console.log(item);
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    if(company.ticketType!=null){
-                        if(company.ticketType.name==item.name){
-                            i=index;
-                        }
-                    }
-                   else {
-                        i=-1;
-                    }
-                    taxRate1.append(option);
-                });
-                taxRate1.get(0).selectedIndex = i;
-                //开票税率2下拉框
-                // var taxRate2=$('#taxRate2');
-                // taxRate2.children().remove();
-                // $.each(data.ticketRateStrList2, function (index, item) {
-                //     // console.log(item);
-                //     var option = $('<option />');
-                //     option.val(index);
-                //     option.text(item.name);
-                //     taxRate2.append(option);
-                // });
-                // taxRate2.get(0).selectedIndex = -1;
-              //赋值联系人
-                $('#contactName').prop("value",company.contactName);
-                //赋值联系方式
-                if(company.mobile!=""&&company.phone==""){
-                    $('#telephone').prop("value",company.mobile);
-                }
-                if(company.mobile==""&&company.phone!=""){
-                    $('#telephone').prop("value",company.phone);
-                }
-                if(company.mobile==""&&company.phone==""){
-                    $('#telephone').prop("value","");
-                }
-                if(company.mobile!=""&&company.phone!=""){
-                    $('#telephone').prop("value",company.mobile);
-                }
-                //赋值开户行名称
-                $('#bankName').prop("value",company.bankName);
-                //赋值开户行账号
-                $('#bankAccount').prop("value",company.bankAccount);
-                $('#company1').prop("value",company.companyName);
-
-            } else {
-                console.log(result);
-            }
-        },
-        error:function (result) {
-            console.log(result);
-        }
-    });
-}
 function changeSelect(index) {
 var index1=index+1;//获得province_id
    //console.log(index1);
@@ -233,117 +84,10 @@ $.ajax({
 });
 
 }
-/**
- * 保存
- */
-function contractSave() {
-    var addType = $("input[name='addType']:checked").val();
-    var s=($('#contractInfoForm').serializeJSON());
-    console.log(s);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "saveContract",                       // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify($('#contractInfoForm').serializeJSON()),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined) {
-               // console.log(eval(result));
-                console.log("success: " + result);
-                alert("保存成功!");
-                    if (addType == "continue") {
-                        $(location).attr('href', 'wastesContractInfo.html');
-                    }
-                    else { localStorage.clear();
-                        $(location).attr('href', 'contractManage.html');
-                        localStorage.name="Wastes";
-                        location.href="contractManage.html";}
 
-                //$(location).attr('href', 'contractManage.html');//跳转
-            } else {
-                console.log("fail: " + result);
-                alert("保存失败!");
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            alert("服务器异常!");
-        }
-    });
-}
-/**/
-function contractSave() {
-    var s=($('#contractInfoForm').serializeJSON());
-    var addType = $("input[name='addType']:checked").val();
-    //console.log(s);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "saveContract",                       // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify($('#contractInfoForm').serializeJSON()),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined) {
-               // console.log(eval(result));
-                console.log("success: " + result);
-                alert("保存成功!");
-                if (addType == "continue")  $(location).attr('href', 'wastesContractInfo.html');
-                else { localStorage.clear();
-                    $(location).attr('href', 'contractManage.html');
-                    localStorage.name="Wastes";
-                    location.href="contractManage.html";}//$(location).attr('href', 'contractManage.html');//跳转
 
-                //$(location).attr('href', 'contractManage.html');//跳转
-            } else {
-                console.log("fail: " + result);
-                alert("保存失败!");
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            alert("服务器异常!");
-        }
-    });
-}
-function contractSubmit(){
-    var s=($('#contractInfoForm').serializeJSON());
-    var addType = $("input[name='addType']:checked").val();
-    console.log(s);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "submitContract",                       // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify($('#contractInfoForm').serializeJSON()),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined) {
-                //(eval(result));
-                console.log("success: " + result);
-                alert("提交成功!");
-                if (addType == "continue") $(location).attr('href', 'wastesContractInfo.html');
-                else{localStorage.clear();
-                    $(location).attr('href', 'contractManage.html');
-                    localStorage.name="Wastes";
-                    location.href="contractManage.html";}
-
-                    //$(location).attr('href', 'contractManage.html');//跳转
-                //$(location).attr('href', 'contractManage.html');//跳转
-            } else {
-                console.log("fail: " + result);
-                alert("保存失败!");
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            alert("服务器异常!");
-        }
-    });
-}
 </script>
-<body onload="loadContractSelectList();">
+<body onload="loadWastesContractSelectList();">
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
     <div class="main-title">
         <ul class="nav navbar-nav navbar-left navbar-side">
@@ -465,157 +209,306 @@ function contractSubmit(){
             </ol>
         </div>
         <h4 class="sub-header">危废合同申请表</h4>
+        <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td class="text-center">送审人员</td>
+            <td class="text-center" colspan="1"><input type="text" class="focus"   value="***" readonly>
+                </input></td>
+            <td class="text-center">送审日期</td>
+            <td class="text-center" colspan="1"> <input type="text" class="focus"   value="***" readonly>
+                </input></td>
+            <td class="text-center">送审部门</td>
+            <td class="text-center" colspan="1"> <input type="text" class="focus"   value="***" readonly>
+                </input></td>
+        </tr>
+        <tr>
+            <td class="text-center">产废单位</td>
+            <td class="text-center">
+                <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
+                </select>
+            </td>
+            <td class="text-center" >合同版本</td>     <!--时间，精确到秒 下同-->
+            <td class="text-center" colspan="1"><label class="radio-inline">
+                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
+            </label>
+                <label class="radio-inline">
+                    <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 产废单位合同
+                </label></td>     <!--时间，精确到秒 下同-->
+            <td class="text-center">合同有效期</td>
+            <td class="text-center form-inline"  colspan="1">
+                <div class="input-group ">
+                    <input type="date" class=" form-control" name="beginTime" id="beginTime">
+                </div>
+                <span >to</span>
+                <div class="input-group ">
+                    <input type="date" class=" form-control" name="endTime" id="endTime" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center" style="width: 150px;">合同名称</td>
+            <td class="text-left">
+                <div class="col-xs-12" id="contractName1" >
+                    <input type="text" class="focus" id="contractName" name="contractName">
+                </div>
+                <div class="col-xs-12 form-inline" id="contractType2">
+                    <select class="form-control"  type="text" id="contractType1" name="modelName"  >
+                    </select>
+                    <input type="button" class="form-control" value="查看" onclick="check1(this)">
+                </div>
+            </td>
+            <td class="text-center" style="width: 150px;">联系电话</td>
+            <td class="text-left"> <input type="text" class="focus" id="telephone" name="telephone" ></td>
+            <td class="text-center">联系人</td>
+            <td class="text-left">
+                <input type="text" class="focus" id="contactName" name="contactName" placeholder="">
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center" style="width: 150px;">开户行名称</td>
+            <td class="text-left"><input type="text" class="focus" id="bankName" name="bankName" placeholder="">
+            </td>
+            <td class="text-center" style="width: 150px;">开户行账号</td>
+            <td class="text-left"> <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder=""></td>
+            <td class="text-center" style="width: 150px;">开票税率</td>
+            <td class="text-center">  <select class="form-control" id="taxRate1" name="ticketRate1">
+            </select></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <label class="col-sm-2 control-label sr-only" > 1111111</label>
+                <label class="checkbox-inline col-xs-5" for="isFreight">
+                    是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="freight" value="true">
+                </label>
+            </td>
+            <td class="hidden">
+                <div class="col-xs-5">
+                    <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
+                    </input>
+                </div>
+            </td>
+            <td colspan="2"></td>
+        </tr>
+        </tbody>
+    </table>
+        <table class="table table-bordered" style="width: 50%">
+            <thead>
+            <tr>
+                <td colspan="13" class="text-center"><h3>报价单明细</h3></td>
+            </tr>
+            <tr>
+                <th class="text-center">序号</th>
+                <th class="text-center" >八位码</th>
+                <th class="text-center" >危废名称</th>
+                <th class="text-center">包装类型</th>
+                <th class="text-center" >单位</th>
+                <th class="text-center" >处置单价</th>
+                <th class="text-center">合约量</th>
+                <th class="text-center" >处置金额</th>
+                <th class="text-center">运输方式</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="cloneTr1" class="myclass">
+                <td class="text-center"><input class="focus" title="" name="0">1</td>
+                <td class="text-center" >
+                    <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode"></select>
+                </td>
+                <td class="text-center" ><input class="focus" title=""></td>
+                <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
+                <td class="text-center"><input class="focus" title=""></td>
+                <td class="text-center"><input class="focus" title=""></td>
+                <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
+                <td class="text-center"><input class="focus" title=""readonly></td>
+                <td class="text-center"><select class="focus" title="" id="transportType" >
+                    <option value="0">0</option>
+                </select></td>
+
+            </tr>
+            <tr id="plusBtn">
+                <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                <td></td>
+                <td ></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td ></td>
+                <td ></td>
+                <td ></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+        <label class="col-sm-4 control-label">保存之后 </label>
+        <div class="col-xs-5 radio">
+            <label>
+                <input type="radio" name="addType" id="addType1" value="continue" checked>
+                继续添加
+            </label>
+            <label>
+                <input type="radio" name="addType" id="addType2" value="break">
+                返回列表
+            </label>
+        </div>
+    </div>
+        <div class="row text-center">
+                <a class="btn btn-success" onclick="contractWastesSave()">保存</a>
+                <a class="btn btn-primary" onclick="contractWastesSubmit()">提交</a>
+                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
+                </div>
+
+
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
-            <div class="row">
-                <div class="form-horizontal col-md-4">
-                    <div class="form-group">
-                        <label class="col-sm-6 control-label" for="submitName">送审人员</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="reviewer" id="submitName" placeholder="***" readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-4" >
-                    <div class="form-group"  >
-                        <label class="col-sm-6 control-label" for="submitDate"> 送审日期</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="reviewDate" id="submitDate" placeholder="***" readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-horizontal col-md-4" >
-                    <div class="form-group">
-                        <label class="col-sm-6 control-label" for="submitDep"> 送审部门</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="row">-->
+                <!--<div class="form-horizontal col-md-4">-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-6 control-label" for="submitName">送审人员</label>-->
+                        <!--<div class="col-xs-6">-->
+                            <!--<input type="text" class="form-control"  name="reviewer" id="submitName" placeholder="***" readonly>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-horizontal col-md-4" >-->
+                    <!--<div class="form-group"  >-->
+                        <!--<label class="col-sm-6 control-label" for="submitDate"> 送审日期</label>-->
+                        <!--<div class="col-xs-6">-->
+                            <!--<input type="text" class="form-control"  name="reviewDate" id="submitDate" placeholder="***" readonly>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-horizontal col-md-4" >-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-6 control-label" for="submitDep"> 送审部门</label>-->
+                        <!--<div class="col-xs-6">-->
+                            <!--<input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="row">
                 <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-4 control-label" for="companyName">产废单位名称</label>
-                        <div class="col-xs-4">
-                            <select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="companyName" name="companyName" onchange="findClient();">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label class="col-sm-4 control-label" for="province">所属区域 </label>
-                        <form name="form1" method="post" action="">
-                        <div class="form-inline">
-                         <div class="form-group col-xs-3">
-                                <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">
-                                </select>
-                            </div>
-                            <div class="form-group col-xs-3">
-                                <select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">
-                                </select>
-                            </div>
-                        </div>
-                        </form>
-                    </div>
-                    <div class="form-group" >
-                        <label  for="contractName" class="col-sm-4 control-label">合同名称</label>
-                        <div class="col-xs-4" id="contractName1" >
-                            <input type="text" class="form-control" id="contractName" name="contractName">
-                        </div>
-                        <div class="col-xs-5 form-inline" id="contractType2">
-                            <select class="form-control"  type="text" id="contractType1" name="modelName"  >
-                            </select>
-                            <input type="button" class="form-control" value="查看" onclick="check1(this)">
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label  for="contactName" class="col-sm-4 control-label">联系人</label>
-                         <div class="col-xs-4" >
-                            <input type="text" class="form-control" id="contactName" name="contactName" placeholder="">
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label  for="bankName" class="col-sm-4 control-label">开户行名称</label>
-                        <div class="col-xs-4" >
-                            <input type="text" class="form-control" id="bankName" name="bankName" placeholder="">
-                        </div>
-                    </div>
+                    <!--<div class="form-group" >-->
+                        <!--<label  class="col-sm-4 control-label" for="companyName">产废单位名称</label>-->
+                        <!--<div class="col-xs-4">-->
+                            <!--<select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..."  name="companyName" onchange="findClient();">-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label class="col-sm-4 control-label" for="province">所属区域 </label>-->
+                        <!--<form name="form1" method="post" action="">-->
+                        <!--<div class="form-inline">-->
+                         <!--<div class="form-group col-xs-3">-->
+                                <!--<select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<div class="form-group col-xs-3">-->
+                                <!--<select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label  for="contractName" class="col-sm-4 control-label">合同名称</label>-->
+                        <!--<div class="col-xs-4"  >-->
+                            <!--<input type="text" class="focus" name="contractName">-->
+                        <!--</div>-->
+                        <!--<div class="col-xs-5 form-inline" >-->
+                            <!--<select class="form-control"  type="text"  name="modelName"  >-->
+                            <!--</select>-->
+                            <!--<input type="button" class="form-control" value="查看" onclick="check1(this)">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label  for="contactName" class="col-sm-4 control-label">联系人</label>-->
+                         <!--<div class="col-xs-4" >-->
+                            <!--<input type="text" class="form-control"  name="contactName" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label  for="bankName" class="col-sm-4 control-label">开户行名称</label>-->
+                        <!--<div class="col-xs-4" >-->
+                            <!--<input type="text" class="form-control"  name="bankName" placeholder="">-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-group" >
                         <div class="col-xs-4" >
                             <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
                         </div>
                     </div><!--隐藏域保存产废单位名称-->
-                    <div class="form-group" >
-                        <label for="taxRate1" class="col-sm-4 control-label">开票税率</label>
-                        <div class="col-xs-5">
-                            <select class="form-control" id="taxRate1" name="ticketRate1">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <!--<label for="isFreight" class="col-sm-4 control-label">是否包含运费</label>
-                        <div class="col-xs-5 checkbox">
-                            <input type="checkbox" id="isFreight" name="freight">
-                        </div>-->
-                        <label class="col-sm-2 control-label sr-only" > 1111111</label>
-                        <label class="checkbox-inline col-xs-5" for="isFreight">
-                            是否包含运费<input type="checkbox" id="isFreight"  class="col-xs-3" name="freight" value="true">
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">保存之后 </label>
-                        <div class="col-xs-5 radio">
-                            <label>
-                                <input type="radio" name="addType" id="addType1" value="continue" checked>
-                                继续添加
-                            </label>
-                            <label>
-                                <input type="radio" name="addType" id="addType2" value="break">
-                                返回列表
-                            </label>
-                        </div>
-                    </div>
+                    <!--<div class="form-group" >-->
+                        <!--<label for="taxRate1" class="col-sm-4 control-label">开票税率</label>-->
+                        <!--<div class="col-xs-5">-->
+                            <!--<select class="form-control"  name="ticketRate1">-->
+                            <!--</select>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group ">-->
+                        <!--&lt;!&ndash;<label for="isFreight" class="col-sm-4 control-label">是否包含运费</label>-->
+                        <!--<div class="col-xs-5 checkbox">-->
+                            <!--<input type="checkbox" id="isFreight" name="freight">-->
+                        <!--</div>&ndash;&gt;-->
+                        <!--<label class="col-sm-2 control-label sr-only" > 1111111</label>-->
+                        <!--<label class="checkbox-inline col-xs-5" for="isFreight">-->
+                            <!--是否包含运费<input type="checkbox"  class="col-xs-3" name="freight" value="true">-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-4 control-label">保存之后 </label>-->
+                        <!--<div class="col-xs-5 radio">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="addType"  value="continue" checked>-->
+                                <!--继续添加-->
+                            <!--</label>-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="addType"  value="break">-->
+                                <!--返回列表-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
                 <div class="form-horizontal col-md-6">
-                    <div class="form-group" >
-                        <label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>
-                        <div class="col-xs-8" >
-                            <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 产废单位合同
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                            <label class="col-sm-3 control-label">合同有效期 </label>
-                        <div class="input-group date">
-                            <input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            <span class="input-group-addon">to</span>
-                            <input type="text" class="input-sm form-control form_datetime2" name="endTime"/>
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label for="order1" class="col-sm-3 control-label">预计处置费</label>
-                        <div class="col-xs-5" >
-                            <input type="text" class="form-control" id="order1" name="order1" >
-                        </div>
-                        <h4>元</h4>
-                    </div>
-                    <div class="form-group" >
-                        <label for="telephone" class="col-sm-3 control-label">联系电话</label>
-                        <div class="col-xs-5" >
-                            <input type="text" class="form-control" id="telephone" name="telephone" >
-                        </div>
-                    </div>
-                    <div class="form-group" >
-                        <label  for="bankAccount" class="col-sm-3 control-label">开户行账号</label>
-                        <div class="col-xs-5" >
-                            <input type="text" class="form-control" id="bankAccount" name="bankAccount" placeholder="">
-                        </div>
-                    </div>
+                    <!--<div class="form-group" >-->
+                        <!--<label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>-->
+                        <!--<div class="col-xs-8" >-->
+                            <!--<label class="radio-inline">-->
+                                <!--<input type="radio" name="contractVersion"  value="companyContract" onclick="Appear()" checked> 公司合同-->
+                            <!--</label>-->
+                            <!--<label class="radio-inline">-->
+                                <!--<input type="radio" name="contractVersion"  value="customerContract" onclick="Appear1()"  > 产废单位合同-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                            <!--<label class="col-sm-3 control-label">合同有效期 </label>-->
+                        <!--<div class="input-group date">-->
+                            <!--<input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--<span class="input-group-addon">to</span>-->
+                            <!--<input type="text" class="input-sm form-control form_datetime2" name="endTime"/>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label for="order1" class="col-sm-3 control-label">预计处置费</label>-->
+                        <!--<div class="col-xs-5" >-->
+                            <!--<input type="text" class="form-control" id="order1" name="order1" >-->
+                        <!--</div>-->
+                        <!--<h4>元</h4>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label for="telephone" class="col-sm-3 control-label">联系电话</label>-->
+                        <!--<div class="col-xs-5" >-->
+                            <!--<input type="text" class="form-control"  name="telephone" >-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" >-->
+                        <!--<label  for="bankAccount" class="col-sm-3 control-label">开户行账号</label>-->
+                        <!--<div class="col-xs-5" >-->
+                            <!--<input type="text" class="form-control" name="bankAccount" placeholder="">                        </div>-->
+                    <!--</div>-->
                     <!--<div class="form-group" >-->
                         <!--<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>-->
                         <!--<div class="col-xs-5">-->
@@ -623,20 +516,20 @@ function contractSubmit(){
                             <!--</select>-->
                         <!--</div>-->
                     <!--</div>-->
-                    <div class="form-group" >
-                        <label for="contractType" class="col-sm-3 control-label"></label>
-                        <div class="col-xs-5">
-                            <input class="form-control"  type="text" id="contractType" name="contractType" value="Wastes" >
-                            </input>
-                        </div>
-                    </div>
+                    <!--<div class="form-group" >-->
+                        <!--<label for="contractType" class="col-sm-3 control-label"></label>-->
+                        <!--<div class="col-xs-5">-->
+                            <!--<input class="form-control"  type="text"  name="contractType" value="Wastes" >-->
+                            <!--</input>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
-            <div class="row text-center">
-                <a class="btn btn-success" onclick="contractSave()">保存</a>
-                <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
-            </div>
+            <!--<div class="row text-center">-->
+                <!--<a class="btn btn-success" onclick="contractSave()">保存</a>-->
+                <!--<a class="btn btn-primary" onclick="contractSubmit()">提交</a>-->
+                <!--<a class="btn btn-danger" href="contractManage.html" id="back">返回</a>-->
+            <!--</div>-->
         </form>
         <!-- 日志模态框 -->
         <div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -762,12 +655,10 @@ function contractSubmit(){
         $('#contractType2').hide();
         $("#contractName1").show();
     }
-
     /**
      *
      * 合同正文查看
      */
-
     function check1(item) {
         var modelName=item.previousElementSibling.value;
         //console.log(modelName);
@@ -802,65 +693,6 @@ function contractSubmit(){
         });
         $('#modelInfoForm').modal('show');
     }
-    //产废单位列表下拉框
-    function findClient() {
-        options=$("#companyName option:selected").val(); //获取选中的项
-        $.ajax({
-            type:"POST",
-            url:"getContractList",
-            dataType: "json",
-            success:function (result) {
-                var obj=eval(result);
-                var company=(obj.companyNameList[options]);//获取处置单位的信息
-                 console.log(company);
-                //2赋值
-                //赋值联系人
-                //产废单位名称
-                $('#company1').prop("value",company.companyName);
-                $('#contactName').prop("value",company.contactName);
-                //赋值联系方式
-                if(company.mobile!=""&&company.phone==""){
-                    $('#telephone').prop("value",company.mobile);
-                }
-                if(company.mobile==""&&company.phone!=""){
-                    $('#telephone').prop("value",company.phone);
-                }
-                if(company.mobile==""&&company.phone==""){
-                    $('#telephone').prop("value","");
-                }
-                if(company.mobile!=""&&company.phone!=""){
-                    $('#telephone').prop("value",company.mobile);
-                }
-                //赋值开户行名称
-                $('#bankName').prop("value",company.bankName);
-                //赋值开户行账号
-                $('#bankAccount').prop("value",company.bankAccount);
-                $("#telephone").prop("value",company.phone);//电话
-              //赋值开票税率
-                var taxRate1=$('#taxRate1');
-                index1=""
-                taxRate1.children().remove();
-                $.each(obj.ticketRateStrList1, function (index, item) {
-                    //console.log(obj.ticketRateStrList1);
-                    var option = $('<option />');
-                    if(company.ticketType!=null){
-                        if(company.ticketType.name==item.name){
-                            index1=index;
-                        }
-                    }
-                    else {
-                        index1=-1;
-                    }
-                    option.val(index);
-                    option.text(item.name);
-                    taxRate1.append(option);
-                });
-                taxRate1.get(0).selectedIndex =index1;
-            },
-            error:function (result) {
 
-            }
-        });
-    }
 </script>
 </html>

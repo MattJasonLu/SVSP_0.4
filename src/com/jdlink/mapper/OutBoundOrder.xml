@@ -303,4 +303,8 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <select id="totalSecondaryInventory" resultType="int">
         select count(*) from t_pl_wasteinventory where  boundType='SecondaryInbound';
     </select>
+    <!--获取最新的出库信息-->
+    <select id="getNewestDate" resultType="Date">
+        select outboundDate from t_pl_outboundorder order by  outboundDate;
+    </select>
 </mapper>

@@ -139,9 +139,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-storageDate" class="col-sm-4 control-label">出库日期</label>
+                                <label for="search-storageDate" class="col-sm-4 control-label">出库日期(起)</label>
                                 <div class="col-xs-7">
                                     <input type="date" class="form-control" id="search-storageDate" name="search-storageDate" placeholder="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-storageDate" class="col-sm-4 control-label">出库日期(终)</label>
+                                <div class="col-xs-7">
+                                    <input type="date" class="form-control" id="search-endDate" name="search-storageDate" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -152,6 +158,7 @@
                                     <input type="text" class="form-control" id="search-storageNumber" name="search-storageNumber" placeholder="">
                                 </div>
                             </div>
+
                             <!--<div class="form-group">-->
                                 <!--<label for="search-wastesId" class="col-sm-4 control-label">危废代码</label>-->
                                 <!--<div class="col-xs-7">-->
@@ -357,6 +364,7 @@
                                     <td class="text-center">氟含量最大值/%</td>
                                     <td class="text-center">氟含量均值/%</td>
                                     <td class="text-center">氟含量最小值/%</td>
+                                    <td class="text-center">处置设备</td>
                                 </tr>
                                 <tr>
                                     <td class="text-center modal-FContent" id="waterMax"></td>
@@ -374,6 +382,7 @@
                                     <td class="text-center modal-FContent" id="fMax"></td>
                                     <td class="text-center modal-FContent" id="fAvg"></td>
                                     <td class="text-center modal-FContent" id="fMin"></td>
+                                    <td class="text-center modal-FContent" id="equipment"></td>
                                     <input class="text-center modal-FContent hidden" id="outboundOrderId"></input>
                                 </tr>
                                 <tr>

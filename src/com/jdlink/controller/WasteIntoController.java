@@ -95,4 +95,5 @@ public class WasteIntoController {
             return 0;
         }
     }
+
 }

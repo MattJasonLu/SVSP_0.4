@@ -440,20 +440,29 @@ array=[];
 array1=[];
 //危废库存查询功能
 function searchWastesInventory() {
-    // isSearch = true;
-    // var page = {};
-    // var pageNumber = 1;                       // 显示首页
-    // page.pageNumber = pageNumber;
-    // page.count = countValue();
-    // page.start = (pageNumber - 1) * page.count;
-    // if ($("#senior").is(':visible')) {
-    //     data1 = {
-    //         date: $("#search-receiveDate").val(),
-    //         name: $("#search-sewageName").val(),
-    //         remarks: $("#search-remarks").val(),
-    //         page: page
-    //     };
-    // }
+    //如果需要按日期范围查询 寻找最早入库的日期
+    var date;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestInBoundDate",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                date=getDateStr(result.dateList[0]);
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+
+    });
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
@@ -467,21 +476,32 @@ function searchWastesInventory() {
     }
     //1入库日期
     var  inboundOrderId =$('#search-inDate').val();
-
+    var endDate=$('#search-endDate').val();
     //2产废单位
     var client=$('#search-client').val();
     //3进料方式
     var handelCategory=$('#search-type option:selected').text();
+    var startDate=getDateByStr(inboundOrderId);
+    var endDate=getDateByStr(endDate);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
+            if(startDate.toString()=='Invalid Date'){
+                startDate=getDateByStr(date);
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=new Date();
+            }
             //console.log(this);
-            if(!($(this).children('td').eq(2).text().indexOf(inboundOrderId)!=-1&&$(this).children('td').eq(3).text().indexOf(client)!=-1
+            if(!($(this).children('td').eq(3).text().indexOf(client)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(2).text().indexOf(inboundOrderId)!=-1&&$(this).children('td').eq(3).text().indexOf(client)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
+            if(($(this).children('td').eq(3).text().indexOf(client)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
+            )){
                 array1.push($(this));
             }
         });

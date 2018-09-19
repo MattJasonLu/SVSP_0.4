@@ -8,6 +8,7 @@ import com.jdlink.service.WasteInventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -115,6 +116,11 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
     @Override
     public List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId) {
         return wasteInventoryMapper.getByInboundOrderItemId(inboundOrderItemId);
+    }
+
+    @Override
+    public List<Date> getNewestInBoundDate() {
+        return wasteInventoryMapper.getNewestInBoundDate();
     }
 
 

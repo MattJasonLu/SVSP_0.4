@@ -22,7 +22,6 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <script src="js/page.js"></script>
-    <script src="js/produce/transportPlan.js"></script>
     <script src="js/produce/wayBill.js"></script>
 </head>
 
@@ -198,6 +197,7 @@
                         <td class="text-center">接运单日期</td>
                         <td class="text-center">业务员</td>
                         <td class="text-center">废物名称</td>
+                        <td class="text-center">危废代码</td>
                         <td class="text-center">数量</td>
                         <td class="text-center">单价</td>
                         <td class="text-center">合计</td>
@@ -207,6 +207,7 @@
                     </thead>
                     <tbody>
                     <tr id="clone">
+                        <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -276,9 +277,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group form-horizontal col-md-6 ">
-                                    <label for="wastes0-wasteAmount" class="col-sm-5 control-label">数量</label>
+                                    <label for="wastes0-wasteCode" class="col-sm-5 control-label">危废代码</label>
                                     <div class="col-sm-7">
-                                        <input type="text" id="wastes0-wasteAmount" size="14">
+                                        <select class="selectpicker input-xlarge form-control" data-live-search="true"
+                                                data-live-search-placeholder="搜索..." id="wastes0-wasteCode"
+                                                name="wastes0-wasteCode" title="未选择"></select>
                                     </div>
                                 </div>
                             </div>
@@ -289,14 +292,20 @@
                                         <input type="text" id="wastes0-unitPriceTax" size="14">
                                     </div>
                                 </div>
+                                <div class="form-group form-horizontal col-md-6 ">
+                                    <label for="wastes0-wasteAmount" class="col-sm-5 control-label">数量</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" id="wastes0-wasteAmount" size="14">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group form-horizontal col-md-6">
                                     <label for="wastes0-invoiceNumber" class="col-sm-5 control-label">发票号码</label>
                                     <div class="col-sm-7">
                                         <input type="text" id="wastes0-invoiceNumber" size="14">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="form-group form-horizontal col-md-6 ">
                                     <label for="wastes0-receiveCompanyOpterator"
                                            class="col-sm-5 control-label">接收单位经手人</label>
@@ -343,13 +352,14 @@
                         </div>
                         <div class="modal-footer center">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal"
-                                    onclick="addWastes();">确定
-                            </button>
+                            <button type="button" class="btn btn-primary" onclick="addWastes();">确定</button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row text-center">
+            <a class="btn btn-danger hidden-print" href="wayBill1.html">返回主页</a>
         </div>
     </div>
 </div>
