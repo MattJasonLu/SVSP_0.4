@@ -1,7 +1,9 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.Assessment;
 import com.jdlink.domain.Produce.LaboratoryTest;
+import com.jdlink.domain.Produce.WayBill;
 import com.jdlink.domain.Produce.WayBillItem;
 import com.jdlink.service.*;
 import com.jdlink.util.RandomUtil;
@@ -936,6 +938,69 @@ public class ContractController {
             res.put("message", "查询客户失败");
         }
         return  res.toString();
+    }
+
+    /**
+     * 根据业务员的编号筛选出历年所有的合同
+     *
+     * @param salesmanId 业务员编号
+     * @return 合同列表
+     */
+    @RequestMapping("getAllContractBySalesmanId")
+    @ResponseBody
+    public String getAllContractBySalesmanId(String salesmanId) {
+        JSONObject res = new JSONObject();
+        try {
+            Integer serialNumber = 0;
+            // 获取该业务员名下所有合同
+            List<Contract> contractList = contractService.getAllContractBySalesmanId(salesmanId);
+            // 危废信息
+            Map<Integer, List<LaboratoryTest>> map = new HashMap<>();
+            // 客户联系信息
+            Map<Integer, String> map2 = new HashMap<>();
+            // 遍历合同列表，获取每个合同对应信息
+            for (Contract contract : contractList) {
+                String clientId = contract.getClientId();
+                //获取并设置业务员ID和姓名
+                Client client = clientService.getByClientId(clientId);
+                String salesmanId1 = client.getSalesman().getSalesmanId();
+                String salesmanName = client.getSalesman().getName();
+                contract.setSalesmanId(salesmanId1);
+                contract.setSalesmanName(salesmanName);
+                // 设置map2
+                String contactInfo = client.getContactName() + "-" + client.getPhone();
+                map2.put(serialNumber, contactInfo);
+                // 设置map3
+                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
+                List<LaboratoryTest> laboratoryTestList = new ArrayList<>();
+                for (QuotationItem quotationItem : quotationItemList) {
+                    String code = quotationItem.getWastesCode();
+                    if (code != null) {
+                        // 获取化验单
+                        LaboratoryTest laboratoryTest = laboratoryTestService.getLaboratoryTestByWastesCodeAndClientId(code,clientId);
+                        laboratoryTestList.add(laboratoryTest);
+                    }
+                }
+                // 设置map
+                map.put(serialNumber,laboratoryTestList);
+                serialNumber++;
+            }
+            // map转json
+            JSONObject jMap = JSONObject.fromMap(map);
+            JSONObject jMap2 = JSONObject.fromMap(map2);
+            JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            // 赋值
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("contractInfo", data);
+            res.put("laboratoryTestInfo", jMap);
+            res.put("contactInfo", jMap2);                // 联系人信息
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
     }
 }
 

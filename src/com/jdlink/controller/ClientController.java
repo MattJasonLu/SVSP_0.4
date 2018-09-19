@@ -151,44 +151,6 @@ public class ClientController {
         return res.toString();
     }
 
-    @RequestMapping("downloadFile")
-    @ResponseBody
-    public void downloadFile(String filePath, HttpServletResponse response) {
-        String fileName = "file";
-        try {
-            filePath = new String(filePath.getBytes("iso8859-1"), "utf-8");
-            String[] str = filePath.split("[/]");
-            fileName = java.net.URLEncoder.encode(str[str.length-1], "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("multipart/form-data");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-        InputStream in = null;
-        try {
-            in = new FileInputStream(filePath);
-            byte[] buffer = new byte[1024];
-            int bytesRead = 0;
-            do {
-                bytesRead = in.read(buffer, 0, buffer.length);
-                response.getOutputStream().write(buffer, 0, bytesRead);
-            } while (bytesRead == buffer.length);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-                response.getOutputStream().flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @RequestMapping("submitClientById")//提交客户备案
     @ResponseBody
     public String submitClientById(String clientId) {

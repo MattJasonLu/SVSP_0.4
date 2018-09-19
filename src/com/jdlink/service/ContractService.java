@@ -67,4 +67,5 @@ public interface ContractService {
     List<Contract> searchModel(Contract contract);
     List<Contract> getContractList(String year);
     List<Contract> getContractListByMonth(String month);
+    List<Contract> getAllContractBySalesmanId(String salesmanId);
 }

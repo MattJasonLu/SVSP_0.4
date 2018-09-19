@@ -1,10 +1,7 @@
 package com.jdlink.controller;
 
 
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Contract;
-import com.jdlink.domain.Hazardous;
-import com.jdlink.domain.Page;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.Assessment;
 import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.WayBill;

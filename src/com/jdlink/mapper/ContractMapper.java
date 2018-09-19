@@ -77,4 +77,5 @@ public interface ContractMapper {
     List<Contract> search(Contract contract);
     List<Contract> searchModel(Contract contract);
     List<Contract> getContractListByMonth(String month);
+    List<Contract> getAllContractBySalesmanId(String salesmanId);
 }
