@@ -67,4 +67,6 @@ public interface ContractService {
     List<Contract> getContractList(String year);
     List<Contract> getContractListByMonth(String month);
     void addQuotationItem(QuotationItem quotationItem);
+    void updateContract(Contract contract);
+    void deleteQuotationItem(String contractId);
 }

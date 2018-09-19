@@ -80,4 +80,15 @@ public interface ContractMapper {
      * 添加合同中的报价单明细
      */
     void addQuotationItem(QuotationItem quotationItem);
+
+    /**
+     * 合同主表更新
+     */
+    void updateContract(Contract contract);
+
+    /**
+     * 删除字表明细
+     * @param contractId
+     */
+    void deleteQuotationItem(String contractId);
 }

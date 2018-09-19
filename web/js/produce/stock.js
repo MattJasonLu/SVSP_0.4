@@ -443,7 +443,7 @@ function setStockList(result) {
         });
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
-        clonedTr.insertBefore(tr);
+        clonedTr.insertAfter(tr);
     });
     // 隐藏无数据的tr
     tr.hide();
