@@ -223,4 +223,14 @@ contractMapper.updateFreight2(id);
     public void addQuotationItem(QuotationItem quotationItem) {
        contractMapper.addQuotationItem(quotationItem);
     }
+
+    @Override
+    public void updateContract(Contract contract) {
+        contractMapper.updateContract(contract);
+    }
+
+    @Override
+    public void deleteQuotationItem(String contractId) {
+        contractMapper.deleteQuotationItem(contractId);
+    }
 }

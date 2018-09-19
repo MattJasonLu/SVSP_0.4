@@ -979,6 +979,48 @@ public class ContractController {
 
 
     }
+
+    //更新合同
+    @RequestMapping("updateContract")
+    @ResponseBody
+    public String updateContract(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try{
+            //更新主表
+            contractService.updateContract(contract);
+            //同时删除字表的明细
+            contractService.deleteQuotationItem(contract.getContractId());
+            res.put("status", "success");
+            res.put("message", "更新合同主表成功");
+            res.put("message", "删除合同子表成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新合同主表失败");
+            res.put("message", "删除合同子表失败");
+        }
+
+         return  res.toString();
+    }
+    //更新合同明细
+    @RequestMapping("updateQuotationItem")
+    @ResponseBody
+    public String updateQuotationItem(@RequestBody QuotationItem quotationItem){
+        JSONObject res=new JSONObject();
+         try {
+             contractService.addQuotationItem(quotationItem);
+             res.put("status", "success");
+             res.put("message", "子表更新成功");
+         }
+         catch (Exception e){
+             e.printStackTrace();
+             res.put("status", "fail");
+             res.put("message", "子表更新失败");
+         }
+
+        return  res.toString();
+    }
 }
 
 
