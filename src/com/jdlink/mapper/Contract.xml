@@ -329,4 +329,22 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
     <select id="getSupplierListById" parameterType="String" resultType="Supplier">
         select * from t_supplier where supplierId=#{supplierId};
     </select>
+
+    <!--更行合同信息==》主表更新-->
+    <update id="updateContract" parameterType="Contract">
+        update t_contract set nowTime=NOW(),bankAccount=#{bankAccount},bankName=#{bankName},
+        beginTime=#{beginTime},clientId=#{client.clientId},contactName=#{contactName},
+        contractName=#{contractName},contractType=#{contractType},contractVersion=#{contractVersion},
+        endTime=#{endTime},isFreight=#{freight},telephone=#{telephone},ticketRate1=#{ticketRate1}
+        where  contractId=#{contractId}
+    </update>
+    <!--删除字表的明细-->
+    <delete id="deleteQuotationItem" parameterType="String">
+        delete from t_quotationitem where  contractId=#{contractId};
+    </delete>
+    <!--更新合同字表-->
+    <!--<update id="updateQuotationItem" parameterType="QuotationItem">-->
+          <!--insert into t_quotationitem(contractId,clientId,wastesCode,wastesName,packageType,util,unitPriceTax,contractAmount,totalPrice,transport,supplierId) values-->
+         <!--(#{contractId},#{client.clientId},#{wastesCode},#{wastesName},#{packageType},#{util},#{unitPriceTax},#{contractAmount},#{totalPrice},#{transport},#{supplier.supplierId});-->
+    <!--</update>-->
 </mapper>
