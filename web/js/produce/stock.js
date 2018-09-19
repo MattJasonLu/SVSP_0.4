@@ -14,7 +14,12 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
-
+//重置
+function reset() {
+    $("#senior").find("input").val("");
+    $("#searchContent").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
 /**
  * 计算总页数
  * */
@@ -362,6 +367,7 @@ function setStockList(result) {
                           $(this).html(obj.client.mobile);
                       }
                     };
+                    break;
                 // 申报状态
                 case (4):
                     if (obj.checkState != null) {
@@ -534,7 +540,7 @@ function searchStock() {
     array1.length=0;//清空数组
     //1分页模糊查询
     for(var i=1;i<=totalPage();i++){
-        switchPage(parseInt(i))
+        switchPage(parseInt(i));
         array.push($('.myclass'));
     }
     //审核状态
@@ -550,12 +556,12 @@ function searchStock() {
         $.each(array[j],function () {
             //console.log(this);
             if(!($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
-                &&$(this).children('td').eq(13).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1)){
+                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1)){
                 array1.push($(this));
             }
         });
@@ -586,7 +592,7 @@ function searchStock1() {
     array.length=0;//清空数组
     array1.length=0;
     for(var i=1;i<=totalPage();i++){
-        switchPage(parseInt(i))
+        switchPage(parseInt(i));
         array.push($('.myclass'));
     }
     var text=$('#searchContent').val();
@@ -879,7 +885,7 @@ function adjustStock(item){
 //修改页面的初始
 function loadAdjustStock() {
     //获取申报编号
-    $('.selectpicker').selectpicker({
+    $('.selectpicker').selectpicker( {
         language: 'zh_CN',
         // style: 'btn-info',
         size: 4
