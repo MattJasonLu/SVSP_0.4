@@ -88,4 +88,9 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
     public void setProductionDailyState(int id, CheckState checkState) {
         productionDailyMapper.setProductionDailyState(id, checkState);
     }
+
+    @Override
+    public void deleteProductionDaily(int id) {
+        productionDailyMapper.deleteProductionDaily(id);
+    }
 }

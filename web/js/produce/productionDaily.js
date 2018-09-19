@@ -1317,6 +1317,48 @@ function loadData() {
         $("#yearDisposalThirdSlag").text(obj.yearDisposalThirdSlag);
         $("#monthDisposalThirdAsh").text(obj.monthDisposalThirdAsh);
         $("#yearDisposalThirdAsh").text(obj.yearDisposalThirdAsh);
+
+        // 设置四个列表
+        // 入库单列表
+        for (var i = 0; i < obj.inboundOrderItemList.length; i++) {
+            var $i = i;
+            if (obj.inboundOrderItemList[i].wastes != null) $("td[id='inboundOrderItemList_" + $i + "_wastesName']").text(obj.inboundOrderItemList[i].wastes.name);
+            if (obj.inboundOrderItemList[i].produceCompany != null) $("td[id='inboundOrderItemList_" + $i + "_client']").text(obj.inboundOrderItemList[i].produceCompany.companyName);
+            $("td[id='inboundOrderItemList_" + $i + "_wastesAmount']").text(obj.inboundOrderItemList[i].wastesAmount);
+            if (obj.inboundOrderItemList[i].handleCategory != null) $("td[id='inboundOrderItemList_" + $i + "_handleCategory']").text(obj.inboundOrderItemList[i].handleCategory.name);
+        }
+        // 出库单A2列表
+        for (var i = 0; i < obj.outboundOrderA2List.length; i++) {
+            var $i = i;
+            if (obj.outboundOrderA2List[i].laboratoryTest != null) $("td[id='outboundOrderA2List_" + $i + "_wastesName']").text(obj.outboundOrderA2List[i].laboratoryTest.wastesName);
+            if (obj.outboundOrderA2List[i].client != null) $("td[id='outboundOrderA2List_" + $i + "_client']").text(obj.outboundOrderA2List[i].client.companyName);
+            $("td[id='outboundOrderA2List_" + $i + "_wastesAmount']").text(obj.outboundOrderA2List[i].outboundNumber);
+            if (obj.outboundOrderA2List[i].handelCategory != null) $("td[id='outboundOrderA2List_" + $i + "_handleCategory']").text(obj.outboundOrderA2List[i].handelCategory.name);
+        }
+        // 出库单B2列表
+        for (var i = 0; i < obj.outboundOrderB2List.length; i++) {
+            var $i = i;
+            if (obj.outboundOrderB2List[i].laboratoryTest != null) $("td[id='outboundOrderB2List_" + $i + "_wastesName']").text(obj.outboundOrderB2List[i].laboratoryTest.wastesName);
+            if (obj.outboundOrderB2List[i].client != null) $("td[id='outboundOrderB2List_" + $i + "_client']").text(obj.outboundOrderB2List[i].client.companyName);
+            $("td[id='outboundOrderB2List_" + $i + "_wastesAmount']").text(obj.outboundOrderB2List[i].outboundNumber);
+            if (obj.outboundOrderB2List[i].handelCategory != null) $("td[id='outboundOrderB2List_" + $i + "_handleCategory']").text(obj.outboundOrderB2List[i].handelCategory.name);
+        }
+        // 出库单Prepare2列表
+        for (var i = 0; i < obj.outboundOrderB2List.length; i++) {
+            var $i = i;
+            if (obj.outboundOrderPrepare2List[i].laboratoryTest != null) $("td[id='outboundOrderPrepare2List_" + $i + "_wastesName']").text(obj.outboundOrderPrepare2List[i].laboratoryTest.wastesName);
+            if (obj.outboundOrderPrepare2List[i].client != null) $("td[id='outboundOrderPrepare2List_" + $i + "_client']").text(obj.outboundOrderPrepare2List[i].client.companyName);
+            $("td[id='outboundOrderPrepare2List_" + $i + "_wastesAmount']").text(obj.outboundOrderB2List[i].outboundNumber);
+            if (obj.outboundOrderPrepare2List[i].handelCategory != null) $("td[id='outboundOrderPrepare2List_" + $i + "_handleCategory']").text(obj.outboundOrderPrepare2List[i].handelCategory.name);
+        }
+        // 出库单三期列表
+        for (var i = 0; i < obj.outboundOrderThirdList.length; i++) {
+            var $i = i;
+            if (obj.outboundOrderThirdList[i].laboratoryTest != null) $("td[id='outboundOrderThirdList_" + $i + "_wastesName']").text(obj.outboundOrderThirdList[i].laboratoryTest.wastesName);
+            if (obj.outboundOrderThirdList[i].client != null) $("td[id='outboundOrderThirdList_" + $i + "_client']").text(obj.outboundOrderThirdList[i].client.companyName);
+            $("td[id='outboundOrderThirdList_" + $i + "_wastesAmount']").text(obj.outboundOrderThirdList[i].outboundNumber);
+            if (obj.outboundOrderThirdList[i].handelCategory != null) $("td[id='outboundOrderThirdList_" + $i + "_handleCategory']").text(obj.outboundOrderThirdList[i].handelCategory.name);
+        }
     }
 }
 
@@ -1328,6 +1370,37 @@ function viewData(e) {
     // 获取编号并存储内存，页面跳转
     window.localStorage.productionDailyId = getIdByMenu(e);
     $(location).prop('href', 'productionDaily1.html');
+}
+
+/**
+ * 计算日报
+ * @param e 菜单
+ */
+function calculate(e) {
+    var r = confirm("重新计算该日报吗？");
+    if (r) {
+        var id = getIdByMenu(e);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "calculateProductionDaily",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                id: id
+            },
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    alert(result.message);
+                    window.location.reload();
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
 }
 
 /**
