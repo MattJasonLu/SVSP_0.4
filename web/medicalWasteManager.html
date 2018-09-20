@@ -12,7 +12,6 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/page.js"></script>
     <script src="js/produce/medicalWastes.js"></script>
 </head>
 <body onload="loadMedicalWastesList()"  >
@@ -118,8 +117,9 @@
                 </div>
                 <div class="input-group col-md-3"></div>
                 <!--查询框-->
-                <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
-                        <span class="input-group-btn">
+                <div class="input-group col-md-3 pull-right">
+                    <input type="text" class="form-control"  placeholder="搜索..." id="searchContent" name="searchContent">
+                    <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchMedicalWastes();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>

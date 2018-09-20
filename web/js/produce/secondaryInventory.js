@@ -397,6 +397,18 @@ function setByInboundOrderItemId(result) {
     tr.hide();
 }
 
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#search').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                search1();
+            }
+        },400);
+    });
+});
+
 //实时筛选，不用点击按钮==>次生库存
 function search1(){
     switchPage(1);
