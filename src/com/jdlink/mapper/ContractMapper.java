@@ -76,6 +76,9 @@ public interface ContractMapper {
     List<Contract> search(Contract contract);
     List<Contract> searchModel(Contract contract);
     List<Contract> getContractListByMonth(String month);
+
+    List<Contract> getAllContractBySalesmanId(String salesmanId);
+
     /**
      * 添加合同中的报价单明细
      */
@@ -91,4 +94,5 @@ public interface ContractMapper {
      * @param contractId
      */
     void deleteQuotationItem(String contractId);
+
 }

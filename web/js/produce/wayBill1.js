@@ -439,10 +439,7 @@ function importExcelChoose() {
  * */
 function downloadModal() {
     var filePath = 'Files/Templates/接运单模板.xlsx';
-    var r = confirm("是否下载模板?");
-    if (r == true) {
-        window.open('downloadFile?filePath=' + filePath);
-    }
+    window.open('downloadFile?filePath=' + filePath);
 }
 
 /**

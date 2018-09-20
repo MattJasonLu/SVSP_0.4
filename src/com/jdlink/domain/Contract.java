@@ -80,7 +80,7 @@ public class Contract implements Serializable {
     /**
      * 预约处置费
      */
-    private String order1;
+    private float order1;
     /**
      * 是否包含运费
      */
@@ -560,11 +560,9 @@ public class Contract implements Serializable {
         this.clientId = clientId;
     }
 
-    public String getOrder1() {
-        return order1;
-    }
 
-    public void setOrder1(String order1) {
+
+    public void setOrder1(float order1) {
         this.order1 = order1;
     }
 

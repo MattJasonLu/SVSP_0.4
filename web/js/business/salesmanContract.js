@@ -4,6 +4,7 @@
 var isSearch = false;
 var currentPage = 1;                          //当前页数
 var data;
+
 /**
  * 返回count值
  * */
@@ -62,6 +63,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -304,6 +306,7 @@ function loadPageList() {
     });
     isSearch = false;
     // getCheckState();
+    $("#search-sex").get(0).selectedIndex = -1; // 初始化下拉框
 }
 
 /**
@@ -317,6 +320,7 @@ function setDataList(result) {
     $.each(result, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.addClass('myClass2');
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -324,13 +328,21 @@ function setDataList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 case (0):
-                    $(this).html(index+1);
+                    $(this).html(index + 1);
                     break;
                 case (1):
                     $(this).html(obj.name);
                     break;
                 case (2):
                     $(this).html(obj.salesmanId);
+                    break;
+                case (3):
+                    $(this).html(obj.age);
+                    break;
+                case (4):
+                    if (obj.sex === true) {
+                        $(this).html('男');
+                    } else $(this).html('女');
                     break;
             }
         });
@@ -401,39 +413,6 @@ function searchData() {
 }
 
 /**
- * 设置高级查询的审核状态数据
- */
-function getCheckState() {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getCheckState",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var checkState = $("#search-checkState");
-                checkState.children().remove();
-                $.each(data.checkStateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    checkState.append(option);
-                });
-                checkState.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-}
-
-
-/**
  * 通过点击的操作按钮来获取销售员的编号
  * @param e 点击的按钮
  * @returns {string} 联单编号
@@ -452,12 +431,88 @@ function viewSalesmanContract(e) {
     location.href = "salesmanContract.html";
 }
 
+var array=[];//存放所有的tr
+var array1=[];//存放目标的tr
 /**
- * 编辑业务员名下的所有合同
- * @param e
+ * 查询功能
  */
-function editSalesmanContract(e) {
-    // 获取当前行的业务员编号
-    localStorage.salesmanId = getIdByMenu(e);
-    location.href = "salesmanContract.html";
+function searchTest() {
+    $('.myClass2').each(function () {
+        $(this).show();
+    });
+    array = [];//清空数组
+    array1 = [];
+    //分页模糊查询
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        array.push($('.myClass2'));
+    }
+
+    if ($("#senior").is(':visible')) {// 高级查询
+        //搜索关键字
+        var salesmanName = $('#search-salesmanName').val();
+        var salesmanId = $('#search-salesmanId').val();
+        var age = $('#search-age').val();
+        var sex = $("#search-sex option:selected").text();
+        console.log(sex);
+        for (var j = 0; j < array.length; j++) {
+            $.each(array[j], function () {
+                //console.log(this);
+                if (!($(this).children('td').eq(1).text().indexOf(salesmanName) != -1 && $(this).children('td').eq(2).text().indexOf(salesmanId) != -1
+                    && $(this).children('td').eq(3).text().indexOf(age) != -1 && $(this).children('td').eq(4).text().indexOf(sex) != -1)) {
+                   console.log($(this).children('td').eq(3).text());
+                    $(this).hide();
+                }
+                if (($(this).children('td').eq(1).text().indexOf(salesmanName) != -1 && $(this).children('td').eq(2).text().indexOf(salesmanId) != -1
+                    && $(this).children('td').eq(3).text().indexOf(age) != -1 && $(this).children('td').eq(4).text().indexOf(sex) != -1)){
+                    array1.push($(this));
+                }
+            });
+        }
+
+        for (var i = 0; i < array1.length; i++) {
+            $.each(array1[i], function () {
+                $('#tbody2').append(this);
+            });
+        }
+
+        if (salesmanName.length <= 0 && salesmanId.length <= 0 && age.length < 0 && sex.length <= 0) {
+            $('.myClass2').each(function () {
+                $(this).show();
+            })
+        }
+    } else {
+        // 模糊查询
+        var text = $('#searchContent').val();
+        for (var j = 0; j < array.length; j++) {
+            $.each(array[j], function () {
+                if (($(this).children('td').text().indexOf(text) == -1)) {
+                    $(this).hide();
+                }
+                if ($(this).children('td').text().indexOf(text) != -1) {
+                    array1.push($(this));
+                }
+            });
+        }
+        for (var i = 0; i < array1.length; i++) {
+            $.each(array1[i], function () {
+                $('#tbody2').append(this);
+            });
+        }
+
+        if (text.length <= 0) {
+            $('.myClass2').each(function () {
+                $(this).show();
+            })
+        }
+    }
+}
+
+/**
+ * 搜素重置功能
+ */
+function reset(){
+    $("#senior").find("input").val("");
+    $("#search-sex").get(0).selectedIndex = -1;
+    $("#searchContent").val("");
 }
