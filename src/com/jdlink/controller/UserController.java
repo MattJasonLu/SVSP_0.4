@@ -4,6 +4,7 @@ import com.jdlink.domain.Account.Authority;
 import com.jdlink.domain.Account.Function;
 import com.jdlink.domain.Account.Role;
 import com.jdlink.domain.LoginLog;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.UserService;
@@ -59,6 +60,8 @@ public class UserController {
                 loginLog.setUsername(user.getUsername());
                 loginLog.setTime(new Date());
                 loginLog.setIp(request.getRemoteAddr());
+                // 用户名root不添加登陆日志（测试账号）
+                if(!loginLog.getUsername().equals("root"))
                 userService.addLog(loginLog);
                 res.put("status", "success");
                 res.put("message", "登录成功");
@@ -103,12 +106,12 @@ public class UserController {
 
     @RequestMapping("getLog")
     @ResponseBody
-    public String getLog(HttpSession session) {
+    public String getLog(HttpSession session,Page page) {
         JSONObject res = new JSONObject();
         try {
             User user = (User) session.getAttribute("user");
             if (user == null) throw new NullPointerException("未正确登录！");
-            List<LoginLog> loginLogs = userService.getLogById(user.getId());
+            List<LoginLog> loginLogs = userService.getLogById(user.getId(),page);
             JSONArray data = JSONArray.fromArray(loginLogs.toArray(new LoginLog[loginLogs.size()]));
             res.put("data", data.toString());
             res.put("message", "获取日志信息成功");
@@ -123,6 +126,14 @@ public class UserController {
             res.put("status", "fail");
         }
         return res.toString();
+    }
+
+    @RequestMapping("totalLogRecord")
+    @ResponseBody
+    public int totalLogRecord(HttpSession session){
+        User user = (User) session.getAttribute("user");
+        if (user == null) throw new NullPointerException("未正确登录！");
+        return userService.totalLogRecord(user.getId());
     }
 
     /**

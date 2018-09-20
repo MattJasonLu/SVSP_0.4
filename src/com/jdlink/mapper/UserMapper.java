@@ -4,6 +4,7 @@ import com.jdlink.domain.Account.Authority;
 import com.jdlink.domain.Account.Function;
 import com.jdlink.domain.Account.Role;
 import com.jdlink.domain.LoginLog;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
 import org.apache.ibatis.annotations.Param;
 
@@ -35,8 +36,9 @@ public interface UserMapper {
 
     void addLog(LoginLog loginLog);
 
-    List<LoginLog> getLogById(int id);
+    List<LoginLog> getLogById(@Param("id")int id,@Param("page") Page page);
 
+    int totalLogRecord(int id);
     /**
      * 列出所有角色
      * @return

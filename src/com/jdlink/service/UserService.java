@@ -4,6 +4,7 @@ import com.jdlink.domain.Account.Authority;
 import com.jdlink.domain.Account.Function;
 import com.jdlink.domain.Account.Role;
 import com.jdlink.domain.LoginLog;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
 
 import java.util.List;
@@ -25,8 +26,19 @@ public interface UserService {
 
     void addLog(LoginLog loginLog);
 
-    List<LoginLog> getLogById(int id);
+    /**
+     * 获取分页登录数据
+     * @param id
+     * @param page
+     * @return
+     */
+    List<LoginLog> getLogById(int id,Page page);
 
+    /**
+     * 获取登陆总记录数
+     * @return
+     */
+    int totalLogRecord(int id);
     /**
      * 列出所有角色
      * @return

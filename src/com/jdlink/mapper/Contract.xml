@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jdlink.mapper.ContractMapper">
 
-    <resultMap id="ContractRM" type="Contract">
+    <resultMap id="ContractRM" type="Contract" autoMapping="true">
         <id property="contractId" column="contractId"/>
         <result property="contractType" column="contractType" javaType="com.jdlink.domain.ContractType"/>
         <result property="checkState" column="checkState" javaType="com.jdlink.domain.CheckState"/>
