@@ -31,7 +31,7 @@ function showLog() {
                 var data = eval(result);
                 if (data.status == "success") {
                     setDataList(result);
-                    $('#logModal').modal('show');
+                    //$('#logModal').modal('show');
                 } else {
                     alert(data.message);
                 }
