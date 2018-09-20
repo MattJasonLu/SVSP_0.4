@@ -447,7 +447,6 @@ function searchTest() {
         switchPage(parseInt(i));
         array.push($('.myClass2'));
     }
-
     if ($("#senior").is(':visible')) {// 高级查询
         //搜索关键字
         var salesmanName = $('#search-salesmanName').val();
@@ -469,13 +468,13 @@ function searchTest() {
                 }
             });
         }
-
+        // 将数据显示出来
         for (var i = 0; i < array1.length; i++) {
             $.each(array1[i], function () {
                 $('#tbody2').append(this);
             });
         }
-
+        // 未输入时全显示
         if (salesmanName.length <= 0 && salesmanId.length <= 0 && age.length < 0 && sex.length <= 0) {
             $('.myClass2').each(function () {
                 $(this).show();
@@ -499,7 +498,6 @@ function searchTest() {
                 $('#tbody2').append(this);
             });
         }
-
         if (text.length <= 0) {
             $('.myClass2').each(function () {
                 $(this).show();
