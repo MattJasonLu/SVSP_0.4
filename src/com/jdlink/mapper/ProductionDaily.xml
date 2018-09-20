@@ -8,8 +8,57 @@
     <!--ProductionDaily映射集-->
     <resultMap id="ProductionDailyRM" type="ProductionDaily" autoMapping="true">
         <id property="id" column="id"/>
-
+        <collection property="inboundOrderItemList" column="id" select="getInboundOrderItemList" ofType="com.jdlink.domain.MixingElement" javaType="ArrayList"/>
+        <collection property="outboundOrderA2List" column="id" select="getOutboundOrderA2List" ofType="com.jdlink.domain.Inventory.OutboundOrder" javaType="ArrayList"/>
+        <collection property="outboundOrderB2List" column="id" select="getOutboundOrderB2List" ofType="com.jdlink.domain.Inventory.OutboundOrder" javaType="ArrayList"/>
+        <collection property="outboundOrderPrepare2List" column="id" select="getOutboundOrderPrepare2List" ofType="com.jdlink.domain.Inventory.OutboundOrder" javaType="ArrayList"/>
+        <collection property="outboundOrderThirdList" column="id" select="getOutboundOrderThirdList" ofType="com.jdlink.domain.Inventory.OutboundOrder" javaType="ArrayList"/>
     </resultMap>
+    <!--入库单映射集-->
+    <resultMap id="InboundOrderItemRM" type="InboundOrderItem">
+        <result column="wastesAmount" property="wastesAmount"/>
+        <result column="wastesHandleCategory" property="handleCategory"/>
+        <association column="clientId" property="produceCompany" select="getClient"/>
+        <association property="wastes" javaType="com.jdlink.domain.Wastes">
+            <result column="wastesName" property="name"/>
+            <result column="wastesCode" property="wastesId"/>
+        </association>
+    </resultMap>
+    <!--出库单映射集-->
+    <resultMap id="OutboundOrderRM" type="OutboundOrder">
+        <result column="wastesAmount" property="outboundNumber"/>
+        <result column="wastesHandleCategory" property="handelCategory"/>
+        <result column="disposalEquipment" property="equipment"/>
+        <association column="clientId" property="client" select="getClient"/>
+        <association property="laboratoryTest" javaType="com.jdlink.domain.Produce.LaboratoryTest">
+            <result column="wastesName" property="wastesName"/>
+            <result column="wastesCode" property="wastesCode"/>
+        </association>
+    </resultMap>
+    <!--获取客户-->
+    <select id="getClient" resultType="Client">
+        select * from client where clientId=#{clientId};
+    </select>
+    <!--入库危废列表-->
+    <select id="getInboundOrderItemList" resultMap="InboundOrderItemRM">
+        select * from t_rp_productiondaily_inbounditem;
+    </select>
+    <!--A2出库列表-->
+    <select id="getOutboundOrderA2List" resultMap="OutboundOrderRM">
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='A2';
+    </select>
+    <!--B2出库列表-->
+    <select id="getOutboundOrderB2List" resultMap="OutboundOrderRM">
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='B2';
+    </select>
+    <!--备2出库列表-->
+    <select id="getOutboundOrderPrepare2List" resultMap="OutboundOrderRM">
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='Prepare2';
+    </select>
+    <!--三期设备出库列表-->
+    <select id="getOutboundOrderThirdList" resultMap="OutboundOrderRM">
+        select * from t_rp_productiondaily_outbounditem where disposalEquipment='ThirdPhasePretreatmentSystem';
+    </select>
 
     <select id="countSewage" resultType="int">
           select count(*) from t_pr_sewage;
@@ -91,7 +140,6 @@
         values
         (#{receiveDate},#{name},#{remarks},#{cod},#{oxygen},#{nitrogen},#{lye},#{ph},#{bod5})
     </insert>
-
 
     <select id="countSoftWater" resultType="int">
           select count(*) from t_pr_softwater;
@@ -193,7 +241,7 @@
     </select>
 
     <!--通过编号获取日报-->
-    <select id="getProductionDailyById" resultType="ProductionDaily">
+    <select id="getProductionDailyById" resultMap="ProductionDailyRM">
         SELECT * FROM t_rp_productiondaily WHERE id=#{id};
     </select>
 
@@ -312,7 +360,7 @@
     </insert>
 
     <!--通过日期范围获取生产日报-->
-    <select id="getProductionDailyByDateRange" resultType="ProductionDaily">
+    <select id="getProductionDailyByDateRange" resultMap="ProductionDailyRM">
         select * from t_rp_productiondaily
         <![CDATA[
             WHERE DATE_FORMAT(date, '%Y-%m-%d') >=  DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
@@ -337,4 +385,11 @@
     <update id="setProductionDailyState">
         update t_rp_productiondaily set checkState=#{checkState} where id=#{id};
     </update>
+
+    <!--删除日报-->
+    <delete id="deleteProductionDaily">
+        delete from t_rp_productiondaily where id=#{id};
+        delete from t_rp_productiondaily_inbounditem where productionDailyId=#{id};
+        delete from t_rp_productiondaily_outbounditem where productionDailyId=#{id};
+    </delete>
 </mapper>

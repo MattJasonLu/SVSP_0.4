@@ -78,4 +78,10 @@ public interface ProductionDailyService {
      * @param checkState 校验状态
      */
     void setProductionDailyState(int id, CheckState checkState);
+
+    /**
+     * 删除日报
+     * @param id 日报编号
+     */
+    void deleteProductionDaily(int id);
 }
