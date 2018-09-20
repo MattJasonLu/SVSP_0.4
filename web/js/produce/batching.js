@@ -5,8 +5,8 @@
 var currentPage = 1;                          //当前页数
 var data1;
 var isSearch = false;
-array=[];//数组用来存放入库编号
-array1=[]//数组用来存放剩余量的
+array=[];
+array1=[]
 /**
  * 返回count值
  * */
@@ -281,6 +281,17 @@ function reset() {
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     $("select[name='search-companyName']").selectpicker('val',' ');
+
+    batchingList();
+
+
+}
+
+function resetList() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+    $("select[name='search-companyName']").selectpicker('val',' ');
+    loadBatchingOrderList();
 }
 /**
  * 设置克隆页码
@@ -410,12 +421,12 @@ function searchBatchOrder() {
     }
 
 
-    if(createDate.length<=0&&wastesName.length<=0&&processWay.length<=0&&companyName.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(createDate.length<=0&&wastesName.length<=0&&processWay.length<=0&&companyName.length<=0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 
 
 }
@@ -480,7 +491,7 @@ function setWasteInventoryList(result) {
                         case (11):
                             $(this).html(obj.remarks);
                             break;
-                        case (11):
+                        case (12):
                             $(this).html(obj.inboundOrderItemId);
                             break;
                     }
@@ -511,6 +522,7 @@ function batching() {
     items.each(function () {
         //获得库存Id
       var inboundOrderItemId=  $(this).parent().parent().parent().children('td').last().text();
+      console.log(inboundOrderItemId);
       //根据inboundOrderItemId获得库存的信息，进行转移放到配料中
         $.ajax({
             type: "POST",                       // 方法类型
@@ -585,9 +597,11 @@ function setBatchingWList(result) {
                 case (7):
                     break;
                 case (8):
-                    $(this).html(obj.remarks);
                     break;
                 case (9):
+                    $(this).html(obj.remarks);
+                    break;
+                case (10):
                     $(this).html(obj.inboundOrderItemId);
                     break;
             }
@@ -685,7 +699,6 @@ function searchInventory() {
     var companyName=$("select[name='search-companyName']").selectpicker('val');
 
     var wastesCode=$("#search-wasteId").val();
-      console.log(inboundDate);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
@@ -706,13 +719,11 @@ function searchInventory() {
             $('#tbody1').append(this) ;
         });
     }
-
-    if(inboundDate.length<=0&&companyName.length<=0&&hangdeCategory.length<0&&transport.length<0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(inboundDate.length<=0&&companyName.length<=0&&hangdeCategory.length<=0&&wastesCode.length<=0){
+    //     $('.myclass').each(function () {
+    //         $(this).attr('style','display: table-row');
+    //     })
+    // }
 
 }
 //数量加减
@@ -785,7 +796,7 @@ function save() {
             //      },
             // wasteType:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
             batchingNumber:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.value,
-            remarks:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
+            remarks:this.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML,
             batchingDate:$("#date").val(),//配料日期
             createDate:$("#createDate").val(),//创建日期
             creator:$("#creator").val(),
@@ -918,11 +929,16 @@ function setBatchingOrderList(result) {
                             break;
                         // 危废名称
                         case (3):
-                          $(this).html(obj.laboratoryTest.wastesName);
+                            if(obj.laboratoryTest!=null){
+                                $(this).html(obj.laboratoryTest.wastesName);
+                            }
                             break;
                         // 处理类别
                         case (4):
-                            $(this).html(obj.processWay.name);
+                            if(obj.processWay!=null){
+                                $(this).html(obj.processWay.name);
+                            }
+
                             break;
                         // 数量
                         case (5):
@@ -934,7 +950,9 @@ function setBatchingOrderList(result) {
                             break;
                         // 产废单位
                         case (7):
+                            if(obj.produceCompany!=null){
                                 $(this).html(obj.produceCompany.companyName);
+                            }
                             break;
                         //创建人
                         case (8):
@@ -1285,7 +1303,7 @@ function update(data) {
         url: "updateMaterialRequisitionOrder",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        //data:JSON.stringify(data),
+        data:JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
@@ -1302,4 +1320,102 @@ function update(data) {
         }
     });
 
+}
+
+//配料单页面粗查询
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchBatchingList();
+            }
+        },400);
+    });
+});
+
+function searchBatchingList() {
+    switchPage(1);
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+    var text=$('#searchContent').val();
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(text.length<=0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+}
+
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContentAdd').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchBatchinAdd();
+            }
+        },400);
+    });
+});
+//配料单新增页面粗查询
+function searchBatchinAdd() {
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    array.push($('.myclass'));
+    var text=$('#searchContentAdd').val();
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(text.length<=0){
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
 }

@@ -96,7 +96,7 @@
                         <li><a href="businessModel.html">采购管理</a></li>
                         <li class="active">月度采购</li>
                     </ol>
-                    <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
+                    <p class="text-center pull-right"><b></b><span class="id"></span></p>
                 </div>
                 <h4 class="sub-header">月度采购申请表</h4>
             </div>
@@ -109,7 +109,8 @@
                         <a class="btn btn-primary btn-xs" href="#"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                    <div class="input-group col-md-3 pull-right">
+                        <input type="text" class="form-control"  placeholder="搜索..." id="searchContent" name="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchProcurement();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>

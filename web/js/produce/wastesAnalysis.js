@@ -4,6 +4,7 @@
 function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
+    loadWasteIntoList();
 }
 var currentPage = 1;                          //当前页数
 var isSearch = false;
@@ -331,7 +332,9 @@ function setWasteIntoList(result) {
                     break;
                 // 收样日期
                 case (1):
-                    $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(getDateStr(obj.laboratoryTest.samplingDate));
+                    }
                     break;
                 // 联单号码
                 case (2):
@@ -339,11 +342,17 @@ function setWasteIntoList(result) {
                     break;
                 // 产废单位
                 case (3):
+                    if(obj.client!=null){
                         $(this).html(obj.client.companyName);
+                    }
+
                     break;
                 // 废物名称
                 case (4):
+                    if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.wastesName);
+
+                    }
                     break;
                 // 废物类别
                 case (5):
@@ -351,51 +360,77 @@ function setWasteIntoList(result) {
                     break;
                 // 废物形态
                 case (6):
-                   $(this).html(obj.handleCategory.name);
+                    if(obj.handleCategory!=null){
+                        $(this).html(obj.handleCategory.name);
+                    }
                     break;
                     //PH
                 case (7):
+                    if(obj.laboratoryTest!=null){
                         $(this).html(obj.laboratoryTest.phAverage);
+                    }
+
                     break;
                     //热值
                 case (8):
-                    $(this).html(obj.laboratoryTest.heatAverage);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.heatAverage);
+                    }
                     break;
                     //水分
                 case (9):
-                    $(this).html(obj.laboratoryTest.waterContentAverage);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.waterContentAverage);
+                    }
                     break;
                     //灰分
                 case (10):
-                    $(this).html(obj.laboratoryTest.ashAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.ashAverage);
+                    }
                     break;
                     //氟含量
+
                 case (11):
-                    $(this).html(obj.laboratoryTest.fluorineContentAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.fluorineContentAverage);
+                    }
                     break;
                     //氯含量
                 case (12):
-                    $(this).html(obj.laboratoryTest.chlorineContentAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.chlorineContentAverage);
+                    }
                     break;
                     //硫含量
                 case (13):
-                    $(this).html(obj.laboratoryTest.sulfurContentAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.sulfurContentAverage);
+                    }
                     break;
                     //磷含量
                 case (14):
-                    $(this).html(obj.laboratoryTest.phosphorusContentAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.phosphorusContentAverage);
+                    }
                     break;
                     //闪点
                 case (15):
-                    $(this).html(obj.laboratoryTest.flashPointAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.flashPointAverage);
+                    }
                     break;
                     //粘度
                 case (16):
-                    $(this).html(obj.laboratoryTest.viscosityAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.viscosityAverage);
+                    }
                     break;
                     //熔融温度
                 case (17):
-                    $(this).html(obj.laboratoryTest.meltingPointAverage);
+                    if(obj.laboratoryTest!=null) {
+                        $(this).html(obj.laboratoryTest.meltingPointAverage);
+                    }
                     break;
                     //备注
                 case (18):
@@ -460,4 +495,56 @@ function searchWasteInto() {
     }
 
 
+}
+
+//粗查询
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchWastesAnalysis();
+            }
+        },400);
+    });
+});
+
+//粗查询
+function searchWastesAnalysis() {
+    switchPage(1);
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+    var text=$('#searchContent').val();
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(text.length<=0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
 }

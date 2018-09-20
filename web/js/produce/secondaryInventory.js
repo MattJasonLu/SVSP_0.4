@@ -3,6 +3,7 @@ function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+    loadWasteInventoryList();
 }
 var isSearch = false;
 var currentPage = 1;                          //当前页数
@@ -396,6 +397,18 @@ function setByInboundOrderItemId(result) {
     tr.hide();
 }
 
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#search').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                search1();
+            }
+        },400);
+    });
+});
+
 //实时筛选，不用点击按钮==>次生库存
 function search1(){
     switchPage(1);
@@ -478,12 +491,12 @@ function searchSec() {
             $('#tbody1').append(this) ;
         });
     }
-    if(inDate.length<=0&&companyName.length<=0&&handelCategory.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(inDate.length<=0&&companyName.length<=0&&handelCategory.length<=0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 
     // $('.myclass').each(function () {
     //     if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){

@@ -184,4 +184,18 @@ public class MedicalWastesController {
         }
         return  res.toString();
     }
+
+    //获取总记录数
+    @RequestMapping("totalMedicalWasteRecord")
+    @ResponseBody
+    public int totalMedicalWasteRecord(){
+        try {
+            return medicalWastesService.total();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
 }
