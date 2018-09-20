@@ -179,6 +179,15 @@ function switchPage(pageNumber) {
 }
 
 /**
+ * 回车跳转
+ */
+function enterSwitchPage(){
+    if(event.keyCode === 13){
+        inputSwitchPage();
+    }
+}
+
+/**
  * 输入页数跳转页面
  * */
 function inputSwitchPage() {
@@ -488,11 +497,17 @@ function reset() {
 }
 
 /**
- * 全页面回车查询
+ * 回车查询
  */
-$(document).keydown(function (event) {    // 全页面监听键盘按下事件
+function enterSearch(){
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        searchWayBill();
+        searchWayBill();      //
+    }
+}
+
+$("#senior").find("input").keydown(function (event) {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchWayBill();      //
     }
 });
 
