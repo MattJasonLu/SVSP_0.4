@@ -4,6 +4,8 @@
 function reset() {
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+    loadWasteInventoryList();
+
 }
 var currentPage = 1;                          //当前页数
 var isSearch = false;
@@ -511,12 +513,12 @@ function searchWastesInventory() {
             $('#tbody1').append(this) ;
         });
     }
-    if(inboundOrderId.length<=0&&client.length<=0&&handelCategory.length<0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(inboundOrderId.length<=0&&client.length<=0&&handelCategory.length<0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 }
 //危废库存查看
 function view(item) {

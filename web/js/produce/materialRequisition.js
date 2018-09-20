@@ -732,16 +732,17 @@ function searchMaterial() {
         });
     }
 
-    if(companyName.length<=0&&wastesCategory.length<=0&&wastesCode.length<=0&&number.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(companyName.length<=0&&wastesCategory.length<=0&&wastesCode.length<=0&&number.length<=0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 }
 //重置
 function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
   //  $("#senior").find("select").get(0).selectedIndex = -1;
+    LoadMaterialRequisitionOrder();
 }
