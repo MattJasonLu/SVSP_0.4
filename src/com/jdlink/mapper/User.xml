@@ -49,8 +49,16 @@
         INSERT INTO t_loginlog (userId, username, time, ip, nowTime) VALUES (#{userId}, #{username}, #{time}, #{ip}, NOW());
     </insert>
 
-    <select id="getLogById" parameterType="int" resultType="LoginLog">
-        SELECT * FROM t_loginlog WHERE userId=#{userId};
+    <select id="getLogById"  resultType="LoginLog">
+        SELECT * FROM t_loginlog WHERE userId=#{id}
+        order by time desc
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="totalLogRecord" parameterType="int" resultType="int">
+        select count(*) from t_loginlog WHERE userId=#{id};
     </select>
 
     <!--列出所有角色-->

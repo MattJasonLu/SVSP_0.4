@@ -220,11 +220,10 @@
                             aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-md-4"></div>
-                <div class="input-group col-md-3 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                <div class="input-group col-md-4 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
                     <span class="input-group-btn">
-                        <a class="btn btn-default" onclick="searchWayBill()"><span
+                        <a class="btn btn-default" onclick="searchWayBill()" ><span
                                 class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                         <a class="btn btn-default" onclick="$('#senior').toggle();"><span
                                 class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
@@ -243,7 +242,7 @@
                         <div class="form-group">
                             <label for="search-id" class="col-sm-4 control-label">序列号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-id" name="search-id" placeholder="">
+                                <input type="text" class="form-control" id="search-id" name="search-id" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -252,7 +251,7 @@
                             <label for="search-companyName" class="col-sm-4 control-label">单位</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="">
+                                       name="search-companyName" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -261,7 +260,7 @@
                             <label for="search-total" class="col-sm-4 control-label">总额</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-total" name="search-total"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -270,7 +269,7 @@
                             <label for="search-freight" class="col-sm-4 control-label">运费</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-freight" name="search-freight"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -281,7 +280,7 @@
                             <label for="search-founder" class="col-sm-4 control-label">创建人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-founder" name="search-founder"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -290,7 +289,7 @@
                             <label for="search-wayBillDate" class="col-sm-4 control-label">创建日期</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-wayBillDate"
-                                       name="search-wayBillDate" placeholder="">
+                                       name="search-wayBillDate" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -299,7 +298,7 @@
                             <label for="search-operator" class="col-sm-4 control-label">经手人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-operator" name="search-operator"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -307,7 +306,7 @@
                         <div class="form-group">
                             <label for="search-wayBillState" class="col-sm-4 control-label">接运单状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-wayBillState" name="search-wayBillState">
+                                <select class="form-control" id="search-wayBillState" name="search-wayBillState" onchange="searchWayBill()">
                                     <option value="0"></option>
                                 </select>
                             </div>
@@ -391,7 +390,7 @@
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber" title=""></li>
+                           id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="loadPageWayBillList();" title="">

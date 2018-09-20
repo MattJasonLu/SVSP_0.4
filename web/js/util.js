@@ -14,70 +14,9 @@ function updateVersion(versionId) {
     num = (num + 0.1).toFixed(1);
     console.log(num);
     if (isNaN(num)) return "V1.0";
-    return "V"+num;
+    return "V" + num;
 }
-/**
- * 显示日志
- */
-function showLog() {
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "getLog",                           // url
-        async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            console.log(result);
-            if (result != undefined) {
-                var data = eval(result);
-                if (data.status == "success") {
-                    setDataList(result);
-                    //$('#logModal').modal('show');
-                } else {
-                    alert(data.message);
-                }
-            }
-        },
-        error:function (result) {
-        }
-    });
-    function setDataList(result) {
-        // 获取id为cloneTr的tr元素
-        var id = 1;
-        var tr = $("#clonedTr2");
-        tr.siblings().remove();
-        $.each(result.data, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var clonedTr = tr.clone();
-            clonedTr.show();
-            // 循环遍历cloneTr的每一个td元素，并赋值
-            clonedTr.children("td").each(function (inner_index) {
-                var obj = eval(item);
-                // 根据索引为部分td赋值
-                switch (inner_index) {
-                    case (0):
-                        $(this).html(id++);
-                        break;
-                    // 样品预约号
-                    case (1):
-                        $(this).html(obj.username);
-                        break;
-                    //样品状态
-                    case (2):
-                        $(this).html(obj.ip);
-                        break;
-                    // 公司名称
-                    case (3):
-                        $(this).html(getTimeStr(obj.time));
-                        break;
-                }
-            });
-            // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
-            clonedTr.insertBefore(tr);
-        });
-        tr.hide();
-    }
-}
+
 /**
  * 通过字符串获取处置类别
  * @param handleCategory
@@ -110,6 +49,7 @@ function getHandleCategoryFromStr(handleCategory) {
     }
     return res;
 }
+
 /**
  * 通过字符串获取物质形态
  * @param formType
@@ -136,6 +76,7 @@ function getFormTypeFromStr(formType) {
     }
     return res;
 }
+
 /**
  * 通过字符串获取包装方式
  * @param packageType
@@ -165,6 +106,7 @@ function getPackageTypeFromStr(packageType) {
     }
     return res;
 }
+
 /**
  * 通过字符串获取处理方式
  * @param formType
@@ -185,6 +127,7 @@ function getProcessWayFromStr(formType) {
     }
     return res;
 }
+
 /**
  * 全选功能
  */
@@ -193,6 +136,7 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
 }
+
 /**
  * 校验权限
  * @param e 要进入的功能
@@ -204,7 +148,7 @@ function checkAuthority(e) {
     $.ajax({
         type: "POST",                            // 方法类型
         url: "checkAuthority",                           // url
-        async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
         data: {
             functionId: functionId
         },
@@ -222,12 +166,13 @@ function checkAuthority(e) {
                 e.prop('href', '#');
             }
         },
-        error:function (result) {
+        error: function (result) {
             console.log(result);
         }
     });
     return flag;
 }
+
 /**
  * 将危废英文名转换成中文
  * @param str
