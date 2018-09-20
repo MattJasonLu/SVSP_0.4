@@ -3,6 +3,7 @@ function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+    loadWasteInventoryList();
 }
 var isSearch = false;
 var currentPage = 1;                          //当前页数
@@ -478,12 +479,12 @@ function searchSec() {
             $('#tbody1').append(this) ;
         });
     }
-    if(inDate.length<=0&&companyName.length<=0&&handelCategory.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(inDate.length<=0&&companyName.length<=0&&handelCategory.length<=0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 
     // $('.myclass').each(function () {
     //     if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){

@@ -1708,7 +1708,6 @@ function calculateTotalPrice(item) {
     var contractAmount=$(item).parent().parent().children('td').eq(6).children('input').val();
     //console.log(unitPrice+"=="+contractAmount);
     $(item).parent().parent().children('td').eq(7).children('input').val((parseFloat(unitPrice)*parseInt(contractAmount)).toFixed(2));
-
 }
 //保存危废合同
 function contractWastesSave() {
