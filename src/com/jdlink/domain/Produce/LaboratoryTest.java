@@ -840,6 +840,14 @@ public class LaboratoryTest {
      */
     private float volatileNumber;
 
+    public float getVolatileNumber() {
+        return volatileNumber;
+    }
+
+    public void setVolatileNumber(float volatileNumber) {
+        this.volatileNumber = volatileNumber;
+    }
+
     public String getLaboratoryTestNumber() {
         return laboratoryTestNumber;
     }

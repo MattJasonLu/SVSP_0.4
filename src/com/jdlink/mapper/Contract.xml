@@ -24,7 +24,8 @@
         <result property="companyName " column="companyName " javaType="String"></result>
         <result property="province" column="province " javaType="com.jdlink.domain.Province"></result>
         <result property="contactName" column="contactName" javaType="String"></result>
-        <result property="telephone" column="telephone " javaType="String"></result>
+        <result property="telephone" column="telephone" javaType="String"></result>
+        <result property="clientId" column="clientId" javaType="String"></result>
         <collection property="hazardousList" select="getHazardous" column="contractId"
                     ofType="com.jdlink.domain.Hazardous" javaType="ArrayList"/>
         <collection property="quotationItemList" select="getQuotationItem" column="contractId"
@@ -243,7 +244,7 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         order by beginTime asc;
     </select>
 
-    <!--通过业务员编号读取对应的合同列表-->
+    <!--通过业务员编号和月份读取对应的合同列表-->
     <select id="getContractBySalesman" parameterType="String" resultMap="ContractRM">
         SELECT * FROM t_contract
         WHERE
@@ -252,6 +253,15 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         or DATE_FORMAT(beginTime,'%Y%m%d') like "%"#{month}"%")
         order by beginTime asc;
     </select>
+
+   <!--获取业务员所有的合同-->
+    <select id="getAllContractBySalesmanId" parameterType="String" resultMap="ContractRM">
+        SELECT * FROM t_contract
+        WHERE
+        clientId in (SELECT clientId FROM client WHERE salesmanId=#{salesmanId}) and contractType='Wastes'
+        order by beginTime asc;
+    </select>
+
 <!--高级查询-->
     <select id="search" parameterType="Contract" resultType="Contract">
          select * from t_contract
