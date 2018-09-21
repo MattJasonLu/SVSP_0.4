@@ -16,15 +16,6 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
 }
-
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
-
 //-----------------------------
 
 var pretreatmentId = "";    //预处理单号
@@ -1158,16 +1149,6 @@ function importExcel() {
 }
 
 /**
- * 重置功能
- */
-function reset() {
-    // $("#searchContent").val("");
-    // $("#senior").find("input").val("");
-    // $("#senior").find("select").get(0).selectedIndex = -1;
-    window.location.reload();
-}
-
-/**
  * 回车查询
  */
 function enterSearch(){
@@ -1217,6 +1198,7 @@ function searchBurnOrder() {
             keywords: keywords
         }
     }
+    console.log(data1);
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({

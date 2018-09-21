@@ -79,7 +79,15 @@
                 or total like "%"#{keywords}"%"
                 or freight like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
-                or (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
                 or produceCompanyOperator like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
@@ -101,7 +109,14 @@
             </if>
             <if test="remarks !=null and remarks !=''">
                 and (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%")
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%e') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%e') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%m.%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%e') like "%"#{remarks}"%")
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
@@ -125,7 +140,15 @@
                 or total like "%"#{keywords}"%"
                 or freight like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
-                or (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
                 or produceCompanyOperator like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
@@ -147,7 +170,14 @@
             </if>
             <if test="remarks !=null and remarks !=''">
                 and (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%")
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y-%c-%e') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%c%e') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%m.%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y.%c.%e') like "%"#{remarks}"%")
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
