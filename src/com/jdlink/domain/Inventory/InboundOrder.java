@@ -1,6 +1,7 @@
 package com.jdlink.domain.Inventory;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,6 +98,14 @@ public class InboundOrder {
      * 类别（危废、次生）
      */
     private int category;
+    /**
+     * 页面
+     */
+    private Page page;
+    /**
+     * 关键字
+     */
+    private String keyword;
 
     public String getInboundOrderId() {
         return inboundOrderId;
@@ -240,6 +249,22 @@ public class InboundOrder {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     @Override
