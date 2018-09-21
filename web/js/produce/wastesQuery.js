@@ -145,14 +145,16 @@ function switchPage(pageNumber) {
             }
 
         });
-    } if (isSearch) { //查询用的
+    }
+    if (isSearch) {//查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
-        for(var i=page.start;i<=page.start+page.count-1;i++){
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
-            isSearch=true;
         }
     }
 }
@@ -212,14 +214,16 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        } if (isSearch) { //查询用的
+        }
+        if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
-            for(var i=page.start;i<=page.start+page.count-1;i++){
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
-                isSearch=true;
             }
         }
     }
@@ -433,6 +437,7 @@ function searchWastesInventory() {
         array.push($('.myclass'));
     }
     isSearch=true;
+    var text=$('#searchContent').val();
     //1入库日期
     var  inboundOrderId =$('#search-inDate').val();
     var endDate=$('#search-endDate').val();
@@ -451,13 +456,13 @@ function searchWastesInventory() {
                 endDate=new Date();
             }
             //console.log(this);
-            if(!($(this).children('td').eq(3).text().indexOf(client)!=-1
+            if(!($(this).children('td').eq(3).text().indexOf(client)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
                 &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(3).text().indexOf(client)!=-1
+            if(($(this).children('td').eq(3).text().indexOf(client)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
                 &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
             )){
@@ -535,8 +540,8 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchWastesInventory1() {
+    isSearch=false;
     loadWasteInventoryList();
-
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
