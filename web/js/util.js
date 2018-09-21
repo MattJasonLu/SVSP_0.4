@@ -196,3 +196,10 @@ function convertStrToWastesName(str) {
     }
     return name;
 }
+
+/**
+ * 重置页面功能
+ */
+function reset() {
+    window.location.reload();
+}
