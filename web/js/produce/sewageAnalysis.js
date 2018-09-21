@@ -1,7 +1,8 @@
 ///////////污水分析日报//
 function reset() {
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
+    // $("#senior").find("input").val("");
+    // $("#searchContent").val("");
+    window.location.reload();
 }
 
 var currentPage = 1;                          //当前页数

@@ -18,12 +18,13 @@ function countValue() {
  * 重置搜索数据
  */
 function reset() {
-    $("#senior").find("input").val("");
-    $("#searchContent").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-    if ($("#senior").find("input").checked == "checked") {
-        $("#senior").find("input").removeAttr("checked")
-    }
+    // $("#senior").find("input").val("");
+    // $("#searchContent").val("");
+    // $("#senior").find("select").get(0).selectedIndex = -1;
+    // if ($("#senior").find("input").checked == "checked") {
+    //     $("#senior").find("input").removeAttr("checked")
+    // }
+    window.location.reload();
 }
 
 /**
