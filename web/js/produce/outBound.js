@@ -155,14 +155,15 @@ function switchPage(pageNumber) {
                 // setClientList(result);
             }
         });
-    } if (isSearch) { //查询用的
+    } if (isSearch) {//查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
-        for(var i=page.start;i<=page.start+page.count-1;i++){
+       var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
             $('#tbody1').append(array1[i]);
-            $(array1[i]).show();
-            isSearch=true;
+             $(array1[i]).show();
         }
     }
 }
@@ -221,14 +222,16 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        } if (isSearch) { //查询用的
+        }
+        if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
-            for(var i=page.start;i<=page.start+page.count-1;i++){
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
-                isSearch=true;
             }
         }
     }
@@ -923,10 +926,7 @@ function searchWasteOut() {
         }
 
     });
-    console.log(date);
-    $('.myclass').each(function () {
-        $(this).show();
-    });
+
     array.length=0;//清空数组
     array1.length=0;//清空数组
     //1分页模糊查询
@@ -936,6 +936,7 @@ function searchWasteOut() {
     }
     isSearch=true;
 // console.log(array);
+    var text=$('#searchContent').val();
 //1出库日期
     var outBoundDate=$('#search-storageDate').val()+"";
     var endDate=$('#search-endDate').val();
@@ -947,7 +948,7 @@ function searchWasteOut() {
     var processWay=$('#search-materialForm option:selected').text();
    var startDate=getDateByStr(outBoundDate);
    var endDate=getDateByStr(endDate);
-
+   console.log(startDate+endDate);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
           if(startDate.toString()=='Invalid Date'){
@@ -956,21 +957,18 @@ function searchWasteOut() {
           if(endDate.toString()=='Invalid Date'){
               endDate=new Date();
           }
-                if(!($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1
+                if(!($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                     &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
                     &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
                 )){
                     $(this).hide();
                 }
-                if(($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1
+                if(($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                     &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1)
                     &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
                 ){
                     array1.push($(this));
                 }
-
-            //console.log(this);
-
         });
     }
 
@@ -1015,7 +1013,7 @@ function searchWasteOut() {
         $('#tbody1').append((array1[i]));
     }
 
-    isSearch=false;
+
 
     // if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<0&&outboundOrderId.length<0){
     //     switchPage(1);
@@ -1041,6 +1039,9 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchOutBound() {
+
+    isSearch=false;
+
     loadOutBoundList();
 
     //1分页模糊查询

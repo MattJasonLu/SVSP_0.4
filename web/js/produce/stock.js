@@ -166,16 +166,18 @@ function switchPage(pageNumber) {
             }
         });
     }
-    if (isSearch) { //查询用的
+    if (isSearch) {//查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
-       for(var i=page.start;i<=page.start+page.count-1;i++){
-           $('#tbody1').append(array1[i]);
-           $(array1[i]).show();
-           isSearch=true;
-       }
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
+            $('#tbody1').append(array1[i]);
+            $(array1[i]).show();
+        }
     }
+
 }
 /**
  * 输入页数跳转页面
@@ -233,16 +235,16 @@ function inputSwitchPage() {
                     // setClientList(result);
                 }
             });
-        }   if (isSearch) {
+        }   if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
-            for(var i=page.start;i<=page.start+page.count-1;i++){
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
-                isSearch=true;
             }
-
         }
     }
 }
@@ -460,7 +462,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //高级查询
 function searchStock() {
-     isSearch=false;
+    isSearch=false;
     array.length=0;//清空数组
     array1.length=0;//清空数组
     //1分页模糊查询
@@ -469,6 +471,7 @@ function searchStock() {
         array.push($('.myclass'));
     }
     isSearch=true;
+    var text=$('#searchContent').val();
     //审核状态
    var checkState=$('#search-checkState option:selected').text();
     //产废单位联系人
@@ -482,22 +485,16 @@ function searchStock() {
         $.each(array[j],function () {
             //console.log(this);
             if(!($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1&&$(this).children('td').text().indexOf(text)!=-1
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(2).text().indexOf(companyContact)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1)){
+                &&$(this).children('td').eq(3).text().indexOf(phone)!=-1&&$(this).children('td').eq(5).text().indexOf(transport)!=-1)&&$(this).children('td').text().indexOf(text)!=-1){
                 array1.push($(this));
             }
         });
     }
-
-    // for(var i=0;i<array1.length;i++){
-    //     $.each(array1[i],function () {
-    //         $('#tbody1').append(this) ;
-    //     });
-    // }
 
     var total;
 
@@ -516,7 +513,9 @@ function searchStock() {
     $("#totalPage").text("共" + total + "页");
 
     var myArray = new Array();
+
     $('.beforeClone').remove();
+
     for ( i = 0; i < total; i++) {
         var li = $("#next").prev();
         myArray[i] = i+1;
@@ -531,6 +530,7 @@ function searchStock() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -540,22 +540,27 @@ function searchStock() {
         $('#tbody1').append((array1[i]));
     }
 
-
-
 }
 //粗查询
+function  searchStock1() {
 
-function searchStock1() {
+    isSearch=false;
+
     loadPageStocktList();
     //1分页模糊查询
     array.length=0;//清空数组
+
     array1.length=0;
+
     for(var i=totalPage();i>0;i--){
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+
     isSearch = true;
+
     var text=$('#searchContent').val();
+
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
@@ -567,7 +572,7 @@ function searchStock1() {
          }
         });
     }
-
+    console.log(array1);
 
     var total;
 

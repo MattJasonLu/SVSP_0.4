@@ -12,7 +12,10 @@
         values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment})
     </insert>
     <select id="loadMedicalWastesList" resultType="MedicalWastes">
-        select  * from t_pl_medicalwastes  order by nowTime desc;
+        select  * from t_pl_medicalwastes  order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
     </select>
     <!--高级查询-->
     <select id="searchMedicalWastes" parameterType="MedicalWastes" resultType="MedicalWastes">

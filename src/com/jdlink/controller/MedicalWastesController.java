@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.MedicalWastes;
 import com.jdlink.service.MedicalWastesService;
 import net.sf.json.JSONObject;
@@ -84,10 +85,10 @@ public class MedicalWastesController {
      */
     @RequestMapping("loadMedicalWastesList")
     @ResponseBody
-    public String loadMedicalWastesList(){
+    public String loadMedicalWastesList(@RequestBody Page page){
         JSONObject res=new JSONObject();
         try {
-            List<MedicalWastes> medicalWastesList=medicalWastesService.loadMedicalWastesList();
+            List<MedicalWastes> medicalWastesList=medicalWastesService.loadMedicalWastesList(page);
             res.put("medicalWastesList", medicalWastesList);
             res.put("status", "success");
             res.put("message", "查询成功");
