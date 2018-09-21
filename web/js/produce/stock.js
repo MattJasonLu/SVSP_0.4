@@ -546,7 +546,7 @@ function  searchStock1() {
 
     isSearch=false;
 
-    loadPageStocktList();
+    //loadPageStocktList();
     //1分页模糊查询
     array.length=0;//清空数组
 

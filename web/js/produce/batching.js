@@ -1295,7 +1295,7 @@ function searchBatchingList() {
 
     isSearch=false;
 
-    loadBatchingOrderList();
+    //loadBatchingOrderList();
 
     //1分页模糊查询
     array.length=0;//清空数组

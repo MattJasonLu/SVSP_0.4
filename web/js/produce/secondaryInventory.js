@@ -375,7 +375,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 function search1(){
     isSearch=false;
 
-    loadWasteInventoryList();
+    //loadWasteInventoryList();
 
     //1分页模糊查询
     //1分页模糊查询

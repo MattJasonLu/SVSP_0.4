@@ -203,7 +203,7 @@ public class StockController {
      * 获取总记录数
      * @return
      */
-    @RequestMapping("totalStockRecord")
+     @RequestMapping("totalStockRecord")
     @ResponseBody
     public int totalStockRecord(){
         try {

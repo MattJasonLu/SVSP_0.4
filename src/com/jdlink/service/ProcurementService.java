@@ -15,4 +15,6 @@ public interface ProcurementService {
     List<String> getIngredientsList();
     void setProcurementListCancel(String receiptNumber);
     void  setProcurementListSubmit(String receiptNumber);
+    int totalMouth();
+    int totalEmc();
 }
