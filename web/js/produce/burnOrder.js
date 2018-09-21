@@ -1161,8 +1161,18 @@ function importExcel() {
  * 重置功能
  */
 function reset() {
+    $("#searchContent").val("");
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchBurnOrder();      //
+    }
 }
 
 /**
@@ -1187,6 +1197,24 @@ function searchBurnOrder() {
             state: state,
             page: page
         };
+    }else{
+        var keywords = $("#searchContent").val();
+        switch (keywords){
+            case("新建"): keywords = "NewBuild";break;
+            case("待审批"): keywords = "ToExamine";break;
+            case("审批中"): keywords = "Examining";break;
+            case("审批通过"): keywords = "Approval";break;
+            case("已驳回"): keywords = "Backed";break;
+            case("驳回"): keywords = "Backed";break;
+            case("已作废"): keywords = "Invalid";break;
+            case("作废"): keywords = "Invalid";break;
+            case("已确认"): keywords = "Confirm";break;
+            case("确认"): keywords = "Confirm";break;
+        }
+        data1={
+            page:page,
+            keywords: keywords
+        }
     }
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
     else {

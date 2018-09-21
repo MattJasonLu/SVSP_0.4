@@ -523,7 +523,7 @@ public class WasteInventoryController {
 //加载出库信息列表==>接口口
     @RequestMapping("loadOutBoundList")
     @ResponseBody
-    public String loadOutBoundList(@RequestBody Page page){
+    public String loadOutBoundList(Page page){
         JSONObject res=new JSONObject();
        try {
            List<OutboundOrder> outboundOrderList=outboundOrderService.loadOutBoundList(page);

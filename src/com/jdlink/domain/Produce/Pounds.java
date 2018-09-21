@@ -96,6 +96,18 @@ public class Pounds {
      * 分页
      */
     private Page page;
+    /**
+     * 查询关键字
+     */
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
     public String getId() {
         return id;

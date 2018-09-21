@@ -177,7 +177,8 @@
                             class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                <div class="input-group col-md-4 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchSampleInfo();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
@@ -194,29 +195,26 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search-id" class="col-sm-4 control-label">预约单号</label>
                             <div class="col-xs-4">
-                                <input type="text" class="form-control" id="search-id"
-                                       name="search-companyCode"
-                                       placeholder="">
+                                <input type="text" class="form-control" id="search-id" name="search-companyCode"
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="search-companyCode" class="col-sm-4 control-label">公司代码</label>
                             <div class="col-xs-4">
                                 <input type="text" class="form-control" id="search-companyCode"
-                                       name="search-companyCode"
-                                       placeholder="">
+                                       name="search-companyCode" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>
                             <div class="col-xs-4">
                                 <input type="text" class="form-control" id="search-wastesCode"
-                                       name="search-wastesCode" placeholder="">
+                                       name="search-wastesCode" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -227,11 +225,11 @@
                                 <div class="checkbox" id="search-addItems">
                                     <label>
                                         <input type="checkbox" name="isFlashPoint1" id="isFlashPoint1"
-                                               value="true">闪点
+                                               value="true" onchange="searchSampleInfo()">闪点
                                     </label>
                                     <label>
                                         <input type="checkbox" name="isViscosity1" id="isViscosity1"
-                                               value="true">黏度
+                                               value="true" onchange="searchSampleInfo()">黏度
                                     </label>
                                 </div>
                             </div>
@@ -241,28 +239,28 @@
                             <div class="col-xs-7">
                                 <div class="checkbox" id="search-basicItems">
                                     <label>
-                                        <input type="checkbox" name="isPH1" id="isPH1" value="true">PH
+                                        <input type="checkbox" name="isPH1" id="isPH1" value="true" onchange="searchSampleInfo()">PH
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isAsh1" id="isAsh1" value="true">灰分
+                                        <input type="checkbox" name="isAsh1" id="isAsh1" value="true" onchange="searchSampleInfo()">灰分
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isWater1" id="isWater1" value="true">水分
+                                        <input type="checkbox" name="isWater1" id="isWater1" value="true" onchange="searchSampleInfo()">水分
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isHeat1" id="isHeat1" value="true">热值
+                                        <input type="checkbox" name="isHeat1" id="isHeat1" value="true" onchange="searchSampleInfo()">热值
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isS1" id="isS1" value="true">硫
+                                        <input type="checkbox" name="isS1" id="isS1" value="true" onchange="searchSampleInfo()">硫
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isCl1" id="isCl1" value="true">氯
+                                        <input type="checkbox" name="isCl1" id="isCl1" value="true" onchange="searchSampleInfo()">氯
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isF1" id="isF1" value="true">氟
+                                        <input type="checkbox" name="isF1" id="isF1" value="true" onchange="searchSampleInfo()">氟
                                     </label>
                                     <label>
-                                        <input type="checkbox" name="isP1" id="isP1" value="true">磷
+                                        <input type="checkbox" name="isP1" id="isP1" value="true" onchange="searchSampleInfo()">磷
                                     </label>
                                 </div>
                             </div>
@@ -272,14 +270,14 @@
                         <div class="form-group">
                             <label for="search-state" class="col-sm-4 control-label">样品状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-state" id="search-state"></select>
+                                <select class="form-control" name="search-state" id="search-state" onchange="searchSampleInfo()"></select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="search-signer" class="col-sm-4 control-label">化验室签收人</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-signer" name="search-signer"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -351,7 +349,7 @@
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage()">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber" title=""></li>
+                           id="pageNumber" title="" onkeydown="enterSwitchPage()"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="loadPageSampleInformationList()" title="">

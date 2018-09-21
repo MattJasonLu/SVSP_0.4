@@ -99,6 +99,18 @@ public class BurnOrder {
      *悬挂连比例
      */
     private Float suspensionProportion;
+    /**
+     * 查询关键字
+     */
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
     public String getId() {
         return id;

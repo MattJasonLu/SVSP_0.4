@@ -31,6 +31,12 @@
     <select id="search" parameterType="ProductionPlan" resultMap="ProductionPlanRM">
         select * from t_pr_productionplan
         <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or founder like "%"#{keywords}"%"
+                or ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or state like "%"#{keywords}"%"
+            </if>
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
             </if>
@@ -54,6 +60,12 @@
     <select id="searchCount" parameterType="ProductionPlan" resultType="int">
         select count(*) from t_pr_productionplan
         <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or founder like "%"#{keywords}"%"
+                or ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or state like "%"#{keywords}"%"
+            </if>
             <if test="id != null and id != ''">
                 and id like "%"#{id}"%"
             </if>

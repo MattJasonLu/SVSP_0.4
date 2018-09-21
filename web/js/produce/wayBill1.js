@@ -98,6 +98,9 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -505,12 +508,6 @@ function enterSearch(){
     }
 }
 
-$("#senior").find("input").keydown(function (event) {
-    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        searchWayBill();      //
-    }
-});
-
 /**
  * 查询功能
  */
@@ -550,6 +547,8 @@ function searchWayBill() {
             case("驳回"): keywords = "Backed";break;
             case("已作废"): keywords = "Invalid";break;
             case("作废"): keywords = "Invalid";break;
+            case("已确认"): keywords = "Confirm";break;
+            case("确认"): keywords = "Confirm";break;
         }
         data={
             page:page,
