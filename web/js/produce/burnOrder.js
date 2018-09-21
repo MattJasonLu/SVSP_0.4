@@ -1161,9 +1161,10 @@ function importExcel() {
  * 重置功能
  */
 function reset() {
-    $("#searchContent").val("");
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
+    // $("#searchContent").val("");
+    // $("#senior").find("input").val("");
+    // $("#senior").find("select").get(0).selectedIndex = -1;
+    window.location.reload();
 }
 
 /**
