@@ -19,7 +19,8 @@ function setYearListSelect() {
  * 搜索重置功能
  */
 function reset() {
-    $("#senior").find("input").val("");
+    // $("#senior").find("input").val("");
+    window.location.reload();
 }
 
 function selectedYear() {
@@ -164,8 +165,9 @@ function toView1(item) {
 
 //-----------------------业务员列表页面-----------------
 function reset1() {
-    $("#senior1").find("input").val("");
-    $("#searchContent1").val("");
+    // $("#senior1").find("input").val("");
+    // $("#searchContent1").val("");
+    window.location.reload();
 }
 
 function loadMonthSalesmanData() {
@@ -358,8 +360,9 @@ function search1() {
 
 //---------------------------合同明细页面---------------
 function reset2() {
-    $("#senior2").find("input").val("");
-    $("#searchContent2").val("");
+    // $("#senior2").find("input").val("");
+    // $("#searchContent2").val("");
+    window.location.reload();
 }
 
 function loadContractListData() {

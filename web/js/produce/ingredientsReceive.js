@@ -24,9 +24,10 @@ function getDayDate(date) {
  * 重置功能
  */
 function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-    $("#searchContent").val("");
+    // $("#senior").find("input").val("");
+    // $("#senior").find("select").get(0).selectedIndex = -1;
+    // $("#searchContent").val("");
+    window.location.reload();
 }
 
 /**
@@ -499,6 +500,15 @@ function importExcel() {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
+}
+
+/**
  * 查询功能
  */
 function searchData() {
@@ -876,11 +886,11 @@ function confirmInsert() {
     var i = 0;  //序号
     // 遍历库存列表，生成领料单
     $("#ingredientsInventoryData").children().not("#cloneTr1").each(function () {
-        i++;
         var isCheck = $(this).find("input[name='select']").prop('checked');
         if (isCheck) {
             var ingredientsId1 = $(this).find("td[name='itemId']").text();
             if ($.inArray(ingredientsId1, ingredientsIdArray) == -1) {
+                i++;
                 ingredientsIdArray.push(ingredientsId1);
                 var ingredients = {};
                 ingredients.name = $(this).find("td[name='name']").text();
@@ -1020,9 +1030,10 @@ function save() {
  * 重置功能
  */
 function reset1() {
-    $("#senior1").find("input").val("");
-    // $("#senior1").find("select").get(0).selectedIndex = -1;
-    $("#searchContent1").val("");
+    // $("#senior1").find("input").val("");
+    // // $("#senior1").find("select").get(0).selectedIndex = -1;
+    // $("#searchContent1").val("");
+    window.location.reload();
 }
 
 /**

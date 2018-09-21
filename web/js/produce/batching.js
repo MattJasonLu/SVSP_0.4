@@ -235,6 +235,7 @@ function  batchingList() {
  * 重置搜索数据
  */
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     $("select[name='search-companyName']").selectpicker('val',' ');
@@ -285,58 +286,7 @@ function setPageClone(result) {
 array=[];
 array1=[];
 function searchBatchOrder() {
-    // isSearch = true;
-    // var page = {};
-    // var pageNumber = 1;                       // 显示首页
-    // page.pageNumber = pageNumber;
-    // page.count = countValue();
-    // page.start = (pageNumber - 1) * page.count;
-    // // if ($("#senior").is(':visible')) {
-    // //     data1 = {
-    // //         laboratoryTest: {wastesName:$("#search-wastesName").val()},
-    // //         produceCompany:{companyName:$("#search-client").val()} ,
-    // //         createDate: $("#search-batchingDate").val(),
-    // //         page: page,
-    // //         processWay:$("#search-processWay").val(),
-    // //     };
-    // //     console.log(data1);
-    // // }
-    // // if (data1 == null) alert("请点击'查询设置'输入查询内容!");
-    // // else {
-    // //     $.ajax({
-    // //         type: "POST",                            // 方法类型
-    // //         url: "searchBatchOrder",                 // url
-    // //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-    // //         data: JSON.stringify(data1),
-    // //         dataType: "json",
-    // //         contentType: "application/json; charset=utf-8",
-    // //         success: function (result) {
-    // //             console.log(result);
-    // //             if (result.data != undefined || result.status == "success") {
-    // //                  console.log(result);
-    // //                 setPageClone(result);
-    // //             } else {
-    // //                 alert(result.message);
-    // //             }
-    // //         },
-    // //         error: function (result) {
-    // //             console.log(result);
-    // //             alert("服务器错误！");
-    // //         }
-    // //     });
-    // // }
-    // $('.myclass').each(function () {
-    //     $(this).show();
-    // });
-    // var batchingDate= $('#search-batchingDate').val()+"";//创建日期
-    // var processWay=$("#search-processWay option:selected").text();
-    // console.log(batchingDate+"=="+processWay);
-    // $('.myclass').each(function () {
-    //     if(!($(this).children('td').eq(9).text().indexOf(batchingDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1)){
-    //         $(this).hide();
-    //     }
-    // });
-    //1分页模糊查询
+   isSearch=false;
     array.length=0;//清空数组
     array1.length=0;
     $('.myclass').each(function () {
@@ -1411,7 +1361,7 @@ function searchBatchingList() {
     if(text.length<=0){
         loadBatchingOrderList();
     }
-    isSearch=false;
+
 }
 
 

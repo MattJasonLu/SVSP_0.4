@@ -18,6 +18,7 @@ function countValue() {
 }
 //重置
 function reset() {
+    isSearch = false;
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
@@ -459,10 +460,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //高级查询
 function searchStock() {
-
-    $('.myclass').each(function () {
-        $(this).show();
-    });
+     isSearch=false;
     array.length=0;//清空数组
     array1.length=0;//清空数组
     //1分页模糊查询
@@ -542,8 +540,6 @@ function searchStock() {
         $('#tbody1').append((array1[i]));
     }
 
-    isSearch=false;
-
 
 
 }
@@ -621,7 +617,7 @@ function searchStock1() {
     if(text.length<=0){
         loadPageStocktList();
     }
-    isSearch=false;
+
 }
 /**
  * 8位危废代码获取

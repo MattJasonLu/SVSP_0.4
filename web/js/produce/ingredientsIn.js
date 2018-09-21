@@ -26,9 +26,10 @@ function allSelect() {
  * 重置功能
  */
 function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-    $("#searchContent").val("");
+    // $("#senior").find("input").val("");
+    // $("#senior").find("select").get(0).selectedIndex = -1;
+    // $("#searchContent").val("");
+    window.location.reload();
 }
 
 var currentPage = 1;                          //当前页数
@@ -511,6 +512,15 @@ function importInExcel() {
             }
         });
     });
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchIngredientIn();      //
+    }
 }
 
 /**
@@ -1285,9 +1295,10 @@ function save() {
  * 重置
  */
 function reset1() {
-    $("#senior1").find("input").val("");
-    $("#senior1").find("select").get(0).selectedIndex = -1;
-    $("#searchContent1").val("");
+    // $("#senior1").find("input").val("");
+    // $("#senior1").find("select").get(0).selectedIndex = -1;
+    // $("#searchContent1").val("");
+    window.location.reload();
 }
 
 /**
