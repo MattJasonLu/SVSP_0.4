@@ -278,6 +278,15 @@ function toViewSalesman1(item) {
     location.href = "assessment2.html";
 }
 
+/**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        search1();      //
+    }
+}
+
 var array = [];//存放所有的tr
 var array1 = [];//存放目标的tr
 /**
@@ -472,6 +481,15 @@ function toViewItems(item) {
 
 function toViewItems1(item) {
     salesmanId = getSalesmanId1(item);
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch1(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        search2();      //
+    }
 }
 
 /**
