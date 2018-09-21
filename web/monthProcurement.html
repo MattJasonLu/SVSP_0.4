@@ -36,11 +36,11 @@
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                            <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="ingredientsReceive.html">辅料/备件领用</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">辅料/备件入库</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">辅料/备件领用</a></li>
                         </ul>
                     </li>
                     <li><a href="emergencyProcurement.html">应急采购</a></li>
@@ -215,11 +215,9 @@
                     <td class="text-center"></td>     <!--时间，精确到秒 下同-->
                     <td class="text-center"></td>
                     <td class="text-center">
-                        <a class="btn btn-primary btn-xs" href="#" title="查看" onclick="view1(this)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
-                        <a class="btn btn-primary btn-xs" href="#" title="作废" onclick="cancel(this)"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
-                        <!--<a class="btn btn-primary btn-xs" href="#" title="保存"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>-->
-                        <a class="btn btn-primary btn-xs" href="#" title="提交" onclick="submit(this)"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>
-                        <!--<a class="btn btn-primary btn-xs" href="#" title="审批" onclick="approval(this)"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>-->
+                        <a href="#" title="查看" onclick="view1(this);"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
+                        <a href="#" title="作废" onclick="cancel(this);"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
+                        <a href="#" title="提交" onclick="submit(this);"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>
                     </td>
                 </tr>
                 </tbody>

@@ -363,7 +363,7 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchTransferDraftTotal",                  // url
+            url: "searchInboundOrderCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -495,7 +495,7 @@ function switchPage(pageNumber) {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchTransferDraft",         // url
+            url: "searchInboundOrder",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data),
             dataType: "json",
@@ -572,7 +572,7 @@ function inputSwitchPage() {
             data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchTransferDraft",         // url
+                url: "searchInboundOrder",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data),
                 dataType: "json",
@@ -626,7 +626,7 @@ function loadPageList() {
         }
     });
     isSearch = false;
-    // getCheckState();
+    getSelectedInfo();
 }
 
 /**
@@ -649,9 +649,10 @@ function setInboundOrderDataList(result) {
         clonedTr.find("td[name='wareHouseName']").text(data.wareHouse.wareHouseName);
         if (data.boundType != null)
         clonedTr.find("td[name='creatorId']").text(data.creatorId);
-        clonedTr.find("td[name='keeperId']").text(data.keeperId);
-        clonedTr.find("td[name='directorId']").text(data.directorId);
-        clonedTr.find("td[name='approverId']").text(data.approverId);
+        // clonedTr.find("td[name='keeperId']").text(data.keeperId);
+        // clonedTr.find("td[name='directorId']").text(data.directorId);
+        // clonedTr.find("td[name='approverId']").text(data.approverId);
+        if (data.boundType != null)
         clonedTr.find("td[name='boundType']").text(data.boundType.name);
         if (data.recordState != null)
         clonedTr.find("td[name='recordState']").text(data.recordState.name);
@@ -678,20 +679,14 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-draftId").val(),
+            inboundOrderId: $("#inboundOrderId").val(),
+            wareHouse: {
+                wareHouseName: $("#search-warehouseName").val()
+            },
+            recordState: $("#search-recordState").val(),
             checkState: $("#search-checkState").val(),
-            produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
-            },
-            transportCompany: {
-                companyName: $("#search-transportCompanyName").val()
-            },
-            acceptCompany: {
-                companyName: $("#search-acceptCompanyName").val()
-            },
-            dispatcher: $("#search-dispatcher").val(),
-            destination: $("#search-destination").val(),
-            transferTime: $("#search-transferTime").val(),
+            companyId: $("#search-beginTime").val(), // 起始时间
+            modifierId: $("#search-endTime").val(),   // 结束时间
             page: page
         };
         console.log(data);
@@ -704,7 +699,7 @@ function searchData() {
     }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchTransferDraft",                  // url
+        url: "searchInboundOrder",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
@@ -725,52 +720,10 @@ function searchData() {
 }
 
 
-
-/**
- * 设置物质形态和包装方式的枚举信息
- */
-function getSelectedInfo() {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var wastesFormType = $("#wastesFormType");
-                wastesFormType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastesFormType.append(option);
-                });
-                wastesFormType.get(0).selectedIndex = -1;
-                var wastespackagetype = $("#wastesPackageType");
-                wastespackagetype.children().remove();
-                $.each(data.packageTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastespackagetype.append(option);
-                });
-                wastespackagetype.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-}
-
 /**
  * 设置高级查询的审核状态数据
  */
-function getCheckState() {
+function getSelectedInfo() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getCheckState",                  // url
@@ -789,6 +742,33 @@ function getCheckState() {
                     checkState.append(option);
                 });
                 checkState.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getRecordState",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var recordState = $("#search-recordState");
+                recordState.children().remove();
+                $.each(data.recordStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    recordState.append(option);
+                });
+                recordState.get(0).selectedIndex = -1;
             } else {
                 console.log("fail: " + result);
             }

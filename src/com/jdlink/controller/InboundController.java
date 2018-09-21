@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpSession;
 import java.text.NumberFormat;
@@ -164,6 +165,46 @@ public class InboundController {
             // 获取入库单列表
             List<InboundOrder> inboundOrderList = inboundService.listInboundOrder(page);
             JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取查询入库单数量
+     * @param inboundOrder 入库单
+     * @return 入库单数量
+     */
+    @RequestMapping("searchInboundOrderCount")
+    @ResponseBody
+    public int searchInboundOrderCount(@RequestBody InboundOrder inboundOrder) {
+        try {
+            return inboundService.searchInboundOrderCount(inboundOrder);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 查询入库单
+     * @param inboundOrder 查询参数
+     * @return 入库单结果
+     */
+    @RequestMapping("searchInboundOrder")
+    @ResponseBody
+    public String searchInboundOrder(@RequestBody InboundOrder inboundOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            List<InboundOrder> inboundOrderList = inboundService.searchInboundOrder(inboundOrder);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            // 获取入库单列表
             res.put("status", "success");
             res.put("message", "获取信息成功");
             res.put("data", data);

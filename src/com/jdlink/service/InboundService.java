@@ -65,6 +65,20 @@ public interface InboundService {
     List<InboundOrder> listInboundOrder(Page page);
 
     /**
+     * 查询入库单
+     * @param inboundOrder 入库单数据
+     * @return 查询结果
+     */
+    List<InboundOrder> searchInboundOrder(InboundOrder inboundOrder);
+
+    /**
+     * 获取查询到的入库单的数量
+     * @param inboundOrder 查询参数
+     * @return 入库单的数量
+     */
+    int searchInboundOrderCount(InboundOrder inboundOrder);
+
+    /**
      * 作废入库单
      * @param inboundOrderId 入库单编号
      */

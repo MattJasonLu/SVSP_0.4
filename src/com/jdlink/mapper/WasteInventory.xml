@@ -35,7 +35,7 @@
     </resultMap>
     <!--查询危废库存信息-->
     <select id="list" resultMap="WasteInventoryRM">
-        select * from t_pl_wasteinventory  where boundType='WasteInbound' order  by nowTime desc
+        select * from t_pl_wasteinventory  where boundType='WasteInbound' and  actualCount>0 order  by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -266,6 +266,6 @@
     </select>
     <!--寻找最新的入库日期-->
      <select id="getNewestInBoundDate" resultType="Date">
-         select  inboundDate from t_pl_wasteinventory order  by inboundDate;
+         select  inboundDate from t_pl_wasteinventory  where  inboundDate is not null  order  by inboundDate;
      </select>
 </mapper>

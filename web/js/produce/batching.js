@@ -125,14 +125,15 @@ function switchPage(pageNumber) {
             }
         });
     }
-    if (isSearch) { //查询用的
+    if (isSearch) {//查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
-        for(var i=page.start;i<=page.start+page.count-1;i++){
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
-            isSearch=true;
         }
     }
 }
@@ -191,16 +192,16 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        }  if (isSearch) {
+        }  if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
-            for(var i=page.start;i<=page.start+page.count-1;i++){
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
-                isSearch=true;
             }
-
         }
     }
 }
@@ -235,16 +236,18 @@ function  batchingList() {
  * 重置搜索数据
  */
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     $("select[name='search-companyName']").selectpicker('val',' ');
-
-    batchingList();
+     $('#searchContentAdd').val('');
+     window.location.reload();
 
 
 }
 
 function resetList() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     $("select[name='search-companyName']").selectpicker('val',' ');
@@ -285,58 +288,7 @@ function setPageClone(result) {
 array=[];
 array1=[];
 function searchBatchOrder() {
-    // isSearch = true;
-    // var page = {};
-    // var pageNumber = 1;                       // 显示首页
-    // page.pageNumber = pageNumber;
-    // page.count = countValue();
-    // page.start = (pageNumber - 1) * page.count;
-    // // if ($("#senior").is(':visible')) {
-    // //     data1 = {
-    // //         laboratoryTest: {wastesName:$("#search-wastesName").val()},
-    // //         produceCompany:{companyName:$("#search-client").val()} ,
-    // //         createDate: $("#search-batchingDate").val(),
-    // //         page: page,
-    // //         processWay:$("#search-processWay").val(),
-    // //     };
-    // //     console.log(data1);
-    // // }
-    // // if (data1 == null) alert("请点击'查询设置'输入查询内容!");
-    // // else {
-    // //     $.ajax({
-    // //         type: "POST",                            // 方法类型
-    // //         url: "searchBatchOrder",                 // url
-    // //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-    // //         data: JSON.stringify(data1),
-    // //         dataType: "json",
-    // //         contentType: "application/json; charset=utf-8",
-    // //         success: function (result) {
-    // //             console.log(result);
-    // //             if (result.data != undefined || result.status == "success") {
-    // //                  console.log(result);
-    // //                 setPageClone(result);
-    // //             } else {
-    // //                 alert(result.message);
-    // //             }
-    // //         },
-    // //         error: function (result) {
-    // //             console.log(result);
-    // //             alert("服务器错误！");
-    // //         }
-    // //     });
-    // // }
-    // $('.myclass').each(function () {
-    //     $(this).show();
-    // });
-    // var batchingDate= $('#search-batchingDate').val()+"";//创建日期
-    // var processWay=$("#search-processWay option:selected").text();
-    // console.log(batchingDate+"=="+processWay);
-    // $('.myclass').each(function () {
-    //     if(!($(this).children('td').eq(9).text().indexOf(batchingDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1)){
-    //         $(this).hide();
-    //     }
-    // });
-    //1分页模糊查询
+   isSearch=false;
     array.length=0;//清空数组
     array1.length=0;
     $('.myclass').each(function () {
@@ -346,6 +298,7 @@ function searchBatchOrder() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    var text=$('#searchContent').val();
     //创建日期
     var createDate=$("#search-batchingDate").val();
     //处理类别
@@ -354,17 +307,17 @@ function searchBatchOrder() {
     var wastesName=$("#search-wastesName").val();
     //产废单位
     var companyName=$('#search-client').val();
-  console.log(processWay);
+    console.log(processWay);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
             if(!($(this).children('td').eq(9).text().indexOf(createDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(7).text().indexOf(companyName)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(7).text().indexOf(companyName)!=-1&&$(this).children('td').text().indexOf(text)!=-1
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(9).text().indexOf(createDate)!=-1&&$(this).children('td').eq(4).text().indexOf(processWay)!=-1
-                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(7).text().indexOf(companyName)!=-1)){
+                &&$(this).children('td').eq(3).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(7).text().indexOf(companyName)!=-1&&$(this).children('td').text().indexOf(text)!=-1)){
                 array1.push($(this));
             }
         });
@@ -684,10 +637,14 @@ function searchInventory() {
         language: 'zh_CN',
         size: 4
     });//下拉框样式
+
+
+
     $('.myclass').each(function () {
         $(this).show();
         array.push($(this));
     });
+    var text=$('#searchContentAdd').val();
 
     var inboundDate=$("#search-inboundDate").val();
 
@@ -700,12 +657,12 @@ function searchInventory() {
         $.each(array[j],function () {
             //console.log(this);
             if(!($(this).children('td').eq(2).text().indexOf(inboundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(2).text().indexOf(inboundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(hangdeCategory)!=-1
-                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1)){
+                &&$(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(wastesCode)!=-1&&$(this).children('td').text().indexOf(text)!=-1)){
                 array1.push($(this));
             }
         });
@@ -1333,7 +1290,10 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     });
 });
 
+//粗查询
 function searchBatchingList() {
+
+    isSearch=false;
 
     loadBatchingOrderList();
 
@@ -1411,7 +1371,7 @@ function searchBatchingList() {
     if(text.length<=0){
         loadBatchingOrderList();
     }
-    isSearch=false;
+
 }
 
 
@@ -1430,7 +1390,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 function searchBatchinAdd() {
     $('.myclass').each(function () {
         $(this).show();
-    });
+    })
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;

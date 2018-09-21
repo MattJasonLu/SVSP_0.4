@@ -167,17 +167,17 @@
         // });
         // var marker = new BMap.Marker(point,{icon:myIcon});
         map.addOverlay(marker);//向地图中添加标记点
-        marker.enableDragging();
+        marker.enableDragging();//允许标注拖拽功能
         marker.addEventListener("dragend",function (e) {
-            alert("当前位置: " + e.point.lng + "," + e.point.lat)
+            alert("当前位置: " + e.point.lng + "," + e.point.lat) //alert出当前拖拽位置的经纬度
         });
         var opts = {
             width : 250,       //信息框宽度
             height : 100,      //信息框高度
             title : "企业信息"   //信息框标题
         };
-        var infoWindow = new BMap.InfoWindow("北控安耐得环保科技发展常州有限公司(春江镇滨江经济开发区滨江三路1号)",opts);
-        map.openInfoWindow(infoWindow, map.getCenter());
+        var infoWindow = new BMap.InfoWindow("北控安耐得环保科技发展常州有限公司(春江镇滨江经济开发区滨江三路1号)",opts); //创建信息窗口对象
+        map.openInfoWindow(infoWindow, map.getCenter());                                                     //打开信息窗口
         //进入全景图标位置
         var stCtrl = new BMap.PanoramaControl();
         stCtrl.setOffset(new BMap.Size(20,20));

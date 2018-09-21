@@ -1,7 +1,8 @@
 /***次生库存脚本文件****/
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
-    $("#searchContent").val("");
+    $("#search").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     loadWasteInventoryList();
 }
@@ -130,16 +131,19 @@ function switchPage(pageNumber) {
                 console.log("error: " + result);
             }
         });
-    } if (isSearch) { //查询用的
+    }
+    if (isSearch) {//查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
-        for(var i=page.start;i<=page.start+page.count-1;i++){
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
-            isSearch=true;
         }
     }
+
 }
 
 /**
@@ -197,14 +201,16 @@ function inputSwitchPage()  {
                     console.log("error: " + result);
                 }
             });
-        } if (isSearch) { //查询用的
+        }
+        if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
-            for(var i=page.start;i<=page.start+page.count-1;i++){
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
-                isSearch=true;
             }
         }
     }
@@ -367,6 +373,8 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //实时筛选，不用点击按钮==>次生库存
 function search1(){
+    isSearch=false;
+
     loadWasteInventoryList();
 
     //1分页模糊查询
@@ -388,19 +396,19 @@ function search1(){
             if(!($(this).children('td').text().indexOf(text)!=-1)){
                 $(this).hide();
             }
-            if($(this).children('td').text().indexOf(text)==-1){
+            if($(this).children('td').text().indexOf(text)!=-1){
                 array1.push($(this));
             }
 
 
         });
     }
-
-    var total;
+      console.log(array1)
+      var total;
 
     if(array1.length%countValue()==0){
         total=array1.length/countValue()
-    }
+     }
 
     if(array1.length%countValue()>0){
         total=Math.ceil(array1.length/countValue());
@@ -432,7 +440,7 @@ function search1(){
     }
 
     for(var i=0;i<array1.length;i++){
-        $(array1[i]).hide();
+        (array1[i]).hide();
     }
 
     //首页展示
@@ -444,13 +452,13 @@ function search1(){
     if(text.length<=0){
         loadWasteInventoryList();
     }
-    isSearch=false;
+
 
 }
 
 //js版本的高级查询==>次生库存
 function searchSec() {
-
+   isSearch=false;
     $('.myclass').each(function () {
         $(this).show();
     });
@@ -463,6 +471,7 @@ function searchSec() {
         array.push($('.myclass'));
     }
     isSearch=true;
+    var text = $('#search').val();//获取文本框输入
     var  inDate=$('#search-inDate').val()+"";
     var  companyName=$('#search-client').val();
     var options=$("#search-type option:selected");
@@ -470,10 +479,13 @@ function searchSec() {
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
-            if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
+            if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+            &&$(this).children('td').text().indexOf(text)!=-1
+            )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1)){
+            if(($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&$(this).children('td').text().indexOf(text)!=-1)){
                array1.push($(this));
             }
         });

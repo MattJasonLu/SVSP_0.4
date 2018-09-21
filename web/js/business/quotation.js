@@ -24,7 +24,7 @@ function searchQuotation() {
                 name: $("#search-name").val(),//报价单名称
                 version: $("#search-version").val(),//版本号
                 checkState: $("#search-checkState").val(),//审核状态
-                page: page,
+                page: page
 
         };
         console.log(data);
