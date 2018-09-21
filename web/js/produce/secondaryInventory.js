@@ -1,7 +1,7 @@
 /***次生库存脚本文件****/
 function reset() {
     $("#senior").find("input").val("");
-    $("#searchContent").val("");
+    $("#search").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     loadWasteInventoryList();
 }
@@ -395,12 +395,12 @@ function search1(){
 
         });
     }
-
-    var total;
+      console.log(array1)
+      var total;
 
     if(array1.length%countValue()==0){
         total=array1.length/countValue()
-    }
+     }
 
     if(array1.length%countValue()>0){
         total=Math.ceil(array1.length/countValue());
@@ -444,13 +444,13 @@ function search1(){
     if(text.length<=0){
         loadWasteInventoryList();
     }
-    isSearch=false;
+
 
 }
 
 //js版本的高级查询==>次生库存
 function searchSec() {
-
+   isSearch=false;
     $('.myclass').each(function () {
         $(this).show();
     });

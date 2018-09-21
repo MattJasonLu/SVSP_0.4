@@ -671,6 +671,7 @@ array=[];
 array1=[];
 //领料单高级查询
 function searchMaterial() {
+    isSearch=false;
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
@@ -846,12 +847,13 @@ function searchMaterialRequisition() {
     if(text.length<=0){
         LoadMaterialRequisitionOrder();
     }
-    isSearch=false;
+
 
 }
 
 //重置
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#searchContent").val("");
   //  $("#senior").find("select").get(0).selectedIndex = -1;

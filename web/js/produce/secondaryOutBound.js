@@ -1187,6 +1187,7 @@ array=[];
 array1=[];
 //次生出库信息高级查询
 function searchSecOutbound() {
+    isSearch=false;
     //1分页模糊查询
     $('.myclass').each(function () {
         $(this).show();
@@ -1359,6 +1360,6 @@ function searchSecondaryOuntBound() {
     if(text.length<=0){
         onLoadSecondary();
     }
-    isSearch=false;
+
 
 }

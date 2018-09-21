@@ -3,6 +3,7 @@ var currentPage = 1;                          //当前页数
 var data;
 /**********************出库部分**********************/
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
@@ -898,6 +899,7 @@ array=[];//存放所有的tr
 array1=[];//存放目标的tr
 //危废出库查询
 function searchWasteOut() {
+    isSearch=false;
     //如果需要按日期范围查询 寻找最早的日期
     var date;
     $.ajax({
@@ -1110,7 +1112,7 @@ function searchOutBound() {
     if(text.length<=0){
         loadOutBoundList();
     }
-    isSearch=false;
+
 
 }
 

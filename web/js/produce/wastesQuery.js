@@ -2,6 +2,7 @@
  * 重置搜索数据
  */
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     loadWasteInventoryList();
@@ -397,6 +398,7 @@ array=[];
 array1=[];
 //危废库存查询功能
 function searchWastesInventory() {
+    isSearch=false;
     //如果需要按日期范围查询 寻找最早入库的日期
     var date;
     $.ajax({
@@ -606,7 +608,7 @@ function searchWastesInventory1() {
     if(text.length<=0){
         loadWasteInventoryList();
     }
-    isSearch=false;
+
 }
 
 //危废库存查看
