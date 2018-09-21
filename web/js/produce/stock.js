@@ -558,9 +558,8 @@ function searchStock1() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
-    isSearch=true;
+    isSearch = true;
     var text=$('#searchContent').val();
-
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);

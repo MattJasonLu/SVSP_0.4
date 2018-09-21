@@ -4,6 +4,7 @@ import com.jdlink.domain.Account.Authority;
 import com.jdlink.domain.Account.Function;
 import com.jdlink.domain.Account.Role;
 import com.jdlink.domain.LoginLog;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.User;
 import com.jdlink.mapper.UserMapper;
 import com.jdlink.service.UserService;
@@ -53,9 +54,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<LoginLog> getLogById(int id) {
-        return userMapper.getLogById(id);
+    public List<LoginLog> getLogById(int id,Page page) {
+        return userMapper.getLogById(id,page);
     }
+
+    @Override
+    public int totalLogRecord(int id){ return userMapper.totalLogRecord(id); }
 
     @Override
     public List<Role> listRole() {

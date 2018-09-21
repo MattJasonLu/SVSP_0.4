@@ -38,7 +38,6 @@
             <ul class="nav navbar-nav">
                 <li><a href="preprocessingManagement.html">首页</a></li>
                 <li class="active"><a href="pretreatmentList.html">预处理</a></li>
-                <li><a href="#">属性调整</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -133,8 +132,9 @@
                             aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
-                        <span class="input-group-btn">
+                <div class="input-group col-xs-4 pull-right" >
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch()">
+                    <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchPretreatment();"><span
                                     class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span> 查询</a>
@@ -155,7 +155,7 @@
                         <div class="form-group">
                             <label for="search-id" class="col-sm-4 control-label">预处理单号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-id" name="search-id" placeholder="">
+                                <input type="text" class="form-control" id="search-id" name="search-id" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
                         <div class="form-group">
                             <label for="search-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search-state" name="search-state">
+                                <select class="form-control" id="search-state" name="search-state" onchange="searchPretreatment()">
                                     <option value="0"></option>
                                 </select>
                             </div>
@@ -173,7 +173,7 @@
                         <div class="form-group">
                             <label for="search-creationDate" class="col-sm-4 control-label">创建日期</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-creationDate" name="search-creationDate" placeholder="">
+                                <input type="text" class="form-control" id="search-creationDate" name="search-creationDate" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                         <div class="form-group">
                             <label for="search-remarks" class="col-sm-4 control-label">备注</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-remarks" name="search-remarks" placeholder="">
+                                <input type="text" class="form-control" id="search-remarks" name="search-remarks" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -223,7 +223,7 @@
                         <td class="text-center">
                             <a href="#" title="查看" onclick="toView(this);"><span class="glyphicon glyphicon-search"
                                                                                  aria-hidden="true"></span></a>
-                            <a href="#" title="作废" onclick="invalid(this);"><span class="glyphicon glyphicon-pencil"
+                            <a href="#" title="作废" onclick="invalid(this);"><span class="glyphicon glyphicon-remove"
                                                                                   aria-hidden="true"></span></a>
                             <a href="#" title="属性调整" onclick="showAdjustModal(this);"><span
                                     class="glyphicon glyphicon-export"

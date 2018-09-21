@@ -502,10 +502,18 @@ function importExcel() {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchData();      //
+    }
+}
+
+/**
  * 查询功能
  */
 function searchData() {
-    console.log("search");
     isSearch = true;
     var page = {};
     var pageNumber = 1;                       // 显示首页
@@ -524,7 +532,7 @@ function searchData() {
         data1 = {
             date: $("#search-creationDate").val(),
             id: $("#search-Id").val(),
-            department: $("#search-department").val(),
+            companyName: $("#search-companyName").val(),
             state: state,
             page: page
         };

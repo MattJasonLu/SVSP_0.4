@@ -59,6 +59,19 @@ public class WayBill {
      */
     private List<WayBillItem> wayBillItemList;
 
+    /**
+     * 模糊查询关键字
+     */
+    public String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public String getId() {
         return id;
     }
