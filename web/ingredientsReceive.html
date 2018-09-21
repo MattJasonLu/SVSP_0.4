@@ -37,11 +37,11 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
-                        <li role="separator" class="divider"></li>
                         <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="ingredientsReceive.html">辅料/备件领用</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
                     </ul>
                 </li>
                 <li><a href="emergencyProcurement.html">应急采购</a></li>
@@ -138,8 +138,7 @@
                                                                      aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-md-4 pull-right" style="margin-right: 23px;">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
+                <div class="input-group col-md-3 pull-right">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchData();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
@@ -226,10 +225,10 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center">
-                            <a class="btn btn-primary btn-xs" title="查看" href="#"
+                            <a title="查看" href="#"
                                onclick="toView(this)"><span class="glyphicon glyphicon-search"
                                                                           aria-hidden="true"></span> </a>
-                            <a class="btn btn-primary btn-xs" title="作废" href="#" onclick="invalid(this)"><span
+                            <a title="作废" href="#" onclick="invalid(this)"><span
                                     class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
                         </td>
                     </tr>

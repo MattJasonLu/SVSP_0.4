@@ -16,7 +16,10 @@ function updateVersion(versionId) {
     if (isNaN(num)) return "V1.0";
     return "V" + num;
 }
-
+function reset() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+}
 /**
  * 通过字符串获取处置类别
  * @param handleCategory
@@ -195,4 +198,11 @@ function convertStrToWastesName(str) {
             break;
     }
     return name;
+}
+
+/**
+ * 重置页面功能
+ */
+function reset() {
+    window.location.reload();
 }

@@ -2,6 +2,7 @@
  * 次生入场分析日报
  * */
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     secondaryAnalysis();
@@ -34,28 +35,7 @@ function totalPage() {
             }
         });
     } else {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchSewageTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                    console.log("总记录数为:" + result);
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
+        totalRecord=array1.length;
     }
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -164,27 +144,17 @@ function switchPage(pageNumber) {
                 alert("服务器异常！")
             }
         });
-    } else {
-        data['page'] = page;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchSewage",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    // console.log(result);
-                    setSewageList(result.data);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
+    }
+    if (isSearch) {//查询用的
+        for(var i=0;i<array1.length;i++){
+            $(array1[i]).hide();
+        }
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
+            $('#tbody1').append(array1[i]);
+            $(array1[i]).show();
+        }
     }
 }
 
@@ -243,27 +213,17 @@ function inputSwitchPage()  {
                     console.log("error: " + result);
                 }
             });
-        } else {
-            data1['page'] = page;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchSewage",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data1),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        // console.log(result);
-                        setSewageList(result.data);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
+        }
+        if (isSearch) {//查询用的
+            for(var i=0;i<array1.length;i++){
+                $(array1[i]).hide();
+            }
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
+                $('#tbody1').append(array1[i]);
+                $(array1[i]).show();
+            }
         }
     }
 }
@@ -388,18 +348,23 @@ array=[];//存放所有的tr
 array1=[];//存放目标的tr
 //次生入场高级查询
 function searchSecInto() {
+    isSearch=false;
+
+    array.length=0;//清空数组
+
+    array1.length=0;
 
     $('.myclass').each(function () {
         $(this).show();
     });
-    array.length=0;//清空数组
-    array1.length=0;//清空数组
+
 
     //1分页模糊查询
-    for(var i=1;i<=totalPage();i++){
-        switchPage(parseInt(i))
+    for(var i=totalPage();i>0;i--){
+        switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    var text=$('#searchContent').val();
     //1收样日期
     var date=$('#search-sewageName').val();
     //2废物名称
@@ -411,29 +376,60 @@ function searchSecInto() {
         $.each(array[j],function () {
             //console.log(this);
             if(!($(this).children('td').eq(2).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
-                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1
+                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(2).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
-                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1)){
+                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1&&$(this).children('td').text().indexOf(text)!=-1)){
                 array1.push($(this));
             }
         });
     }
+    var total;
 
-    for(var i=0;i<array1.length;i++){
-        $.each(array1[i],function () {
-            $('#tbody1').append(this) ;
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+    $('.beforeClone').remove();
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
         });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    for(var i=0;i<array1.length;i++){
+        array1[i].hide();
     }
 
-    if(wastesName.length<=0&&remarks.length<=0&&date.length<0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
     }
+
+    isSearch=false;
+
+
 
 
 
@@ -454,17 +450,20 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchWastesAnalysis() {
-    switchPage(1);
+    isSearch=false;
+    secondaryAnalysis();
+    array.length=0;//清空数组
+    array1.length=0;
     $('.myclass').each(function () {
         $(this).show();
     });
     //1分页模糊查询
-    array.length=0;//清空数组
-    array1.length=0;
-    for(var i=1;i<=totalPage();i++){
+
+    for(var i=totalPage();i>0;i--){
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    isSearch=true;
     var text=$('#searchContent').val();
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -477,16 +476,56 @@ function searchWastesAnalysis() {
             }
         });
     }
-    for(var i=0;i<array1.length;i++){
-        $.each(array1[i],function () {
-            $('#tbody1').append(this) ;
+
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
         });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $(array1[i]).hide();
+    }
+
+    //首页展示
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
     }
 
     if(text.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
+        secondaryAnalysis();
     }
+
+
+
 }
