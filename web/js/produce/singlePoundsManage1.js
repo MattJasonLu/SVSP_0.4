@@ -559,6 +559,7 @@ function searchPounds() {
             wayBillDate: $("#search-wayBillDate").val,
             enterLicencePlate: $("#search-licencePlate").val(),
             driver: $("#search-driver").val(),
+            founder: $("search-founder").val(),
             state: state,
             page: page
         };

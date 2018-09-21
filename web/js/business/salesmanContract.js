@@ -514,12 +514,3 @@ function searchTest() {
         }
     }
 }
-
-/**
- * 搜素重置功能
- */
-function reset(){
-    $("#senior").find("input").val("");
-    $("#search-sex").get(0).selectedIndex = -1;
-    $("#searchContent").val("");
-}

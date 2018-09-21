@@ -34,7 +34,15 @@
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
-                or ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
             </if>
             <if test="id != null and id != ''">
@@ -44,8 +52,15 @@
                 and founder like "%"#{founder}"%"
             </if>
             <if test="advice != null and advice != ''">
-                and ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
-                      or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%")
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{advice}"%")
             </if>
             <if test="state != null and state != ''">
                 and state like "%"#{state}"%"
@@ -63,7 +78,15 @@
             <if test="keywords != null and keywords != ''">
                 or id like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
-                or ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
             </if>
             <if test="id != null and id != ''">
@@ -73,8 +96,15 @@
                 and founder like "%"#{founder}"%"
             </if>
             <if test="advice != null and advice != ''">
-                and ( DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%")
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{advice}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{advice}"%")
             </if>
             <if test="state != null and state != ''">
                 and state like "%"#{state}"%"

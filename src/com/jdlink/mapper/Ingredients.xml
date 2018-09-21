@@ -48,7 +48,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalPrice = #{keywords}
@@ -67,7 +74,14 @@
             <if test="date != null and date !=''">
                 <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
                 and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{date}"%")
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
@@ -86,7 +100,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalPrice = #{keywords}
@@ -105,7 +126,14 @@
             <if test="date != null and date !=''">
                 <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
                 and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{date}"%")
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
@@ -245,46 +273,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
-                or department like "%"#{keywords}"%"
-                or fileId like "%"#{keywords}"%"
-                or totalAmount = #{keywords}
-                or vicePresident like "%"#{keywords}"%"
-                or wareHouseSupervisor like "%"#{keywords}"%"
-                or keeper like "%"#{keywords}"%"
-                or pickingSupervisor like "%"#{keywords}"%"
-                or pickingMan like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
-            </if>
-            <if test="id != null and id != '' ">
-                and id like "%"#{id}"%"
-            </if>
-            <if test="state != null and state !=''">
-                and state like "%"#{state}"%"
-            </if>
-            <if test="date != null and date !=''">
-                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
-            </if>
-            <if test="department !=null and department !='' ">
-                and department like "%"#{department}"%"
-            </if>
-        </where>
-        order by nowTime desc
-        <if test="page != null and page.start != null and page.count != null and page.count != 0">
-            limit #{page.start}, #{page.count};
-        </if>
-    </select>
-
-    <select id="searchReceiveCount" parameterType="IngredientsReceive" resultType="int">
-        select count(*) from t_pr_ingredients_receive
-        <where>
-            <if test="keywords != null and keywords != ''">
-                or id like "%"#{keywords}"%"
-                or state like "%"#{keywords}"%"
-                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or department like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
@@ -304,7 +300,67 @@
             <if test="date != null and date !=''">
                 <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
                 and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{date}"%")
+            </if>
+            <if test="department !=null and department !='' ">
+                and department like "%"#{department}"%"
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <select id="searchReceiveCount" parameterType="IngredientsReceive" resultType="int">
+        select count(*) from t_pr_ingredients_receive
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
+                or department like "%"#{keywords}"%"
+                or fileId like "%"#{keywords}"%"
+                or totalAmount = #{keywords}
+                or vicePresident like "%"#{keywords}"%"
+                or wareHouseSupervisor like "%"#{keywords}"%"
+                or keeper like "%"#{keywords}"%"
+                or pickingSupervisor like "%"#{keywords}"%"
+                or pickingMan like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+            </if>
+            <if test="id != '' and id != null">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="state != null and state !=''">
+                and state like "%"#{state}"%"
+            </if>
+            <if test="date != null and date !=''">
+                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{date}"%")
             </if>
             <if test="department !=null and department !='' ">
                 and department like "%"#{department}"%"
@@ -458,7 +514,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
@@ -477,7 +540,14 @@
             <if test="date != null and date !=''">
                 <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
                 and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{date}"%")
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
@@ -496,7 +566,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
@@ -515,7 +592,14 @@
             <if test="date != null and date !=''">
                 <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
                 and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{date}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{date}"%")
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
