@@ -103,6 +103,18 @@ public class Pretreatment {
      * 出库单Id列表
      */
     private List<String> outBoundOrderIdList;
+    /**
+     * 查询关键字
+     */
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
 
     public List<String> getOutBoundOrderIdList() {
         return outBoundOrderIdList;

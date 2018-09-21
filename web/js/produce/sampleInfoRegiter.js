@@ -19,6 +19,7 @@ function countValue() {
  */
 function reset() {
     $("#senior").find("input").val("");
+    $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     if ($("#senior").find("input").checked == "checked") {
         $("#senior").find("input").removeAttr("checked")
@@ -191,15 +192,24 @@ function switchPage(pageNumber) {
     }
 }
 
+function enterSwitchPage(){
+    if(event.keyCode === 13){
+        inputSwitchPage();
+    }
+}
+
 /**
  * 输入页数跳转页面
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
     } else {
+        if(pageNumber > totalPage()){
+            alert("跳转页数超出总页数！");
+            pageNumber = 1;
+        }
         if (pageNumber == 1) {
             $("#previous").addClass("disabled");
             $("#firstPage").addClass("disabled");
@@ -221,6 +231,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        $("#current").find("a").text("当前页：" + pageNumber);
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -1028,6 +1039,15 @@ function updateAppointBySampleId() {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchSampleInfo();      //
+    }
+}
+
+/**
  * 查询功能
  */
 function searchSampleInfo() {
@@ -1046,6 +1066,7 @@ function searchSampleInfo() {
     if ($("#search-state").val() == 3) applyState = "Invalid";
     if ($("#senior").is(':visible')) {
         data = {
+            id : $("#search-id").val(),
             companyCode: $("#search-companyCode").val(),
             wastesCode: $("#search-wastesCode").val(),
             laboratorySigner: $("#search-signer").val(),
@@ -1065,10 +1086,12 @@ function searchSampleInfo() {
         console.log(data);
         // 模糊查询
     } else {
-        data = {
-            keyword: $("#searchContent").val(),
-            page: page
-        };
+
+        var keywords = $("#searchContent").val();
+        data={
+            page:page,
+            keywords: keywords
+        }
     }
     $.ajax({
         type: "POST",                            // 方法类型

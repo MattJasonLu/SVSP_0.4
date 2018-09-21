@@ -50,14 +50,32 @@
     <select id="search" parameterType="Pounds" resultMap="PoundsRM">
         select * from t_pr_pounds
         <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or transferId like "%"#{keywords}"%"
+                or deliveryCompanyId in (select clientId from client where companyName like
+                "%"#{keywords}"%")
+                or receiveCompanyId in (select clientId from client where companyName like
+                "%"#{keywords}"%")
+                or enterLicencePlate like "%"#{keywords}"%"
+                or founder like "%"#{keywords}"%"
+                or (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or goodsName like "%"#{keywords}"%"
+                or businessType like "%"#{keywords}"%"
+                or driver like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+            </if>
             <if test="transferId != null and transferId != ''">
-                and transferId = #{transferId}
+                and transferId like "%"#{transferId}"%"
             </if>
-            <if test="deliveryCompany.companyName !=null and deliveryCompany.companyName != ''">
-                and deliveryCompanyId in (select clientId from client where companyName like "%"#{deliveryCompany.companyName}"%")
+            <if test="deliveryCompany != null and deliveryCompany.companyName !=null and deliveryCompany.companyName != ''">
+                and deliveryCompanyId in (select clientId from client where companyName like
+                "%"#{deliveryCompany.companyName}"%")
             </if>
-            <if test="receiveCompany.companyName != null and receiveCompany.companyName != ''">
-                and receiveCompanyId in (select clientId from client where companyName like "%"#{receiveCompany.companyName}"%")
+            <if test="receiveCompany != null and receiveCompany.companyName != null and receiveCompany.companyName != ''">
+                and receiveCompanyId in (select clientId from client where companyName like
+                "%"#{receiveCompany.companyName}"%")
             </if>
             <if test="driver != null and driver != ''">
                 and driver like "%"#{driver}"%"
@@ -81,11 +99,32 @@
     <select id="searchCount" parameterType="Pounds" resultType="int">
         select count(*) from t_pr_pounds
         <where>
-            <if test="deliveryCompany.companyName !=null and deliveryCompany.companyName != ''">
-                and deliveryCompanyId in (select clientId from client where companyName like "%"#{deliveryCompany.companyName}"%")
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or transferId like "%"#{keywords}"%"
+                or deliveryCompanyId in (select clientId from client where companyName like
+                "%"#{keywords}"%")
+                or receiveCompanyId in (select clientId from client where companyName like
+                "%"#{keywords}"%")
+                or enterLicencePlate like "%"#{keywords}"%"
+                or founder like "%"#{keywords}"%"
+                or (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or goodsName like "%"#{keywords}"%"
+                or businessType like "%"#{keywords}"%"
+                or driver like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
             </if>
-            <if test="receiveCompany.companyName != null and receiveCompany.companyName != ''">
-                and receiveCompanyId in (select clientId from client where companyName like "%"#{receiveCompany.companyName}"%")
+            <if test="transferId != null and transferId != ''">
+                and transferId like "%"#{transferId}"%"
+            </if>
+            <if test="deliveryCompany != null and deliveryCompany.companyName !=null and deliveryCompany.companyName != ''">
+                and deliveryCompanyId in (select clientId from client where companyName like
+                "%"#{deliveryCompany.companyName}"%")
+            </if>
+            <if test="receiveCompany != null and receiveCompany.companyName != null and receiveCompany.companyName != ''">
+                and receiveCompanyId in (select clientId from client where companyName like
+                "%"#{receiveCompany.companyName}"%")
             </if>
             <if test="driver != null and driver != ''">
                 and driver like "%"#{driver}"%"

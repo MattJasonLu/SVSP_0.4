@@ -459,6 +459,16 @@ function importExcel() {
 function reset() {
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+    $("#searchContent").val("");
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch() {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchProductionPlan();      //
+    }
 }
 
 /**
@@ -472,43 +482,76 @@ function searchProductionPlan() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-state").val() == 0) state = "NewBuild";//新建
-    if ($("#search-state").val() == 1) state = "ToExamine";//待审批
-    if ($("#search-state").val() == 2) state = "Examining";//审批中
-    if ($("#search-state").val() == 3) state = "Approval";//审批通过
-    if ($("#search-state").val() == 4) state = "Backed";//驳回
-    if ($("#search-state").val() == 5) state = "Invalid";//驳回
+    if ($("#search-state").val() == 0) state = "NewBuild";    // 新建
+    if ($("#search-state").val() == 1) state = "ToExamine";  // 待审批
+    if ($("#search-state").val() == 2) state = "Examining";   // 审批中
+    if ($("#search-state").val() == 3) state = "Approval";   // 审批通过
+    if ($("#search-state").val() == 4) state = "Backed";    // 驳回
+    if ($("#search-state").val() == 5) state = "Invalid";    // 作废
     if ($("#senior").is(':visible')) {
         data = {
             id: $("#search-id").val(),
             founder: $("#search-founder").val(),
             advice: $("#search-creationDate").val(),
             state: state,
-            page:page
+            page: page
         };
-    }
-    console.log("搜索数据为：");
-    console.log(data);
-    $.ajax({
-        type: "POST",                            // 方法类型
-        url: "searchProductionPlan",                 // url
-        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            console.log(result);
-            if (result.data != undefined || result.status == "success") {
-                setPageClone(result.data);
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-            alert("请点击'查询设置'输入查询内容!");
+    } else {
+        var keywords = $("#searchContent").val();
+        switch (keywords) {
+            case("新建"):
+                keywords = "NewBuild";
+                break;
+            case("待审批"):
+                keywords = "ToExamine";
+                break;
+            case("审批中"):
+                keywords = "Examining";
+                break;
+            case("审批通过"):
+                keywords = "Approval";
+                break;
+            case("已驳回"):
+                keywords = "Backed";
+                break;
+            case("驳回"):
+                keywords = "Backed";
+                break;
+            case("已作废"):
+                keywords = "Invalid";
+                break;
+            case("作废"):
+                keywords = "Invalid";
+                break;
         }
-    });
+        data = {
+            page: page,
+            keywords: keywords
+        }
+    }
+    if (data == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchProductionPlan",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    setPageClone(result.data);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("请点击'查询设置'输入查询内容!");
+            }
+        });
+    }
 }
 
 /**
@@ -519,6 +562,7 @@ function searchProductionPlan() {
 function getProductionPlanId(item) {
     return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
+
 function getProductionPlanId1(item) {
     return item.firstElementChild.nextElementSibling.innerHTML;
 }
@@ -528,7 +572,7 @@ function getProductionPlanId1(item) {
  * @param item
  */
 function view(item) {
-    if(btn === 'click')productionPlanId = getProductionPlanId(item);
+    if (btn === 'click') productionPlanId = getProductionPlanId(item);
     else productionPlanId = getProductionPlanId1(item);
     $.ajax({
         type: "POST",                            // 方法类型
@@ -592,9 +636,9 @@ function view(item) {
  * 单击查看
  * @param item
  */
-function view1(item){
-   btn = 'click';
-   view(item);
+function view1(item) {
+    btn = 'click';
+    view(item);
 }
 
 /**
@@ -673,33 +717,33 @@ function edit(item) {
  * 提交功能
  */
 function submit(item) {
-        productionPlanId = getProductionPlanId(item);
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getProductionPlan",                 // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                id: productionPlanId
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.data != undefined || result.status == "success" || result.data != null) {
-                    var data = eval(result.data);
-                    if (data.state.name != '待审批') alert("请确认后再进行提交操作！");
-                    else {
-                        if(confirm("确定提交？")){
-                            submit1(productionPlanId);
-                        }
+    productionPlanId = getProductionPlanId(item);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getProductionPlan",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id: productionPlanId
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result.data != undefined || result.status == "success" || result.data != null) {
+                var data = eval(result.data);
+                if (data.state.name != '待审批') alert("请确认后再进行提交操作！");
+                else {
+                    if (confirm("确定提交？")) {
+                        submit1(productionPlanId);
                     }
-                } else {
-                    alert(result.message);
                 }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
+            } else {
+                alert(result.message);
             }
-        });
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
 }
 
 function submit1(id) {
@@ -843,7 +887,7 @@ function reject1() {
  * 作废功能
  */
 function invalid(item) {
-    if(confirm("确定作废？")) {
+    if (confirm("确定作废？")) {
         var id = getProductionPlanId(item);
         $.ajax({
             type: "POST",
@@ -874,7 +918,7 @@ function invalid(item) {
  * @param item
  */
 function delete1(item) {
-    if(confirm("确定删除？")) {
+    if (confirm("确定删除？")) {
         var id = getProductionPlanId(item);
         $.ajax({
             type: "POST",
@@ -906,7 +950,7 @@ function delete1(item) {
  */
 function confirm1(item) {
 
-    if(confirm("是否确认？")) {
+    if (confirm("是否确认？")) {
         var id = getProductionPlanId(item);
         $.ajax({
             type: "POST",
