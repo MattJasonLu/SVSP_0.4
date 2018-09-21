@@ -891,7 +891,7 @@ catch (Exception e){
     @ResponseBody
     public int totalBatchingRecord() {
         try {
-            return wasteInventoryService.total();
+            return wasteInventoryService.total1();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

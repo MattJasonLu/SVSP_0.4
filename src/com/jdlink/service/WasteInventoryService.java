@@ -29,4 +29,5 @@ public interface WasteInventoryService {
     int searchBatchingTotal(BatchingOrder batchingOrder);
     List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId);
     List<Date> getNewestInBoundDate();
+    int  total1();
 }

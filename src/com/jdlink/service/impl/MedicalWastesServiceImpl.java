@@ -52,4 +52,9 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     public List<MedicalWastes> getMedicalWastesBySimpleDateAndEquipment(Date date, String equipment) {
         return medicalWastesMapper.getMedicalWastesByDateAndEquipment(date,date,equipment);
     }
+
+    @Override
+    public int total() {
+        return medicalWastesMapper.total();
+    }
 }
