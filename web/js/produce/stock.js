@@ -142,7 +142,7 @@ function switchPage(pageNumber) {
     currentPage = pageNumber;          //当前页面
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
-    if (!isSearch) {
+    if (!isSearch) { //分页用的
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadPageStockList",         // url
@@ -164,7 +164,8 @@ function switchPage(pageNumber) {
                 // setClientList(result);
             }
         });
-    }  if (isSearch) {
+    }
+    if (isSearch) { //查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
@@ -173,7 +174,6 @@ function switchPage(pageNumber) {
            $(array1[i]).show();
            isSearch=true;
        }
-
     }
 }
 /**
@@ -220,29 +220,8 @@ function inputSwitchPage() {
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined) {
-                        console.log(result);
-                        setClientList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
-        } else {
-            data['page'] = page;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchStock",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
                         // console.log(result);
-                        setClientList(result.data);
+                        setStockList(result);
                     } else {
                         console.log("fail: " + result);
                         // setClientList(result);
@@ -253,6 +232,16 @@ function inputSwitchPage() {
                     // setClientList(result);
                 }
             });
+        }   if (isSearch) {
+            for(var i=0;i<array1.length;i++){
+                $(array1[i]).hide();
+            }
+            for(var i=page.start;i<=page.start+page.count-1;i++){
+                $('#tbody1').append(array1[i]);
+                $(array1[i]).show();
+                isSearch=true;
+            }
+
         }
     }
 }
@@ -506,11 +495,11 @@ function searchStock() {
         });
     }
 
-    for(var i=0;i<array1.length;i++){
-        $.each(array1[i],function () {
-            $('#tbody1').append(this) ;
-        });
-    }
+    // for(var i=0;i<array1.length;i++){
+    //     $.each(array1[i],function () {
+    //         $('#tbody1').append(this) ;
+    //     });
+    // }
 
     var total;
 
@@ -559,7 +548,7 @@ function searchStock() {
 
 }
 //粗查询
-var state;
+
 function searchStock1() {
     loadPageStocktList();
     //1分页模糊查询
@@ -583,10 +572,7 @@ function searchStock1() {
         });
     }
 
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i),state);
-        $('.myclass').remove();
-    }
+
     var total;
 
     if(array1.length%countValue()==0){
@@ -604,7 +590,9 @@ function searchStock1() {
     $("#totalPage").text("共" + total + "页");
 
     var myArray = new Array();
+
     $('.beforeClone').remove();
+
     for ( i = 0; i < total; i++) {
         var li = $("#next").prev();
         myArray[i] = i+1;
@@ -621,9 +609,10 @@ function searchStock1() {
     }
 
     for(var i=0;i<array1.length;i++){
-        array1[i].hide();
+        $(array1[i]).hide();
     }
 
+    //首页展示
     for(var i=0;i<countValue();i++){
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));

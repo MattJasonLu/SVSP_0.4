@@ -497,7 +497,9 @@ function reset() {
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     $("#searchContent").val("");
+
 }
+
 
 /**
  * 回车查询
@@ -507,6 +509,12 @@ function enterSearch(){
         searchWayBill();      //
     }
 }
+
+$("#senior").find("input").keydown(function (event) {
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchWayBill();      //
+    }
+});
 
 /**
  * 查询功能
