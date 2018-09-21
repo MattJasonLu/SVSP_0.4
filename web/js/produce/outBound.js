@@ -41,28 +41,8 @@ function totalPage() {
                 totalRecord = 0;
             }
         });
-    } else {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchOutBoundTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                // console.log(result);
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
+    }else {
+        totalRecord=array1.length;
     }
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
@@ -174,29 +154,15 @@ function switchPage(pageNumber) {
                 // setClientList(result);
             }
         });
-    } else {
-        data['page'] = page;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchClient",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    // console.log(result);
-                    setClientList(result.data);
-                } else {
-                    console.log("fail: " + result);
-                    // setClientList(result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                // setClientList(result);
-            }
-        });
+    } if (isSearch) { //查询用的
+        for(var i=0;i<array1.length;i++){
+            $(array1[i]).hide();
+        }
+        for(var i=page.start;i<=page.start+page.count-1;i++){
+            $('#tbody1').append(array1[i]);
+            $(array1[i]).show();
+            isSearch=true;
+        }
     }
 }
 
@@ -254,29 +220,15 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        } else {
-            data['page'] = page;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchStock",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        // console.log(result);
-                        setClientList(result.data);
-                    } else {
-                        console.log("fail: " + result);
-                        // setClientList(result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                    // setClientList(result);
-                }
-            });
+        } if (isSearch) { //查询用的
+            for(var i=0;i<array1.length;i++){
+                $(array1[i]).hide();
+            }
+            for(var i=page.start;i<=page.start+page.count-1;i++){
+                $('#tbody1').append(array1[i]);
+                $(array1[i]).show();
+                isSearch=true;
+            }
         }
     }
 }
@@ -976,10 +928,11 @@ function searchWasteOut() {
     array.length=0;//清空数组
     array1.length=0;//清空数组
     //1分页模糊查询
-    for(var i=1;i<=totalPage();i++){
-        switchPage(parseInt(i))
+    for(var i=totalPage();i>0;i--){
+        switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    isSearch=true;
 // console.log(array);
 //1出库日期
     var outBoundDate=$('#search-storageDate').val()+"";
@@ -1019,11 +972,48 @@ function searchWasteOut() {
         });
     }
 
-    for(var i=0;i<array1.length;i++){
-        $.each(array1[i],function () {
-            $('#tbody1').append(this) ;
-        });
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
     }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+    $('.beforeClone').remove();
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    for(var i=0;i<array1.length;i++){
+        array1[i].hide();
+    }
+
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+    isSearch=false;
 
     // if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<0&&outboundOrderId.length<0){
     //     switchPage(1);
@@ -1032,6 +1022,95 @@ function searchWasteOut() {
     //     })
     // }
 
+
+}
+//危废出库粗查询
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchOutBound();
+            }
+        },400);
+    });
+});
+
+//粗查询
+function searchOutBound() {
+    loadOutBoundList();
+
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    for(var i=totalPage();i>0;i--){
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+    isSearch=true;
+    var text=$('#searchContent').val();
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $(array1[i]).hide();
+    }
+
+    //首页展示
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+    if(text.length<=0){
+        loadOutBoundList();
+    }
+    isSearch=false;
 
 }
 

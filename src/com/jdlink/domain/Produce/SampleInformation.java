@@ -30,8 +30,7 @@ public class SampleInformation {
     /**
      *查询关键字
      */
-    private String keyword;
-
+    private String keywords;
     /**
      * 危废名称
      */
@@ -211,12 +210,12 @@ public class SampleInformation {
         this.page = page;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getKeywords() {
+        return keywords;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     public Date getSamplingDate() {
@@ -235,8 +234,9 @@ public class SampleInformation {
                 ", wastesCode='" + wastesCode + '\'' +
                 ", laboratorySigner='" + laboratorySigner + '\'' +
                 ", applyState=" + applyState +
-                ", keyword='" + keyword + '\'' +
+                ", keywords='" + keywords + '\'' +
                 ", wastesName='" + wastesName + '\'' +
+                ", samplingDate=" + samplingDate +
                 ", wastesList=" + wastesList +
                 ", isPH=" + isPH +
                 ", isAsh=" + isAsh +

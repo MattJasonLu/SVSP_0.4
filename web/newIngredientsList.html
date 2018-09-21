@@ -118,7 +118,8 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6"></div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right" style="margin-right: -151px;">
+                    <div class="input-group col-md-3 pull-right" >
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContentAdd">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchInventory();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -351,6 +352,7 @@
                         <th class="text-center">产废类别</th>
                         <th class="text-center">进料方式</th>
                         <th class="text-center">数量</th>
+                        <th class="text-center">剩余数量</th>
                         <th class="text-center">备注</th>
                         <th class="text-center hidden"></th>
                     </tr>
@@ -368,6 +370,7 @@
                         <td class="text-right modal-packingType" name="123">
                             <input type='text' style='width: 100px;'  name='count' value="" id='input1' onchange='subtraction(this);'>
                         </td>
+                        <td class="text-right modal-packingType"></td>
                         <td class="text-right modal-packingType"></td>
                         <td class="text-right modal-packingType hidden"></td>
                     </tr>

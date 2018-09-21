@@ -492,3 +492,56 @@ function getIngredientsList() {
         }
     });
 }
+
+
+//粗查询
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchWastesAnalysis();
+            }
+        },400);
+    });
+});
+
+//粗查询
+function searchWastesAnalysis() {
+    switchPage(1);
+    $('.myclass').each(function () {
+        $(this).show();
+    });
+    //1分页模糊查询
+    array.length=0;//清空数组
+    array1.length=0;
+    for(var i=1;i<=totalPage();i++){
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+    var text=$('#searchContent').val();
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+    for(var i=0;i<array1.length;i++){
+        $.each(array1[i],function () {
+            $('#tbody1').append(this) ;
+        });
+    }
+
+    if(text.length<=0){
+        switchPage(1);
+        $('.myclass').each(function () {
+            $(this).show();
+        })
+    }
+}

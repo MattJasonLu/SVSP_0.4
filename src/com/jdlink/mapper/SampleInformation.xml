@@ -90,24 +90,30 @@
     <select id="searchCount" parameterType="SampleInformation" resultType="int">
         SELECT COUNT(*) FROM t_pr_sampleinformation
         <where>
-            <if test="keyword != null and keyword != ''">
-                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like
-                "%"#{keyword}"%"
+            <if test="keywords != null and keywords != ''">
+                or companyCode LIKE "%"#{keywords}"%"
+                or wastesCode like "%"#{keywords}"%"
+                or laboratorySigner like "%"#{keywords}"%"
+                or (DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(samplingDate,'%Y%m%d') like "%"#{keywords}"%")
+                or id like "%"#{keywords}"%"
             </if>
-            <if test='keyword == "已"'>
+            <if test='keywords == "已"'>
                 or applyState = 'SampleTaked' or applyState = 'Appointed'
             </if>
-            <if test='keyword == "预约"'>
+            <if test='keywords == "预约"'>
                 or applyState = 'Appointed' or applyState = 'Canceld'
             </if>
-            <if test='keyword == "已取样" || keyword == "取样"'>
+            <if test='keywords == "已取样" or keywords == "取样"'>
                 or applyState = 'SampleTaked'
             </if>
-            <if test='keyword== "已预约"'>
+            <if test='keywords == "已预约"'>
                 or applyState = 'Appointed'
             </if>
-            <if test='keyword == "预约取消"'>
+            <if test='keywords == "预约取消"'>
                 or applyState = 'Canceld'
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
             </if>
             <if test='companyCode != null and companyCode != ""'>
                 and companyCode LIKE "%"#{companyCode}"%"
@@ -157,24 +163,30 @@
     <select id="search" parameterType="SampleInformation" resultType="SampleInformation">
         SELECT * FROM t_pr_sampleinformation
         <where>
-            <if test="keyword != null and keyword != ''">
-                and companyCode LIKE "%"#{keyword}"%" or wastesCode like "%"#{keyword}"%" or laboratorySigner like
-                "%"#{keyword}"%"
+            <if test="keywords != null and keywords != ''">
+                or companyCode LIKE "%"#{keywords}"%"
+                or wastesCode like "%"#{keywords}"%"
+                or laboratorySigner like "%"#{keywords}"%"
+                or (DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(samplingDate,'%Y%m%d') like "%"#{keywords}"%")
+                or id like "%"#{keywords}"%"
             </if>
-            <if test='keyword == "已"'>
+            <if test='keywords == "已"'>
                 or applyState = 'SampleTaked' or applyState = 'Appointed'
             </if>
-            <if test='keyword == "预约"'>
+            <if test='keywords == "预约"'>
                 or applyState = 'Appointed' or applyState = 'Canceld'
             </if>
-            <if test='keyword == "已取样" || keyword == "取样"'>
+            <if test='keywords == "已取样" or keywords == "取样"'>
                 or applyState = 'SampleTaked'
             </if>
-            <if test='keyword== "已预约"'>
+            <if test='keywords == "已预约"'>
                 or applyState = 'Appointed'
             </if>
-            <if test='keyword == "预约取消"'>
+            <if test='keywords == "预约取消"'>
                 or applyState = 'Canceld'
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
             </if>
             <if test='companyCode != null and companyCode != ""'>
                 and companyCode LIKE "%"#{companyCode}"%"

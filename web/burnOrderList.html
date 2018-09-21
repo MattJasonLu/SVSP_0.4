@@ -103,7 +103,8 @@
                                 aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
+                    <div class="input-group col-xs-4 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchBurnOrder();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
@@ -121,7 +122,7 @@
                             <div class="form-group">
                                 <label for="search-id" class="col-sm-4 control-label">焚烧工单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-id" name="search-id" placeholder="">
+                                    <input type="text" class="form-control" id="search-id" name="search-id" placeholder="" onkeydown="enterSearch()">
                                 </div>
                             </div>
                         </div>
@@ -129,7 +130,7 @@
                             <div class="form-group">
                                 <label for="search-state" class="col-sm-4 control-label">状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" id="search-state" name="search-state">
+                                    <select class="form-control" id="search-state" name="search-state" onchange="searchBurnOrder()">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -139,7 +140,7 @@
                             <div class="form-group">
                                 <label for="search-creationDate" class="col-sm-4 control-label">创建日期</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-creationDate" name="search-creationDate" placeholder="">
+                                    <input type="text" class="form-control" id="search-creationDate" name="search-creationDate" placeholder="" onkeydown="enterSearch()">
                                 </div>
                             </div>
                         </div>
@@ -147,7 +148,7 @@
                             <div class="form-group">
                                 <label for="search-remarks" class="col-sm-4 control-label">备注</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-remarks" name="search-remarks" placeholder="">
+                                    <input type="text" class="form-control" id="search-remarks" name="search-remarks" placeholder="" onkeydown="enterSearch()">
                                 </div>
                             </div>
                         </div>

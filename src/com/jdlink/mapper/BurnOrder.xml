@@ -64,6 +64,17 @@
     <select id="search" parameterType="BurnOrder" resultMap="BurnOrderRM">
         select * from t_pr_burnorder
         <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or weightTotal like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+                or bulkProportion like "%"#{keywords}"%"
+                or distillationProportion like "%"#{keywords}"%"
+                or wasteLiquidProportion like "%"#{keywords}"%"
+                or sludgeProportion like "%"#{keywords}"%"
+            </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
@@ -88,6 +99,17 @@
     <select id="searchCount" parameterType="BurnOrder" resultType="int">
         select count(*) from t_pr_burnorder
         <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+                or (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or weightTotal like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+                or bulkProportion like "%"#{keywords}"%"
+                or distillationProportion like "%"#{keywords}"%"
+                or wasteLiquidProportion like "%"#{keywords}"%"
+                or sludgeProportion like "%"#{keywords}"%"
+            </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>

@@ -166,8 +166,9 @@
                                                                        aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-xs-3 pull-right" style="margin-right: -151px;">
-                        <span class="input-group-btn">
+                <div class="input-group col-xs-4 pull-right" >
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
+                    <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchPounds();"><span
                                     class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span> 查询</a>
@@ -188,7 +189,7 @@
                             <label for="search-transferId" class="col-sm-4 control-label">转移联单号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-transferId"
-                                       name="search-transferId" placeholder="">
+                                       name="search-transferId" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -197,7 +198,7 @@
                             <label for="search-deliveryCompany" class="col-sm-4 control-label">发货单位</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-deliveryCompany"
-                                       name="search-deliveryCompany" placeholder="">
+                                       name="search-deliveryCompany" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -206,7 +207,7 @@
                             <label for="search-receiveCompany" class="col-sm-4 control-label">收货单位</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-receiveCompany"
-                                       name="search-receiveCompany" placeholder="">
+                                       name="search-receiveCompany" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -215,7 +216,7 @@
                             <label for="search-driver" class="col-sm-4 control-label">司机</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-driver" name="search-driver"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -226,7 +227,7 @@
                             <label for="search-goods" class="col-sm-4 control-label">货物名称</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-goods"
-                                       name="search-goods" placeholder="">
+                                       name="search-goods" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -235,7 +236,7 @@
                             <label for="search-licencePlate" class="col-sm-4 control-label">入厂车牌</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-licencePlate"
-                                       name="search-licencePlate" placeholder="">
+                                       name="search-licencePlate" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -244,7 +245,7 @@
                             <label for="search-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
                                 <select class="form-control" id="search-state" name="search-state"
-                                        placeholder=""></select>
+                                        placeholder="" onchange="searchPounds()"></select>
                                 <option value="0"></option>
                             </div>
                         </div>
