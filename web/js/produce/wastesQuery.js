@@ -541,7 +541,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 //粗查询
 function searchWastesInventory1() {
     isSearch=false;
-    loadWasteInventoryList();
+    //loadWasteInventoryList();
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;

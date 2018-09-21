@@ -118,7 +118,7 @@
                 <div class="input-group col-md-3"></div>
                 <!--查询框-->
                 <div class="input-group col-md-3 pull-right">
-                    <input type="text" class="form-control"  placeholder="搜索..." id="searchContent" name="searchContent">
+                    <input type="text" class="form-control"  placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchMedicalWastes();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -135,7 +135,7 @@
                         <div class="form-group">
                             <label for="search-dateTime" class="col-sm-4 control-label">登记日期</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-dateTime" name="search-dateTime" placeholder="">
+                                <input type="date" class="form-control" id="search-dateTime" name="search-dateTime" placeholder="">
                             </div>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
                 </div>
             </div>
         </div>
-        <div class="table">
+
             <table class="table table-striped table-hover table-condensed">
                 <thead>
                 <tr>
@@ -209,7 +209,7 @@
                     <th class="text-center">水分含量</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="tbody1">
                 <tr id="cloneTr" class="myclass">
                     <td class="text-center"></td>
                     <td class="text-center"></td>
@@ -228,7 +228,7 @@
                 </tr>
                 </tbody>
             </table>
-        </div>
+
         <!--分页1-->
         <nav aria-label="Page navigation" class="text-center">
             <ol class="pagination" style="width: 800px;">

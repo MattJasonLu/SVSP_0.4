@@ -5,6 +5,7 @@ var data;
 array=[];
 array1=[];
 /**********************客户部分**********************/
+
 /**
  * 返回count值
  * */
@@ -13,6 +14,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 //重置
 function reset() {
     isSearch = false;
@@ -21,6 +23,7 @@ function reset() {
     //$("#senior").find("select").get(0).selectedIndex = -1;
     loadMedicalWastesList();
 }
+
 /**
  * 计算总页数
  * */
@@ -53,6 +56,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -103,6 +107,7 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
+
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -140,7 +145,7 @@ function switchPage(pageNumber) {
     currentPage = pageNumber;          //当前页面
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
-    if (!isSearch) {
+    if (!isSearch) { //分页用的
         $.ajax({
             type: "POST",                       // 方法类型
             url: "loadMedicalWastesList",         // url
@@ -150,7 +155,7 @@ function switchPage(pageNumber) {
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    // console.log(result);
+                    console.log("走到这了！");
                     setMedicalWastesList(result);
                 } else {
                     console.log("fail: " + result);
@@ -174,7 +179,9 @@ function switchPage(pageNumber) {
             $(array1[i]).show();
         }
     }
+
 }
+
 
 /**
  * 输入页数跳转页面
@@ -220,18 +227,19 @@ function inputSwitchPage() {
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined) {
-                        console.log(result);
+                        // console.log(result);
                         setMedicalWastesList(result);
                     } else {
                         console.log("fail: " + result);
+                        // setClientList(result);
                     }
                 },
                 error: function (result) {
                     console.log("error: " + result);
+                    // setClientList(result);
                 }
             });
-        }
-        if (isSearch) {//查询用的
+        }   if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
@@ -246,7 +254,105 @@ function inputSwitchPage() {
 }
 
 
+//粗查询
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) {
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchMedicalWastes1();
+            }
+        },400);
+    });
+});
 
+//粗查询
+function searchMedicalWastes1() {
+    isSearch=false;
+
+    //loadMedicalWastesList();
+    //1分页模糊查询
+    array.length=0;//清空数组
+
+    array1.length=0;
+
+    for(var i=totalPage();i>0;i--){
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
+    }
+
+     console.log((array));
+    isSearch = true;
+
+    var text=$('#searchContent').val();
+    console.log(text);
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+
+    console.log(array1);
+    console.log("长度"+array1.length);
+
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+    for(var i=0;i<array1.length;i++){
+        (array1[i]).hide();
+    }
+
+    //首页展示
+        for(var i=0;i<countValue();i++){
+            $(array1[i]).show();
+            //$('#tbody1').append((array1[i]));
+        }
+
+
+    if(text.length<=0){
+        loadMedicalWastesList();
+    }
+
+}
 
 /**
  *医废出入库脚本文件
@@ -391,7 +497,6 @@ function loadMedicalWastesList() {
 function setMedicalWastesList(result) {
     var tr = $("#cloneTr");
     tr.siblings().remove();
-
     $.each(result.medicalWastesList, function (index, item) {
         var clonedTr = tr.clone();
         clonedTr.show();
@@ -459,14 +564,15 @@ function setMedicalWastesList(result) {
                     break;
             }
             clonedTr.removeAttr("id");
-            clonedTr.insertAfter(tr);
+            clonedTr.insertBefore(tr);
+            tr.removeAttr('class');
         });
         // 把克隆好的tr追加到原来的tr前面
 
     });
     // 隐藏无数据的tr
     tr.hide();
-    tr.removeAttr('class');
+
 }
 //高级查询
 function searchMedicalWastes() {
@@ -623,97 +729,3 @@ function getWaterByCooking() {
 
 }
 
-//粗查询
-$(document).ready(function () {//页面载入是就会进行加载里面的内容
-    var last;
-    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
-        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
-        setTimeout(function () {
-            if(last-event.timeStamp==0){
-                searchMedicalWastes1();
-            }
-        },400);
-    });
-});
-
-//粗查询
-function searchMedicalWastes1() {
-
-    isSearch=false;
-
-    loadMedicalWastesList();
-
-    //1分页模糊查询
-    array.length=0;//清空数组
-    array1.length=0;
-
-    for(var i=totalPage();i>0;i--){
-        switchPage(parseInt(i));
-        array.push($('.myclass'));
-    }
-    console.log(array);
-    isSearch = true;
-
-    var text=$('#searchContent').val();
-
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
-            //console.log(this);
-            if(($(this).children('td').text().indexOf(text)==-1)){
-                $(this).hide();
-            }
-            if($(this).children('td').text().indexOf(text)!=-1){
-                array1.push($(this));
-            }
-        });
-    }
-
-    var total;
-
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
-    }
-
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
-    }
-
-    if(array1.length/countValue()<1){
-        total=1;
-    }
-
-    $("#totalPage").text("共" + total + "页");
-
-    var myArray = new Array();
-
-    $('.beforeClone').remove();
-
-    for ( i = 0; i < total; i++) {
-        var li = $("#next").prev();
-        myArray[i] = i+1;
-        var clonedLi = li.clone();
-        clonedLi.show();
-        clonedLi.find('a:first-child').text(myArray[i]);
-        clonedLi.find('a:first-child').click(function () {
-            var num = $(this).text();
-            switchPage(num);
-        });
-        clonedLi.addClass("beforeClone");
-        clonedLi.removeAttr("id");
-        clonedLi.insertAfter(li);
-    }
-
-    for(var i=0;i<array1.length;i++){
-        $(array1[i]).hide();
-    }
-
-    //首页展示
-    for(var i=0;i<countValue();i++){
-        $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
-    }
-    if(text.length<=0){
-        loadMedicalWastesList();
-    }
-
-}

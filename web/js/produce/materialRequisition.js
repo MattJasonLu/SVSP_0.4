@@ -779,7 +779,7 @@ function searchMaterialRequisition() {
 
     isSearch=false;
 
-    LoadMaterialRequisitionOrder();
+    //LoadMaterialRequisitionOrder();
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
