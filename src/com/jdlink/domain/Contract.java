@@ -560,7 +560,9 @@ public class Contract implements Serializable {
         this.clientId = clientId;
     }
 
-
+    public float getOrder1() {
+        return order1;
+    }
 
     public void setOrder1(float order1) {
         this.order1 = order1;

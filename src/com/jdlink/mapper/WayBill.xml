@@ -73,6 +73,17 @@
     <select id="search" parameterType="WayBill" resultMap="WayBillRM">
         select * from t_pr_waybill
         <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or produceCompanyName like "%"#{keywords}"%"
+                or total like "%"#{keywords}"%"
+                or freight like "%"#{keywords}"%"
+                or founder like "%"#{keywords}"%"
+                or (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{keywords}"%")
+                or remarks like "%"#{keywords}"%"
+                or produceCompanyOperator like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+            </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
@@ -88,14 +99,15 @@
             <if test="founder !=null and founder !=''">
                 and founder like "%"#{founder}"%"
             </if>
-            <if test="wayBillDate !=null and wayBillDate !=''">
-                and wayBillDate like "%"#{wayBillDate}"%"
+            <if test="remarks !=null and remarks !=''">
+                and (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%")
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
             </if>
             <if test="state != null and state != ''">
-                and t_pr_waybill.state like "%"#{state}"%"
+                and t_pr_waybill.state = #{state}
             </if>
         </where>
         order by nowTime desc
@@ -107,6 +119,17 @@
     <select id="searchCount" parameterType="WayBill" resultType="int">
         select count(*) from t_pr_waybill
         <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or produceCompanyName like "%"#{keywords}"%"
+                or total like "%"#{keywords}"%"
+                or freight like "%"#{keywords}"%"
+                or founder like "%"#{keywords}"%"
+                or (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{keywords}"%")
+                or remarks like "%"#{keywords}"%"
+                or produceCompanyOperator like "%"#{keywords}"%"
+                or state like "%"#{keywords}"%"
+            </if>
             <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
@@ -122,14 +145,15 @@
             <if test="founder !=null and founder !=''">
                 and founder like "%"#{founder}"%"
             </if>
-            <if test="wayBillDate !=null and wayBillDate !=''">
-                and wayBillDate like "%"#{wayBillDate}"%"
+            <if test="remarks !=null and remarks !=''">
+                and (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{remarks}"%"
+                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%")
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
             </if>
             <if test="state != null and state != ''">
-                and t_pr_waybill.state like "%"#{state}"%"
+                and t_pr_waybill.state = #{state}
             </if>
         </where>
     </select>

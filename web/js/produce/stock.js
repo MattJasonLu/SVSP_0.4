@@ -19,6 +19,7 @@ function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+    loadPageStocktList();
 }
 /**
  * 计算总页数
@@ -486,6 +487,20 @@ array1=[];//存放目标的tr
 /**
  * 查找申报信息
  */
+
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp==0){
+                searchStock1();
+            }
+        },400);
+    });
+});
+
+//高级查询
 function searchStock() {
     // var page = {};
     // var pageNumber = 1;                       // 显示首页
@@ -573,12 +588,12 @@ function searchStock() {
         });
     }
 
-    if(checkState.length<=0&&phone.length<=0&&companyContact.length<0&&transport.length<0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(checkState.length<=0&&phone.length<=0&&companyContact.length<0&&transport.length<0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 
 
 }

@@ -209,7 +209,7 @@ public class PRWayBillController {
     public String getWayBillSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.ToExamine, CheckState.Examining, CheckState.Approval, CheckState.Backed};
+        CheckState[] states = new CheckState[]{CheckState.NewBuild, CheckState.ToExamine, CheckState.Examining, CheckState.Approval, CheckState.Backed,CheckState.Invalid};
         JSONArray stateList = JSONArray.fromArray(states);
         res.put("stateList", stateList);
         return res.toString();

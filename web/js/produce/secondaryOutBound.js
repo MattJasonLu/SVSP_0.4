@@ -5,6 +5,7 @@ function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+    onLoadSecondary();
 }
 var isSearch = false;
 var currentPage = 1;                          //当前页数
@@ -1269,10 +1270,10 @@ function searchSecOutbound() {
            $('#tbody1').append(this) ;
         });
     }
-    if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<=0&&outboundOrderId.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(outBoundDate.length<=0&&outBoundNumber.length<=0&&processWay.length<=0&&outboundOrderId.length<=0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 }

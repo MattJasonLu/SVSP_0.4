@@ -281,6 +281,17 @@ function reset() {
     $("#senior").find("input").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
     $("select[name='search-companyName']").selectpicker('val',' ');
+
+    batchingList();
+
+
+}
+
+function resetList() {
+    $("#senior").find("input").val("");
+    $("#senior").find("select").get(0).selectedIndex = -1;
+    $("select[name='search-companyName']").selectpicker('val',' ');
+    loadBatchingOrderList();
 }
 /**
  * 设置克隆页码
@@ -410,12 +421,12 @@ function searchBatchOrder() {
     }
 
 
-    if(createDate.length<=0&&wastesName.length<=0&&processWay.length<=0&&companyName.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(createDate.length<=0&&wastesName.length<=0&&processWay.length<=0&&companyName.length<=0){
+    //     switchPage(1);
+    //     $('.myclass').each(function () {
+    //         $(this).show();
+    //     })
+    // }
 
 
 }
@@ -685,7 +696,6 @@ function searchInventory() {
     var companyName=$("select[name='search-companyName']").selectpicker('val');
 
     var wastesCode=$("#search-wasteId").val();
-      console.log(inboundDate);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
@@ -706,13 +716,11 @@ function searchInventory() {
             $('#tbody1').append(this) ;
         });
     }
-
-    if(inboundDate.length<=0&&companyName.length<=0&&hangdeCategory.length<0&&transport.length<0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
-    }
+    // if(inboundDate.length<=0&&companyName.length<=0&&hangdeCategory.length<=0&&wastesCode.length<=0){
+    //     $('.myclass').each(function () {
+    //         $(this).attr('style','display: table-row');
+    //     })
+    // }
 
 }
 //数量加减
