@@ -37,11 +37,11 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">辅料/备件管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
-                        <li role="separator" class="divider"></li>
                         <li><a href="ingredientsIn.html">辅料/备件入库</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="ingredientsReceive.html">辅料/备件领用</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="ingredientsOut.html">辅料/备件出库</a></li>   <!--辅料领料单-->
                     </ul>
                 </li>
                 <li><a href="emergencyProcurement.html">应急采购</a></li>
@@ -127,15 +127,15 @@
             <h4 class="sub-header">辅料/备件出库单新增</h4>
         </div>
         <div class="row">
-            <div class="input-group col-xs-4 pull-right" style="margin-right: 32px;">
+            <div class="input-group col-md-3 pull-right">
                 <input type="text" class="form-control" placeholder="搜索..." id="searchContent1">
                 <span class="input-group-btn">
                             <a class="btn btn-default" onclick="search1();"><span
                                     class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior1').toggle();"><span
-                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
-                            <a class="btn btn-default" onclick="reset1();"><span class="glyphicon glyphicon-cog"
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
                                                                                  aria-hidden="true"></span> 重置</a>
                         </span>
             </div>

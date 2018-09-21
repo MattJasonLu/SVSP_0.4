@@ -132,14 +132,14 @@
                             aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-xs-4 pull-right" >
+                <div class="input-group col-md-3 pull-right" >
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch()">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchPretreatment();"><span
                                     class="glyphicon glyphicon-search"
                                     aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span
-                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
                                                                                 aria-hidden="true"></span> 重置</a>
                         </span>
@@ -173,7 +173,7 @@
                         <div class="form-group">
                             <label for="search-creationDate" class="col-sm-4 control-label">创建日期</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-creationDate" name="search-creationDate" placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-creationDate" name="search-creationDate" placeholder="20180101" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>

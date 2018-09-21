@@ -148,8 +148,8 @@
         </div>
         <!--查询框-->
         <div class="row">
-            <div class="input-group col-xs-4 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1">
+            <div class="input-group col-md-3 pull-right">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch()">
                 <span class="input-group-btn">
                     <a class="btn btn-default" onclick="search1();"><span class="glyphicon glyphicon-search"
                                                                           aria-hidden="true"></span> 查询</a>
@@ -167,7 +167,7 @@
                         <div class="form-group" style="margin-left: -10px;">
                             <label class="col-sm-4 control-label">业务员编号</label>
                             <div class="input-group date">
-                                <input type="text" id="search1-salesmanId"/>
+                                <input type="text" id="search1-salesmanId" onkeydown="enterSearch()"/>
                             </div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
                         <div class="form-group" style="margin-left: -10px;">
                             <label class="col-sm-4 control-label">业务员</label>
                             <div class="input-group date">
-                                <input type="text" id="search1-salesmanName"/>
+                                <input type="text" id="search1-salesmanName" onkeydown="enterSearch()"/>
                             </div>
                         </div>
                     </div>
@@ -183,7 +183,7 @@
                         <div class="form-group" style="margin-left: -10px;">
                             <label class="col-sm-4 control-label">接运单金额</label>
                             <div class="input-group date">
-                                <input type="text" id="search1-wayBillTotalPrice"/>
+                                <input type="text" id="search1-wayBillTotalPrice" onkeydown="enterSearch()"/>
                             </div>
                         </div>
                     </div>

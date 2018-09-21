@@ -158,8 +158,8 @@
                 <!--<a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                 <!--</div>-->
                 <!--查询框-->
-                <div class="input-group col-xs-4 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                <div class="input-group col-md-3 pull-right">
+                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search"
                                                                                      aria-hidden="true"></span> 查询</a>
@@ -180,7 +180,7 @@
                             <label for="search-salesmanName" class="col-sm-4 control-label">业务员</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-salesmanName"
-                                       name="search-salesmanName" placeholder="">
+                                       name="search-salesmanName" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
                             <label for="search-salesmanId" class="col-sm-4 control-label">业务员编号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-salesmanId" name="search-salesmanId"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -198,7 +198,7 @@
                             <label for="search-age" class="col-sm-4 control-label">年龄</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-age" name="search-age"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                         <div class="form-group">
                             <label for="search-sex" class="col-sm-4 control-label">性别</label>
                             <div class="col-xs-7">
-                                <select class="form-control" name="search-sex" id="search-sex" title="">
+                                <select class="form-control" name="search-sex" id="search-sex" title="" onchange="searchTest()">
                                     <option value="1">男</option>
                                     <option value="0">女</option>
                                 </select>

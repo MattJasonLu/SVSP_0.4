@@ -146,8 +146,8 @@
         <br>
         <!--查询框-->
         <div class="row">
-            <div class="input-group col-xs-4 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent2">
+            <div class="input-group col-md-3 pull-right">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent2" onkeydown="enterSearch1()">
                 <span class="input-group-btn">
                     <a class="btn btn-default" onclick="search2();"><span class="glyphicon glyphicon-search"
                                                                           aria-hidden="true"></span> 查询</a>
@@ -165,7 +165,7 @@
                         <div class="form-group" style="margin-left: -10px;">
                             <label class="col-sm-3 control-label">产废单位</label>
                             <div class="input-group date">
-                                <input type="text" id="search2-produceCompanyName"/>
+                                <input type="text" id="search2-produceCompanyName" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
                         <div class="form-group" style="margin-left: -10px;">
                             <label class="col-sm-3 control-label">到账日期</label>
                             <div class="input-group date">
-                                <input type="text" id="search2-accountDate"/>
+                                <input type="text" id="search2-accountDate" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
                         <div class="form-group" style="margin-left: -10px;">
                             <label class="col-sm-3 control-label">备注</label>
                             <div class="input-group date">
-                                <input type="text" id="search2-remarks"/>
+                                <input type="text" id="search2-remarks" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>

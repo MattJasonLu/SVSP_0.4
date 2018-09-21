@@ -19,7 +19,8 @@ function setYearListSelect() {
  * 搜索重置功能
  */
 function reset() {
-    $("#senior").find("input").val("");
+    // $("#senior").find("input").val("");
+    window.location.reload();
 }
 
 function selectedYear() {
@@ -164,8 +165,9 @@ function toView1(item) {
 
 //-----------------------业务员列表页面-----------------
 function reset1() {
-    $("#senior1").find("input").val("");
-    $("#searchContent1").val("");
+    // $("#senior1").find("input").val("");
+    // $("#searchContent1").val("");
+    window.location.reload();
 }
 
 function loadMonthSalesmanData() {
@@ -278,6 +280,15 @@ function toViewSalesman1(item) {
     location.href = "assessment2.html";
 }
 
+/**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        search1();      //
+    }
+}
+
 var array = [];//存放所有的tr
 var array1 = [];//存放目标的tr
 /**
@@ -349,8 +360,9 @@ function search1() {
 
 //---------------------------合同明细页面---------------
 function reset2() {
-    $("#senior2").find("input").val("");
-    $("#searchContent2").val("");
+    // $("#senior2").find("input").val("");
+    // $("#searchContent2").val("");
+    window.location.reload();
 }
 
 function loadContractListData() {
@@ -472,6 +484,15 @@ function toViewItems(item) {
 
 function toViewItems1(item) {
     salesmanId = getSalesmanId1(item);
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch1(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        search2();      //
+    }
 }
 
 /**
