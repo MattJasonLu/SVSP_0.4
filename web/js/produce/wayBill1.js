@@ -182,15 +182,6 @@ function switchPage(pageNumber) {
 }
 
 /**
- * 回车跳转
- */
-function enterSwitchPage(){
-    if(event.keyCode === 13){
-        inputSwitchPage();
-    }
-}
-
-/**
  * 输入页数跳转页面
  * */
 function inputSwitchPage() {
