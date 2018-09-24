@@ -131,7 +131,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">产生单位</label>
                         <div class="col-xs-7">
-                            <select id="produceCompany" name="produceCompany" class="form-control"></select>
+                            <select id="produceCompany" name="produceCompany" class="form-control" onchange="showProduceCompanyInfo($(this));"></select>
                             <!--<input type="text" class="form-control" placeholder="" name="produceCompanyName" id="produceCompanyName" value="测试生产单位">-->
                         </div>
                         <label class="col-sm-3 control-label">单位盖章</label>
@@ -157,7 +157,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">运输单位</label>
                         <div class="col-xs-9">
-                            <select id="transportCompany" name="transportCompany" class="form-control"></select>
+                            <select id="transportCompany" name="transportCompany" class="form-control" onchange="showTransportCompanyInfo($(this));"></select>
                             <!--<input type="text" class="form-control" placeholder="" name="transportCompanyName" id="transportCompanyName" value="测试运输单位">-->
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">接收单位</label>
                         <div class="col-xs-9">
-                            <select id="acceptCompany" name="acceptCompany" class="form-control"></select>
+                            <select id="acceptCompany" name="acceptCompany" class="form-control" onchange="showAcceptCompanyInfo($(this));"></select>
                             <!--<input type="text" class="form-control" placeholder="" name="acceptCompanyName" id="acceptCompanyName" value="常州北控安耐得有限公司">-->
                         </div>
                     </div>

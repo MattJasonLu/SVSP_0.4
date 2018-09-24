@@ -1027,3 +1027,91 @@ function viewData(e) {
 function getIdByMenu(e) {
     return e.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
+
+/**
+ * 显示生产单位的信息
+ */
+function showProduceCompanyInfo(e) {
+    var produceCompanyId = e.children('option:selected').val();//这就是selected的值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClient",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            id: produceCompanyId
+        },
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                $("#produceCompanyPhone").val(data.phone);
+                $("#produceCompanyLocation").val(data.location);
+                $("#produceCompanyPostcode").val(data.postCode);
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/**
+ * 显示运输单位的信息
+ */
+function showTransportCompanyInfo(e) {
+    var transportCompanyId = e.children('option:selected').val();//这就是selected的值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listSupplierById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            id: transportCompanyId
+        },
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                $("#transportCompanyPhone").val(data.phone);
+                $("#transportCompanyLocation").val(data.location);
+                $("#transportCompanyPostcode").val(data.postCode);
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/**
+ * 显示接受单位的信息
+ */
+function showAcceptCompanyInfo(e) {
+    var acceptCompanyId = e.children('option:selected').val();//这就是selected的值
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClient",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            id: acceptCompanyId
+        },
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                $("#acceptCompanyPhone").val(data.phone);
+                $("#acceptCompanyLocation").val(data.location);
+                $("#acceptCompanyPostcode").val(data.postCode);
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
