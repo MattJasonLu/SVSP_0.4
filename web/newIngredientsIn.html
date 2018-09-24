@@ -130,7 +130,7 @@
         <div class="row">
             <!--查询框-->
             <div class="input-group col-md-3 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch1()">
                 <span class="input-group-btn">
                             <a class="btn btn-default" onclick="search1();"><span
                                     class="glyphicon glyphicon-search"
@@ -152,7 +152,7 @@
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-receiptNumber"
                                        name="search1-receiptNumber"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
                         <div class="form-group">
                             <label for="search1-applyMouth" class="col-sm-4 control-label">申请月份</label>
                             <div class="col-xs-7">
-                                <select title="" class="months" id="search1-applyMouth">
+                                <select title="" class="months" id="search1-applyMouth" onchange="search1()">
                                     <option value="0"></option>
                                     <option value="1">1月</option>
                                     <option value="1">2月</option>
@@ -183,7 +183,7 @@
                             <label for="search1-suppliesCategory" class="col-sm-4 control-label">物资类别</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-suppliesCategory"
-                                       name="search1-suppliesCategory" placeholder="">
+                                       name="search1-suppliesCategory" placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                             <label for="search1-applyDepartment" class="col-sm-4 control-label">申请部门</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-applyDepartment"
-                                       name="search1-applyDepartment" placeholder="">
+                                       name="search1-applyDepartment" placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>

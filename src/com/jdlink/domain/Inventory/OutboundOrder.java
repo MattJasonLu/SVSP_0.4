@@ -75,6 +75,42 @@ public class OutboundOrder {
      * @return
      */
     private Equipment equipment;
+    /**
+     * 模糊查询关键字
+     */
+    private String keywords;
+    /**
+     * 日期查询 起始时间
+     */
+    private Date startDate;
+    /**
+     * 日期查询 终止时间
+     */
+    private Date endDate;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
     public Equipment getEquipment() {
         return equipment;

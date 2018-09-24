@@ -120,7 +120,7 @@
         <div class="row">
             <!--查询框-->
             <div class="input-group col-md-3 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearchItem();">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchOutBoundOrder();"><span
                                     class="glyphicon glyphicon-search"
@@ -136,80 +136,82 @@
         <div class="panel panel-default" id="senior1" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-wareHouseId" class="col-sm-4 control-label">仓库号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-wareHouseId"
-                                       name="search1-wareHouseId" placeholder="">
+                                       name="search1-wareHouseId" placeholder="" onkeydown="enterSearchItem();">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-departmentName" class="col-sm-4 control-label">部门</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-departmentName"
-                                       name="search1-departmentName" placeholder="">
+                                       name="search1-departmentName" placeholder="" onkeydown="enterSearchItem();">
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search1-outboundDate" class="col-sm-4 control-label">出库日期</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-outboundDate"
-                                       name="search1-outboundDate" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-outboundOrderId" class="col-sm-4 control-label">出库单号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-outboundOrderId"
-                                       name="search1-outboundOrderId" placeholder="">
+                                       name="search1-outboundOrderId" placeholder="" onkeydown="enterSearchItem();">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-recordState" class="col-sm-4 control-label">记录状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search1-recordState" name="search1-recordState">
+                                <select class="form-control" id="search1-recordState" name="search1-recordState" onchange="searchOutBoundOrder()">
                                     <option value="0"></option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-checkState" class="col-sm-4 control-label">单据状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search1-checkState" name="search1-checkState">
+                                <select class="form-control" id="search1-checkState" name="search1-checkState" onchange="searchOutBoundOrder()">
                                     <option value="0"></option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-transferDraftId" class="col-sm-4 control-label">转移联单号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-transferDraftId"
-                                       name="search1-transferDraftId" placeholder="">
+                                       name="search1-transferDraftId" placeholder="" onkeydown="enterSearchItem();">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-client" class="col-sm-4 control-label">产废单位</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-client" name="search1-client"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearchItem();">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">出库日期 </label>
+                            <div class="input-group">
+                                <input type="date" class="input-sm form-control" id="search1-startDate" title="" onkeydown="enterSearchItem()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="input-sm form-control" id="search1-endDate" title="" onkeydown="enterSearchItem()"/>
                             </div>
                         </div>
                     </div>

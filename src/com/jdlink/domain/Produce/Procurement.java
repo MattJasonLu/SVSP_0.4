@@ -24,7 +24,6 @@ public class Procurement {
      * 需求时间(应急同)
      */
     private Date demandTime;
-
     /**
      * 申请日期
      */

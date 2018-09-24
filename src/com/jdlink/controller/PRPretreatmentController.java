@@ -447,7 +447,7 @@ public class PRPretreatmentController {
     public String setOutBoundOrderSeniorSelectedList() {
         JSONObject res = new JSONObject();
         // 获取枚举
-        CheckState[] checkState = new CheckState[]{CheckState.NewBuild,CheckState.ToPick,CheckState.Picked,CheckState.Invalid};
+        CheckState[] checkState = new CheckState[]{CheckState.NewBuild,CheckState.ToPick,CheckState.Picked,CheckState.OutBounded,CheckState.Invalid,};
         JSONArray checkStateList = JSONArray.fromArray(checkState);
         RecordState[] recordState = new RecordState[]{RecordState.Delete, RecordState.Usable, RecordState.Disabled};
         JSONArray recordStateList = JSONArray.fromArray(recordState);

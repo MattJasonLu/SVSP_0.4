@@ -526,6 +526,7 @@ public class WasteInventoryController {
     public String loadOutBoundList(Page page){
         JSONObject res=new JSONObject();
        try {
+           page.setCount(0);
            List<OutboundOrder> outboundOrderList=outboundOrderService.loadOutBoundList(page);
            res.put("data",outboundOrderList);
            res.put("status", "success");

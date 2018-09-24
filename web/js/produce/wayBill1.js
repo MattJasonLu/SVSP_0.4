@@ -491,18 +491,6 @@ function importExcel() {
 }
 
 /**
- * 重置功能
- */
-function reset() {
-    // $("#senior").find("input").val("");
-    // $("#senior").find("select").get(0).selectedIndex = -1;
-    // $("#searchContent").val("");
-    window.location.reload();
-
-}
-
-
-/**
  * 回车查询
  */
 function enterSearch(){
@@ -511,11 +499,6 @@ function enterSearch(){
     }
 }
 
-$("#senior").find("input").keydown(function (event) {
-    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        searchWayBill();      //
-    }
-});
 
 /**
  * 查询功能
@@ -540,7 +523,8 @@ function searchWayBill() {
             total: $("#search-total").val(),
             freight: $("#search-freight").val(),
             founder: $("#search-founder").val(),
-            remarks: $("#search-wayBillDate").val(),                  // 代替wayBillDate 设置成字符型
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             produceCompanyOperator: $("#search-operator").val(),
             state: state,
             page: page
@@ -564,6 +548,8 @@ function searchWayBill() {
             keywords: keywords
         }
     }
+    console.log("data");
+    console.log(data);
     if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({

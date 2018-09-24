@@ -68,6 +68,31 @@ public class IngredientsReceive {
      */
      private String keywords;
 
+    /**
+     * 日期查询 起始时间
+     */
+    private Date startDate;
+    /**
+     * 日期查询 终止时间
+     */
+    private Date endDate;
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
     public String getId() {
         return id;
     }

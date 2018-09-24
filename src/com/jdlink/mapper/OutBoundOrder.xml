@@ -25,7 +25,7 @@
     <!--加载出库信息列表==>接口-->
     <select id="loadOutBoundList" resultMap="OutBoundRM">
      select  * from  t_pl_outboundorder  order  by nowTime desc
-        <if test="start != null and count != null">
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>
@@ -195,18 +195,43 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
         select * from t_pl_outboundorder where outboundOrderId = #{id};
     </select>
     <!--查找出库单-->
-    <select id="search" parameterType="OutBoundOrder" resultMap="OutBoundOrderList">
+    <select id="search" parameterType="OutBoundOrder" resultMap="OutBoundRM">
         select * from t_pl_outboundorder
         <where>
+            <if test="keywords != null and keywords != ''">
+                or outboundOrderId like "%"#{keywords}"%"
+                or departmentName like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(outboundDate,'%Y.%c.%e') like "%"#{keywords}"%"
+                or wareHouseId like "%"#{keywords}"%"
+                or recordState like "%"#{keywords}"%"
+                or checkState like "%"#{keywords}"%"
+                or transferDraftId like "%"#{keywords}"%"
+                or clientId in (select clientId from client where companyName like "%"#{keywords}"%")
+                or laboratoryTestId in (select laboratorytestnumber from t_pr_laboratorytest where wastesName=#{keywords})
+                or outboundNumber like "%"#{keywords}"%"
+                or remarks like "%"#{keywords}"%"
+                or processWay like "%"#{keywords}"%"
+                or handelCategory like "%"#{keywords}"%"
+            </if>
             <if test="outboundOrderId != null and outboundOrderId != ''">
                 and outboundOrderId like "%"#{outboundOrderId}"%"
             </if>
-            <if test="wareHouse.wareHouseId != null and wareHouse.wareHouseId != ''">
+            <if test="wareHouse != null and wareHouse.wareHouseId != null and wareHouse.wareHouseId != ''">
                 and wareHouseId like "%"#{wareHouse.wareHouseId}"%"
             </if>
-            <if test="auditor != null and auditor != ''">
-                and DATE_FORMAT(outboundDate,'%Y-%m-%d') like "%"#{auditor}"%"
-                or DATE_FORMAT(outboundDate,'%Y%m%d') like "%"#{auditor}"%"
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(outboundDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(outboundDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="departmentName != null and departmentName != ''">
                 and departmentName like "%"#{departmentName}"%"
@@ -220,10 +245,11 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
             <if test="transferDraftId != null and transferDraftId != ''">
                 and transferDraftId like "%"#{transferDraftId}"%"
             </if>
-            <if test="client.companyName != null and client.companyName != ''">
+            <if test="client != null and client.companyName != null and client.companyName != ''">
                 and clientId in (select clientId from client where companyName like "%"#{client.companyName}"%")
             </if>
         </where>
+        order  by nowTime desc
     </select>
 
 
