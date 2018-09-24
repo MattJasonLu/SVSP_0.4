@@ -456,19 +456,22 @@ function addData(state) {
     var data = {
         id: transferId,
         produceCompany: {
-            companyName: $("#produceCompany").text(),
+            clientId: $("#produceCompany").val(),
+            companyName: $("#produceCompany  option:selected").text(),
             phone: $("#produceCompanyPhone").val(),
             location: $("#produceCompanyLocation").val(),
             postCode: $("#produceCompanyPostcode").val()
         },
         transportCompany: {
-            companyName: $("#transportCompany").text(),
+            supplierId: $("#transportCompany").val(),
+            companyName: $("#transportCompany  option:selected").text(),
             phone: $("#transportCompanyPhone").val(),
             location: $("#transportCompanyLocation").val(),
             postCode: $("#transportCompanyPostcode").val()
         },
         acceptCompany: {
-            companyName: $("#acceptCompany").text(),
+            clientId: $("#acceptCompany").val(),
+            companyName: $("#acceptCompany  option:selected").text(),
             phone: $("#acceptCompanyPhone").val(),
             location: $("#acceptCompanyLocation").val(),
             postCode: $("#acceptCompanyPostcode").val()
@@ -477,10 +480,10 @@ function addData(state) {
             name: $("#wastesName").val(),
             prepareTransferCount: $("#wastesPrepareTransferCount").val(),
             wastesCharacter: $("#wastesCharacter").val(),
-            category: $("#wastesCategory").val(),
+            handleCategory: $("#wastesCategory").val(),
             transferCount: $("#wastesTransferCount").val(),
             formType: $("#wastesFormType").val(),
-            code: $("#wastesCode").val(),
+            wastesId: $('#wastesCode').selectpicker('val'),
             signCount: $("#wastesSignCount").val(),
             packageType: $("#wastesPackageType").val()
         },
@@ -551,47 +554,6 @@ function addData(state) {
         error: function (result) {
             console.log(result);
             alert("服务器异常!");
-        }
-    });
-}
-
-/**
- * 设置物质形态和包装方式的枚举信息
- */
-function getSelectedInfo() {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getFormTypeAndPackageType",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result !== undefined) {
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                var wastesFormType = $("#wastesFormType");
-                wastesFormType.children().remove();
-                $.each(data.formTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastesFormType.append(option);
-                });
-                wastesFormType.get(0).selectedIndex = -1;
-                var wastespackagetype = $("#wastesPackageType");
-                wastespackagetype.children().remove();
-                $.each(data.packageTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    wastespackagetype.append(option);
-                });
-                wastespackagetype.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
         }
     });
 }
@@ -807,6 +769,7 @@ function loadData() {
 }
 
 function getSelectedInfo() {
+    // 生产单位和接收单位的信息
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listClient",                  // url
@@ -843,6 +806,7 @@ function getSelectedInfo() {
             console.log("error: " + result);
         }
     });
+    // 运输单位的信息
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listSupplier",                  // url
@@ -867,6 +831,99 @@ function getSelectedInfo() {
         },
         error: function (result) {
             console.log("error: " + result);
+        }
+    });
+    // 设置物质形态和包装方式的枚举信息
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getFormTypeAndPackageType",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesFormType = $("#wastesFormType");
+                wastesFormType.children().remove();
+                $.each(data.formTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    wastesFormType.append(option);
+                });
+                wastesFormType.get(0).selectedIndex = -1;
+                var wastespackagetype = $("#wastesPackageType");
+                wastespackagetype.children().remove();
+                $.each(data.packageTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    wastespackagetype.append(option);
+                });
+                wastespackagetype.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 进料方式
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandleCategory",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var wastesCategory = $("#wastesCategory");
+                wastesCategory.children().remove();
+                $.each(data.handleCategoryList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    wastesCategory.append(option);
+                });
+                wastesCategory.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    // 八位码
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getWastesInfoList",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result.data);
+                // 各下拉框数据填充
+                var wastesInfoList = $("#wastesCode");
+                // 清空遗留元素
+                wastesInfoList.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.code);
+                    option.text(item.code);
+                    wastesInfoList.append(option);
+                });
+                $('.selectpicker').selectpicker('refresh');
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
         }
     });
 }

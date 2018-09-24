@@ -16,29 +16,30 @@
         <association property="wastes" column="wastesId" select="getWastes"/>
     </resultMap>
     <insert id="add" parameterType="TransferDraft" >
-        INSERT INTO t_pr_transferdraft (id, checkState, produceCompanyId, transportCompanyId, acceptCompanyId,
-        wastesId, outwardIsTransit, outwardIsUse, outwardIsDeal, outwardIsDispose, mainDangerComponent,
-        dangerCharacter, emergencyMeasure, emergencyEquipment, dispatcher, destination, transferTime,
-        firstCarrier, firstCarryTime, firstModel, firstBrand, firstTransportNumber, firstOrigin, firstStation,
-        firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel, secondBrand,
-        secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
-        acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn,
-        disposeIsLandFill, disposeIsOther, headSign, signDate, produceCompanyName, transportCompanyName, acceptCompanyName,
-        nowTime) VALUES (#{id}, #{checkState}, #{produceCompany.clientId}, #{transportCompany.supplierId},
-        #{acceptCompany.clientId}, #{wastes.id}, #{outwardIsTransit}, #{outwardIsUse},
-        #{outwardIsDeal}, #{outwardIsDispose}, #{mainDangerComponent}, #{dangerCharacter}, #{emergencyMeasure},
+        insert into t_pr_transferdraft (id, checkState, produceCompanyId, produceCompanyName, produceCompanyPhone,
+        produceCompanyLocation, produceCompanyPostcode, transportCompanyId, transportCompanyName, transportCompanyPhone,
+        transportCompanyLocation, transportCompanyPostcode, acceptCompanyId, acceptCompanyName, acceptCompanyPhone,
+        acceptCompanyLocation, acceptCompanyPostcode, wastesName, prepareTransferCount, wastesCharacter,
+        handleCategory, transferCount, formType, wastesCode, packageType, signCount, outwardIsTransit, outwardIsUse,
+        outwardIsDeal, outwardIsDispose, mainDangerComponent, dangerCharacter, emergencyMeasure, emergencyEquipment,
+        dispatcher, destination, transferTime, firstCarrier, firstCarryTime, firstModel, firstBrand, firstTransportNumber,
+        firstOrigin, firstStation, firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel,
+        secondBrand, secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
+        acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn, disposeIsLandFill,
+        disposeIsOther, headSign, signDate, nowTime) values (#{id}, #{checkState}, #{produceCompany.clientId},
+        #{produceCompany.companyName}, #{produceCompany.phone}, #{produceCompany.location}, #{produceCompany.postCode},
+        #{transportCompany.supplierId}, #{transportCompany.companyName}, #{transportCompany.phone},
+        #{transportCompany.location}, #{transportCompany.postCode}, #{acceptCompany.clientId}, #{acceptCompany.companyName},
+        #{acceptCompany.phone}, #{acceptCompany.location}, #{acceptCompany.postCode}, #{wastes.name},
+        #{wastes.prepareTransferCount}, #{wastes.wastesCharacter}, #{wastes.handleCategory}, #{wastes.transferCount},
+        #{wastes.formType}, #{wastes.wastesId}, #{wastes.packageType}, #{wastes.signCount}, #{outwardIsTransit},
+        #{outwardIsUse}, #{outwardIsDeal}, #{outwardIsDispose}, #{mainDangerComponent}, #{dangerCharacter}, #{emergencyMeasure},
         #{emergencyEquipment}, #{dispatcher}, #{destination}, #{transferTime}, #{firstCarrier},
         #{firstCarryTime}, #{firstModel}, #{firstBrand}, #{firstTransportNumber}, #{firstOrigin}, #{firstStation},
         #{firstDestination}, #{firstCarrierSign}, #{secondCarrier}, #{secondCarryTime}, #{secondModel}, #{secondBrand},
         #{secondTransportNumber}, #{secondOrigin}, #{secondStation}, #{secondDestination}, #{secondCarrierSign},
         #{acceptCompanyLicense}, #{recipient}, #{acceptDate}, #{disposeIsUse}, #{disposeIsStore}, #{disposeIsBurn},
-        #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, #{produceCompany.companyName},
-        #{transportCompany.companyName}, #{acceptCompany.companyName}, NOW());
-
-        INSERT INTO t_wastes (id, name, category, code, prepareTransferCount, transferCount, signCount, wastesCharacter,
-        formType, packageType) VALUES (#{wastes.id}, #{wastes.name}, #{wastes.category}, #{wastes.code},
-        #{wastes.prepareTransferCount}, #{wastes.transferCount}, #{wastes.signCount}, #{wastes.wastesCharacter},
-        #{wastes.formType}, #{wastes.packageType});
+        #{disposeIsLandFill}, #{disposeIsOther}, #{headSign}, #{signDate}, NOW());
     </insert>
 
     <select id="getById" parameterType="String" resultMap="TransferDraftRM">
@@ -58,26 +59,30 @@
         SELECT * FROM t_wastes WHERE id=#{wastesId};
     </select>
 
-    <update id="update" parameterType="TransferDraft" >
-        UPDATE t_pr_transferdraft SET produceCompanyId=#{produceCompany.clientId}, transportCompanyId=#{transportCompany.supplierId},
-        acceptCompanyId=#{acceptCompany.clientId}, outwardIsTransit=#{outwardIsTransit},
-        outwardIsUse=#{outwardIsUse}, outwardIsDeal=#{outwardIsDeal}, outwardIsDispose=#{outwardIsDispose},
-        mainDangerComponent=#{mainDangerComponent}, dangerCharacter=#{dangerCharacter}, emergencyMeasure=#{emergencyMeasure},
-        emergencyEquipment=#{emergencyEquipment}, dispatcher=#{dispatcher}, destination=#{destination},
-        transferTime=#{transferTime}, firstCarrier=#{firstCarrier}, firstCarryTime=#{firstCarryTime}, firstModel=#{firstModel}, firstBrand=#{firstBrand},
-        firstTransportNumber=#{firstTransportNumber}, firstOrigin=#{firstOrigin}, firstStation=#{firstStation},
-        firstDestination=#{firstDestination}, firstCarrierSign=#{firstCarrierSign}, secondCarrier=#{secondCarrier},
-        secondCarryTime=#{secondCarryTime}, secondModel=#{secondModel}, secondBrand=#{secondBrand}, secondTransportNumber=#{secondTransportNumber},
+    <update id="update" parameterType="TransferDraft">
+        update t_pr_transferdraft set produceCompanyId=#{produceCompany.clientId}, produceCompanyName=#{produceCompany.companyName},
+        produceCompanyPhone=#{produceCompany.phone}, produceCompanyLocation=#{produceCompany.location},
+        produceCompanyPostcode=#{produceCompany.postCode}, transportCompanyId=#{transportCompany.supplierId},
+        transportCompanyName=#{transportCompany.companyName}, transportCompanyPhone=#{transportCompany.phone},
+        transportCompanyLocation=#{transportCompany.location}, transportCompanyPostcode=#{transportCompany.postCode},
+        acceptCompanyId=#{acceptCompany.clientId}, acceptCompanyName=#{acceptCompany.companyName},
+        acceptCompanyPhone=#{acceptCompany.phone}, acceptCompanyLocation=#{acceptCompany.location},
+        acceptCompanyPostcode=#{acceptCompany.postCode}, wastesName=#{wastes.name}, prepareTransferCount=#{wastes.prepareTransferCount},
+        wastesCharacter=#{wastes.wastesCharacter}, handleCategory=#{wastes.handleCategory}, transferCount=#{wastes.transferCount},
+        formType=#{wastes.formType}, wastesCode=#{wastes.wastesId}, packageType=#{wastes.packageType}, signCount=#{wastes.signCount},
+        outwardIsTransit=#{outwardIsTransit}, outwardIsUse=#{outwardIsUse}, outwardIsDeal=#{outwardIsDeal},
+        outwardIsDispose=#{outwardIsDispose}, mainDangerComponent=#{mainDangerComponent}, dangerCharacter=#{dangerCharacter},
+        emergencyMeasure=#{emergencyMeasure}, emergencyEquipment=#{emergencyEquipment}, dispatcher=#{dispatcher},
+        destination=#{destination}, transferTime=#{transferTime}, firstCarrier=#{firstCarrier}, firstCarryTime=#{firstCarryTime},
+        firstModel=#{firstModel}, firstBrand=#{firstBrand}, firstTransportNumber=#{firstTransportNumber},
+        firstOrigin=#{firstOrigin}, firstStation=#{firstStation}, firstDestination=#{firstDestination},
+        firstCarrierSign=#{firstCarrierSign}, secondCarrier=#{secondCarrier}, secondCarryTime=#{secondCarryTime},
+        secondModel=#{secondModel}, secondBrand=#{secondBrand}, secondTransportNumber=#{secondTransportNumber},
         secondOrigin=#{secondOrigin}, secondStation=#{secondStation}, secondDestination=#{secondDestination},
         secondCarrierSign=#{secondCarrierSign}, acceptCompanyLicense=#{acceptCompanyLicense}, recipient=#{recipient},
         acceptDate=#{acceptDate}, disposeIsUse=#{disposeIsUse}, disposeIsStore=#{disposeIsStore}, disposeIsBurn=#{disposeIsBurn},
-        disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate},
-        produceCompanyName=#{produceCompany.companyName}, transportCompanyName=#{transportCompany.companyName},
-        acceptCompanyName=#{acceptCompany.companyName}, nowTime=NOW() WHERE id=#{id};
-
-        UPDATE t_wastes SET name=#{wastes.name}, category=#{wastes.category}, code=#{wastes.code}, prepareTransferCount=#{wastes.prepareTransferCount},
-        transferCount=#{wastes.transferCount}, signCount=#{wastes.signCount}, wastesCharacter=#{wastes.wastesCharacter}, formType=#{wastes.formType},
-        packageType=#{wastes.packageType} WHERE id=#{wastes.id};
+        disposeIsLandFill=#{disposeIsLandFill}, disposeIsOther=#{disposeIsOther}, headSign=#{headSign}, signDate=#{signDate}
+        where id=#{id};
     </update>
 
     <update id="setStateInvalid" parameterType="String">
