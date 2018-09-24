@@ -217,4 +217,34 @@ public class ProcurementController {
         return res.toString();
 
     }
+
+    /**
+     * 获取月季采购总数
+     */
+    @RequestMapping("totalMouthProcumentRecord")
+    @ResponseBody
+    public int totalMouthProcumentRecord(){
+        try {
+            return procurementService.totalMouth();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取应急采购总数
+     */
+    @RequestMapping("totalEmcRecord")
+    @ResponseBody
+    public int totalEmcRecord(){
+        try {
+            return procurementService.totalEmc();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
 }

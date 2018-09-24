@@ -100,4 +100,13 @@
     <update id="setProcurementListSubmit" parameterType="String">
         update t_pl_procurement set state='Submitted',nowTIme=NOW() where receiptNumber=#{receiptNumber};
     </update>
+
+    <!--获取月度采购总数-->
+    <select id="totalMouth" resultType="int">
+        select count(*) from  t_pl_procurement where procurementCategory='1';
+    </select>
+    <!--获取应急采购总数-->
+    <select id="totalEmc" resultType="int">
+        select count(*) from  t_pl_procurement where procurementCategory='';
+    </select>
 </mapper>

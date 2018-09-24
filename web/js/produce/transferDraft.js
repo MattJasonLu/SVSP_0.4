@@ -456,19 +456,19 @@ function addData(state) {
     var data = {
         id: transferId,
         produceCompany: {
-            companyName: $("#produceCompanyName").val(),
+            companyName: $("#produceCompany").text(),
             phone: $("#produceCompanyPhone").val(),
             location: $("#produceCompanyLocation").val(),
             postCode: $("#produceCompanyPostcode").val()
         },
         transportCompany: {
-            companyName: $("#transportCompanyName").val(),
+            companyName: $("#transportCompany").text(),
             phone: $("#transportCompanyPhone").val(),
             location: $("#transportCompanyLocation").val(),
             postCode: $("#transportCompanyPostcode").val()
         },
         acceptCompany: {
-            companyName: $("#acceptCompanyName").val(),
+            companyName: $("#acceptCompany").text(),
             phone: $("#acceptCompanyPhone").val(),
             location: $("#acceptCompanyLocation").val(),
             postCode: $("#acceptCompanyPostcode").val()
@@ -799,7 +799,76 @@ function loadData() {
                 alert("服务器异常");
             }
         });
+    } else {
+        // 设置三个单位的数据
+        getSelectedInfo();
     }
+
+}
+
+function getSelectedInfo() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listClient",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var produceCompany = $("#produceCompany");
+                produceCompany.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    produceCompany.append(option);
+                });
+                produceCompany.get(0).selectedIndex = -1;
+
+                var acceptCompany = $("#acceptCompany");
+                acceptCompany.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.clientId);
+                    option.text(item.companyName);
+                    acceptCompany.append(option);
+                });
+                acceptCompany.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listSupplier",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var transportCompany = $("#transportCompany");
+                transportCompany.children().remove();
+                $.each(data, function (index, item) {
+                    var option = $('<option />');
+                    option.val(item.supplierId);
+                    option.text(item.companyName);
+                    transportCompany.append(option);
+                });
+                transportCompany.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**

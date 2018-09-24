@@ -1,9 +1,247 @@
+
+var isSearch = false;
+var currentPage = 1;                          //当前页数
+var data;
+array=[];//存放所有的tr
+array1=[];//存放目标的tr
+
+function countValue() {
+    var mySelect = document.getElementById("count");
+    var index = mySelect.selectedIndex;
+    return mySelect.options[index].text;
+}
+
+/**
+ * 计算总页数
+ * */
+function totalPage() {
+    var totalRecord = 0;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalMouthProcumentRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    } else {
+        totalRecord=array1.length;
+    }
+    var count = countValue();                         // 可选
+    return loadPages(totalRecord, count);
+}
+
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        window.alert("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
+
+/**
+ * 克隆页码
+ * @param result
+ */
+function setPageClone(result) {
+    $(".beforeClone").remove();
+    setMonthProcurementList(result);
+    var total = totalPage();
+    $("#next").prev().hide();
+    var st = "共" + total + "页";
+    $("#totalPage").text(st);
+    var myArray = new Array();
+    for (var i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+}
+
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage(pageNumber) {
+
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) { //分页用的
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getProcurementList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setMonthProcurementList(result);
+                } else {
+                    console.log("fail: " + result);
+                    // setClientList(result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                // setClientList(result);
+            }
+        });
+    }
+    if (isSearch) {//查询用的
+        for(var i=0;i<array1.length;i++){
+            $(array1[i]).hide();
+        }
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
+            $('#tbody1').append(array1[i]);
+            $(array1[i]).show();
+        }
+    }
+
+}
+
+/**
+ * 输入页数跳转页面
+ * */
+function inputSwitchPage() {
+    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == null || pageNumber == undefined) {
+        window.alert("跳转页数不能为空！")
+    } else {
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        currentPage = pageNumber;
+        var page = {};
+        page.count = countValue();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getProcurementList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setMonthProcurementList(result);
+                    } else {
+                        console.log("fail: " + result);
+                        // setClientList(result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    // setClientList(result);
+                }
+            });
+        }   if (isSearch) {//查询用的
+            for(var i=0;i<array1.length;i++){
+                $(array1[i]).hide();
+            }
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
+                $('#tbody1').append(array1[i]);
+                $(array1[i]).show();
+            }
+        }
+    }
+}
+
+
 function reset() {
     $("#search-Id").val("");
     $("#search-wastesCode").val("");
     $("#search-wastesType").val("");
     $("#search-company").val("");
 }
+
+
+
 //全选复选框
 function allSelect() {
     var isChecked = $('#allSel').prop('checked');
@@ -130,6 +368,18 @@ function saveMonth() {
 }
 //加载月度采购申请表数据列表
 function getMontnProcurement() {
+    $("#current").find("a").text("当前页：1");
+    $("#previous").addClass("disabled");
+    $("#firstPage").addClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.count = countValue();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getProcurementList",          // url
@@ -140,7 +390,8 @@ function getMontnProcurement() {
             if (result != undefined && result.status == "success"){
                // console.log(result)
                 //设置月度采购申请表数据
-                setMonthProcurementList(result);
+                setPageClone(result);
+
             }
             else {
 
@@ -152,7 +403,7 @@ function getMontnProcurement() {
 
         }
     });
-
+    isSearch = false;
 }
 //设置月度采购申请表数据
 function setMonthProcurementList(result) {
@@ -509,18 +760,21 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchWastesAnalysis() {
-    switchPage(1);
-    $('.myclass').each(function () {
-        $(this).show();
-    });
+    isSearch=false;
+
+    //getMontnProcurement();
+
+
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
-    for(var i=1;i<=totalPage();i++){
+    for(var i=totalPage();i>0;i--){
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    isSearch = true;
     var text=$('#searchContent').val();
+
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
@@ -532,16 +786,54 @@ function searchWastesAnalysis() {
             }
         });
     }
-    for(var i=0;i<array1.length;i++){
-        $.each(array1[i],function () {
-            $('#tbody1').append(this) ;
+
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
         });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+    for(var i=0;i<array1.length;i++){
+        $(array1[i]).hide();
+    }
+
+    //首页展示
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
     }
 
     if(text.length<=0){
-        switchPage(1);
-        $('.myclass').each(function () {
-            $(this).show();
-        })
+        getMontnProcurement();
     }
+
 }

@@ -58,4 +58,14 @@ public class ProcurementServiceImpl implements ProcurementService {
     public void setProcurementListSubmit(String receiptNumber) {
         procurementMapper.setProcurementListSubmit(receiptNumber);
     }
+
+    @Override
+    public int totalMouth() {
+        return procurementMapper.totalMouth();
+    }
+
+    @Override
+    public int totalEmc() {
+        return procurementMapper.totalEmc();
+    }
 }

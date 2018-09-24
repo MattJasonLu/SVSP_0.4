@@ -509,7 +509,7 @@ function searchWastesAnalysis() {
 
     isSearch=false;
 
-    loadWasteIntoList();
+    //loadWasteIntoList();
 
     $('.myclass').each(function () {
         $(this).show();
