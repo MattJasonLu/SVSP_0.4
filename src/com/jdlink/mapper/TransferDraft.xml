@@ -10,9 +10,27 @@
         <result property="packageType" column="packageType" javaType="com.jdlink.domain.PackageType"/>
     </resultMap>
     <resultMap id="TransferDraftRM" type="TransferDraft" autoMapping="true">
-        <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
-        <association property="transportCompany" column="transportCompanyId" select="getTransportCompany"/>
-        <association property="acceptCompany" column="acceptCompanyId" select="getAcceptCompany"/>
+        <association property="produceCompany" javaType="com.jdlink.domain.Client">
+            <id column="produceCompanyId" property="clientId"/>
+            <result column="produceCompanyName" property="companyName"/>
+            <result column="produceCompanyPhone" property="phone"/>
+            <result column="produceCompanyLocation" property="location"/>
+            <result column="transportCompanyPostcode" property="postCode"/>
+        </association>
+        <association property="transportCompany" javaType="com.jdlink.domain.Supplier">
+            <id column="transportCompanyId" property="supplierId"/>
+            <result column="transportCompanyName" property="companyName"/>
+            <result column="transportCompanyPhone" property="phone"/>
+            <result column="transportCompanyLocation" property="location"/>
+            <result column="transportCompanyPostcode" property="postCode"/>
+        </association>
+        <association property="acceptCompany" javaType="com.jdlink.domain.Client">
+            <id column="acceptCompanyId" property="clientId"/>
+            <result column="acceptCompanyName" property="companyName"/>
+            <result column="acceptCompanyPhone" property="phone"/>
+            <result column="acceptCompanyLocation" property="location"/>
+            <result column="acceptCompanyPostcode" property="postCode"/>
+        </association>
         <association property="wastes" javaType="com.jdlink.domain.Wastes">
             <result column="wastesName" property="name"/>
             <result column="prepareTransferCount" property="prepareTransferCount"/>

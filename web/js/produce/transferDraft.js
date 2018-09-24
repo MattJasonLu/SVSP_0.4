@@ -679,23 +679,23 @@ function loadData() {
                 id: id
             },
             success: function (result) {
-                if (result !== undefined && result.status === "success") {
+                if (result != undefined && result.status == "success") {
                     console.log(result);
                     var data = eval(result.data);
                     if (data.produceCompany != null) {
-                        $("#produceCompanyName").val(data.produceCompany.companyName);
+                        $("#produceCompany").val(data.produceCompany.clientId);
                         $("#produceCompanyPhone").val(data.produceCompany.phone);
                         $("#produceCompanyLocation").val(data.produceCompany.location);
                         $("#produceCompanyPostcode").val(data.produceCompany.postCode);
                     }
                     if (data.transportCompany != null) {
-                        $("#transportCompanyName").val(data.transportCompany.companyName);
+                        $("#transportCompany").val(data.transportCompany.supplierId);
                         $("#transportCompanyPhone").val(data.transportCompany.phone);
                         $("#transportCompanyLocation").val(data.transportCompany.location);
                         $("#transportCompanyPostcode").val(data.transportCompany.postCode);
                     }
                     if (data.acceptCompany != null) {
-                        $("#acceptCompanyName").val(data.acceptCompany.companyName);
+                        $("#acceptCompany").val(data.acceptCompany.clientId);
                         $("#acceptCompanyPhone").val(data.acceptCompany.phone);
                         $("#acceptCompanyLocation").val(data.acceptCompany.location);
                         $("#acceptCompanyPostcode").val(data.acceptCompany.postCode);
@@ -704,9 +704,10 @@ function loadData() {
                         $("#wastesName").val(data.wastes.name);
                         $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount);
                         $("#wastesCharacter").val(data.wastes.wastesCharacter);
-                        $("#wastesCategory").val(data.wastes.category);
+                        if (data.wastes.handleCategory != null)
+                        $("#wastesCategory").val(data.wastes.handleCategory.index-1);
                         $("#wastesTransferCount").val(data.wastes.transferCount);
-                        $("#wastesCode").val(data.wastes.code);
+                        $("#wastesCode").val(data.wastes.wastesId);
                         $("#wastesSignCount").val(data.wastes.signCount);
                         if (data.wastes.formType != null)
                         $("#wastesFormType").val(data.wastes.formType.index-1);
