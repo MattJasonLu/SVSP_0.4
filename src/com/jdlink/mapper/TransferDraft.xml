@@ -13,7 +13,17 @@
         <association property="produceCompany" column="produceCompanyId" select="getProduceCompany"/>
         <association property="transportCompany" column="transportCompanyId" select="getTransportCompany"/>
         <association property="acceptCompany" column="acceptCompanyId" select="getAcceptCompany"/>
-        <association property="wastes" column="wastesId" select="getWastes"/>
+        <association property="wastes" javaType="com.jdlink.domain.Wastes">
+            <result column="wastesName" property="name"/>
+            <result column="prepareTransferCount" property="prepareTransferCount"/>
+            <result column="wastesCharacter" property="wastesCharacter"/>
+            <result column="handleCategory" property="handleCategory"/>
+            <result column="transferCount" property="transferCount"/>
+            <result column="formType" property="formType"/>
+            <result column="wastesCode" property="wastesId"/>
+            <result column="packageType" property="packageType"/>
+            <result column="signCount" property="signCount"/>
+        </association>
     </resultMap>
     <insert id="add" parameterType="TransferDraft" >
         insert into t_pr_transferdraft (id, checkState, produceCompanyId, produceCompanyName, produceCompanyPhone,
