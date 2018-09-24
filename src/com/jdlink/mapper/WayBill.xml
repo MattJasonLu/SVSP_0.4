@@ -107,16 +107,11 @@
             <if test="founder !=null and founder !=''">
                 and founder like "%"#{founder}"%"
             </if>
-            <if test="remarks !=null and remarks !=''">
-                and (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y-%c-%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y-%c-%e') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%c%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%c%e') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y.%m.%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y.%c.%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y.%c.%e') like "%"#{remarks}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(wayBillDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(wayBillDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
@@ -168,16 +163,11 @@
             <if test="founder !=null and founder !=''">
                 and founder like "%"#{founder}"%"
             </if>
-            <if test="remarks !=null and remarks !=''">
-                and (DATE_FORMAT(wayBillDate,'%Y-%m-%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y-%c-%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y-%c-%e') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%m%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%c%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y%c%e') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y.%m.%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y.%c.%d') like "%"#{remarks}"%"
-                or DATE_FORMAT(wayBillDate,'%Y.%c.%e') like "%"#{remarks}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(wayBillDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(wayBillDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="produceCompanyOperator != null and produceCompanyOperator != ''">
                 and produceCompanyOperator like "%"#{produceCompanyOperator}"%"
@@ -222,21 +212,22 @@
             receiveCompanyOperator=#{wayBillItem.receiveCompanyOperator},invoiceNumber=#{wayBillItem.invoiceNumber},
             invoiceDate=#{wayBillItem.invoiceDate},salesmanName=#{wayBillItem.salesmanName},
             receiveCompanyName=#{wayBillItem.receiveCompanyName},wastesId=#{wayBillItem.wastesId},
-            wastesCode =#{wayBillItem.wastesCode},wastesAmount=#{wayBillItem.wastesAmount},wastesName=#{wayBillItem.wastesName},
+            wastesCode
+            =#{wayBillItem.wastesCode},wastesAmount=#{wayBillItem.wastesAmount},wastesName=#{wayBillItem.wastesName},
             wastesPrice=#{wayBillItem.wastesPrice},wastesTotalPrice=#{wayBillItem.wastesTotalPrice}
             where wayBillId=#{id};
         </foreach>
     </update>
 
     <insert id="addItem" parameterType="WayBill">
-    <foreach collection="wayBillItemList" index="index" item="wayBillItem">
-        insert into t_pr_waybillitem
-        (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)
-        values
-        (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesmanName},#{wayBillItem.receiveCompanyName},#{wayBillItem.wastesId},
-        #{wayBillItem.wastesCode},#{wayBillItem.wastesPrice},#{wayBillItem.wastesName},#{wayBillItem.wastesAmount},#{wayBillItem.wastesTotalPrice});
-    </foreach>
-</insert>
+        <foreach collection="wayBillItemList" index="index" item="wayBillItem">
+            insert into t_pr_waybillitem
+            (itemId,wayBillId,receiveDate,receiveCompanyOperator,invoiceNumber,invoiceDate,salesmanName,receiveCompanyName,wastesId,wastesCode,wastesPrice,wastesName,wastesAmount,wastesTotalPrice)
+            values
+            (#{wayBillItem.itemId},#{wayBillItem.wayBillId},#{wayBillItem.receiveDate},#{wayBillItem.receiveCompanyOperator},#{wayBillItem.invoiceNumber},#{wayBillItem.invoiceDate},#{wayBillItem.salesmanName},#{wayBillItem.receiveCompanyName},#{wayBillItem.wastesId},
+            #{wayBillItem.wastesCode},#{wayBillItem.wastesPrice},#{wayBillItem.wastesName},#{wayBillItem.wastesAmount},#{wayBillItem.wastesTotalPrice});
+        </foreach>
+    </insert>
 
     <insert id="addWayBill" parameterType="WayBill">
         insert into t_pr_waybill

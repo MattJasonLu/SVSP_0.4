@@ -51,16 +51,11 @@
             <if test="founder !=null and founder != ''">
                 and founder like "%"#{founder}"%"
             </if>
-            <if test="advice != null and advice != ''">
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{advice}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="state != null and state != ''">
                 and state like "%"#{state}"%"
@@ -95,16 +90,11 @@
             <if test="founder !=null and founder != ''">
                 and founder like "%"#{founder}"%"
             </if>
-            <if test="advice != null and advice != ''">
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{advice}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{advice}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="state != null and state != ''">
                 and state like "%"#{state}"%"

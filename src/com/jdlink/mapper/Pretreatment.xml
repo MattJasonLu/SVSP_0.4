@@ -91,17 +91,11 @@
             <if test="state != null and state != ''">
                 and state = #{state}
             </if>
-            <if test="searchDate != null and searchDate !=''">
-                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{searchDate}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="remarks !=null and remarks !='' ">
                 and remarks like "%"#{remarks}"%"
@@ -143,17 +137,11 @@
             <if test="state != null and state != ''">
                 and state = #{state}
             </if>
-            <if test="searchDate != null and searchDate !=''">
-                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{searchDate}"%"
-                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{searchDate}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="remarks !=null and remarks !='' ">
                 and remarks like "%"#{remarks}"%"

@@ -1,9 +1,4 @@
 ///////////软水分析日报//
-function reset() {
-    // $("#senior").find("input").val("");
-    // $("#searchContent").val("");
-    window.location.reload();
-}
 
 var currentPage = 1;                          //当前页数
 var isSearch = false;
@@ -452,6 +447,15 @@ function importExcel() {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchSoftWater();      //
+    }
+}
+
+/**
  * 污水分析日报查询功能
  */
 function searchSoftWater() {
@@ -463,7 +467,8 @@ function searchSoftWater() {
     page.start = (pageNumber - 1) * page.count;
     if ($("#senior").is(':visible')) {
         data1 = {
-            date: $("#search-receiveDate").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             name: $("#search-softWaterName").val(),
             remarks: $("#search-remarks").val(),
             page: page

@@ -177,7 +177,6 @@ function switchPage(pageNumber) {
             $(array1[i]).show();
         }
     }
-
 }
 /**
  * 输入页数跳转页面

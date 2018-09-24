@@ -76,7 +76,14 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or name like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
                 or COD = #{keywords}
@@ -89,9 +96,11 @@
             <if test="name != null and name != ''">
                 and name like "%"#{name}"%"
             </if>
-            <if test="date != null and date != ''">
-                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="remarks != null and remarks != ''">
                 and remarks like "%"#{remarks}"%"
@@ -108,7 +117,14 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or name like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
                 or COD = #{keywords}
@@ -121,17 +137,16 @@
             <if test="name != null and name != ''">
                 and name like "%"#{name}"%"
             </if>
-            <if test="date != null and date != ''">
-                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="remarks != null and remarks != ''">
                 and remarks like "%"#{remarks}"%"
             </if>
         </where>
-        <if test="page.start != null and page.count != null">
-            limit #{page.start}, #{page.count}
-        </if>
     </select>
 
     <insert id="addSewage" parameterType="Sewage">
@@ -157,7 +172,14 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or name like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
                 or relativeAlkalinity = #{keywords}
@@ -170,9 +192,11 @@
             <if test="name != null and name != ''">
                 and name like "%"#{name}"%"
             </if>
-            <if test="date != null and date != ''">
-                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="remarks != null and remarks != ''">
                 and remarks like "%"#{remarks}"%"
@@ -189,7 +213,14 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(receiveDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or name like "%"#{keywords}"%"
                 or remarks like "%"#{keywords}"%"
                 or relativeAlkalinity = #{keywords}
@@ -202,17 +233,16 @@
             <if test="name != null and name != ''">
                 and name like "%"#{name}"%"
             </if>
-            <if test="date != null and date != ''">
-                and (DATE_FORMAT(receiveDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(receiveDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(receiveDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="remarks != null and remarks != ''">
                 and remarks like "%"#{remarks}"%"
             </if>
         </where>
-        <if test="page.start != null and page.count != null">
-            limit #{page.start}, #{page.count}
-        </if>
     </select>
 
     <insert id="addSoftWater" parameterType="SoftWater">

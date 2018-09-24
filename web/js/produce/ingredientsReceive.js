@@ -528,7 +528,8 @@ function searchData() {
     if ($("#searchContent").val() == "已出库" || $("#searchContent").val() == "出库") keywords = "OutBounded";
     if ($("#senior").is(':visible')) {
         data1 = {
-            date: $("#search-creationDate").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             id: $("#search-Id").val(),
             department: $("#search-department").val(),
             state: state,
@@ -719,10 +720,8 @@ function invalid(item) {
             dataType: "json",
             success: function (result) {
                 if (result.status == "success") {
-                    divFadeAlert();
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 1000);
+                    alert("作废成功！");
+                    window.location.reload();
                 } else {
                     alert(result.message);
                 }
@@ -1034,6 +1033,15 @@ function reset1() {
     // // $("#senior1").find("select").get(0).selectedIndex = -1;
     // $("#searchContent1").val("");
     window.location.reload();
+}
+
+/**
+ * 回车查询
+ */
+function enterSearch1(){
+    if(event.keyCode === 13){
+        search1();
+    }
 }
 
 /**
