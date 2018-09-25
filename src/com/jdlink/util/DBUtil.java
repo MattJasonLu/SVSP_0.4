@@ -70,7 +70,9 @@ public class DBUtil {
             int colnum = rsmd.getColumnCount();
             //设置表头信息
             for (int i = 1; i <= colnum; i++) {
-                String columnName = rsmd.getColumnName(i);
+             //   String columnName = rsmd.getColumnLabel(i);               // 获取数据库表头别名
+                String columnName = rsmd.getColumnName(i);                  // 获取数据库表头原名
+         //       System.out.println("别名：" + columnName);
                 // 单元格
                 org.apache.poi.ss.usermodel.Cell cell = row1.createCell(i - 1);
                 // 写入数据
@@ -78,6 +80,7 @@ public class DBUtil {
             }
             // 设置表格信息
             int idx = 1;
+            // 当下一行非空时执行操作
             while (rs.next()) {
                 // 行
                 Row row = sheet.createRow(idx++);
