@@ -293,8 +293,8 @@ $.ajax({
             </td>
         </tr>
         </tbody>
-    </table>
-        <table class="table table-bordered" style="width: 50%">
+        </table>
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <td colspan="13" class="text-center"><h3>报价单明细</h3></td>
@@ -323,10 +323,11 @@ $.ajax({
                 <td class="text-center"><input class="focus" title=""></td>
                 <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
                 <td class="text-center"><input class="focus" title=""readonly></td>
-                <td class="text-center"><select class="focus" title="" id="transportType" >
-                    <option value="0">0</option>
-                </select></td>
-
+                <td class="text-center">
+                    <select class="focus" title="" id="transportType" >
+                        <option value="0">0</option>
+                    </select>
+                </td>
             </tr>
             <tr id="plusBtn">
                 <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -341,25 +342,28 @@ $.ajax({
             </tr>
             </tbody>
         </table>
-        <div class="form-group">
-        <label class="col-sm-4 control-label">保存之后 </label>
-        <div class="col-xs-5 radio">
-            <label>
-                <input type="radio" name="addType" id="addType1" value="continue" checked>
-                继续添加
-            </label>
-            <label>
-                <input type="radio" name="addType" id="addType2" value="break">
-                返回列表
-            </label>
-        </div>
-    </div>
-        <div class="row text-center">
-                <a class="btn btn-success" onclick="contractWastesSave()">保存</a>
-                <a class="btn btn-primary" onclick="contractWastesSubmit()">提交</a>
-                <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
+        <div class="row">
+            <div class="form-horizontal col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">保存之后 </label>
+                    <div class="col-xs-5 radio">
+                        <label>
+                            <input type="radio" name="addType" id="addType1" value="continue" checked>
+                            继续添加
+                        </label>
+                        <label>
+                            <input type="radio" name="addType" id="addType2" value="break">
+                            返回列表
+                        </label>
+                    </div>
                 </div>
-
+            </div>
+        </div>
+        <div class="row text-center">
+            <a class="btn btn-success" onclick="contractWastesSave()">保存</a>
+            <a class="btn btn-primary" onclick="contractWastesSubmit()">提交</a>
+            <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
+        </div>
 
         <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
             <!--<div class="row">-->
