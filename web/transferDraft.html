@@ -312,7 +312,8 @@
         <div class="modal-content" >
             <div style="margin: 5%;">
                 <div class="modal-header">
-                    <h2 class="text-center">转移联单</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title">转移联单</h2>
                 </div>
                 <div class="modal-body">
                     <form method="post" id="produceForm">
@@ -446,7 +447,7 @@
                                 <div class="form-group">
                                     <label for="wastesFormType" class="col-sm-4 control-label">形&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
                                     <div class="col-xs-5">
-                                        <select class="form-control" name="wastesFormType" id="wastesFormType"></select>
+                                        <input class="form-control" name="wastesFormType" id="wastesFormType"/>
                                     </div>
                                 </div>
                             </div>
@@ -466,7 +467,7 @@
                                 <div class="form-group">
                                     <label for="wastesPackageType" class="col-sm-4 control-label">包装方式</label>
                                     <div class="col-xs-5">
-                                        <select class="form-control" name="wastesPackageType" id="wastesPackageType"></select>
+                                        <input class="form-control" name="wastesPackageType" id="wastesPackageType"/>
                                     </div>
                                 </div>
                             </div>
@@ -794,6 +795,12 @@
                             </div>
                         </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row text-center">
+                        <button type="button" class="btn btn-primary" id="printBtn">打印</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
                 </div>
             </div>
         </div>

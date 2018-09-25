@@ -79,12 +79,12 @@ public class TransferDraftController {
         JSONObject res = new JSONObject();
         try {
             // 更新三个公司的信息
-            Client produceCompany = clientService.getByName(transferDraft.getProduceCompany().getCompanyName());
-            transferDraft.setProduceCompany(produceCompany);
-            Supplier transportCompany = supplierService.getByName(transferDraft.getTransportCompany().getCompanyName());
-            transferDraft.setTransportCompany(transportCompany);
-            Client acceptCompany = clientService.getByName(transferDraft.getAcceptCompany().getCompanyName());
-            transferDraft.setAcceptCompany(acceptCompany);
+//            Client produceCompany = clientService.getByName(transferDraft.getProduceCompany().getCompanyName());
+//            transferDraft.setProduceCompany(produceCompany);
+//            Supplier transportCompany = supplierService.getByName(transferDraft.getTransportCompany().getCompanyName());
+//            transferDraft.setTransportCompany(transportCompany);
+//            Client acceptCompany = clientService.getByName(transferDraft.getAcceptCompany().getCompanyName());
+//            transferDraft.setAcceptCompany(acceptCompany);
             // 获取旧的数据
             TransferDraft oldTransferDraft = transferDraftService.getById(transferDraft.getId());
             // 如果已存在数据则更新，否则进行新建
@@ -118,7 +118,8 @@ public class TransferDraftController {
                 // 危废信息
                 Wastes wastes = new Wastes();
                 wastes.setName(transferDraft.getWastes().getName());
-                wastes.setCode(transferDraft.getWastes().getCode());
+                wastes.setCode(transferDraft.getWastes().getWastesId());
+                wastes.setHandleCategory(transferDraft.getWastes().getHandleCategory());
                 wastes.setCategory(transferDraft.getWastes().getCategory());
                 inboundPlanOrder.setWastes(wastes);
                 // 业务员信息
