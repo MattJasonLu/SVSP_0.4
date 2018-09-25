@@ -689,3 +689,11 @@ function setWasteInventoryList1(result) {
     tr.hide();
     tr.removeAttr('class');
 }
+
+//导出
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_wasteinventory';
+    var sqlWords = "select * from t_pl_wasteinventory left join t_pr_laboratorytest on t_pl_wasteinventory.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}

@@ -1,9 +1,7 @@
-///////////软水分析日报//
-
-var currentPage = 1;                          //当前页数
 var isSearch = false;
-var data1;
-
+var currentPage = 1;                          //当前页数
+var data;
+/**********************客户部分**********************/
 /**
  * 返回count值
  * */
@@ -21,10 +19,11 @@ function totalPage() {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "totalSoftWaterRecord",                  // url
+            url: "totalClientSalesmanRecord",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
+                // console.log(result);
                 if (result > 0) {
                     totalRecord = result;
                 } else {
@@ -40,16 +39,15 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSoftWaterTotal",                  // url
+            url: "searchClientTotal",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 // console.log(result);
                 if (result > 0) {
                     totalRecord = result;
-                    console.log("总记录数为:" + result);
                 } else {
                     console.log("fail: " + result);
                     totalRecord = 0;
@@ -62,16 +60,32 @@ function totalPage() {
         });
     }
     var count = countValue();                         // 可选
-    var total = loadPages(totalRecord, count);
-    return total;
+    return loadPages(totalRecord, count);
+}
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
+ */
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        window.alert("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
 }
 
 /**
- * 设置克隆页码
- * */
+ * 克隆页码
+ * @param result
+ */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setSoftWaterList(result);
+    setClientList(result.data);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -91,7 +105,6 @@ function setPageClone(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
 }
 
 /**
@@ -99,7 +112,6 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
-    console.log("当前页：" + pageNumber);
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -140,41 +152,46 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "loadPageSoftWaterList",         // url
+            url: "loadPageClientList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setSoftWaterList(result.data);
+                    // console.log(result);
+                    setClientList(result);
                 } else {
                     console.log("fail: " + result);
+                    // setClientList(result);
                 }
             },
             error: function (result) {
                 console.log("error: " + result);
+                // setClientList(result);
             }
         });
     } else {
         data['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "searchSoftWater",         // url
+            url: "searchClient",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setSewageList(result.data);
+                    setClientList(result.data);
                 } else {
                     console.log("fail: " + result);
+                    // setClientList(result);
                 }
             },
             error: function (result) {
                 console.log("error: " + result);
+                // setClientList(result);
             }
         });
     }
@@ -198,7 +215,6 @@ function inputSwitchPage() {
         if (pageNumber == totalPage()) {
             $("#next").addClass("disabled");
             $("#endPage").addClass("disabled");
-
             $("#previous").removeClass("disabled");
             $("#firstPage").removeClass("disabled");
         }
@@ -218,7 +234,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "loadPageSoftWaterList",         // url
+                url: "loadPageClientList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -226,7 +242,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setSewageList(result.data);
+                        setClientList(result);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -236,24 +252,26 @@ function inputSwitchPage() {
                 }
             });
         } else {
-            data1['page'] = page;
+            data['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchSoftWater",         // url
+                url: "searchClient",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data1),
+                data: JSON.stringify(data),
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setSewageList(result.data);
+                        setClientList(result.data);
                     } else {
                         console.log("fail: " + result);
+                        // setClientList(result);
                     }
                 },
                 error: function (result) {
                     console.log("error: " + result);
+                    // setClientList(result);
                 }
             });
         }
@@ -263,32 +281,28 @@ function inputSwitchPage() {
 /**
  * 分页 获取首页内容
  * */
-function loadPageSoftWaterList() {
-    var pageNumber = 1;               // 显示首页
+function loadPageClientList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
-    if (totalPage() == 1) {
-        $("#next").addClass("disabled");
-        $("#endPage").addClass("disabled");
-    }
     var page = {};
+    var pageNumber = 1;                       // 显示首页
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "loadPageSoftWaterList",          // url
+        url: "loadPageClientList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
-            if (result != undefined && result.status == "success") {
+            if (result != undefined) {
                 console.log(result);
-                setPageClone(result.data);
+                setPageClone(result);
             } else {
-                console.log(result.message);
+                console.log("fail: " + result);
             }
         },
         error: function (result) {
@@ -296,81 +310,104 @@ function loadPageSoftWaterList() {
             console.log("失败");
         }
     });
+    // 设置高级检索的下拉框数据
+    setSeniorSelectedList();
     isSearch = false;
 }
 
 /**
- * 计算分页总页数
- * @param totalRecord
- * @param count
- * @returns {number}
+ * 设置客户数据
+ * @param result
  */
-function loadPages(totalRecord, count) {
-    if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
-        return 0;
-    }
-    else if (totalRecord % count == 0)
-        return totalRecord / count;
-    else
-        return parseInt(totalRecord / count) + 1;
-}
-
-function setSoftWaterList(result) {
+function setClientList(result) {
     // 获取id为cloneTr的tr元素
-    var tr = $("#clone");
+    var tr = $("#cloneTr");
     tr.siblings().remove();
-    var serialNumber = 0;    // 序号
     $.each(result, function (index, item) {
-        serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();
+        var _index = index;
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
-                    // 序号
-                    $(this).html(serialNumber);
-                    break;
+                // 客户编号
                 case (1):
-                    // 软水接收日期
-                    $(this).html(getDateStr(obj.receiveDate));
+                    $(this).html(obj.clientId);
                     break;
+                // 客户名称
                 case (2):
-                    // 软水名称
-                    $(this).html(obj.name);
+                    $(this).html(obj.companyName);
                     break;
+                // 申报状态
                 case (3):
-                    // 相对碱度
-                    $(this).html(obj.relativeAlkalinity);
+                    if (obj.applicationStatus != null)
+                        $(this).html(obj.applicationStatus.name);
                     break;
+                // 审核状态
                 case (4):
-                    // 溶解固形物
-                    $(this).html(obj.dissolvedSolidForm);
+                    if (obj.checkState != null) {
+                        $(this).html(obj.checkState.name);
+                        // $("#commit").attr(addClass("disabled"));
+                    }
                     break;
+                // 账号状态
                 case (5):
-                    // PH
-                    $(this).html(obj.ph);
+                    if (obj.clientState != null)
+                        $(this).html(obj.clientState.name);
                     break;
+                // 联系人
                 case (6):
-                    // 碱度
-                    $(this).html(obj.alkalinity);
+                    $(this).html(obj.contactName);
                     break;
+                // 联系方式
                 case (7):
-                    // 硬度
-                    $(this).html(obj.hardness);
+                    $(this).html(obj.phone);
                     break;
                 case (8):
-                    // 电导率
-                    $(this).html(obj.electricalConductivity);
+                    if (obj.clientType != null)
+                        $(this).html(obj.clientType.name);
                     break;
-                case (9):
-                    // 备注
-                    $(this).html(obj.remarks);
-                    break;
+                // 操作
+//                    case (9):
+//                        if(obj.clientState.name == "已启用"){
+//                            if(obj.checkState.name == "已完成"){
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(2).attr("class","disabled");
+//                                $(this).children().eq(2).removeAttr("onclick");
+//                                $(this).children().eq(3).attr("class","disabled");
+//                                $(this).children().eq(3).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                                $(this).children().eq(6).attr("class","disabled");
+//                                $(this).children().eq(6).removeAttr("onclick");
+//                            }else if(obj.checkState.name == "审批中"){
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(2).attr("class","disabled");
+//                                $(this).children().eq(2).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                            }else{
+//                                $(this).children().eq(1).attr("class","disabled");
+//                                $(this).children().eq(1).removeAttr("onclick");
+//                                $(this).children().eq(4).attr("class","disabled");
+//                                $(this).children().eq(4).removeAttr("onclick");
+//                                $(this).children().eq(6).attr("class","disabled");
+//                                $(this).children().eq(6).removeAttr("onclick");
+//                            }
+//                        }else{
+//                            $(this).children().eq(0).attr("class","disabled");
+//                            $(this).children().eq(0).removeAttr("onclick");
+//                            $(this).children().eq(4).attr("class","disabled");
+//                            $(this).children().eq(4).removeAttr("onclick");
+//                            $(this).children().eq(6).attr("class","disabled");
+//                            $(this).children().eq(6).removeAttr("onclick");
+//                        }
+//                        break;
             }
         });
         // 把克隆好的tr追加到原来的tr前面
@@ -382,124 +419,132 @@ function setSoftWaterList(result) {
 }
 
 /**
- * 导出excel
- * @param e
+ * 设置高级检索的下拉框数据
  */
-function exportExcel() {
-    var name = 't_pr_softwater';
-    var sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater;";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
-}
-
-/**
- * 导入模态框
- * */
-function importExcelChoose() {
-    $("#importExcelModal").modal('show');
-}
-
-/**
- * 下载模板
- * */
-function downloadModal() {
-    var filePath = 'Files/Templates/软水分析日报模板.xls';
-    var r = confirm("是否下载模板?");
-    if (r == true) {
-        window.open('downloadFile?filePath=' + filePath);
-    }
-}
-
-/**
- * 导入excel
- */
-function importExcel() {
-    document.getElementById("idExcel").click();
-    document.getElementById("idExcel").addEventListener("change", function () {
-        var eFile = document.getElementById("idExcel").files[0];
-        var formFile = new FormData();
-        formFile.append("excelFile", eFile);
-        formFile.append("excelFile", eFile);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "importSoftWaterExcel",              // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: formFile,
-            processData: false,
-            contentType: false,
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    if (result.status == "success") {
-                        alert(result.message);
-                        window.location.reload();         //刷新
-                    } else {
-                        alert(result.message);
+function setSeniorSelectedList() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getClientSeniorSelectedList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    if (item.index >= 1 && item.index <= 3) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        checkState.append(option);
                     }
-                }
-            },
-            error: function (result) {
-                console.log(result);
+                });
+                checkState.get(0).selectedIndex = -1;
+                var clientState = $("#search-clientState");
+                clientState.children().remove();
+                $.each(data.clientStateList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    clientState.append(option);
+                });
+                clientState.get(0).selectedIndex = -1;
+                var applicationStatus = $("#search-applicationStatus");
+                applicationStatus.children().remove();
+                $.each(data.applicationStatusList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    applicationStatus.append(option);
+                });
+                applicationStatus.get(0).selectedIndex = -1;
+                var clientType = $("#search-clientType");
+                clientType.children().remove();
+                $.each(data.clientTypeList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    clientType.append(option);
+                });
+                clientType.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
             }
-        });
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
     });
 }
 
-/**
- * 回车查询
- */
-function enterSearch(){
-    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
-        searchSoftWater();      //
-    }
-}
 
 /**
- * 污水分析日报查询功能
+ * 查找客户
  */
-function searchSoftWater() {
-    isSearch = true;
+function searchClient() {
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.pageNumber = pageNumber;
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
+    // 精确查询
     if ($("#senior").is(':visible')) {
-        data1 = {
-            startDate: $("#search-startDate").val(),
-            endDate: $("#search-endDate").val(),
-            name: $("#search-softWaterName").val(),
-            remarks: $("#search-remarks").val(),
+        data = {
+            clientId: $("#search-clientId").val(),
+            companyName: $("#search-companyName").val(),
+            contactName: $("#search-contactName").val(),
+            phone: $("#search-phone").val(),
+            checkState: $("#search-checkState").val(),
+            clientState: $("#search-clientState").val(),
+            applicationStatus: $("#search-applicationStatus").val(),
+            clientType: $("#search-clientType").val(),
             page: page
         };
-    }else{
-        data1 = {
-            keywords: $("#searchContent").val(),
+        console.log(data);
+        // 模糊查询
+    } else {
+        data = {
+            keyword: $("#searchContent").val(),
             page: page
         };
     }
-    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
-    else {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "searchSoftWater",                 // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data1),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "searchClient",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(data),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
-                if (result.data != undefined || result.status == "success") {
-                    setPageClone(result.data);
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器错误！");
+                setPageClone(result);
+            } else {
+                alert(result.message);
             }
-        });
-    }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+    isSearch = true;
 }
 
+/**
+ * 延时搜索及回车搜索功能
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp == 0){
+                searchClient();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchClient();      //
+            }
+        },400);
+    });
+});

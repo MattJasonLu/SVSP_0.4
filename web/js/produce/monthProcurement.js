@@ -837,3 +837,16 @@ function searchWastesAnalysis() {
     }
 
 }
+
+
+/**
+ *
+ * 导出
+ * @returns {string}
+ */
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_procurement';
+    var sqlWords = "select * from t_pl_procurement where procurementCategory='1'";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
