@@ -44,4 +44,7 @@ public interface SupplierService {
 
     void setFilePath(Supplier supplier);
 
+    List<Supplier> transportList();
+
+
 }

@@ -171,7 +171,7 @@
                     <div class="form-group">
                         <label for="transport" class="col-sm-4 control-label">运输公司</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" id="transport" name="transport" placeholder="">
+                            <select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="transport" id="transport" onchange="findSupplier()"></select>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                     <div class="form-group">
                         <label for="transportTelephone" class="col-sm-4 control-label">运输公司联系电话</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" id="transportTelephone" name="transportTelephone" placeholder="">
+                            <input type="text" class="form-control" id="transportTelephone" name="transportTelephone" placeholder="" readonly>
                         </div>
                     </div>
                 </div>
