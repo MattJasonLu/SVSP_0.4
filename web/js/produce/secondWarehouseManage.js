@@ -391,11 +391,11 @@ function searchData() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
-            if (result !== undefined && result.status === "success") {
+            if (result != undefined && result.status == "success") {
                 console.log(result);
                 setPageClone(result.data);
             } else {
-                alert(result.message);
+                console.log(result.message);
             }
         },
         error: function (result) {

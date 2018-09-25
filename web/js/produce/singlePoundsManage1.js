@@ -307,7 +307,7 @@ function loadPagePoundsList() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -534,6 +534,23 @@ function enterSearch(){
 }
 
 /**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchPounds();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchPounds();      //
+            }
+        },600);
+    });
+});
+
+/**
  * 查询功能
  */
 function searchPounds() {
@@ -548,21 +565,21 @@ function searchPounds() {
     if ($("#search-state").val() == 1) state = "Invalid";//已作废
     if ($("#senior").is(':visible')) {
         var deliveryCompany = {};
-        deliveryCompany.companyName = $("#search-deliveryCompany").val();
+        deliveryCompany.companyName = $.trim($("#search-deliveryCompany").val());
         var receiveCompany = {};
-        receiveCompany.companyName = $("#search-receiveCompany").val();
+        receiveCompany.companyName = $.trim($("#search-receiveCompany").val());
         data = {
-            transferId: $("#search-transferId").val(),
+            transferId: $.trim($("#search-transferId").val()),
             deliveryCompany: deliveryCompany,
             receiveCompany: receiveCompany,
-            goodsName: $("#search-goods").val(),
+            goodsName: $.trim($("#search-goods").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             state: state,
             page: page
         };
     }else{
-        var keywords = $("#searchContent").val();
+        var keywords = $.trim($("#searchContent").val());
         switch (keywords){
             case("新建"): keywords = "NewBuild";break;
             case("待审批"): keywords = "ToExamine";break;
@@ -594,7 +611,7 @@ function searchPounds() {
                 if (result.data != undefined || result.status == "success") {
                     setPageClone(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {

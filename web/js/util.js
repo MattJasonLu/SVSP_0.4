@@ -164,7 +164,7 @@ function checkAuthority(e) {
                 flag = true;
             } else {
                 // 提示没有权限进入
-                if (result.message == undefined) alert("未正确登录！");
+                if (result.message == undefined) alert("账号过期，请重新登录！");
                 else alert(result.message);
                 e.prop('href', '#');
             }

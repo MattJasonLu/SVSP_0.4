@@ -438,10 +438,12 @@ function setSeniorSelectedList() {
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
                 $.each(data.checkStateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    checkState.append(option);
+                    if (item.index >= 1 && item.index <= 3) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        checkState.append(option);
+                    }
                 });
                 checkState.get(0).selectedIndex = -1;
                 var clientState = $("#search-clientState");
@@ -480,6 +482,7 @@ function setSeniorSelectedList() {
         }
     });
 }
+
 
 /**
  * 查找客户
@@ -521,7 +524,7 @@ function searchClient() {
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 console.log(result);
-                setPageClone(result.data);
+                setPageClone(result);
             } else {
                 alert(result.message);
             }

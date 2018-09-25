@@ -356,6 +356,23 @@ function enterSearch(){
     }
 }
 
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchTest();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchTest();      //
+            }
+        },600);
+    });
+});
+
 var array=[];//存放所有的tr
 var array1=[];//存放目标的tr
 /**
@@ -373,14 +390,14 @@ function searchTest() {
         switchPage(parseInt(i1));
         array.push($('.myClass2'));
     }
-    console.log("array:")
+    console.log("array:");
     console.log(array);
     isSearch=true;
     if ($("#senior").is(':visible')) {// 高级查询
         //搜索关键字
-        var salesmanName = $('#search-salesmanName').val();
-        var salesmanId = $('#search-salesmanId').val();
-        var age = $('#search-age').val();
+        var salesmanName = $.trim($('#search-salesmanName').val());
+        var salesmanId = $.trim($('#search-salesmanId').val());
+        var age = $.trim($('#search-age').val());
         var sex = $("#search-sex option:selected").text();
         for (var j = 0; j < array.length; j++) {
             $.each(array[j], function () {
@@ -444,7 +461,7 @@ function searchTest() {
         }
     } else {
         // 模糊查询
-        var text = $('#searchContent').val();
+        var text = $.trim($('#searchContent').val());
         for (var j = 0; j < array.length; j++) {
             $.each(array[j], function () {
                 if (($(this).children('td').text().indexOf(text) == -1)) {
