@@ -59,7 +59,15 @@
                 "%"#{keywords}"%")
                 or enterLicencePlate like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
-                or (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or goodsName like "%"#{keywords}"%"
                 or businessType like "%"#{keywords}"%"
                 or driver like "%"#{keywords}"%"
@@ -77,17 +85,17 @@
                 and receiveCompanyId in (select clientId from client where companyName like
                 "%"#{receiveCompany.companyName}"%")
             </if>
-            <if test="driver != null and driver != ''">
-                and driver like "%"#{driver}"%"
-            </if>
             <if test="goodsName != null and goodsName != ''">
                 and goodsName like "%"#{goodsName}"%"
             </if>
-            <if test="enterLicencePlate != null and enterLicencePlate != ''">
-                and enterLicencePlate like "%"#{enterLicencePlate}"%"
-            </if>
             <if test="state != null and state != ''">
                 and state like "%"#{state}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
         </where>
         order by nowTime desc
@@ -108,7 +116,15 @@
                 "%"#{keywords}"%")
                 or enterLicencePlate like "%"#{keywords}"%"
                 or founder like "%"#{keywords}"%"
-                or (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or goodsName like "%"#{keywords}"%"
                 or businessType like "%"#{keywords}"%"
                 or driver like "%"#{keywords}"%"
@@ -126,17 +142,17 @@
                 and receiveCompanyId in (select clientId from client where companyName like
                 "%"#{receiveCompany.companyName}"%")
             </if>
-            <if test="driver != null and driver != ''">
-                and driver like "%"#{driver}"%"
-            </if>
             <if test="goodsName != null and goodsName != ''">
                 and goodsName like "%"#{goodsName}"%"
             </if>
-            <if test="enterLicencePlate != null and enterLicencePlate != ''">
-                and enterLicencePlate like "%"#{enterLicencePlate}"%"
-            </if>
             <if test="state != null and state != ''">
                 and state like "%"#{state}"%"
+            </if>
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
         </where>
     </select>

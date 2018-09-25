@@ -48,7 +48,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalPrice = #{keywords}
@@ -64,10 +71,11 @@
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="date != null and date !=''">
-                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
@@ -86,7 +94,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalPrice = #{keywords}
@@ -102,10 +117,11 @@
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="date != null and date !=''">
-                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
@@ -127,8 +143,6 @@
         SELECT * FROM t_pr_ingredients_in
             <![CDATA[WHERE DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d')
             AND DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d')]]>
-
-
     </select>
 
     <select id="getAmountItems" parameterType="Ingredients" resultType="int">
@@ -245,7 +259,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or department like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
@@ -256,16 +277,17 @@
                 or pickingMan like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
             </if>
-            <if test="id != null and id != '' ">
+            <if test="id != '' and id != null">
                 and id like "%"#{id}"%"
             </if>
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="date != null and date !=''">
-                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="department !=null and department !='' ">
                 and department like "%"#{department}"%"
@@ -284,7 +306,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or department like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
@@ -301,10 +330,11 @@
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="date != null and date !=''">
-                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="department !=null and department !='' ">
                 and department like "%"#{department}"%"
@@ -458,7 +488,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
@@ -474,10 +511,11 @@
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="date != null and date !=''">
-                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"
@@ -496,7 +534,14 @@
                 or id like "%"#{keywords}"%"
                 or state like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y-%c-%e') like "%"#{keywords}"%"
                 or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creationDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or companyName like "%"#{keywords}"%"
                 or fileId like "%"#{keywords}"%"
                 or totalAmount = #{keywords}
@@ -512,10 +557,11 @@
             <if test="state != null and state !=''">
                 and state like "%"#{state}"%"
             </if>
-            <if test="date != null and date !=''">
-                <!--用date来代装创建日期数据，防止被自动赋成日期格式的数据-->
-                and (DATE_FORMAT(creationDate,'%Y-%m-%d') like "%"#{date}"%"
-                or DATE_FORMAT(creationDate,'%Y%m%d') like "%"#{date}"%")
+            <if test="startDate !=null and startDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') >=  DATE_FORMAT(#{startDate}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="endDate !=null and endDate !=''">
+                <![CDATA[ and DATE_FORMAT(creationDate, '%Y-%m-%d') <=  DATE_FORMAT(#{endDate}, '%Y-%m-%d') ]]>
             </if>
             <if test="companyName !=null and companyName !='' ">
                 and companyName like "%"#{companyName}"%"

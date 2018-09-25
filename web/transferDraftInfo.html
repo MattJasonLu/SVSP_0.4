@@ -12,8 +12,11 @@
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/bootstrap/defaults-zh_CN.min.js"></script>
     <script src="js/produce/transferDraft.js"></script>
 </head>
 <body onload="loadData();">
@@ -131,7 +134,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">产生单位</label>
                         <div class="col-xs-7">
-                            <input type="text" class="form-control" placeholder="" name="produceCompanyName" id="produceCompanyName" value="测试生产单位">
+                            <select id="produceCompany" name="produceCompany" class="form-control" onchange="showProduceCompanyInfo($(this));"></select>
+                            <!--<input type="text" class="form-control" placeholder="" name="produceCompanyName" id="produceCompanyName" value="测试生产单位">-->
                         </div>
                         <label class="col-sm-3 control-label">单位盖章</label>
                     </div>
@@ -156,7 +160,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">运输单位</label>
                         <div class="col-xs-9">
-                            <input type="text" class="form-control" placeholder="" name="transportCompanyName" id="transportCompanyName" value="测试运输单位">
+                            <select id="transportCompany" name="transportCompany" class="form-control" onchange="showTransportCompanyInfo($(this));"></select>
+                            <!--<input type="text" class="form-control" placeholder="" name="transportCompanyName" id="transportCompanyName" value="测试运输单位">-->
                         </div>
                     </div>
                     <div class="form-group">
@@ -168,7 +173,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">接收单位</label>
                         <div class="col-xs-9">
-                            <input type="text" class="form-control" placeholder="" name="acceptCompanyName" id="acceptCompanyName" value="常州北控安耐得有限公司">
+                            <select id="acceptCompany" name="acceptCompany" class="form-control" onchange="showAcceptCompanyInfo($(this));"></select>
+                            <!--<input type="text" class="form-control" placeholder="" name="acceptCompanyName" id="acceptCompanyName" value="常州北控安耐得有限公司">-->
                         </div>
                     </div>
                     <div class="form-group">
@@ -234,15 +240,15 @@
                 </div>
                 <div class="form-horizontal col-md-4">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">废物类别</label>
+                        <label class="col-sm-4 control-label">进料方式</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" placeholder="" name="wastesCategory" id="wastesCategory">
+                            <select class="form-control" name="wastesCategory" id="wastesCategory"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">转&nbsp;&nbsp;移&nbsp;&nbsp;量</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" placeholder="" name="wastesTransferCount" id="wastesTransferCount">
+                            <input type="number" class="form-control" placeholder="" name="wastesTransferCount" id="wastesTransferCount">
                         </div>
                     </div>
                     <div class="form-group">
@@ -256,13 +262,13 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label">八&nbsp;&nbsp;位&nbsp;&nbsp;码</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" placeholder="" name="wastesCode" id="wastesCode">
+                            <select class="selectpicker input-xlarge form-control" data-style="btn-default" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">签&nbsp;&nbsp;收&nbsp;&nbsp;量</label>
                         <div class="col-xs-5">
-                            <input type="text" class="form-control" placeholder="" name="wastesSignCount" id="wastesSignCount">
+                            <input type="number" class="form-control" placeholder="" name="wastesSignCount" id="wastesSignCount">
                         </div>
                     </div>
                     <div class="form-group">
@@ -648,6 +654,13 @@
         minView: 0,
         minuteStep:1,
         forceParse: 0
+    });
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4
+        });
     });
 </script>
 </html>

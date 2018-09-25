@@ -206,3 +206,12 @@ function convertStrToWastesName(str) {
 function reset() {
     window.location.reload();
 }
+
+/**
+ * 回车跳转（输入页数回车跳转页面）
+ */
+function enterSwitchPage(){
+    if(event.keyCode === 13){
+        inputSwitchPage();
+    }
+}

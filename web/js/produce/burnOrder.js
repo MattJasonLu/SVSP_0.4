@@ -16,15 +16,6 @@ function allSelect() {
     if (isChecked) $("input[name='select']").prop('checked', true);
     else $("input[name='select']").prop('checked', false);
 }
-
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
-
 //-----------------------------
 
 var pretreatmentId = "";    //预处理单号
@@ -639,9 +630,19 @@ function getCurrentBurnOrderId() {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch1(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        search1();      //
+    }
+}
+
+/**
  * 新增页面预处理单查询功能
  */
 function search1() {
+    isSearch = true;
     var state = null;
     if ($("#search1-state").val() == 0) state = "NewBuild";//新建
     if ($("#search1-state").val() == 1) state = "Confirm";//已确认
@@ -649,10 +650,23 @@ function search1() {
     if ($("#senior1").is(':visible')) {
         var data = {
             id: $("#search1-id").val(),
-            searchDate: $("#search1-creationDate").val(),
+            startDate: $("#search1-startDate").val(),
+            endDate: $("#search1-endDate").val(),
             remarks: $("#search1-remarks").val(),
             state: state
         };
+    }else {
+        var keywords = $("#searchContent1").val();
+        switch (keywords){
+            case("新建"): keywords = "NewBuild";break;
+            case("已作废"): keywords = "Invalid";break;
+            case("作废"): keywords = "Invalid";break;
+            case("已确认"): keywords = "Confirm";break;
+            case("确认"): keywords = "Confirm";break;
+        }
+        data={
+            keywords: keywords
+        }
     }
     if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {
@@ -1158,16 +1172,6 @@ function importExcel() {
 }
 
 /**
- * 重置功能
- */
-function reset() {
-    // $("#searchContent").val("");
-    // $("#senior").find("input").val("");
-    // $("#senior").find("select").get(0).selectedIndex = -1;
-    window.location.reload();
-}
-
-/**
  * 回车查询
  */
 function enterSearch(){
@@ -1193,7 +1197,8 @@ function searchBurnOrder() {
     if ($("#senior").is(':visible')) {
         data1 = {
             id: $("#search-id").val(),
-            pretreatmentId: $("#search-creationDate").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             remarks: $("#search-remarks").val(),
             state: state,
             page: page
@@ -1217,6 +1222,7 @@ function searchBurnOrder() {
             keywords: keywords
         }
     }
+    console.log(data1);
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({

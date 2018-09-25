@@ -937,6 +937,7 @@
                     </div>
                 </div>
             </div>
+            <br>
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
@@ -947,25 +948,12 @@
                                     <input type="text" class="form-control" id="search-questionnaireId" name="search-questionnaireId" placeholder="">
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
-                                </div>
-                            </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
                                 <label for="search-industry" class="col-sm-4 control-label">所属行业</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-industry" name="search-industry" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-state" class="col-sm-4 control-label">状态</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-state" id="search-state">
-                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -976,19 +964,41 @@
                                     <input type="text" class="form-control" id="search-product" name="search-product" placeholder="">
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
                             <div class="form-group">
                                 <label for="search-author" class="col-sm-4 control-label">填报人</label>
                                 <div class="col-xs-7">
                                     <input class="form-control" name="search-author" id="search-author">
-                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-time" class="col-sm-4 control-label">填报日期</label>
+                                <label for="search-state" class="col-sm-4 control-label">状态</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-time" name="search-time" placeholder="">
+                                    <select class="form-control" name="search-state" id="search-state">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group" style="margin-right: 80px">
+                                <label class="col-sm-3 control-label">填报日期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="beginTime" title=""/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="endTime" title=""/>
                                 </div>
                             </div>
                         </div>

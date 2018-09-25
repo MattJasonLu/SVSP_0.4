@@ -543,7 +543,8 @@ function searchIngredientIn() {
     if ($("#searchContent").val() === "已作废" || $("#searchContent").val() === "作废") keywords = "Invalid";
     if ($("#senior").is(':visible')) {
         data1 = {
-            date: $("#search-creationDate").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             id: $("#search-Id").val(),
             companyName: $("#search-companyName").val(),
             state: state,
@@ -788,11 +789,8 @@ function invalidIngredientsIn(item) {
             dataType: "json",
             success: function (result) {
                 if (result.status == "success") {
-                    //alert("作废成功！");
-                    divFadeAlert();
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 1000);
+                    alert("作废成功！");
+                    window.location.reload();
                 } else {
                     alert(result.message);
                 }
@@ -1292,13 +1290,12 @@ function save() {
 }
 
 /**
- * 重置
+ * 回车查询
  */
-function reset1() {
-    // $("#senior1").find("input").val("");
-    // $("#senior1").find("select").get(0).selectedIndex = -1;
-    // $("#searchContent1").val("");
-    window.location.reload();
+function enterSearch1(){
+    if(event.keyCode === 13){
+        search1();
+    }
 }
 
 /**

@@ -24,7 +24,7 @@ function allSelect() {
 
 var currentPage = 1;                          //当前页数
 var isSearch = false;
-var data1;
+var data1 = null;
 var pretreatmentId = '';
 
 /**
@@ -510,16 +510,6 @@ function importExcel() {
 }
 
 /**
- * 重置功能
- */
-function reset() {
-    // $("#senior").find("input").val("");
-    // $("#senior").find("select").get(0).selectedIndex = -1;
-    // $("#searchContent1").val("");
-    window.location.reload();
-}
-
-/**
  * 回车查询
  */
 function enterSearch(){
@@ -546,12 +536,13 @@ function searchPretreatment() {
         data1 = {
             id: $("#search-id").val(),
             searchDate: $("#search-creationDate").val(),
-            remarks: $("#search-remarks").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             state: state,
             page: page
         };
     }else{
-        var keywords = $("#searchContent").val();
+        var keywords = $("#searchContent1").val();
         switch (keywords){
             case("新建"): keywords = "NewBuild";break;
             case("待审批"): keywords = "ToExamine";break;
@@ -569,6 +560,7 @@ function searchPretreatment() {
             keywords: keywords
         }
     }
+    console.log(data1);
     if (data1 == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({
@@ -1490,9 +1482,20 @@ function save() {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearchItem(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchOutBoundOrder();      //
+    }
+}
+
+/**
  * 新增页面查找出库单功能
  */
 function searchOutBoundOrder() {
+    var data = {};
+    isSearch = true;
     var recordState = null;
     if ($("#search1-recordState").val() === 0) recordState = "Delete";//删除
     if ($("#search1-recordState").val() === 1) recordState = "Usable";//可用
@@ -1501,21 +1504,52 @@ function searchOutBoundOrder() {
     if ($("#search1-checkState").val() === 0) checkState = "NewBuild";//新建
     if ($("#search1-checkState").val() === 1) checkState = "ToPick";//带领料
     if ($("#search1-checkState").val() === 2) checkState = "Picked";//已领料
-    if ($("#search1-checkState").val() === 3) checkState = "Invalid";//作废
+    if ($("#search1-checkState").val() === 3) checkState = "OutBounded";//已出库
+    if ($("#search1-checkState").val() === 4) checkState = "Invalid";//作废
     var client = {};
     client.companyName = $("#search1-client").val();
     var wareHouse = {};
     wareHouse.wareHouseId = $("#search1-wareHouseId").val();
-    var data = {
-        wareHouse: wareHouse,
-        departmentName: $("#search1-departmentName").val(),
-        auditor: $("#search1-outboundDate").val(),   //出库日期，用审核人代替，保存为String形式
-        outboundOrderId: $("#search1-outboundDate").val(),
-        recordState: recordState,
-        checkState: checkState,
-        transferDraftId: $("#search1-transferDraftId").val(),
-        client: client
-    };
+    if ($("#senior1").is(':visible')) {
+        data = {
+            wareHouse: wareHouse,
+            departmentName: $("#search1-departmentName").val(),
+            startDate: $("#search1-startDate").val(),
+            endDate: $("#search1-endDate").val(),
+            outboundOrderId: $("#search1-outboundOrderId").val(),
+            recordState: recordState,
+            checkState: checkState,
+            transferDraftId: $("#search1-transferDraftId").val(),
+            client: client
+        };
+    }else {
+        var keywords = $("#searchContent").val();
+        switch (keywords){
+            case("删除"): keywords = "Delete";break;
+            case("可用"): keywords = "Usable";break;
+            case("不可用"): keywords = "Disabled";break;
+            case("新建"): keywords = "NewBuild";break;
+            case("待领料"): keywords = "ToPick";break;
+            case("已领料"): keywords = "Picked";break;
+            case("已出库"): keywords = "OutBounded";break;
+            case("出库"): keywords = "OutBounded";break;
+            case("已作废"): keywords = "Invalid";break;
+            case("作废"): keywords = "Invalid";break;
+            case("污泥"): keywords = "Sludge";break;
+            case("废液"): keywords = "WasteLiquid";break;
+            case("散装料"): keywords = "Bulk";break;
+            case("破碎料"): keywords = "Crushing";break;
+            case("精馏残渣"): keywords = "Distillation";break;
+            case("悬挂连"): keywords = "Suspension";break;
+            case("焚烧"): keywords = "Burning";break;
+            case("填埋"): keywords = "Landfill";break;
+        }
+        data={
+            keywords: keywords
+        }
+    }
+    console.log("data:");
+    console.log(data);
     if (data == null) alert("请点击'查询设置'输入查询内容!");
     else {
         $.ajax({

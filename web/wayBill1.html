@@ -234,11 +234,11 @@
             </div>
         </div>
         <br>
-        <!--查询设置框（高级查询-->
+        <!--查询设置框（高级查询）-->
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search-id" class="col-sm-4 control-label">序列号</label>
                             <div class="col-xs-7">
@@ -246,7 +246,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search-companyName" class="col-sm-4 control-label">单位</label>
                             <div class="col-xs-7">
@@ -255,21 +255,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-total" class="col-sm-4 control-label">总额</label>
+                            <label for="search-wayBillState" class="col-sm-4 control-label">接运单状态</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-total" name="search-total"
-                                       placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-freight" class="col-sm-4 control-label">运费</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-freight" name="search-freight"
-                                       placeholder="" onkeydown="enterSearch()">
+                                <select class="form-control" id="search-wayBillState" name="search-wayBillState" onchange="searchWayBill()">
+                                    <option value="0"></option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -279,17 +271,17 @@
                         <div class="form-group">
                             <label for="search-founder" class="col-sm-4 control-label">创建人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-founder" name="search-founder"
-                                       placeholder="" onkeydown="enterSearch()">
+                                <input type="text" class="form-control" id="search-founder" name="search-founder" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label for="search-wayBillDate" class="col-sm-4 control-label">创建日期</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-wayBillDate"
-                                       name="search-wayBillDate" placeholder="" onkeydown="enterSearch()">
+                            <label class="col-sm-3 control-label">创建日期 </label>
+                            <div class="input-group">
+                                <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
                             </div>
                         </div>
                     </div>
@@ -297,18 +289,7 @@
                         <div class="form-group">
                             <label for="search-operator" class="col-sm-4 control-label">经手人</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-operator" name="search-operator"
-                                       placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-wayBillState" class="col-sm-4 control-label">接运单状态</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" id="search-wayBillState" name="search-wayBillState" onchange="searchWayBill()">
-                                    <option value="0"></option>
-                                </select>
+                                <input type="text" class="form-control" id="search-operator" name="search-operator" placeholder="" onkeydown="enterSearch()">
                             </div>
                         </div>
                     </div>
@@ -356,7 +337,7 @@
                             <!--<a href="#" id="function_126" title="审批" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examination(e);}"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                             <a href="#" id="function_127" title="作废"
                                onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; invalidWayBill(e);}"><span
-                                    class="glyphicon glyphicon-floppy-remove"
+                                    class="glyphicon glyphicon-remove-sign"
                                     aria-hidden="true"></span></a>
                         </td>
                     </tr>

@@ -1,9 +1,4 @@
 ///////////软水分析日报//
-function reset() {
-    // $("#senior").find("input").val("");
-    // $("#searchContent").val("");
-    window.location.reload();
-}
 
 var currentPage = 1;                          //当前页数
 var isSearch = false;
@@ -391,7 +386,6 @@ function setSoftWaterList(result) {
  * @param e
  */
 function exportExcel() {
-    console.log("export");
     var name = 't_pr_softwater';
     var sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
@@ -452,6 +446,15 @@ function importExcel() {
 }
 
 /**
+ * 回车查询
+ */
+function enterSearch(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        searchSoftWater();      //
+    }
+}
+
+/**
  * 污水分析日报查询功能
  */
 function searchSoftWater() {
@@ -463,7 +466,8 @@ function searchSoftWater() {
     page.start = (pageNumber - 1) * page.count;
     if ($("#senior").is(':visible')) {
         data1 = {
-            date: $("#search-receiveDate").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             name: $("#search-softWaterName").val(),
             remarks: $("#search-remarks").val(),
             page: page
