@@ -94,7 +94,15 @@
                 or companyCode LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
-                or (DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(samplingDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or id like "%"#{keywords}"%"
             </if>
             <if test='keywords == "已"'>
@@ -167,7 +175,15 @@
                 or companyCode LIKE "%"#{keywords}"%"
                 or wastesCode like "%"#{keywords}"%"
                 or laboratorySigner like "%"#{keywords}"%"
-                or (DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%" or DATE_FORMAT(samplingDate,'%Y%m%d') like "%"#{keywords}"%")
+                or DATE_FORMAT(samplingDate,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(samplingDate,'%Y.%c.%e') like "%"#{keywords}"%"
                 or id like "%"#{keywords}"%"
             </if>
             <if test='keywords == "已"'>

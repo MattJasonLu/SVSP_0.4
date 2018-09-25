@@ -86,12 +86,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="sidebar">
-                <!--<h4>博客管理系统(四月)</h4>-->
-                <!--<div class="cover">-->
-                <!--<h4><img class="img-circle" src="image/icons.png"/></h4>-->
-                <!--<b>Hi~ 小主</b>-->
-                <!--<p>超级管理员</p>-->
-                <!--</div>-->
                 <ul class="sidenav animated fadeInUp">
                     <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
                     <li><a class="withripple" href="wastesPlatform.html"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
@@ -128,13 +122,13 @@
                         <a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                         <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                     </div>
-                    <div class="input-group col-md-3"></div>
+                    <div class="input-group col-md-2"></div>
                     <!--查询框-->
-                    <div class="input-group col-xs-3 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
+                    <div class="input-group col-md-4 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
-                            <a class="btn btn-default"  onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
-                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级搜索</a>
+                            <a class="btn btn-default"  onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
                     </div>
@@ -144,62 +138,48 @@
             <div class="panel panel-default" id="senior" style="display: none;">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-warehouseId" class="col-sm-4 control-label">仓库号</label>
+                                <label for="search-warehouseName" class="col-sm-4 control-label">仓库</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-warehouseId" name="search-warehouseId" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-storageDate" class="col-sm-4 control-label">入库日期</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-storageDate" name="search-storageDate" placeholder="">
+                                    <input type="text" class="form-control" id="search-warehouseName" name="search-warehouseName" placeholder="">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-storageNumber" class="col-sm-4 control-label">入库单号</label>
+                                <label for="search-inboundOrderId" class="col-sm-4 control-label">入库单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-storageNumber" name="search-storageNumber" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-wastesId" class="col-sm-4 control-label">危废代码</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-wastesId" id="search-wastesId">
-                                        <option value="0"></option>
-                                    </select>
+                                    <input type="text" class="form-control" id="search-inboundOrderId" name="search-inboundOrderId" placeholder="">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-storageQuantity" class="col-sm-4 control-label">入库数量</label>
+                                <label for="search-recordState" class="col-sm-4 control-label">单据状态</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-storageQuantity" name="search-storageQuantity" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-materialForm" class="col-sm-4 control-label">物质形态</label>
-                                <div class="col-xs-7">
-                                    <select class="form-control" name="search-materialForm" id="search-materialForm">
-                                        <option value="0"></option>
-                                    </select>
+                                    <select class="form-control" name="search-recordState" id="search-recordState"></select>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-packingType" class="col-sm-4 control-label">包装类型</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-packingType" name="search-packingType" placeholder="">
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group" style="margin-left: -10px;">
+                                <label class="col-sm-3 control-label">入库日期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-beginTime" title=""/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-endTime" title=""/>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <input type="button" onclick="reset();" value="重置" title="">
-                                <input type="button" value="搜索" title="">
+                                <label for="search-checkState" class="col-sm-4 control-label">审批状态</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-checkState" id="search-checkState"></select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -225,9 +205,9 @@
                         <!--<th class="text-center">危废数量</th>-->
                         <th class="text-center">单据状态</th>
                         <th class="text-center">制单人</th>
-                        <th class="text-center">保管员</th>
-                        <th class="text-center">主管</th>
-                        <th class="text-center">审批人</th>
+                        <!--<th class="text-center">保管员</th>-->
+                        <!--<th class="text-center">主管</th>-->
+                        <!--<th class="text-center">审批人</th>-->
                         <th class="text-center">审批状态</th>
                         <th class="text-center">备注</th>
                         <!--<th class="text-center">转移联单号</th>-->
@@ -252,9 +232,9 @@
                         <!--<td class="text-center">危废数量</td>-->
                         <td class="text-center" name="recordState">单据状态</td>
                         <td class="text-center" name="creatorId">制单人</td>
-                        <td class="text-center" name="keeperId">保管员</td>
-                        <td class="text-center" name="directorId">主管</td>
-                        <td class="text-center" name="approverId">审批人</td>
+                        <!--<td class="text-center" name="keeperId">保管员</td>-->
+                        <!--<td class="text-center" name="directorId">主管</td>-->
+                        <!--<td class="text-center" name="approverId">审批人</td>-->
                         <td class="text-center" name="checkState">审批状态</td>
                         <td class="text-center" name="remarks">备注</td>
                         <!--<td class="text-center">转移联单号</td>-->

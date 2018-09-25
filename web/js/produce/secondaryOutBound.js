@@ -2,6 +2,7 @@
 *次生出库脚本文件
  */
 function reset() {
+    isSearch=false;
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
@@ -131,14 +132,16 @@ function switchPage(pageNumber) {
                 console.log("error: " + result);
             }
         });
-    } if (isSearch) { //查询用的
+    }
+    if (isSearch) {//查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
-        for(var i=page.start;i<=page.start+page.count-1;i++){
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
-            isSearch=true;
         }
     }
 }
@@ -198,14 +201,16 @@ function inputSwitchPage() {
                     console.log("error: " + result);
                 }
             });
-        } if (isSearch) { //查询用的
+        }
+        if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
-            for(var i=page.start;i<=page.start+page.count-1;i++){
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
-                isSearch=true;
             }
         }
     }
@@ -306,6 +311,7 @@ function onLoadSecondary() {
             alert("服务器异常")
         }
     });
+    isSearch=false;
 }
 
 //设置出库数据列表==>次生出库页面
@@ -1200,6 +1206,7 @@ function searchSecOutbound() {
         array.push($('.myclass'));
     }
     isSearch=true;
+    var text=$('#searchContent').val();
     //1出库日期
     var outBoundDate=$('#search-storageDate').val()+"";
     //2出库数量
@@ -1212,12 +1219,12 @@ function searchSecOutbound() {
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
-            if(!($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1
+            if(!($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
             &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
             )){
                 $(this).hide();
            }
-            if(($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1
+            if(($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1)){
                array1.push($(this));
             }
@@ -1290,7 +1297,8 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
 //粗查询
 function searchSecondaryOuntBound() {
-    onLoadSecondary();
+    isSearch=false;
+    //onLoadSecondary();
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;

@@ -128,7 +128,7 @@
         </div>
         <div class="row">
             <div class="input-group col-md-3 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch1()">
                 <span class="input-group-btn">
                             <a class="btn btn-default" onclick="search1();"><span
                                     class="glyphicon glyphicon-search"
@@ -144,40 +144,43 @@
         <div class="panel panel-default" id="senior1" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-Id" class="col-sm-4 control-label">领料单号</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-Id" name="search1-Id"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-department" class="col-sm-4 control-label">部门</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-department"
-                                       name="search1-department" placeholder="">
+                                       name="search1-department" placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search1-creationDate" class="col-sm-4 control-label">创建日期</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search1-creationDate"
-                                       name="search1-creationDate" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
+                    <div class="form-horizontal col-md-4">
                         <div class="form-group">
                             <label for="search1-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
-                                <select class="form-control" id="search1-state" name="search1-state">
+                                <select class="form-control" id="search1-state" name="search1-state" onchange="search1()">
                                     <option value="0"></option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">创建日期 </label>
+                            <div class="input-group">
+                                <input type="date" class="input-sm form-control" id="search1-startDate" title="" onkeydown="enterSearch1()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="input-sm form-control" id="search1-endDate" title="" onkeydown="enterSearch1()"/>
                             </div>
                         </div>
                     </div>

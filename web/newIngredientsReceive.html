@@ -129,7 +129,7 @@
         <div class="row">
             <!--查询框-->
             <div class="input-group col-md-3 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch1()">
                 <span class="input-group-btn">
                             <a class="btn btn-default" onclick="search1();"><span
                                     class="glyphicon glyphicon-search"
@@ -151,7 +151,7 @@
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-wareHouseName"
                                        name="search1-wareHouseName"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-name"
                                        name="search1-name"
-                                       placeholder="">
+                                       placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>
@@ -170,7 +170,7 @@
                             <label for="search1-amount" class="col-sm-4 control-label">库存量</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search1-amount"
-                                       name="search1-amount" placeholder="">
+                                       name="search1-amount" placeholder="" onkeydown="enterSearch1()">
                             </div>
                         </div>
                     </div>

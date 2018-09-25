@@ -204,6 +204,86 @@
         SELECT * FROM t_pl_inboundorder WHERE boundType='WasteInbound';
     </select>
 
+    <!--获取查询入库单的数量-->
+    <select id="searchInboundOrderCount" resultType="int">
+        select count(*) from t_pl_inboundorder
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and boundType='WasteInbound'
+                and (inboundOrderId like "%"#{keyword}"%"
+                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or recordState=#{keyword}
+                or checkState=#{keyword})
+            </if>
+            <if test="inboundOrderId != null and inboundOrderId != ''">
+                and inboundOrderId LIKE "%"#{inboundOrderId}"%"
+            </if>
+            <if test="companyId != null and companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
+                ]]>
+            </if>
+            <if test="modifierId != null and modifierId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
+                ]]>
+            </if>
+            <if test="true">
+                and boundType='WasteInbound'
+            </if>
+            <if test="recordState != null and recordState != ''">
+                and recordState = #{recordState}
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+    </select>
+
+    <!--查询入库单-->
+    <select id="searchInboundOrder" resultMap="InboundOrderRM">
+        select * from t_pl_inboundorder
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and boundType='WasteInbound'
+                and (inboundOrderId like "%"#{keyword}"%"
+                or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
+                or recordState=#{keyword}
+                or checkState=#{keyword})
+            </if>
+            <if test="inboundOrderId != null and inboundOrderId != ''">
+                and inboundOrderId LIKE "%"#{inboundOrderId}"%"
+            </if>
+            <if test="companyId != null and companyId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') >= #{companyId})
+                ]]>
+            </if>
+            <if test="modifierId != null and modifierId != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(inboundDate,'%Y-%m-%d') <= #{modifierId})
+                ]]>
+            </if>
+            <if test="true">
+                and boundType='WasteInbound'
+            </if>
+            <if test="recordState != null and recordState != ''">
+                and recordState = #{recordState}
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+        order by  nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
     <!--列出次生入库单-->
     <select id="listSecondInboundOrder" resultMap="InboundOrderRM">
         SELECT * FROM t_pl_inboundorder WHERE boundType='SecondaryInbound';

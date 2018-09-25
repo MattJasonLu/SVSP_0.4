@@ -454,16 +454,6 @@ function importExcel() {
 }
 
 /**
- * 重置功能
- */
-function reset() {
-    // $("#senior").find("input").val("");
-    // $("#senior").find("select").get(0).selectedIndex = -1;
-    // $("#searchContent").val("");
-    window.location.reload();
-}
-
-/**
  * 回车查询
  */
 function enterSearch() {
@@ -493,7 +483,8 @@ function searchProductionPlan() {
         data = {
             id: $("#search-id").val(),
             founder: $("#search-founder").val(),
-            advice: $("#search-creationDate").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             state: state,
             page: page
         };

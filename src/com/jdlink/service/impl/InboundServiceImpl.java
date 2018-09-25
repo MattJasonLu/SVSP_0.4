@@ -107,6 +107,16 @@ public class InboundServiceImpl implements InboundService {
     }
 
     @Override
+    public List<InboundOrder> searchInboundOrder(InboundOrder inboundOrder) {
+        return inboundMapper.searchInboundOrder(inboundOrder);
+    }
+
+    @Override
+    public int searchInboundOrderCount(InboundOrder inboundOrder) {
+        return inboundMapper.searchInboundOrderCount(inboundOrder);
+    }
+
+    @Override
     public void setInboundOrderStateInvalid(String inboundOrderId) {
         inboundMapper.setInboundOrderStateInvalid(inboundOrderId);
     }

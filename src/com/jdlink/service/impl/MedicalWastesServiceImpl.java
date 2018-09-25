@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.MedicalWastes;
 import com.jdlink.mapper.MedicalWastesMapper;
 import com.jdlink.service.MedicalWastesService;
@@ -24,8 +25,8 @@ public class MedicalWastesServiceImpl implements MedicalWastesService {
     }
 
     @Override
-    public List<MedicalWastes> loadMedicalWastesList() {
-        return medicalWastesMapper.loadMedicalWastesList();
+    public List<MedicalWastes> loadMedicalWastesList(Page page) {
+        return medicalWastesMapper.loadMedicalWastesList(page);
     }
 
     @Override

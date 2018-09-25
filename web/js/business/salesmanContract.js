@@ -39,26 +39,7 @@ function totalPage() {
             }
         });
     } else {
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchTransferDraftTotal",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
+        totalRecord = array1.length;
     }
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
@@ -171,25 +152,15 @@ function switchPage(pageNumber) {
             }
         });
     } else {
-        data['page'] = page;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "searchTransferDraft",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result !== undefined && result.status === "success") {
-                    setDataList(result.data);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
+        for(var i=0;i<array1.length;i++){
+            $(array1[i]).hide();
+        }
+        var i=parseInt((pageNumber - 1) * countValue());
+        var j=parseInt((pageNumber - 1) * countValue())+parseInt(countValue() - 1);
+        for(var i=i;i<=j;i++){
+            $('#tbody2').append(array1[i]);
+            $(array1[i]).show();
+        }
     }
 }
 
@@ -248,26 +219,15 @@ function inputSwitchPage() {
                 }
             });
         } else {
-            data['page'] = page;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchTransferDraft",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result !== undefined && result.status === "success") {
-                        // console.log(result);
-                        setDataList(result.data);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
+            for(var i=0;i<array1.length;i++){
+                $(array1[i]).hide();
+            }
+            var i=parseInt((pageNumber - 1) * countValue());
+            var j=parseInt((pageNumber - 1) * countValue()) + parseInt(countValue() - 1);
+            for(var i=i;i<=j;i++){
+                $('#tbody2').append(array1[i]);
+                $(array1[i]).show();
+            }
         }
     }
 }
@@ -355,64 +315,6 @@ function setDataList(result) {
 }
 
 /**
- * 查找
- */
-function searchData() {
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.pageNumber = pageNumber;
-    page.count = countValue();
-    page.start = (pageNumber - 1) * page.count;
-    // 精确查询
-    if ($("#senior").is(':visible')) {
-        data = {
-            id: $("#search-draftId").val(),
-            checkState: $("#search-checkState").val(),
-            produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
-            },
-            transportCompany: {
-                companyName: $("#search-transportCompanyName").val()
-            },
-            acceptCompany: {
-                companyName: $("#search-acceptCompanyName").val()
-            },
-            dispatcher: $("#search-dispatcher").val(),
-            destination: $("#search-destination").val(),
-            transferTime: $("#search-transferTime").val(),
-            page: page
-        };
-        console.log(data);
-        // 模糊查询
-    } else {
-        data = {
-            keyword: $("#searchContent").val(),
-            page: page
-        };
-    }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "searchTransferDraft",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                setPageClone(result.data);
-            } else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            console.log(result);
-        }
-    });
-    isSearch = true;
-}
-
-/**
  * 通过点击的操作按钮来获取销售员的编号
  * @param e 点击的按钮
  * @returns {string} 联单编号
@@ -422,11 +324,25 @@ function getIdByMenu(e) {
 }
 
 /**
- * 查看业务员名下的所有合同
+ * 双击获取销售员编号
+ * @param e
+ * @returns {jQuery}
+ */
+function getIdByMenu1(e) {
+    return $(e).find("td[name='salesmanId']").text();
+}
+/**
+ * 双击查看业务员名下合同
  * @param e
  */
-function viewSalesmanContract(e) {
-    // 获取当前行的业务员编号
+function toView1(e){
+    localStorage.salesmanId = getIdByMenu1(e);
+    location.href = "salesmanContract.html";
+}
+/**
+ * 单击查看业务员名下的所有合同
+ */
+function toView(e){
     localStorage.salesmanId = getIdByMenu(e);
     location.href = "salesmanContract.html";
 }
@@ -446,23 +362,26 @@ var array1=[];//存放目标的tr
  * 查询功能
  */
 function searchTest() {
+    isSearch=false;
     $('.myClass2').each(function () {
         $(this).show();
     });
-    array = [];//清空数组
+    array = [];                   // 清空数组
     array1 = [];
     //分页模糊查询
-    for(var i=1;i<=totalPage();i++){
-        switchPage(parseInt(i));
+    for(var i1=1;i1<=totalPage();i1++){
+        switchPage(parseInt(i1));
         array.push($('.myClass2'));
     }
+    console.log("array:")
+    console.log(array);
+    isSearch=true;
     if ($("#senior").is(':visible')) {// 高级查询
         //搜索关键字
         var salesmanName = $('#search-salesmanName').val();
         var salesmanId = $('#search-salesmanId').val();
         var age = $('#search-age').val();
         var sex = $("#search-sex option:selected").text();
-        console.log(sex);
         for (var j = 0; j < array.length; j++) {
             $.each(array[j], function () {
                 //console.log(this);
@@ -477,11 +396,45 @@ function searchTest() {
                 }
             });
         }
-        // 将数据显示出来
-        for (var i = 0; i < array1.length; i++) {
-            $.each(array1[i], function () {
-                $('#tbody2').append(this);
+        //计算总页数
+        var total;
+        if(array1.length % countValue() === 0){
+            total=array1.length / countValue()
+        }
+        if(array1.length % countValue() > 0){
+            total=Math.ceil(array1.length / countValue());
+        }
+
+        if(array1.length / countValue() < 1){
+            total=1;
+        }
+
+        $("#totalPage").text("共" + total + "页");
+
+        var myArray = new Array();
+
+        $('.beforeClone').remove();
+        for (var i = 0; i < total; i++) {
+            var li = $("#next").prev();
+            myArray[i] = i+1;
+            var clonedLi = li.clone();
+            clonedLi.show();
+            clonedLi.find('a:first-child').text(myArray[i]);
+            clonedLi.find('a:first-child').click(function () {
+                var num = $(this).text();
+                switchPage(num);
             });
+            clonedLi.addClass("beforeClone");
+            clonedLi.removeAttr("id");
+            clonedLi.insertAfter(li);
+        }
+        for(var i=0;i<array1.length;i++){
+            array1[i].hide();
+        }
+        // 将数据显示出来
+        for(var i=0;i<countValue();i++){
+            $(array1[i]).show();
+            $('#tbody2').append((array1[i]));
         }
         // 未输入时全显示
         if (salesmanName.length <= 0 && salesmanId.length <= 0 && age.length < 0 && sex.length <= 0) {
@@ -502,24 +455,53 @@ function searchTest() {
                 }
             });
         }
-        for (var i = 0; i < array1.length; i++) {
-            $.each(array1[i], function () {
-                $('#tbody2').append(this);
-            });
+        var total;
+
+        if(array1.length%countValue()==0){
+            total=array1.length/countValue()
         }
-        if (text.length <= 0) {
-            $('.myClass2').each(function () {
-                $(this).show();
-            })
+
+        if(array1.length%countValue()>0){
+            total=Math.ceil(array1.length/countValue());
+        }
+
+        if(array1.length/countValue()<1){
+            total=1;
+        }
+
+        $("#totalPage").text("共" + total + "页");
+
+        var myArray = new Array();
+
+        $('.beforeClone').remove();
+
+        for ( i = 0; i < total; i++) {
+            var li = $("#next").prev();
+            myArray[i] = i+1;
+            var clonedLi = li.clone();
+            clonedLi.show();
+            clonedLi.find('a:first-child').text(myArray[i]);
+            clonedLi.find('a:first-child').click(function () {
+                var num = $(this).text();
+                switchPage(num);
+            });
+            clonedLi.addClass("beforeClone");
+            clonedLi.removeAttr("id");
+            clonedLi.insertAfter(li);
+        }
+
+        for(var i=0;i<array1.length;i++){
+            $(array1[i]).hide();
+        }
+
+        //首页展示
+        for(var i=0;i<countValue();i++){
+            $(array1[i]).show();
+            $('#tbody1').append((array1[i]));
+        }
+
+        if(text.length<=0){
+            loadPageList();
         }
     }
-}
-
-/**
- * 搜素重置功能
- */
-function reset(){
-    $("#senior").find("input").val("");
-    $("#search-sex").get(0).selectedIndex = -1;
-    $("#searchContent").val("");
 }

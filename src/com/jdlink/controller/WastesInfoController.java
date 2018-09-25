@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Inventory.RecordState;
 import com.jdlink.domain.Inventory.WareHouse;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.HandleCategory;
@@ -72,6 +73,15 @@ public class WastesInfoController {
         JSONObject res = new JSONObject();
         JSONArray checkStateList = JSONArray.fromArray(CheckState.values());
         res.put("checkStateList", checkStateList);
+        return res.toString();
+    }
+
+    @RequestMapping("getRecordState")
+    @ResponseBody
+    public String getRecordState() {
+        JSONObject res = new JSONObject();
+        JSONArray recordStateList = JSONArray.fromArray(RecordState.values());
+        res.put("recordStateList", recordStateList);
         return res.toString();
     }
 

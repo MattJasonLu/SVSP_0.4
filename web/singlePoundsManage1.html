@@ -213,17 +213,6 @@
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-driver" class="col-sm-4 control-label">司机</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-driver" name="search-driver"
-                                       placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
                             <label for="search-goods" class="col-sm-4 control-label">货物名称</label>
                             <div class="col-xs-7">
                                 <input type="text" class="form-control" id="search-goods"
@@ -231,15 +220,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-licencePlate" class="col-sm-4 control-label">入厂车牌</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-licencePlate"
-                                       name="search-licencePlate" placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-state" class="col-sm-4 control-label">状态</label>
@@ -247,6 +229,16 @@
                                 <select class="form-control" id="search-state" name="search-state"
                                         placeholder="" onchange="searchPounds()"></select>
                                 <option value="0"></option>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">创建日期 </label>
+                            <div class="input-group">
+                                <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="date" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch()"/>
                             </div>
                         </div>
                     </div>
@@ -291,7 +283,7 @@
                             <a href="#" title="查看" onclick="toView(this);"><span class="glyphicon glyphicon-search"
                                                                                  aria-hidden="true"></span></a>
                             <a href="#" title="作废" onclick="invalid(this);"><span
-                                    class="glyphicon glyphicon-remove"
+                                    class="glyphicon glyphicon-remove-sign"
                                     aria-hidden="true"></span></a>
                         </td>
                     </tr>
@@ -349,7 +341,7 @@
                 <li><a id="totalPage"></a></li>
                 <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
                 <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
-                           id="pageNumber" title=""></li>
+                           id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
                 <li class="showLi">每页显示:</li>
                 <li class="selectLi">
                     <select id="count" onchange="loadPagePoundsList();" title="">

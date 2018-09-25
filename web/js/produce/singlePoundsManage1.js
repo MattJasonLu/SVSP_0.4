@@ -556,9 +556,8 @@ function searchPounds() {
             deliveryCompany: deliveryCompany,
             receiveCompany: receiveCompany,
             goodsName: $("#search-goods").val(),
-            wayBillDate: $("#search-wayBillDate").val,
-            enterLicencePlate: $("#search-licencePlate").val(),
-            driver: $("#search-driver").val(),
+            startDate: $("#search-startDate").val(),
+            endDate: $("#search-endDate").val(),
             state: state,
             page: page
         };
