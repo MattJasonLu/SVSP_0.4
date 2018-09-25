@@ -8,8 +8,8 @@
         select medicalWastesId from t_pl_medicalwastes order by medicalWastesId desc ;
     </select>
     <insert id="addMedicalWastes" parameterType="MedicalWastes">
-        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime,equipment)
-        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment})
+        insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime,equipment,checkState)
+        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment},'Enabled')
     </insert>
     <select id="loadMedicalWastesList" resultType="MedicalWastes">
         select  * from t_pl_medicalwastes  order by nowTime desc
@@ -50,4 +50,8 @@
    <select id="total" resultType="int">
        select  count(*) from  t_pl_medicalwastes;
    </select>
+    <!--作废-->
+    <update id="cancelMedicalWastes" parameterType="String">
+        update t_pl_medicalwastes set checkState='Disabled',nowTime=NOW() where medicalWastesId=#{medicalWastesId};
+    </update>
 </mapper>
