@@ -3,6 +3,7 @@ import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.Stock;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.StockService;
+import com.jdlink.service.SupplierService;
 import com.jdlink.service.WastesInfoService;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
@@ -25,6 +26,8 @@ public class StockController {
     WastesInfoService wastesInfoService;
     @Autowired
     ClientService clientService;
+    @Autowired
+    SupplierService supplierService;
     //添加申报信息
     @RequestMapping("addStock")
     @ResponseBody
@@ -86,8 +89,10 @@ public class StockController {
             Stock stock=stockService.getById(stockId);
             JSONObject json=JSONObject.fromBean(stock);
             List<WastesInfo> wastesInfoList = wastesInfoService.list();
-           JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
+            JSONArray data = JSONArray.fromArray(wastesInfoList.toArray(new WastesInfo[wastesInfoList.size()]));
             List<Client> clientList = clientService.list();
+           List<Supplier> supplierList=supplierService.transportList();
+            res.put("supplierList",supplierList);
             res.put("clientList",clientList);
              res.put("data", data);
             res.put("stock",json);
@@ -320,6 +325,25 @@ public class StockController {
             res.put("status", "fail");
             res.put("message", "客户查询失败");
 
+        }
+        return  res.toString();
+    }
+
+    //获取所有的供应商
+    @RequestMapping("getSupplierListFromStock")
+    @ResponseBody
+    public String getSupplierListFromStock(){
+        JSONObject res=new JSONObject();
+        try {
+       List<Supplier> supplierList=supplierService.transportList();
+            res.put("data", supplierList);
+            res.put("status", "success");
+            res.put("message", "运输类供应商列表查询成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "运输类供应商列表查询失败");
         }
         return  res.toString();
     }

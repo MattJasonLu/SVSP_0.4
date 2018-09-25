@@ -1,9 +1,6 @@
 package com.jdlink.domain.Produce;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Page;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +65,20 @@ public class Stock {
      * @return
      */
     private Client client;
+
+    /**
+     * 运输类供应方
+     * @return
+     */
+    private Supplier supplier;
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
 
     public Client getClient() {
         return client;
