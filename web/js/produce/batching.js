@@ -1419,3 +1419,11 @@ function searchBatchinAdd() {
         })
     }
 }
+
+//导出
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_batchingorder';
+    var sqlWords = "select * from t_pl_batchingorder;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}

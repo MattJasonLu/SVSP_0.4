@@ -865,3 +865,11 @@ function reset() {
   //  $("#senior").find("select").get(0).selectedIndex = -1;
     LoadMaterialRequisitionOrder();
 }
+
+//导出
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_materialrequisitionorder';
+    var sqlWords = "select * from t_pl_materialrequisitionorder;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}

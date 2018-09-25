@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/time.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text" id="time" size="25"><button id="start">开始</button><button id="end">结束</button>
+</body>
+<script>
+    //setInterval 里面的函数一直循环下去
+    //setTimeout 里面的函数只执行一次 如果要做时钟的话 就在方法里套用setTime
+    // var flag=true;
+
+   // var time= setInterval(getTime,1000);//必须要 调用循环函数 time作为停止的唯一标示
+   //  $('#start').click(function () {
+   //           time= setInterval(getTime,1000);//开始
+   //  });
+   //  $('#end').click(function () {
+   //         clearInterval(time);//清除
+   //  });
+   //  //
+   // function getTime() {
+    //     var date=new Date();
+    //     $('#time').val((date));
+    // }
+    function getTime1() {
+        var date=new Date();
+        $('#time').val((date));
+         t=setTimeout(getTime1,1000);
+    }
+    getTime1();
+
+     $('#end').click(function () {
+            clearInterval(t);//清除
+     });
+
+     $('#start').click(function () {
+         t=setTimeout(getTime1,1000);
+     });
+</script>
+</html>
