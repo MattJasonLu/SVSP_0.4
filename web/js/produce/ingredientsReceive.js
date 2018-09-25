@@ -329,7 +329,7 @@ function loadPageList() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -509,6 +509,35 @@ function enterSearch(){
 }
 
 /**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    // 主页
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchData();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },600);
+    });
+    // 新增页面
+    $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                search1();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                search1();      //
+            }
+        },600);
+    });
+});
+
+/**
  * 查询功能
  */
 function searchData() {
@@ -522,16 +551,27 @@ function searchData() {
     if ($("#search-state").val() == 0) state = "NewBuild";//新建
     if ($("#search-state").val() == 1) state = "Invalid";//已作废
     if ($("#search-state").val() == 2) state = "OutBounded";//已出库
-    var keywords = $("#searchContent").val();
-    if ($("#searchContent").val() == "新建") keywords = "NewBuild";
-    if ($("#searchContent").val() == "已作废" || $("#searchContent").val() == "作废") keywords = "Invalid";
-    if ($("#searchContent").val() == "已出库" || $("#searchContent").val() == "出库") keywords = "OutBounded";
+    var keywords = $.trim($("#searchContent").val());
+    switch (keywords){
+        case("新建"): keywords = "NewBuild";break;
+        case("待审批"): keywords = "ToExamine";break;
+        case("审批中"): keywords = "Examining";break;
+        case("审批通过"): keywords = "Approval";break;
+        case("已驳回"): keywords = "Backed";break;
+        case("驳回"): keywords = "Backed";break;
+        case("已作废"): keywords = "Invalid";break;
+        case("作废"): keywords = "Invalid";break;
+        case("已确认"): keywords = "Confirm";break;
+        case("确认"): keywords = "Confirm";break;
+        case ("已出库"): keywords = "OutBounded";break;
+        case ("出库"): keywords = "OutBounded";break;
+    }
     if ($("#senior").is(':visible')) {
         data1 = {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
-            id: $("#search-Id").val(),
-            department: $("#search-department").val(),
+            id: $.trim($("#search-Id").val()),
+            department: $.trim($("#search-department").val()),
             state: state,
             page: page
         };
@@ -555,7 +595,7 @@ function searchData() {
                 if (result.data != undefined || result.status == "success") {
                     setPageClone(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {
@@ -1051,13 +1091,13 @@ function search1() {
     var ingredients;
     if ($("#senior1").is(':visible')) {
         ingredients = {
-            amount: $("#search1-amount").val(),
-            name: $("#search1-name").val(),
-            wareHouseName: $("#search1-wareHouseName").val()
+            amount: $.trim($("#search1-amount").val()),
+            name: $.trim($("#search1-name").val()),
+            wareHouseName: $.trim($("#search1-wareHouseName").val())
         };
     } else {
         ingredients = {
-            keywords: $("#searchContent1").val()
+            keywords: $.trim($("#searchContent1").val())
         };
     }
     if (ingredients == null) alert("请输入查询内容!");
@@ -1074,7 +1114,7 @@ function search1() {
                 if (result.data != undefined || result.status == "success") {
                     setInventoryList(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {

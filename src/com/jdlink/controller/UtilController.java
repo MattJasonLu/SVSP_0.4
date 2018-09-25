@@ -45,6 +45,34 @@ public class UtilController {
     }
 
     /**
+     * 导出(带表头字段)
+     *
+     * @param name
+     * @param response
+     * @param sqlWords
+     * @return
+     */
+    @RequestMapping("exportExcel2")
+    @ResponseBody
+    public String exportExcel(String name, HttpServletResponse response, String sqlWords,String tableHead) {
+        JSONObject res = new JSONObject();
+        try {
+            DBUtil db = new DBUtil();
+            byte[] bytes = tableHead.getBytes("UTF-8");
+            String tHead = new String(bytes,"UTF-8");
+            System.out.println(tHead);
+            db.exportExcel2(name, response, sqlWords,tHead);//HttpServletResponse response
+            res.put("status", "success");
+            res.put("message", "导出成功");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导出失败，请重试！");
+        }
+        return res.toString();
+    }
+
+    /**
      * 导入
      *
      * @param excelFile

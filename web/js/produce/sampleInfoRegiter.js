@@ -318,7 +318,7 @@ function loadPageSampleInformationList() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -1038,6 +1038,23 @@ function enterSearch() {
 }
 
 /**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchSampleInfo();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchSampleInfo();      //
+            }
+        },600);
+    });
+});
+
+/**
  * 查询功能
  */
 function searchSampleInfo() {
@@ -1048,7 +1065,6 @@ function searchSampleInfo() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     // 精确查询
-    console.log($("#search-state").find("option:selected").text());
     var applyState = null;
     if ($("#search-state").val() == 0) applyState = "Appointed";
     if ($("#search-state").val() == 1) applyState = "Canceld";
@@ -1056,10 +1072,10 @@ function searchSampleInfo() {
     if ($("#search-state").val() == 3) applyState = "Invalid";
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-id").val(),
-            companyCode: $("#search-companyCode").val(),
-            wastesCode: $("#search-wastesCode").val(),
-            laboratorySigner: $("#search-signer").val(),
+            id: $.trim($("#search-id").val()),
+            companyCode: $.trim($("#search-companyCode").val()),
+            wastesCode: $.trim($("#search-wastesCode").val()),
+            laboratorySigner:$.trim( $("#search-signer").val()),
             applyState: applyState,
             isPH: $("#isPH1").prop("checked"),
             isAsh: $("#isAsh1").prop("checked"),
@@ -1076,7 +1092,7 @@ function searchSampleInfo() {
         console.log(data);
         // 模糊查询
     } else {
-        var keywords = $("#searchContent").val();
+        var keywords = $.trim($("#searchContent").val());
         switch (keywords) {
             case "闪点":
                 var isFlashPoint = true;
@@ -1158,7 +1174,7 @@ function searchSampleInfo() {
             if (result.data != undefined || result.status == "success") {
                 setPageClone(result.data);
             } else {
-                alert(result.message);
+                console.log(result.message);
             }
         },
         error: function (result) {

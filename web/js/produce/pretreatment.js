@@ -333,7 +333,7 @@ function loadPagePretreatmentList() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -519,6 +519,35 @@ function enterSearch(){
 }
 
 /**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    // 主页
+    $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchPretreatment();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchPretreatment();      //
+            }
+        },600);
+    });
+    // 新增页面
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchOutBoundOrder();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchOutBoundOrder();      //
+            }
+        },600);
+    });
+});
+
+/**
  * 查询功能
  */
 function searchPretreatment() {
@@ -534,15 +563,14 @@ function searchPretreatment() {
     if ($("#search-state").val() == 2) state = "Invalid";//已作废
     if ($("#senior").is(':visible')) {
         data1 = {
-            id: $("#search-id").val(),
-            searchDate: $("#search-creationDate").val(),
+            id: $.trim($("#search-id").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
             state: state,
             page: page
         };
     }else{
-        var keywords = $("#searchContent1").val();
+        var keywords = $.trim($("#searchContent1").val());
         switch (keywords){
             case("新建"): keywords = "NewBuild";break;
             case("待审批"): keywords = "ToExamine";break;
@@ -575,7 +603,7 @@ function searchPretreatment() {
                 if (result.data != undefined || result.status == "success") {
                     setPageClone(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {
@@ -1507,23 +1535,23 @@ function searchOutBoundOrder() {
     if ($("#search1-checkState").val() === 3) checkState = "OutBounded";//已出库
     if ($("#search1-checkState").val() === 4) checkState = "Invalid";//作废
     var client = {};
-    client.companyName = $("#search1-client").val();
+    client.companyName = $.trim($("#search1-client").val());
     var wareHouse = {};
-    wareHouse.wareHouseId = $("#search1-wareHouseId").val();
+    wareHouse.wareHouseId = $.trim($("#search1-wareHouseId").val());
     if ($("#senior1").is(':visible')) {
         data = {
             wareHouse: wareHouse,
-            departmentName: $("#search1-departmentName").val(),
+            departmentName: $.trim($("#search1-departmentName").val()),
             startDate: $("#search1-startDate").val(),
             endDate: $("#search1-endDate").val(),
-            outboundOrderId: $("#search1-outboundOrderId").val(),
+            outboundOrderId: $.trim($("#search1-outboundOrderId").val()),
             recordState: recordState,
             checkState: checkState,
-            transferDraftId: $("#search1-transferDraftId").val(),
+            transferDraftId: $.trim($("#search1-transferDraftId").val()),
             client: client
         };
     }else {
-        var keywords = $("#searchContent").val();
+        var keywords = $.trim($("#searchContent").val());
         switch (keywords){
             case("删除"): keywords = "Delete";break;
             case("可用"): keywords = "Usable";break;
@@ -1564,7 +1592,7 @@ function searchOutBoundOrder() {
                 if (result.data != undefined || result.status == "success") {
                     setOutBoundOrderList(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {

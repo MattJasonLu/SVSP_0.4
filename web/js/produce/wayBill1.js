@@ -310,7 +310,7 @@ function loadPageWayBillList() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -490,6 +490,22 @@ function enterSearch(){
     }
 }
 
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchWayBill();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchWayBill();      //
+            }
+        },600);
+    });
+});
 
 /**
  * 查询功能
@@ -502,26 +518,26 @@ function searchWayBill() {
     page.count = countValue();
     page.start = (pageNumber - 1) * page.count;
     var state = null;
-    if ($("#search-wayBillState").val() == 0) state = "NewBuild";//新建
-    if ($("#search-wayBillState").val() == 1) state = "ToExamine";//待审批
-    if ($("#search-wayBillState").val() == 2) state = "Examining";//审批中
-    if ($("#search-wayBillState").val() == 3) state = "Approval";//审批通过
-    if ($("#search-wayBillState").val() == 4) state = "Backed";//驳回
+    if ($("#search-wayBillState").val() === 0) state = "NewBuild";//新建
+    if ($("#search-wayBillState").val() === 1) state = "ToExamine";//待审批
+    if ($("#search-wayBillState").val() === 2)state = "Examining";//审批中
+    if ($("#search-wayBillState").val() === 3) state = "Approval";//审批通过
+    if ($("#search-wayBillState").val() === 4) state = "Backed";//驳回
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-id").val(),
-            produceCompanyName:  $("#search-companyName").val(),
-            total: $("#search-total").val(),
-            freight: $("#search-freight").val(),
-            founder: $("#search-founder").val(),
+            id: $.trim($("#search-id").val()),
+            produceCompanyName:  $.trim($("#search-companyName").val()),
+            total: $.trim($("#search-total").val()),
+            freight: $.trim($("#search-freight").val()),
+            founder: $.trim($("#search-founder").val()),
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
-            produceCompanyOperator: $("#search-operator").val(),
+            produceCompanyOperator: $.trim($("#search-operator").val()),
             state: state,
             page: page
         };
     }else{
-        var keywords = $("#searchContent").val();
+        var keywords = $.trim($("#searchContent").val());
         switch (keywords){
             case("新建"): keywords = "NewBuild";break;
             case("待审批"): keywords = "ToExamine";break;
@@ -533,6 +549,8 @@ function searchWayBill() {
             case("作废"): keywords = "Invalid";break;
             case("已确认"): keywords = "Confirm";break;
             case("确认"): keywords = "Confirm";break;
+            case ("已出库"): keywords = "OutBounded";break;
+            case ("出库"): keywords = "OutBounded";break;
         }
         data={
             page:page,
@@ -555,7 +573,7 @@ function searchWayBill() {
                 if (result.data != undefined || result.status == "success") {
                     setPageClone(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {
