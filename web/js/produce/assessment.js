@@ -289,6 +289,35 @@ function enterSearch(){
     }
 }
 
+/**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    // 业务员列表页面
+    $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                search1();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                search1();      //
+            }
+        },600);
+    });
+    // 合同明细页面
+    $('#searchContent2').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                search2();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                search2();      //
+            }
+        },600);
+    });
+});
+
 var array = [];//存放所有的tr
 var array1 = [];//存放目标的tr
 /**
@@ -303,9 +332,9 @@ function search1() {
     array.push($('.myclass'));
     if ($("#senior1").is(':visible')) {// 高级查询
         //搜索关键字
-        var salesmanId = $('#search1-salesmanId').val();
-        var salesmanName = $('#search1-salesmanName').val();
-        var wayBillTotalPrice = $('#search1-wayBillTotalPrice').val();
+        var salesmanId = $.trim($('#search1-salesmanId').val());
+        var salesmanName = $.trim($('#search1-salesmanName').val());
+        var wayBillTotalPrice = $.trim($('#search1-wayBillTotalPrice').val());
         for (var j = 0; j < array.length; j++) {
             $.each(array[j], function () {
                 //console.log(this);
@@ -333,7 +362,7 @@ function search1() {
         }
     } else {
         // 模糊查询
-        var text = $('#searchContent1').val();
+        var text = $.trim($('#searchContent1').val());
         for (var j = 0; j < array.length; j++) {
             $.each(array[j], function () {
                 if (($(this).children('td').text().indexOf(text) == -1)) {
@@ -507,9 +536,9 @@ function search2() {
     array.push($('.myClass2'));
     if ($("#senior2").is(':visible')) {// 高级查询
         //搜索关键字
-        var produceCompanyName = $('#search2-produceCompanyName').val();
-        var accountDate = $('#search2-accountDate').val();
-        var remarks = $('#search2-remarks').val();
+        var produceCompanyName = $.trim($('#search2-produceCompanyName').val());
+        var accountDate = $.trim($('#search2-accountDate').val());
+        var remarks = $.trim($('#search2-remarks').val());
         for (var j = 0; j < array.length; j++) {
             $.each(array[j], function () {
                 //console.log(this);
@@ -537,7 +566,7 @@ function search2() {
         }
     } else {
         // 模糊查询
-        var text = $('#searchContent2').val();
+        var text = $.trim($('#searchContent2').val());
         for (var j = 0; j < array.length; j++) {
             $.each(array[j], function () {
                 if (($(this).children('td').text().indexOf(text) == -1)) {

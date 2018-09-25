@@ -340,7 +340,7 @@ function loadPageIngredientsInList() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -537,16 +537,21 @@ function searchIngredientIn() {
     if ($("#search-state").val() == 0) state = "NewBuild";//新建
     if ($("#search-state").val() == 1) state = "Invalid";//已作废
     if ($("#search-state").val() == 2) state = "OutBounded";//已出库
-    var keywords = $("#searchContent").val();
+    var keywords = $.trim($("#searchContent").val());
     //模糊查询状态字段转换
-    if ($("#searchContent").val() === "新建") keywords = "NewBuild";
-    if ($("#searchContent").val() === "已作废" || $("#searchContent").val() === "作废") keywords = "Invalid";
+    switch(keywords){
+        case "新建":keywords = "NewBuild";break;
+        case "已作废":keywords = "Invalid";break;
+        case "作废":keywords = "Invalid";break;
+        case "已出库":keywords = "OutBounded";break;
+        case "出库":keywords = "OutBounded";break;
+    }
     if ($("#senior").is(':visible')) {
         data1 = {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
-            id: $("#search-Id").val(),
-            companyName: $("#search-companyName").val(),
+            id: $.trim($("#search-Id").val()),
+            companyName: $.trim($("#search-companyName").val()),
             state: state,
             page: page
         };
@@ -570,7 +575,7 @@ function searchIngredientIn() {
                 if (result.data != undefined || result.status == "success") {
                     setPageClone(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {
@@ -1299,20 +1304,49 @@ function enterSearch1(){
 }
 
 /**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    // 新增页面
+    $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                search1();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                search1();      //
+            }
+        },600);
+    });
+    // 主页
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchIngredientIn();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchIngredientIn();      //
+            }
+        },600);
+    });
+});
+
+/**
  * 新增页面查询功能
  */
 function search1() {
     var procurement;
     if ($("#senior1").is(':visible')) {
         procurement = {
-            receiptNumber: $("#search1-receiptNumber").val(),
+            receiptNumber: $.trim($("#search1-receiptNumber").val()),
             applyMouth: $("#search1-applyMouth option:selected").text().replace(/[^0-9]/ig, ""),
-            suppliesCategory: $("#search1-suppliesCategory").val(),
-            applyDepartment: $("#search1-applyDepartment").val()
+            suppliesCategory: $.trim($("#search1-suppliesCategory").val()),
+            applyDepartment: $.trim($("#search1-applyDepartment").val())
         };
     } else {
         procurement = {
-            keywords: $("#searchContent1").val()
+            keywords: $.trim($("#searchContent1").val())
         };
     }
     if (procurement == null) alert("请输入查询内容!");
@@ -1327,7 +1361,7 @@ function search1() {
             success: function (result) {
                 if (result.status == "success") {
                     setProcurementList(result);
-                } else alert(result.message);
+                } else console.log(result.message);
             },
             error: function (result) {
                 console.log(result.message);

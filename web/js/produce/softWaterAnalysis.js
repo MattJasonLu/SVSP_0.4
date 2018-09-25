@@ -307,7 +307,7 @@ function loadPageSoftWaterList() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -388,6 +388,7 @@ function setSoftWaterList(result) {
 function exportExcel() {
     var name = 't_pr_softwater';
     var sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater;";
+   // var tableHead = "编号/软水名称/软水接收日期/相对碱度/溶解固形物/PH/碱度/硬度/电导率/备注";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -455,6 +456,23 @@ function enterSearch(){
 }
 
 /**
+ * 延时自动查询
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                searchSoftWater();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchSoftWater();      //
+            }
+        },600);
+    });
+});
+
+/**
  * 污水分析日报查询功能
  */
 function searchSoftWater() {
@@ -468,13 +486,13 @@ function searchSoftWater() {
         data1 = {
             startDate: $("#search-startDate").val(),
             endDate: $("#search-endDate").val(),
-            name: $("#search-softWaterName").val(),
-            remarks: $("#search-remarks").val(),
+            name: $.trim($("#search-softWaterName").val()),
+            remarks: $.trim($("#search-remarks").val()),
             page: page
         };
     }else{
         data1 = {
-            keywords: $("#searchContent").val(),
+            keywords: $.trim($("#searchContent").val()),
             page: page
         };
     }
@@ -492,7 +510,7 @@ function searchSoftWater() {
                 if (result.data != undefined || result.status == "success") {
                     setPageClone(result.data);
                 } else {
-                    alert(result.message);
+                    console.log(result.message);
                 }
             },
             error: function (result) {
