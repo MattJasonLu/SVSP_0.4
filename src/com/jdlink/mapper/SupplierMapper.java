@@ -29,6 +29,7 @@ public interface SupplierMapper {
     void update(Supplier supplier);
 
     List<Supplier> list();
+    List<Supplier> transportList();
 
     List<Supplier> listPage(Page page);
 

@@ -155,7 +155,10 @@
     <select id="list" resultMap="SupplierRM">
         select * from t_supplier order by nowTime desc ;
     </select>
-
+    <!--获取运输类供应商-->
+    <select id="transportList" resultMap="SupplierRM">
+        select * from t_supplier  where supplierType='Transport' order by nowTime desc ;
+    </select>
     <select id="listPage" resultMap="SupplierRM">
        select * from t_supplier order by nowTime desc
        <if test="start != null and count != null">

@@ -1389,6 +1389,7 @@
      * 查询预约单
      */
     function searchSample() {
+        isSearch = true;
         var keyword = $("#searchContent").val();
         $.ajax({
             type: "POST",                            // 方法类型

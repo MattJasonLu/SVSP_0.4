@@ -100,4 +100,9 @@ public class SupplierServiceImpl implements SupplierService {
     public void setFilePath(Supplier supplier) {
         supplierMapper.setFilePath(supplier);
     }
+
+    @Override
+    public List<Supplier> transportList() {
+        return supplierMapper.transportList();
+    }
 }
