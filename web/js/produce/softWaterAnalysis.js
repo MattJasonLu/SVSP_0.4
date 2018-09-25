@@ -386,7 +386,6 @@ function setSoftWaterList(result) {
  * @param e
  */
 function exportExcel() {
-    console.log("export");
     var name = 't_pr_softwater';
     var sqlWords = "select id as '编号', name as '软水名称',receiveDate as '软水接收日期',relativeAlkalinity as '相对碱度',dissolvedSolidForm as '溶解固形物',PH,alkalinity as '碱度',hardness as '硬度',electricalConductivity as '电导率',remarks as '备注' from t_pr_softwater;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
