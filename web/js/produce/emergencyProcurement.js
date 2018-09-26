@@ -529,7 +529,7 @@ function setEmProcurementList(result) {
                         break;
                     // 需用时间
                     case (2):
-                        $(this).html(getDateStr(obj.demandTime));
+                        $(this).html((obj.demandTime));
                         break;
                     // 申请部门
                     case (3):

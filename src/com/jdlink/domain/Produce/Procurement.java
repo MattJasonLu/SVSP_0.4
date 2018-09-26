@@ -163,6 +163,19 @@ public class Procurement {
     /**
      * 采购类别(true 为月季采购，false为应急采购)
      */
+    /**
+     * 创建日期
+     */
+    private  Date createDate;
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
     private boolean procurementCategory;
 
     public String getSuppliesCategory() {

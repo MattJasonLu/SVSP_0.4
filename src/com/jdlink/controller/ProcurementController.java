@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -274,7 +275,7 @@ public class ProcurementController {
               receiptNumber=get4(receiptNumberList.get(0));
           }
             procurement.setReceiptNumber(receiptNumber);//注入
-
+            procurement.setProcurementCategory(true);
              if(String.valueOf(data.get(i)[3][2])!="null"){
                  procurement.setApplyMouth(String.valueOf(data.get(i)[3][2]));//申请月份
              }
@@ -391,6 +392,25 @@ public class ProcurementController {
 
 
     }
-
+    /**
+     * 获得最早的创建日期
+     */
+    @RequestMapping("getNewestMouth")
+    @ResponseBody
+    public String getNewestMouth(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Date> dateList=procurementService.getNewestMouth();
+            res.put("status", "success");
+            res.put("message", "查询最早创建时间成功");
+            res.put("dateList", dateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早创建时间失败");
+        }
+        return  res.toString();
+    }
 
 }
