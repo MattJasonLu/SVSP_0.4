@@ -491,27 +491,24 @@ function searchContract() {
     array.length=0;//清空数组
     array1.length=0;
 
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
 
-    var companyName=$('#search-companyName').val();//产废单位
+    var companyName=$.trim($('#search-companyName').val());//产废单位
 
-    var checkState=$('#search-checkState option:selected').text();
+    var checkState=$.trim($('#search-checkState option:selected').text());
 
 
-    var suppierName=$('#search-suppierName').val();//处置单位
+    var suppierName=$.trim($('#search-suppierName').val());//处置单位
 
-    var contactName=$('#search-contactName').val();
+    var contactName=$.trim($('#search-contactName').val());
 
-    var beginTime=$('#beginTime').val();
+    var beginTime=$.trim($('#beginTime').val());
 
-    var endTime=$('#endTime').val();
+    var endTime=$.trim($('#endTime').val());
 
     var startDate=getDateByStr(beginTime);
 
     var endDate=getDateByStr(endTime);
-
-    console.log(companyName)
-
 
     if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
         $('#Wa').click();
@@ -768,7 +765,7 @@ function searchFuzzy() {
     //分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
         $('#Wa').click();
         localStorage.clear();

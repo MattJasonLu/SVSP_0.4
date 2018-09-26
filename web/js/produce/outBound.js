@@ -936,16 +936,16 @@ function searchWasteOut() {
     }
     isSearch=true;
 // console.log(array);
-    var text=$('#searchContent').val();
-//1出库日期
-    var outBoundDate=$('#search-storageDate').val()+"";
-    var endDate=$('#search-endDate').val();
+    var text=$.trim($('#searchContent').val());
+   //1出库日期
+    var outBoundDate=$.trim($('#search-storageDate').val());
+    var endDate=$.trim($('#search-endDate').val());
     //2出库数量
-    var outBoundNumber=$('#search-storageQuantity').val();
-    //3出库单号
-    var outboundOrderId =$('#search-storageNumber').val();
+    var outBoundNumber=$.trim($('#search-storageQuantity').val());
+    //3业务员
+    var salesman =$.trim($('#search-storageNumber').val());
     //4进料方式
-    var processWay=$('#search-materialForm option:selected').text();
+    var processWay=$.trim($('#search-materialForm option:selected').text());
    var startDate=getDateByStr(outBoundDate);
    var endDate=getDateByStr(endDate);
    console.log(startDate+endDate);
@@ -958,13 +958,13 @@ function searchWasteOut() {
               endDate=new Date();
           }
                 if(!($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
+                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
                     &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
                 )){
                     $(this).hide();
                 }
                 if(($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1)
+                    &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(3).text().indexOf(salesman)!=-1)
                     &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
                 ){
                     array1.push($(this));
@@ -1052,7 +1052,7 @@ function searchOutBound() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
