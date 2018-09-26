@@ -388,7 +388,7 @@ function search1(){
     }
     isSearch=true;
 
-     var text = $('#search').val();//获取文本框输入
+     var text =  $.trim($('#search').val());//获取文本框输入
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -462,6 +462,29 @@ function searchSec() {
     $('.myclass').each(function () {
         $(this).show();
     });
+    var date;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestInBoundDateSec",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                date=getDateStr(result.dateList[0]);
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+
+    });
+
     //1分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
@@ -471,21 +494,33 @@ function searchSec() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text = $('#search').val();//获取文本框输入
-    var  inDate=$('#search-inDate').val()+"";
-    var  companyName=$('#search-client').val();
-    var options=$("#search-type option:selected");
-    var handelCategory=options.text();
+    var text = $.trim($('#search').val());//获取文本框输入
+    //入库日期
+    var  inDate= $.trim($('#search-inDate').val());
+    var endDate= $.trim($('#search-endDate').val());
+    var  companyName= $.trim($('#search-client').val());
+    var handelCategory=$.trim($("#search-type option:selected").text());
+    var wastesName=$.trim($("#search-wastesName").val());
+    var startDate=getDateByStr(inDate);
+    var endDate=getDateByStr(endDate);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            //console.log(this);
-            if(!($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
-            &&$(this).children('td').text().indexOf(text)!=-1
+            if(startDate.toString()=='Invalid Date'){
+                startDate=getDateByStr(date);
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=new Date();
+            }
+            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+            &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(7).text().indexOf(wastesName)!=-1
+                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(2).text().indexOf(inDate)!=-1&&$(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
-                &&$(this).children('td').text().indexOf(text)!=-1)){
+            if(($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
+                &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(7).text().indexOf(wastesName)!=-1
+                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
+            )){
                array1.push($(this));
             }
         });

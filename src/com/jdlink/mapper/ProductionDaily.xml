@@ -411,6 +411,62 @@
         ]]>;
     </select>
 
+    <!--搜索日报-->
+    <select id="searchProductionDaily" resultMap="ProductionDailyRM">
+        select * from t_rp_productiondaily
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
+                or checkState=#{keyword}
+            </if>
+            <if test="parkingReason != null and parkingReason != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(date,'%Y-%m-%d') >= #{parkingReason})
+                ]]>
+            </if>
+            <if test="otherIssue != null and otherIssue != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(date,'%Y-%m-%d') <= #{otherIssue})
+                ]]>
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+        order by  nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count};
+        </if>
+    </select>
+
+    <!--搜索日报的数量-->
+    <select id="searchProductionDailyCount" resultType="int">
+        select count(*) from t_rp_productiondaily
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and (DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
+                or checkState=#{keyword}
+            </if>
+            <if test="parkingReason != null and parkingReason != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(date,'%Y-%m-%d') >= #{parkingReason})
+                ]]>
+            </if>
+            <if test="otherIssue != null and otherIssue != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(date,'%Y-%m-%d') <= #{otherIssue})
+                ]]>
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+    </select>
+
     <!--更改日报的状态-->
     <update id="setProductionDailyState">
         update t_rp_productiondaily set checkState=#{checkState} where id=#{id};

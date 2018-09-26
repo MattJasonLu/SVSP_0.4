@@ -1070,7 +1070,7 @@ catch (Exception e){
         return res.toString();
 
     }
-    //获取最早的出库日期
+    //获取最早的出库日期 ==》危废
     @RequestMapping("getNewestDate")
     @ResponseBody
     public String getNewestDate(){
@@ -1088,7 +1088,7 @@ catch (Exception e){
      }
        return  res.toString();
     }
-    //获取最早的入库日期
+    //获取最早的入库日期危废
     @RequestMapping("getNewestInBoundDate")
     @ResponseBody
     public String getNewestInBoundDate(){
@@ -1106,4 +1106,44 @@ catch (Exception e){
         }
         return  res.toString();
     }
+
+    //获取最早的入库日期次生
+    @RequestMapping("getNewestInBoundDateSec")
+    @ResponseBody
+    public String getNewestInBoundDateSec(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Date> dateList=wasteInventoryService.getNewestInBoundDateSec();
+            res.put("status", "success");
+            res.put("message", "查询最早出库时间成功");
+            res.put("dateList", dateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早出库时间失败");
+        }
+        return  res.toString();
+    }
+
+    //获取最早的出库日期 ==》次生
+    @RequestMapping("getNewestDateSec")
+    @ResponseBody
+    public String getNewestDateSec(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Date> dateList=outboundOrderService.getNewestDateSec();
+            res.put("status", "success");
+            res.put("message", "查询最早出库时间成功");
+            res.put("dateList", dateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早出库时间失败");
+        }
+        return  res.toString();
+    }
+
+
 }

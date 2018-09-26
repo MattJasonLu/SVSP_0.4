@@ -185,8 +185,10 @@ public class InboundController {
     @ResponseBody
     public int searchInboundOrderCount(@RequestBody InboundOrder inboundOrder) {
         try {
+            // 设置入库类别为危废入库
+            inboundOrder.setBoundType(BoundType.WasteInbound);
             return inboundService.searchInboundOrderCount(inboundOrder);
-        }catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -202,6 +204,52 @@ public class InboundController {
     public String searchInboundOrder(@RequestBody InboundOrder inboundOrder) {
         JSONObject res = new JSONObject();
         try {
+            // 设置入库类别为危废入库
+            inboundOrder.setBoundType(BoundType.WasteInbound);
+            List<InboundOrder> inboundOrderList = inboundService.searchInboundOrder(inboundOrder);
+            JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
+            // 获取入库单列表
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取查询入库单数量
+     * @param inboundOrder 入库单
+     * @return 入库单数量
+     */
+    @RequestMapping("searchSecondInboundOrderCount")
+    @ResponseBody
+    public int searchSecondInboundOrderCount(@RequestBody InboundOrder inboundOrder) {
+        try {
+            // 设置入库类别为次生入库
+            inboundOrder.setBoundType(BoundType.SecondaryInbound);
+            return inboundService.searchInboundOrderCount(inboundOrder);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 查询次生入库单
+     * @param inboundOrder 查询信息
+     * @return 次生入库单查询结果
+     */
+    @RequestMapping("searchSecondInboundOrder")
+    @ResponseBody
+    public String searchSecondInboundOrder(@RequestBody InboundOrder inboundOrder) {
+        JSONObject res = new JSONObject();
+        try {
+            // 设置入库类别为次生入库
+            inboundOrder.setBoundType(BoundType.SecondaryInbound);
             List<InboundOrder> inboundOrderList = inboundService.searchInboundOrder(inboundOrder);
             JSONArray data = JSONArray.fromArray(inboundOrderList.toArray(new InboundOrder[inboundOrderList.size()]));
             // 获取入库单列表

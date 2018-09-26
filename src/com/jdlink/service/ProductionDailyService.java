@@ -84,4 +84,18 @@ public interface ProductionDailyService {
      * @param id 日报编号
      */
     void deleteProductionDaily(int id);
+
+    /**
+     * 搜索日报
+     * @param productionDaily 参数
+     * @return 搜索到的日报
+     */
+    List<ProductionDaily> searchProductionDaily(ProductionDaily productionDaily);
+
+    /**
+     * 搜索日报的数量
+     * @param productionDaily 参数
+     * @return 数量
+     */
+    int searchProductionDailyCount(ProductionDaily productionDaily);
 }

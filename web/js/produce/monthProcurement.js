@@ -234,10 +234,9 @@ function inputSwitchPage() {
 
 
 function reset() {
-    $("#search-Id").val("");
-    $("#search-wastesCode").val("");
-    $("#search-wastesType").val("");
-    $("#search-company").val("");
+    $('#searchContent').val(" ");
+    $('#senior').find('input').val('');
+    getMontnProcurement();
 }
 
 
@@ -292,7 +291,7 @@ function saveMonth() {
     //1获取除物料需求外的数据
     //在添加物料表
     data={
-        applyMouth:$('#applyMonth').val(),
+        applyMouth:$('#applyMonth option:selected').text(),
         demandTime:$('#demandTime').val(),
         applyDepartment:$('#applyDepartment').val(),
         proposer:$('#proposer').val(),
@@ -302,6 +301,7 @@ function saveMonth() {
         generalManager:$('#generalManager').val(),
         procurementCategory:1//代表是月季采购
     }
+    console.log(data)
     //执行添加到后台的ajax
     $.ajax({
         type: "POST",                       // 方法类型
@@ -671,39 +671,96 @@ function setMonthProcurementListModal(result) {
 }
 //高级查询
 function searchProcurement() {
-    if ($("#senior").is(':visible')) {
-        data = {
-            receiptNumber: $("#search-receiptNumber").val(),
-            applyMouth: $("#search-applyMouth").val(),
-            demandTime: $("#search-demandTime").val(),
-            applyDepartment: $("#search-applyDepartment").val(),
-            proposer: $("#search-proposer").val(),
-            divisionHead: $("#search-divisionHead").val(),
-            purchasingDirector: $("#search-purchasingDirector").val(),
-            purchasingHead:$("#search-purchasingHead").val(),
-            generalManager:$("#search-generalManager").val(),
-        };
-        //console.log(data);
+    isSearch=false;
+    array.length=0;//清空数组
+    array1.length=0;//清空数组
+    //1分页模糊查询
+    for(var i=totalPage();i>0;i--){
+        switchPage(parseInt(i));
+        array.push($('.myclass'));
     }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "searchProcurement",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                //console.log(result);
-                setMonthProcurementList(result);
-            } else {
-                alert(result.message);
+    isSearch=true;
+    var text=$.trim($('#searchContent').val());
+        data = {
+            //receiptNumber: $.trim($("#search-receiptNumber").val()),
+            applyMouth: $.trim($("#search-applyMouth").val()),
+            demandTime: $.trim($("#search-demandTime").val()),
+            applyDepartment: $.trim($("#search-applyDepartment").val()),
+            proposer: $.trim($("#search-proposer").val()),
+            divisionHead: $.trim($("#search-divisionHead").val()),
+            purchasingDirector: $.trim($("#search-purchasingDirector").val()),
+            purchasingHead:$.trim($("#search-purchasingHead").val()),
+            generalManager:$.trim($("#search-generalManager").val()),
+        };
+
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(!($(this).children('td').eq(1).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(3).text().indexOf(data.applyDepartment)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(7).text().indexOf(data.purchasingHead)!=-1
+                &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
+
+            )){
+                $(this).hide();
             }
-        },
-        error: function (result) {
-            console.log(result);
-        }
-    });
+            if(($(this).children('td').eq(1).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(3).text().indexOf(data.applyDepartment)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(7).text().indexOf(data.purchasingHead)!=-1
+                &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
+
+            )){
+                array1.push($(this));
+            }
+        });
+    }
+
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+    for(var i=0;i<array1.length;i++){
+        array1[i].hide();
+    }
+
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+
 }
 //加载辅料列表
 function getIngredientsList() {
@@ -773,7 +830,7 @@ function searchWastesAnalysis() {
         array.push($('.myclass'));
     }
     isSearch = true;
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -849,4 +906,58 @@ function exportExcel() {
     var name = 't_pl_procurement';
     var sqlWords = "select * from t_pl_procurement where procurementCategory='1'";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
+/**
+ *
+ * 导入
+ * @returns {string}
+ */
+
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+/*导入月季采购需求*/
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importMonthProcurementExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+/**
+ * 下载模板
+ * */
+
+function downloadModal() {
+    var filePath = 'model/materialDemand.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
 }
