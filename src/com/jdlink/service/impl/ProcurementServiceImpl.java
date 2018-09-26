@@ -74,4 +74,9 @@ public class ProcurementServiceImpl implements ProcurementService {
     public List<Date> getNewestMouth() {
         return procurementMapper.getNewestMouth();
     }
+
+    @Override
+    public List<Date> getNewestEm() {
+        return procurementMapper.getNewestEm();
+    }
 }

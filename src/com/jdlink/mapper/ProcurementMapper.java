@@ -19,4 +19,5 @@ public interface ProcurementMapper {
     int totalMouth();
     int totalEmc();
     List<Date>getNewestMouth();
+    List<Date>getNewestEm();
 }

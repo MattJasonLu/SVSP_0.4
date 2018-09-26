@@ -19,4 +19,5 @@ public interface ProcurementService {
     int totalMouth();
     int totalEmc();
     List<Date>getNewestMouth();
+    List<Date>getNewestEm();
 }

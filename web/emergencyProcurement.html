@@ -124,17 +124,41 @@
                     <div class="row">
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-receiptNumber" class="col-sm-4 control-label">申请单编号</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-receiptNumber" name="search-receiptNumber" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="search-suppliesCategory" class="col-sm-4 control-label">物资类别</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-suppliesCategory" name="search-suppliesCategory" placeholder="">
                                 </div>
                             </div>
+
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-applyDate" class="col-sm-4 control-label">申请日期</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-applyDate" name="search-applyDate" placeholder="">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <!--<div class="form-group">-->
+                            <!--<label for="search-demandTime" class="col-sm-4 control-label">需求时间</label>-->
+                            <!--<div class="col-xs-7">-->
+                            <!--<input type="text" class="form-control" id="search-demandTime" name="search-demandTime" placeholder="">-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <label for="search-divisionHead" class="col-sm-4 control-label">生产部门主管</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-divisionHead" name="search-divisionHead" placeholder="">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
                                 <label for="search-proposer" class="col-sm-4 control-label">申购部门负责人</label>
                                 <div class="col-xs-7">
@@ -144,17 +168,23 @@
                         </div>
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-applyDate" class="col-sm-4 control-label">申请日期</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-applyDate" name="search-applyDate" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="search-purchasingDirector" class="col-sm-4 control-label">采购部门负责人</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-purchasingDirector" name="search-purchasingDirector" placeholder="">
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group">
+                                <label for="search-applyDepartment" class="col-sm-4 control-label">申请部门</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-applyDepartment" name="search-applyDepartment" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-horizontal col-md-4">
                             <div class="form-group">
                                 <label for="search-generalManager" class="col-sm-4 control-label">总经理</label>
                                 <div class="col-xs-7">
@@ -163,25 +193,16 @@
                             </div>
                         </div>
                         <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-demandTime" class="col-sm-4 control-label">需求时间</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-demandTime" name="search-demandTime" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-divisionHead" class="col-sm-4 control-label">生产部门主管</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-divisionHead" name="search-divisionHead" placeholder="">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="search-applyDepartment" class="col-sm-4 control-label">申请部门</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-applyDepartment" name="search-applyDepartment" placeholder="">
+                            <div class="form-group" style="margin-left: -10px;">
+                                <label class="col-sm-3 control-label">申请日期 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-inDate" title=""/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-endDate" title=""/>
                                 </div>
                             </div>
                         </div>
+                        <div class="form-horizontal col-md-4"></div>
                     </div>
                 </div>
             </div>

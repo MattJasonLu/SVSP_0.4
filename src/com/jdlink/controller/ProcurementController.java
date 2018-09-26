@@ -393,7 +393,7 @@ public class ProcurementController {
 
     }
     /**
-     * 获得最早的创建日期
+     * 获得最早的创建日期 月季
      */
     @RequestMapping("getNewestMouth")
     @ResponseBody
@@ -412,5 +412,27 @@ public class ProcurementController {
         }
         return  res.toString();
     }
+
+    /**
+     * 获得最早的申请日期 应急
+     */
+    @RequestMapping("getNewestEm")
+    @ResponseBody
+    public String getNewestEm(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Date> dateList=procurementService.getNewestEm();
+            res.put("status", "success");
+            res.put("message", "查询最早创建时间成功");
+            res.put("dateList", dateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早创建时间失败");
+        }
+        return  res.toString();
+    }
+
 
 }

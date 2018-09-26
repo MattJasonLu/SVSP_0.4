@@ -127,4 +127,8 @@
     <select id="getNewestMouth" resultType="Date">
         select createDate from t_pl_procurement where createDate is not null  and procurementCategory='1' order by createDate;
     </select>
+    <!--获得最早的应急采购申请时间-->
+    <select id="getNewestEm" resultType="Date">
+        select applyDate from t_pl_procurement where applyDate is not null  and procurementCategory='0' order by applyDate;
+    </select>
 </mapper>
