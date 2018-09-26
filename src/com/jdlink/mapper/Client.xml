@@ -95,6 +95,18 @@
             <if test="phone != null and phone != ''">
                 and phone LIKE "%"#{phone}"%"
             </if>
+            <if test="checkState != null">
+                and checkState = #{checkState}
+            </if>
+            <if test="clientState != null">
+                and state = #{clientState}
+            </if>
+            <if test="clientType != null">
+                and clientType = #{clientType}
+            </if>
+            <if test="applicationStatus != null">
+                and applicationStatus = #{applicationStatus}
+            </if>
             <if test="salesman != null and salesman.name != null and salesman.name != ''">
                 and salesmanId = #{salesman.salesmanId}
             </if>
@@ -121,6 +133,18 @@
             </if>
             <if test="phone != null and phone != ''">
                 and phone LIKE "%"#{phone}"%"
+            </if>
+            <if test="checkState != null">
+                and checkState = #{checkState}
+            </if>
+            <if test="clientState != null">
+                and state = #{clientState}
+            </if>
+            <if test="clientType != null">
+                and clientType = #{clientType}
+            </if>
+            <if test="applicationStatus != null">
+                and applicationStatus = #{applicationStatus}
             </if>
             <if test="salesman != null and salesman.name != null and salesman.name != ''">
                 and salesmanId = #{salesman.salesmanId}
