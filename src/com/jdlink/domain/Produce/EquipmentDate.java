@@ -1,9 +1,12 @@
 package com.jdlink.domain.Produce;
 
 
+import com.jdlink.domain.Page;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class EquipmentDate {
     /**
@@ -41,7 +44,15 @@ public class EquipmentDate {
     /**
      * 明细列表
      */
-    List<EquipmentItem> equipmentItemList=new ArrayList<>();
+    private List<EquipmentItem> equipmentItemList=new ArrayList<>();
+    /**
+     * 搜索关键字
+     */
+    private String keyword;
+    /**
+     * 分页
+     */
+    private Page page;
 
     public String getCreator() {
         return creator;
@@ -107,6 +118,30 @@ public class EquipmentDate {
         this.note = note;
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public List<EquipmentItem> getEquipmentItemList() {
+        return equipmentItemList;
+    }
+
+    public void setEquipmentItemList(List<EquipmentItem> equipmentItemList) {
+        this.equipmentItemList = equipmentItemList;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
     @Override
     public String toString() {
         return "EquipmentDate{" +
@@ -121,4 +156,6 @@ public class EquipmentDate {
                 ", equipmentItemList=" + equipmentItemList +
                 '}';
     }
+
+
 }

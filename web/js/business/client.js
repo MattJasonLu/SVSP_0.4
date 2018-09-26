@@ -85,7 +85,7 @@ function loadPages(totalRecord, count) {
  */
 function setPageClone(result) {
     $(".beforeClone").remove();
-    setClientList(result.data);
+    setClientList(result);
     var total = totalPage();
     $("#next").prev().hide();
     var st = "共" + total + "页";
@@ -323,7 +323,7 @@ function setClientList(result) {
     // 获取id为cloneTr的tr元素
     var tr = $("#cloneTr");
     tr.siblings().remove();
-    $.each(result, function (index, item) {
+    $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
         clonedTr.show();

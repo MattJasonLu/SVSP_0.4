@@ -3,6 +3,7 @@ package com.jdlink.domain.Produce;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Page;
 
 import java.util.Date;
 import java.util.List;
@@ -3850,6 +3851,14 @@ public class ProductionDaily {
      * 日报状态
      */
     private CheckState checkState;
+    /**
+     * 分页数据
+     */
+    private Page page;
+    /**
+     * 关键字
+     */
+    private String keyword;
 
     public int getId() {
         return id;
@@ -11329,5 +11338,21 @@ public class ProductionDaily {
 
     public void setCheckState(CheckState checkState) {
         this.checkState = checkState;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

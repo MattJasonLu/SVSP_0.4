@@ -673,38 +673,38 @@ array=[];
 array1=[];
 //领料单高级查询
 function searchMaterial() {
-    isSearch=false;
+    isSearch = false;
     //1分页模糊查询
-    array.length=0;//清空数组
-    array1.length=0;
+    array.length = 0;//清空数组
+    array1.length = 0;
     $('.myclass').each(function () {
         $(this).show();
     });
-    for(var i=totalPage();i>0;i--){
+    for (var i = totalPage(); i > 0; i--) {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
-    isSearch=true;
-    var text=$('#searchContent').val();
+    isSearch = true;
+    var text = $.trim($('#searchContent').val());
     //1厂家
-    var companyName=$('#search-Id').val();
+    var companyName = $.trim($('#search-Id').val());
     //2危废代码
-    var wastesCode=$('#search-wastesCode').val();
+    var wastesCode = $.trim($('#search-wastesCode').val());
     //危废类别
-    var wastesCategory=$('#search-wastesType').val();
+    var wastesCategory = $.trim($('#search-wastesType').val());
     //领用数量
-    var number=$('#search-company').val();
+    var number = $.trim($('#search-company').val());
 
-    for(var j=0;j<array.length;j++){
-        $.each(array[j],function () {
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
             //console.log(this);
-            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCode)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1&&$(this).children('td').eq(8).text().indexOf(number)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-            )){
+            if (!($(this).children('td').eq(3).text().indexOf(companyName) != -1 && $(this).children('td').eq(5).text().indexOf(wastesCode) != -1
+                && $(this).children('td').eq(6).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(8).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1
+            )) {
                 $(this).hide();
             }
-            if(($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(5).text().indexOf(wastesCode)!=-1
-                &&$(this).children('td').eq(6).text().indexOf(wastesCategory)!=-1&&$(this).children('td').eq(8).text().indexOf(number)!=-1&&$(this).children('td').text().indexOf(text)!=-1)){
+            if (($(this).children('td').eq(3).text().indexOf(companyName) != -1 && $(this).children('td').eq(5).text().indexOf(wastesCode) != -1
+                && $(this).children('td').eq(6).text().indexOf(wastesCategory) != -1 && $(this).children('td').eq(8).text().indexOf(number) != -1 && $(this).children('td').text().indexOf(text) != -1)) {
                 array1.push($(this));
             }
         });
@@ -712,25 +712,25 @@ function searchMaterial() {
 
     var total;
 
-    if(array1.length%countValue()==0){
-        total=array1.length/countValue()
+    if (array1.length % countValue() == 0) {
+        total = array1.length / countValue()
     }
 
-    if(array1.length%countValue()>0){
-        total=Math.ceil(array1.length/countValue());
+    if (array1.length % countValue() > 0) {
+        total = Math.ceil(array1.length / countValue());
     }
 
-    if(array1.length/countValue()<1){
-        total=1;
+    if (array1.length / countValue() < 1) {
+        total = 1;
     }
 
     $("#totalPage").text("共" + total + "页");
 
     var myArray = new Array();
     $('.beforeClone').remove();
-    for ( i = 0; i < total; i++) {
+    for (i = 0; i < total; i++) {
         var li = $("#next").prev();
-        myArray[i] = i+1;
+        myArray[i] = i + 1;
         var clonedLi = li.clone();
         clonedLi.show();
         clonedLi.find('a:first-child').text(myArray[i]);
@@ -742,17 +742,17 @@ function searchMaterial() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-    for(var i=0;i<array1.length;i++){
+    for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
     }
 
-    for(var i=0;i<countValue();i++){
+    for (var i = 0; i < countValue(); i++) {
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
 
-    isSearch=false;
 
+}
 
     // if(companyName.length<=0&&wastesCategory.length<=0&&wastesCode.length<=0&&number.length<=0){
     //     switchPage(1);
@@ -760,7 +760,7 @@ function searchMaterial() {
     //         $(this).show();
     //     })
     // }
-}
+
 //领料单粗查询
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
@@ -791,7 +791,7 @@ function searchMaterialRequisition() {
 
     isSearch=true;
 
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {

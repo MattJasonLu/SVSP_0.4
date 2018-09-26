@@ -13,7 +13,6 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/sewageAnalysis.js"></script>
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -190,6 +189,14 @@ $('.form_datetime2').datetimepicker({
                                 </div>
                             </div>
                         </div>
+                        <div class="form-horizontal col-md-6">
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">日报状态</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" id="search-checkState" name="search-checkState" onchange="searchData();"></select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -221,7 +228,7 @@ $('.form_datetime2').datetimepicker({
                         <td class="text-center" name="index">1</td>
                         <td class="text-center" name="date">2018-08-08</td>
                         <td class="text-center">常州北控安耐得有限公司</td>
-                        <td class="text-center" name="checkState">锁定</td>
+                        <td class="text-center" name="checkState">新建</td>
                         <td class="text-center" name="author">Admin</td>
                         <td class="text-center">
                             <a href="#" onclick="viewData($(this));" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>

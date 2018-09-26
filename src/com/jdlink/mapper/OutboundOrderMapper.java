@@ -48,4 +48,6 @@ public interface OutboundOrderMapper {
     int totalSecOutBoundRecord();
     List<Date>getNewestDate();
     List<OutboundOrder> getOutBoundOrderByClientId(String id);
+    List<Date>getNewestDateSec();
+
 }

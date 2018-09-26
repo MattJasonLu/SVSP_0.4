@@ -472,15 +472,15 @@ function searchStock() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     //审核状态
-   var checkState=$('#search-checkState option:selected').text();
+   var checkState=$.trim($('#search-checkState option:selected').text());
     //产废单位联系人
-    var companyContact=$('#search-proContactName').val();
+    var companyContact=$.trim($('#search-proContactName').val());
     //单位联系电话
-    var phone=$('#search-proTelephone').val();
+    var phone=$.trim($('#search-proTelephone').val());
     //运输公司
-    var transport=$('#search-transport').val();
+    var transport=$.trim($('#search-transport').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -560,7 +560,7 @@ function  searchStock1() {
 
     isSearch = true;
 
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {

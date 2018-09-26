@@ -364,13 +364,13 @@ function searchSecInto() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     //1收样日期
-    var date=$('#search-sewageName').val();
+    var date=$.trim($('#search-sewageName').val());
     //2废物名称
-    var wastesName=$('#search-receiveDate').val();
+    var wastesName=$.trim($('#search-receiveDate').val());
     //3备注
-    var remarks=$('#search-remarks').val();
+    var remarks=$.trim($('#search-remarks').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -464,7 +464,7 @@ function searchWastesAnalysis() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
