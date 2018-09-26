@@ -263,7 +263,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchMedicalWastes1();
             }
-        },400);
+            else if(event.keyCode=='13'){
+                searchMedicalWastes1();
+            }
+        },600);
+
     });
 });
 
@@ -285,7 +289,7 @@ function searchMedicalWastes1() {
      console.log((array));
     isSearch = true;
 
-    var text=$('#searchContent').val();
+    var text= $.trim($('#searchContent').val());
     console.log(text);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -593,11 +597,11 @@ function searchMedicalWastes() {
 
     isSearch=true;
 
-    var text=$('#searchContent').val();
+    var text= $.trim($('#searchContent').val());
 
-    var date=$('#search-dateTime').val();
+    var date=$.trim($('#search-dateTime').val());
 
-    var person=$('#search-departmentName').val();
+    var person=$.trim($('#search-departmentName').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
