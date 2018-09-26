@@ -41,20 +41,21 @@ function totalPage() {
     } else {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getProductionDailyByDateRangeCount",                  // url
+            url: "searchProductionDailyCount",                  // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result > 0) {
                     totalRecord = result;
                 } else {
-                    console.log("fail: " + result);
+                    console.log(result);
                     totalRecord = 0;
                 }
             },
             error: function (result) {
-                console.log("error: " + result);
+                console.log(result);
                 totalRecord = 0;
             }
         });
@@ -174,17 +175,18 @@ function switchPage(pageNumber) {
             type: "POST",                       // 方法类型
             url: "searchProductionDaily",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result !== undefined && result.status === "success") {
                     setDataList(result.data);
                 } else {
-                    console.log("fail: " + result);
+                    console.log(result);
                 }
             },
             error: function (result) {
-                console.log("error: " + result);
+                console.log(result);
             }
         });
     }
@@ -237,11 +239,11 @@ function inputSwitchPage() {
                         console.log(result);
                         setDataList(result.data);
                     } else {
-                        console.log("fail: " + result);
+                        console.log(result);
                     }
                 },
                 error: function (result) {
-                    console.log("error: " + result);
+                    console.log(result);
                 }
             });
         } else {
@@ -250,18 +252,19 @@ function inputSwitchPage() {
                 type: "POST",                       // 方法类型
                 url: "searchProductionDaily",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: data,
+                data: JSON.stringify(data),
                 dataType: "json",
+                contentType: 'application/json;charset=utf-8',
                 success: function (result) {
                     if (result !== undefined && result.status === "success") {
                         // console.log(result);
                         setDataList(result.data);
                     } else {
-                        console.log("fail: " + result);
+                        console.log(result);
                     }
                 },
                 error: function (result) {
-                    console.log("error: " + result);
+                    console.log(result);
                 }
             });
         }
@@ -301,6 +304,41 @@ function loadPageList() {
         }
     });
     isSearch = false;
+    getSelectedInfo();
+}
+
+/**
+ * 设置高级查询的审核状态数据
+ */
+function getSelectedInfo() {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCheckState",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result !== undefined) {
+                var data = eval(result);
+                // 高级检索下拉框数据填充
+                var checkState = $("#search-checkState");
+                checkState.children().remove();
+                $.each(data.checkStateList, function (index, item) {
+                    if (item.index == 13 || item.index == 7 || item.index == 21) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        checkState.append(option);
+                    }
+                });
+                checkState.get(0).selectedIndex = -1;
+            } else {
+                console.log("fail: " + result);
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+        }
+    });
 }
 
 /**
@@ -342,8 +380,9 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            beginTime: $("#beginTime").val(),
-            endTime: $("#endTime").val(),
+            parkingReason: $("#beginTime").val(),
+            otherIssue: $("#endTime").val(),
+            checkState: $("#search-checkState").val(),
             page: page
         };
         console.log(data);
@@ -358,14 +397,15 @@ function searchData() {
         type: "POST",                       // 方法类型
         url: "searchProductionDaily",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: data,
+        data: JSON.stringify(data),
         dataType: "json",
+        contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
             } else {
-                alert(result.message);
+                console.log(result.message);
             }
         },
         error: function (result) {
@@ -1475,5 +1515,22 @@ function setLocked(e) {
 function getIdByMenu(e) {
     return e.parent().parent().find("td[name='id']").text();
 }
+
+/**
+ * 延时搜索及回车搜索功能
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp == 0){
+                searchData();
+            }else if (event.keyCode == 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },400);
+    });
+});
 
 
