@@ -768,3 +768,20 @@ function setSelectList() {
     });
     $("select[name='wastesName']").get(0).selectedIndex = -1;
 }
+
+/**
+ * 延时搜索及回车搜索功能
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp == 0){
+                searchData();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },400);
+    });
+});
