@@ -454,6 +454,8 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         setTimeout(function () {
             if(last-event.timeStamp==0){
                 searchStock1();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchStock1();      //
             }
         },400);
     });

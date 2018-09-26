@@ -16,4 +16,5 @@ public interface MedicalWastesService {
     List<MedicalWastes>  getMedicalWastesByDateAndEquipment(Date startDate, Date endDate,String equipment);
     List<MedicalWastes>  getMedicalWastesBySimpleDateAndEquipment(Date date,String equipment);
     int total();
+    void cancelMedicalWastes(String medicalWastesId);
 }

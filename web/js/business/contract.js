@@ -12,6 +12,7 @@ function reset() {
     $("#senior").find("input").val("");
     $("#searchContent").val("");
     $("#senior").find("select").get(0).selectedIndex = -1;
+
 }
 /**
  * 返回count值
@@ -27,27 +28,32 @@ function countValue() {
  * */
 function totalPage(contractIndex) {
     var totalRecord = 0;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "totalContractManageRecord",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: {
-            'contractIndex': contractIndex
-        },
-        success: function (result) {
-            if (result > 0) {
-                totalRecord = result;
-            } else {
-                console.log("fail: " + result);
+    if (!isSearch){
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalContractManageRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {
+                'contractIndex': contractIndex
+            },
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
                 totalRecord = 0;
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            totalRecord = 0;
-        }
-    });
+        });
+    }
+    else {
+        totalRecord=array1.length;
+    }
     //console.log(totalRecord);
     var count = countValue();                         // 可选
     var total = loadPages(totalRecord, count);
@@ -126,24 +132,38 @@ function switchPage(pageNumber) {
     page.contractIndex = contractIndex;
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageContractManageList",         // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined) {
-                setContractList(result);
-            } else {
-                console.log("fail: " + result);
+    if(!isSearch){
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageContractManageList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setContractList(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
+        });
+    }
+    if (isSearch) {//查询用的
+        for(var i=0;i<array1.length;i++){
+            $(array1[i]).hide();
         }
-    });
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
+            $('#tbody1').append(array1[i]);
+            $(array1[i]).show();
+        }
+    }
+
 }
 
 /**
@@ -181,26 +201,37 @@ function inputSwitchPage() {
         page.pageNumber = pageNumber;
         page.start = (pageNumber - 1) * page.count;
         page.contractIndex = contractIndex;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageContractManageList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    setContractList(result);
-                } else {
-                    console.log("fail: " + result);
+        if(!isSearch){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageContractManageList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        setContractList(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
                 }
-            },
-            error: function (result) {
-                console.log("error: " + result);
+            });
+        }
+        if (isSearch) {//查询用的
+            for(var i=0;i<array1.length;i++){
+                $(array1[i]).hide();
             }
-        });
-
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
+                $('#tbody1').append(array1[i]);
+                $(array1[i]).show();
+            }
+        }
 
     }
 }
@@ -292,8 +323,7 @@ function  ContractListByName(item) {
             data: JSON.stringify(page),
             success: function (result) {
                 if (result != undefined) {
-                    //alert(result);
-                    //console.log(result);
+                    console.log(result);
                     setPageClone(result);
                     //setContractList(result);
                 } else {
@@ -323,8 +353,7 @@ function  ContractListByName(item) {
             data: JSON.stringify(page),
             success: function (result) {
                 if (result != undefined) {
-                    //alert(result);
-                    //console.log(result);
+                    console.log(result);
                     setContractList(result);
                 } else {
                     console.log("fail: " + result);
@@ -354,8 +383,7 @@ function  ContractListByName(item) {
             contentType: "application/json; charset=gbk",
             success: function (result) {
                 if (result != undefined) {
-                    //alert(result);
-                    //console.log(result);
+                    console.log(result);
                     setContractList(result);
                 } else {
                     console.log("fail: " + result);
@@ -459,65 +487,46 @@ function setSeniorSelectedList() {
 }
 //合同列表高级查询
 function searchContract() {
+    isSearch=false;
     array.length=0;//清空数组
     array1.length=0;
 
-    var contractId=$('#search-contractId').val();
+    var text=$('#searchContent').val();
 
-    var companyName=$('#search-companyName').val();
-
-    var contractName=$('#search-contractName').val();
-
-    var telephone=$('#search-telephone').val();
+    var companyName=$('#search-companyName').val();//产废单位
 
     var checkState=$('#search-checkState option:selected').text();
 
-    var suppierName=$('#search-suppierName').val();
+
+    var suppierName=$('#search-suppierName').val();//处置单位
 
     var contactName=$('#search-contactName').val();
 
-    var beginTime=$('#search-beginTime').val();
+    var beginTime=$('#beginTime').val();
+
+    var endTime=$('#endTime').val();
+
+    var startDate=getDateByStr(beginTime);
+
+    var endDate=getDateByStr(endTime);
+
+    console.log(companyName)
+
 
     if (nameBykey == '危废合同' || nameBykey == "Wastes" || nameBykey == undefined) {
         $('#Wa').click();
         localStorage.clear();
         $('#toggleName').text("产废单位名称");
-        switchPage(1);
-        $('.myclass1').each(function () {
-            $(this).show();
-        });
-        for(var i=1;i<=totalPage(contractIndex);i++){
-            switchPage(parseInt(i))
+
+        for(var i=totalPage(contractIndex);i>0;i--){
+            switchPage(parseInt(i));
             array.push($('.myclass1'));
         }
-        for(var j=0;j<array.length;j++){
-            $.each(array[j],function () {
-                //console.log(this);
-                if(!($(this).children('td').eq(1).text().indexOf(contractId)!=-1&&$(this).children('td').eq(2).text().indexOf(companyName)!=-1
-                    &&$(this).children('td').eq(3).text().indexOf(contractName)!=-1&&$(this).children('td').eq(7).text().indexOf(telephone)!=-1&&
-                    $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(8).text().indexOf(beginTime)!=-1
-                    &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1)){
-                    $(this).hide();
-                }
-                if(($(this).children('td').eq(1).text().indexOf(contractId)!=-1&&$(this).children('td').eq(2).text().indexOf(companyName)!=-1
-                    &&$(this).children('td').eq(3).text().indexOf(contractName)!=-1&&$(this).children('td').eq(7).text().indexOf(telephone)!=-1&&
-                    $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(8).text().indexOf(beginTime)!=-1
-                    &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1)){
-                    array1.push($(this));
-                }
-            });
-        }
-        for(var i=0;i<array1.length;i++){
-            $.each(array1[i],function () {
-                $('#tbody1').append(this) ;
-            });
-        }
-        if(contractId.length<=0&&contractName.length<=0&&checkState.length<0&&contactName.length<0&&companyName.length<0&&telephone.length<0&&beginTime.length<0){
-            switchPage(1);
-            $('.myclass').each(function () {
-                $(this).show();
-            })
-        }
+
+
+
+
+
     }
 
     if (nameBykey == "应急处置合同") {
@@ -525,44 +534,11 @@ function searchContract() {
         localStorage.clear();
         //如果是物流就改为处置单位
         $('#toggleName').text("产废单位名称");
-        switchPage(1);
-        $('.myclass1').each(function () {
-            $(this).show();
-        });
-        for(var i=1;i<=totalPage(contractIndex);i++){
-            switchPage(parseInt(i))
+
+        for(var i=totalPage(contractIndex);i>0;i--){
+            switchPage(parseInt(i));
             array.push($('.myclass1'));
         }
-        for(var j=0;j<array.length;j++){
-            $.each(array[j],function () {
-                //console.log(this);
-                if(!($(this).children('td').eq(1).text().indexOf(contractId)!=-1&&$(this).children('td').eq(2).text().indexOf(companyName)!=-1
-                    &&$(this).children('td').eq(3).text().indexOf(contractName)!=-1&&$(this).children('td').eq(7).text().indexOf(telephone)!=-1&&
-                    $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(8).text().indexOf(beginTime)!=-1
-                    &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1)){
-                    $(this).hide();
-                }
-                if(($(this).children('td').eq(1).text().indexOf(contractId)!=-1&&$(this).children('td').eq(2).text().indexOf(companyName)!=-1
-                    &&$(this).children('td').eq(3).text().indexOf(contractName)!=-1&&$(this).children('td').eq(7).text().indexOf(telephone)!=-1&&
-                    $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(8).text().indexOf(beginTime)!=-1
-                    &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1)){
-                    array1.push($(this));
-                }
-            });
-        }
-        for(var i=0;i<array1.length;i++){
-            $.each(array1[i],function () {
-                $('#tbody1').append(this) ;
-            });
-        }
-        if(contractId.length<=0&&contractName.length<=0&&checkState.length<0&&contactName.length<0&&companyName.length<0&&telephone.length<0&&beginTime.length<0){
-            switchPage(1);
-            $('.myclass').each(function () {
-                $(this).show();
-            })
-        }
-
-
 
 
 
@@ -571,43 +547,121 @@ function searchContract() {
     if (nameBykey == "物流合同") {
         $('#Lo').click();
         localStorage.clear();
-        switchPage(1);
-        $('.myclass1').each(function () {
-            $(this).show();
-        });
-        for(var i=1;i<=totalPage(contractIndex);i++){
-            switchPage(parseInt(i))
+
+        for (var i = totalPage(contractIndex); i > 0; i--) {
+            switchPage(parseInt(i));
             array.push($('.myclass1'));
         }
-        for(var j=0;j<array.length;j++){
-            $.each(array[j],function () {
-                //console.log(this);
-                if(!($(this).children('td').eq(1).text().indexOf(contractId)!=-1&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1
-                    &&$(this).children('td').eq(3).text().indexOf(contractName)!=-1&&$(this).children('td').eq(7).text().indexOf(telephone)!=-1&&
-                    $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(8).text().indexOf(beginTime)!=-1
-                    &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&$(this).children('td').eq(2).text().indexOf(companyName)!=-1)){
-                    $(this).hide();
-                }
-                if(($(this).children('td').eq(1).text().indexOf(contractId)!=-1&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1
-                    &&$(this).children('td').eq(3).text().indexOf(contractName)!=-1&&$(this).children('td').eq(7).text().indexOf(telephone)!=-1&&
-                    $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&$(this).children('td').eq(8).text().indexOf(beginTime)!=-1
-                    &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&$(this).children('td').eq(2).text().indexOf(companyName)!=-1)){
-                    array1.push($(this));
-                }
-            });
+
+
+
+    }
+
+
+
+
+
+    isSearch=true;
+    var arraydate=[];
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            arraydate.push(($(this).children('td').eq(8).text()))
+        });
+    }
+    var dateMin=(arraydate[0]);
+    var dateMax=(arraydate[0]);
+    for(var i=0;i<arraydate.length;i++){
+        if(new Date(arraydate[i]).getTime()<new Date(dateMin)){
+            dateMin=(arraydate[i]);
         }
-        for(var i=0;i<array1.length;i++){
-            $.each(array1[i],function () {
-                $('#tbody1').append(this) ;
-            });
-        }
-        if(contractId.length<=0&&contractName.length<=0&&checkState.length<0&&contactName.length<0&&suppierName.length<0&&telephone.length<0&&beginTime.length<0){
-            switchPage(1);
-            $('.myclass').each(function () {
-                $(this).show();
-            })
+        if(new Date(arraydate[i]).getTime()>new Date(dateMax)){
+            dateMax=(arraydate[i]);
         }
     }
+    //1循环找出最小的日期
+  console.log(dateMin+dateMax)
+   console.log(startDate+endDate)
+
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+
+            if(startDate.toString()=='Invalid Date'){
+                 startDate=dateMin;
+            }
+            if(endDate.toString()=='Invalid Date'){
+                 endDate=dateMax;
+            }
+           var  start=$(this).children('td').eq(8).text();
+            var  end=$(this).children('td').eq(9).text();
+            if(!($(this).children('td').eq(2).text().indexOf(companyName)!=-1
+                &&$(this).children('td').text().indexOf(text)!=-1&&
+                $(this).children('td').eq(4).text().indexOf(checkState)!=-1
+                &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
+                &&(new Date(end).getTime()<=new Date(endDate).getTime())&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1
+            )){
+                $(this).hide();
+            }
+            if(($(this).children('td').eq(2).text().indexOf(companyName)!=-1
+                &&$(this).children('td').text().indexOf(text)!=-1&&
+                $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
+                &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1
+                &&(new Date(end).getTime()<=new Date(endDate).getTime())&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1
+            )){
+                array1.push($(this));
+            }
+        });
+    }
+
+
+    console.log(array1)
+
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+    for(var i=0;i<array1.length;i++){
+        array1[i].hide();
+    }
+
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+
+
+
 }
 //设置合同模板高级查询下拉框数据
 function setModelSelectedList() {
@@ -710,6 +764,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 });
 
 function searchFuzzy() {
+    isSearch=false;
     //分页模糊查询
     array.length=0;//清空数组
     array1.length=0;
@@ -718,36 +773,13 @@ function searchFuzzy() {
         $('#Wa').click();
         localStorage.clear();
         $('#toggleName').text("产废单位名称");
-        switchPage(1);
-        $('.myclass1').each(function () {
-            $(this).show();
-        });
-        for(var i=1;i<=totalPage(contractIndex);i++){
-            switchPage(parseInt(i))
+        for(var i=totalPage(contractIndex);i>0;i--){
+            switchPage(parseInt(i));
             array.push($('.myclass1'));
         }
-        for(var j=0;j<array.length;j++){
-            $.each(array[j],function () {
-                //console.log(this);
-                if(($(this).children('td').text().indexOf(text)==-1)){
-                    $(this).hide();
-                }
-                if($(this).children('td').text().indexOf(text)!=-1){
-                    array1.push($(this));
-                }
-            });
-        }
-        for(var i=0;i<array1.length;i++){
-            $.each(array1[i],function () {
-                $('#tbody1').append(this) ;
-            });
-        }
-
         if(text.length<=0){
-            switchPage(1);
-            $('.myclass').each(function () {
-                $(this).show();
-            })
+            localStorage.name="Wastes";
+            loadPageContractManageList();
         }
     }
     if (nameBykey == "应急处置合同") {
@@ -755,39 +787,14 @@ function searchFuzzy() {
         localStorage.clear();
         //如果是物流就改为处置单位
         $('#toggleName').text("产废单位名称");
-        switchPage(1);
-        $('.myclass1').each(function () {
-            $(this).show();
-        });
-        for(var i=1;i<=totalPage(contractIndex);i++){
-            switchPage(parseInt(i))
+        for(var i=totalPage(contractIndex);i>0;i--){
+            switchPage(parseInt(i));
             array.push($('.myclass1'));
         }
-        for(var j=0;j<array.length;j++){
-            $.each(array[j],function () {
-                //console.log(this);
-                if(($(this).children('td').text().indexOf(text)==-1)){
-                    $(this).hide();
-                }
-                if($(this).children('td').text().indexOf(text)!=-1){
-                    array1.push($(this));
-                }
-            });
-        }
-        for(var i=0;i<array1.length;i++){
-            $.each(array1[i],function () {
-                $('#tbody1').append(this) ;
-            });
-        }
-
         if(text.length<=0){
-            switchPage(1);
-            $('.myclass').each(function () {
-                $(this).show();
-            })
+            localStorage.name="Emergency";
+            loadPageContractManageList();
         }
-
-
 
 
 
@@ -795,38 +802,78 @@ function searchFuzzy() {
     if (nameBykey == "物流合同") {
         $('#Lo').click();
         localStorage.clear();
-        switchPage(1);
-        $('.myclass1').each(function () {
-            $(this).show();
-        });
-        for(var i=1;i<=totalPage(contractIndex);i++){
-            switchPage(parseInt(i))
+        for(var i=totalPage(contractIndex);i>0;i--){
+            switchPage(parseInt(i));
             array.push($('.myclass1'));
         }
-        for(var j=0;j<array.length;j++){
-            $.each(array[j],function () {
-                //console.log(this);
-                if(($(this).children('td').text().indexOf(text)==-1)){
-                    $(this).hide();
-                }
-                if($(this).children('td').text().indexOf(text)!=-1){
-                    array1.push($(this));
-                }
-            });
-        }
-        for(var i=0;i<array1.length;i++){
-            $.each(array1[i],function () {
-                $('#tbody1').append(this) ;
-            });
+        if(text.length<=0){
+            localStorage.name="Logistics";
+            loadPageContractManageList();
         }
 
-        if(text.length<=0){
-            switchPage(1);
-            $('.myclass').each(function () {
-                $(this).show();
-            })
-        }
     }
+
+
+
+    isSearch=true;
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            //console.log(this);
+            if(($(this).children('td').text().indexOf(text)==-1)){
+                $(this).hide();
+            }
+            if($(this).children('td').text().indexOf(text)!=-1){
+                array1.push($(this));
+            }
+        });
+    }
+    console.log(array1)
+    var total;
+
+    if(array1.length%countValue()==0){
+        total=array1.length/countValue()
+    }
+
+    if(array1.length%countValue()>0){
+        total=Math.ceil(array1.length/countValue());
+    }
+
+    if(array1.length/countValue()<1){
+        total=1;
+    }
+
+    $("#totalPage").text("共" + total + "页");
+
+    var myArray = new Array();
+
+    $('.beforeClone').remove();
+
+    for ( i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i+1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+
+    for(var i=0;i<array1.length;i++){
+        array1[i].hide();
+    }
+
+    for(var i=0;i<countValue();i++){
+        $(array1[i]).show();
+        $('#tbody1').append((array1[i]));
+    }
+
+
+
 
 }
 function setContractList(result) {
