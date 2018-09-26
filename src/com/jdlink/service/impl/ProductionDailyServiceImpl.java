@@ -93,4 +93,14 @@ public class ProductionDailyServiceImpl implements ProductionDailyService {
     public void deleteProductionDaily(int id) {
         productionDailyMapper.deleteProductionDaily(id);
     }
+
+    @Override
+    public List<ProductionDaily> searchProductionDaily(ProductionDaily productionDaily) {
+        return productionDailyMapper.searchProductionDaily(productionDaily);
+    }
+
+    @Override
+    public int searchProductionDailyCount(ProductionDaily productionDaily) {
+        return productionDailyMapper.searchProductionDailyCount(productionDaily);
+    }
 }

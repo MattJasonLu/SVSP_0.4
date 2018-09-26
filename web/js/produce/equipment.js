@@ -315,25 +315,24 @@ function searchData() {
             editor: $("#search-editor").val()//修改人
         };
         console.log(data);
-        // 模糊查询
     }
+    // 模糊查询
     // else {
     //     data = {
-    //         keyword: $("#searchContent").val(),
-    //         compatibilityId:compatibilityId//配伍编号
+    //         keyword: $("#searchContent").val()
     //     };
     //     console.log(data);
     // }
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "searchEquipment",                      // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        url: "searchEquipment",             // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(data),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                console.log(result);
+                // $.alert("23132");
                 var obj=result.data;
                 //var n=result.length;
                 setEquipment(obj);

@@ -121,10 +121,10 @@ public class ProductionDailyController {
 
     @RequestMapping("searchProductionDaily")
     @ResponseBody
-    public String searchProductionDaily(Date beginTime, Date endTime, Page page) {
+    public String searchProductionDaily(@RequestBody ProductionDaily productionDaily) {
         JSONObject res = new JSONObject();
         try {
-            List<ProductionDaily> productionDailyList = productionDailyService.getProductionDailyByDateRange(beginTime, endTime, page);
+            List<ProductionDaily> productionDailyList = productionDailyService.searchProductionDaily(productionDaily);
             JSONArray data = JSONArray.fromArray(productionDailyList.toArray(new ProductionDaily[productionDailyList.size()]));
             res.put("status", "success");
             res.put("message", "获取信息成功");
@@ -135,6 +135,22 @@ public class ProductionDailyController {
             res.put("message", "获取信息失败");
         }
         return res.toString();
+    }
+
+    /**
+     * 查询生产日报数量
+     * @param productionDaily 生产日报参数
+     * @return 数量
+     */
+    @RequestMapping("searchProductionDailyCount")
+    @ResponseBody
+    public int searchProductionDailyCount(@RequestBody ProductionDaily productionDaily) {
+        try {
+            return productionDailyService.searchProductionDailyCount(productionDaily);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**
@@ -179,7 +195,7 @@ public class ProductionDailyController {
         try {
             // 对日报进行计算
             calculateProductionDaily(now, productionDaily);
-
+            productionDaily.setCheckState(CheckState.NewBuild);
             // 增加日报
             productionDailyService.addProductionDaily(productionDaily);
             // 回送数据
