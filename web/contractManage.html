@@ -23,6 +23,7 @@
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <script language="javascript" src="js/business/contract.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/time.js"></script>
 </head>
 <style>
     p {
@@ -460,14 +461,14 @@
                         <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
-                    </ul>
-                </li>
+                <!--<li class="dropdown">-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                        <!--<li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>-->
+                        <!--<li role="separator" class="divider"></li>-->
+                        <!--<li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
                 <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
                 <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
             </ul>
@@ -537,7 +538,7 @@
                         <a class="btn btn-primary btn-xs" id="function_143" href="emergencyContractInfo.html"> 应急处置意向书</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right">
+                    <div class="input-group col-md-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
                         <span class="input-group-btn">
                             <a class="btn btn-default"  onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
@@ -583,11 +584,17 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-contractId" class="col-sm-4 control-label">合同编号</label>
+                                <label for="search-contactName" class="col-sm-4 control-label">联系人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-contractId" name="search-contractId" placeholder="">
+                                    <input type="text" class="form-control" id="search-contactName" name="search-contactName" placeholder="">
                                 </div>
                             </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-contractId" class="col-sm-4 control-label">合同编号</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-contractId" name="search-contractId" placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
@@ -598,12 +605,7 @@
                             </div>
                         </div>
                         <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-contactName" class="col-sm-4 control-label">联系人</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-contactName" name="search-contactName" placeholder="">
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -263,7 +263,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
             if(last-event.timeStamp==0){
                 searchMedicalWastes1();
             }
-        },400);
+            else if(event.keyCode=='13'){
+                searchMedicalWastes1();
+            }
+        },600);
+
     });
 });
 
@@ -285,7 +289,7 @@ function searchMedicalWastes1() {
      console.log((array));
     isSearch = true;
 
-    var text=$('#searchContent').val();
+    var text= $.trim($('#searchContent').val());
     console.log(text);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -562,6 +566,11 @@ function setMedicalWastesList(result) {
                 case (13):
                     $(this).html(obj.wetNumber);
                     break;
+                case (14):
+                    if(obj.checkState!=null){
+                        $(this).html(obj.checkState.name);
+                    }
+                    break;
             }
             clonedTr.removeAttr("id");
             clonedTr.insertBefore(tr);
@@ -588,11 +597,11 @@ function searchMedicalWastes() {
 
     isSearch=true;
 
-    var text=$('#searchContent').val();
+    var text= $.trim($('#searchContent').val());
 
-    var date=$('#search-dateTime').val();
+    var date=$.trim($('#search-dateTime').val());
 
-    var person=$('#search-departmentName').val();
+    var person=$.trim($('#search-departmentName').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -726,6 +735,35 @@ function getWaterByCooking() {
         afterCookingNumber=0;
     }
     $("#wetNumber").val(parseInt(cookingWastes)-parseInt(afterCookingNumber));
+
+}
+
+function cancelMedicalWastes(item) {
+    var id=$(item).parent().parent().children('td').eq(0).text();
+    if(confirm("确认作废？")){
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "cancelMedicalWastes",                  // url
+            dataType: "json",
+            data: {'id':id},
+            //contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result);
+                    alert(result.message)
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+
+            }
+        });
+
+    }
 
 }
 
