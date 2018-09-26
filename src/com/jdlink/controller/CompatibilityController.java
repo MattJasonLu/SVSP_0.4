@@ -62,7 +62,7 @@ public class CompatibilityController {
     public String importCompatibilityExcel(MultipartFile excelFile, String tableName, String id){
         JSONObject res = new JSONObject();
         String fileName = excelFile.getOriginalFilename();
-        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+        Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
         for (int i = 0; i < data.length; i++){
             for (int j = 0; j < data[i].length; j++)
                 System.out.print((data[i][j]).toString() + " ");

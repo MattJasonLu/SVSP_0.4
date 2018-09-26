@@ -71,7 +71,7 @@ public class PRProductionDailyController {
     public String importSewageExcel(MultipartFile excelFile) {
         JSONObject res = new JSONObject();
         try {
-            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
             System.out.println("数据如下：");
             for (int i = 1; i < data.length; i++) {
                 for (int j = 0; j < data[0].length; j++) {
@@ -189,7 +189,7 @@ public class PRProductionDailyController {
     public String importSoftWaterExcel(MultipartFile excelFile) {
         JSONObject res = new JSONObject();
         try {
-            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
             System.out.println("数据如下：");
             for (int i = 1; i < data.length; i++) {
                 for (int j = 0; j < data[0].length; j++) {

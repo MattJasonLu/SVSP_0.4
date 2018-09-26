@@ -23,7 +23,7 @@ public class Procurement {
     /**
      * 需求时间(应急同)
      */
-    private Date demandTime;
+    private String demandTime;
     /**
      * 申请日期
      */
@@ -126,7 +126,12 @@ public class Procurement {
         this.receiptNumber = receiptNumber;
     }
 
-    public void setDemandTime(Date demandTime) {
+
+    public String getDemandTime() {
+        return demandTime;
+    }
+
+    public void setDemandTime(String demandTime) {
         this.demandTime = demandTime;
     }
 
@@ -134,9 +139,7 @@ public class Procurement {
         this.materialList = materialList;
     }
 
-    public Date getDemandTime() {
-        return demandTime;
-    }
+
     //    /**
 //     * 物资名称(应急同)
 //     */

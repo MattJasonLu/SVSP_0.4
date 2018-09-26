@@ -291,8 +291,9 @@ function saveMonth() {
     //1获取除物料需求外的数据
     //在添加物料表
     data={
+        suppliesCategory:$('#suppliesCategory').val(),
         applyMouth:$('#applyMonth option:selected').text(),
-        demandTime:$('#demandTime').val(),
+        demandTime:($('#demandTime').val())+" ",
         applyDepartment:$('#applyDepartment').val(),
         proposer:$('#proposer').val(),
         divisionHead:$('#divisionHead').val(),
@@ -435,7 +436,7 @@ function setMonthProcurementList(result) {
                             break;
                         // 需求时间
                         case (2):
-                            $(this).html(getDateStr(obj.demandTime));
+                            $(this).html((obj.demandTime));
                             break;
                         // 申请部门
                         case (3):
