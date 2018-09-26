@@ -128,5 +128,11 @@ public class WasteInventoryServiceImpl implements WasteInventoryService {
         return wasteInventoryMapper.total1();
     }
 
+    @Override
+    public List<Date> getNewestInBoundDateSec() {
+        return wasteInventoryMapper.getNewestInBoundDateSec();
+
+    }
+
 
 }

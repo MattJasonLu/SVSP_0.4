@@ -30,4 +30,5 @@ public interface WasteInventoryService {
     List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId);
     List<Date> getNewestInBoundDate();
     int  total1();
+    List<Date> getNewestInBoundDateSec();
 }

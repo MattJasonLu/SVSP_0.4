@@ -420,13 +420,13 @@ function searchWasteInto() {
         array.push($('.myclass'));
     }
 
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     //1产废单位
-    var companyName=$('#search-receiveDate').val();
+    var companyName=$.trim($('#search-receiveDate').val());
     //2收样日期
-    var date=$('#search-sewageName').val();
+    var date=$.trim($('#search-sewageName').val());
     //3联单号码
-    var number=$('#search-remarks').val();
+    var number=$.trim($('#search-remarks').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -525,7 +525,7 @@ function searchWastesAnalysis() {
 
     isSearch=true;
 
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {

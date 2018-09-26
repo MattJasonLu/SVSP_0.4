@@ -10,7 +10,6 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
-    <script src="js/util.js"></script>
     <script src="js/produce/emergencyProcurement.js"></script>
 </head>
 <body onload="getEmProcurement()">
@@ -96,7 +95,7 @@
                         <li><a href="businessModel.html">采购管理</a></li>
                         <li class="active">月度采购</li>
                     </ol>
-                    <p class="text-center pull-right"><b>编号</b><span class="id"></span></p>
+                    <p class="text-center pull-right"><b></b><span class="id"></span></p>
                 </div>
                 <h4 class="sub-header">急需物资购置申请表</h4>
             </div>
@@ -213,13 +212,12 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <!--<td class="text-center"></td>-->
                     <td class="text-center">
-                        <a href="#" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
-                        <a href="#" title="作废"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span> </a>
-                        <a href="#" title="保存"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>
-                        <a href="#" title="提交"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>
-                        <a href="#" title="审批"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>
+                        <a href="#" title="查看" onclick="check(this)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> </a>
+                        <!--<a href="#" title="保存"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> </a>-->
+                        <!--<a href="#" title="提交"><span class="glyphicon glyphicon-subscript" aria-hidden="true"></span> </a>-->
+                        <!--<a href="#" title="审批"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> </a>-->
                     </td>
                 </tr>
                 </tbody>

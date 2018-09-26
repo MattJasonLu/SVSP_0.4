@@ -30,4 +30,5 @@ public interface WasteInventoryMapper {
     int searchBatchingTotal(BatchingOrder batchingOrder);
     List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId);
     List<Date> getNewestInBoundDate();
+    List<Date> getNewestInBoundDateSec();
 }
