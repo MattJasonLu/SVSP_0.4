@@ -47,4 +47,5 @@ public interface OutboundOrderMapper {
     List<OutboundOrder>  loadSecOutBoundList(Page page);
     int totalSecOutBoundRecord();
     List<Date>getNewestDate();
+    List<OutboundOrder> getOutBoundOrderByClientId(String id);
 }

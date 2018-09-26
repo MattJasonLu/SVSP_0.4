@@ -190,6 +190,10 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <select id="getOutBoundOrderList" resultMap="OutBoundOrderList">
         select  * from t_pl_outboundorder;
     </select>
+
+    <select id="getOutBoundOrderByClientId" parameterType="String" resultMap="OutBoundOrderList">
+        select  * from t_pl_outboundorder where clientId =#{id};
+    </select>
     <!--根据Id获取出库单信息-->
     <select id="getById" parameterType="String" resultMap="OutBoundOrderList">
         select * from t_pl_outboundorder where outboundOrderId = #{id};

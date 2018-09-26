@@ -13,7 +13,6 @@ public class Client {
      * 集团编号
      */
     private String groupId;
-
     // 基本信息
     /**
      * 企业名称
@@ -103,7 +102,6 @@ public class Client {
      * 工艺描述
      */
     private String processDesp;
-
     // 联系信息
     /**
      * 联系人
