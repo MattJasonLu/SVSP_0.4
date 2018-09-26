@@ -209,7 +209,7 @@
         select count(*) from t_pl_inboundorder
         <where>
             <if test="keyword != null and keyword != ''">
-                and boundType='WasteInbound'
+                and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
                 or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
                 or recordState=#{keyword}
@@ -231,7 +231,7 @@
                 ]]>
             </if>
             <if test="true">
-                and boundType='WasteInbound'
+                and boundType=#{boundType}
             </if>
             <if test="recordState != null and recordState != ''">
                 and recordState = #{recordState}
@@ -247,7 +247,7 @@
         select * from t_pl_inboundorder
         <where>
             <if test="keyword != null and keyword != ''">
-                and boundType='WasteInbound'
+                and boundType=#{boundType}
                 and (inboundOrderId like "%"#{keyword}"%"
                 or (DATE_FORMAT(inboundDate,'%Y-%m-%d') like "%"#{keyword}"%")
                 or recordState=#{keyword}
@@ -269,7 +269,7 @@
                 ]]>
             </if>
             <if test="true">
-                and boundType='WasteInbound'
+                and boundType=#{boundType}
             </if>
             <if test="recordState != null and recordState != ''">
                 and recordState = #{recordState}
