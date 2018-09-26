@@ -44,7 +44,7 @@
                 and creator like  "%"#{creator}"%"
             </if>
             <if test="createDept != null and createDept != ''">
-                and createDept like  "%"#{createDept}" %"
+                and createDept like  "%"#{createDept}"%"
             </if>
             <if test="editor != null and editor != ''">
                 and editor like  "%"#{editor}"%"

@@ -93,7 +93,7 @@
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeyup="searchData();">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -110,7 +110,7 @@
                             <div class="form-group">
                                 <label for="search-documentNumber" class="col-sm-4 control-label">单据号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-documentNumber" name="search-documentNumber" placeholder="">
+                                    <input type="text" onkeyup="searchData();" class="form-control" id="search-documentNumber" name="search-documentNumber" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                             <div class="form-group">
                                 <label for="search-creator" class="col-sm-4 control-label">创建人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-creator" name="search-creator" placeholder="">
+                                    <input type="text" onkeyup="searchData();" class="form-control" id="search-creator" name="search-creator" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                             <div class="form-group">
                                 <label for="search-createDept" class="col-sm-4 control-label">创建部门</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-createDept" name="search-createDept" placeholder="">
+                                    <input type="text" onkeyup="searchData();" class="form-control" id="search-createDept" name="search-createDept" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                             <div class="form-group">
                                 <label for="search-editor" class="col-sm-4 control-label">修改人</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-editor" name="search-editor" placeholder="">
+                                    <input type="text" onkeyup="searchData();" class="form-control" id="search-editor" name="search-editor" placeholder="">
                                 </div>
                             </div>
                         </div>

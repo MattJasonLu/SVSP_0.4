@@ -14,6 +14,8 @@
     <script src="js/bootstrap/treeview/bootstrap-treeview.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
+    <script src="js/produce/base-loading.js"></script>
+    <!--<script src="js/produce/loading.js"></script>-->
     <script src="js/business/userManage.js"></script>
     <!--<link rel="stylesheet" type="text/css" href="./index_files/lato.css">-->
     <!--<link rel="stylesheet" type="text/css" href="./index_files/fontawesome.css">-->
@@ -25,6 +27,7 @@
     <!--<script type="text/javascript" src="./index_files/livedemo.js"></script>-->
     <!--<script type="text/javascript" src="./index_files/flavr.min.js"></script>-->
 </head>
+
 <body onload="loadRoleAndFunction();">
 <!--导航条-->
 <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
@@ -143,6 +146,7 @@
                 </div>
             </div>
             <span id="span_content" style="font-size: 20px;color: #2f3d4c"></span>
+            <!--<span id="msgDiv" style="font-size: 20px;color: #2f3d4c"></span>-->
         </div>
     </div>
 </div>
@@ -150,5 +154,6 @@
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');
+    // $(document).ready(parent.closeWaiting());
 </script>
 </html>
