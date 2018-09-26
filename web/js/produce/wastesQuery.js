@@ -437,14 +437,14 @@ function searchWastesInventory() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     //1入库日期
-    var  inboundOrderId =$('#search-inDate').val();
-    var endDate=$('#search-endDate').val();
+    var  inboundOrderId =$.trim($('#search-inDate').val());
+    var endDate=$.trim($('#search-endDate').val());
     //2产废单位
-    var client=$('#search-client').val();
+    var client=$.trim($('#search-client').val());
     //3进料方式
-    var handelCategory=$('#search-type option:selected').text();
+    var handelCategory=$.trim($('#search-type option:selected').text());
     var startDate=getDateByStr(inboundOrderId);
     var endDate=getDateByStr(endDate);
     for(var j=0;j<array.length;j++){
@@ -550,7 +550,8 @@ function searchWastesInventory1() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text=$('#searchContent').val();
+
+    var text=$.trim($('#searchContent').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {

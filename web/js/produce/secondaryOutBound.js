@@ -1206,26 +1206,69 @@ function searchSecOutbound() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text=$('#searchContent').val();
+
+    //如果需要按日期范围查询 寻找最早入库的日期
+    var date;
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestDateSec",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                date=getDateStr(result.dateList[0]);
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+
+    });
+
+    var text=$.trim($('#searchContent').val());
     //1出库日期
-    var outBoundDate=$('#search-storageDate').val()+"";
+    var outBoundDate=$.trim($('#search-storageDate').val());
+
+    var endDate=$.trim($('#search-endDate').val());
     //2出库数量
-    var outBoundNumber=$('#search-storageQuantity').val();
+    var outBoundNumber=$.trim($('#search-storageQuantity').val());
     //3出库单号
-    var outboundOrderId =$('#search-storageNumber').val();
+    var outboundOrderId =$.trim($('#search-storageNumber').val());
     //4进料方式
-    var processWay=$('#search-materialForm option:selected').text();
+    var processWay=$.trim($('#search-materialForm option:selected').text());
+    //业务员
+    var salesman=$.trim($('#search-salesman').val());
+    var startDate=getDateByStr(outBoundDate);
+    var endDate=getDateByStr(endDate);
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            //console.log(this);
-            if(!($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+
+            if(startDate.toString()=='Invalid Date'){
+                startDate=getDateByStr(date);
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=new Date();
+            }
+
+            if(!($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
             &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
+                &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
             )){
                 $(this).hide();
            }
-            if(($(this).children('td').eq(4).text().indexOf(outBoundDate)!=-1&&$(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
-                &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1)){
+            if(($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
+                &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
+                &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate))){
                array1.push($(this));
             }
         });
@@ -1307,7 +1350,7 @@ function searchSecondaryOuntBound() {
         array.push($('.myclass'));
     }
     isSearch=true;
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);

@@ -298,15 +298,15 @@ function searchBatchOrder() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
     //创建日期
     var createDate=$("#search-batchingDate").val();
     //处理类别
     var processWay=$('#search-processWay option:selected').text();
     //危废名称
-    var wastesName=$("#search-wastesName").val();
+    var wastesName=$.trim($("#search-wastesName").val());
     //产废单位
-    var companyName=$('#search-client').val();
+    var companyName=$.trim($('#search-client').val());
     console.log(processWay);
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -644,15 +644,15 @@ function searchInventory() {
         $(this).show();
         array.push($(this));
     });
-    var text=$('#searchContentAdd').val();
+    var text=$.trim($('#searchContentAdd').val());
 
-    var inboundDate=$("#search-inboundDate").val();
+    var inboundDate=$.trim($("#search-inboundDate").val());
 
-    var hangdeCategory=$("#search-handelCategory option:selected").text();
+    var hangdeCategory=$.trim($("#search-handelCategory option:selected").text());
 
-    var companyName=$("select[name='search-companyName']").selectpicker('val');
+    var companyName=$.trim($("select[name='search-companyName']").selectpicker('val'));
 
-    var wastesCode=$("#search-wasteId").val();
+    var wastesCode=$.trim($("#search-wasteId").val());
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
@@ -1309,7 +1309,7 @@ function searchBatchingList() {
 
     isSearch=true;
 
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -1395,7 +1395,7 @@ function searchBatchinAdd() {
     array.length=0;//清空数组
     array1.length=0;
     array.push($('.myclass'));
-    var text=$('#searchContentAdd').val();
+    var text=$.trim($('#searchContentAdd').val());
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
             //console.log(this);
