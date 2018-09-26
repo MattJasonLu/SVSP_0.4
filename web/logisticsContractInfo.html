@@ -184,14 +184,14 @@ function contractSubmit(){
                         <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
-                    </ul>
-                </li>
+                <!--<li class="dropdown">-->
+                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                        <!--<li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>-->
+                        <!--<li role="separator" class="divider"></li>-->
+                        <!--<li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
                 <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
                 <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
             </ul>
@@ -324,7 +324,8 @@ function contractSubmit(){
                     </input>
                 </td>
                 <td class="text-center" style="width: 150px;" colspan="2">预计处置费</td>
-                <td class="text-left"><input type="text" class="focus" id="order1" name="order1" placeholder="">
+                <td class="text-left" colspan="2">
+                    <input type="text" class="focus" id="order1" name="order1" placeholder="">
                 </td>
                 <!--<td class="text-center" style="width: 150px;">应急处置意向书</td>-->
                 <!--<td><input type="file"  id="materialAttachment" name="materialAttachment" placeholder="">-->
@@ -335,7 +336,7 @@ function contractSubmit(){
             </tr>
             </tbody>
         </table>
-        <table class="table table-bordered" style="width: 50%">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <td colspan="13" class="text-center"><h3>报价单明细</h3></td>
@@ -364,10 +365,11 @@ function contractSubmit(){
                 <td class="text-center"><input class="focus" title=""></td>
                 <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
                 <td class="text-center"><input class="focus" title=""readonly></td>
-                <td class="text-center"><select class="focus" title="" id="transportType" >
-                    <option value="0">0</option>
-                </select></td>
-
+                <td class="text-center">
+                    <select class="focus" title="" id="transportType" >
+                        <option value="0">0</option>
+                    </select>
+                </td>
             </tr>
             <tr id="plusBtn">
                 <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
@@ -421,19 +423,23 @@ function contractSubmit(){
                             <!--<select class="form-control" id="taxRate1" name="ticketRate1"></select>-->
                         <!--</div>-->
                     <!--</div>-->
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">保存之后 </label>
-                        <div class="col-xs-5 radio">
-                            <label>
-                                <input type="radio" name="addType" id="addType1" value="continue" checked>
-                                继续添加
-                            </label>
-                            <label>
-                                <input type="radio" name="addType" id="addType2" value="break">
-                                返回列表
-                            </label>
-                        </div>
+        <div class="row">
+            <div class="form-horizontal col-md-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">保存之后 </label>
+                    <div class="col-xs-5 radio">
+                        <label>
+                            <input type="radio" name="addType" id="addType1" value="continue" checked>
+                            继续添加
+                        </label>
+                        <label>
+                            <input type="radio" name="addType" id="addType2" value="break">
+                            返回列表
+                        </label>
                     </div>
+                </div>
+            </div>
+        </div>
                 <!--</div>-->
                 <!--<div class="form-horizontal col-md-4" >-->
                     <!--<div class="form-group"  >-->
@@ -572,11 +578,11 @@ function contractSubmit(){
                     <!--&lt;!&ndash;</div>&ndash;&gt;-->
                 <!--&lt;!&ndash;</div>&ndash;&gt;-->
             <!--&lt;!&ndash;</div>&ndash;&gt;-->
-            <div class="row text-center">
-                <a class="btn btn-success" onclick="contractLogicSave()">保存</a>
-                <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
-                <a class="btn btn-danger" id="back">返回</a>
-            </div>
+        <div class="row text-center">
+            <a class="btn btn-success" onclick="contractLogicSave()">保存</a>
+            <a class="btn btn-primary" onclick="contractSubmit()">提交</a>
+            <a class="btn btn-danger" id="back">返回</a>
+        </div>
         <!--</form>-->
     </div>
 </div>

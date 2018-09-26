@@ -1,5 +1,7 @@
 package com.jdlink.domain.Produce;
 
+import com.jdlink.domain.CheckState;
+
 import java.util.Date;
 
 /**
@@ -81,6 +83,21 @@ public class MedicalWastes {
      * @return
      */
     private float wastesAmount;
+
+    /**
+     * 状态
+     * @return
+     */
+    private CheckState checkState;
+
+    public CheckState getCheckState() {
+
+        return checkState;
+    }
+
+    public void setCheckState(CheckState checkState) {
+        this.checkState = checkState;
+    }
 
     public float getWastesAmount() {
         return wastesAmount;

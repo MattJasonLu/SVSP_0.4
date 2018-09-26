@@ -115,9 +115,8 @@
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
                     <!--<a class="btn btn-primary btn-xs" onclick="view1()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 属性调整</a>-->
                 </div>
-                <div class="input-group col-md-3"></div>
                 <!--查询框-->
-                <div class="input-group col-md-3 pull-right">
+                <div class="input-group col-md-4 pull-right">
                     <input type="text" class="form-control"  placeholder="搜索..." id="searchContent">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchMedicalWastes();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 查询</a>
@@ -207,6 +206,8 @@
                     <th class="text-center">本月蒸煮后外送量</th>
                     <th class="text-center">误差量</th>
                     <th class="text-center">水分含量</th>
+                    <th class="text-center">状态</th>
+                    <th class="text-center">操作</th>
                 </tr>
                 </thead>
                 <tbody id="tbody1">
@@ -225,6 +226,9 @@
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"><a title="作废" onclick="cancelMedicalWastes(this)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

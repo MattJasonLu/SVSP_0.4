@@ -14,5 +14,5 @@ public interface MedicalWastesMapper {
     List<MedicalWastes>  getMedicalWastesByRange(Date startDate, Date endDate);
     List<MedicalWastes>  getMedicalWastesByDateAndEquipment(Date startDate, Date endDate,String equipment);
     int total();
-
+    void cancelMedicalWastes(String medicalWastesId);
 }

@@ -132,7 +132,7 @@
                             aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->
-                <div class="input-group col-md-3 pull-right" >
+                <div class="input-group col-md-4 pull-right" >
                     <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch()">
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchPretreatment();"><span
@@ -151,7 +151,7 @@
         <div class="panel panel-default" id="senior" style="display: none;">
             <div class="panel-body">
                 <div class="row">
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-id" class="col-sm-4 control-label">预处理单号</label>
                             <div class="col-xs-7">
@@ -159,7 +159,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-4">
+                    <div class="form-horizontal col-md-3">
                         <div class="form-group">
                             <label for="search-state" class="col-sm-4 control-label">状态</label>
                             <div class="col-xs-7">
@@ -169,19 +169,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-horizontal col-md-4">
-                        <div class="form-group">
-                            <label for="search-remarks" class="col-sm-4 control-label">备注</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-remarks" name="search-remarks" placeholder="" onkeydown="enterSearch()">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="form-horizontal col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">创建日期</label>
+                            <label class="col-sm-3 control-label" style="margin-left: -30px">创建日期</label>
                             <div class="input-group">
                                 <input type="date" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch()"/>
                                 <span class="input-group-addon">-</span>
@@ -189,6 +179,14 @@
                             </div>
                         </div>
                     </div>
+                    <!--<div class="form-horizontal col-md-4">-->
+                        <!--<div class="form-group">-->
+                            <!--<label for="search-remarks" class="col-sm-4 control-label">备注</label>-->
+                            <!--<div class="col-xs-7">-->
+                                <!--<input type="text" class="form-control" id="search-remarks" name="search-remarks" placeholder="" onkeydown="enterSearch()">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>

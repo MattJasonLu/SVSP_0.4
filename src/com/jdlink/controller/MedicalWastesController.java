@@ -198,5 +198,25 @@ public class MedicalWastesController {
         }
     }
 
+    /**
+     * 作废
+     */
+    @RequestMapping("cancelMedicalWastes")
+    @ResponseBody
+    public String cancelMedicalWastes(String id){
+        JSONObject res=new JSONObject();
+        try{
+            medicalWastesService.cancelMedicalWastes(id);
+            res.put("status", "success");
+            res.put("message", "作废成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "作废失败");
+        }
+
+        return res.toString();
+    }
 
 }
