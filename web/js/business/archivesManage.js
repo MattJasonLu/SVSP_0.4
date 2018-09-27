@@ -210,6 +210,7 @@ function viewData1() {
     // 设置送样模态框数据
     $('#modal1-beginTime').val("");
     $('#modal1-endTime').val("");
+    $("#date1").show();
     if (resultData != null) {
         $("#modal1_companyName").text(resultData.clientList[0].companyName);
         $("#modal1-sendSampleNumber").text(resultData.sampleInfoList.length);
@@ -361,11 +362,22 @@ function searchDate1() {
 }
 
 /**
+ * 送样模态框打印功能
+ */
+function print1() {
+    //打印模态框
+    $("#date1").hide();
+    $("#modal1").printThis({
+    });
+}
+
+/**
  * 详情2
  */
 function viewData2() {
     $('#modal2-beginTime').val("");
     $('#modal2-endTime').val("");
+    $("#date2").show();
     if (resultData != null) {
         $("#modal2_companyName").text(resultData.clientList[0].companyName);
         setContractList(resultData.contractList);
@@ -491,21 +503,41 @@ function searchDate2() {
 }
 
 /**
+ * 合同模态框打印功能
+ */
+function print2() {
+    //打印模态框
+    $("#date2").hide();
+    $("#modal2").printThis({
+    });
+}
+/**
  * 详情3
  */
 function viewData3() {
     $('#modal3-beginTime').val("");
     $('#modal3-endTime').val("");
+    $("#date3").show();
     // $("#detail3").preventDefault();
     $("#modal3").modal("show")
 }
 
+/**
+ * 派车模态框打印功能
+ */
+function print3() {
+    //打印模态框
+    $("#date3").hide();
+    $("#modal3").printThis({
+    });
+}
 /**
  * 详情4
  */
 function viewData4() {
     $('#modal4-beginTime').val("");
     $('#modal4-endTime').val("");
+    $("#date4").show();
     if (resultData != null) {
         $("#modal4_companyName").text(resultData.clientList[0].companyName);
         setInboundOrderItemList(resultData.inboundOrderItemList);
@@ -628,11 +660,21 @@ function searchDate4() {
 }
 
 /**
+ * 危废接收模态框打印功能
+ */
+function print4() {
+    //打印模态框
+    $("#date4").hide();
+    $("#modal4").printThis({
+    });
+}
+/**
  * 详情5
  */
 function viewData5() {
     $('#modal5-beginTime').val("");
     $('#modal5-endTime').val("");
+    $("#date5").show();
     if (resultData != null) {
         $("#modal5_companyName").text(resultData.clientList[0].companyName);
         setOutBoundList(resultData.outboundOrderList);
@@ -754,9 +796,27 @@ function searchDate5() {
 }
 
 /**
+ * 危废处置模态框打印功能
+ */
+function print5() {
+    //打印模态框
+    $("#date5").hide();
+    $("#modal5").printThis({
+    });
+}
+/**
  * 详情6
  */
 function viewData6() {
     // $("#detail6").preventDefault();
     $("#modal6").modal("show")
+}
+
+/**
+ * 合同附件模态框打印功能
+ */
+function print6() {
+    //打印模态框
+    $("#modal6").printThis({
+    });
 }

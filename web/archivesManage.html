@@ -13,6 +13,7 @@
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <script language="javascript" src="js/bootstrap/printThis.js"></script>
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
     <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -424,7 +425,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group" id="date1">
                             <label class="col-sm-2 control-label">送样日期： </label>
                             <div class="input-group date">
                                 <i class="glyphicon glyphicon-calendar"></i>
@@ -496,7 +497,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="" id="print1-1">打印</a>
+                <a class="btn btn-primary hidden-print" onclick="print1()" id="print1-1">打印</a>
                 <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
             </div>
         </div>
@@ -520,7 +521,7 @@
                             <p class="text-left">产废单位: <span id="modal2_companyName"></span></p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" id="date2">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">开始日期： </label>
                             <div class="input-group date">
@@ -565,7 +566,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="" id="print2-1">打印</a>
+                <a class="btn btn-primary hidden-print" onclick="print2()" id="print2-1">打印</a>
                 <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
             </div>
         </div>
@@ -589,7 +590,7 @@
                             <p class="text-left">产废单位: <span id="modal3_companyName"></span></p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" id="date3">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">运输开始时间： </label>
                             <div class="input-group date">
@@ -650,7 +651,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="" id="print3-1">打印</a>
+                <a class="btn btn-primary hidden-print" onclick="print3()" id="print3-1">打印</a>
                 <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
             </div>
         </div>
@@ -674,7 +675,7 @@
                             <p class="text-left">产废单位: <span id="modal4_companyName"></span></p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" id="date4">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">入库时间： </label>
                             <div class="input-group date">
@@ -718,7 +719,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="" id="print4-1">打印</a>
+                <a class="btn btn-primary hidden-print" onclick="print4()" id="print4-1">打印</a>
                 <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
             </div>
         </div>
@@ -742,7 +743,7 @@
                             <p class="text-left">产废单位: <span id="modal5_companyName"></span></p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" id="date5">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">出库时间： </label>
                             <div class="input-group date">
@@ -786,7 +787,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="" id="print5-1">打印</a>
+                <a class="btn btn-primary hidden-print" onclick="print5()" id="print5-1">打印</a>
                 <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
             </div>
         </div>
@@ -834,7 +835,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a class="btn btn-primary hidden-print" onclick="" id="print6-1">打印</a>
+                <a class="btn btn-primary hidden-print" onclick="print6()" id="print6-1">打印</a>
                 <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
             </div>
         </div>
