@@ -568,10 +568,10 @@ function searchContract() {
     var dateMin=(arraydate[0]);
     var dateMax=(arraydate[0]);
     for(var i=0;i<arraydate.length;i++){
-        if(new Date(arraydate[i]).getTime()<new Date(dateMin)){
+        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
             dateMin=(arraydate[i]);
         }
-        if(new Date(arraydate[i]).getTime()>new Date(dateMax)){
+        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
             dateMax=(arraydate[i]);
         }
     }
