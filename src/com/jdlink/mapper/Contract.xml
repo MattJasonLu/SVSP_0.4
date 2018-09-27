@@ -299,6 +299,11 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
             limit #{page.start}, #{page.count};
         </if>
     </select>
+
+    <select id="getContractByClientId" parameterType="String" resultMap="ContractRM">
+        select * from t_contract where clientId =#{clientId} and checkState != 'Invalid';
+    </select>
+
     <select id="searchModel" parameterType="Contract" resultType="Contract">
         select * from t_contract
         <where>
