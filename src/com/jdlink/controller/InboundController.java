@@ -7,6 +7,7 @@ import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
 import com.jdlink.service.LaboratoryTestService;
 import com.jdlink.service.QuotationService;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.text.NumberFormat;
@@ -483,6 +485,35 @@ public class InboundController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "增加次生入库单失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导入
+     *
+     * @param excelFile 导入文件
+     * @return 成功与否
+     */
+    @RequestMapping("importWastesInboundExcel")
+    @ResponseBody
+    public String importWastesInboundExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            InboundOrder inboundOrder = new InboundOrder();
+            inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
+            System.out.println("数据如下：");
+            for (int i = 1; i < data.length; i++) {
+                for (int j = 0; j < data[0].length; j++) {
+                    System.out.print(data[i][j].toString());
+                    System.out.print(",");
+                }
+                System.out.println();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return res.toString();
     }
