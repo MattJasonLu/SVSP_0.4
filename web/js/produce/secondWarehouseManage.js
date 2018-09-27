@@ -785,3 +785,68 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         },400);
     });
 });
+
+/**
+ * 导出excel
+ * @param e
+ */
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_inboundorder';
+    var sqlWords = "select t_pl_inboundorder.inboundOrderId, inboundDate, warehouseId, boundType, transferDraftId, (select companyName from client where clientId=produceCompanyId) as 'companyName', wastesName, wastesCode, wastesAmount, unitPriceTax, totalPrice, processWay, handleCategory, t_pl_inboundorderitem.remarks, warehouseArea from t_pl_inboundorder join t_pl_inboundorderitem where t_pl_inboundorderitem.inboundOrderId=t_pl_inboundorder.inboundOrderId and boundType='SecondaryInbound';";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
+
+/**
+ * 导入模态框
+ * */
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+/**
+ * 下载模板
+ * */
+function downloadModal() {
+    var filePath = 'Files/Templates/次生入库单导入模板.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+
+/**
+ * 导入excel
+ */
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importSecondWastesInboundExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
