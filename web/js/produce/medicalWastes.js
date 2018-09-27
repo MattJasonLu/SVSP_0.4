@@ -58,6 +58,16 @@ function totalPage() {
 }
 
 /**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
+
+/**
  * 计算分页总页数
  * @param totalRecord
  * @param count
@@ -95,6 +105,7 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -335,6 +346,7 @@ function searchMedicalWastes1() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -419,6 +431,7 @@ function getNewestId() {
 
 
 }
+
 //保存医废出入库信息
 function saveMedicalWastes() {
 //获得输入的信息
@@ -460,6 +473,7 @@ function saveMedicalWastes() {
         }
     });
 }
+
 //加载医危废数据
 function loadMedicalWastesList() {
     $("#current").find("a").text("当前页：1");
@@ -497,6 +511,7 @@ function loadMedicalWastesList() {
     });
     isSearch=false;
 }
+
 //加载医危废数据
 function setMedicalWastesList(result) {
     var tr = $("#cloneTr");
@@ -583,6 +598,7 @@ function setMedicalWastesList(result) {
     tr.hide();
 
 }
+
 //高级查询
 function searchMedicalWastes() {
     isSearch=false;
@@ -648,6 +664,7 @@ function searchMedicalWastes() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -665,6 +682,7 @@ function searchMedicalWastes() {
 
 
 }
+
 //误差量计算
 //医废-误差量计算公式：误差量=本日进厂医废（接运单）-本日直接转外处置量-本日蒸煮医废（过磅量）
 function geterrorNumberByWastes() {

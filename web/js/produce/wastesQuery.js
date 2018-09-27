@@ -8,6 +8,7 @@ function reset() {
     loadWasteInventoryList();
 
 }
+
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
@@ -20,6 +21,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 /**
  * 计算总页数
  * */
@@ -52,6 +54,7 @@ function totalPage() {
     var total = loadPages(totalRecord, count);
     return total;
 }
+
 /**
  * 设置克隆页码
  * */
@@ -72,12 +75,23 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
 
+}
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
 }
 
 /**
@@ -497,6 +511,7 @@ function searchWastesInventory() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -595,6 +610,7 @@ function searchWastesInventory1() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -651,6 +667,7 @@ function viewWastesIn(item) {
 
 
 }
+
 //危废库存查看，点击查看按钮
 function setByInboundOrderItemId(result) {
     var tr=$('#cloneTr3');
@@ -696,6 +713,7 @@ function setByInboundOrderItemId(result) {
     })
      tr.hide();
 }
+
 /**
  *
  * 导出

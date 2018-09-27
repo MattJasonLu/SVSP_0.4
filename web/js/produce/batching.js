@@ -15,6 +15,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 /**
  * 计算总页数
  * */
@@ -46,6 +47,7 @@ function totalPage() {
     var total = loadPages(totalRecord, count);
     return total;
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -62,6 +64,7 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
+
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
@@ -137,6 +140,7 @@ function switchPage(pageNumber) {
         }
     }
 }
+
 /**
  * 输入页数跳转页面
  * */
@@ -205,6 +209,7 @@ function inputSwitchPage() {
         }
     }
 }
+
 function  batchingList() {
     var page={};
     $.ajax({
@@ -232,6 +237,7 @@ function  batchingList() {
     //加载高级查询数据
     setSeniorSelectedList();
 }
+
 /**
  * 重置搜索数据
  */
@@ -253,6 +259,7 @@ function resetList() {
     $("select[name='search-companyName']").selectpicker('val',' ');
     loadBatchingOrderList();
 }
+
 /**
  * 设置克隆页码
  * */
@@ -273,12 +280,23 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
 
+}
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
 }
 
 /**
@@ -363,6 +381,7 @@ function searchBatchOrder() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -380,6 +399,7 @@ function searchBatchOrder() {
     isSearch=false;
 
 }
+
 /**设置库存列表数据
  */
 function setWasteInventoryList(result) {
@@ -466,6 +486,7 @@ function setWasteInventoryList(result) {
 
 
 }
+
 /*配料*/
 function batching() {
     var items = $("input[name='select']:checked");//判断复选框是否选中
@@ -497,6 +518,7 @@ function batching() {
         });
     });
 }
+
 /**设置配料列表数据
  *
  */
@@ -564,6 +586,7 @@ function setBatchingWList(result) {
     tr.hide();
     tr.removeAttr('class');
 }
+
 //加载高级查询数据
 function setSeniorSelectedList() {
     $('.selectpicker').selectpicker({
@@ -626,6 +649,7 @@ function setSeniorSelectedList() {
 
 
 }
+
 //高级查询功能
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
@@ -680,6 +704,7 @@ function searchInventory() {
     // }
 
 }
+
 //数量加减
 function adjustNumber(item) {
     var inboundOrderId=item.parentElement.firstElementChild.innerHTML;
@@ -706,6 +731,7 @@ function adjustNumber(item) {
 
 
 }
+
 //数量加减
 function subtraction(item) {
     //获得相应的入库单号
@@ -717,6 +743,7 @@ function subtraction(item) {
   // console.log(array)
     //进行运算
 }
+
 function time(inboundOrderItemId,number) {
     $.ajax({
         type: "POST",                       // 方法类型
@@ -738,6 +765,7 @@ function time(inboundOrderItemId,number) {
         }
     });
 }
+
 //保存
 function save() {
     $(".myclass2").each(function () {
@@ -783,6 +811,7 @@ function save() {
     alert("添加成功！");
     window.location.href="ingredientsList.html";
 }
+
 //配料单显示页面加载
 function loadBatchingOrderList() {
     var pageNumber = 1;               // 显示首页
@@ -825,6 +854,7 @@ function loadBatchingOrderList() {
     setSenierList();
     isSearch = false;
 }
+
 //2加载高级搜索下拉框
 function setSenierList() {
     $.ajax({
@@ -857,6 +887,7 @@ function setSenierList() {
         }
     });
 }
+
 //加载配料单数据源
 function setBatchingOrderList(result) {
         var tr = $("#cloneTr3");
@@ -940,6 +971,7 @@ function setBatchingOrderList(result) {
       // tr.removeAttr('class');
         tr.hide();
 }
+
 //生成领料单
  function generateRequisition(){
      var items = $("input[name='select']:checked");//判断复选框是否选中
@@ -1022,6 +1054,7 @@ function setBatchingOrderList(result) {
          alert("请勾选数据！")
      }
  }
+
  //生成领料单1
 function add(data) {
     $.ajax({
@@ -1045,6 +1078,7 @@ function add(data) {
 
     });
 }
+
 //领料单新增页面预加载
 function loadMaterialRequisitionList(){
     var page={};
@@ -1071,6 +1105,7 @@ function loadMaterialRequisitionList(){
         }
     });
 }
+
 //设置领料单新增列表
 function setMaterialRequisitionList(result) {
     var tr = $("#cloneTr1");
@@ -1146,6 +1181,7 @@ function setMaterialRequisitionList(result) {
     tr.removeAttr('class');
 
 }
+
 //判断是否存在领料单号
 function isMaterialRequisitionOrderId() {
     $.ajax({
@@ -1169,6 +1205,7 @@ alert("服务器异常！")
         
     });
 }
+
 //生成领料单号(当数据库没有领料单的时候)
 function generateRequisitionNumber(index) {
    var date=new Date();
@@ -1184,6 +1221,7 @@ function generateRequisitionNumber(index) {
   return year+mouth+index;
 
 }
+
 //生成领料单号(当数据库存在领料单的时候)
 function generateRequisitionNumber1(theNewestmaterialRequisitionOrderId) {
     var s= theNewestmaterialRequisitionOrderId;//原字符串
@@ -1192,12 +1230,14 @@ function generateRequisitionNumber1(theNewestmaterialRequisitionOrderId) {
     var number = getString3((parseInt(s2) + 1));
     return s1+number;
 }
+
 function getString3(number) {
     while (number.length!=3){
         number="0"+number;
     }
     return number;
 }
+
 //保存领料单 实则是更新
 function updateMaterialRequisitionOrder() {
     if(confirm("确认领料?")){
@@ -1250,6 +1290,7 @@ function updateMaterialRequisitionOrder() {
     }
 
 }
+
 //更新领料单的特有数据
 function update(data) {
     $.ajax({
@@ -1352,6 +1393,7 @@ function searchBatchingList() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -1374,7 +1416,6 @@ function searchBatchingList() {
 
 }
 
-
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
     $('#searchContentAdd').keyup(function (event) { //给Input赋予onkeyup事件
@@ -1386,6 +1427,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         },400);
     });
 });
+
 //配料单新增页面粗查询
 function searchBatchinAdd() {
     $('.myclass').each(function () {

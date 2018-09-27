@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
 import com.jdlink.service.ProcurementService;
@@ -80,14 +81,14 @@ public class ProcurementController {
      return  res.toString();
     }
     /**
-     * 加载采购列表
+     * 加载月季采购列表
      */
      @RequestMapping("getProcurementList")
      @ResponseBody
-     public  String getProcurementList(){
+     public  String getProcurementList(@RequestBody Page page){
          JSONObject res=new JSONObject();
          try {
-              List<Procurement> procurements=procurementService.getProcurementList();
+              List<Procurement> procurements=procurementService.getProcurementList(page);
              JSONArray array=JSONArray.fromObject(procurements);
               res.put("data",array);
              res.put("status", "success");
@@ -102,6 +103,32 @@ public class ProcurementController {
        return res.toString();
 
      }
+
+    /**
+     * 加载应急采购列表
+     */
+    @RequestMapping("getEmergencyProcurementList")
+    @ResponseBody
+    public  String getEmergencyProcurementList(@RequestBody Page page){
+        JSONObject res=new JSONObject();
+        try {
+            List<Procurement> procurements=procurementService.getEmergencyProcurementList(page);
+            JSONArray array=JSONArray.fromObject(procurements);
+            res.put("data",array);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+
+    }
+
+
     /**
      * 根据编号获取信息
      */

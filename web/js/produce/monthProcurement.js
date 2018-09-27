@@ -75,12 +75,26 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
 }
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
+
+
+
 
 /**
  * 点击页数跳转页面
@@ -383,7 +397,8 @@ function getMontnProcurement() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProcurementList",          // url
+        url: "getProcurementList",
+        data: JSON.stringify(page),// url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
@@ -411,9 +426,8 @@ function setMonthProcurementList(result) {
     //$('.myclass').hide();
     var tr = $("#cloneTr");
     tr.siblings().remove();
-    console.log(result.data);
+    // console.log(result.data);
     tr.attr('class','myclass');
-
         $.each(result.data, function (index, item) {
             //console.log(item);
             // 克隆tr，每次遍历都可以产生新的tr
@@ -478,6 +492,7 @@ function setMonthProcurementList(result) {
                 });
                 // 把克隆好的tr追加到原来的tr前面
                 // clonedTr.removeAttr("class");
+               clonedTr.removeAttr('id');
                 clonedTr.insertBefore(tr);
             }
 
@@ -632,6 +647,7 @@ function setMonthProcurementListModal(result) {
         //console.log(item);
         // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
+
             clonedTr.show();
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
@@ -667,7 +683,7 @@ function setMonthProcurementListModal(result) {
                 }
             });
             // 把克隆好的tr追加到原来的tr前面
-            clonedTr.removeAttr("id");
+        clonedTr.removeAttr('id');
             clonedTr.insertBefore(tr);
 
 
@@ -712,8 +728,8 @@ function searchProcurement() {
 
 
     isSearch=true;
-    var startTime=$("#search-inDate").val();
-    var endTime=$("#search-endDate").val();
+    var startTime=$.trim($("#search-inDate").val());
+    var endTime=$.trim($("#search-endDate").val());
     var startDate=getDateByStr(startTime);
     var endDate=getDateByStr(endTime);
 
@@ -788,6 +804,7 @@ function searchProcurement() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -886,7 +903,7 @@ function searchWastesAnalysis() {
             }
         });
     }
-
+     console.log(array1)
     var total;
 
     if(array1.length%countValue()==0){
@@ -916,6 +933,7 @@ function searchWastesAnalysis() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -929,7 +947,7 @@ function searchWastesAnalysis() {
     //首页展示
     for(var i=0;i<countValue();i++){
         $(array1[i]).show();
-        $('#tbody1').append((array1[i]));
+       $('#tbody1').append((array1[i]));
     }
 
     if(text.length<=0){
@@ -947,7 +965,7 @@ function searchWastesAnalysis() {
 function exportExcel() {
     console.log("export");
     var name = 't_pl_procurement';
-    var sqlWords = "select * from t_pl_procurement where procurementCategory='1'";
+    var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory!='0';";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 /**

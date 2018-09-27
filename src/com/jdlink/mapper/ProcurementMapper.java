@@ -1,5 +1,6 @@
 package com.jdlink.mapper;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
 
@@ -10,7 +11,8 @@ public interface ProcurementMapper {
     void  add(Procurement procurement);
     List<String> getNewestId();
     void addMaterial(Material material);
-    List<Procurement> getProcurementList();
+    List<Procurement> getProcurementList(Page page);
+    List<Procurement> getEmergencyProcurementList(Page page);
     List<Procurement> getProcurementListById(String receiptNumber);
     List<Procurement> searchProcurement(Procurement procurement);
     List<String> getIngredientsList();

@@ -62,12 +62,23 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
 
+}
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
 }
 
 /**
@@ -346,6 +357,7 @@ function setSecIntoList(result) {
 }
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
+
 //次生入场高级查询
 function searchSecInto() {
     isSearch=false;
@@ -447,6 +459,7 @@ function searchSecInto() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -540,6 +553,7 @@ function searchWastesAnalysis() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
