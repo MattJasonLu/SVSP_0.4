@@ -208,6 +208,9 @@ function setDataList(result) {
 function viewData1() {
     // $("#detail1").preventDefault();
     // 设置送样模态框数据
+    $('#modal1-beginTime').val("");
+    $('#modal1-endTime').val("");
+    $("#date1").show();
     if (resultData != null) {
         $("#modal1_companyName").text(resultData.clientList[0].companyName);
         $("#modal1-sendSampleNumber").text(resultData.sampleInfoList.length);
@@ -243,6 +246,7 @@ function setSampleList(result) {
                 serialNumber++;
                 // 克隆tr，每次遍历都可以产生新的tr
                 var clonedTr = tr.clone();
+                clonedTr.addClass('myclass1');
                 clonedTr.show();
                 // 循环遍历cloneTr的每一个td元素，并赋值
                 clonedTr.children("td").each(function (inner_index) {
@@ -310,10 +314,70 @@ function setSampleList(result) {
     });
 }
 
+var array = [];//存放所有的tr
+var array1 = [];//存放目标的tr
+/**
+ * 送样模态框日期查询
+ */
+function searchDate1() {
+    $('.myclass1').each(function () {
+        $(this).show();
+    });
+    array = [];//清空数组
+    array1 = [];
+    array.push($('.myclass1'));
+    //搜索关键字
+    var beginTime = $.trim($('#modal1-beginTime').val());
+    var endTime = $.trim($('#modal1-endTime').val());
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            // 设置查询条件
+            var time = $(this).children('td').eq(7).text();
+            if (beginTime != null && endTime != null && beginTime != "" && endTime != "") {
+                if (time > endTime || time < beginTime) {
+                    $(this).hide();       //不满足条件的隐藏
+                }
+            } else if (!(time <= endTime || time >= beginTime)) {
+                $(this).hide();
+            }
+            if (beginTime != null && endTime != null && (time <= endTime && time >= beginTime)) {
+                array1.push($(this));     // 满足条件插入到数组中
+            } else if (time <= endTime || time >= beginTime) {
+                array1.push($(this));
+            }
+        });
+    }
+    // 将查询到的数据显示
+    for (var i = 0; i < array1.length; i++) {
+        $.each(array1[i], function () {
+            $('#tBody1').append(this);
+        });
+    }
+   // 若输入框未数据则将全部数据显示
+    if (beginTime.length <= 0 && endTime.length <= 0) {
+        $('.myclass1').each(function () {
+            $(this).show();
+        })
+    }
+}
+
+/**
+ * 送样模态框打印功能
+ */
+function print1() {
+    //打印模态框
+    $("#date1").hide();
+    $("#modal1").printThis({
+    });
+}
+
 /**
  * 详情2
  */
 function viewData2() {
+    $('#modal2-beginTime').val("");
+    $('#modal2-endTime').val("");
+    $("#date2").show();
     if (resultData != null) {
         $("#modal2_companyName").text(resultData.clientList[0].companyName);
         setContractList(resultData.contractList);
@@ -334,6 +398,7 @@ function setContractList(result) {
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.addClass("myclass2");
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -379,7 +444,7 @@ function setContractList(result) {
                     break;
                 // 经营合同详情（暂用正文数据）
                 case (9):
-                    $(this).html(obj.content);
+                    //$(this).html();
                     break;
             }
         });
@@ -393,17 +458,86 @@ function setContractList(result) {
 }
 
 /**
+ * 合同模态框日期查询
+ */
+function searchDate2() {
+    $('.myclass2').each(function () {
+        $(this).show();
+    });
+    array = [];//清空数组
+    array1 = [];
+    array.push($('.myclass2'));
+    //搜索关键字
+    var beginTime = $.trim($('#modal2-beginTime').val());
+    var endTime = $.trim($('#modal2-endTime').val());
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            // 设置查询条件
+            var time = $(this).children('td').eq(3).text();
+            if (beginTime != null && endTime != null && beginTime != "" && endTime != "") {
+                if (time > endTime || time < beginTime) {
+                    $(this).hide();
+                }
+            } else if (!(time <= endTime || time >= beginTime)) {
+                $(this).hide();
+            }
+            if (beginTime != null && endTime != null && (time <= endTime && time >= beginTime)) {
+                array1.push($(this));
+            } else if (time <= endTime || time >= beginTime) {
+                array1.push($(this));
+            }
+        });
+    }
+    // 将查询到的数据显示
+    for (var i = 0; i < array1.length; i++) {
+        $.each(array1[i], function () {
+            $('#tBody2').append(this);
+        });
+    }
+    // 若输入框未输入数据则全部显示
+    if (beginTime.length <= 0 && endTime.length <= 0) {
+        $('.myclass2').each(function () {
+            $(this).show();
+        })
+    }
+}
+
+/**
+ * 合同模态框打印功能
+ */
+function print2() {
+    //打印模态框
+    $("#date2").hide();
+    $("#modal2").printThis({
+    });
+}
+/**
  * 详情3
  */
 function viewData3() {
+    $('#modal3-beginTime').val("");
+    $('#modal3-endTime').val("");
+    $("#date3").show();
     // $("#detail3").preventDefault();
     $("#modal3").modal("show")
 }
 
 /**
+ * 派车模态框打印功能
+ */
+function print3() {
+    //打印模态框
+    $("#date3").hide();
+    $("#modal3").printThis({
+    });
+}
+/**
  * 详情4
  */
 function viewData4() {
+    $('#modal4-beginTime').val("");
+    $('#modal4-endTime').val("");
+    $("#date4").show();
     if (resultData != null) {
         $("#modal4_companyName").text(resultData.clientList[0].companyName);
         setInboundOrderItemList(resultData.inboundOrderItemList);
@@ -415,7 +549,7 @@ function viewData4() {
  * 设置危废接收模态框
  * @param result
  */
-function setInboundOrderItemList(result){
+function setInboundOrderItemList(result) {
     $(".newLine").remove();                 // 删除旧数据
     // 获取id为cloneTr的tr元素
     var tr = $("#clone4");
@@ -425,6 +559,7 @@ function setInboundOrderItemList(result){
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.addClass("myclass4");
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -477,13 +612,69 @@ function setInboundOrderItemList(result){
     });
     // 隐藏无数据的tr
     tr.hide();
-
 }
 
+/**
+ * 危废接收模态框日期查询
+ */
+function searchDate4() {
+    $('.myclass4').each(function () {
+        $(this).show();
+    });
+    array = [];//清空数组
+    array1 = [];
+    array.push($('.myclass4'));
+    //搜索关键字
+    var beginTime = $.trim($('#modal4-beginTime').val());
+    var endTime = $.trim($('#modal4-endTime').val());
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            // 设置查询条件
+            var time = $(this).children('td').eq(7).text();
+            if (beginTime != null && endTime != null && beginTime != "" && endTime != "") {
+                if (time > endTime || time < beginTime) {
+                    $(this).hide();       //不满足条件的隐藏
+                }
+            } else if (!(time <= endTime || time >= beginTime)) {
+                $(this).hide();
+            }
+            if (beginTime != null && endTime != null && (time <= endTime && time >= beginTime)) {
+                array1.push($(this));     // 满足条件插入到数组中
+            } else if (time <= endTime || time >= beginTime) {
+                array1.push($(this));
+            }
+        });
+    }
+    // 将查询到的数据显示
+    for (var i = 0; i < array1.length; i++) {
+        $.each(array1[i], function () {
+            $('#tBody4').append(this);
+        });
+    }
+    // 若输入框未数据则将全部数据显示
+    if (beginTime.length <= 0 && endTime.length <= 0) {
+        $('.myclass4').each(function () {
+            $(this).show();
+        })
+    }
+}
+
+/**
+ * 危废接收模态框打印功能
+ */
+function print4() {
+    //打印模态框
+    $("#date4").hide();
+    $("#modal4").printThis({
+    });
+}
 /**
  * 详情5
  */
 function viewData5() {
+    $('#modal5-beginTime').val("");
+    $('#modal5-endTime').val("");
+    $("#date5").show();
     if (resultData != null) {
         $("#modal5_companyName").text(resultData.clientList[0].companyName);
         setOutBoundList(resultData.outboundOrderList);
@@ -504,6 +695,7 @@ function setOutBoundList(result) {
         serialNumber++;
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.addClass("myclass5");
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
@@ -559,9 +751,72 @@ function setOutBoundList(result) {
 }
 
 /**
+ * 危废处置模态框日期查询
+ */
+function searchDate5() {
+    $('.myclass5').each(function () {
+        $(this).show();
+    });
+    array = [];//清空数组
+    array1 = [];
+    array.push($('.myclass5'));
+    //搜索关键字
+    var beginTime = $.trim($('#modal5-beginTime').val());
+    var endTime = $.trim($('#modal5-endTime').val());
+    for (var j = 0; j < array.length; j++) {
+        $.each(array[j], function () {
+            // 设置查询条件
+            var time = $(this).children('td').eq(7).text();
+            if (beginTime != null && endTime != null && beginTime != "" && endTime != "") {
+                if (time > endTime || time < beginTime) {
+                    $(this).hide();       //不满足条件的隐藏
+                }
+            } else if (!(time <= endTime || time >= beginTime)) {
+                $(this).hide();
+            }
+            if (beginTime != null && endTime != null && (time <= endTime && time >= beginTime)) {
+                array1.push($(this));     // 满足条件插入到数组中
+            } else if (time <= endTime || time >= beginTime) {
+                array1.push($(this));
+            }
+        });
+    }
+    // 将查询到的数据显示
+    for (var i = 0; i < array1.length; i++) {
+        $.each(array1[i], function () {
+            $('#tBody5').append(this);
+        });
+    }
+    // 若输入框未数据则将全部数据显示
+    if (beginTime.length <= 0 && endTime.length <= 0) {
+        $('.myclass5').each(function () {
+            $(this).show();
+        })
+    }
+}
+
+/**
+ * 危废处置模态框打印功能
+ */
+function print5() {
+    //打印模态框
+    $("#date5").hide();
+    $("#modal5").printThis({
+    });
+}
+/**
  * 详情6
  */
 function viewData6() {
     // $("#detail6").preventDefault();
     $("#modal6").modal("show")
+}
+
+/**
+ * 合同附件模态框打印功能
+ */
+function print6() {
+    //打印模态框
+    $("#modal6").printThis({
+    });
 }

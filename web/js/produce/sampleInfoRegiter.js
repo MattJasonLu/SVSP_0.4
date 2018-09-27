@@ -86,11 +86,14 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 
 }
 
@@ -1349,11 +1352,11 @@ function print() {
     //打印模态框
     $("#footer").hide();
     $("#viewModal").printThis({
-        debug: false,             // 调试模式下打印文本的渲染状态
-        importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
-        importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
-        printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
-        copyTagClasses: false
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: true,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: false
     });
 
 }

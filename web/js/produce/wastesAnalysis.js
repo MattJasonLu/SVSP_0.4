@@ -449,25 +449,66 @@ function searchWasteInto() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
-
+    isSearch=true;
     var text=$.trim($('#searchContent').val());
     //1产废单位
     var companyName=$.trim($('#search-receiveDate').val());
     //2收样日期
-    var date=$.trim($('#search-sewageName').val());
+    var beginTime=$.trim($('#search-inDate').val());
+    var endTime=$.trim($('#search-endDate').val());
+
+    var startDate=getDateByStr(beginTime);
+
+    var endDate=getDateByStr(endTime);
+
     //3联单号码
     var number=$.trim($('#search-remarks').val());
+    //进料方式
+    var hangelCategory=$.trim($('#search-type option:selected').text());
+    //废物名称
+    var wastesName=$.trim($('#search-wastesName').val());
+    //废物类别
+    var wastesCategory=$.trim($('#search-wastesCategory').val());
+    var arraydate=[];
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            arraydate.push(($(this).children('td').eq(1).text()))
+        });
+    }
+    var dateMin=(arraydate[0]);
+    var dateMax=(arraydate[0]);
+    for(var i=0;i<arraydate.length;i++){
+        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
+            dateMin=(arraydate[i]);
+        }
+        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
+            dateMax=(arraydate[i]);
+        }
+    }
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            //console.log(this);
-            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
+            if(startDate.toString()=='Invalid Date'){
+                startDate=dateMin;
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=dateMax;
+            }
+            var date=$(this).children('td').eq(1).text();
+            if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(6).text().indexOf(hangelCategory)!=-1
                 &&$(this).children('td').eq(2).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
+                &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
+                &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(4).text().indexOf(companyName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
-                &&$(this).children('td').eq(2).text().indexOf(number)!=-1&&$(this).children('td').text().indexOf(text)!=-1)){
+            if(
+                ($(this).children('td').eq(3).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(6).text().indexOf(hangelCategory)!=-1
+                    &&$(this).children('td').eq(2).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
+                    &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
+                    &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
+                )
+            ){
                 array1.push($(this));
             }
         });

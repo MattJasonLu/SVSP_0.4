@@ -84,12 +84,14 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 /**
@@ -186,6 +188,9 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
@@ -199,7 +204,6 @@ function inputSwitchPage() {
         if (pageNumber == totalPage()) {
             $("#next").addClass("disabled");
             $("#endPage").addClass("disabled");
-
             $("#previous").removeClass("disabled");
             $("#firstPage").removeClass("disabled");
         }
