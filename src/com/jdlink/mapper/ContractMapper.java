@@ -95,4 +95,6 @@ public interface ContractMapper {
      */
     void deleteQuotationItem(String contractId);
 
+    List<Contract> getContractByClientId(String id);
+
 }

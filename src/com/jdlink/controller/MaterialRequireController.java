@@ -267,7 +267,7 @@ try{
      public String  importMaterialRequireIdExcel(MultipartFile excelFile){
          JSONObject res = new JSONObject();
          String fileName = excelFile.getOriginalFilename();
-         Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+         Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
          Calendar cal = Calendar.getInstance();
          //获取年
          String year=String.valueOf(cal.get(Calendar.YEAR));

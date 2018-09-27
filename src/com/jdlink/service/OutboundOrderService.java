@@ -37,5 +37,6 @@ public interface OutboundOrderService {
     List<OutboundOrder>  loadSecOutBoundList(Page page);
     int totalSecOutBoundRecord();
     List<Date>getNewestDate();
+    List<OutboundOrder> getOutBoundOrderByClientId(String id);
     List<Date>getNewestDateSec();
 }

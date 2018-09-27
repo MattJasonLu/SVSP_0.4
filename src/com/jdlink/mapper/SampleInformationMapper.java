@@ -24,4 +24,5 @@ public interface SampleInformationMapper {
     Wastes getByWastesId(String id);
     List<Wastes> listWastes();
     List<Client> listClient();
+    List<SampleInformation> getSampleInfoByClientId(String id);
 }

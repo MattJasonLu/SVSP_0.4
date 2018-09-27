@@ -237,4 +237,7 @@ contractMapper.updateFreight2(id);
         contractMapper.deleteQuotationItem(contractId);
     }
 
+    @Override
+    public List<Contract> getContractByClientId(String id){ return contractMapper.getContractByClientId(id); }
+
 }

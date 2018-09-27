@@ -1,8 +1,11 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.*;
-import com.jdlink.service.ClientService;
-import com.jdlink.service.SalesmanService;
+import com.jdlink.domain.Inventory.InboundOrder;
+import com.jdlink.domain.Inventory.InboundOrderItem;
+import com.jdlink.domain.Inventory.OutboundOrder;
+import com.jdlink.domain.Produce.SampleInformation;
+import com.jdlink.service.*;
 import com.jdlink.util.DBUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -30,6 +33,15 @@ public class ClientController {
     ClientService clientService;
     @Autowired
     SalesmanService salesmanService;
+    @Autowired
+    SampleInformationService sampleInformationService;
+    @Autowired
+    ContractService contractService;
+    @Autowired
+    OutboundOrderService outboundOrderService;
+    @Autowired
+    InboundService inboundService;
+
     /**
      * 新增客户
      * @param client 客户
@@ -289,6 +301,47 @@ public class ClientController {
             res.put("status", "success");
             res.put("message", "查询成功");
             res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    @RequestMapping("searchClientData")
+    @ResponseBody
+    public String searchClientData(@RequestBody Client client) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取企业数据
+            List<Client> clientList = clientService.search(client);
+            JSONArray data = JSONArray.fromArray(clientList.toArray(new Client[clientList.size()]));
+            Client client1 = new Client();
+            if(clientList.size() > 0){
+                client1 = clientList.get(0);
+            }
+            // 获取企业的接运单数据
+            List<SampleInformation> sampleInformationList = sampleInformationService.getSampleInfoByClientId(client1.getClientId());
+            JSONArray sampleInfoList = JSONArray.fromArray(sampleInformationList.toArray(new SampleInformation[sampleInformationList.size()]));
+            // 获取企业的有效合同数据
+            List<Contract> contractList = contractService.getContractByClientId(client1.getClientId());
+            JSONArray contractInfo = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            // 派车
+
+            // 获取危废接收数据（危废入库）
+            List<InboundOrderItem> inboundOrderItemList = inboundService.getInboundOrderItemByClientId(client1.getClientId());
+            JSONArray inboundOrderItemInfo = JSONArray.fromArray(inboundOrderItemList.toArray(new InboundOrderItem[inboundOrderItemList.size()]));
+            // 获取危废处置数据 （危废出库）
+            List<OutboundOrder> outboundOrderList = outboundOrderService.getOutBoundOrderByClientId(client1.getClientId());
+            JSONArray outboundOrderInfo = JSONArray.fromArray(outboundOrderList.toArray(new OutboundOrder[outboundOrderList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("clientList", data);
+            res.put("sampleInfoList", sampleInfoList);
+            res.put("contractList", contractInfo);
+            res.put("inboundOrderItemList",inboundOrderItemInfo);
+            res.put("outboundOrderList",outboundOrderInfo);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

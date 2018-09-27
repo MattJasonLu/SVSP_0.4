@@ -7,6 +7,7 @@ import com.jdlink.service.ProcurementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -67,5 +68,15 @@ public class ProcurementServiceImpl implements ProcurementService {
     @Override
     public int totalEmc() {
         return procurementMapper.totalEmc();
+    }
+
+    @Override
+    public List<Date> getNewestMouth() {
+        return procurementMapper.getNewestMouth();
+    }
+
+    @Override
+    public List<Date> getNewestEm() {
+        return procurementMapper.getNewestEm();
     }
 }
