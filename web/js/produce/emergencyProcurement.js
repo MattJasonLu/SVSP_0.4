@@ -818,4 +818,59 @@ function exportExcel() {
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
+/**
+ *
+ * 导入
+ * @returns {string}
+ */
+
+function importExcelChoose() {
+    $("#importExcelModal").modal('show');
+}
+
+/*导入月季采购需求*/
+function importExcel() {
+    document.getElementById("idExcel").click();
+    document.getElementById("idExcel").addEventListener("change", function () {
+        var eFile = document.getElementById("idExcel").files[0];
+        var formFile = new FormData();
+        formFile.append("excelFile", eFile);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "importEmergencyProcurementExcel",              // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: formFile,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    if (result.status == "success") {
+                        alert(result.message);
+                        window.location.reload();         //刷新
+                    } else {
+                        alert(result.message);
+                    }
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    });
+}
+
+/**
+ * 下载模板
+ * */
+
+function downloadModal() {
+    var filePath = 'model/materialDemand.xlsx';
+    var r = confirm("是否下载模板?");
+    if (r == true) {
+        window.open('downloadFile?filePath=' + filePath);
+    }
+}
+
 

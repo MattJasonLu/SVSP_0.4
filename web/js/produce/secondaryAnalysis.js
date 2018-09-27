@@ -364,28 +364,62 @@ function searchSecInto() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    isSearch=true;
     var text=$.trim($('#searchContent').val());
     //1收样日期
-    var date=$.trim($('#search-sewageName').val());
+    var beginTime=$.trim($('#search-inDate').val());
+
+    var endTime=$.trim($('#search-endDate').val());
+
+    var startDate=getDateByStr(beginTime);
+
+    var endDate=getDateByStr(endTime);
+
     //2废物名称
     var wastesName=$.trim($('#search-receiveDate').val());
-    //3备注
-    var remarks=$.trim($('#search-remarks').val());
+
+    var arraydate=[];
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            //console.log(this);
-            if(!($(this).children('td').eq(2).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
-                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
+            arraydate.push(($(this).children('td').eq(1).text()))
+        });
+    }
+
+    var dateMin=(arraydate[0]);
+    var dateMax=(arraydate[0]);
+    for(var i=1;i<arraydate.length;i++){
+        if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
+            dateMin=(arraydate[i]);
+        }
+        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
+            dateMax=(arraydate[i]);
+        }
+    }
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            if(startDate.toString()=='Invalid Date'){
+                startDate=dateMin;
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=dateMax;
+            }
+            var date=$(this).children('td').eq(1).text();
+            if(!($(this).children('td').eq(2).text().indexOf(wastesName)!=-1
+                &&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
             )){
                 $(this).hide();
             }
-            if(($(this).children('td').eq(2).text().indexOf(wastesName)!=-1&&$(this).children('td').eq(1).text().indexOf(date)!=-1
-                &&$(this).children('td').eq(5).text().indexOf(remarks)!=-1&&$(this).children('td').text().indexOf(text)!=-1)){
+            if(($(this).children('td').eq(2).text().indexOf(wastesName)!=-1
+               &&$(this).children('td').text().indexOf(text)!=-1
+                &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())))
+            {
                 array1.push($(this));
             }
         });
     }
+
     var total;
 
     if(array1.length%countValue()==0){
@@ -427,7 +461,7 @@ function searchSecInto() {
         $('#tbody1').append((array1[i]));
     }
 
-    isSearch=false;
+
 
 
 
