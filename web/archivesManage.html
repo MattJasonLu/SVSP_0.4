@@ -425,13 +425,13 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <label class="col-sm-2 control-label">送样日期： </label>
                             <div class="input-group date">
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title="" id="modal1-beginTime" onchange="searchDate1()"/>
                                 &nbsp;至&nbsp;
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title="" id="modal1-endTime" onchange="searchDate1()"/>
                             </div>
                         </div>
                     </div>
@@ -461,6 +461,7 @@
                 </table>
                 <div class="panel-footer text-center">送样/检样单列表</div>
                 <table class="table">
+                    <thead>
                     <tr>
                         <td class="text-center">序号</td>
                         <td class="text-center">送样单位</td>
@@ -475,6 +476,8 @@
                         <td class="text-center">送样类型</td>
                         <td class="text-center">对应分析单单据号</td>
                     </tr>
+                    </thead>
+                    <tbody id="tBody1">
                     <tr id="clone1">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -489,6 +492,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -518,18 +522,19 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <label class="col-sm-2 control-label">开始日期： </label>
                             <div class="input-group date">
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title="" id="modal2-beginTime" onchange="searchDate2()"/>
                                 &nbsp;至&nbsp;
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title="" id="modal2-endTime" onchange="searchDate2()"/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <table class="table">
+                    <thead></thead>
                     <tr>
                         <td class="text-center">序号</td>
                         <td class="text-center">经营合同状态</td>
@@ -542,6 +547,8 @@
                         <td class="text-center">合同附件名</td>
                         <td class="text-center">经营合同详情</td>
                     </tr>
+                    </thead>
+                    <tbody id="tBody2">
                     <tr id="clone2">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -554,6 +561,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -583,13 +591,13 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">运输日期： </label>
+                            <label class="col-sm-3 control-label">运输开始时间： </label>
                             <div class="input-group date">
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title="" id="modal3-beginTime" onchange="searchDate3()"/>
                                 &nbsp;至&nbsp;
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title="" id="modal3-endTime" onchange="searchDate3()"/>
                             </div>
                         </div>
                     </div>
@@ -608,6 +616,7 @@
                 </div>
                 <div class="panel-footer text-center">派车单列表</div>
                 <table class="table">
+                    <thead>
                     <tr>
                         <td class="text-center">序号</td>
                         <td class="text-center">单据号</td>
@@ -621,7 +630,9 @@
                         <td class="text-center">运输结束时间</td>
                         <td class="text-center">派车单详情</td>
                     </tr>
-                    <tr>
+                    </thead>
+                    <tbody id="tBody3">
+                    <tr id="clone3">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -635,6 +646,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -664,19 +676,20 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <label class="col-sm-2 control-label">入库时间： </label>
                             <div class="input-group date">
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title="" id="modal4-beginTime" onchange="searchDate4()"/>
                                 &nbsp;至&nbsp;
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title="" id="modal4-endTime" onchange="searchDate4()"/>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="panel-footer text-center">危废出库记录</div>
+                <div class="panel-footer text-center">危废入库记录</div>
                 <table class="table">
+                    <thead>
                     <tr>
                         <td class="text-center">序号</td>
                         <td class="text-center">八位码</td>
@@ -685,9 +698,11 @@
                         <td class="text-center">数量</td>
                         <td class="text-center">单位</td>
                         <td class="text-center">转移联单号</td>
-                        <td class="text-center">出库时间</td>
+                        <td class="text-center">入库时间</td>
                         <td class="text-center">生命周期</td>
                     </tr>
+                    </thead>
+                    <tbody id="tBody4">
                     <tr id="clone4">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -699,6 +714,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -728,19 +744,20 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">单据日期： </label>
+                            <label class="col-sm-2 control-label">出库时间： </label>
                             <div class="input-group date">
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime1" name="beginTime" title=""/>
+                                <input type="text" class="input-sm form_datetime1" name="beginTime" title="" id="modal5-beginTime" onchange="searchDate5()"/>
                                 &nbsp;至&nbsp;
                                 <i class="glyphicon glyphicon-calendar"></i>
-                                <input type="text" class="input-sm form_datetime2" name="endTime" title=""/>
+                                <input type="text" class="input-sm form_datetime2" name="endTime" title="" id="modal5-endTime" onchange="searchDate5()"/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel-footer text-center">危废出库记录</div>
                 <table class="table">
+                    <thead>
                     <tr>
                         <td class="text-center">序号</td>
                         <td class="text-center">八位码</td>
@@ -752,6 +769,8 @@
                         <td class="text-center">出库时间</td>
                         <td class="text-center">生命周期</td>
                     </tr>
+                    </thead>
+                    <tbody id="tBody5">
                     <tr id="clone5">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -763,6 +782,7 @@
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="modal-footer">
