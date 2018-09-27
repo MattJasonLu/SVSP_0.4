@@ -41,6 +41,17 @@ function totalPage() {
     var total = loadPages(totalRecord, count);
     return total;
 }
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
+
 /**
  * 设置克隆页码
  * */
@@ -61,13 +72,16 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
+
 /**
  * 返回count值
  * */
@@ -76,6 +90,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
@@ -153,6 +168,7 @@ function switchPage(pageNumber) {
         }
     }
 }
+
 /**
  * 输入页数跳转页面
  * */
@@ -221,6 +237,7 @@ function inputSwitchPage()  {
         }
     }
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -237,6 +254,7 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
+
 //加载危废入场分析日报数据列表
 function loadWasteIntoList() {
     $("#current").find("a").text("当前页：1");
@@ -304,6 +322,7 @@ function loadWasteIntoList() {
     });
 
 }
+
 //设置危废入场分析日报数据
 function setWasteIntoList(result) {
     var tr = $("#cloneTr");
@@ -432,9 +451,11 @@ function setWasteIntoList(result) {
     });
     tr.hide();
 }
+
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
 //危废入场的高级查询
+
 function searchWasteInto() {
     isSearch=false;
     array.length=0;//清空数组
@@ -546,6 +567,8 @@ function searchWasteInto() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -644,7 +667,8 @@ function searchWastesAnalysis() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }

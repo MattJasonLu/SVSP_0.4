@@ -449,7 +449,8 @@ function search1(){
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         (array1[i]).hide();
     }
@@ -570,6 +571,8 @@ function searchSec() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -649,7 +652,8 @@ function setPageClone1(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 //设置危废查询列表
@@ -676,7 +680,9 @@ function setWasteInventoryList1(result) {
                         break;
                     //产废单位
                     case (3):
-                        $(this).html(obj.produceCompany.companyName);
+                        if(obj.produceCompany!=null){
+                            $(this).html(obj.produceCompany.companyName);
+                        }
                         break;
                     // 仓库名称
                     case (4):
@@ -684,25 +690,33 @@ function setWasteInventoryList1(result) {
                         break;
                     // 入库类别
                     case (5):
-                        $(this).html(obj.boundType.name);
+                        if(obj.boundType!=null){
+                            $(this).html(obj.boundType.name);
+                        }
+
                         break;
                     // 进料方式
                     case (6):
-                        $(this).html(obj.handleCategory.name);
+                        if(obj.handleCategory!=null){
+                            $(this).html(obj.handleCategory.name);
+                        }
+
                         break;
                     // 危废名称
                     case (7):
-                        if(obj.laboratoryTest.wastesName=='slag'){
-                            $(this).html('炉渣');
-                        }
-                        if(obj.laboratoryTest.wastesName=='ash'){
-                            $(this).html('飞灰');
-                        }
-                        if(obj.laboratoryTest.wastesName=='bucket'){
-                            $(this).html('桶');
-                        }
 
+                        if(obj.laboratoryTest!=null){
+                            if(obj.laboratoryTest.wastesName=='slag'){
+                                $(this).html('炉渣');
+                            }
+                            if(obj.laboratoryTest.wastesName=='ash'){
+                                $(this).html('飞灰');
+                            }
+                            if(obj.laboratoryTest.wastesName=='bucket'){
+                                $(this).html('桶');
+                            }
 
+                        }
                         break;
                     //危废类型
                     // case (8):

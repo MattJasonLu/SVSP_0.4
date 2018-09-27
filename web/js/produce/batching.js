@@ -286,7 +286,8 @@ function setPageClone(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 /**
@@ -387,6 +388,8 @@ function searchBatchOrder() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -958,7 +961,10 @@ function setBatchingOrderList(result) {
                             break;
                         //状态
                         case (11):
-                            $(this).html(obj.checkState.name);
+                            if(obj.checkState!=null){
+                                $(this).html(obj.checkState.name);
+                            }
+
                             break;
                     }
                 });
@@ -1399,7 +1405,8 @@ function searchBatchingList() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }

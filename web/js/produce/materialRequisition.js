@@ -311,7 +311,8 @@ function setPageClone(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 //
@@ -340,15 +341,23 @@ function setMaterialRequisitionList(result) {
                         break;
                     // 产废单位
                     case (3):
-                        $(this).html(obj.client.companyName);
+                        if(obj.client!=null){
+                            $(this).html(obj.client.companyName);
+                        }
+
                         break;
                     // 危废名称
                     case (4):
-                        $(this).html(obj.laboratoryTest.wastesName);
+                        if(obj.laboratoryTest!=null){
+                            $(this).html(obj.laboratoryTest.wastesName);
+                        }
+
                         break;
                     // 危废代码
                     case (5):
-                        $(this).html(obj.laboratoryTest.wastesCode);
+                        if(obj.laboratoryTest!=null) {
+                            $(this).html(obj.laboratoryTest.wastesCode);
+                        }
                         break;
                     // 危废类别
                     case (6):
@@ -765,6 +774,8 @@ function searchMaterial() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for (var i = 0; i < array1.length; i++) {
         array1[i].hide();
     }
@@ -863,6 +874,8 @@ function searchMaterialRequisition() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
