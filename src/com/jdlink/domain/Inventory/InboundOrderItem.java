@@ -8,6 +8,8 @@ import com.jdlink.domain.Produce.LaboratoryTest;
 import com.jdlink.domain.Produce.ProcessWay;
 import com.jdlink.domain.Wastes;
 
+import java.util.Date;
+
 /**
  * Created by matt on 2018/8/20.
  * DoubleClickTo 666
@@ -85,6 +87,26 @@ public class InboundOrderItem {
      * 化验结果是否合格
      */
     private boolean isQualified;
+    /**
+     * 入库日期
+     */
+    private Date inboundDate;
+
+    public boolean isQualified() {
+        return isQualified;
+    }
+
+    public void setQualified(boolean qualified) {
+        isQualified = qualified;
+    }
+
+    public Date getInboundDate() {
+        return inboundDate;
+    }
+
+    public void setInboundDate(Date inboundDate) {
+        this.inboundDate = inboundDate;
+    }
 
     public String getTransferDraftId() {
         return transferDraftId;

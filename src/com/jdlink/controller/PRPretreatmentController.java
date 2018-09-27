@@ -126,7 +126,7 @@ public class PRPretreatmentController {
     public String importPretreatmentExcel(MultipartFile excelFile) {
         JSONObject res = new JSONObject();
         try {
-            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
             {
                 System.out.println("数据如下：");
                 for (int i = 1; i < data.length; i++) {

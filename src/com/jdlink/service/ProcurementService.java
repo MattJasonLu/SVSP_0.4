@@ -3,6 +3,7 @@ package com.jdlink.service;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ProcurementService {
@@ -17,4 +18,6 @@ public interface ProcurementService {
     void  setProcurementListSubmit(String receiptNumber);
     int totalMouth();
     int totalEmc();
+    List<Date>getNewestMouth();
+    List<Date>getNewestEm();
 }

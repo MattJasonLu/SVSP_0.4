@@ -122,7 +122,7 @@ public class LaboratoryTestController {
     public String importLaboratoryTestExcel(MultipartFile excelFile){
         JSONObject res = new JSONObject();
         try {
-            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
             // 化验单对象
             LaboratoryTest laboratoryTest = new LaboratoryTest();
             for (int i = 0; i < data.length; i++) {

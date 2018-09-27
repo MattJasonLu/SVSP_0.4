@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
 import com.jdlink.service.ProcurementService;
+import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -244,6 +247,191 @@ public class ProcurementController {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 导入月度采购
+     */
+    @RequestMapping("importMonthProcurementExcel")
+    @ResponseBody
+    public String importMonthProcurementExcel(MultipartFile excelFile){
+        JSONObject res = new JSONObject();
+        List<Object[][]> data = ImportUtil.getInstance().getExcelFileData(excelFile);
+       //data 带表页数现在一页一页的进行导入即可
+        try{
+        for(int i=0;i<data.size();i++){//一页的遍历
+           //创建采购对象
+          Procurement procurement=new Procurement();
+
+            //找出最新的编号
+          //1首先寻找最新的采购编号
+          List<String> receiptNumberList=procurementService.getNewestId();
+          //设定初始编号为'0001'
+          String receiptNumber="0001";
+          if(receiptNumberList.size()==0){
+              receiptNumber="0001";
+          }
+          if(receiptNumberList.size()>0){
+              receiptNumber=get4(receiptNumberList.get(0));
+          }
+            procurement.setReceiptNumber(receiptNumber);//注入
+            procurement.setProcurementCategory(true);
+             if(String.valueOf(data.get(i)[3][2])!="null"){
+                 procurement.setApplyMouth(String.valueOf(data.get(i)[3][2]));//申请月份
+             }
+
+            if(String.valueOf(data.get(i)[3][2])=="null"){
+                procurement.setApplyMouth(" ");//申请月份
+            }
+
+            if(String.valueOf(data.get(i)[3][7])!="null"){
+                procurement.setDemandTime(String.valueOf(data.get(i)[3][7]));//需求时间
+            }
+            if(String.valueOf(data.get(i)[3][7])=="null"){
+                procurement.setDemandTime(" ");//需求时间
+            }
+            if(String.valueOf(data.get(i)[3][13])!="null"){
+                procurement.setApplyDepartment(String.valueOf(data.get(i)[3][13]));//申请部门
+            }
+            if(String.valueOf(data.get(i)[3][13])=="null"){
+                procurement.setApplyDepartment(" ");//申请部门
+            }
+            if(String.valueOf(data.get(i)[4][2])!="null"){
+                procurement.setProposer(String.valueOf(data.get(i)[4][2]));//申购部门负责人
+            }
+            if(String.valueOf(data.get(i)[4][2])=="null"){
+                procurement.setProposer(" ");//申购部门负责人
+            }
+            if(String.valueOf(data.get(i)[4][7])!="null"){
+                procurement.setDivisionHead(String.valueOf(data.get(i)[4][7]));//申购部门分管领导
+            }
+            if(String.valueOf(data.get(i)[4][7])=="null"){
+                procurement.setDivisionHead(" ");//申购部门分管领导
+            }
+            if(String.valueOf(data.get(i)[4][11])!="null"){
+                procurement.setPurchasingDirector(String.valueOf(data.get(i)[4][11]));//采购部门负责人
+            }
+            if(String.valueOf(data.get(i)[4][11])=="null"){
+                procurement.setPurchasingDirector(" ");//采购部门负责人
+            }
+            if(String.valueOf(data.get(i)[4][13])!="null"){
+                procurement.setPurchasingHead(String.valueOf(data.get(i)[4][13]));//采购部门分管领导
+            }
+            if(String.valueOf(data.get(i)[4][13])=="null"){
+                procurement.setPurchasingHead(" ");//采购部门分管领导
+            }
+            if(String.valueOf(data.get(i)[4][15])!="null"){
+                procurement.setGeneralManager(String.valueOf(data.get(i)[4][15]));//总经理
+            }
+            if(String.valueOf(data.get(i)[4][15])=="null"){
+                procurement.setGeneralManager(" ");//总经理
+            }
+         for(int j=7;j<data.get(i).length-3;j++){
+             //创建物资对象
+             Material material=new Material();
+             material.setReceiptNumber(receiptNumber);//设置申请单编号
+             if(String.valueOf(data.get(i)[j][1])!="null"){
+                 material.setSuppliesName(String.valueOf(data.get(i)[j][1]));
+             }
+             if(String.valueOf(data.get(i)[j][1])=="null"){
+                 material.setSuppliesName(" ");
+             }//设置物资名称
+
+             if(String.valueOf(data.get(i)[j][6])!="null"){
+                 material.setSpecifications(String.valueOf(data.get(i)[j][6]));
+             }
+             if(String.valueOf(data.get(i)[j][6])=="null"){
+                 material.setSpecifications(" ");
+             }//设置规格型号
+
+             if(String.valueOf(data.get(i)[j][11])!="null"){
+                 material.setUnit(String.valueOf(data.get(i)[j][11]));
+             }
+             if(String.valueOf(data.get(i)[j][11])=="null"){
+                 material.setUnit(" ");
+             }//设置单位
+
+             if(String.valueOf(data.get(i)[j][12])!="null"){
+                 material.setInventory(Float.parseFloat(data.get(i)[j][12].toString()));
+             }
+             if(String.valueOf(data.get(i)[j][12])=="null"){
+                 material.setInventory(0);
+             }//设置库存量
+
+             if(String.valueOf(data.get(i)[j][13])!="null"){
+                 material.setDemandQuantity(Float.parseFloat(data.get(i)[j][13].toString()));
+             }
+             if(String.valueOf(data.get(i)[j][13])=="null"){
+                 material.setDemandQuantity(0);
+             }//设置需求数量
+
+             if(String.valueOf(data.get(i)[j][14])!="null"){
+                 material.setNote(String.valueOf(data.get(i)[j][14]));
+             }
+             if(String.valueOf(data.get(i)[j][14])=="null"){
+                 material.setNote(" ");
+             }//设置备注
+             //首先添加主表
+             //再添加字表
+             procurementService.addMaterial(material);
+         }
+       //进行添加
+            procurementService.add(procurement);
+
+      }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+
+        }
+        return res.toString();
+
+
+    }
+    /**
+     * 获得最早的创建日期 月季
+     */
+    @RequestMapping("getNewestMouth")
+    @ResponseBody
+    public String getNewestMouth(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Date> dateList=procurementService.getNewestMouth();
+            res.put("status", "success");
+            res.put("message", "查询最早创建时间成功");
+            res.put("dateList", dateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早创建时间失败");
+        }
+        return  res.toString();
+    }
+
+    /**
+     * 获得最早的申请日期 应急
+     */
+    @RequestMapping("getNewestEm")
+    @ResponseBody
+    public String getNewestEm(){
+        JSONObject res=new JSONObject();
+        try {
+            List<Date> dateList=procurementService.getNewestEm();
+            res.put("status", "success");
+            res.put("message", "查询最早创建时间成功");
+            res.put("dateList", dateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询最早创建时间失败");
+        }
+        return  res.toString();
     }
 
 

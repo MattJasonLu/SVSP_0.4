@@ -8,11 +8,13 @@
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/data-format.js"></script>
     <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
     <link href="css/dropdown-submenu.css" rel="stylesheet">
     <link href="css/bootstrap/navbar.css" rel="stylesheet">
     <script src="js/bootstrap/navbar.js"></script>
     <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
     <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
@@ -20,6 +22,14 @@
 </head>
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
+    $(window).on('load', function () {
+        // 中文重写select 查询为空提示信息
+        $('.selectpicker').selectpicker({
+            language: 'zh_CN',
+            size: 4,
+            title: '请选择'
+        });
+    });
 </script>
 <body onload="loadPageClientList()">
 <!--导航条-->
@@ -149,8 +159,8 @@
             <h4 class="sub-header">企业列表</h4>
             <div>
                 <!--查询框-->
-                <div class="input-group col-md-4 pull-right">
-                    <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
+                <div class="input-group col-md-3 pull-right">
+                    <!--<input type="text" class="form-control" placeholder="搜索..." id="searchContent">-->
                     <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -176,8 +186,10 @@
                         <div class="form-group">
                             <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-companyName"
-                                       name="search-companyName" placeholder="">
+                                <select class="selectpicker form-control" data-live-search="true"
+                                        data-live-search-placeholder="搜索..." id="search-companyName"
+                                        name="search-companyName" onchange="searchData()">
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -210,19 +222,19 @@
                 <tbody>
                 <tr style="border-color: #caf8ff">
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">企业名称</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" ><span id="companyName"></span></td>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">单位编码</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" ><span id="companyId"></span></td>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">行政区域</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="companyArea"></span></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">企业地址</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="location"></span></td>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">企业联系人</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="contactName"></span></td>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">派车区域</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="carArea"></span></td>
                 </tr>
                 </tbody>
             </table>
@@ -237,13 +249,13 @@
                 <tbody>
                 <tr>
                     <td class="text-center" style="width: 160px">送样次数</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="sendSampleNumber"></span></td>
                     <td class="text-center" style="width: 160px">送样分析单数量</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="sampleOrderNumber"></span></td>
                     <td class="text-center" style="width: 160px">送样分析通过</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="samplePassNumber"></span></td>
                     <td class="text-center" style="width: 160px">送样分析未通过</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="sampleRejectNumber"></span></td>
                 </tr>
                 <tr>
                     <td class="text-center" style="width: 160px">抽检次数</td>
@@ -273,15 +285,15 @@
                             </tr>
                             <tr>
                                 <td class="text-center" style="width: 160px">合同总数：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="validContractTotal"></span></td>
                                 <td class="text-center" style="width: 160px">危废种类：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="wastesSpeciesTotal"></span></td>
                             </tr>
                             <tr>
                                 <td class="text-center" style="width: 160px">合同总量：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="wastesAmountTotal"></span></td>
                                 <td class="text-center" style="width: 160px">剩余量：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="wastesResidueAmountTotal"></span></td>
                             </tr>
                         </table>
                     </td>
@@ -295,17 +307,17 @@
                             </tr>
                             <tr>
                                 <td class="text-center" colspan="2" style="width: 160px">合同总数：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="currentValidContractTotal"></span></td>
                                 <td class="text-center" colspan="2" style="width: 160px">危废种类：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="currentWastesSpeciesTotal"></span></td>
                             </tr>
                             <tr>
                                 <td class="text-center" style="width: 160px">合同总量：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="currentWastesAmountTotal"></span></td>
                                 <td class="text-center" style="width: 160px">接收量：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="currentWastesReceiveAmountTotal"></span></td>
                                 <td class="text-center" style="width: 160px">剩余量：</td>
-                                <td class="text-center"></td>
+                                <td class="text-center"><span id="currentWastesResidueAmountTotal"></span></td>
                             </tr>
                         </table>
                     </td>
@@ -320,11 +332,11 @@
             <table class="table table-bordered">
                 <tr>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">派车总次数</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="sentCarTotalNumber"></span></td>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">行驶公里总数</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="totalMileage"></span></td>
                     <td class="text-center" style="width: 160px;background-color: #caf8ff">行驶总时间</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><span id="totalDriveTime"></span></td>
                 </tr>
             </table>
             <table class="table table-bordered">
@@ -356,7 +368,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel-footer text-center">版权所有：************&nbsp;备案编号：*************</div>
+        <!--<div class="panel-footer text-center">版权所有：************&nbsp;备案编号：*************</div>-->
         <!--分页-->
         <!--<nav aria-label="Page navigation" style="text-align: center">-->
             <!--<ol class="pagination" style="width: 900px;">-->
@@ -428,13 +440,13 @@
                 <table class="table" style="border: transparent solid 3px">
                     <tr>
                         <td class="text-center">送样次数：</td>
-                        <td class="text-center">0</td>
+                        <td class="text-center"><span id="modal1-sendSampleNumber"></span></td>
                         <td class="text-center">送样分析单数量：</td>
-                        <td class="text-center">0</td>
+                        <td class="text-center"><span id="modal1-sampleOrderNumber"></span></td>
                         <td class="text-center">送样分析通过数量：</td>
-                        <td class="text-center">0</td>
+                        <td class="text-center"><span id="modal1-samplePassNumber"></span></td>
                         <td class="text-center">送样分析未通过数量：</td>
-                        <td class="text-center">0</td>
+                        <td class="text-center"><span id="modal1-sampleRejectNumber"></span></td>
                     </tr>
                     <tr>
                         <td class="text-center">抽检次数：</td>
@@ -463,7 +475,7 @@
                         <td class="text-center">送样类型</td>
                         <td class="text-center">对应分析单单据号</td>
                     </tr>
-                    <tr>
+                    <tr id="clone1">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -530,13 +542,9 @@
                         <td class="text-center">合同附件名</td>
                         <td class="text-center">经营合同详情</td>
                     </tr>
-                    <tr>
+                    <tr id="clone2">
                         <td class="text-center"></td>
-                        <td class="text-center">
-                            <select class="state" title="">
-                                <option value="0"></option>
-                            </select>
-                        </td>
+                        <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -670,6 +678,7 @@
                 <div class="panel-footer text-center">危废出库记录</div>
                 <table class="table">
                     <tr>
+                        <td class="text-center">序号</td>
                         <td class="text-center">八位码</td>
                         <td class="text-center">危废名称</td>
                         <td class="text-center">包装类型</td>
@@ -679,7 +688,8 @@
                         <td class="text-center">出库时间</td>
                         <td class="text-center">生命周期</td>
                     </tr>
-                    <tr>
+                    <tr id="clone4">
+                        <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -732,6 +742,7 @@
                 <div class="panel-footer text-center">危废出库记录</div>
                 <table class="table">
                     <tr>
+                        <td class="text-center">序号</td>
                         <td class="text-center">八位码</td>
                         <td class="text-center">危废名称</td>
                         <td class="text-center">包装类型</td>
@@ -741,7 +752,8 @@
                         <td class="text-center">出库时间</td>
                         <td class="text-center">生命周期</td>
                     </tr>
-                    <tr>
+                    <tr id="clone5">
+                        <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>

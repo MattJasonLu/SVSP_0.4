@@ -9,20 +9,53 @@
  */
 function getDateStr(obj) {
     if (obj == null) return "";
-    var year=(parseInt(obj.year)+1900).toString();
-    var mouth=parseInt((obj.month)+1).toString();
-    if(mouth.length!=2){
-        mouth=0+mouth;
+    var year = (parseInt(obj.year) + 1900).toString();
+    var mouth = parseInt((obj.month) + 1).toString();
+    if (mouth.length != 2) {
+        mouth = 0 + mouth;
     }
     //  dataLeftCompleting(2, "0", mouth.toString()).toString();
-    var  day=parseInt((obj.date)).toString();
+    var day = parseInt((obj.date)).toString();
     //ataLeftCompleting(2, "0", day.toString()).toString();
-    if(day.length!=2){
-        day=0+day;
+    if (day.length != 2) {
+        day = 0 + day;
     }
-    var time1=year+"-"+mouth+"-"+day;
+    var time1 = year + "-" + mouth + "-" + day;
     return time1;
 }
+
+/**
+ * 将当前时间转为字符串 yyyy-MM-dd
+ * @param now
+ * @returns {string}
+ */
+function dateToString(now) {
+    var year = now.getFullYear();
+    var month = (now.getMonth() + 1).toString();
+    var day = (now.getDate()).toString();
+    var hour = (now.getHours()).toString();
+    var minute = (now.getMinutes()).toString();
+    var second = (now.getSeconds()).toString();
+    if (month.length == 1) {
+        month = "0" + month;
+    }
+    if (day.length == 1) {
+        day = "0" + day;
+    }
+    if (hour.length == 1) {
+        hour = "0" + hour;
+    }
+    if (minute.length == 1) {
+        minute = "0" + minute;
+    }
+    if (second.length == 1) {
+        second = "0" + second;
+    }
+    var dateTime = year + "-" + month + "-" + day;
+    return dateTime;
+
+}
+
 /**
  * 获取时间 yyyy-MM-dd HH:mm:ss
  * @param obj
@@ -30,32 +63,33 @@ function getDateStr(obj) {
  */
 function getTimeStr(obj) {
     if (obj == null) return "";
-    var year=(parseInt(obj.year)+1900).toString();
-    var month=parseInt((obj.month)+1).toString();
-    if(month.length!=2){
-        month=0+month;
+    var year = (parseInt(obj.year) + 1900).toString();
+    var month = parseInt((obj.month) + 1).toString();
+    if (month.length != 2) {
+        month = 0 + month;
     }
     var hour = parseInt(obj.hours).toString();
-    if (hour.length!=2){
-        hour=0+hour;
+    if (hour.length != 2) {
+        hour = 0 + hour;
     }
     var minutes = parseInt(obj.minutes).toString();
-    if (minutes.length!=2){
-        minutes=0+minutes;
+    if (minutes.length != 2) {
+        minutes = 0 + minutes;
     }
     var seconds = parseInt(obj.seconds).toString();
-    if (seconds.length!=2){
-        seconds=0+seconds;
+    if (seconds.length != 2) {
+        seconds = 0 + seconds;
     }
     //  dataLeftCompleting(2, "0", mouth.toString()).toString();
-    var  day=parseInt((obj.date)).toString();
+    var day = parseInt((obj.date)).toString();
     //ataLeftCompleting(2, "0", day.toString()).toString();
-    if(day.length!=2){
-        day=0+day;
+    if (day.length != 2) {
+        day = 0 + day;
     }
     var time1 = year + "-" + month + "-" + day + " " + hour + ":" + minutes + ":" + seconds;
     return time1;
 }
+
 /**
  * 通过字符串获取标准时间格式 yyyy-MM-dd'T'HH:mm:ss.SSSZ
  * @param time
@@ -64,7 +98,7 @@ function getTimeStr(obj) {
 function getStdTimeStr(time) {
     if (time == '') return "";
     var timeArr = time.split(' ');
-    time = timeArr[0]+'T'+timeArr[1]+'.000Z';
+    time = timeArr[0] + 'T' + timeArr[1] + '.000Z';
     return time;
 }
 
@@ -72,8 +106,7 @@ function getStdTimeStr(time) {
  * 获取年月周 返回格式：2018年8月第1周
  */
 function getWeekDate() {
-    var getMonthWeek = function(a, b, c)
-    {
+    var getMonthWeek = function (a, b, c) {
         /*
         a = d = 当前日期
         b = 6 - w = 当前周的还有几天过完(不算今天)
@@ -84,8 +117,7 @@ function getWeekDate() {
             d = date.getDate();
         return Math.ceil((d + 6 - w) / 7);
     };
-    var getYearWeek = function(a, b, c)
-    {
+    var getYearWeek = function (a, b, c) {
         /*
         date1是当前日期
         date2是当年第一天
@@ -112,17 +144,18 @@ function getWeekDate() {
     return year + "年" + month + "月第" + week + "周";
 
 }
+
 function getDateOfWeek() {
     var e;
-    var month = new Date().getMonth()+1;
+    var month = new Date().getMonth() + 1;
     var year = new Date().getFullYear();
     var day = new Date().getDate();
-    if(month == 1||month == 3||month == 5||month == 7||month == 8||month == 10||month == 12){
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
         e = 31;
-    }else if (month == 2){
-        if((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0)) e = 29;
+    } else if (month == 2) {
+        if ((year % 4 == 0) && (year % 100 != 0 || year % 400 == 0)) e = 29;
         else e = 28;
-    }else {
+    } else {
         e = 30;
     }
     var f1;       //f为当前日期的下周一日期，f+7为当前日期的下周日日期
@@ -131,375 +164,375 @@ function getDateOfWeek() {
     var sunday;
     var g = day; //当前日期
     var h = new Date().getDay();
-    if(h == 0){
-        f1 = g+1;
-        f7 = g+7;
-        if(e == 28&&f1 > 28){
+    if (h == 0) {
+        f1 = g + 1;
+        f7 = g + 7;
+        if (e == 28 && f1 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f1 < 28&&f7>28){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f1 < 28 && f7 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f7 < 28){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f7 < 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 29&&f1 > 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 29 && f1 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f1 < 29&&f7>29){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f1 < 29 && f7 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f7 < 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f7 < 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 30&&f1 > 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 30 && f1 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f1 < 30&&f7>30){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f1 < 30 && f7 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f7 < 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f7 < 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 31&&f1 > 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 31 && f1 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f1 < 31&&f7>31){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f1 < 31 && f7 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f7 < 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f7 < 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
         }
     }
-    else if(h == 1){
-        f1 = g+7;
-        f7 = g+13;
-        if(e == 28&&f1 > 28){
+    else if (h == 1) {
+        f1 = g + 7;
+        f7 = g + 13;
+        if (e == 28 && f1 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f1 < 28&&f7>28){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f1 < 28 && f7 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f7 < 28){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f7 < 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 29&&f1 > 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 29 && f1 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f1 < 29&&f7>29){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f1 < 29 && f7 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f7 < 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f7 < 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 30&&f1 > 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 30 && f1 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f1 < 30&&f7>30){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f1 < 30 && f7 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f7 < 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f7 < 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 31&&f1 > 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 31 && f1 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f1 < 31&&f7>31){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f1 < 31 && f7 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f7 < 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f7 < 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
         }
     }
-    else if(h == 2){
-        f1 = g+6;
-        f7 = g+12;
-        if(e == 28&&f1 > 28){
+    else if (h == 2) {
+        f1 = g + 6;
+        f7 = g + 12;
+        if (e == 28 && f1 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f1 < 28&&f7>28){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f1 < 28 && f7 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f7 < 28){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f7 < 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 29&&f1 > 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 29 && f1 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f1 < 29&&f7>29){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f1 < 29 && f7 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f7 < 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f7 < 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 30&&f1 > 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 30 && f1 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f1 < 30&&f7>30){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f1 < 30 && f7 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f7 < 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f7 < 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 31&&f1 > 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 31 && f1 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f1 < 31&&f7>31){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f1 < 31 && f7 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f7 < 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f7 < 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
         }
     }
-    else if(h == 3){
-        f1 = g+5;
-        f7 = g+11;
-        if(e == 28&&f1 > 28){
+    else if (h == 3) {
+        f1 = g + 5;
+        f7 = g + 11;
+        if (e == 28 && f1 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f1 < 28&&f7>28){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f1 < 28 && f7 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f7 < 28){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f7 < 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 29&&f1 > 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 29 && f1 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f1 < 29&&f7>29){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f1 < 29 && f7 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f7 < 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f7 < 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 30&&f1 > 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 30 && f1 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f1 < 30&&f7>30){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f1 < 30 && f7 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f7 < 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f7 < 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 31&&f1 > 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 31 && f1 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f1 < 31&&f7>31){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f1 < 31 && f7 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f7 < 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f7 < 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
         }
     }
-    else if(h == 4){
-        f1 = g+4;
-        f7 = g+10;
-        if(e == 28&&f1 > 28){
+    else if (h == 4) {
+        f1 = g + 4;
+        f7 = g + 10;
+        if (e == 28 && f1 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f1 < 28&&f7>28){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f1 < 28 && f7 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f7 < 28){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f7 < 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 29&&f1 > 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 29 && f1 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f1 < 29&&f7>29){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f1 < 29 && f7 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f7 < 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f7 < 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 30&&f1 > 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 30 && f1 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f1 < 30&&f7>30){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f1 < 30 && f7 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f7 < 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f7 < 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 31&&f1 > 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 31 && f1 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f1 < 31&&f7>31){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f1 < 31 && f7 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f7 < 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f7 < 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
         }
     }
-    else if(h == 5){
-        f1 = g+3;
-        f7 = g+9;
-        if(e == 28&&f1 > 28){
+    else if (h == 5) {
+        f1 = g + 3;
+        f7 = g + 9;
+        if (e == 28 && f1 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f1 < 28&&f7>28){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f1 < 28 && f7 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f7 < 28){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f7 < 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 29&&f1 > 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 29 && f1 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f1 < 29&&f7>29){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f1 < 29 && f7 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f7 < 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f7 < 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 30&&f1 > 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 30 && f1 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f1 < 30&&f7>30){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f1 < 30 && f7 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f7 < 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f7 < 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 31&&f1 > 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 31 && f1 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f1 < 31&&f7>31){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f1 < 31 && f7 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f7 < 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f7 < 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
         }
     }
-    else if(h == 6){
-        f1 = g+2;
-        f7 = g+8;
-        if(e == 28&&f1 > 28){
+    else if (h == 6) {
+        f1 = g + 2;
+        f7 = g + 8;
+        if (e == 28 && f1 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f1 < 28&&f7>28){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f1 < 28 && f7 > 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 28&&f7 < 28){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 28 && f7 < 28) {
             monday = f1 - 28;
             sunday = f7 - 21;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 29&&f1 > 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 29 && f1 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f1 < 29&&f7>29){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f1 < 29 && f7 > 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 29&&f7 < 29){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 29 && f7 < 29) {
             monday = f1 - 29;
             sunday = f7 - 22;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 30&&f1 > 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 30 && f1 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f1 < 30&&f7>30){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f1 < 30 && f7 > 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 30&&f7 < 30){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 30 && f7 < 30) {
             monday = f1 - 30;
             sunday = f7 - 23;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
-        }else if(e == 31&&f1 > 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
+        } else if (e == 31 && f1 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month+1)+"月"+monday+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f1 < 31&&f7>31){
+            return year + "年" + (month + 1) + "月" + monday + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f1 < 31 && f7 > 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month+1)+"月"+sunday+"日";
-        }else if(e == 31&&f7 < 31){
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month + 1) + "月" + sunday + "日";
+        } else if (e == 31 && f7 < 31) {
             monday = f1 - 31;
             sunday = f7 - 24;
-            return year+"年"+(month)+"月"+f1+"日"+"-"+year+"年"+(month)+"月"+f7+"日";
+            return year + "年" + (month) + "月" + f1 + "日" + "-" + year + "年" + (month) + "月" + f7 + "日";
         }
     }
 }
@@ -509,4 +542,27 @@ function getDateOfWeek() {
  */
 function getDateByStr(str) {
     return new Date(Date.parse(str));
+}
+
+/**
+ * jQuery中将日期类型转为字符串
+ * new Date().Format("yyyy-MM-dd")
+ * @param fmt
+ * @returns {*}
+ * @constructor
+ */
+Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1, //月份
+        "d+": this.getDate(), //日
+        "H+": this.getHours(), //小时
+        "m+": this.getMinutes(), //分
+        "s+": this.getSeconds(), //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
 }

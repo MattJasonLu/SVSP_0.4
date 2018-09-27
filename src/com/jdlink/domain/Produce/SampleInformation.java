@@ -26,7 +26,6 @@ public class SampleInformation {
      * 样品预约状态
      */
     private ApplyState applyState;
-
     /**
      *查询关键字
      */
@@ -35,7 +34,6 @@ public class SampleInformation {
      * 危废名称
      */
     private String wastesName;
-
     /**
      * 取样日期
      */
@@ -44,6 +42,10 @@ public class SampleInformation {
      * 危废列表
      */
     private  List<Wastes> wastesList;
+    /**
+     * 创建日期
+     */
+    private Date creationDate;
 
     private boolean isPH; // PH值
 
@@ -91,6 +93,13 @@ public class SampleInformation {
         this.wastesName = wastesName;
     }
 
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public String getCompanyCode() {
         return companyCode;

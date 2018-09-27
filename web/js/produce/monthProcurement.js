@@ -291,8 +291,9 @@ function saveMonth() {
     //1获取除物料需求外的数据
     //在添加物料表
     data={
-        applyMouth:$('#applyMonth option:selected').text(),
-        demandTime:$('#demandTime').val(),
+        suppliesCategory:$('#suppliesCategory').val(),
+        applyMouth:$('#applyMonth option:selected').text()+"月份",
+        demandTime:($('#demandTime').val())+" ",
         applyDepartment:$('#applyDepartment').val(),
         proposer:$('#proposer').val(),
         divisionHead:$('#divisionHead').val(),
@@ -435,7 +436,7 @@ function setMonthProcurementList(result) {
                             break;
                         // 需求时间
                         case (2):
-                            $(this).html(getDateStr(obj.demandTime));
+                            $(this).html((obj.demandTime));
                             break;
                         // 申请部门
                         case (3):
@@ -461,10 +462,16 @@ function setMonthProcurementList(result) {
                         case (8):
                             $(this).html(obj.generalManager);
                             break;
-                        //物资类别
+                        //状态
                         case (9):
                             if(obj.state!=null){
                                 $(this).html(obj.state.name);
+                            }
+                            break;
+                            //创建日期
+                        case (10):
+                            if(obj.createDate!=null){
+                                $(this).html(getDateStr(obj.createDate));
                             }
                             break;
                     }
@@ -679,12 +686,42 @@ function searchProcurement() {
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
+    var date;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestMouth",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                date=getDateStr(result.dateList[0]);
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
+
+    });
+
+
+
     isSearch=true;
+    var startTime=$("#search-inDate").val();
+    var endTime=$("#search-endDate").val();
+    var startDate=getDateByStr(startTime);
+    var endDate=getDateByStr(endTime);
+
     var text=$.trim($('#searchContent').val());
         data = {
             //receiptNumber: $.trim($("#search-receiptNumber").val()),
             applyMouth: $.trim($("#search-applyMouth").val()),
-            demandTime: $.trim($("#search-demandTime").val()),
+            //demandTime: $.trim($("#search-demandTime").val()),
             applyDepartment: $.trim($("#search-applyDepartment").val()),
             proposer: $.trim($("#search-proposer").val()),
             divisionHead: $.trim($("#search-divisionHead").val()),
@@ -696,11 +733,17 @@ function searchProcurement() {
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            //console.log(this);
+            if(startDate.toString()=='Invalid Date'){
+                startDate=getDateByStr(date);
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=new Date();
+            }
             if(!($(this).children('td').eq(1).text().indexOf(data.applyMouth)!=-1&&$(this).children('td').eq(3).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(7).text().indexOf(data.purchasingHead)!=-1
                 &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
+                &&(getDateByStr($(this).children('td').eq(10).text())<=endDate&&getDateByStr($(this).children('td').eq(10).text())>=startDate)
 
             )){
                 $(this).hide();
@@ -709,7 +752,7 @@ function searchProcurement() {
                 &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1 &&$(this).children('td').eq(7).text().indexOf(data.purchasingHead)!=-1
                 &&$(this).children('td').eq(8).text().indexOf(data.generalManager)!=-1
-
+                &&(getDateByStr($(this).children('td').eq(10).text())<=endDate&&getDateByStr($(this).children('td').eq(10).text())>=startDate)
             )){
                 array1.push($(this));
             }
