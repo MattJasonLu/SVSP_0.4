@@ -7,7 +7,7 @@ var currentPage = 1;                          //当前页数
 var data;
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
-/**********************客户部分**********************/
+
 /**
  * 返回count值
  * */
@@ -16,6 +16,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 //重置
 function reset() {
     isSearch = false;
@@ -24,6 +25,7 @@ function reset() {
     $("#senior").find("select").get(0).selectedIndex = -1;
     loadPageStocktList();
 }
+
 /**
  * 计算总页数
  * */
@@ -55,6 +57,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -93,11 +96,22 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+}
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
 }
 
 /**
@@ -178,6 +192,7 @@ function switchPage(pageNumber) {
         }
     }
 }
+
 /**
  * 输入页数跳转页面
  * */
@@ -526,6 +541,7 @@ function searchStock() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -542,6 +558,7 @@ function searchStock() {
     }
 
 }
+
 //粗查询
 function  searchStock1() {
 
@@ -604,6 +621,7 @@ function  searchStock1() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -625,6 +643,7 @@ function  searchStock1() {
     }
 
 }
+
 /**
  * 8位危废代码获取
  */
@@ -809,6 +828,7 @@ function judge() {
 
     }
 }
+
 //判断是否是自运单位修改
 function judge1() {
     var s = $('#selfEmployed').prop('checked');
@@ -819,11 +839,13 @@ function judge1() {
         $("#transport1").show(1000);
     }
 }
+
 //删除行方法
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
 }
+
 //保存库存信息
 function save() {
     //收集数据
@@ -871,6 +893,7 @@ function save() {
 
 
 }
+
 //克隆行方法
 function addNewLine() {
     $('.selectpicker').selectpicker({
@@ -905,6 +928,7 @@ function addNewLine() {
     $('.selectpicker').selectpicker();
 
 }
+
 //克隆行方法(修改页面)
 function addNewLine1() {
     // var wastesInfoList = $("#code");
@@ -946,6 +970,7 @@ function addNewLine1() {
        $('.selectpicker').selectpicker();//初始化
       $('.selectpicker').selectpicker('refresh');//初始化刷新
 }
+
 //修改库存信息页面跳转
 function adjustStock(item){
    var stockId= item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
@@ -954,6 +979,7 @@ function adjustStock(item){
     //console.log(localStorage.stockId);
     location.href="adjustStock.html";
 }
+
 //修改页面的初始
 function loadAdjustStock() {
     //获取申报编号
@@ -1191,12 +1217,14 @@ function adjustStock1() {
         }
     });
 }
+
 function allSelect1() {
         var isChecked = $('#allSel1').prop('checked');
         console.log(isChecked);
         if (isChecked) $("input[name='blankCheckbox1']").prop('checked', true);
         else $("input[name='blankCheckbox1']").prop('checked', false);
     }//提交
+
 function contractSubmit() {
     //在此提交
     var items = $("input[name='blankCheckbox1']:checked");//判断复选框是否选中
@@ -1240,6 +1268,7 @@ function contractSubmit() {
 function getContractId1(item) {
     return item.parentElement.parentElement.nextElementSibling.innerHTML;
 }
+
 //作废
 function cancel(item) {
     //查看合同编号
@@ -1271,6 +1300,7 @@ function cancel(item) {
         alert("取消作废")
     }
 }
+
 //查看
 function viewStock(item) {
     //查看页面 审批隐藏 打印显示 驳回隐藏
@@ -1385,6 +1415,7 @@ function viewStock(item) {
     $('#stockInfoForm').modal('show');
     localStorage.clear();
 }
+
 //添加危废列表新行
 function addWastesNewLine() {
     $("#body2").children().last().clone().remove();
@@ -1408,6 +1439,7 @@ function addWastesNewLine() {
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
 }
+
 //审批
 function approval(item) {
     //出现模态框和查看一个效果
@@ -1482,13 +1514,16 @@ function approval(item) {
     });
     $('#stockInfoForm').modal('show');//出现第一个模态框
 }
+
 //审批界面和驳回界面
 function showApproval(){
     $('#contractInfoForm3').modal('show');
 }
+
 function showBack(){
     $('#contractInfoForm4').modal('show');
 }
+
 //把按钮功能分出来做这个是审批
 function confirm1() {
     opinion = $('#opinion').val();
@@ -1515,6 +1550,7 @@ function confirm1() {
 
 });
 }
+
 //把按钮功能分出来做这个是驳回
 function back1() {
     backContent = $('#backContent').val();
@@ -1539,9 +1575,11 @@ function back1() {
         }
     });
 }
+
 function re1(){
     $('.newLine').remove();
 }
+
 //根据下拉框获取客户信息
 function getClentInfo(item) {
    var clientId=$(item).selectpicker('val');

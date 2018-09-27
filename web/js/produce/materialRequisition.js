@@ -3,6 +3,7 @@ MaterialRequisitionList=[];
 var currentPage = 1;                          //当前页数
 var data1;
 var isSearch = false;
+
 /**
  * 返回count值
  * */
@@ -11,6 +12,17 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
+
 /**
  * 计算总页数
  * */
@@ -64,6 +76,7 @@ function totalPage() {
     var total = loadPages(totalRecord, count);
     return total;
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -80,6 +93,7 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
+
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
@@ -155,6 +169,7 @@ function switchPage(pageNumber) {
         }
     }
 }
+
 /**
  * 输入页数跳转页面
  * */
@@ -224,6 +239,7 @@ function inputSwitchPage() {
         }
     }
 }
+
 //加载领料单列表
 function LoadMaterialRequisitionOrder() {
     var pageNumber = 1;               // 显示首页
@@ -268,6 +284,7 @@ function LoadMaterialRequisitionOrder() {
     //setSenierList();
       isSearch = false;
 }
+
 /**
  * 设置克隆页码
  * */
@@ -288,6 +305,7 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -295,6 +313,7 @@ function setPageClone(result) {
     }
 
 }
+
 //
 //设置领料单列表
 function setMaterialRequisitionList(result) {
@@ -383,6 +402,7 @@ function setMaterialRequisitionList(result) {
     tr.removeAttr('class');
 
 }
+
 //领料单领用
 function receive() {
     if(confirm("确定领用?")){
@@ -462,6 +482,7 @@ function receive() {
         location.href="newWarehouseOut.html";
     }
 }
+
 //加载出库增加页面的领料单
 function loadRequisitionList() {
     $('.selectpicker').selectpicker({
@@ -571,6 +592,7 @@ function loadRequisitionList() {
 
     localStorage.clear();
 }
+
 //设置出库增加页面的领料单数据
 function setRequisitionList(result) {
     var tr = $("#cloneTr");
@@ -737,6 +759,7 @@ function searchMaterial() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -834,6 +857,7 @@ function searchMaterialRequisition() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");

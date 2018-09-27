@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.WareHouseMapper">
+    <!--仓库映射集-->
+    <resultMap id="WareHouseRM" type="WareHouse">
+        <id column="warehouseId" property="wareHouseId"/>
+        <result column="warehouseName" property="wareHouseName"/>
+    </resultMap>
+    <!--增加仓库-->
+    <insert id="add" parameterType="WareHouse">
+        insert into t_pl_warehouse (warehouseId, warehouseName) values (#{wareHouseId}, #{wareHouseName});
+    </insert>
+    <!--通过仓库名称来获取仓库对象-->
+    <select id="getWareHouseByName" resultMap="WareHouseRM">
+        select * from t_pl_warehouse where warehouseName=#{name};
+    </select>
+    <!--通过仓库编号来获取仓库-->
+    <select id="getWareHouseById" resultMap="WareHouseRM">
+        select * from t_pl_warehouse where warehouseId=#{id};
+    </select>
+    <!--获取仓库的数量-->
+    <select id="count" resultType="int">
+        select count(*) from t_pl_warehouse;
+    </select>
+
+</mapper>

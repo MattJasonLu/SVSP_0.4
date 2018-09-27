@@ -14,6 +14,7 @@ function reset() {
     $("#senior").find("select").get(0).selectedIndex = -1;
 
 }
+
 /**
  * 返回count值
  * */
@@ -80,12 +81,23 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
 
+}
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
 }
 
 /**
@@ -438,6 +450,7 @@ function  ContractListByName(item) {
         });
     }
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -454,6 +467,7 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
+
 //设置合同列表高级查询下拉框数据
 function setSeniorSelectedList() {
     $.ajax({
@@ -485,6 +499,7 @@ function setSeniorSelectedList() {
     });
 
 }
+
 //合同列表高级查询
 function searchContract() {
     isSearch=false;
@@ -519,11 +534,7 @@ function searchContract() {
             switchPage(parseInt(i));
             array.push($('.myclass1'));
         }
-
-
-
-
-
+        console.log(array.length)
     }
 
     if (nameBykey == "应急处置合同") {
@@ -565,20 +576,29 @@ function searchContract() {
             arraydate.push(($(this).children('td').eq(8).text()))
         });
     }
+    // console.log(arraydate)
+    var arraydate1=[];
+    for(var j=0;j<array.length;j++){
+        $.each(array[j],function () {
+            arraydate1.push(($(this).children('td').eq(9).text()))
+        });
+    }
+
+
     var dateMin=(arraydate[0]);
-    var dateMax=(arraydate[0]);
+    var dateMax=(arraydate1[0]);
     for(var i=0;i<arraydate.length;i++){
         if(new Date(arraydate[i]).getTime()<new Date(dateMin)||dateMin.length==0){
             dateMin=(arraydate[i]);
         }
-        if(new Date(arraydate[i]).getTime()>new Date(dateMax)||dateMax.length==0){
-            dateMax=(arraydate[i]);
+
+    }
+    for(var i=0;i<arraydate1.length;i++){
+        if(new Date(arraydate1[i]).getTime()>new Date(dateMax)||dateMax.length==0){
+            dateMax=(arraydate1[i]);
         }
     }
-    //1循环找出最小的日期
-  console.log(dateMin+dateMax)
-   console.log(startDate+endDate)
-
+   // console.log(dateMin+dateMax)
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
 
@@ -594,7 +614,7 @@ function searchContract() {
                 &&$(this).children('td').text().indexOf(text)!=-1&&
                 $(this).children('td').eq(4).text().indexOf(checkState)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
-                &&(new Date(end).getTime()<=new Date(endDate).getTime())&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1
+                &&(new Date(end).getTime()<=new Date(endDate).getTime()||(start.length==0||end.length==0))
             )){
                 $(this).hide();
             }
@@ -602,8 +622,8 @@ function searchContract() {
                 &&$(this).children('td').text().indexOf(text)!=-1&&
                 $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
                 &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1
-                &&(new Date(end).getTime()<=new Date(endDate).getTime())&&$(this).children('td').eq(2).text().indexOf(suppierName)!=-1
-            )){
+                &&(new Date(end).getTime()<=new Date(endDate).getTime()||(start.length==0||end.length==0)))
+            ){
                 array1.push($(this));
             }
         });
@@ -641,6 +661,7 @@ function searchContract() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -660,6 +681,7 @@ function searchContract() {
 
 
 }
+
 //设置合同模板高级查询下拉框数据
 function setModelSelectedList() {
     $.ajax({
@@ -699,6 +721,7 @@ function setModelSelectedList() {
         }
     });
 }
+
 //合同模板高级查询
 function searchModel() {
     var page = {};
@@ -743,6 +766,7 @@ function searchModel() {
     });
     isSearch = true;
 }
+
 //模糊查询
 array=[];//存放所有的tr
 array1=[];//存放目标的tr
@@ -854,6 +878,7 @@ function searchFuzzy() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -873,6 +898,7 @@ function searchFuzzy() {
 
 
 }
+
 function setContractList(result) {
     //console.log(eval(result));//可以取到
     // 获取id为cloneTr的tr元素
@@ -1338,6 +1364,7 @@ function setContractListModal(result) {
     tr.hide();
     tr.removeAttr('class');
 }
+
 /***
  * 查看合同2
  */
@@ -1746,6 +1773,7 @@ function loadWastesContractSelectList() {
 
     });
 }
+
 //计算总价
 function calculateTotalPrice(item) {
     var unitPrice=$(item).parent().parent().children('td').eq(5).children('input').val();
@@ -1753,6 +1781,7 @@ function calculateTotalPrice(item) {
     //console.log(unitPrice+"=="+contractAmount);
     $(item).parent().parent().children('td').eq(7).children('input').val((parseFloat(unitPrice)*parseInt(contractAmount)).toFixed(2));
 }
+
 //保存危废合同
 function contractWastesSave() {
     var addType = $("input[name='addType']:checked").val();
@@ -1880,6 +1909,7 @@ function contractWastesSave() {
 
 
 }
+
 //产废单位列表下拉框
 function findClient() {
     $.ajax({
@@ -1960,6 +1990,7 @@ function findClient() {
         }
     });
 }
+
 //提交危废合同
 function contractWastesSubmit(){
     var s=($('#contractInfoForm').serializeJSON());
@@ -2711,6 +2742,7 @@ function loadLogicContractSelectList() {
 
     });
 }
+
 //点击查询供应商信息
 function findSuppier() {
 
