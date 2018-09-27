@@ -124,7 +124,7 @@ public class PRPoundsController {
     public String importPoundsExcel(MultipartFile excelFile) {
         JSONObject res = new JSONObject();
         try {
-            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile);
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
             for (int i = 0; i < data.length; i++) {
                 System.out.println();
                 for (int j = 0; j < data[0].length; j++) {
