@@ -790,24 +790,6 @@ function showPrintModal() {
  * 打印功能
  */
 function print() {
-    //打印网页
-    // $('#printBtn').hide();
-    // $('#pic').show();
-    // $('#poundsTitle').hide();
-    // $('title').hide();
-    // html2canvas(document.querySelector("#poundsForm")).then(function (canvas) {
-    //     $("#pic").css("visibility", "visible");
-    //     var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
-    //     var newImg = document.createElement("img");//创建img对象
-    //     newImg.src = dataUrl;//将canvas图形url赋给img对象
-    //     //然后将画布缩放，将图像放大两倍画到画布上
-    //     $('#pic').append(newImg).printThis({
-    //         //保留BASE标记或接受URL
-    //     });//打印img，注意不能直接打印img对象，需要包裹一层div
-    //     $('#printBtn').show();
-    // });
-    // $('#pic').html('');//打印完毕释放包裹层内容（图像)
-    // $('#poundsTitle').show();
     //打印模态框
     $("#footer").hide();
     $("#print1").printThis({
@@ -816,14 +798,14 @@ function print() {
         // importStyle: true,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
         // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
         // copyTagClasses: false
-        debug: false,
-        importCSS: false,
-        importStyle: true,
-        printContainer: true,
-        removeInline: false,
-        printDelay: 333,
-        header: null,
-        formValues: false
+        // debug: false,
+        // importCSS: false,
+        // importStyle: true,
+        // printContainer: true,
+        // removeInline: false,
+        // printDelay: 333,
+        // header: null,
+        // formValues: false
     });
 
 }
