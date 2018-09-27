@@ -77,7 +77,7 @@ public class ImportUtil {
         // 定义一维数组，存放Excel表里的每一行的各个列的数据
         Object[] obj;
         Object[][] param = null;
-        List<Object[][]> list=null;//存储每一个页码中的内容
+        List<Object[][]> list = new ArrayList<>();//存储每一个页码中的内容
         InputStream is = null;
         String fileName = file.getOriginalFilename();
         try {
@@ -94,7 +94,7 @@ public class ImportUtil {
                 Workbook rwb;
                 rwb = Workbook.getWorkbook(is);
                 Sheet[] sheets = rwb.getSheets();//获取总页数
-                list=new ArrayList<>();
+
                for(int k=0;k<sheets.length;k++){
                    Sheet sht = rwb.getSheet(k);// 得到第一个表d
                    int col = sht.getColumns(); // 获得Excel列
@@ -111,7 +111,6 @@ public class ImportUtil {
                                obj[j] = "null";
                            param[i][j] = obj[j];
                        }
-
                    }
                    list.add(param);
                }
@@ -182,9 +181,8 @@ public class ImportUtil {
                             param[i][j] = obj[j];
                         }
                     }
+                    list.add(param);
                 }
-
-
                 is.close();
             } catch (Exception e) {
                 e.printStackTrace();

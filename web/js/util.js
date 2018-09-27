@@ -217,3 +217,14 @@ function enterSwitchPage(){
         inputSwitchPage();
     }
 }
+
+/**
+ * 分页：设置选中页页码标蓝
+ * @param item
+ */
+function addAndRemoveClass(item){
+    $(".oldPageClass").removeClass("active");
+    $(".oldPageClass").removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
