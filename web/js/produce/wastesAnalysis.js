@@ -273,6 +273,36 @@ function loadWasteIntoList() {
              alert("服务器异常！")
         }
     });
+    //加载进料方式列表
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getHandelCategoryList",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                var type=$('#search-type');
+                type.children().remove();
+                $.each(result.array1,function (index,item) {
+                    var option=$('<option/>');
+                    option.val(item.index);
+                    option.text(item.name);
+                    type.append(option);
+                })
+                type.get(0).selectedIndex=-1;
+            }
+            else {
+                alert(result.message);
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        },
+
+    });
+
 }
 //设置危废入场分析日报数据
 function setWasteIntoList(result) {

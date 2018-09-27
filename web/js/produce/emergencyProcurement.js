@@ -378,7 +378,7 @@ function  searchStock1() {
 function reset() {
     $('#searchContent').val(" ");
     $('#senior').find('input').val(" ");
-    getEmProcurement();
+    window.location.reload();
 }
 //全选复选框
 function allSelect() {
@@ -529,7 +529,7 @@ function setEmProcurementList(result) {
                         break;
                     // 需用时间
                     case (2):
-                        $(this).html(getDateStr(obj.demandTime));
+                        $(this).html((obj.demandTime));
                         break;
                     // 申请部门
                     case (3):
@@ -684,12 +684,38 @@ function searchEm() {
 
     array1.length=0;//清空数组
     //1分页模糊查询
+    var date;
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getNewestEm",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        //data:{'outboundOrderId':outboundOrderId},
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                date=getDateStr(result.dateList[0]);
+                console.log(result);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！");
+        }
 
+    });
     for(var i=totalPage();i>0;i--){
         switchPage(parseInt(i));
         array.push($('.myclass'));
     }
     var text=$.trim($('#searchContent').val());
+
+    var startTime=$("#search-inDate").val();
+    var endTime=$('#search-endDate').val();
+    var startDate=getDateByStr(startTime);
+    var endDate=getDateByStr(endTime);
         data = {
             suppliesCategory:$('#search-suppliesCategory').val(),
             demandTime: $("#search-demandTime").val(),
@@ -705,13 +731,19 @@ function searchEm() {
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
-            //console.log(this);
+            if(startDate.toString()=='Invalid Date'){
+                startDate=getDateByStr(date);
+                console.log(startDate)
+            }
+            if(endDate.toString()=='Invalid Date'){
+                endDate=new Date();
+                console.log(endDate)
+            }
             if(!($(this).children('td').eq(1).text().indexOf(data.suppliesCategory)!=-1&&$(this).children('td').eq(3).text().indexOf(data.applyDepartment)!=-1
                 &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1
                 &&$(this).children('td').eq(7).text().indexOf(data.generalManager)!=-1
-                &&$(this).children('td').eq(8).text().indexOf(data.applyDate)!=-1
-                &&$(this).children('td').text().indexOf(text)!=-1
+                &&(getDateByStr($(this).children('td').eq(8).text())<=endDate&&getDateByStr($(this).children('td').eq(8).text())>=startDate)
             )){
                 $(this).hide();
             }
@@ -719,8 +751,7 @@ function searchEm() {
                 &&$(this).children('td').eq(4).text().indexOf(data.proposer)!=-1&&$(this).children('td').eq(5).text().indexOf(data.divisionHead)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(data.purchasingDirector)!=-1
                 &&$(this).children('td').eq(7).text().indexOf(data.generalManager)!=-1
-                &&$(this).children('td').eq(8).text().indexOf(data.applyDate)!=-1
-                &&$(this).children('td').text().indexOf(text)!=-1
+                &&(getDateByStr($(this).children('td').eq(8).text())<=endDate&&getDateByStr($(this).children('td').eq(8).text())>=startDate)
             )
 
             ){

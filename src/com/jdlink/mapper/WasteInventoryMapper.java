@@ -31,4 +31,5 @@ public interface WasteInventoryMapper {
     List<WasteInventory> getByInboundOrderItemId(String inboundOrderItemId);
     List<Date> getNewestInBoundDate();
     List<Date> getNewestInBoundDateSec();
+
 }
