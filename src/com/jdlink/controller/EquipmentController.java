@@ -1,5 +1,6 @@
 package com.jdlink.controller;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
@@ -121,6 +122,24 @@ public class EquipmentController {
         return res.toString();
     }
 
+    @RequestMapping("equipmentListPage")
+    @ResponseBody
+    public String equipmentListPage(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<EquipmentDate> equipmentDateList = equipmentService.equipmentListPage(page);
+            JSONArray data = JSONArray.fromArray(equipmentDateList.toArray(new EquipmentDate[equipmentDateList.size()]));
+            res.put("data", data);
+            res.put("status", "success");
+            res.put("message", "分页数据获取成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "分页数据获取失败！");
+        }
+        // 返回结果
+        return res.toString();
+    }
     /**
      *
      * 生成单据号
@@ -172,16 +191,46 @@ public class EquipmentController {
         JSONObject res = new JSONObject();
         try {
             List<EquipmentDate> equipmentList = equipmentService.search(equipmentDate);
-            JSONArray data = JSONArray.fromArray(equipmentList.toArray(new EquipmentDate[equipmentList.size()]));
+           // JSONArray data = JSONArray.fromArray(equipmentList.toArray(new EquipmentDate[equipmentList.size()]));
             res.put("length",equipmentList.size());
             res.put("status", "success");
             res.put("message", "查询成功");
-            res.put("data", data);
+            res.put("data", equipmentList);
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "查询失败");
         }
         return  res.toString();
+    }
+
+    /**
+     * 获取总记录数
+     * @return 总记录数
+     */
+    @RequestMapping("totalEquipmentRecord")
+    @ResponseBody
+    public int totalEquipmentRecord(){
+        try {
+            return equipmentService.count();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 获取查询记录数
+     * @return 查询记录数
+     */
+    @RequestMapping("searchEquipmentTotal")
+    @ResponseBody
+    public int searchEquipmentTotal(@RequestBody Equipment equipment){
+        try {
+            return equipmentService.searchCount(equipment);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 }
