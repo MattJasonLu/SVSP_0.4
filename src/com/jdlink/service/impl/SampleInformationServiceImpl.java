@@ -63,4 +63,7 @@ public class SampleInformationServiceImpl implements SampleInformationService {
 
     @Override
     public List<Client> listClient(){ return sampleInformationMapper.listClient(); }
+
+    @Override
+    public List<SampleInformation> getSampleInfoByClientId(String id){ return sampleInformationMapper.getSampleInfoByClientId(id); }
 }

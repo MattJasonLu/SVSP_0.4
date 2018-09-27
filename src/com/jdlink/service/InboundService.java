@@ -143,4 +143,6 @@ public interface InboundService {
      * @return 入库单集合
      */
     List<InboundOrderItem> getSecondInboundOrderItemByRange(Date startDate, Date endDate);
+
+    List<InboundOrderItem> getInboundOrderItemByClientId(String id);
 }

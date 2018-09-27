@@ -166,5 +166,7 @@ public class InboundServiceImpl implements InboundService {
         return inboundMapper.getSecondInboundOrderItemByRange(startDate, endDate);
     }
 
+    @Override
+    public List<InboundOrderItem> getInboundOrderItemByClientId(String id){ return inboundMapper.getInboundOrderItemByClientId(id); }
 
 }

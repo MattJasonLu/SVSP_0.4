@@ -159,4 +159,8 @@ public class OutboundOrderServiceImpl implements OutboundOrderService{
 
     @Override
     public List<OutboundOrder> search(OutboundOrder outboundOrder){ return outboundOrderMapper.search(outboundOrder); }
+
+    @Override
+    public List<OutboundOrder> getOutBoundOrderByClientId(String id){ return outboundOrderMapper.getOutBoundOrderByClientId(id); }
+
 }

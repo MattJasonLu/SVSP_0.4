@@ -72,5 +72,6 @@ public interface ContractService {
     void addQuotationItem(QuotationItem quotationItem);
     void updateContract(Contract contract);
     void deleteQuotationItem(String contractId);
+    List<Contract> getContractByClientId(String id);
 
 }

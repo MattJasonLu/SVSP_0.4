@@ -15,11 +15,11 @@
 
     <insert id="add" parameterType="SampleInformation">
         INSERT INTO t_pr_sampleinformation (id,companyCode,
-        wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,nowTime)
+        wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity,nowTime,creationDate)
         VALUES (#{id},#{companyCode},#{wastesList[0].code},'Appointed',#{laboratorySigner},#{wastesList[0].isPH},
         #{wastesList[0].isAsh}, #{wastesList[0].isWater}, #{wastesList[0].isHeat},
-        #{wastesList[0].isSulfur}, #{wastesList[0].isChlorine}, #{wastesList[0].isFluorine},
-        #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity}, NOW());
+        #{wastesList[0].isSulfur}, #{wa stesList[0].isChlorine}, #{wastesList[0].isFluorine},
+        #{wastesList[0].isPhosphorus}, #{wastesList[0].isFlashPoint}, #{wastesList[0].isViscosity}, NOW(),NOW());
         <if test="wastesList.size() > 0">
             <foreach collection="wastesList" item="wastes" index="index">
                 INSERT INTO t_pr_sampleinformationitem
@@ -251,6 +251,12 @@
         <if test="page != null and page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
+    </select>
+
+    <select id="getSampleInfoByClientId" parameterType="String" resultMap="SampleInformationRM">
+        select * from t_pr_sampleinformation
+        where
+        companyCode =#{id}
     </select>
 
     <select id="getWastes" resultType="Wastes" parameterType="String">
