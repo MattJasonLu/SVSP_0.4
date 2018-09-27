@@ -26,12 +26,24 @@
     <select id="getMaterial" resultType="Material">
         select * from t_pl_material where receiptNumber=#{receiptNumber};
     </select>
+    <!--获取月季采购-->
     <select id="getProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement order by nowTime desc;;
+        select * from t_pl_procurement   where procurementCategory='1'order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+    <!--获取应急采购-->
+    <select id="getEmergencyProcurementList" resultMap="ProcurementRM">
+        select * from t_pl_procurement   where procurementCategory='0'order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
     </select>
     <!--根据编号查询信息-->
     <select id="getProcurementListById" parameterType="String" resultMap="ProcurementRM">
         select * from t_pl_procurement where receiptNumber=#{receiptNumber} order by nowTime desc;
+
     </select>
     <!--高级查询-->
     <select id="searchProcurement" parameterType="Procurement" resultMap="ProcurementRM">

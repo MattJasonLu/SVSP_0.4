@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Material;
 import com.jdlink.domain.Produce.Procurement;
 import com.jdlink.mapper.ProcurementMapper;
@@ -30,8 +31,8 @@ public class ProcurementServiceImpl implements ProcurementService {
     }
 
     @Override
-    public List<Procurement> getProcurementList() {
-        return procurementMapper.getProcurementList();
+    public List<Procurement> getProcurementList(Page page) {
+        return procurementMapper.getProcurementList(page);
     }
 
     @Override
@@ -78,5 +79,10 @@ public class ProcurementServiceImpl implements ProcurementService {
     @Override
     public List<Date> getNewestEm() {
         return procurementMapper.getNewestEm();
+    }
+
+    @Override
+    public List<Procurement> getEmergencyProcurementList(Page page) {
+        return procurementMapper.getEmergencyProcurementList(page);
     }
 }
