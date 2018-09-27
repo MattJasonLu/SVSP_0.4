@@ -53,6 +53,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -69,6 +70,7 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
+
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
@@ -217,6 +219,15 @@ function inputSwitchPage() {
 }
 
 /**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
+/**
  * 克隆页码
  * @param result
  */
@@ -237,6 +248,7 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -1189,8 +1201,10 @@ function cancel(item) {
     }
 
 }
+
 array=[];
 array1=[];
+
 //次生出库信息高级查询
 function searchSecOutbound() {
     isSearch=false;
@@ -1301,6 +1315,7 @@ function searchSecOutbound() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -1392,6 +1407,7 @@ function searchSecondaryOuntBound() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");

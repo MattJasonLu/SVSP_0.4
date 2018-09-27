@@ -11,6 +11,7 @@ var currentPage = 1;                          //当前页数
 var data;
 var array=[];
 var array1=[];
+
 /**
  * 返回count值
  * */
@@ -216,6 +217,15 @@ function inputSwitchPage()  {
     }
 }
 
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
 // /**
 //  * 克隆页码
 //  * @param result
@@ -433,6 +443,7 @@ function search1(){
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -553,6 +564,7 @@ function searchSec() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -631,6 +643,7 @@ function setPageClone1(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this)
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");

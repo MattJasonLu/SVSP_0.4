@@ -9,6 +9,7 @@ function reset() {
     $("#senior").find("select").get(0).selectedIndex = -1;
     loadOutBoundList();
 }
+
 /**
  * 返回count值
  * */
@@ -17,6 +18,7 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
+
 /**
  * 计算总页数
  * */
@@ -48,6 +50,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -64,6 +67,7 @@ function loadPages(totalRecord, count) {
     else
         return parseInt(totalRecord / count) + 1;
 }
+
 /**
  * 克隆页码
  * @param result
@@ -85,12 +89,24 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
 }
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
+}
+
 /**
  * 点击页数跳转页面
  * @param pageNumber 跳转页数
@@ -168,6 +184,7 @@ function switchPage(pageNumber) {
     }
 }
 
+
 /**
  * 输入页数跳转页面
  * */
@@ -236,6 +253,7 @@ function inputSwitchPage() {
         }
     }
 }
+
 /**
  * 分页 获取首页内容==>危废
  * */
@@ -312,6 +330,7 @@ function loadOutBoundList() {
 
 
 }
+
 //点击确认进行出库操作
 function outBound() {
 
@@ -369,6 +388,7 @@ function outBound() {
 
 
 }
+
 //设置出库列表
 function setOutboutList(result,index) {
     id="";
@@ -442,6 +462,7 @@ function setOutboutList(result,index) {
 
 
 }
+
 //保存添加至库存
 function saveOutBound(){
     if(confirm("确定生成出库单?")){
@@ -481,6 +502,7 @@ function saveOutBound(){
 
 
 }
+
 //添加出库单
 function addOutBoundOrder(data) {
     $.ajax({
@@ -610,6 +632,7 @@ function setOutBoundList(result) {
 
 
 }
+
 //双击查看出库单明细
 function viewOutBound(item) {
     var outboundOrderId=$(item).children().get(5).innerHTML;
@@ -700,6 +723,7 @@ function viewOutBound(item) {
 
     }) ;
 }
+
 //属性调整
 function adjustAttr() {
 
@@ -737,6 +761,7 @@ function adjustAttr() {
     $('#examineModal').modal('show');
 
 }
+
 //确认修改属性
 function comfirm() {
     console.log($("#outboundOrderId").val());
@@ -763,6 +788,7 @@ function comfirm() {
         }
      });
 }
+
 //导出
 function exportExcel() {
     console.log("export");
@@ -770,6 +796,7 @@ function exportExcel() {
     var sqlWords = "select * from t_pl_outboundorder join t_pr_laboratorytest where t_pl_outboundorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber;";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
+
 /**
  * 单击查看
  * @param item
@@ -867,6 +894,7 @@ function view1(item){
 
     }) ;
 }
+
 //作废
 function cancel(item) {
     if(confirm("确定作废?")){
@@ -999,6 +1027,7 @@ function searchWasteOut() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -1024,6 +1053,7 @@ function searchWasteOut() {
 
 
 }
+
 //危废出库粗查询
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
@@ -1094,6 +1124,7 @@ function searchOutBound() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");

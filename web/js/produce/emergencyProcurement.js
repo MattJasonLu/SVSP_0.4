@@ -42,6 +42,7 @@ function totalPage() {
     var count = countValue();                         // 可选
     return loadPages(totalRecord, count);
 }
+
 /**
  * 计算分页总页数
  * @param totalRecord
@@ -80,11 +81,22 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+}
+
+/**
+ * 设置选中页页码标蓝
+ */
+function AddAndRemoveClass(item) {
+    $('.oldPageClass').removeClass("active");
+    $('.oldPageClass').removeClass("oldPageClass");
+    $(item).parent().addClass("active");
+    $(item).parent().addClass("oldPageClass");
 }
 
 /**
@@ -133,7 +145,7 @@ function switchPage(pageNumber) {
     if (!isSearch) { //分页用的
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getProcurementList",         // url
+            url: "getEmergencyProcurementList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -166,6 +178,7 @@ function switchPage(pageNumber) {
     }
 
 }
+
 /**
  * 输入页数跳转页面
  * */
@@ -203,7 +216,7 @@ function inputSwitchPage() {
         if (!isSearch) {
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "getProcurementList",         // url
+                url: "getEmergencyProcurementList",         // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(page),
                 dataType: "json",
@@ -236,8 +249,6 @@ function inputSwitchPage() {
     }
 }
 
-
-
 //加载应急物资采购列表
 function getEmProcurement() {
     $("#current").find("a").text("当前页：1");
@@ -254,7 +265,8 @@ function getEmProcurement() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getProcurementList",          // url
+        url: "getEmergencyProcurementList",          // url
+        data: JSON.stringify(page),
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
@@ -277,6 +289,7 @@ function getEmProcurement() {
     });
     isSearch=false;
 }
+
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
@@ -288,6 +301,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
         },400);
     });
 });
+
 //粗查询
 function  searchStock1() {
 
@@ -306,7 +320,7 @@ function  searchStock1() {
 
     isSearch = true;
 
-    var text=$('#searchContent').val();
+    var text=$.trim($('#searchContent').val());
 
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
@@ -350,6 +364,7 @@ function  searchStock1() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -372,20 +387,19 @@ function  searchStock1() {
 
 }
 
-
-
-
 function reset() {
     $('#searchContent').val(" ");
     $('#senior').find('input').val(" ");
     window.location.reload();
 }
+
 //全选复选框
 function allSelect() {
     var isChecked = $('#allSel').prop('checked');
     if (isChecked) $("input[name='select']").prop('checked',true);
     else $("input[name='select']").prop('checked',false);
 }
+
 //克隆行方法
 function addNewLine() {
     $('.selectpicker').selectpicker({
@@ -420,11 +434,13 @@ function addNewLine() {
     $('.selectpicker').selectpicker('refresh');
 
 }
+
 //删除行方法
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
 }
+
 //保存应急采购方法
 function saveEmer() {
     //先添加到采购表中，再添加到物资表中
@@ -549,7 +565,7 @@ function setEmProcurementList(result) {
                         break;
                     //总经理
                     case (7):
-                        $(this).html(obj.purchasingHead);
+                        $(this).html(obj.generalManager);
                         break;
                     //申请日期
                     case (8):
@@ -567,6 +583,7 @@ function setEmProcurementList(result) {
     tr.hide();
     tr.removeAttr('class');
 }
+
 //双击查询
 function view(item) {
     var receiptNumber=$(item).children().get(0).innerHTML;
@@ -618,6 +635,7 @@ function check(item) {
     });
     $('#appointModal2').modal('show');
 }
+
 //设置月度采购申请表数据模态框数据
 function setEmProcurementListModal(result) {
     //$('.myclass1').hide();
@@ -675,6 +693,7 @@ function setEmProcurementListModal(result) {
     tr.hide();
     tr.removeAttr('class');
 }
+
 //应急采购高级查询
 function searchEm() {
 
@@ -789,6 +808,7 @@ function searchEm() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -814,7 +834,7 @@ function searchEm() {
 function exportExcel() {
     console.log("export");
     var name = 't_pl_procurement';
-    var sqlWords = "select * from t_pl_procurement where procurementCategory='0';";
+    var sqlWords = "select t_pl_procurement.*,t_pl_material.* from t_pl_procurement left join t_pl_material on t_pl_procurement.receiptNumber=t_pl_material.receiptNumber and t_pl_procurement.procurementCategory='0';";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
