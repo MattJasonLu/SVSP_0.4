@@ -228,3 +228,17 @@ function addAndRemoveClass(item){
     $(item).parent().addClass("active");
     $(item).parent().addClass("oldPageClass");
 }
+
+/**
+ * 分页：点击上下页按钮时页码标蓝
+ */
+function addPageClass(pageNumber){
+    $(".oldPageClass").removeClass("active");                 // 移除上一次页码标蓝
+    $(".oldPageClass").removeClass("oldPageClass");
+    $.each($("#previous").next().nextAll(),function(index,item){
+        if($(item).find("a").text() == pageNumber){
+            $(item).addClass("active");
+            $(item).addClass("oldPageClass");
+        }
+    });
+}

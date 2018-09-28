@@ -191,6 +191,9 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -222,12 +225,14 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
+    addPageClass(pageNumber);           // 设置页码标蓝
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;          //当前页面
     //addClass("active");
     page.start = (pageNumber - 1) * page.count;
+    console.log(page);
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getLog",         // url
@@ -237,6 +242,7 @@ function switchPage(pageNumber) {
         contentType: 'application/json;charset=utf-8',
         success: function (result) {
             if (result != undefined) {
+                console.log(result);
                 setDataList(result.data);
             } else {
                 console.log("fail: " + result);
@@ -253,8 +259,11 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == null || pageNumber == undefined) {
+    if (pageNumber == null || pageNumber == "") {
         window.alert("跳转页数不能为空！")
     } else {
         if (pageNumber == 1) {
@@ -279,6 +288,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -313,6 +323,8 @@ function showLog() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
@@ -351,7 +363,7 @@ function showLog() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+       console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
