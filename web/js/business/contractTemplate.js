@@ -815,3 +815,94 @@ function dataLeftCompleting(bits, identifier, value) {
     value = Array(bits + 1).join(identifier) + value;
     return value.slice(-bits);
 }
+
+
+//合同模板升级的载入方法
+function getContractList() {
+    var contractId=localStorage["contractId"];
+    //console.log(contractId);
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getContractBymodelName",                  // url
+        dataType: "json",
+        data:{"contractId":contractId},
+        success: function (result) {
+            var data=eval(result);
+            console.log(data);
+            //赋值模板名称
+            $('#modelName').prop("value",data.modelName);
+            //赋值模板版本
+            $('#modelVersion').prop("value",data.modelVersion);
+            //赋值模板编号
+            $('#contractId').prop("value",data.contractId);
+            //赋值合同内容
+            CKEDITOR.instances.TextArea1.setData(data.contractContent);//获取值
+            //$('#TextArea1').val(text);
+            if (result != undefined) {
+                var data = eval(result);
+                // 各下拉框数据填充
+                var contractType = $("#contractType");
+                index1=""
+                contractType.children().remove();
+                $.each(data.contractNameStrList, function (index, item) {
+                    var option = $('<option />');
+                    option.val(index);
+                    option.text(item.name);
+                    if(data.contractType.name==item.name){
+                        index1=index;
+                    }
+                    contractType.append(option);
+                });
+                contractType.get(0).selectedIndex=index1;
+                // var s='${model.year}'+"";
+                // console.log(s);
+                var year=$('#year');
+                year.find("option[value="+data.year+"]").attr("selected",true);
+                var period=$('#period');
+                // var s1='${model.period}'+"";
+                // console.log(s1);
+                period.find("option[value="+data.period+"]").attr("selected",true);
+            }
+            else {
+                console.log(result);
+            }
+        },
+        error:function (result) {
+            console.log(result);
+        }
+    });
+}
+
+//升级合同模板
+function contractAdjustSave() {
+    contractId='${contract.contractId}';
+    var text='${contract.contractContent}';
+    var CText=CKEDITOR.instances.TextArea1.getData(); //取得纯文本
+    //var des =CText.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
+    $('#TextArea1').prop("value",CText);
+    console.log( JSON.stringify($('#page1Info').serializeJSON()));
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "upgradeContractModel",                       // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify($('#page1Info').serializeJSON()),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined) {
+                // console.log(eval(result));
+                console.log("success: " + result);
+                alert("保存修改成功!");
+                $(location).attr('href', 'contractTemplate.html');//跳转
+            } else {
+                console.log("fail: " + result);
+                alert("保存失败!");
+            }
+        },
+        error: function (result) {
+            console.log("error: " + result);
+            alert("服务器异常!");
+        }
+    });
+}
+

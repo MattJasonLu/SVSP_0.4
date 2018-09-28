@@ -1987,7 +1987,7 @@ function addNewLine() {
     });
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-    clonedTr.children("td:eq(0)").prepend(delBtn);
+    clonedTr.children("td:eq(0)").append(delBtn);
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
@@ -2000,7 +2000,7 @@ function delLine(e) {
     tr.parentNode.removeChild(tr);
     var i=0
     $('.myclass').each(function (index,item) {
-        $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>"+(parseInt(index)+1).toString());
+        $(this).children('td').eq(0).html((parseInt(index)+1).toString()+"<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
     });
 }
 
