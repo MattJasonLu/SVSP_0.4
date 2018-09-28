@@ -160,7 +160,7 @@
     <!--增加次生入库单-->
     <insert id="addSecondInboundOrder" parameterType="InboundOrder">
         INSERT INTO t_pl_inboundorder (inboundOrderId, inboundDate, warehouseId, boundType, keeperId, directorId, approverId, checkState, remarks, creatorId, createDate, departmentId, companyId, modifierId,
-        modifyDate, recordState, category) VALUES (#{inboundOrderId}, NOW(), #{wareHouse.warehouseId}, #{boundType},
+        modifyDate, recordState, category) VALUES (#{inboundOrderId}, NOW(), #{wareHouse.wareHouseId}, #{boundType},
         #{keeperId}, #{directorId}, #{approverId}, #{checkState}, #{remarks},
         #{creatorId}, NOW(), #{departmentId}, #{companyId}, #{modifierId}, NOW(),
         #{recordState}, 1);

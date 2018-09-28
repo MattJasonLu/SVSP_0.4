@@ -196,7 +196,7 @@ function convertStrToWastesName(str) {
             name = '桶';
             break;
         default:
-            name = '';
+            name = str;
             break;
     }
     return name;

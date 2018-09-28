@@ -100,7 +100,7 @@
         // 克隆后清空新克隆出的行数据
         clonedTr.children("td:eq(1),td:eq(2),td:eq(3)").find("input").val("");
         // 获取编号
-        var id = $("#plusBtn").prev().children().get(0).innerHTML;
+        var id = $("#plusBtn").prevAll().length - 1;
         var num = parseInt(id);
         if (!isNaN(num)) {
             num++;
@@ -122,7 +122,7 @@
         // 克隆后清空新克隆出的行数据
         clonedTr.children("td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)").find("input").val("");
         // 获取编号
-        var id = $("#plusBtn1").prev().children().get(0).innerHTML;
+        var id = $("#plusBtn1").prevAll().length - 1;
         var num = parseInt(id);
         if (!isNaN(num)) {
             num++;
@@ -161,7 +161,15 @@
 
     function delLine(e) {
         var tr = e.parentElement.parentElement;
+        var length = $(tr.parentNode).children().length - 3;         // 行数
+        var tBody = $(tr.parentNode);                                  // 删除前获取父节点
         tr.parentNode.removeChild(tr);
+        for(var i = 2; i< length + 1; i++){             // 更新序号
+            tBody.children().eq(i).children().eq(0).get(0).innerHTML = i ;     // 更新序号
+            // 重新加上减行按钮
+            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id2--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+            tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+        }
     }
 </script>
 <style>
