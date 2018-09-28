@@ -487,17 +487,17 @@ public class ContractController {
         //给予合同的状态
         //取出合同版本
        String modelVersion= contract.getModelVersion();
-      if(modelVersion!=null){
-          String remove="V";
-          String modelVersion1= modelVersion.replace(remove,"");
-          if(modelVersion1!=null){
-              String  modelVersion2=UpdateVersion.updateVersionID(modelVersion1);
-              contract.setModelVersion(modelVersion2);//升级模板号，同时作废前一个模板 相当于添加一个新的模板
-
-              System.out.print(modelVersion1+"AAA");
-
-          }
-      }
+//      if(modelVersion!=null){
+//          String remove="V";
+//          String modelVersion1= modelVersion.replace(remove,"");
+//          if(modelVersion1!=null){
+//              String  modelVersion2=UpdateVersion.updateVersionID(modelVersion1);
+//              contract.setModelVersion(modelVersion2);//升级模板号，同时作废前一个模板 相当于添加一个新的模板
+//
+//              System.out.print(modelVersion1+"AAA");
+//
+//          }
+//      }
         //设置时间
         //生成日期对象
         Date current_date = new Date();
@@ -1084,6 +1084,35 @@ public class ContractController {
              res.put("status", "fail");
              res.put("message", "子表更新失败");
          }
+        return  res.toString();
+    }
+
+    //升级合同模板
+    @RequestMapping("upgradeContractModel")
+    @ResponseBody
+    public String upgradeContractModel(@RequestBody Contract contract){
+        JSONObject res=new JSONObject();
+        try{
+            String modelVersion= contract.getModelVersion();
+                String remove="V";
+                String modelVersion1= modelVersion.replace(remove,"");
+                if(modelVersion1!=null){
+                    String  modelVersion2=UpdateVersion.updateVersionID(modelVersion1);
+                    contract.setModelVersion(modelVersion2);//升级模板号，同时作废前一个模板 相当于添加一个新的模板
+                }
+            contractService.update(contract);
+            res.put("status", "success");
+            res.put("message", "更新成功");
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "更新失败");
+        }
+
+
+
         return  res.toString();
     }
 }

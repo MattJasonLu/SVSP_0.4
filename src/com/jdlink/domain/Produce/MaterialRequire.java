@@ -8,6 +8,9 @@ import com.jdlink.domain.Wastes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 物料需求单
+ */
 public class MaterialRequire {
     /**
      * 物料需求单编号
@@ -53,6 +56,30 @@ public class MaterialRequire {
      *
      */
     private CheckState checkState;
+    /**
+     * 物料需求
+     *
+     */
+    private Compatibility compatibility;
+    /**
+     * 包装方式
+     *
+     */
+    private PackageType packageType;
+    /**
+     * 备注
+     *
+     */
+    private String remarks;
+    /**
+     * 配伍编号
+     *
+     */
+    private String compatibilityId;
+    /**
+     * 危废信息(形态、包装方式、一些物质的最大值最小值)
+     */
+    List<Wastes> wastesList = new ArrayList<>();
 
     public CheckState getCheckState() {
         return checkState;
@@ -82,49 +109,8 @@ public class MaterialRequire {
         return threshold;
     }
 
-    /**
-     * 物料需求
-     *
-     */
-    private Compatibility compatibility;
-    /**
-     * 包装方式
-     *
-     */
-    private PackageType packageType;
-
     public PackageType getPackageType() {
         return packageType;
-    }
-    /**
-     * 备注
-     *
-     */
-    private String remarks;
-    /**
-     * 配伍编号
-     *
-     */
-    private String compatibilityId;
-
-    @Override
-    public String toString() {
-        return "MaterialRequire{" +
-                "materialRequireId='" + materialRequireId + '\'' +
-                ", handleCategory=" + handleCategory +
-                ", currentInventory=" + currentInventory +
-                ", weeklyDemand=" + weeklyDemand +
-                ", safety=" + safety +
-                ", marketPurchases=" + marketPurchases +
-                ", threshold=" + threshold +
-                ", id='" + id + '\'' +
-                ", formType=" + formType +
-                ", compatibility=" + compatibility +
-                ", packageType=" + packageType +
-                ", remarks='" + remarks + '\'' +
-                ", compatibilityId='" + compatibilityId + '\'' +
-                ", wastesList=" + wastesList +
-                '}';
     }
 
     public String getCompatibilityId() {
@@ -158,11 +144,6 @@ public class MaterialRequire {
     public void setThreshold(Threshold threshold) {
         this.threshold = threshold;
     }
-
-    /**
- * 危废信息(形态、包装方式、一些物质的最大值最小值)
- */
-  List<Wastes> wastesList=new ArrayList<>();
 
     public String getMaterialRequireId() {
         return materialRequireId;
@@ -218,6 +199,26 @@ public class MaterialRequire {
 
     public void setWastesList(List<Wastes> wastesList) {
         this.wastesList = wastesList;
+    }
+
+    @Override
+    public String toString() {
+        return "MaterialRequire{" +
+                "materialRequireId='" + materialRequireId + '\'' +
+                ", handleCategory=" + handleCategory +
+                ", currentInventory=" + currentInventory +
+                ", weeklyDemand=" + weeklyDemand +
+                ", safety=" + safety +
+                ", marketPurchases=" + marketPurchases +
+                ", threshold=" + threshold +
+                ", id='" + id + '\'' +
+                ", formType=" + formType +
+                ", compatibility=" + compatibility +
+                ", packageType=" + packageType +
+                ", remarks='" + remarks + '\'' +
+                ", compatibilityId='" + compatibilityId + '\'' +
+                ", wastesList=" + wastesList +
+                '}';
     }
 
 }

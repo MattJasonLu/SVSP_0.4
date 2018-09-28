@@ -8,6 +8,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.service.*;
 import com.jdlink.util.DateUtil;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -210,6 +212,28 @@ public class ProductionDailyController {
             res.put("message", "生成日报失败");
         }
         return  res.toString();
+    }
+
+    /**
+     * 导入生产日报
+     * @param excelFile
+     * @return
+     */
+    @RequestMapping("importProductionDailyExcel")
+    @ResponseBody
+    public String importProductionDailyExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取危废入库的表格数据
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+        }
+        return res.toString();
     }
 
     /**
