@@ -540,7 +540,7 @@ function searchWastesInventory() {
         $('#tbody1').append((array1[i]));
     }
 
-    isSearch=false;
+
 
 
 

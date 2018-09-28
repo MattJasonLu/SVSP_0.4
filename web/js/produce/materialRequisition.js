@@ -703,6 +703,7 @@ $('#number').on('blur','[contenteditable="true"]',function(){
 array=[];
 array1=[];
 //领料单高级查询
+
 function searchMaterial() {
     isSearch = false;
     //1分页模糊查询
@@ -787,14 +788,6 @@ function searchMaterial() {
 
 
 }
-
-    // if(companyName.length<=0&&wastesCategory.length<=0&&wastesCode.length<=0&&number.length<=0){
-    //     switchPage(1);
-    //     $('.myclass').each(function () {
-    //         $(this).show();
-    //     })
-    // }
-
 //领料单粗查询
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;

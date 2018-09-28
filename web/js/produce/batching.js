@@ -398,8 +398,7 @@ function searchBatchOrder() {
         $(array1[i]).show();
         $('#tbody1').append((array1[i]));
     }
-
-    isSearch=false;
+    
 
 }
 
