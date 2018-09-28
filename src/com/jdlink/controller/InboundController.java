@@ -523,7 +523,7 @@ public class InboundController {
             inboundOrder.setWareHouse(wareHouse);
 
             // 设置入库类别
-            inboundOrder.setBoundType(BoundType.WasteInbound);
+            inboundOrder.setBoundType(BoundType.SecondaryInbound);
             // 设置状态
             inboundOrder.setCheckState(CheckState.NewBuild);
             // 设置单据状态
@@ -610,6 +610,62 @@ public class InboundController {
             inboundOrder.setInboundOrderItemList(inboundOrderItemList);
             // 增加入库单
             inboundService.addInboundOrder(inboundOrder);
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 导入次生危废入库文件
+     * @param excelFile excel文件
+     * @return 成功与否
+     */
+    @RequestMapping("importSecondWastesInboundExcel")
+    @ResponseBody
+    public String importSecondWastesInboundExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取危废入库的表格数据
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            // 创建入库单对象
+            InboundOrder inboundOrder = new InboundOrder();
+// 设置入库单编号
+            inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
+            // 设置入库日期
+            inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
+
+            // 通过仓库名称获取仓库
+            WareHouse wareHouse = wareHouseService.getWareHouseByName(data[1][1].toString());
+            if (wareHouse == null) {
+                wareHouse = new WareHouse();
+                wareHouse.setWareHouseId(wareHouseService.getCurrentId());
+                wareHouse.setWareHouseName(data[1][1].toString());
+                wareHouseService.add(wareHouse);
+            }
+            // 设置仓库
+            inboundOrder.setWareHouse(wareHouse);
+
+            // 设置入库类别
+            inboundOrder.setBoundType(BoundType.WasteInbound);
+            // 设置状态
+            inboundOrder.setCheckState(CheckState.NewBuild);
+            // 设置单据状态
+            inboundOrder.setRecordState(RecordState.Usable);
+            // 设置创建日期
+            inboundOrder.setCreateDate(new Date());
+            inboundOrder.setModifyDate(new Date());
+            // 创建入库单条目列表
+            List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
+            for (int i = 1; i < data.length; i++) {
+                InboundOrderItem inboundOrderItem = new InboundOrderItem();
+
+                inboundOrderItemList.add(inboundOrderItem);
+            }
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
@@ -55,6 +56,21 @@ public class EquimentServiceImpl implements  EquipmentService {
     @Override
     public List<EquipmentItem> getEquipmentDataByDate(Date dayTime, Date editTime) {
         return equipmentMapper.getEquipmentDataByDate(dayTime,editTime);
+    }
+
+    @Override
+    public List<EquipmentDate> equipmentListPage(Page page) {
+        return equipmentMapper.equipmentListPage(page);
+    }
+
+    @Override
+    public int count() {
+        return equipmentMapper.count();
+    }
+
+    @Override
+    public int searchCount(Equipment equipment) {
+        return equipmentMapper.searchCount(equipment);
     }
 
 }

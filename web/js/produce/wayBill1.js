@@ -71,7 +71,7 @@ function setPageClone(result) {
     $(".beforeClone").remove();
     setWayBillList(result);
     var total = totalPage();
-    $("#next").prev().hide();
+    $("#next").prev().hide();            // 将页码克隆模板隐藏
     var st = "共" + total + "页";
     $("#totalPage").text(st);
     var myArray = new Array();
@@ -90,7 +90,7 @@ function setPageClone(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
@@ -134,6 +134,7 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
+    addPageClass(pageNumber);           // 设置页码标蓝
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
@@ -192,7 +193,7 @@ function inputSwitchPage() {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == null || pageNumber == undefined) {
+    if (pageNumber == null || pageNumber == "") {
         window.alert("跳转页数不能为空！")
     } else {
         if (pageNumber == 1) {
@@ -216,6 +217,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -273,6 +275,8 @@ function loadPageWayBillList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");

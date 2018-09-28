@@ -103,6 +103,9 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -134,6 +137,7 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
+    addPageClass(pageNumber);           // 设置页码标蓝
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
@@ -188,8 +192,11 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     $("#current").find("a").text("当前页：" + pageNumber);
-    if (pageNumber == null || pageNumber == undefined) {
+    if (pageNumber == null || pageNumber == "") {
         window.alert("跳转页数不能为空！")
     } else {
         if (pageNumber == 1) {
@@ -214,6 +221,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -271,6 +279,8 @@ function loadPageSoftWaterList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
