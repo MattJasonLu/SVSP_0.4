@@ -9,6 +9,7 @@ import com.jdlink.service.*;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -523,7 +525,7 @@ public class InboundController {
             inboundOrder.setWareHouse(wareHouse);
 
             // 设置入库类别
-            inboundOrder.setBoundType(BoundType.SecondaryInbound);
+            inboundOrder.setBoundType(BoundType.WasteInbound);
             // 设置状态
             inboundOrder.setCheckState(CheckState.NewBuild);
             // 设置单据状态
@@ -634,11 +636,10 @@ public class InboundController {
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
             // 创建入库单对象
             InboundOrder inboundOrder = new InboundOrder();
-// 设置入库单编号
+            // 设置入库单编号
             inboundOrder.setInboundOrderId(inboundService.getInboundOrderId());
             // 设置入库日期
             inboundOrder.setInboundDate(DateUtil.getDateFromStr(data[1][0].toString()));
-
             // 通过仓库名称获取仓库
             WareHouse wareHouse = wareHouseService.getWareHouseByName(data[1][1].toString());
             if (wareHouse == null) {
@@ -651,7 +652,8 @@ public class InboundController {
             inboundOrder.setWareHouse(wareHouse);
 
             // 设置入库类别
-            inboundOrder.setBoundType(BoundType.WasteInbound);
+            inboundOrder.setBoundType(BoundType.SecondaryInbound);
+
             // 设置状态
             inboundOrder.setCheckState(CheckState.NewBuild);
             // 设置单据状态
@@ -663,9 +665,122 @@ public class InboundController {
             List<InboundOrderItem> inboundOrderItemList = new ArrayList<>();
             for (int i = 1; i < data.length; i++) {
                 InboundOrderItem inboundOrderItem = new InboundOrderItem();
+                // 设置入库条目单号
+                inboundOrderItem.setInboundOrderItemId(RandomUtil.getRandomEightNumber());
+                // 入库单号
+                inboundOrderItem.setInboundOrderId(inboundOrder.getInboundOrderId());
+                // 设置客户信息
+                Client client = clientService.getByName(data[i][3].toString());
+                if (client != null) inboundOrderItem.setProduceCompany(client);
+                else {
+                    client = new Client();
+                    client.setClientId(clientService.getCurrentId());
+                    client.setCompanyName(data[i][3].toString());
+                    clientService.add(client);
+                    inboundOrderItem.setProduceCompany(client);
+                }
+                // 设置危废信息
+                Wastes wastes = new Wastes();
+                wastes.setName(data[i][4].toString());      // 危废名称
+                wastes.setWastesId(data[i][5].toString());  // 危废代码
+                inboundOrderItem.setWastes(wastes);
+                inboundOrderItem.setWastesAmount(Float.parseFloat(data[i][6].toString()));
+                inboundOrderItem.setUnitPriceTax(Float.parseFloat(data[i][7].toString())); // 危废数量
+                inboundOrderItem.setTotalPrice(Float.parseFloat(data[i][8].toString()));   // 危废单价
+                // 设置处置方式
+                switch (data[i][9].toString()) {
+                    case "焚烧":
+                        inboundOrderItem.setProcessWay(ProcessWay.Burning);
+                        break;
+                    case "填埋":
+                        inboundOrderItem.setProcessWay(ProcessWay.Landfill);
+                        break;
+                    default:
+                        break;
+                }
+                // 设置进料方式
+                switch (data[i][10].toString()) {
+                    case "污泥":
+                        inboundOrderItem.setHandleCategory(HandleCategory.Sludge);
+                        break;
+                    case "废液":
+                        inboundOrderItem.setHandleCategory(HandleCategory.WasteLiquid);
+                        break;
+                    case "散装料":
+                        inboundOrderItem.setHandleCategory(HandleCategory.Bulk);
+                        break;
+                    case "破碎料":
+                        inboundOrderItem.setHandleCategory(HandleCategory.Crushing);
+                        break;
+                    case "精馏残渣":
+                        inboundOrderItem.setHandleCategory(HandleCategory.Distillation);
+                        break;
+                    case "悬挂连":
+                        inboundOrderItem.setHandleCategory(HandleCategory.Suspension);
+                        break;
+                    default:
+                        break;
+                }
+                // 设置物质形态
+                switch (data[i][11].toString()) {
+                    case "气体":
+                        inboundOrderItem.setFormType(FormType.Gas);
+                        break;
+                    case "液体":
+                        inboundOrderItem.setFormType(FormType.Liquid);
+                        break;
+                    case "固体":
+                        inboundOrderItem.setFormType(FormType.Solid);
+                        break;
+                    case "半固态":
+                        inboundOrderItem.setFormType(FormType.HalfSolid);
+                        break;
+                    default:
+                        break;
+                }
+                // 设置包装方式
+                switch (data[i][12].toString()) {
+                    case "吨袋":
+                        inboundOrderItem.setPackageType(PackageType.Bag);
+                        break;
+                    case "标准箱":
+                        inboundOrderItem.setPackageType(PackageType.Box);
+                        break;
+                    case "吨箱":
+                        inboundOrderItem.setPackageType(PackageType.Ton);
+                        break;
+                    case "小袋":
+                        inboundOrderItem.setPackageType(PackageType.Pouch);
+                        break;
+                    case "铁桶":
+                        inboundOrderItem.setPackageType(PackageType.Iron);
+                        break;
+                    default:
+                        break;
+                }
+
+                // 设置化验单
+                LaboratoryTest laboratoryTest = new LaboratoryTest();
+                laboratoryTest.setLaboratoryTestNumber(RandomUtil.getRandomEightNumber());
+                laboratoryTest.setHeatAverage(Float.parseFloat(data[i][13].toString()));
+                laboratoryTest.setPhAverage(Float.parseFloat(data[i][14].toString()));
+                laboratoryTest.setAshAverage(Float.parseFloat(data[i][15].toString()));
+                laboratoryTest.setWaterContentAverage(Float.parseFloat(data[i][16].toString()));
+                laboratoryTest.setChlorineContentAverage(Float.parseFloat(data[i][17].toString()));
+                laboratoryTest.setSulfurContentAverage(Float.parseFloat(data[i][18].toString()));
+                laboratoryTest.setPhosphorusContentAverage(Float.parseFloat(data[i][19].toString()));
+                laboratoryTest.setFluorineContentAverage(Float.parseFloat(data[i][20].toString()));
+
+                inboundOrderItem.setLaboratoryTest(laboratoryTest);
+
+                inboundOrderItem.setRemarks(data[i][21].toString());
+                inboundOrderItem.setWarehouseArea(data[i][22].toString());
 
                 inboundOrderItemList.add(inboundOrderItem);
             }
+            // 设置列表
+            inboundOrder.setInboundOrderItemList(inboundOrderItemList);
+            inboundService.addSecondInboundOrder(inboundOrder);
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
