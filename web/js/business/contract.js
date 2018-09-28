@@ -87,6 +87,8 @@ function setPageClone(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 
 }
 
@@ -667,6 +669,8 @@ function searchContract() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
@@ -682,90 +686,9 @@ function searchContract() {
 
 }
 
-//设置合同模板高级查询下拉框数据
-function setModelSelectedList() {
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getModelSelectedList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                var data = eval(result);
-                // 高级检索下拉框数据填充
-                // var checkState = $("#search-checkState");
-                // checkState.children().remove();
-                // $.each(data.checkStateList, function (index, item) {
-                //     var option = $('<option />');
-                //     option.val(index);
-                //     option.text(item.name);
-                //     checkState.append(option);
-                // });
-                // checkState.get(0).selectedIndex = -1;
-                var contractType=$('#search-contractType');
-                contractType.children().remove();
-                $.each(data.contractTypeList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    contractType.append(option);
-                });
-                contractType.get(0).selectedIndex = -1;
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-}
 
-//合同模板高级查询
-function searchModel() {
-    var page = {};
-    var pageNumber = 1;                       // 显示首页
-    page.pageNumber = pageNumber;
-    page.count = countValue();
-    page.start = (pageNumber - 1) * page.count;
-    if ($("#senior").is(':visible')) {
-        data = {
-            modelName: $("#search-modelName").val(),//模板名称
-            contractType: $("#search-contractType").val(),//合同类型
-            checkState: $("#search-checkState").val(),//年份
-            year: $("#search-year").val(),//联系方式
-            page: page,
-        };
-        console.log(data);
-        // 模糊查询
-    } else {
-        data = {
-            keyword: $("#search").val(),
-            page: page,
-        };
-        console.log(data);
-    }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "searchModel",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        data:  JSON.stringify(data),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                setContractModelList(result);
-            } else {
-                console.log("fail: " + result);
-            }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-        }
-    });
-    isSearch = true;
-}
+
+
 
 //模糊查询
 array=[];//存放所有的tr
@@ -884,6 +807,8 @@ function searchFuzzy() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
