@@ -100,11 +100,14 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 /**
@@ -112,6 +115,9 @@ function setPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchPage(pageNumber) {
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -144,6 +150,7 @@ function switchPage(pageNumber) {
         $("#endPage").removeClass("disabled");
     }
     var page = {};
+    addPageClass(pageNumber);           // 设置页码标蓝
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
     currentPage = pageNumber;          //当前页面
@@ -202,6 +209,9 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
@@ -227,6 +237,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -285,6 +296,8 @@ function loadPageClientList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     var page = {};
     var pageNumber = 1;                       // 显示首页
     page.count = countValue();                                 // 可选
