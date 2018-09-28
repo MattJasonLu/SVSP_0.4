@@ -1004,10 +1004,7 @@ function gettime(obj) {
     return time1;
 }
 
-function dataLeftCompleting(bits, identifier, value) {
-    value = Array(bits + 1).join(identifier) + value;
-    return value.slice(-bits);
-}
+
 
 function contractSubmit() {
     //在此提交
@@ -1142,11 +1139,17 @@ function viewContract(item) {
                     $('#name1').html("处置单位名称&nbsp;&nbsp;");
                     //$("#modal3_suppierName").text(data.suppierName);
                     //供用商姓名
-                    $('#modal3_suppierName').text(data.suppierName);
+                    if(data.supplier!=null){
+                        $('#modal3_suppierName').text(data.supplier.companyName);
+                    }
+
                 }
                 if (data.contractType.name != '物流合同') {
                     $('#name1').html("产废单位名称&nbsp;&nbsp;");
-                    $("#modal3_suppierName").text(data.company1);//公司名称
+                    if(data.client!=null){
+                        $("#modal3_suppierName").text(data.client.companyName);//公司名称
+                    }
+
 
                 }
 
@@ -1195,7 +1198,10 @@ function viewContract(item) {
                 }
 
                 //赋值报价单明细
-                setContractListModal(data.quotationItemList);
+                if(data.quotationItemList!=null){
+                    setContractListModal(data.quotationItemList);
+                }
+
 
 
 
@@ -1992,6 +1998,10 @@ function addNewLine() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
+    $('.myclass').each(function (item,index) {
+        console.log("2142")
+        $(this).children('td').eq(0).children('input').val(index+1);
+    });
 }
 
 //应急合同新增页面加载

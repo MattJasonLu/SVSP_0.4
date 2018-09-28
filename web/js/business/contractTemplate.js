@@ -810,3 +810,8 @@ function searchModel() {
 
 
 }
+
+function dataLeftCompleting(bits, identifier, value) {
+    value = Array(bits + 1).join(identifier) + value;
+    return value.slice(-bits);
+}
