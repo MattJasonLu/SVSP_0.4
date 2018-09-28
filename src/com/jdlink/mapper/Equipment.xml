@@ -37,6 +37,57 @@
     <select id="search" parameterType="EquipmentDate" resultType="EquipmentDate">
         select * from t_rp_equipment
         <where>
+            <if test="keyword != null and keyword != ''">
+                and documentNumber like "%"#{keyword}"%"
+                or creator like "%"#{keyword}"%"
+                or createDept like "%"#{keyword}"%"
+                or editor like "%"#{keyword}"%"
+            </if>
+            <if test="documentNumber != null and documentNumber != ''">
+                and documentNumber like  "%"#{documentNumber}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like  "%"#{creator}"%"
+            </if>
+            <if test="createDept != null and createDept != ''">
+                and createDept like  "%"#{createDept}"%"
+            </if>
+            <if test="editor != null and editor != ''">
+                and editor like  "%"#{editor}"%"
+            </if>
+        </where>
+        order by documentNumber desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+    <!--根据时间范围查询出库单-->
+    <select id="getEquipmentDataByDate" resultType="EquipmentItem" >
+        SELECT * FROM t_rp_equipmentchild where documentNumber in
+        (select t_rp_equipment.documentNumber from  t_rp_equipment
+        <![CDATA[WHERE DATE_FORMAT(dayTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
+        AND DATE_FORMAT(dayTime, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]>);
+    </select>
+    <select id="equipmentListPage" resultType="EquipmentDate">
+        select * from t_rp_equipment order by documentNumber desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+    <!--查看具体数量-->
+    <select id="count" resultType="int">
+        select count(*) from t_rp_equipment;
+    </select>
+    <!--查询数量-->
+    <select id="searchCount" parameterType="EquipmentDate" resultType="int">
+        select count(*) from t_rp_equipment
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and documentNumber like "%"#{keyword}"%"
+                or creator like "%"#{keyword}"%"
+                or createDept like "%"#{keyword}"%"
+                or editor like "%"#{keyword}"%"
+            </if>
             <if test="documentNumber != null and documentNumber != ''">
                 and documentNumber like  "%"#{documentNumber}"%"
             </if>
@@ -51,11 +102,4 @@
             </if>
         </where>
     </select>
-    <!--根据时间范围查询出库单-->
-    <select id="getEquipmentDataByDate" resultType="EquipmentItem" >
-            SELECT * FROM t_rp_equipmentchild where documentNumber in
-            (select t_rp_equipment.documentNumber from  t_rp_equipment
-            <![CDATA[WHERE DATE_FORMAT(dayTime, '%Y-%m-%d') >=  DATE_FORMAT(#{0}, '%Y-%m-%d')
-            AND DATE_FORMAT(dayTime, '%Y-%m-%d') <=  DATE_FORMAT(#{1}, '%Y-%m-%d')]]>);
-       </select>
 </mapper>
