@@ -57,8 +57,16 @@
         </if>
     </select>
 
-    <select id="totalLogRecord" parameterType="int" resultType="int">
-        select count(*) from t_loginlog WHERE userId=#{id};
+    <select id="getLog" resultType="LoginLog">
+        SELECT * FROM t_loginlog
+        order by time desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <select id="totalLogRecord" resultType="int">
+        select count(*) from t_loginlog ;
     </select>
 
     <!--列出所有角色-->
