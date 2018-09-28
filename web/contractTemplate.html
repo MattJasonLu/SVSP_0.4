@@ -14,7 +14,7 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/business/contract.js"></script>
+    <script src="js/business/contractTemplate.js"></script>
 </head>
 <style>
     pre{
@@ -27,367 +27,15 @@
 <script type="text/javascript">
     $('#embed').load('embed/loginLogModal.html');
 
-    var currentPage = 1;                          //当前页数
-
-    /**
-     * 返回count值
-     * */
-    function countValue(){
-        var mySelect=document.getElementById("count");
-        var index=mySelect.selectedIndex;
-        console.log(mySelect.options[index].text);
-        return mySelect.options[index].text;
-
-    }
-    /**
-     * 计算总页数
-     * */
-    function totalPage() {
-        var totalRecord = 0;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "totalContractTemplateRecord",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result > 0) {
-                    totalRecord = result;
-                } else {
-                    console.log("fail: " + result);
-                    totalRecord = 0;
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                totalRecord = 0;
-            }
-        });
-        var count = countValue();                         // 可选
-        var total = loadPages(totalRecord, count);
-        return total;
-    }
-
-    /**
-     * 设置克隆页码
-     * */
-    function setPageClone(result) {
-        $(".beforeClone").remove();
-        setContractModelList(result);
-        var total = totalPage();
-        $("#next").prev().hide();
-        var st = "共" + total + "页";
-        $("#totalPage").text(st);
-        var myArray = new Array();
-        for (var i = 0; i < total; i++) {
-            var li = $("#next").prev();
-            myArray[i] = i + 1;
-            var clonedLi = li.clone();
-            clonedLi.show();
-            clonedLi.find('a:first-child').text(myArray[i]);
-            clonedLi.find('a:first-child').click(function () {
-                var num = $(this).text();
-                switchPage(num);
-            });
-            clonedLi.addClass("beforeClone");
-            clonedLi.removeAttr("id");
-            clonedLi.insertAfter(li);
-        }
-
-    }
-
-    /**
-     * 点击页数跳转页面
-     * @param pageNumber 跳转页数
-     * */
-    function switchPage(pageNumber) {
-        console.log("当前页：" + pageNumber);
-        if (pageNumber == 0) {                 //首页
-            pageNumber = 1;
-        }
-        if (pageNumber == -2) {
-            pageNumber = totalPage();        //尾页
-        }
-        if (pageNumber == null || pageNumber == undefined) {
-            console.log("参数为空,返回首页!");
-            pageNumber = 1;
-        }
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == 1) {
-            $("#previous").addClass("disabled");
-            $("#firstPage").addClass("disabled");
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        if (pageNumber == totalPage()) {
-            $("#next").addClass("disabled");
-            $("#endPage").addClass("disabled");
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber > 1){
-            $("#previous").removeClass("disabled");
-            $("#firstPage").removeClass("disabled");
-        }
-        if(pageNumber < totalPage()){
-            $("#next").removeClass("disabled");
-            $("#endPage").removeClass("disabled");
-        }
-        var page = {};
-        page.count = countValue();                        //可选
-        page.pageNumber = pageNumber;
-        currentPage = pageNumber;          //当前页面
-        //addClass("active");
-        page.start = (pageNumber - 1) * page.count;
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageContractTemplateList",         // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined) {
-                    setContractList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-
-    /**
-     * 输入页数跳转页面
-     * */
-    function inputSwitchPage() {
-        var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-        $("#current").find("a").text("当前页："+pageNumber);
-        if (pageNumber == null || pageNumber == undefined) {
-            window.alert("跳转页数不能为空！")
-        } else {
-            if (pageNumber == 1) {
-                $("#previous").addClass("disabled");
-                $("#firstPage").addClass("disabled");
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            if (pageNumber == totalPage()) {
-                $("#next").addClass("disabled");
-                $("#endPage").addClass("disabled");
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber > 1){
-                $("#previous").removeClass("disabled");
-                $("#firstPage").removeClass("disabled");
-            }
-            if(pageNumber < totalPage()){
-                $("#next").removeClass("disabled");
-                $("#endPage").removeClass("disabled");
-            }
-            currentPage = pageNumber;
-            var page = {};
-            page.count = countValue();//可选
-            page.pageNumber = pageNumber;
-            page.start = (pageNumber - 1) * page.count;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "loadPageContractTemplateList",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(page),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        console.log(result);
-                        setContractList(result);
-                    } else {
-                        console.log("fail: " + result);
-                    }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
 
 
-        }
-    }
 
-    /**
-     * 分页 获取首页内容
-     * */
-    function loadPageContractTemplateList() {
-        var pageNumber = 1;               // 显示首页
-        $('#contractId').hide();
-        $('#cId').hide();
-        $("#current").find("a").text("当前页：1");
-        $("#previous").addClass("disabled");
-        $("#firstPage").addClass("disabled");
-        var page = {};
-        page.count = countValue();                                 // 可选
-        page.pageNumber = pageNumber;
-        page.start = (pageNumber - 1) * page.count;
-        console.log(page);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "loadPageContractTemplateList",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(page),
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    console.log(result);
-                    setPageClone(result);
-                } else {
-                    console.log(result.message);
-                }
-            },
-            error: function (result) {
-                console.log("error: " + result);
-                console.log("失败");
-            }
-        });
-        setModelSelectedList();
-    }
 
-    /**
-     * 计算分页总页数
-     * @param totalRecord
-     * @param count
-     * @returns {number}
-     */
-    function loadPages(totalRecord, count) {
-        if (totalRecord == 0) {
-            window.alert("总记录数为0，请检查！");
-            return 0;
-        }
-        else if (totalRecord % count == 0)
-            return totalRecord / count;
-        else
-            return parseInt(totalRecord / count) + 1;
-    }
 
-    function loadContract() {
-        $('#contractId').hide();
-        $('#cId').hide();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "listContract",                  // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            success: function (result) {
-                if (result != undefined) {
-                    //alert(result);
-                    //console.log(result);
-                    setContractList(result);
-                } else {
-                    console.log("fail: " + result);
-                }
-            },
-            error:function (result) {
-                console.log("error: " + result);
-            }
-        });
-    }
-    function setContractModelList(result){
-     //console.log(eval(result));//可以取到
-        // 获取id为cloneTr的tr元素
-      //判断字段是否存在
-        var tr = $("#cloneTr1");//克隆一行
-        tr.siblings().remove();
-        $.each(result.data, function (index, item) {
-            // 克隆tr，每次遍历都可以产生新的tr
-            var obj = eval(item);
-            //console.log(obj);
-            if(obj.modelName!=""&&obj.year!="") {
-               // console.log(obj);
-                var clonedTr = tr.clone();
-                clonedTr.show();
-                // 循环遍历cloneTr的每一个td元素，并赋值
-                clonedTr.children("td").each(function (inner_index) {
-                    // 根据索引为部分td赋值
-                    // console.log(obj);
-                    switch (inner_index) {
-                        // 合同类型
-                        case (2):
-                            if (obj.contractType != null)
-                            $(this).html(  obj.contractType.name);
-                            break;
-                        // 模板名称
-                        case (1):
-                            $(this).html(obj.modelName);
-                            break;
-                        // 合同状态
-                        case (3):
-                            if(obj.checkState.name=="已作废"){
-                                $(this).html("已作废");
-                            }
-                            if(obj.checkState.name!="已作废"){
-                                $(this).html("使用中");
-                            }
-                            break;
-                        // 合同版本号
-                        case (4):
-                            $(this).html(obj.modelVersion);
-                            break;
-                        // 年份
-                        case (5):
-                            $(this).html(obj.year);
-                            break;
-                        case (6):
-                            $(this).html(obj.contractId);
-                            break;
-                    }
-                });
-                // 把克隆好的tr追加到原来的tr前面
-                clonedTr.removeAttr("id");
-                clonedTr.insertBefore(tr);
-            }
-        });
-        // 隐藏无数据的tr
-        tr.hide();
-    }
-    function adjust(item) {
-       // var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
-        var contractId=item.parentElement.previousElementSibling.innerHTML;
-      localStorage.contractId=contractId;
-      location.href="model.html";
-       // window.location.href ="showModel?contractId="+contractId;
-       //  window.location.href =searchUrl;
-         //console.log(modelName+"123")
-          //window.location.href="jsp/model.jsp?modelName="+modelName;
-    }
-   CKEDITOR.editorConfig = function( config ) {
-       config.toolbarGroups = [
-            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-            { name: 'links', groups: [ 'links' ] },
-            { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-            { name: 'insert', groups: [ 'insert' ] },
-            { name: 'forms', groups: [ 'forms' ] },
-            { name: 'tools', groups: [ 'tools' ] },
-            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-            { name: 'others', groups: [ 'others' ] },
-            '/',
-            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-            { name: 'styles', groups: [ 'styles' ] },
-            { name: 'colors', groups: [ 'colors' ] },
-            { name: 'about', groups: [ 'about' ] }
-        ];
-        config.removeButtons = 'Underline,Subscript,Superscript';
-        config.pasteFromWordRemoveFontStyles = false;
-        config.pasteFromWordRemoveStyles = false;
-       config.removePlugins='elementspath';
-   };
-    function allSelect() {
-        var isChecked = $('#allSel').prop('checked');
-        if (isChecked) $("input[name='select']").prop('checked',true);
-        else $("input[name='select']").prop('checked',false);
-    }
+
+
+
+
 </script>
 <body onload="loadPageContractTemplateList()">
     <!--导航条-->
@@ -519,12 +167,12 @@
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
                         <a class="btn btn-primary btn-xs" id="function_148" onclick="checkAuthority($(this))" href="newTemplate.html"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                        <a class="btn btn-primary btn-xs" id="function_149" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" id="function_150" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <!--<a class="btn btn-primary btn-xs" id="function_149" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
+                        <!--<a class="btn btn-primary btn-xs" id="function_150" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
-                        <input type="text" class="form-control" placeholder="搜索..." id="search">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent">
                         <span class="input-group-btn">
                             <a class="btn btn-default" onclick="searchModel();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
@@ -568,40 +216,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-checkState"-->
-                                       <!--class="col-sm-4 control-label">模板状态</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<select type="text" class="form-control" id="search-checkState"-->
-                                            <!--name="search-checkState" placeholder=""></select>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-contactName" class="col-sm-4 control-label">联系人</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<input type="text" class="form-control" id="search-contactName" name="search-contactName"-->
-                                           <!--placeholder="">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <div class="form-group">
-                                <label for="search-year" class="col-sm-4 control-label">年份</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-year" name="search-year"
-                                           placeholder="">
+                        <div class="form-horizontal col-md-4">
+                            <div class="form-group" style="margin-left: -10px;">
+                                <label class="col-sm-3 control-label">年份 </label>
+                                <div class="input-group">
+                                    <input type="date" class="input-sm form-control" id="search-beginTime" title=""/>
+                                    <span class="input-group-addon">-</span>
+                                    <input type="date" class="input-sm form-control" id="search-endTime" title=""/>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-horizontal col-md-3">
 
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-beginTime" class="col-sm-4 control-label">签订日期</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<input type="date" class="form-control" id="search-beginTime" name="search-beginTime"-->
-                                           <!--placeholder="">-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        </div>
                     </div>
                 </div>
             </div>
@@ -623,7 +248,7 @@
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tbody1">
                     <tr id="cloneTr1" name="clone" ondblclick="checkclone(this)">
                         <td class="text-center">
                             <label>
@@ -648,7 +273,7 @@
             <!--分页-->
             <nav aria-label="Page navigation" style="text-align: center">
                 <ol class="pagination" style="width: 800px;">
-                    <li id="current"><a href="#"></a> </li>
+                    <li id="current" style="display: none"><a>当前页：</a>
                     <li id="firstPage">
                         <a href='#' onclick="switchPage(0)">首 页</a>
                     </li>
@@ -755,115 +380,7 @@
 </style>
 <script>
     CKEDITOR.replace('modal3_contractContent',{toolbarCanCollapse: true, toolbarStartupExpanded: false});
-    function check(item) {
-        //模板名称
-        var contractId=item.parentElement.previousElementSibling.innerHTML;
 
-        // console.log(modelName);
-        $.ajax({
-            type:"POST",
-            url:"getContractBymodelName",
-            async: false,
-            dataType: "json",
-            data: {
-                'contractId': contractId
-            },
-            success:function (result) {
-                if(result!=undefined){
-                    var obj=eval(result);
-                    //console.log(obj);
-                    //$('input').prop("readonly",true);
-                   // $('textarea').prop("readonly",true);
-                    $('#modal3_modelName').val(obj.modelName);
-                    $('#modal3_contractType').val(obj.contractType.name);
-                    $('#modal3_year').val(obj.year);
-                    $('#modal3_period').val(obj.period);
-                    $('#modelVersion').val(obj.modelVersion);
-                    var text=obj.contractContent;
-                    //console.log(text);
-                     //$('#modal3_contractContent').val($(text).text());//有换行的格式
-                   CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
-                }
-            },
-            error:function (result) {
-
-            }
-        });
-        $('#btn').text();
-        $('#btn').text('打印');
-        $('#contractInfoForm').modal('show');
-    }
-    function cancel(item) {
-        var modelName=item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
-        var contractId=item.parentElement.previousElementSibling.innerHTML;
-        //console.log(modelName);
-        var r = confirm("是否作废该模板？");
-        if(r==true){
-            $.ajax({
-                type:"POST",
-                url:"cancelModel",
-                async: false,
-                dataType: "json",
-                data: {
-                    'contractId': contractId
-                },
-                success:function (result) {
-                    var obj=eval(result);
-                    if(obj.state=="success"){
-                        alert("作废成功！");
-                        window.location.reload();
-                    }
-                    else {
-                        alert("作废失败！")
-                    }
-                },
-                error:function (result) {
-                    alert("服务器异常！")
-                }
-            });
-        }
-      else {
-
-        }
-
-
-    }
-    function checkclone(item) {
-      var contractId=  item.lastElementChild.previousElementSibling.innerHTML;
-      //console.log(contractId);
-        $.ajax({
-            type:"POST",
-            url:"getContractBymodelName",
-            async: false,
-            dataType: "json",
-            data: {
-                'contractId': contractId
-            },
-            success:function (result) {
-                if(result!=undefined){
-                    var obj=eval(result);
-                    //console.log(obj);
-                    //$('input').prop("readonly",true);
-                    // $('textarea').prop("readonly",true);
-                    $('#modal3_modelName').val(obj.modelName);
-                    $('#modal3_contractType').val(obj.contractType.name);
-                    $('#modal3_year').val(obj.year);
-                    $('#modal3_period').val(obj.period);
-                    $('#modelVersion').val(obj.modelVersion);
-                    var text=obj.contractContent;
-                    //console.log(text);
-                    //$('#modal3_contractContent').val($(text).text());//有换行的格式
-                    CKEDITOR.instances.modal3_contractContent.setData(text);//获取值
-                }
-            },
-            error:function (result) {
-
-            }
-        });
-        $('#btn').text();
-        $('#btn').text('打印');
-        $('#contractInfoForm').modal('show');
-    }
     /**
      * 导出excel
      * @param e
@@ -913,26 +430,6 @@
         });
 
     }
-    function matchStringByIndexOf(parent,child,str)//总字符串 要找的字符串
-    {
-        index = 0;
-        if( ( index = parent.indexOf(child,index)) != -1 )
-        {
-            index = index+child.length;
-            console.log(index);
-            //console.log(parent.substring(index+1,index+10));
-            // target=parent.substring(index+1,index+10);//改变后的字符
-            text1=(changeStr(text1,index+2,index+10,"</strong>","</strong>"+str));
 
-        }
-        //结果输出
-    }
-    function changeStr(allstr,start,end,str,changeStr){ //allstr:原始字符串，start,开始位置,end：结束位  置,str：要改变的字，changeStr:改变后的字
-        if(allstr.substring(start-1,end) == str){
-            return allstr.substring(0,start-1)+changeStr+allstr.substring(end,allstr.length);
-        }else{
-            return allstr;
-        }
-    }
 </script>
 </html>
