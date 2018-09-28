@@ -128,12 +128,32 @@ public class UserController {
         return res.toString();
     }
 
+    @RequestMapping("getAllLog")
+    @ResponseBody
+    public String getAllLog(@RequestBody Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<LoginLog> loginLogs = userService.getLog(page);
+            JSONArray data = JSONArray.fromArray(loginLogs.toArray(new LoginLog[loginLogs.size()]));
+            res.put("data", data);
+            res.put("message", "获取日志信息成功");
+            res.put("status", "success");
+        } catch (NullPointerException e) {
+//            e.printStackTrace();
+            res.put("message", "未正确登录！");
+            res.put("status", "fail");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("message", "获取日志信息失败");
+            res.put("status", "fail");
+        }
+        return res.toString();
+    }
+
     @RequestMapping("totalLogRecord")
     @ResponseBody
     public int totalLogRecord(HttpSession session){
-        User user = (User) session.getAttribute("user");
-        if (user == null) throw new NullPointerException("未正确登录！");
-        return userService.totalLogRecord(user.getId());
+        return userService.totalLogRecord();
     }
 
     /**

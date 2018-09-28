@@ -37,8 +37,8 @@ public interface UserMapper {
     void addLog(LoginLog loginLog);
 
     List<LoginLog> getLogById(@Param("id")int id,@Param("page") Page page);
-
-    int totalLogRecord(int id);
+    List<LoginLog> getLog(Page page);
+    int totalLogRecord();
     /**
      * 列出所有角色
      * @return
