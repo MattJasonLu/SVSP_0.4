@@ -97,12 +97,14 @@ function setPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 function setQuestionnaireList(result) {
     // 获取id为cloneTr的tr元素
