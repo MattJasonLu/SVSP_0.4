@@ -355,7 +355,9 @@ function setStockList(result) {
                 // 运输公司
                 case (5):
                     if(obj.selfEmployed==false){
-                        $(this).html(obj.transport);
+                       if(obj.supplier!=null){
+                           $(this).html(obj.supplier.companyName);
+                       }
                     }
                     else
                         $(this).html("");

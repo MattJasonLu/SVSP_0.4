@@ -108,6 +108,9 @@ function AddAndRemoveClass(item) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -139,6 +142,7 @@ function switchPage(pageNumber) {
         $("#next").removeClass("disabled");
         $("#endPage").removeClass("disabled");
     }
+    addPageClass(pageNumber);           // 设置页码标蓝
     var page = {};
     page.count = countValue();                        //可选
     page.pageNumber = pageNumber;
@@ -185,6 +189,12 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
@@ -210,6 +220,7 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -286,6 +297,8 @@ function loadPageContractManageList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     var page = {};
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
@@ -1004,10 +1017,7 @@ function gettime(obj) {
     return time1;
 }
 
-function dataLeftCompleting(bits, identifier, value) {
-    value = Array(bits + 1).join(identifier) + value;
-    return value.slice(-bits);
-}
+
 
 function contractSubmit() {
     //在此提交
@@ -1142,11 +1152,17 @@ function viewContract(item) {
                     $('#name1').html("处置单位名称&nbsp;&nbsp;");
                     //$("#modal3_suppierName").text(data.suppierName);
                     //供用商姓名
-                    $('#modal3_suppierName').text(data.suppierName);
+                    if(data.supplier!=null){
+                        $('#modal3_suppierName').text(data.supplier.companyName);
+                    }
+
                 }
                 if (data.contractType.name != '物流合同') {
                     $('#name1').html("产废单位名称&nbsp;&nbsp;");
-                    $("#modal3_suppierName").text(data.company1);//公司名称
+                    if(data.client!=null){
+                        $("#modal3_suppierName").text(data.client.companyName);//公司名称
+                    }
+
 
                 }
 
@@ -1195,7 +1211,10 @@ function viewContract(item) {
                 }
 
                 //赋值报价单明细
-                setContractListModal(data.quotationItemList);
+                if(data.quotationItemList!=null){
+                    setContractListModal(data.quotationItemList);
+                }
+
 
 
 
@@ -1992,6 +2011,10 @@ function addNewLine() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
+    $('.myclass').each(function (item,index) {
+        console.log("2142")
+        $(this).children('td').eq(0).children('input').val(index+1);
+    });
 }
 
 //应急合同新增页面加载

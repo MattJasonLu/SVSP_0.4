@@ -582,9 +582,6 @@ function searchSec() {
         $('#tbody1').append((array1[i]));
     }
 
-    isSearch=false;
-
-
     // if(inDate.length<=0&&companyName.length<=0&&handelCategory.length<=0){
     //     switchPage(1);
     //     $('.myclass').each(function () {

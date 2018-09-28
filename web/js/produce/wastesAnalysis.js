@@ -564,6 +564,7 @@ function searchWasteInto() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
@@ -580,7 +581,7 @@ function searchWasteInto() {
         $('#tbody1').append((array1[i]));
     }
 
-    isSearch=false;
+
 
 
 
@@ -664,6 +665,7 @@ function searchWastesAnalysis() {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchPage(num);
+            AddAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
