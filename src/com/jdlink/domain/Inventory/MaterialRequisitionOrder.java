@@ -8,7 +8,9 @@ import com.jdlink.domain.Produce.ProcessWay;
 
 import java.util.Date;
 
-/*领料单*/
+/**
+ * 领料单
+ */
 public class MaterialRequisitionOrder {
     /*配料单对象*/
     private BatchingOrder batchingOrder;
@@ -27,7 +29,7 @@ public class MaterialRequisitionOrder {
     /*部门*/
     private String departmentName;
     /*主管副总经理:*/
-   private  String deputyGeneral;
+    private  String deputyGeneral;
     /*仓库部门主管*/
     private String warehouseManager;
     /*领料部门主管*/
@@ -38,11 +40,12 @@ public class MaterialRequisitionOrder {
     private Date pickerDate;
     /*领用数量*/
     private float recipientsNumber;
-   /*状态*/
+    /*状态*/
     private CheckState checkState;
     /*危废信息
     *
     * 这里为了好拿数据，不用再xml进行多次迭代
+    * 2018-09-28 15:12:52 我觉得不好拿
     * */
     private Wastes wastes;
     /*产废单位*/
@@ -51,6 +54,11 @@ public class MaterialRequisitionOrder {
     private PackageType packageType;
     private FormType formType;
     private Page page;
+    private LaboratoryTest laboratoryTest;
+    private HandleCategory handelCategory;
+    private ProcessWay processWay;
+    private String wasteCategory;
+    private QuotationItem quotationItem;
 
     public Page getPage() {
         return page;
@@ -83,11 +91,6 @@ public class MaterialRequisitionOrder {
     public void setRecordState(RecordState recordState) {
         this.recordState = recordState;
     }
-    private LaboratoryTest laboratoryTest;
-    private HandleCategory handelCategory;
-    private ProcessWay processWay;
-    private String wasteCategory;
-    private QuotationItem quotationItem;
 
     public QuotationItem getQuotationItem() {
         return quotationItem;

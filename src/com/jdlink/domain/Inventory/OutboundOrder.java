@@ -9,7 +9,9 @@ import com.jdlink.domain.Produce.ProcessWay;
 import java.util.Date;
 import java.util.List;
 
-/*出库单*/
+/**
+ * 出库单
+ */
 public class OutboundOrder {
     /*领料单对列表
     * 1:N
@@ -51,7 +53,7 @@ public class OutboundOrder {
      * 备注信息
      */
     private String remarks;
-   /*出库类别*/
+    /*出库类别*/
     private BoundType boundType;
     /*部门*/
     private String departmentName;
@@ -64,15 +66,13 @@ public class OutboundOrder {
     private HandleCategory handelCategory;
     private ProcessWay processWay;
     private String wasteCategory;
-     private String guardian;
-     private String deputyGeneral;
-     private String inboundOrderItemId;
+    private String guardian;
+    private String deputyGeneral;
+    private String inboundOrderItemId;
     private PackageType packageType;
     private FormType formType;
-
     /**
      * 处置设备
-     * @return
      */
     private Equipment equipment;
     /**
@@ -87,6 +87,8 @@ public class OutboundOrder {
      * 日期查询 终止时间
      */
     private Date endDate;
+    private QuotationItem quotationItem;
+    private float outboundNumber;
 
     public String getKeywords() {
         return keywords;
@@ -188,7 +190,7 @@ public class OutboundOrder {
 
         return laboratoryTest;
     }
-    private QuotationItem quotationItem;
+
 
     public QuotationItem getQuotationItem() {
         return quotationItem;
@@ -209,8 +211,6 @@ public class OutboundOrder {
     public void setWareHouse(WareHouse wareHouse) {
         this.wareHouse = wareHouse;
     }
-
-    private float outboundNumber;
 
     public float getOutboundNumber() {
         return outboundNumber;

@@ -6,7 +6,6 @@ import java.util.Date;
 
 /**
  * 医废出入库
- *
  */
 public class MedicalWastes {
     /**
@@ -14,7 +13,6 @@ public class MedicalWastes {
      */
     private String medicalWastesId;
     /**
-     *
      * 登记部门
      */
     private String department;
@@ -31,7 +29,7 @@ public class MedicalWastes {
      */
     private Date adjustDate;
     /**
-     *登记时间
+     * 登记时间
      */
     private Date dateTime;
     /**
@@ -56,7 +54,6 @@ public class MedicalWastes {
     private  float  afterCookingInbound;
     /**
      * 本日蒸煮后外送量
-     *
      */
     private float thisMonthSendCooking;
     /**
@@ -65,28 +62,18 @@ public class MedicalWastes {
     private float errorNumber;
     /**
      * 水分含量
-     *
      */
     private float wetNumber;
-
     /**
      * 设备
-     * @return
      */
     private Equipment equipment;
-    public String getDepartment() {
-        return department;
-    }
-
     /**
      * 危废数量
-     * @return
      */
     private float wastesAmount;
-
     /**
      * 状态
-     * @return
      */
     private CheckState checkState;
 
@@ -142,7 +129,6 @@ public class MedicalWastes {
     public void setAdjustDate(Date adjustDate) {
         this.adjustDate = adjustDate;
     }
-
 
     public Date getDateTime() {
         return dateTime;
@@ -222,6 +208,10 @@ public class MedicalWastes {
 
     public void setMedicalWastesId(String medicalWastesId) {
         this.medicalWastesId = medicalWastesId;
+    }
+
+    public String getDepartment() {
+        return department;
     }
 
     @Override
