@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int totalLogRecord(int id){ return userMapper.totalLogRecord(id); }
+    public int totalLogRecord(){ return userMapper.totalLogRecord(); }
 
     @Override
     public List<Role> listRole() {
@@ -106,5 +106,8 @@ public class UserServiceImpl implements UserService {
     public boolean checkAuthority(int roleId, int functionId) {
         return userMapper.checkAuthority(roleId, functionId);
     }
+
+    @Override
+    public List<LoginLog> getLog(Page page){ return userMapper.getLog(page); }
 
 }

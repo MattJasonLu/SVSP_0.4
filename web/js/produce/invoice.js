@@ -235,7 +235,7 @@ function switchPage(pageNumber) {
     console.log(page);
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getLog",         // url
+        url: "getAllLog",         // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",
@@ -295,7 +295,7 @@ function inputSwitchPage() {
         page.start = (pageNumber - 1) * page.count;
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getLog",         // url
+            url: "getAllLog",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
@@ -335,7 +335,7 @@ function showLog() {
     page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type: "POST",                       // 方法类型
-        url: "getLog",                      // url
+        url: "getAllLog",                      // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
         data: JSON.stringify(page),
         dataType: "json",

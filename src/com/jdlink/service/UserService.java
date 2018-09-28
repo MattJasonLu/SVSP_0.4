@@ -34,11 +34,12 @@ public interface UserService {
      */
     List<LoginLog> getLogById(int id,Page page);
 
+    List<LoginLog> getLog(Page page);
     /**
      * 获取登陆总记录数
      * @return
      */
-    int totalLogRecord(int id);
+    int totalLogRecord();
     /**
      * 列出所有角色
      * @return

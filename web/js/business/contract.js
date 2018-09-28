@@ -2000,7 +2000,7 @@ function addNewLine() {
     });
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-    clonedTr.children("td:eq(0)").prepend(delBtn);
+    clonedTr.children("td:eq(0)").append(delBtn);
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
@@ -2011,9 +2011,9 @@ function addNewLine() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
-    $('.myclass').each(function (item,index) {
-        console.log("2142")
-        $(this).children('td').eq(0).children('input').val(index+1);
+    var i=0
+    $('.myclass').each(function (index,item) {
+        $(this).children('td').eq(0).html((parseInt(index)+1).toString()+"<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>");
     });
 }
 
