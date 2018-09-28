@@ -482,7 +482,7 @@ function saveOutBound(){
             //5领料单号
             var materialRequisitionId=$(this).children().get(10).innerHTML;
             //6处置设备
-            var equipment=$('#equipment').selectpicker('val');
+            var equipment=$('#equipment').selectpicker('val')-1;
             data={
                 boundType:boundType,
                 outboundDate:outboundDate,
@@ -490,14 +490,14 @@ function saveOutBound(){
                 auditor:auditor,
                 outboundNumber:$(this).children('td').get(4).innerHTML,
                 materialRequisitionOrder:{materialRequisitionId:materialRequisitionId},
-                equipment:equipment
+                equipment:equipment,
             }
             console.log(data);
            addOutBoundOrder(data);
         });
 
     }
-    window.location.href="warehouseManageOut.html";
+   window.location.href="warehouseManageOut.html";
 
 
 
