@@ -850,6 +850,10 @@ function judge1() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
+    $('.myclass').each(function (index,item) {
+        $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>"+(parseInt(index)+1).toString());
+    });
+
 }
 
 //保存库存信息

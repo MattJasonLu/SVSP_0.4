@@ -1998,9 +1998,9 @@ function addNewLine() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
-    $('.myclass').each(function (item,index) {
-        console.log("2142")
-        $(this).children('td').eq(0).children('input').val(index+1);
+    var i=0
+    $('.myclass').each(function (index,item) {
+        $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>"+(parseInt(index)+1).toString());
     });
 }
 
