@@ -157,14 +157,15 @@ function switchPage(pageNumber) {
             }
         });
     }
-    if (isSearch) { //查询用的
+    if (isSearch) {//查询用的
         for(var i=0;i<array1.length;i++){
             $(array1[i]).hide();
         }
-        for(var i=page.start;i<=page.start+page.count-1;i++){
+        var i=parseInt((pageNumber-1)*countValue());
+        var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+        for(var i=i;i<=j;i++){
             $('#tbody1').append(array1[i]);
             $(array1[i]).show();
-            isSearch=true;
         }
     }
 }
@@ -225,14 +226,15 @@ function inputSwitchPage()  {
                 }
             });
         }
-        if (isSearch) { //查询用的
+        if (isSearch) {//查询用的
             for(var i=0;i<array1.length;i++){
                 $(array1[i]).hide();
             }
-            for(var i=page.start;i<=page.start+page.count-1;i++){
+            var i=parseInt((pageNumber-1)*countValue());
+            var j=parseInt((pageNumber-1)*countValue())+parseInt(countValue()-1);
+            for(var i=i;i<=j;i++){
                 $('#tbody1').append(array1[i]);
                 $(array1[i]).show();
-                isSearch=true;
             }
         }
     }
