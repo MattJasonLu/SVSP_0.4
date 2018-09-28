@@ -1,5 +1,6 @@
 package com.jdlink.service;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Equipment;
 import com.jdlink.domain.Produce.EquipmentDate;
 import com.jdlink.domain.Produce.EquipmentItem;
@@ -54,4 +55,23 @@ public interface EquipmentService {
      * 根据日期查询设备
      */
     List<EquipmentItem> getEquipmentDataByDate(Date dayTime,Date editTime);
+
+    /**
+     * 分页
+     * @param page
+     * @return Equipment列表
+     */
+    List<EquipmentDate> equipmentListPage(Page page);
+
+    /**
+     * 获取设备数量
+     * @return 设备数量
+     */
+    int count();
+
+    /**
+     * 查询数量
+     * @return 查询数量
+     */
+    int searchCount(Equipment equipment);
 }

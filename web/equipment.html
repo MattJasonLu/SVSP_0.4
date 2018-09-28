@@ -13,7 +13,7 @@
     <script src="js/util.js"></script>
     <script src="js/produce/equipment.js"></script>
 </head>
-<body onload="listEquipment();">
+<body onload="loadPageList();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
@@ -162,7 +162,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr id="cloneTr1">
+                        <tr id="cloneTr">
                             <td class="text-center">
                                 <label>
                                     <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
@@ -186,6 +186,44 @@
         </div>
     </div>
     <div id="embed"></div>
+
+    <!--分页-->
+    <nav aria-label="Page navigation" class="text-center">
+        <ol class="pagination" style="width: 800px;">
+            <li id="current" hidden><a>当前页：</a>
+            <li id="firstPage">
+                <a href='#' onclick="switchPage(0)">首 页</a>
+            </li>
+            <li id="previous">
+                <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li id="next">
+                <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+                </a>
+            </li>
+            <li id="endPage">
+                <a href='#' onclick="switchPage(-2)">尾 页</a>
+            </li>
+            <li><a id="totalPage"></a></li>
+            <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+            <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                       id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
+            <li class="showLi">每页显示:</li>
+            <li class="selectLi">
+                <select id="count" onchange="loadPageBurnOrderList();" title="">
+                    <option>5</option>
+                    <option selected>15</option>
+                    <option>50</option>
+                </select>
+            </li>
+        </ol>
+    </nav>
     <!--明细模态框 check(this); function check(e){if(!checkAuthority($(e))) return false;-->
     <div class="modal fade bs-example-modal-lg" id="view1Modal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">

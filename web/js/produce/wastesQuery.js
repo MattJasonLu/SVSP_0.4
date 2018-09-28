@@ -81,7 +81,8 @@ function setPageClone(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 /**
@@ -357,7 +358,10 @@ function setWasteInventoryList(result) {
                         break;
                     //产废单位
                     case (3):
-                        $(this).html(obj.produceCompany.companyName);
+                        if(obj.produceCompany!=null){
+                            $(this).html(obj.produceCompany.companyName);
+                        }
+
                         break;
                     // 仓库名称
                     case (4):
@@ -365,18 +369,21 @@ function setWasteInventoryList(result) {
                         break;
                     // 入库类别
                     case (5):
-                        $(this).html(obj.boundType.name);
+                        if(obj.boundType!=null){
+                            $(this).html(obj.boundType.name);
+                        }
                         break;
                     // 进料方式
                     case (6):
-                        $(this).html(obj.handleCategory.name);
+                        if(obj.handleCategory!=null){
+                            $(this).html(obj.handleCategory.name);
+                        }
                         break;
                     // 危废名称
                     case (7):
-
-                        $(this).html(obj.laboratoryTest.wastesName);
-
-
+                         if(obj.laboratoryTest!=null){
+                             $(this).html(obj.laboratoryTest.wastesName);
+                         }
                         break;
                     //危废类型
                     case (8):
@@ -388,11 +395,16 @@ function setWasteInventoryList(result) {
                         break;
                     //单价
                     case (10):
-                        $(this).html(obj.quotationItem.unitPriceTax);
+                        if(obj.quotationItem!=null){
+                            $(this).html(obj.quotationItem.unitPriceTax);
+                        }
+
                         break;
                     //总价
                     case (11):
-                        $(this).html(parseInt(obj.actualCount)*(obj.quotationItem.unitPriceTax).toFixed(2)  );
+                        if(obj.quotationItem!=null) {
+                            $(this).html(parseInt(obj.actualCount) * (obj.quotationItem.unitPriceTax).toFixed(2));
+                        }
                         break;
                     //创建时间
                     case (12):
@@ -517,6 +529,8 @@ function searchWastesInventory() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -616,7 +630,8 @@ function searchWastesInventory1() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }
@@ -682,13 +697,19 @@ function setByInboundOrderItemId(result) {
                     $(this).html(getDateStr(obj.inboundDate));
                     break;
                 case (1):
-                    $(this).html(obj.produceCompany.companyName);
+                    if(obj.produceCompany!=null){
+                        $(this).html(obj.produceCompany.companyName);
+                    }
                     break;
                 case (2):
-                    $(this).html(obj.laboratoryTest.wastesName);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.wastesName);
+                    }
                     break;
                 case (3):
-                    $(this).html(obj.laboratoryTest.wastesCode);
+                    if(obj.laboratoryTest!=null){
+                        $(this).html(obj.laboratoryTest.wastesCode);
+                    }
                     break;
                 case (4):
                     $(this).html(obj.actualCount);
@@ -697,13 +718,17 @@ function setByInboundOrderItemId(result) {
                     $(this).html(obj.wastesCategory);
                     break;
                 case (6):
-                    $(this).html(obj.handleCategory.name);
+                    if(obj.handleCategory!=null){
+                        $(this).html(obj.handleCategory.name);
+                    }
                     break;
                 case (7):
                     $(this).html(obj.wastesCategory);
                     break;
                 case (8):
-                    $(this).html(obj.handleCategory.name);
+                    if(obj.handleCategory!=null){
+                        $(this).html(obj.handleCategory.name);
+                    }
                     break;
             }
         })

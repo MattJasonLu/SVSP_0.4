@@ -254,6 +254,8 @@ function setPageClone(result) {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 //加载次生出库信息==>次生出库页面
@@ -409,11 +411,17 @@ function setOutBoundList(result) {
                         break;
                     //单据状态
                     case (10):
-                        $(this).html(obj.recordState.name);
+                        if(obj.recordState!=null){
+                            $(this).html(obj.recordState.name);
+                        }
+
                         break;
                     //审批状态
                     case (11):
-                        $(this).html(obj.checkState.name);
+                        if(obj.checkState!=null){
+                            $(this).html(obj.checkState.name);
+                        }
+
                         break;
                     //备注
                     case (12):
@@ -1097,13 +1105,29 @@ function view1(item) {
                 console.log(result);
                 //赋值
                 //产废单位
-                $("#companyName").text(result.data[0].client.companyName);
+                if(result.data[0].client!=null){
+                    $("#companyName").text(result.data[0].client.companyName);
+                }
                 // //出库时间
                 $('#outBoundDate').text(getDateStr(result.data[0].outboundDate));
                 // //废物名称
-                $('#name').text(result.data[0].laboratoryTest.wastesName);
+                if(result.data[0].laboratoryTest!=null){
+                    if(result.data[0].laboratoryTest.wastesName=='slag'){
+                        $('#name').text('炉渣');
+                    }
+                    if(result.data[0].laboratoryTest.wastesName=='ash'){
+                        $('#name').text('飞灰');
+                    }
+                    if(result.data[0].laboratoryTest.wastesName=='bucket'){
+                        $('#name').text('桶');
+                    }
+
+                }
+
                 // //废物代码
-                $('#wastesId').text(result.data[0].laboratoryTest.wastesCode);
+                if(result.data[0].laboratoryTest!=null) {
+                    $('#wastesId').text(result.data[0].laboratoryTest.wastesCode);
+                }
                 // //重量
                 $('#wastesAmount').text(result.data[0].outboundNumber);
                 // //物质形态
@@ -1115,38 +1139,40 @@ function view1(item) {
                 if(result.data[0].packageType!=null){
                     $('#packageType').text(result.data[0].packageType.name);
                 }
-                //热值/KCal/Kg最大
-                $('#kCalMax').text(result.data[0].laboratoryTest.heatMaximum);
-                $('#kCalAvg').text(result.data[0].laboratoryTest.heatAverage);
-                $('#kCalMin').text(result.data[0].laboratoryTest.heatMinimum);
-                // //PH
-                $('#phMax').text(result.data[0].laboratoryTest.phMaximum);
-                $('#phAvg').text(result.data[0].laboratoryTest.phAverage);
-                $('#phMin').text(result.data[0].laboratoryTest.phMaximum);
-                //灰分/%
-                $('#ashMax').text(result.data[0].laboratoryTest.ashMaximum);
-                $('#ashAvg').text(result.data[0].laboratoryTest.ashAverage);
-                $('#ashMin').text(result.data[0].laboratoryTest.ashMinimum);
-                //水分
-                $('#waterMax').text(result.data[0].laboratoryTest.waterContentMaximum);
-                $('#waterAvg').text(result.data[0].laboratoryTest.waterContentAverage);
-                $('#waterMin').text(result.data[0].laboratoryTest.waterContentMinimum);
-                //硫含量
-                $('#sMax').text(result.data[0].laboratoryTest.sulfurContentMaximum);
-                $('#sAvg').text(result.data[0].laboratoryTest.sulfurContentAverage);
-                $('#sMin').text(result.data[0].laboratoryTest.sulfurContentMinimum);
-                //氯含量
-                $('#clMax').text(result.data[0].laboratoryTest.chlorineContentMaximum);
-                $('#clAvg').text(result.data[0].laboratoryTest.chlorineContentAverage);
-                $('#clMin').text(result.data[0].laboratoryTest.chlorineContentMinimum);
-                //磷含量
-                $('#pMax').text(result.data[0].laboratoryTest.phosphorusContentMaximum);
-                $('#pAvg').text(result.data[0].laboratoryTest.phosphorusContentAverage);
-                $('#pMin').text(result.data[0].laboratoryTest.phosphorusContentMinimum);
-                //氟含量
-                $('#fMax').text(result.data[0].laboratoryTest.fluorineContentMaximum);
-                $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
-                $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
+                if(result.data[0].laboratoryTest!=null) {
+                    //热值/KCal/Kg最大
+                    $('#kCalMax').text(result.data[0].laboratoryTest.heatMaximum);
+                    $('#kCalAvg').text(result.data[0].laboratoryTest.heatAverage);
+                    $('#kCalMin').text(result.data[0].laboratoryTest.heatMinimum);
+                    // //PH
+                    $('#phMax').text(result.data[0].laboratoryTest.phMaximum);
+                    $('#phAvg').text(result.data[0].laboratoryTest.phAverage);
+                    $('#phMin').text(result.data[0].laboratoryTest.phMaximum);
+                    //灰分/%
+                    $('#ashMax').text(result.data[0].laboratoryTest.ashMaximum);
+                    $('#ashAvg').text(result.data[0].laboratoryTest.ashAverage);
+                    $('#ashMin').text(result.data[0].laboratoryTest.ashMinimum);
+                    //水分
+                    $('#waterMax').text(result.data[0].laboratoryTest.waterContentMaximum);
+                    $('#waterAvg').text(result.data[0].laboratoryTest.waterContentAverage);
+                    $('#waterMin').text(result.data[0].laboratoryTest.waterContentMinimum);
+                    //硫含量
+                    $('#sMax').text(result.data[0].laboratoryTest.sulfurContentMaximum);
+                    $('#sAvg').text(result.data[0].laboratoryTest.sulfurContentAverage);
+                    $('#sMin').text(result.data[0].laboratoryTest.sulfurContentMinimum);
+                    //氯含量
+                    $('#clMax').text(result.data[0].laboratoryTest.chlorineContentMaximum);
+                    $('#clAvg').text(result.data[0].laboratoryTest.chlorineContentAverage);
+                    $('#clMin').text(result.data[0].laboratoryTest.chlorineContentMinimum);
+                    //磷含量
+                    $('#pMax').text(result.data[0].laboratoryTest.phosphorusContentMaximum);
+                    $('#pAvg').text(result.data[0].laboratoryTest.phosphorusContentAverage);
+                    $('#pMin').text(result.data[0].laboratoryTest.phosphorusContentMinimum);
+                    //氟含量
+                    $('#fMax').text(result.data[0].laboratoryTest.fluorineContentMaximum);
+                    $('#fAvg').text(result.data[0].laboratoryTest.fluorineContentAverage);
+                    $('#fMin').text(result.data[0].laboratoryTest.fluorineContentMinimum);
+                }
                 //处理方式
                 if(result.data[0].processWay!=null){
                     $('#processingMethod').text(result.data[0].processWay.name);
@@ -1321,6 +1347,8 @@ function searchSecOutbound() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         array1[i].hide();
     }
@@ -1413,7 +1441,8 @@ function searchSecondaryOuntBound() {
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
-
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
     for(var i=0;i<array1.length;i++){
         $(array1[i]).hide();
     }
