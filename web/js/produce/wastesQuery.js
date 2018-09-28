@@ -270,6 +270,8 @@ function loadWasteInventoryList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     if (totalPage() == 1) {
         $("#next").addClass("disabled");
         $("#endPage").addClass("disabled");
