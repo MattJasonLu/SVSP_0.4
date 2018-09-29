@@ -48,6 +48,7 @@ public class QuestionnaireController {
 
     /**
      * 通过问卷编号获取调查表对象
+     *
      * @param questionnaireId 调查表编号
      * @return 调查表对象
      */
@@ -73,6 +74,7 @@ public class QuestionnaireController {
 
     /**
      * 列出所有问卷
+     *
      * @return 问卷列表
      */
     @RequestMapping("listQuestionnaire")
@@ -83,6 +85,7 @@ public class QuestionnaireController {
 
     /**
      * 列出客户的问卷
+     *
      * @return 问卷列表
      */
     @RequestMapping("client/listQuestionnaire")
@@ -105,6 +108,7 @@ public class QuestionnaireController {
 
     /**
      * 保存问卷页面1的信息
+     *
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
@@ -135,6 +139,7 @@ public class QuestionnaireController {
 
     /**
      * 保存问卷页面2的信息
+     *
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
@@ -162,12 +167,19 @@ public class QuestionnaireController {
                 oldCount = QuestionnaireController.questionnaire.getWasteProcessList().size();
             newCount = questionnaire.getWasteProcessList().size();
             // 旧数据比新数据少时
-            if(oldCount <= newCount) {
+            if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
                     questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
+                    questionnaire.getDeriveWastesList().get(i).setId(QuestionnaireController.questionnaire.getDeriveWastesList().get(i).getId());
                 }
                 for (int i = oldCount; i < newCount; i++) {
                     questionnaire.getWasteProcessList().get(i).setProcessId(RandomUtil.getRandomEightNumber());
+                    questionnaire.getDeriveWastesList().get(i).setId(RandomUtil.getRandomEightNumber());
+                }
+            } else {    // 旧数据比新数据多时
+                for (int i = 0; i < newCount; i++) {
+                    questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
+                    questionnaire.getDeriveWastesList().get(i).setId(QuestionnaireController.questionnaire.getDeriveWastesList().get(i).getId());
                 }
             }
             // 更新原材料的信息
@@ -191,6 +203,7 @@ public class QuestionnaireController {
 
     /**
      * 保存问卷页面3的信息
+     *
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
@@ -218,10 +231,56 @@ public class QuestionnaireController {
 //                    }
 //            }
             //如果旧数据比新数据多
-            if(oldCount > newCount){
-               // 直接替换成新数据
-                QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
-                QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
+            if (oldCount > newCount) {
+                // 直接替换成新数据
+                for (int i = 0; i < newCount; i++) {
+                    // 更新页面2危废代码
+                    QuestionnaireController.questionnaire.getWasteProcessList().get(i).setCode(questionnaire.getWasteProcessList().get(i).getCode());
+                    //
+                    DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
+                    DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
+                    newDeriveWastes.setId(oldDeriveWastes.getId());
+                    // 混合物成分编号
+                    int innerOldCount = 0;
+                    if (oldDeriveWastes.getMixingElementList() != null)
+                        innerOldCount = oldDeriveWastes.getMixingElementList().size();
+                    int innerNewCount = newDeriveWastes.getMixingElementList().size();
+                    for (int j = 0; j < innerOldCount; j++) {
+                        newDeriveWastes.getMixingElementList().get(j).setId(oldDeriveWastes.getMixingElementList().get(j).getId());
+                    }
+                    for (int j = innerOldCount; j < innerNewCount; j++) {
+                        newDeriveWastes.getMixingElementList().get(j).setId(RandomUtil.getRandomEightNumber());
+                    }
+                    // 敏感成分编号
+                    innerOldCount = 0;
+                    if (oldDeriveWastes.getSensitiveElementList() != null)
+                        innerOldCount = oldDeriveWastes.getSensitiveElementList().size();
+                    innerNewCount = newDeriveWastes.getSensitiveElementList().size();
+                    for (int j = 0; j < innerOldCount; j++) {
+                        newDeriveWastes.getSensitiveElementList().get(j).setId(oldDeriveWastes.getSensitiveElementList().get(j).getId());
+                    }
+                    for (int j = innerOldCount; j < innerNewCount; j++) {
+                        newDeriveWastes.getSensitiveElementList().get(j).setId(RandomUtil.getRandomEightNumber());
+                    }
+                    oldDeriveWastes.setName(newDeriveWastes.getName());
+                    oldDeriveWastes.setCode(newDeriveWastes.getCode());
+                    oldDeriveWastes.setFormType(newDeriveWastes.getFormType());
+                    oldDeriveWastes.setFormTypeDetail(newDeriveWastes.getFormTypeDetail());
+                    oldDeriveWastes.setSmellType(newDeriveWastes.getSmellType());
+                    oldDeriveWastes.setSmellTypeDetail(newDeriveWastes.getSmellTypeDetail());
+                    oldDeriveWastes.setSolubility(newDeriveWastes.getSolubility());
+                    oldDeriveWastes.setSolubilityDetail(newDeriveWastes.getSolubilityDetail());
+                    oldDeriveWastes.setIsLowTemp(newDeriveWastes.getIsLowTemp());
+                    oldDeriveWastes.setIsMixture(newDeriveWastes.getIsMixture());
+                    oldDeriveWastes.setLowTemp(newDeriveWastes.getLowTemp());
+                    oldDeriveWastes.setSolubleTemp(newDeriveWastes.getSolubleTemp());
+                    oldDeriveWastes.setMixingElementList(newDeriveWastes.getMixingElementList());
+                    oldDeriveWastes.setSensitiveElementList(newDeriveWastes.getSensitiveElementList());
+                }
+                for(int i = newCount; i < oldCount; i++){
+                    QuestionnaireController.questionnaire.getWasteProcessList().remove(i);
+                    QuestionnaireController.questionnaire.getDeriveWastesList().remove(i);
+                }
             }
             // 如果旧数据不存在，则直接赋值
             if (oldCount == 0) {
@@ -235,8 +294,7 @@ public class QuestionnaireController {
                     }
                 }
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
-                QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
-            // 如果旧数据存在，且数量小于新数据
+                // 如果旧数据存在，且数量小于新数据
             } else if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
                     // 更新页面2危废代码
@@ -316,6 +374,10 @@ public class QuestionnaireController {
                 for (int i = oldCount; i < newCount; i++) {
                     QuestionnaireController.questionnaire.getDeriveWastesList().add(questionnaire.getDeriveWastesList().get(i));
                     QuestionnaireController.questionnaire.getWasteProcessList().add(questionnaire.getWasteProcessList().get(i));
+                    // 更新新行数据
+                    QuestionnaireController.questionnaire.getWasteProcessList().get(i).setProcessId(RandomUtil.getRandomEightNumber());
+                    QuestionnaireController.questionnaire.getWasteProcessList().get(i).setCode(questionnaire.getWasteProcessList().get(i).getCode());
+
                 }
             }
             res.put("status", "success");
@@ -331,6 +393,7 @@ public class QuestionnaireController {
 
     /**
      * 保存问卷页面4的信息
+     *
      * @param questionnaire 问卷对象
      * @return 成功与否
      */
@@ -394,11 +457,12 @@ public class QuestionnaireController {
 
     /**
      * 增加调查表
+     *
      * @return 成功与否
      */
     @RequestMapping(value = {"addQuestionnaire", "client/addQuestionnaire"})
     @ResponseBody
-    public String addQuestionnaire(){
+    public String addQuestionnaire() {
         JSONObject res = new JSONObject();
         try {
             // 更改状态为待签收
@@ -418,6 +482,7 @@ public class QuestionnaireController {
 
     /**
      * 保存调查表
+     *
      * @return 成功与否
      */
     @RequestMapping(value = {"saveQuestionnaire", "client/saveQuestionnaire"})
@@ -442,6 +507,7 @@ public class QuestionnaireController {
 
     /**
      * 更新调查表
+     *
      * @return 成功与否
      */
     @RequestMapping("updateQuestionnaire")
@@ -463,6 +529,7 @@ public class QuestionnaireController {
 
     /**
      * 获取问卷编号
+     *
      * @return 问卷编号
      */
     @RequestMapping(value = {"getCurrentQuestionnaireId", "client/getCurrentQuestionnaireId"})
@@ -499,6 +566,7 @@ public class QuestionnaireController {
 
     /**
      * 获取调查表的数据
+     *
      * @return 成功与否
      */
     @RequestMapping(value = {"getCurrentQuestionnaire", "client/getCurrentQuestionnaire"})
@@ -543,9 +611,10 @@ public class QuestionnaireController {
 
     /**
      * 问卷页面3中三个枚举数据
+     *
      * @return 枚举数据
      */
-    @RequestMapping(value={"getQuestionnaireSelectedList", "client/getQuestionnaireSelectedList"})
+    @RequestMapping(value = {"getQuestionnaireSelectedList", "client/getQuestionnaireSelectedList"})
     @ResponseBody
     public String getQuestionnaireSelectedList() {
         JSONObject res = new JSONObject();
@@ -561,6 +630,7 @@ public class QuestionnaireController {
 
     /**
      * 审批调查表
+     *
      * @param questionnaire 问卷
      * @return
      */
@@ -606,14 +676,15 @@ public class QuestionnaireController {
 
     /**
      * 获取总记录数
+     *
      * @return
      */
     @RequestMapping("totalQuestionnaireRecord")
     @ResponseBody
-    public int totalQuestionnaireRecord(){
+    public int totalQuestionnaireRecord() {
         try {
             return questionnaireService.count();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
@@ -621,7 +692,7 @@ public class QuestionnaireController {
 
     @RequestMapping("loadPageQuestionnaireList")
     @ResponseBody
-    public  String loadPageQuestionnaireList(@RequestBody Page page){
+    public String loadPageQuestionnaireList(@RequestBody Page page) {
         JSONObject res = new JSONObject();
         try {
             // 取出查询客户
@@ -642,22 +713,21 @@ public class QuestionnaireController {
 
     @RequestMapping("importQuestionnaireExcel")
     @ResponseBody
-    public String importQuestionnaireExcel(MultipartFile excelFile, String tableName, String id){
+    public String importQuestionnaireExcel(MultipartFile excelFile, String tableName, String id) {
         JSONObject res = new JSONObject();
         try {
-            DBUtil db=new DBUtil();
+            DBUtil db = new DBUtil();
             db.importExcel(excelFile, tableName, id);
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "导入失败，请重试！"+e.getMessage());
+            res.put("message", "导入失败，请重试！" + e.getMessage());
         }
         return res.toString();
 
     }
-
 
 
     /********************************************下面暂时不用****************************************/
@@ -1347,7 +1417,6 @@ public class QuestionnaireController {
     }
 
 
-
     /**
      * 签收问卷
      *
@@ -1370,45 +1439,45 @@ public class QuestionnaireController {
         }
         return res.toString();
     }
-   /**
-   * 高级查询
-   */
-   @RequestMapping("searchQuestionnaireManage")
+
+    /**
+     * 高级查询
+     */
+    @RequestMapping("searchQuestionnaireManage")
     @ResponseBody
-    public String searchQuestionnaireManage(@RequestBody Questionnaire questionnaire){
-       JSONObject res=new JSONObject();
-       try{
-           List<Questionnaire> questionnaireList=questionnaireService.searchQuestionnaireManage(questionnaire);
-           JSONArray data = JSONArray.fromArray(questionnaireList.toArray(new Questionnaire[questionnaireList.size()]));
-           res.put("status", "success");
-           res.put("message", "查询成功");
-           res.put("data",data);
-       }
-       catch (Exception e){
-           e.printStackTrace();
-           res.put("status", "fail");
-           res.put("message", "查询失败");
-       }
+    public String searchQuestionnaireManage(@RequestBody Questionnaire questionnaire) {
+        JSONObject res = new JSONObject();
+        try {
+            List<Questionnaire> questionnaireList = questionnaireService.searchQuestionnaireManage(questionnaire);
+            JSONArray data = JSONArray.fromArray(questionnaireList.toArray(new Questionnaire[questionnaireList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
 
 
-       return  res.toString();
-   }
+        return res.toString();
+    }
+
     /**
      * 加载样品预约单状态
      */
     @RequestMapping("applyStateList")
     @ResponseBody
-    public String applyStateList(){
-        JSONObject res=new JSONObject();
-        try{
-       // 获取枚举
+    public String applyStateList() {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取枚举
             JSONArray ApplyStateList = JSONArray.fromArray(ApplyState.values());
             res.put("ApplyStateList", ApplyStateList);
             res.put("status", "success");
             res.put("message", "获取成功");
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "获取失败");
