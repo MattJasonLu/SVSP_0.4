@@ -62,7 +62,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+       console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -451,41 +451,41 @@ function loadSecondaryList() {
         size: 4
     });
     var page = {};
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getOutBoundList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result ) {
-            if (result != undefined && result.status == "success"){
-                // console.log(result);
-                //1获得下拉列表
-                var outboundType=$("#outboundType");
-                //2清除子元素
-                outboundType.children().remove();
-                //3遍历获得项来赋值
-                $.each(result.array,function (index,item) {
-                    //4创建选项元素
-                    var option = $('<option />');
-                    //5给option赋值
-                    option.val(index);
-                    option.text(item.name);
-                    //6添加到父节点
-                    outboundType.append(option);
-                });
-                //7初始化选项
-                outboundType.get(0).selectedIndex=-1;
-
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getOutBoundList",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     contentType: "application/json; charset=utf-8",
+    //     success:function (result ) {
+    //         if (result != undefined && result.status == "success"){
+    //             // console.log(result);
+    //             //1获得下拉列表
+    //             var outboundType=$("#outboundType");
+    //             //2清除子元素
+    //             outboundType.children().remove();
+    //             //3遍历获得项来赋值
+    //             $.each(result.array,function (index,item) {
+    //                 //4创建选项元素
+    //                 var option = $('<option />');
+    //                 //5给option赋值
+    //                 option.val(index);
+    //                 option.text(item.name);
+    //                 //6添加到父节点
+    //                 outboundType.append(option);
+    //             });
+    //             //7初始化选项
+    //             outboundType.get(0).selectedIndex=-1;
+    //
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error:function (result) {
+    //         alert("服务器异常！")
+    //     }
+    // });
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getSecondaryInventoryList",                  // url
@@ -772,46 +772,64 @@ function time(inboundOrderId,number) {
 }
 //保存==>次生出库新增页面
 function save() {
-    if(confirm("确定生成出库单?")){
-        //点击确定后操作
-        $(".myclass2").each(function () {
-            var data={
-                inboundOrderItemId:$(this).children('td').last().text(),
-                outboundNumber:$(this).children('td').get(7).innerHTML,
-                outboundDate:$('#date').val(),
-                boundType:$("#outboundType").val(),
-                creator:$('#creator').val(),
-                departmentName:$('#departmentName').val(),
-                equipment:$('#equipment').selectpicker('val'),
-            };
-            console.log(data);
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "addSecondary",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
-                        console.log(result);
-                    }
-                    else {
-                        alert(result.message);
+    if($('#date').val().length>0){
+        if(confirm("确定生成出库单?")){
+            //点击确定后操作
+            $(".myclass2").each(function () {
+                var data={
+                    inboundOrderItemId:$(this).children('td').last().text(),
+                    outboundNumber:$(this).children('td').get(7).innerHTML,
+                    outboundDate:$('#date').val(),
+                    creator:$('#creator').val(),
+                    departmentName:$('#departmentName').val(),
+                    equipment:$('#equipment').selectpicker('val'),
+                };
+                console.log(data);
+                $.ajax({
+                    type: "POST",                       // 方法类型
+                    url: "addSecondary",                  // url
+                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+
+                    error:function (result) {
+                        alert("服务器异常")
 
                     }
-                },
-
-                error:function (result) {
-                    alert("服务器异常")
-
-                }
+                });
             });
-        });
+        }
+        alert("添加成功！");
+      window.location.href="secondaryOutbound.html";
+
+    }
+    else {
+        $('#date').parent().next('span').remove();
+        var span=$('<span>');
+        span.text("请输入日期！");
+        span.css('color','red');
+        $('#date').after($(span));
     }
 
-      // alert("添加成功！");
-      // window.location.href="secondaryOutbound.html";
+}
+
+function warning(item) {
+    // if($('#beginTime').val().length>0&&$('#endTime').val().length>0){
+    //    $('#endTime').parent().next('span').remove();
+    // }
+    if($(item).val().length>0){
+        $(item).next('span').remove();
+    }
 }
 
 //设置危废查询列表
@@ -1297,18 +1315,22 @@ function searchSecOutbound() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=new Date();
             }
+            var start=$(this).children('td').eq(4).text();
+            if(start.length==0){
+                start=date;
+            }
 
             if(!($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
             &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
                 &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
-                &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
+                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                 $(this).hide();
            }
             if(($(this).children('td').eq(8).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(9).text().indexOf(processWay)!=-1&&$(this).children('td').eq(5).text().indexOf(outboundOrderId)!=-1
                 &&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
-                &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate))){
+                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate))){
                array1.push($(this));
             }
         });

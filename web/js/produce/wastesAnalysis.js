@@ -248,7 +248,7 @@ function inputSwitchPage()  {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -508,20 +508,23 @@ function searchWasteInto() {
             dateMax=(arraydate[i]);
         }
     }
-
     for(var j=0;j<array.length;j++){
         $.each(array[j],function () {
+            var date=$(this).children('td').eq(1).text();
             if(startDate.toString()=='Invalid Date'){
                 startDate=dateMin;
             }
             if(endDate.toString()=='Invalid Date'){
                 endDate=dateMax;
             }
-            var date=$(this).children('td').eq(1).text();
+            if(date.length==0){
+                date=startDate;
+            }
+
             if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(6).text().indexOf(hangelCategory)!=-1
                 &&$(this).children('td').eq(2).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
                 &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
-                &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
+                &&(new Date(date).getTime()<=new Date(endDate).getTime()&&new Date(date).getTime()>=new Date(startDate).getTime())
             )){
                 $(this).hide();
             }
@@ -529,7 +532,7 @@ function searchWasteInto() {
                 ($(this).children('td').eq(3).text().indexOf(companyName)!=-1 &&$(this).children('td').eq(6).text().indexOf(hangelCategory)!=-1
                     &&$(this).children('td').eq(2).text().indexOf(number)!=-1 &&$(this).children('td').text().indexOf(text)!=-1
                     &&$(this).children('td').eq(4).text().indexOf(wastesName)!=-1 &&$(this).children('td').eq(5).text().indexOf(wastesCategory)!=-1
-                    &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
+                    &&(new Date(date).getTime()<=new Date(endDate).getTime()&&new Date(date).getTime()>=new Date(startDate).getTime())
                 )
             ){
                 array1.push($(this));
@@ -689,3 +692,16 @@ function searchWastesAnalysis() {
 
 
 }
+
+/**
+*
+* 导出
+* @returns {string}
+*/
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_wasteinto';
+    var sqlWords = "select * from  t_pl_wasteinto;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+}
+

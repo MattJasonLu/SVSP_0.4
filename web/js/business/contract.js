@@ -108,8 +108,8 @@ function AddAndRemoveClass(item) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
-        pageNumber = totalPage();
+    if(pageNumber > totalPage(contractIndex)){
+        pageNumber = totalPage(contractIndex);
     }
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
@@ -189,11 +189,11 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
-        pageNumber = totalPage();
+    if(pageNumber > totalPage(contractIndex)){
+        pageNumber = totalPage(contractIndex);
     }
-    if(pageNumber > totalPage()){
-        pageNumber = totalPage();
+    if(pageNumber > totalPage(contractIndex)){
+        pageNumber = totalPage(contractIndex);
     }
     $("#current").find("a").text("当前页：" + pageNumber);
     if (pageNumber == null || pageNumber == undefined) {
@@ -474,7 +474,7 @@ function  ContractListByName(item) {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -625,11 +625,18 @@ function searchContract() {
             }
            var  start=$(this).children('td').eq(8).text();
             var  end=$(this).children('td').eq(9).text();
+
+            if(start.length==0){
+                start=startDate;
+            }
+            if(end.length==0){
+                end=endDate;
+            }
             if(!($(this).children('td').eq(2).text().indexOf(companyName)!=-1
                 &&$(this).children('td').text().indexOf(text)!=-1&&
                 $(this).children('td').eq(4).text().indexOf(checkState)!=-1
                 &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
-                &&(new Date(end).getTime()<=new Date(endDate).getTime()||(start.length==0||end.length==0))
+                &&(new Date(end).getTime()<=new Date(endDate).getTime())
             )){
                 $(this).hide();
             }
@@ -637,7 +644,7 @@ function searchContract() {
                 &&$(this).children('td').text().indexOf(text)!=-1&&
                 $(this).children('td').eq(4).text().indexOf(checkState)!=-1&&(new Date(start).getTime()>=new Date(startDate).getTime())
                 &&$(this).children('td').eq(6).text().indexOf(contactName)!=-1
-                &&(new Date(end).getTime()<=new Date(endDate).getTime()||(start.length==0||end.length==0)))
+                &&(new Date(end).getTime()<=new Date(endDate).getTime()))
             ){
                 array1.push($(this));
             }
@@ -1725,29 +1732,54 @@ function calculateTotalPrice(item) {
     //console.log(unitPrice+"=="+contractAmount);
     $(item).parent().parent().children('td').eq(7).children('input').val((parseFloat(unitPrice)*parseInt(contractAmount)).toFixed(2));
 }
-
+function warning(item) {
+    // if($('#beginTime').val().length>0&&$('#endTime').val().length>0){
+    //    $('#endTime').parent().next('span').remove();
+    // }
+    if($(item).val().length>0){
+        $(item).parent().next('span').remove();
+    }
+}
 //保存危废合同
 function contractWastesSave() {
     var addType = $("input[name='addType']:checked").val();
-    //console.log(addType);
-    //console.log($('input[name="contractVersion"]:checked').val())
-    if($('input[name="contractVersion"]:checked').val()=='customerContract'){
-        var data={
-            client:{clientId:$('#companyName').selectpicker('val')},
-            contractVersion:$('input[name="contractVersion"]:checked').val(),
-            beginTime:$('#beginTime').val(),
-            endTime:$('#endTime').val(),
-            contractName:$('#contractName').val(),
-            bankName:$('#bankName').val(),
-            bankAccount:$('#bankAccount').val(),
-            freight:$('#isFreight').prop('checked'),
-            telephone:$('#telephone').val(),
-            contactName:$('#contactName').val(),
-            ticketRate1:$('#taxRate1').val(),
-            contractType:$('#contractType').val(),
-        };
-        //console.log(data);
-        $.ajax({
+    if($('#beginTime').val().length==0||$('#endTime').val().length==0){
+        $('#endTime').parent().next('span').remove();
+        var span=$('<span>');
+        span.text("请输入日期！");
+        span.css('color','red');
+        $('#endTime').parent().after($(span));
+    }
+
+        if($('input[name="contractVersion"]:checked').val()=='customerContract'){
+                  if( $('#contractName').val().length==0){
+                      $('#contractName').parent().next('span').remove();
+                      var span=$('<span>');
+                      span.text("请输入合同名称！");
+                      span.css('color','red');
+                      $('#contractName1').after($(span));
+                  }
+
+
+
+
+            if($('#beginTime').val().length>0&&$('#endTime').val().length>0&&$('#contractName').val().length>0){
+            var data={
+                client:{clientId:$('#companyName').selectpicker('val')},
+                contractVersion:$('input[name="contractVersion"]:checked').val(),
+                beginTime:$('#beginTime').val(),
+                endTime:$('#endTime').val(),
+                contractName:$('#contractName').val(),
+                bankName:$('#bankName').val(),
+                bankAccount:$('#bankAccount').val(),
+                freight:$('#isFreight').prop('checked'),
+                telephone:$('#telephone').val(),
+                contactName:$('#contactName').val(),
+                ticketRate1:$('#taxRate1').val(),
+                contractType:$('#contractType').val(),
+            };
+            //console.log(data);
+            $.ajax({
                 type: "POST",                            // 方法类型
                 url: "saveContract",                       // url
                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
@@ -1765,91 +1797,148 @@ function contractWastesSave() {
                 error:function (result) {
                     alert("服务器异常！");
                 }
-        });
+            });
+
+            $('.myclass').each(function(){
+                var quotationItemData={
+                    client:{clientId:$('#companyName').selectpicker('val')} ,
+                    wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName:$(this).children('td').eq(2).children('input').val(),
+                    packageType:$(this).children('td').eq(3).children('select').val(),
+                    transport:$(this).children('td').eq(8).children('select').val(),
+                    util:$(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax:$(this).children('td').eq(5).children('input').val(),
+                    contractAmount:$(this).children('td').eq(6).children('input').val(),
+                    totalPrice:$(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type:'POST',
+                    url:"addQuotationItem",
+                    data:JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            // console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+                alert("添加成功！");
+                if(addType=='continue'){
+                    $(location).attr('href', 'wastesContractInfo.html');
+                }
+                if(addType=='break'){
+                    // $("#commentForm").attr('action','contractManage.html');
+                    window.location.href="contractManage.html";
+                    localStorage.clear();
+                    localStorage.name="Wastes";
+                }
+        }
     }
-    if($('input[name="contractVersion"]:checked').val()=='companyContract'){
-        var data={
-            client:{clientId:$('#companyName').selectpicker('val')},
-            contractVersion:$('input[name="contractVersion"]:checked').val(),
-            beginTime:$('#beginTime').val(),
-            endTime:$('#endTime').val(),
-            contractName:$('#contractType1').val(),
-            bankName:$('#bankName').val(),
-            bankAccount:$('#bankAccount').val(),
-            freight:$('#isFreight').prop('checked'),
-            telephone:$('#telephone').val(),
-            contactName:$('#contactName').val(),
-            ticketRate1:$('#taxRate1').val(),
-            contractType:$('#contractType').val(),
-        };
-        //(data);
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "saveContract",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                   // console.log(result);
+
+    if($('input[name="contractVersion"]:checked').val()=='companyContract') {
+
+        if($('#contractType1').val()==null){
+            $('#contractType1').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入合同名称！");
+            span.css('color','red');
+            $('#contractType2').after($(span));
+        }
+        if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractType1').val().length > 0) {
+            var data = {
+                client: {clientId: $('#companyName').selectpicker('val')},
+                contractVersion: $('input[name="contractVersion"]:checked').val(),
+                beginTime: $('#beginTime').val(),
+                endTime: $('#endTime').val(),
+                contractName: $('#contractType1').val(),
+                bankName: $('#bankName').val(),
+                bankAccount: $('#bankAccount').val(),
+                freight: $('#isFreight').prop('checked'),
+                telephone: $('#telephone').val(),
+                contactName: $('#contactName').val(),
+                ticketRate1: $('#taxRate1').val(),
+                contractType: $('#contractType').val(),
+            };
+            //(data);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveContract",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        // console.log(result);
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！");
                 }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！");
+            });
+            $('.myclass').each(function () {
+                var quotationItemData = {
+                    client: {clientId: $('#companyName').selectpicker('val')},
+                    wastesCode: $(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName: $(this).children('td').eq(2).children('input').val(),
+                    packageType: $(this).children('td').eq(3).children('select').val(),
+                    transport: $(this).children('td').eq(8).children('select').val(),
+                    util: $(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax: $(this).children('td').eq(5).children('input').val(),
+                    contractAmount: $(this).children('td').eq(6).children('input').val(),
+                    totalPrice: $(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type: 'POST',
+                    url: "addQuotationItem",
+                    data: JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success: function (result) {
+                        if (result != undefined && result.status == "success") {
+                            // console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error: function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+            alert("添加成功！")
+            if(addType=='continue'){
+                $(location).attr('href', 'wastesContractInfo.html');
             }
-        });
-
-    }
-
-    $('.myclass').each(function(){
-        var quotationItemData={
-             client:{clientId:$('#companyName').selectpicker('val')} ,
-            wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
-            wastesName:$(this).children('td').eq(2).children('input').val(),
-             packageType:$(this).children('td').eq(3).children('select').val(),
-            transport:$(this).children('td').eq(8).children('select').val(),
-            util:$(this).children('td').eq(4).children('input').val(),
-            unitPriceTax:$(this).children('td').eq(5).children('input').val(),
-            contractAmount:$(this).children('td').eq(6).children('input').val(),
-            totalPrice:$(this).children('td').eq(7).children('input').val(),
-        };
-        //console.log(quotationItemData);
-       //1添加报价单明细
-        $.ajax({
-            type:'POST',
-            url:"addQuotationItem",
-            data:JSON.stringify(quotationItemData),
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                   // console.log(result);
-                }
-                else {
-                    alert(result.message);
-
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！");
+            if(addType=='break'){
+                $("#commentForm").attr('action','contractManage.html');
+                window.location.href="contractManage.html";
+                localStorage.clear();
+                localStorage.name="Wastes";
             }
-        });
-    });
-    alert("添加成功！")
-    if(addType=='continue'){
-        $(location).attr('href', 'wastesContractInfo.html');
+        }
     }
-    if(addType=='break'){
-        localStorage.clear();
-        $(location).attr('href', 'contractManage.html');
-        localStorage.name="Wastes";
-        location.href="contractManage.html";
 
-    }
+
+
 
 
 }
@@ -2291,127 +2380,208 @@ function loadEmSelectList() {
  */
 function contractEmSave() {
     var addType = $("input[name='addType']:checked").val();
-    //console.log(addType);
-    console.log($('input[name="contractVersion"]:checked').val())
-    if($('input[name="contractVersion"]:checked').val()=='customerContract'){
-        var data={
-            client:{clientId:$('#companyName').selectpicker('val')} ,
-            contractVersion:$('input[name="contractVersion"]:checked').val(),
-            beginTime:$('#beginTime').val(),
-            endTime:$('#endTime').val(),
-            contractName:$('#contractName').val(),
-            bankName:$('#bankName').val(),
-            bankAccount:$('#bankAccount').val(),
-            freight:$('#isFreight').prop('checked'),
-            telephone:$('#telephone').val(),
-            contactName:$('#contactName').val(),
-            ticketRate1:$('#taxRate1').val(),
-            contractType:$('#contractType').val(),
-        };
-       // console.log(data);
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "saveContract",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    console.log(result);
+    if($('#beginTime').val().length==0||$('#endTime').val().length==0){
+        $('#endTime').parent().next('span').remove();
+        var span=$('<span>');
+        span.text("请输入日期！");
+        span.css('color','red');
+        $('#endTime').parent().after($(span));
+    }
+      console.log($('input[name="contractVersion"]:checked').val())
+    if($('input[name="contractVersion"]:checked').val()=='customerContract') {
+        if( $('#contractName').val().length==0){
+            $('#contractName').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入合同名称！");
+            span.css('color','red');
+            $('#contractName1').after($(span));
+        }
+        if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractName').val().length > 0) {
+            var data = {
+                client: {clientId: $('#companyName').selectpicker('val')},
+                contractVersion: $('input[name="contractVersion"]:checked').val(),
+                beginTime: $('#beginTime').val(),
+                endTime: $('#endTime').val(),
+                contractName: $('#contractName').val(),
+                bankName: $('#bankName').val(),
+                bankAccount: $('#bankAccount').val(),
+                freight: $('#isFreight').prop('checked'),
+                telephone: $('#telephone').val(),
+                contactName: $('#contactName').val(),
+                ticketRate1: $('#taxRate1').val(),
+                contractType: $('#contractType').val(),
+            };
+            // console.log(data);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveContract",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        console.log(result);
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！");
                 }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！");
+            });
+            $('.myclass').each(function(){
+                var quotationItemData={
+                    client:{clientId:$('#companyName').selectpicker('val')} ,
+                    wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName:$(this).children('td').eq(2).children('input').val(),
+                    packageType:$(this).children('td').eq(3).children('select').val(),
+                    transport:$(this).children('td').eq(8).children('select').val(),
+                    util:$(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax:$(this).children('td').eq(5).children('input').val(),
+                    contractAmount:$(this).children('td').eq(6).children('input').val(),
+                    totalPrice:$(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type:'POST',
+                    url:"addQuotationItem",
+                    data:JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            //console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+            alert("添加成功！");
+            if(addType=='continue'){
+                $(location).attr('href', 'urgentContractInfo.html');
             }
-        });
-    }
-    if($('input[name="contractVersion"]:checked').val()=='companyContract'){
-        var data={
-            client:{clientId:$('#companyName').selectpicker('val')},
-            contractVersion:$('input[name="contractVersion"]:checked').val(),
-            beginTime:$('#beginTime').val(),
-            endTime:$('#endTime').val(),
-            contractName:$('#contractType1').val(),
-            bankName:$('#bankName').val(),
-            bankAccount:$('#bankAccount').val(),
-            freight:$('#isFreight').prop('checked'),
-            telephone:$('#telephone').val(),
-            contactName:$('#contactName').val(),
-            ticketRate1:$('#taxRate1').val(),
-            contractType:$('#contractType').val(),
-        };
-        //console.log(data);
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "saveContract",                       // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    //console.log(result);
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！");
+            if(addType=='break'){
+                console.log("来了")
+                localStorage.clear();
+                window.location.href="contractManage.html";
+                localStorage.name="Emergency";
+
             }
-        });
 
+        }
     }
 
-    $('.myclass').each(function(){
-        var quotationItemData={
-            client:{clientId:$('#companyName').selectpicker('val')} ,
-            wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
-            wastesName:$(this).children('td').eq(2).children('input').val(),
-            packageType:$(this).children('td').eq(3).children('select').val(),
-            transport:$(this).children('td').eq(8).children('select').val(),
-            util:$(this).children('td').eq(4).children('input').val(),
-            unitPriceTax:$(this).children('td').eq(5).children('input').val(),
-            contractAmount:$(this).children('td').eq(6).children('input').val(),
-            totalPrice:$(this).children('td').eq(7).children('input').val(),
-        };
-        //console.log(quotationItemData);
-        //1添加报价单明细
-        $.ajax({
-            type:'POST',
-            url:"addQuotationItem",
-            data:JSON.stringify(quotationItemData),
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    //console.log(result);
-                }
-                else {
-                    alert(result.message);
 
+    if($('input[name="contractVersion"]:checked').val()=='companyContract') {
+        if($('#contractType1').val()==null){
+            $('#contractType1').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入合同名称！");
+            span.css('color','red');
+            $('#contractType2').after($(span));
+        }
+        if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractType1 ').val().length > 0) {
+            var data = {
+                client: {clientId: $('#companyName').selectpicker('val')},
+                contractVersion: $('input[name="contractVersion"]:checked').val(),
+                beginTime: $('#beginTime').val(),
+                endTime: $('#endTime').val(),
+                contractName: $('#contractType1').val(),
+                bankName: $('#bankName').val(),
+                bankAccount: $('#bankAccount').val(),
+                freight: $('#isFreight').prop('checked'),
+                telephone: $('#telephone').val(),
+                contactName: $('#contactName').val(),
+                ticketRate1: $('#taxRate1').val(),
+                contractType: $('#contractType').val(),
+            };
+            //console.log(data);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveContract",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        //console.log(result);
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！");
                 }
-            },
-            error:function (result) {
-                alert("服务器异常！");
+            });
+            $('.myclass').each(function(){
+                var quotationItemData={
+                    client:{clientId:$('#companyName').selectpicker('val')} ,
+                    wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName:$(this).children('td').eq(2).children('input').val(),
+                    packageType:$(this).children('td').eq(3).children('select').val(),
+                    transport:$(this).children('td').eq(8).children('select').val(),
+                    util:$(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax:$(this).children('td').eq(5).children('input').val(),
+                    contractAmount:$(this).children('td').eq(6).children('input').val(),
+                    totalPrice:$(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type:'POST',
+                    url:"addQuotationItem",
+                    data:JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            //console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+            alert("添加成功！");
+            if(addType=='continue'){
+                $(location).attr('href', 'urgentContractInfo.html');
             }
-        });
-    });
-    alert("添加成功！")
-    if(addType=='continue'){
-        $(location).attr('href', 'urgentContractInfo.html');
-    }
-    if(addType=='break'){
-        localStorage.clear();
-        $(location).attr('href', 'contractManage.html');
-        localStorage.name="Emergency";
-        location.href="contractManage.html";
+            if(addType=='break'){
+                console.log("来了")
+                localStorage.clear();
+                window.location.href="contractManage.html";
+                localStorage.name="Emergency";
 
+            }
+            // if(addType=='continue'){
+            //     $(location).attr('href', 'urgentContractInfo.html');
+            // }
+            // if(addType=='break'){
+            //     localStorage.clear();
+            //     $(location).attr('href', 'contractManage.html');
+            //     localStorage.name="Emergency";
+            //     location.href="contractManage.html";
+            //
+            // }
+        }
     }
+
 
 }
 
@@ -2765,9 +2935,24 @@ function findSuppier() {
 //保存物流合同
 function contractLogicSave() {
     var addType = $("input[name='addType']:checked").val();
-    //console.log(addType);
-    //console.log($('input[name="contractVersion"]:checked').val())
+    if($('#beginTime').val().length==0||$('#endTime').val().length==0){
+        $('#endTime').parent().next('span').remove();
+        var span=$('<span>');
+        span.text("请输入日期！");
+        span.css('color','red');
+        $('#endTime').parent().after($(span));
+    }
+    console.log(addType)
+
     if($('input[name="contractVersion"]:checked').val()=='customerContract'){
+        if( $('#contractName').val().length==0){
+            $('#contractName').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入合同名称！");
+            span.css('color','red');
+            $('#contractName1').after($(span));
+        }
+        if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractName').val().length > 0) {
         var data={
             supplier:{supplierId:$('#suppier').selectpicker('val')},
             contractVersion:$('input[name="contractVersion"]:checked').val(),
@@ -2783,7 +2968,7 @@ function contractLogicSave() {
             contractType:$('#contractType').val(),
         };
         //console.log(data);
-        $.ajax({
+            $.ajax({
             type: "POST",                            // 方法类型
             url: "saveContract",                       // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
@@ -2802,14 +2987,177 @@ function contractLogicSave() {
                 alert("服务器异常！");
             }
         });
+            $('.myclass').each(function(){
+                var quotationItemData={
+                    supplier:{supplierId:$('#suppier').selectpicker('val')} ,
+                    wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName:$(this).children('td').eq(2).children('input').val(),
+                    packageType:$(this).children('td').eq(3).children('select').val(),
+                    transport:$(this).children('td').eq(8).children('select').val(),
+                    util:$(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax:$(this).children('td').eq(5).children('input').val(),
+                    contractAmount:$(this).children('td').eq(6).children('input').val(),
+                    totalPrice:$(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type:'POST',
+                    url:"addQuotationItem",
+                    data:JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            //console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+            alert("添加成功！")
+            if(addType=='continue'){
+                $(location).attr('href', 'logisticsContractInfo.html');
+            }
+            else
+            {
+            window.location.href='contractManage.html';
+                localStorage.clear();
+                localStorage.name="Logistics";
+
+            }
     }
-    if($('input[name="contractVersion"]:checked').val()=='companyContract'){
+
+    }
+
+
+    if($('input[name="contractVersion"]:checked').val()=='companyContract') {
+        if($('#contractType1').val()==null){
+            $('#contractType1').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入合同名称！");
+            span.css('color','red');
+            $('#contractType2').after($(span));
+        }
+        var addType = $("input[name='addType']:checked").val();
+        if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractType1 ').val().length > 0) {
+            var data = {
+                supplier: {supplierId: $('#suppier').selectpicker('val')},
+                contractVersion: $('input[name="contractVersion"]:checked').val(),
+                beginTime: $('#beginTime').val(),
+                endTime: $('#endTime').val(),
+                contractName: $('#contractType1').val(),
+                bankName: $('#bankName').val(),
+                bankAccount: $('#bankAccount').val(),
+                freight: $('#isFreight').prop('checked'),
+                telephone: $('#telephone').val(),
+                contactName: $('#contactName').val(),
+                ticketRate1: $('#taxRate1').val(),
+                contractType: $('#contractType').val(),
+            };
+            //console.log(data);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveContract",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        //console.log(result);
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！");
+                }
+            });
+            $('.myclass').each(function(){
+                var quotationItemData={
+                    supplier:{supplierId:$('#suppier').selectpicker('val')} ,
+                    wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName:$(this).children('td').eq(2).children('input').val(),
+                    packageType:$(this).children('td').eq(3).children('select').val(),
+                    transport:$(this).children('td').eq(8).children('select').val(),
+                    util:$(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax:$(this).children('td').eq(5).children('input').val(),
+                    contractAmount:$(this).children('td').eq(6).children('input').val(),
+                    totalPrice:$(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type:'POST',
+                    url:"addQuotationItem",
+                    data:JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            //console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+            alert("添加成功！");
+            if(addType=='continue'){
+                $(location).attr('href', 'logisticsContractInfo.html');
+            }
+            if(addType=='break'){
+                localStorage.clear();
+                window.location.href='contractManage.html';
+                localStorage.name="Logistics";
+
+            }
+        }
+    }
+
+
+
+
+}
+function contractLogicSave() {
+    var addType = $("input[name='addType']:checked").val();
+    if($('#beginTime').val().length==0||$('#endTime').val().length==0){
+        $('#endTime').parent().next('span').remove();
+        var span=$('<span>');
+        span.text("请输入日期！");
+        span.css('color','red');
+        $('#endTime').parent().after($(span));
+    }
+    console.log(addType)
+
+    if($('input[name="contractVersion"]:checked').val()=='customerContract'){
+        if( $('#contractName').val().length==0){
+            $('#contractName').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入合同名称！");
+            span.css('color','red');
+            $('#contractName1').after($(span));
+        }
+        if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractName').val().length > 0) {
         var data={
             supplier:{supplierId:$('#suppier').selectpicker('val')},
             contractVersion:$('input[name="contractVersion"]:checked').val(),
             beginTime:$('#beginTime').val(),
             endTime:$('#endTime').val(),
-            contractName:$('#contractType1').val(),
+            contractName:$('#contractName').val(),
             bankName:$('#bankName').val(),
             bankAccount:$('#bankAccount').val(),
             freight:$('#isFreight').prop('checked'),
@@ -2819,7 +3167,7 @@ function contractLogicSave() {
             contractType:$('#contractType').val(),
         };
         //console.log(data);
-        $.ajax({
+            $.ajax({
             type: "POST",                            // 方法类型
             url: "saveContract",                       // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
@@ -2838,54 +3186,149 @@ function contractLogicSave() {
                 alert("服务器异常！");
             }
         });
+            $('.myclass').each(function(){
+                var quotationItemData={
+                    supplier:{supplierId:$('#suppier').selectpicker('val')} ,
+                    wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName:$(this).children('td').eq(2).children('input').val(),
+                    packageType:$(this).children('td').eq(3).children('select').val(),
+                    transport:$(this).children('td').eq(8).children('select').val(),
+                    util:$(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax:$(this).children('td').eq(5).children('input').val(),
+                    contractAmount:$(this).children('td').eq(6).children('input').val(),
+                    totalPrice:$(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type:'POST',
+                    url:"addQuotationItem",
+                    data:JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            //console.log(result);
+                        }
+                        else {
+                            alert(result.message);
 
-    }
-
-    $('.myclass').each(function(){
-        var quotationItemData={
-            supplier:{supplierId:$('#suppier').selectpicker('val')} ,
-            wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
-            wastesName:$(this).children('td').eq(2).children('input').val(),
-            packageType:$(this).children('td').eq(3).children('select').val(),
-            transport:$(this).children('td').eq(8).children('select').val(),
-            util:$(this).children('td').eq(4).children('input').val(),
-            unitPriceTax:$(this).children('td').eq(5).children('input').val(),
-            contractAmount:$(this).children('td').eq(6).children('input').val(),
-            totalPrice:$(this).children('td').eq(7).children('input').val(),
-        };
-        //console.log(quotationItemData);
-        //1添加报价单明细
-        $.ajax({
-            type:'POST',
-            url:"addQuotationItem",
-            data:JSON.stringify(quotationItemData),
-            dataType: "json",
-            contentType: "application/json;charset=utf-8",
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    //console.log(result);
-                }
-                else {
-                    alert(result.message);
-
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！");
+                        }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+            alert("添加成功！")
+            if(addType=='continue'){
+                $(location).attr('href', 'logisticsContractInfo.html');
             }
-        });
-    });
-    alert("添加成功！")
-    if(addType=='continue'){
-        $(location).attr('href', 'logisticsContractInfo.html');
+            else
+            {
+            window.location.href='contractManage.html';
+                localStorage.clear();
+                localStorage.name="Logistics";
+
+            }
     }
-    if(addType=='break'){
-        localStorage.clear();
-        $(location).attr('href', 'contractManage.html');
-        localStorage.name="Logistics";
-        location.href="contractManage.html";
 
     }
+
+
+    if($('input[name="contractVersion"]:checked').val()=='companyContract') {
+        if($('#contractType1').val()==null){
+            $('#contractType1').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入合同名称！");
+            span.css('color','red');
+            $('#contractType2').after($(span));
+        }
+        var addType = $("input[name='addType']:checked").val();
+        if ($('#beginTime').val().length > 0 && $('#endTime').val().length > 0 && $('#contractType1 ').val().length > 0) {
+            var data = {
+                supplier: {supplierId: $('#suppier').selectpicker('val')},
+                contractVersion: $('input[name="contractVersion"]:checked').val(),
+                beginTime: $('#beginTime').val(),
+                endTime: $('#endTime').val(),
+                contractName: $('#contractType1').val(),
+                bankName: $('#bankName').val(),
+                bankAccount: $('#bankAccount').val(),
+                freight: $('#isFreight').prop('checked'),
+                telephone: $('#telephone').val(),
+                contactName: $('#contactName').val(),
+                ticketRate1: $('#taxRate1').val(),
+                contractType: $('#contractType').val(),
+            };
+            //console.log(data);
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "saveContract",                       // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
+                        //console.log(result);
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error: function (result) {
+                    alert("服务器异常！");
+                }
+            });
+            $('.myclass').each(function(){
+                var quotationItemData={
+                    supplier:{supplierId:$('#suppier').selectpicker('val')} ,
+                    wastesCode:$(this).children('td').eq(1).children('div').find('button').attr('title'),
+                    wastesName:$(this).children('td').eq(2).children('input').val(),
+                    packageType:$(this).children('td').eq(3).children('select').val(),
+                    transport:$(this).children('td').eq(8).children('select').val(),
+                    util:$(this).children('td').eq(4).children('input').val(),
+                    unitPriceTax:$(this).children('td').eq(5).children('input').val(),
+                    contractAmount:$(this).children('td').eq(6).children('input').val(),
+                    totalPrice:$(this).children('td').eq(7).children('input').val(),
+                };
+                //console.log(quotationItemData);
+                //1添加报价单明细
+                $.ajax({
+                    type:'POST',
+                    url:"addQuotationItem",
+                    data:JSON.stringify(quotationItemData),
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    success:function (result) {
+                        if (result != undefined && result.status == "success"){
+                            //console.log(result);
+                        }
+                        else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error:function (result) {
+                        alert("服务器异常！");
+                    }
+                });
+            });
+            alert("添加成功！");
+            if(addType=='continue'){
+                $(location).attr('href', 'logisticsContractInfo.html');
+            }
+            if(addType=='break'){
+                localStorage.clear();
+                window.location.href='contractManage.html';
+                localStorage.name="Logistics";
+
+            }
+        }
+    }
+
+
+
 
 }
 

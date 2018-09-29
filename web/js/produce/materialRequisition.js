@@ -85,7 +85,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -504,41 +504,41 @@ function loadRequisitionList() {
         language: 'zh_CN',
         size: 4
     });
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getOutBoundList",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success:function (result ) {
-            if (result != undefined && result.status == "success"){
-               // console.log(result);
-                //1获得下拉列表
-                var outboundType=$("#outboundType");
-                //2清除子元素
-                outboundType.children().remove();
-                //3遍历获得项来赋值
-                $.each(result.array,function (index,item) {
-                  //4创建选项元素
-                    var option = $('<option />');
-                    //5给option赋值
-                    option.val(index);
-                    option.text(item.name);
-                    //6添加到父节点
-                    outboundType.append(option);
-                });
-                //7初始化选项
-                outboundType.get(0).selectedIndex=-1;
-
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
-        }
-    });
+    // $.ajax({
+    //     type: "POST",                       // 方法类型
+    //     url: "getOutBoundList",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     contentType: "application/json; charset=utf-8",
+    //     success:function (result ) {
+    //         if (result != undefined && result.status == "success"){
+    //            // console.log(result);
+    //             //1获得下拉列表
+    //             var outboundType=$("#outboundType");
+    //             //2清除子元素
+    //             outboundType.children().remove();
+    //             //3遍历获得项来赋值
+    //             $.each(result.array,function (index,item) {
+    //               //4创建选项元素
+    //                 var option = $('<option />');
+    //                 //5给option赋值
+    //                 option.val(index);
+    //                 option.text(item.name);
+    //                 //6添加到父节点
+    //                 outboundType.append(option);
+    //             });
+    //             //7初始化选项
+    //             outboundType.get(0).selectedIndex=-1;
+    //
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error:function (result) {
+    //         alert("服务器异常！")
+    //     }
+    // });
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getEquipmentNameList",                  // url
