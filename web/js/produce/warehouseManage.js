@@ -393,7 +393,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord === 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count === 0)
@@ -1071,3 +1071,19 @@ function importExcel() {
         });
     });
 }
+/**
+ * 延时搜索及回车搜索功能
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp == 0){
+                searchData();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },400);
+    });
+});
