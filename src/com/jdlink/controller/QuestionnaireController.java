@@ -161,11 +161,14 @@ public class QuestionnaireController {
             if (QuestionnaireController.questionnaire.getWasteProcessList() != null)
                 oldCount = QuestionnaireController.questionnaire.getWasteProcessList().size();
             newCount = questionnaire.getWasteProcessList().size();
-            for (int i = 0; i < oldCount; i++) {
-                questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
-            }
-            for (int i = oldCount; i < newCount; i++) {
-                questionnaire.getWasteProcessList().get(i).setProcessId(RandomUtil.getRandomEightNumber());
+            // 旧数据比新数据少时
+            if(oldCount <= newCount) {
+                for (int i = 0; i < oldCount; i++) {
+                    questionnaire.getWasteProcessList().get(i).setProcessId(QuestionnaireController.questionnaire.getWasteProcessList().get(i).getProcessId());
+                }
+                for (int i = oldCount; i < newCount; i++) {
+                    questionnaire.getWasteProcessList().get(i).setProcessId(RandomUtil.getRandomEightNumber());
+                }
             }
             // 更新原材料的信息
             QuestionnaireController.questionnaire.setRawWastesList(questionnaire.getRawWastesList());
@@ -173,6 +176,8 @@ public class QuestionnaireController {
             QuestionnaireController.questionnaire.setWasteInclusionTypeList(questionnaire.getWasteInclusionTypeList());
             // 更新工艺流程的信息
             QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
+            // 设置下一页初始数据
+            QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
             res.put("status", "success");
             res.put("message", "页面2数据保存成功");
         } catch (Exception e) {
@@ -212,6 +217,12 @@ public class QuestionnaireController {
 //                        if (sensitiveElement.getId() == null || sensitiveElement.getId().equals("")) sensitiveElement.setId(RandomUtil.getRandomEightNumber());
 //                    }
 //            }
+            //如果旧数据比新数据多
+            if(oldCount > newCount){
+               // 直接替换成新数据
+                QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
+                QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
+            }
             // 如果旧数据不存在，则直接赋值
             if (oldCount == 0) {
                 for (DeriveWastes deriveWastes : questionnaire.getDeriveWastesList()) {
@@ -224,9 +235,13 @@ public class QuestionnaireController {
                     }
                 }
                 QuestionnaireController.questionnaire.setDeriveWastesList(questionnaire.getDeriveWastesList());
+                QuestionnaireController.questionnaire.setWasteProcessList(questionnaire.getWasteProcessList());
             // 如果旧数据存在，且数量小于新数据
             } else if (oldCount <= newCount) {
                 for (int i = 0; i < oldCount; i++) {
+                    // 更新页面2危废代码
+                    QuestionnaireController.questionnaire.getWasteProcessList().get(i).setCode(questionnaire.getWasteProcessList().get(i).getCode());
+                    //
                     DeriveWastes newDeriveWastes = questionnaire.getDeriveWastesList().get(i);
                     DeriveWastes oldDeriveWastes = QuestionnaireController.questionnaire.getDeriveWastesList().get(i);
                     newDeriveWastes.setId(oldDeriveWastes.getId());
@@ -300,6 +315,7 @@ public class QuestionnaireController {
                 // 对于新增加的数据则直接添加
                 for (int i = oldCount; i < newCount; i++) {
                     QuestionnaireController.questionnaire.getDeriveWastesList().add(questionnaire.getDeriveWastesList().get(i));
+                    QuestionnaireController.questionnaire.getWasteProcessList().add(questionnaire.getWasteProcessList().get(i));
                 }
             }
             res.put("status", "success");

@@ -7,9 +7,22 @@ import com.jdlink.domain.Wastes;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 送样登记单
+ */
 public class SampleInformation {
-
+    /**
+     * 送样登记单ID
+     */
     private String id;
+    /**
+     * 入库计划单ID
+     */
+    private String inboundPlanOrderId;
+    /**
+     * 签收单ID
+     */
+    private String signOrderId;
     /**
      * 公司代码
      */
@@ -66,8 +79,26 @@ public class SampleInformation {
     private boolean isFlashPoint;  // 闪点
 
     private boolean isViscosity;  // 粘度
-
+    /**
+     * 分页
+     */
     private Page page;
+
+    public String getInboundPlanOrderId() {
+        return inboundPlanOrderId;
+    }
+
+    public void setInboundPlanOrderId(String inboundPlanOrderId) {
+        this.inboundPlanOrderId = inboundPlanOrderId;
+    }
+
+    public String getSignOrderId() {
+        return signOrderId;
+    }
+
+    public void setSignOrderId(String signOrderId) {
+        this.signOrderId = signOrderId;
+    }
 
     public String getId() {
         return id;
