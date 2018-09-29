@@ -195,28 +195,17 @@
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
         clonedTr1.children("td:eq(0)").prepend(delBtn);
 
-        function changeName(element) {
-            element.find("input[name*='deriveWastesList'],select[name*='deriveWastesList']").each(function () {
-                var oldName = $(this).attr("name");
-                var newName = oldName.replace(/[0-9]\d*/, num - 1);
-                $(this).attr('name', newName);
-                if ($(this).attr('type') == "text") $(this).val("");
-                else if ($(this).attr('type') == "radio" || $(this).attr('type') == "checkbox") $(this).removeAttr('checked');
-                else if ($(this)[0].tagName == "SELECT") $(this).get(0).selectedIndex = -1;
-            });
-        }
-
-        changeName(clonedTr1);
-        changeName(clonedTr2);
-        changeName(clonedTr3);
-        changeName(clonedTr4);
-        changeName(clonedTr5);
-        changeName(clonedTr6);
-        changeName(clonedTr7);
-        changeName(clonedTr8);
-        changeName(clonedTr9);
-        changeName(clonedTr10);
-        changeName(clonedTr11);
+        changeName(clonedTr1,num);
+        changeName(clonedTr2,num);
+        changeName(clonedTr3,num);
+        changeName(clonedTr4,num);
+        changeName(clonedTr5,num);
+        changeName(clonedTr6,num);
+        changeName(clonedTr7,num);
+        changeName(clonedTr8,num);
+        changeName(clonedTr9,num);
+        changeName(clonedTr10,num);
+        changeName(clonedTr11,num);
 
         clonedTr1.insertAfter(tr11);
         clonedTr2.insertAfter(clonedTr1);
@@ -243,6 +232,35 @@
         $('.selectpicker').data('selectpicker', null);
         $('.bootstrap-select').find("button:first").remove();
         $('.selectpicker').selectpicker();
+    }
+
+    /**
+     * 更新name
+     * @param element
+     * @param num
+     */
+    function changeName(element,num) {
+        element.find("input[name*='deriveWastesList'],select[name*='deriveWastesList']").each(function () {
+            var oldName = $(this).attr("name");
+            var newName = oldName.replace(/[0-9]\d*/, num - 1);
+            $(this).attr('name', newName);
+            if ($(this).attr('type') == "text") $(this).val("");
+            else if ($(this).attr('type') == "radio" || $(this).attr('type') == "checkbox") $(this).removeAttr('checked');
+            else if ($(this)[0].tagName == "SELECT") $(this).get(0).selectedIndex = -1;
+        });
+    }
+
+    /**
+     * 更新name
+     * @param element
+     * @param num
+     */
+    function changeName1(element,num) {
+        element.find("input[name*='deriveWastesList'],select[name*='deriveWastesList']").each(function () {
+            var oldName = $(this).attr("name");
+            var newName = oldName.replace(/[0-9]\d*/, num - 1);
+            $(this).attr('name', newName);
+        });
     }
     function delLine(e) {
         var tr1 = e.parentElement.parentElement;
@@ -273,6 +291,17 @@
         for(var i = 1; i< length / 11 - 1; i++){             // 更新序号
             j++;
             tBody.children().eq(i*11 + 1).children().eq(0).get(0).innerHTML = j ;     // 更新序号
+            changeName1(tBody.children().eq(i*11 + 1),j);
+            changeName1(tBody.children().eq(i*11 + 2),j);
+            changeName1(tBody.children().eq(i*11 + 3),j);
+            changeName1(tBody.children().eq(i*11 + 4),j);
+            changeName1(tBody.children().eq(i*11 + 5),j);
+            changeName1(tBody.children().eq(i*11 + 6),j);
+            changeName1(tBody.children().eq(i*11 + 7),j);
+            changeName1(tBody.children().eq(i*11 + 8),j);
+            changeName1(tBody.children().eq(i*11 + 9),j);
+            changeName1(tBody.children().eq(i*11 + 10),j);
+            changeName1(tBody.children().eq(i*11 + 11),j);
             // 重新加上减行按钮
             var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
             tBody.children().eq(i*11 + 1).children("td:eq(0)").prepend(delBtn);
@@ -303,7 +332,7 @@
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 900px;">
+        <div class="container navbar-left" style="width: 1000px;">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
@@ -349,14 +378,6 @@
                             </li>
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
                         </ul>
                     </li>
                     <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
