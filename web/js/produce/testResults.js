@@ -18,13 +18,6 @@ function countValue() {
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
 }
-/**
- * 重置搜索数据
- */
-function reset() {
-    $("#senior").find("input").val("");
-    $("#senior").find("select").get(0).selectedIndex = -1;
-}
 
 /**
  * 计算总页数
@@ -83,7 +76,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -1038,10 +1031,12 @@ function getCheckState() {
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
                 $.each(data.checkStateList, function (index, item) {
-                    var option = $('<option />');
-                    option.val(index);
-                    option.text(item.name);
-                    checkState.append(option);
+                    if (item.index >= 1 && item.index <= 5 || item.index == 12) {
+                        var option = $('<option />');
+                        option.val(index);
+                        option.text(item.name);
+                        checkState.append(option);
+                    }
                 });
                 checkState.get(0).selectedIndex = -1;
             } else {
@@ -1152,3 +1147,20 @@ function downloadModal() {
         window.open('downloadFile?filePath=' + filePath);
     }
 }
+
+/**
+ * 延时搜索及回车搜索功能
+ */
+$(document).ready(function () {//页面载入是就会进行加载里面的内容
+    var last;
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp == 0){
+                searchData();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                searchData();      //
+            }
+        },400);
+    });
+});
