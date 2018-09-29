@@ -1096,11 +1096,14 @@ function setSalesPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchSalesPage(num);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 
 }
 
@@ -1109,6 +1112,9 @@ function setSalesPageClone(result) {
  * @param pageNumber 跳转页数
  * */
 function switchSalesPage(pageNumber) {
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     console.log("当前页：" + pageNumber);
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
@@ -1198,6 +1204,9 @@ function switchSalesPage(pageNumber) {
  * */
 function inputSalesSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     $("#current").find("a").text("当前页："+pageNumber);
     if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
