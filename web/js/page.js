@@ -621,11 +621,14 @@ function setSupplierPageClone(result) {
         clonedLi.find('a:first-child').click(function () {
             var num = $(this).text();
             switchSupplierPage(num);
+            addAndRemoveClass(this);
         });
         clonedLi.addClass("beforeClone");
         clonedLi.removeAttr("id");
         clonedLi.insertAfter(li);
     }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页码标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
 }
 
 /**
@@ -814,6 +817,8 @@ function loadPageSupplierList() {
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
     var page = {};
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
