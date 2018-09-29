@@ -251,25 +251,27 @@ public class SupplierController {
             //枚举类型转换
             //供应商类型
             String keyword = supplier.getKeyword();
-            if (keyword.equals("次生处置供方") || keyword.equals("次生处置") || keyword.equals("次生") || keyword.equals("处置"))
-                keyword = "DeriveDisposal";
-            if (keyword.equals("运输类供方") || keyword.equals("运输类") || keyword.equals("运输"))
-                keyword = "Transport";
-            if (keyword.equals("采购供方") || keyword.equals("采购"))
-                keyword = "Purchase";
-            if (keyword.equals("其他供方") || keyword.equals("其他"))
-                keyword = "Others";
-            //supplierState
-            if (keyword.equals("已启用") || keyword.equals("启用")) keyword = "Enabled";
-            if (keyword.equals("已禁用") || keyword.equals("禁用")) keyword = "Disabled";
-            //checkState
-            for (CheckState c : CheckState.values()) {
-                if (keyword.equals(c.getName())) {
-                    keyword = c.name();
-                    //System.out.println("keyword=" + keyword);
+            if (keyword != null) {
+                if (keyword.equals("次生处置供方") || keyword.equals("次生处置") || keyword.equals("次生") || keyword.equals("处置"))
+                    keyword = "DeriveDisposal";
+                if (keyword.equals("运输类供方") || keyword.equals("运输类") || keyword.equals("运输"))
+                    keyword = "Transport";
+                if (keyword.equals("采购供方") || keyword.equals("采购"))
+                    keyword = "Purchase";
+                if (keyword.equals("其他供方") || keyword.equals("其他"))
+                    keyword = "Others";
+                //supplierState
+                if (keyword.equals("已启用") || keyword.equals("启用")) keyword = "Enabled";
+                if (keyword.equals("已禁用") || keyword.equals("禁用")) keyword = "Disabled";
+                //checkState
+                for (CheckState c : CheckState.values()) {
+                    if (keyword.equals(c.getName())) {
+                        keyword = c.name();
+                        //System.out.println("keyword=" + keyword);
+                    }
                 }
+                supplier.setKeyword(keyword);
             }
-            supplier.setKeyword(keyword);
             List<Supplier> supplierList = supplierService.search(supplier);
             JSONArray data = JSONArray.fromArray(supplierList.toArray(new Supplier[supplierList.size()]));
             res.put("status", "success");
@@ -290,25 +292,27 @@ public class SupplierController {
             //枚举类型转换
             //供应商类型
             String keyword = supplier.getKeyword();
-            if (keyword.equals("次生处置供方") || keyword.equals("次生处置") || keyword.equals("次生") || keyword.equals("处置"))
-                keyword = "DeriveDisposal";
-            if (keyword.equals("运输类供方") || keyword.equals("运输类") || keyword.equals("运输"))
-                keyword = "Transport";
-            if (keyword.equals("采购供方") || keyword.equals("采购"))
-                keyword = "Purchase";
-            if (keyword.equals("其他供方") || keyword.equals("其他"))
-                keyword = "Others";
-            //supplierState
-            if (keyword.equals("已启用") || keyword.equals("启用")) keyword = "Enabled";
-            if (keyword.equals("已禁用") || keyword.equals("禁用")) keyword = "Disabled";
-            //checkState
-            for (CheckState c : CheckState.values()) {
-                if (keyword.equals(c.getName())) {
-                    keyword = c.name();
-                    //System.out.println("keyword=" + keyword);
+            if (keyword != null) {
+                if (keyword.equals("次生处置供方") || keyword.equals("次生处置") || keyword.equals("次生") || keyword.equals("处置"))
+                    keyword = "DeriveDisposal";
+                if (keyword.equals("运输类供方") || keyword.equals("运输类") || keyword.equals("运输"))
+                    keyword = "Transport";
+                if (keyword.equals("采购供方") || keyword.equals("采购"))
+                    keyword = "Purchase";
+                if (keyword.equals("其他供方") || keyword.equals("其他"))
+                    keyword = "Others";
+                //supplierState
+                if (keyword.equals("已启用") || keyword.equals("启用")) keyword = "Enabled";
+                if (keyword.equals("已禁用") || keyword.equals("禁用")) keyword = "Disabled";
+                //checkState
+                for (CheckState c : CheckState.values()) {
+                    if (keyword.equals(c.getName())) {
+                        keyword = c.name();
+                        //System.out.println("keyword=" + keyword);
+                    }
                 }
+                supplier.setKeyword(keyword);
             }
-            supplier.setKeyword(keyword);
             return supplierService.searchCount(supplier);
         } catch (Exception e) {
             e.printStackTrace();
