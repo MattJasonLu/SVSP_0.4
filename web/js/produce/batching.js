@@ -434,15 +434,21 @@ function setWasteInventoryList(result) {
                             break;
                         //产废单位
                         case (4):
-                            $(this).html(obj.produceCompany.companyName);
+                            if(obj.produceCompany!=null){
+                                $(this).html(obj.produceCompany.companyName);
+                            }
                             break;
                         // 危废名称
                         case (5):
-                            $(this).html(obj.laboratoryTest.wastesName);
+                            if(obj.laboratoryTest!=null){
+                                $(this).html(obj.laboratoryTest.wastesName);
+                            }
                             break;
                         // 危废代码
                         case (6):
-                            $(this).html(obj.laboratoryTest.wastesCode);
+                            if(obj.laboratoryTest!=null) {
+                                $(this).html(obj.laboratoryTest.wastesCode);
+                            }
                             break;
                         // 产废类别
                         case (7):
@@ -450,7 +456,9 @@ function setWasteInventoryList(result) {
                             break;
                         // 进料方式
                         case (8):
-                            $(this).html(obj.handleCategory.name);
+                            if(obj.handleCategory!=null){
+                                $(this).html(obj.handleCategory.name);
+                            }
                             break;
                         //数量
                         case (9):

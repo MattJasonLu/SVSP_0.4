@@ -8,8 +8,10 @@ import com.jdlink.domain.Produce.ProcessWay;
 import java.util.Date;
 import java.util.List;
 
-/*配料单*/
-   public class BatchingOrder {
+/**
+ * 配料单
+ */
+public class BatchingOrder {
     /*配料单号*/
     private String batchingOrderId;
     /*配料日期*/
@@ -17,7 +19,7 @@ import java.util.List;
     /*创建人*/
     private String creator;
     /*创建日期*/
-   private Date createDate;
+    private Date createDate;
     /*备注*/
     private String remarks;
     /*仓库*/
@@ -38,9 +40,26 @@ import java.util.List;
 //    private Salesman salesman;
     private Wastes wastes;
     private String inboundOrderItemId;
-   private PackageType packageType;
-   private FormType formType;
-  private String time;
+    private PackageType packageType;
+    private FormType formType;
+    private String time;
+    /*领料状态*/
+    private CheckState checkState;
+    /*记录状态*/
+    private  RecordState recordState;
+    /*危废库存*/
+//    private WasteInventory wasteInventory;
+    /*入库单对象*/
+    private InboundOrder inboundOrder;
+    /**
+     * 页码
+     */
+    private Page page;
+    /*配料数量*/
+    private HandleCategory handelCategory;
+    private ProcessWay processWay;
+    private float batchingNumber;
+    private LaboratoryTest laboratoryTest;
 
     public String getTime() {
         return time;
@@ -49,13 +68,6 @@ import java.util.List;
     public void setTime(String time) {
         this.time = time;
     }
-
-    /**
-     * 页码
-     * @return
-     */
-    private Page page;
-
 
     public Page getPage() {
         return page;
@@ -113,15 +125,6 @@ import java.util.List;
 //        this.salesman = salesman;
 //    }
 
-    /*领料状态*/
-    private CheckState checkState;
-    /*记录状态*/
-    private  RecordState recordState;
-    /*危废库存*/
-//    private WasteInventory wasteInventory;
-    /*入库单对象*/
-    private InboundOrder inboundOrder;
-
     public InboundOrder getInboundOrder() {
         return inboundOrder;
     }
@@ -129,15 +132,6 @@ import java.util.List;
     public void setInboundOrder(InboundOrder inboundOrder) {
         this.inboundOrder = inboundOrder;
     }
-
-    /*配料数量*/
-    private HandleCategory handelCategory;
-    private ProcessWay processWay;
-    private float batchingNumber;
-    private LaboratoryTest laboratoryTest;
-
-
-
 
     public ProcessWay getProcessWay() {
         return processWay;
@@ -294,9 +288,6 @@ import java.util.List;
     public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
-
-
-
 
 //    public List<MaterialRequisitionOrder> getMaterialRequisitionOrderList() {
 //        return materialRequisitionOrderList;

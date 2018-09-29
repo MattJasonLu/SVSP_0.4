@@ -18,15 +18,6 @@ public class Stock {
      *产废公司名称
      */
     private String proWasteCompany;
-
-    public String getProWasteCompany() {
-        return proWasteCompany;
-    }
-
-    public void setProWasteCompany(String proWasteCompany) {
-        this.proWasteCompany = proWasteCompany;
-    }
-
     /**
      *产废联系人
      */
@@ -50,7 +41,7 @@ public class Stock {
     /**
     * 危废列表
      */
-   private List<Wastes> wastesList=new ArrayList<>();
+    private List<Wastes> wastesList=new ArrayList<>();
     /**
      * 审批意见
      */
@@ -59,18 +50,29 @@ public class Stock {
      * 驳回意见
      */
     private  String backContent;
-
     /**
      * 产废公司
-     * @return
      */
     private Client client;
-
     /**
      * 运输类供应方
-     * @return
      */
     private Supplier supplier;
+    /**
+     * 是否自营
+     */
+    private boolean selfEmployed;
+    /**
+     * 是否需要添加
+     */
+    private String addType;
+    /**
+     * 状态
+     */
+    private CheckState checkState;
+
+    private Page page;
+    private String keyword;
 
     public Supplier getSupplier() {
         return supplier;
@@ -78,6 +80,14 @@ public class Stock {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public String getProWasteCompany() {
+        return proWasteCompany;
+    }
+
+    public void setProWasteCompany(String proWasteCompany) {
+        this.proWasteCompany = proWasteCompany;
     }
 
     public Client getClient() {
@@ -104,8 +114,6 @@ public class Stock {
         this.backContent = backContent;
     }
 
-    private Page page;
-
     public Page getPage() {
         return page;
     }
@@ -113,7 +121,6 @@ public class Stock {
     public void setPage(Page page) {
         this.page = page;
     }
-    private  String keyword;
 
     public String getKeyword() {
         return keyword;
@@ -123,22 +130,6 @@ public class Stock {
         this.keyword = keyword;
     }
 
-    @Override
-    public String toString() {
-        return "Stock{" +
-                "stockId='" + stockId + '\'' +
-                ", proContactName='" + proContactName + '\'' +
-                ", proTelephone='" + proTelephone + '\'' +
-                ", transport='" + transport + '\'' +
-                ", transportTelephone='" + transportTelephone + '\'' +
-                ", plateNumber='" + plateNumber + '\'' +
-                ", wastesList=" + wastesList +
-                ", selfEmployed=" + selfEmployed +
-                ", addType='" + addType + '\'' +
-                ", checkState=" + checkState +
-                '}';
-    }
-
     public List<Wastes> getWastesList() {
         return wastesList;
     }
@@ -146,18 +137,6 @@ public class Stock {
     public void setWastesList(List<Wastes> wastesList) {
         this.wastesList = wastesList;
     }
-
-    /**
-     * 是否自营
-     */
-    private boolean selfEmployed;
-   //是否需要添加
-    private String addType;
-    /**
-     * 状态
-     */
-    private CheckState checkState;
-
 
     public CheckState getCheckState() {
         return checkState;
@@ -231,5 +210,26 @@ public class Stock {
         this.plateNumber = plateNumber;
     }
 
-
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "stockId='" + stockId + '\'' +
+                ", proWasteCompany='" + proWasteCompany + '\'' +
+                ", proContactName='" + proContactName + '\'' +
+                ", proTelephone='" + proTelephone + '\'' +
+                ", transport='" + transport + '\'' +
+                ", transportTelephone='" + transportTelephone + '\'' +
+                ", plateNumber='" + plateNumber + '\'' +
+                ", wastesList=" + wastesList +
+                ", opinion='" + opinion + '\'' +
+                ", backContent='" + backContent + '\'' +
+                ", client=" + client +
+                ", supplier=" + supplier +
+                ", selfEmployed=" + selfEmployed +
+                ", addType='" + addType + '\'' +
+                ", checkState=" + checkState +
+                ", page=" + page +
+                ", keyword='" + keyword + '\'' +
+                '}';
+    }
 }

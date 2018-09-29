@@ -5,6 +5,9 @@ import com.jdlink.domain.Page;
 
 import java.util.Date;
 
+/**
+ * 产量计划单
+ */
 public class ProductionPlan {
     /**
      * 产量计划单编号

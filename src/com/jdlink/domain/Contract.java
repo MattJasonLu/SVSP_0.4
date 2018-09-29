@@ -217,6 +217,24 @@ public class Contract implements Serializable {
      */
     private List<QuotationItem> quotationItemList=new ArrayList<>();
 
+    private String suppierName;
+    /**
+     * 业务员ID
+     */
+    private String salesmanId;
+    /**
+     * 业务员姓名
+     */
+    private String salesmanName;
+    /**
+     * 客户对象
+     */
+    private Client client;
+    /**
+     * 增加类型
+     */
+    private String addType;
+
     public List<QuotationItem> getQuotationItemList() {
         return quotationItemList;
     }
@@ -225,11 +243,6 @@ public class Contract implements Serializable {
         this.quotationItemList = quotationItemList;
     }
 
-    private String suppierName;
-    /**
-     * 业务员ID
-     */
-    private String salesmanId;
 
     public Supplier getSupplier() {
         return supplier;
@@ -247,15 +260,7 @@ public class Contract implements Serializable {
         this.client = client;
     }
 
-    /**
-     * 业务员姓名
-     */
 
-    private String salesmanName;
-    /**
-     * 客户对象
-     */
-    private Client client;
 
     public String getSalesmanName() {
         return salesmanName;
@@ -409,7 +414,7 @@ public class Contract implements Serializable {
         this.modelVersion = modelVersion;
     }
 
-    private String addType;
+
 
     public String getAddType() {
         return addType;

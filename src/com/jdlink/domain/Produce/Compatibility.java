@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 配伍周计划
+ */
 public class Compatibility {
     //序号
     private String pwId;
@@ -43,7 +46,7 @@ public class Compatibility {
     private float weeklyDemandTotal;
     //热值总量
     private float calorificTotal;
-//审核状态
+    //审核状态
     private CheckState checkState;
     //配伍编号
     //审批内容
@@ -52,13 +55,13 @@ public class Compatibility {
     private String backContent;
     //关键字
     private  String keyword;
-//开始日期
+    //开始日期
     private  Date beginTime;
     //结束日期
     private  Date endTime;
-//当前时间
+    //当前时间
     private  Date nowTime;
-//危废信息
+    //危废信息
     private List<Wastes> wastesList=new ArrayList<>();
 
     public List<Wastes> getWastesList() {
@@ -132,29 +135,6 @@ public class Compatibility {
 
     public void setCheckState(CheckState checkState) {
         this.checkState = checkState;
-    }
-
-    @Override
-    public String toString() {
-        return "Compatibility{" +
-                "pwId='" + pwId + '\'' +
-                ", handleCategory=" + handleCategory +
-                ", formType=" + formType +
-                ", proportion=" + proportion +
-                ", dailyProportions=" + dailyProportions +
-                ", weeklyDemand=" + weeklyDemand +
-                ", calorific=" + calorific +
-                ", ash=" + ash +
-                ", water=" + water +
-                ", CL=" + CL +
-                ", S=" + S +
-                ", P=" + P +
-                ", F=" + F +
-                ", PH=" + PH +
-                ", dailyProportionsTotal=" + dailyProportionsTotal +
-                ", weeklyDemandTotal=" + weeklyDemandTotal +
-                ", calorificTotal=" + calorificTotal +
-                '}';
     }
 
     public String getPwId() {
@@ -291,5 +271,28 @@ public class Compatibility {
 
     public void setCalorificTotal(float calorificTotal) {
         this.calorificTotal = calorificTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "Compatibility{" +
+                "pwId='" + pwId + '\'' +
+                ", handleCategory=" + handleCategory +
+                ", formType=" + formType +
+                ", proportion=" + proportion +
+                ", dailyProportions=" + dailyProportions +
+                ", weeklyDemand=" + weeklyDemand +
+                ", calorific=" + calorific +
+                ", ash=" + ash +
+                ", water=" + water +
+                ", CL=" + CL +
+                ", S=" + S +
+                ", P=" + P +
+                ", F=" + F +
+                ", PH=" + PH +
+                ", dailyProportionsTotal=" + dailyProportionsTotal +
+                ", weeklyDemandTotal=" + weeklyDemandTotal +
+                ", calorificTotal=" + calorificTotal +
+                '}';
     }
 }

@@ -850,6 +850,10 @@ function judge1() {
 function delLine(e) {
     var tr = e.parentElement.parentElement;
     tr.parentNode.removeChild(tr);
+    $('.myclass').each(function (index,item) {
+        $(this).children('td').eq(0).html("<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>"+(parseInt(index)+1).toString());
+    });
+
 }
 
 //保存库存信息
@@ -928,7 +932,7 @@ function addNewLine() {
     });
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-    clonedTr.children("td:eq(0)").prepend(delBtn);
+    clonedTr.children("td:eq(0)").append(delBtn);
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
@@ -970,7 +974,7 @@ function addNewLine1() {
     });
     clonedTr.insertAfter(tr);
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
-    clonedTr.children("td:eq(0)").prepend(delBtn);
+    clonedTr.children("td:eq(0)").append(delBtn);
       $('.selectpicker').data('selectpicker', null);//清空
       $('.bootstrap-select').find("button:first").remove();//删除
        $('.selectpicker').selectpicker();//初始化

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 采购数据结构
+ */
 public class Procurement {
     /**
      * 物资类别(应急同)
@@ -67,7 +70,7 @@ public class Procurement {
     /**
      *物资需求清单列表
      */
-    List<Material> materialList=new ArrayList<>();
+    List<Material> materialList = new ArrayList<>();
     /**
      * 模糊查询关键字
      */
@@ -80,6 +83,13 @@ public class Procurement {
      * 入库状态
      */
     private CheckState state;
+    /**
+     * 采购类别(true 为月季采购，false为应急采购)
+     */
+    /**
+     * 创建日期
+     */
+    private  Date createDate;
 
 
     public CheckState getState() {
@@ -160,13 +170,7 @@ public class Procurement {
 //     * 备注
 //     */
 //    private String note;
-    /**
-     * 采购类别(true 为月季采购，false为应急采购)
-     */
-    /**
-     * 创建日期
-     */
-    private  Date createDate;
+
 
     public Date getCreateDate() {
         return createDate;
