@@ -134,26 +134,31 @@
         tr6.removeAttr("id");
     }
 </script>
+<style>
+    li {
+        border-bottom: 0px solid transparent;
+    }
+</style>
 <body onload="loadPage4Info();">
     <!--导航条-->
     <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
         <div class="main-title">
-            <ul class="nav navbar-nav navbar-left navbar-side">
+            <ul class="nav navbar-nav navbar-left navbar-side" style="height: 50px">
                 <li>
-                    <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                    <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px;margin-top: -5px;margin-left: -5px">
                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="container navbar-left" style="width: 1000px;">
+        <div class="container navbar-left" style="width: 1000px;height: 50px">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
             </div>
-            <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
-                <ul class="nav navbar-nav">
-                    <li><a href="businessModel.html">首页</a></li>
-                    <li class="dropdown active">
+            <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;height: 50px">
+                <ul class="nav navbar-nav" style="height: 50px">
+                    <li><a href="businessModel.html" style="margin-top: -5px;margin-left: -5px">首页</a></li>
+                    <li class="dropdown active" style="margin-top: -1px;margin-left: -5px">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产废单位管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="clientBackup.html" id="function_48" onclick="checkAuthority($(this))">产废单位备案</a></li>
@@ -174,13 +179,13 @@
                             <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown" style="margin-top: -1px;margin-left: -5px">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">处置单位管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="supplierBackup.html" id="function_15" onclick="checkAuthority($(this))">处置单位备案</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown" style="margin-top: -1px;margin-left: -5px">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu">
@@ -194,23 +199,15 @@
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
-                    <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
+                    <li style="margin-top: -1px;margin-left: -5px"><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
+                    <li style="margin-top: -1px;margin-left: -5px"><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
-            <li class="dropdown">
+            <li style="margin-top: -1px;margin-left: -5px"><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
+            <li style="margin-top: -1px;margin-left: -5px"><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li style="margin-top: -1px;margin-left: -5px" class="dropdown">
                 <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="#">个人信息</a></li>
@@ -220,7 +217,6 @@
                 </ul>
             </li>
         </ul>
-
     </nav>
 
     <div class="container-fluid">
