@@ -955,7 +955,7 @@
                             <div class="form-group">
                                 <label for="search-questionnaireId" class="col-sm-4 control-label">调查表编号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-questionnaireId" name="search-questionnaireId" placeholder="">
+                                    <input type="text" class="form-control" id="search-questionnaireId" name="search-questionnaireId" placeholder="" onkeyup="searchQuestionnaire();">
                                 </div>
                             </div>
                         </div>
@@ -963,7 +963,7 @@
                             <div class="form-group">
                                 <label for="search-industry" class="col-sm-4 control-label">所属行业</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-industry" name="search-industry" placeholder="">
+                                    <input type="text" class="form-control" id="search-industry" name="search-industry" placeholder="" onkeyup="searchQuestionnaire();">
                                 </div>
                             </div>
                         </div>
@@ -971,7 +971,7 @@
                             <div class="form-group">
                                 <label for="search-product" class="col-sm-4 control-label">主要产品</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-product" name="search-product" placeholder="">
+                                    <input type="text" class="form-control" id="search-product" name="search-product" placeholder="" onkeyup="searchQuestionnaire();">
                                 </div>
                             </div>
                         </div>
@@ -979,7 +979,7 @@
                             <div class="form-group">
                                 <label for="search-author" class="col-sm-4 control-label">填报人</label>
                                 <div class="col-xs-7">
-                                    <input class="form-control" name="search-author" id="search-author">
+                                    <input class="form-control" name="search-author" id="search-author" onkeyup="searchQuestionnaire();">
                                 </div>
                             </div>
                         </div>
@@ -989,7 +989,7 @@
                             <div class="form-group">
                                 <label for="search-companyName" class="col-sm-4 control-label">企业名称</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="" onkeyup="searchQuestionnaire();">
                                 </div>
                             </div>
                         </div>
@@ -997,8 +997,7 @@
                             <div class="form-group">
                                 <label for="search-state" class="col-sm-4 control-label">状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-state" id="search-state">
-                                    </select>
+                                    <select class="form-control" name="search-state" id="search-state" onchange="searchQuestionnaire()"></select>
                                 </div>
                             </div>
                         </div>

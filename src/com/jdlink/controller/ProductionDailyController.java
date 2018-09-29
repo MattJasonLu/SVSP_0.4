@@ -216,8 +216,8 @@ public class ProductionDailyController {
 
     /**
      * 导入生产日报
-     * @param excelFile
-     * @return
+     * @param excelFile 日报文件
+     * @return 导入生产日报
      */
     @RequestMapping("importProductionDailyExcel")
     @ResponseBody
@@ -226,6 +226,7 @@ public class ProductionDailyController {
         try {
             // 获取危废入库的表格数据
             Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            // TODO: 生产日报导入问题 2018-09-29 13:16:44
             res.put("status", "success");
             res.put("message", "导入成功");
         } catch (Exception e) {

@@ -170,6 +170,17 @@
         var clonedTr9 = tr9.clone();
         var clonedTr10 = tr10.clone();
         var clonedTr11 = tr11.clone();
+        clonedTr1.addClass("newLine");
+        clonedTr2.addClass("newLine");
+        clonedTr3.addClass("newLine");
+        clonedTr4.addClass("newLine");
+        clonedTr5.addClass("newLine");
+        clonedTr6.addClass("newLine");
+        clonedTr7.addClass("newLine");
+        clonedTr8.addClass("newLine");
+        clonedTr9.addClass("newLine");
+        clonedTr10.addClass("newLine");
+        clonedTr11.addClass("newLine");
         // 获取编号
         var id = tr1.children().get(0).innerHTML;
         var num = parseInt(id);
@@ -187,7 +198,7 @@
         function changeName(element) {
             element.find("input[name*='deriveWastesList'],select[name*='deriveWastesList']").each(function () {
                 var oldName = $(this).attr("name");
-                var newName = oldName.replace(/[0-9]\d*/, id);
+                var newName = oldName.replace(/[0-9]\d*/, num - 1);
                 $(this).attr('name', newName);
                 if ($(this).attr('type') == "text") $(this).val("");
                 else if ($(this).attr('type') == "radio" || $(this).attr('type') == "checkbox") $(this).removeAttr('checked');
@@ -229,9 +240,14 @@
         tr9.removeAttr("id");
         tr10.removeAttr("id");
         tr11.removeAttr("id");
+        $('.selectpicker').data('selectpicker', null);
+        $('.bootstrap-select').find("button:first").remove();
+        $('.selectpicker').selectpicker();
     }
     function delLine(e) {
         var tr1 = e.parentElement.parentElement;
+        var length = $(tr1.parentNode).children().length - 2;         // 行数
+        var tBody = $(tr1.parentNode);
         var tr2 = tr1.nextElementSibling;
         var tr3 = tr2.nextElementSibling;
         var tr4 = tr3.nextElementSibling;
@@ -253,6 +269,14 @@
         tr9.parentNode.removeChild(tr9);
         tr10.parentNode.removeChild(tr10);
         tr11.parentNode.removeChild(tr11);
+        var j = 1;
+        for(var i = 1; i< length / 11 - 1; i++){             // 更新序号
+            j++;
+            tBody.children().eq(i*11 + 1).children().eq(0).get(0).innerHTML = j ;     // 更新序号
+            // 重新加上减行按钮
+            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);id1--;'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+            tBody.children().eq(i*11 + 1).children("td:eq(0)").prepend(delBtn);
+        }
     }
 </script>
 <style>
@@ -622,6 +646,7 @@
      * 装载页面3的数据
      */
     function loadPage3Info() {
+        $(".newLine").remove();            // 删除旧行
         // 添加危废信息
         $.ajax({
             type: "POST",                       // 方法类型
@@ -663,8 +688,13 @@
                     if (result.status == "success") {
                         var data = eval(result);
                         $("#questionnaireId").text(data.data.questionnaireId);
+                        // for(var i = 0; i < data.data.wasteProcessList.length; i++){
+                        //     if (i > 0) addNewLine();
+                        //     var $i = i;
+                        //     $("select[name='deriveWastesList[" + $i + "].code']").selectpicker('val', data.data.wasteProcessList[i].code);
+                        // }
                         for (var i = 0; i < data.data.deriveWastesList.length; i++) {
-                            if (i > 0) addNewLine();
+                           if (i > 0) addNewLine();
                             var $i = i;
                             $("input[name='deriveWastesList[" + $i + "].name']").val(data.data.deriveWastesList[i].name);
                             $("select[name='deriveWastesList[" + $i + "].code']").selectpicker('val', data.data.deriveWastesList[i].code);
@@ -712,11 +742,15 @@
         var deriveWastesCount = $("select[name$='code']").length;
         // 可能引入化学物质列表
         data['deriveWastesList'] = [];
+        data['wasteProcessList'] = [];
         for (var i = 0; i < deriveWastesCount; i++) {
             var $i = i;
+            console.log($("select[name='deriveWastesList[" + $i + "].code']"));
             var deriveWastes = {};
+            var wasteProcess = {};
             deriveWastes.name = $("input[name='deriveWastesList[" + $i + "].name']").val();
             deriveWastes.code = $("select[name='deriveWastesList[" + $i + "].code']").selectpicker('val');
+            wasteProcess.code = deriveWastes.code;
             deriveWastes.formType = $("select[name='deriveWastesList[" + $i + "].formType']").val();
             deriveWastes.formTypeDetail = $("input[name='deriveWastesList[" + $i + "].formTypeDetail']").val();
             deriveWastes.smellType = $("select[name='deriveWastesList[" + $i + "].smellType']").val();
@@ -729,7 +763,6 @@
             deriveWastes.isMixture = $("input[name='deriveWastesList[" + $i + "].isMixture']:checked").val();
             deriveWastes['mixingElementList'] = [];
             deriveWastes['sensitiveElementList'] = [];
-
             // 混合物成分列表
             var mixingElementList = $("input[name^='deriveWastesList[" + $i + "]'][name$='name'][name*='mixingElementList']");
             var mixingElementArray = [];
@@ -769,9 +802,9 @@
                 deriveWastes.sensitiveElementList.push(sensitiveElement);
             }
             data['deriveWastesList'].push(deriveWastes);
+            data['wasteProcessList'].push(wasteProcess);
         }
         console.log(data);
-
         $.ajax({
             type: "POST",                            // 方法类型
             url: "savePage3Info",               // url

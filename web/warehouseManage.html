@@ -145,7 +145,7 @@
                             <div class="form-group">
                                 <label for="search-warehouseName" class="col-sm-4 control-label">仓库</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-warehouseName" name="search-warehouseName" placeholder="">
+                                    <input type="text" class="form-control" id="search-warehouseName" name="search-warehouseName" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                             <div class="form-group">
                                 <label for="search-inboundOrderId" class="col-sm-4 control-label">入库单号</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-inboundOrderId" name="search-inboundOrderId" placeholder="">
+                                    <input type="text" class="form-control" id="search-inboundOrderId" name="search-inboundOrderId" placeholder="" onkeyup="searchData();">
                                 </div>
                             </div>
                         </div>
@@ -161,7 +161,7 @@
                             <div class="form-group">
                                 <label for="search-recordState" class="col-sm-4 control-label">单据状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-recordState" id="search-recordState"></select>
+                                    <select class="form-control" name="search-recordState" id="search-recordState" onchange="searchData();"></select>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                             <div class="form-group">
                                 <label for="search-checkState" class="col-sm-4 control-label">审批状态</label>
                                 <div class="col-xs-7">
-                                    <select class="form-control" name="search-checkState" id="search-checkState"></select>
+                                    <select class="form-control" name="search-checkState" id="search-checkState" onchange="searchData();"></select>
                                 </div>
                             </div>
                         </div>
