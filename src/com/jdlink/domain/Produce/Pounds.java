@@ -20,6 +20,10 @@ public class Pounds {
      */
     private String transferId;
     /**
+     * 入库计划单ID
+     */
+    private String inboundPlanOrderId;
+    /**
      * 创建人
      */
     private String founder;
@@ -111,6 +115,14 @@ public class Pounds {
      * 日期查询 终止时间
      */
     private Date endDate;
+
+    public String getInboundPlanOrderId() {
+        return inboundPlanOrderId;
+    }
+
+    public void setInboundPlanOrderId(String inboundPlanOrderId) {
+        this.inboundPlanOrderId = inboundPlanOrderId;
+    }
 
     public Date getStartDate() {
         return startDate;
