@@ -59,7 +59,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -467,42 +467,66 @@ function setOutboutList(result,index) {
 
 //保存添加至库存
 function saveOutBound(){
+    if($('#outBoundDate').val().length>0){
     if(confirm("确定生成出库单?")){
         //点击确定后操作
         //获得输入的数据
-        $('.myclass2').each(function (index) {
-            //1出库日期
-            var outboundDate=$("#outBoundDate").val();
-            //2出库类别
-            var boundType=$("#outboundType").val();
-            //3制单人
-            var  creator=$('#creator').val();
-            //4审核人
-            var auditor=$('#auditor').val();
-            //5领料单号
-            var materialRequisitionId=$(this).children().get(10).innerHTML;
-            //6处置设备
-            var equipment=$('#equipment').selectpicker('val')-1;
-            data={
-                boundType:boundType,
-                outboundDate:outboundDate,
-                creator:creator,
-                auditor:auditor,
-                outboundNumber:$(this).children('td').get(4).innerHTML,
-                materialRequisitionOrder:{materialRequisitionId:materialRequisitionId},
-                equipment:equipment,
-            }
-            console.log(data);
-           addOutBoundOrder(data);
-        });
+            $('.myclass2').each(function (index) {
+                //1出库日期
+                var outboundDate=$("#outBoundDate").val();
+                //2出库类别
+                var boundType=$("#outboundType").val();
+                //3制单人
+                var  creator=$('#creator').val();
+                //4审核人
+                var auditor=$('#auditor').val();
+                //5领料单号
+                var materialRequisitionId=$(this).children().get(10).innerHTML;
+                //6处置设备
+                var equipment=$('#equipment').selectpicker('val')-1;
+                data={
+                    boundType:boundType,
+                    outboundDate:outboundDate,
+                    creator:creator,
+                    auditor:auditor,
+                    outboundNumber:$(this).children('td').get(4).innerHTML,
+                    materialRequisitionOrder:{materialRequisitionId:materialRequisitionId},
+                    equipment:equipment,
+                }
+                console.log(data);
+                addOutBoundOrder(data);
+            });
+        }
+        alert("出库成功！");
+       // window.location.href="warehouseManageOut.html";
+      window.location.href="warehouseManageOut.html";
 
     }
-   window.location.href="warehouseManageOut.html";
+
+    else
+    {
+            $('#outBoundDate').parent().next('span').remove();
+            var span=$('<span>');
+            span.text("请输入日期！");
+            span.css('color','red');
+            $('#outBoundDate').after($(span));
+    }
 
 
 
 
 
+
+}
+
+
+function warning(item) {
+    // if($('#beginTime').val().length>0&&$('#endTime').val().length>0){
+    //    $('#endTime').parent().next('span').remove();
+    // }
+    if($(item).val().length>0){
+        $(item).next('span').remove();
+    }
 }
 
 //添加出库单
@@ -987,15 +1011,19 @@ function searchWasteOut() {
           if(endDate.toString()=='Invalid Date'){
               endDate=new Date();
           }
+            var  start=$(this).children('td').eq(4).text();
+            if(start.length==0){
+                start=startDate;
+            }
                 if(!($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                     &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(3).text().indexOf(salesman)!=-1
-                    &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
+                    &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
                 )){
                     $(this).hide();
                 }
                 if(($(this).children('td').eq(12).text().indexOf(outBoundNumber)!=-1&&$(this).children('td').text().indexOf(text)!=-1
                     &&$(this).children('td').eq(13).text().indexOf(processWay)!=-1&&$(this).children('td').eq(3).text().indexOf(salesman)!=-1)
-                    &&(getDateByStr($(this).children('td').eq(4).text())<=endDate&&getDateByStr($(this).children('td').eq(4).text())>=startDate)
+                    &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
                 ){
                     array1.push($(this));
                 }
