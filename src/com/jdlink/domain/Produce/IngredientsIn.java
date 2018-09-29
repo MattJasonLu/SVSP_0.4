@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 辅料、备件入库
+ */
 public class IngredientsIn {
     /**
      * 入库单编号

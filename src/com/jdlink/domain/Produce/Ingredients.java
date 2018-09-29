@@ -3,6 +3,9 @@ package com.jdlink.domain.Produce;
 import java.util.Arrays;
 import java.util.Date;
 
+/**
+ * 辅料备件数据结构
+ */
 public class Ingredients {
     /**
      * 辅料、备件ID

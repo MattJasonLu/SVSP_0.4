@@ -137,6 +137,9 @@ function switchPage(pageNumber) {
     if(pageNumber > totalPage()){
         pageNumber = totalPage();
     }
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     if (pageNumber == 0) {                 //首页
         pageNumber = 1;
     }
@@ -222,6 +225,9 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
     if(pageNumber > totalPage()){
         pageNumber = totalPage();
     }

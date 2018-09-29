@@ -58,46 +58,41 @@ public class WasteInventory {
      * 剩余数量
      */
     private float  leftNumeber;
-
-    /**
-     * 化验单对象
-     * @return
-     */
     /**
      * 报价单明细
      */
     private QuotationItem quotationItem;
+    /**
+     * 化验单对象
+     */
     private LaboratoryTest laboratoryTest;
     /**
      * 含税单价
      */
     private float unitPriceTax;
     /**
-     * 进料方式
-     */
-    /**
      * 危废类别
      */
     private String   wastesCategory;
+    /**
+     * 进料方式
+     */
     private HandleCategory handleCategory;
     private String inboundOrderItemId;
     /**
      * 类别（危废、次生）
      */
     private int category;
-   private String remarks;
-
+    private String remarks;
     /**
      * 分页
-     * @return
      */
     private Page page;
-
     /**
      * 可用状态
-     * @return
      */
     private RecordState recordState;
+    private String transferDraftId;
 
     public RecordState getRecordState() {
         return recordState;
@@ -154,8 +149,6 @@ public class WasteInventory {
     public void setHandleCategory(HandleCategory handleCategory) {
         this.handleCategory = handleCategory;
     }
-
-    private String transferDraftId;
 
     public String getTransferDraftId() {
         return transferDraftId;

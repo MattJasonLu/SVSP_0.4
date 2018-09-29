@@ -7,6 +7,9 @@ import jxl.write.DateTime;
 
 import java.util.Date;
 
+/**
+ * 磅单
+ */
 public class Pounds {
     /**
      * 磅单号
