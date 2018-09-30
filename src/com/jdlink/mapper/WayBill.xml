@@ -184,6 +184,10 @@
         and wastesCode =#{code};
     </select>
 
+    <select id="getWayBillById" parameterType="String" resultMap="WayBillRM">
+        select * from t_pr_waybill where id =#{id};
+    </select>
+
     <update id="approval" parameterType="WayBill">
         update t_pr_waybill set state = 'Approval',advice = #{advice} where id = #{id}
     </update>
@@ -243,7 +247,7 @@
         </foreach>
     </insert>
 
-    <select id="getWayBillById" parameterType="String" resultMap="WayBillRM">
-        select * from t_pr_waybill where id =#{id};
-    </select>
+    <delete id="deleteItem" parameterType="String">
+        delete from t_pr_waybillitem where wayBillId = #{id};
+    </delete>
 </mapper>
