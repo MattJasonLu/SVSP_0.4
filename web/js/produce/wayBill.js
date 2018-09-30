@@ -166,6 +166,7 @@ function addNewItemLine() {
     // 获取id为plusBtn的tr元素
     var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
+    console.log(tr);
     var clonedTr = tr.clone();
     clonedTr.show();        // 将隐藏的新增行显示出来
     // 克隆后清空新克隆出的行数据
@@ -178,7 +179,7 @@ function addNewItemLine() {
         $(this).prop('id', newId);
     });
     clonedTr.addClass("newLine");
-    clonedTr.insertAfter(tr);
+    clonedTr.insertBefore(tr);
     clonedTr.removeAttr("id");
     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
     clonedTr.children("td:eq(0)").prepend(delBtn);
