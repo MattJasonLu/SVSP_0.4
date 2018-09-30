@@ -531,7 +531,7 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6 boo">
-                        <a class="btn btn-primary btn-xs" id="function_139" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; wastes(e)}"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" id="function_139" href="wastesContractInfo.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <a class="btn btn-primary btn-xs" id="function_140" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
                         <!--<a class="btn btn-primary btn-xs" id="function_141" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                         <!--<a class="btn btn-primary btn-xs" id="function_142" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
@@ -695,7 +695,7 @@
                                 <td class="text-center"></td>
                                 <td class="text-center">
                                     <a href="#" id="function_144" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                    <a href="#" id="function_145" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustContract(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                    <a href="wastesContractInfoChange.html" id="function_145" onclick="checkAuthority($(this))" title="变更"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                                     <a href="#" id="function_146" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
                                     <a href="#" id="function_147" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
                                 </td>
