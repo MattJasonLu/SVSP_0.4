@@ -862,6 +862,13 @@ function delLine(e) {
         // 重新加上减行按钮
         var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
         tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+        // 更新name
+        tBody.children().eq(i).children("td:not(0)").find("input,select").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/[0-9]\d*/, i-1);
+            //console.log(newName);
+            $(this).prop('name', newName);
+        });
     }
 
 }
