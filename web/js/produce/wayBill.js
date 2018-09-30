@@ -11,17 +11,12 @@ function loadPageWayBillDetailList() {
 
     //编辑显示按钮，查看隐藏按钮
     if (localStorage.add == 0) {
-        $("#plusBtn").addClass('hidden');
-        //$("#saveBtn").addClass('hidden');
+        $("#plusBtn").css("display","none");
         $("#saveBtn").css("display","none");
-        if ($("#plusBtn").hasClass('show')) $("#plusBtn").removeClass('show');
-      //  if ($("#saveBtn").hasClass('show')) $("#saveBtn").removeClass('show');
     }
     else {
-        $("#plusBtn").addClass('show');
+        $("#plusBtn").css("display","");
         $("#saveBtn").css("display","");
-        if ($("#plusBtn").hasClass('hidden')) $("#plusBtn").removeClass('hidden');
-        //if ($("#saveBtn").hasClass('hidden')) $("#saveBtn").removeClass('hidden');
     }
     $.ajax({
         type: "POST",                       // 方法类型
@@ -166,7 +161,6 @@ function addNewItemLine() {
     // 获取id为plusBtn的tr元素
     var tr = $("#plusBtn").prev();
     // 克隆tr，每次遍历都可以产生新的tr
-    console.log(tr);
     var clonedTr = tr.clone();
     clonedTr.show();        // 将隐藏的新增行显示出来
     // 克隆后清空新克隆出的行数据
