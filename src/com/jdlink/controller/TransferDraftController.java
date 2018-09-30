@@ -8,16 +8,28 @@ import com.jdlink.service.ClientService;
 import com.jdlink.service.InboundService;
 import com.jdlink.service.SupplierService;
 import com.jdlink.service.TransferDraftService;
+import com.jdlink.util.DateUtil;
+import com.jdlink.util.ImportUtil;
+import com.jdlink.util.PdfUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.util.PDFTextStripper;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -301,4 +313,26 @@ public class TransferDraftController {
         return res.toString();
     }
 
+    /**
+     * 导入转移联单
+     * @param excelFile 导入文件
+     * @return 成功与否
+     */
+    @RequestMapping("importTransferDraft")
+    @ResponseBody
+    public String importTransferDraft(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            String content = PdfUtil.getText2(excelFile);
+            System.out.println(content);
+
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+        }
+        return res.toString();
+    }
 }
