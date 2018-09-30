@@ -271,28 +271,31 @@ $.ajax({
                         <input type="text" class="focus" id="contactName" name="contactName" placeholder="">
                     </td>
                 </tr>
+                <!--<tr>-->
+                    <!--<td class="text-center" style="width: 150px;">开户行名称</td>-->
+                    <!--<td class="text-left" colspan="2"><input type="text" class="focus" id="bankName" name="bankName" placeholder=""></td>-->
+                    <!--<td class="text-center" style="width: 150px;">开户行账号</td>-->
+                    <!--<td class="text-left" colspan="2"><input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder=""></td>-->
+                <!--</tr>-->
                 <tr>
-                    <td class="text-center" style="width: 150px;">开户行名称</td>
-                    <td class="text-left" colspan="2"><input type="text" class="focus" id="bankName" name="bankName" placeholder=""></td>
-                    <td class="text-center" style="width: 150px;">开户行账号</td>
-                    <td class="text-left" colspan="2"><input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder=""></td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="width: 150px;">开票税率</td>
-                    <td class="text-center" colspan="2">
-                        <select title="" class="form-control" id="taxRate1" name="ticketRate1"></select>
-                    </td>
+                    <!--<td class="text-center" style="width: 150px;">开票税率</td>-->
+                    <!--<td class="text-center" colspan="2">-->
+                        <!--<select title="" class="form-control" id="taxRate1" name="ticketRate1"></select>-->
+                    <!--</td>-->
+
                     <td class="text-center">合同附件</td>
                     <td class="text-center" colspan="2">
                         <input type="file" class="focus" id="contactFile" name="contactName" placeholder="">
                     </td>
+                    <td class="text-center" ></td>
+                    <td class="text-center" colspan="2"></td>
                 </tr>
             </tbody>
             </table>
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <td colspan="13" class="text-center"><h3>合同明细</h3></td>
+                    <td colspan="13" class="text-center"><h3>费用明细</h3></td>
                 </tr>
                 <tr>
                     <th class="text-center">序号</th>
@@ -343,13 +346,17 @@ $.ajax({
                 </tr>
                 <tr>
                     <td class="text-center">开户行名称</td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><input type="text" class="focus" id="bankName" name="bankName" placeholder=""></td>
                     <td class="text-center">开户行账号</td>
-                    <td class="text-center"></td>
+                    <td class="text-center">
+                        <input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder="">
+                    </td>
                 </tr>
                 <tr>
-                    <td class="text-center">开票类型</td>
-                    <td class="text-center"></td>
+                    <td class="text-center" style="width: 200px">开票类型</td>
+                    <td class="text-center">
+                        <select title="" class="form-control" id="taxRate1" name="ticketRate1" style="width: 200px"></select>
+                    </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                 </tr>

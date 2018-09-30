@@ -26,7 +26,8 @@ public enum CheckState implements CodeBaseEnum{
     Picked("已领料",18),
     OutBounded("已出库",19),
     Processed("已处理",20),
-    Locked("已锁定", 21)
+    Locked("已锁定", 21),
+    ToGenerated("待生成物料", 21),
     ;
 
     private String name;

@@ -8,7 +8,7 @@ import com.jdlink.domain.FormType;
 public class CompatibilityItem {
     //主表用来取主键
 
-     Compatibility compatibility;
+     private String compatibilityId;
 
     //处置类别
     private HandleCategory handleCategory;
@@ -50,12 +50,12 @@ public class CompatibilityItem {
 
     private float ph;
 
-    public Compatibility getCompatibility() {
-        return compatibility;
+    public String getCompatibilityId() {
+        return compatibilityId;
     }
 
-    public void setCompatibility(Compatibility compatibility) {
-        this.compatibility = compatibility;
+    public void setCompatibilityId(String compatibilityId) {
+        this.compatibilityId = compatibilityId;
     }
 
     public HandleCategory getHandleCategory() {
@@ -165,7 +165,7 @@ public class CompatibilityItem {
     @Override
     public String toString() {
         return "CompatibilityItem{" +
-                "compatibility=" + compatibility +
+                "compatibilityId=" + compatibilityId +
                 ", handleCategory=" + handleCategory +
                 ", formType=" + formType +
                 ", proportion=" + proportion +
