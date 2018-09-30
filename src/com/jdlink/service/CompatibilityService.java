@@ -21,4 +21,6 @@ public interface CompatibilityService {
     void add(Compatibility compatibility);
     void addCompatibility(Compatibility compatibility);
     void addCompatibilityItem(CompatibilityItem compatibilityItem);
+    List<Compatibility>getWeekPlanList();
+    List<CompatibilityItem>getWeekById(String compatibilityId);
 }

@@ -12,6 +12,7 @@ import java.util.List;
  * 配伍周计划
  */
 public class Compatibility {
+
     //配伍主键
     private String compatibilityId;
 
