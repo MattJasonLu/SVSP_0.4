@@ -248,7 +248,7 @@ function inputSwitchPage()  {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -418,6 +418,11 @@ function searchSecInto() {
                 endDate=dateMax;
             }
             var date=$(this).children('td').eq(1).text();
+
+            if(date.length==0){
+                date=startDate;
+            }
+
             if(!($(this).children('td').eq(2).text().indexOf(wastesName)!=-1
                 &&$(this).children('td').text().indexOf(text)!=-1
                 &&(new Date(date).getTime()>=new Date(startDate).getTime())&&(new Date(date).getTime()<=new Date(endDate).getTime())
@@ -580,4 +585,17 @@ function searchWastesAnalysis() {
 
 
 
+}
+
+
+/**
+ *
+ * 导出
+ * @returns {string}
+ */
+function exportExcel() {
+    console.log("export");
+    var name = 't_pl_secondaryinto';
+    var sqlWords = "select * from  t_pl_secondaryinto;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }

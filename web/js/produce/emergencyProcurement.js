@@ -51,7 +51,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -455,61 +455,25 @@ function delLine(e) {
 
 //保存应急采购方法
 function saveEmer() {
-    //先添加到采购表中，再添加到物资表中
-    data={
-        suppliesCategory:$('#suppliesCategory').val(),
-        applyDate:$('#applyDate').val(),
-        demandTime:$('#demandTime').val(),
-        applyDepartment:$('#applyDepartment').val(),
-        proposer:$('#proposer').val(),
-        divisionHead:$('#divisionHead').val(),
-        purchasingDirector:$('#purchasingDirector').val(),
-        generalManager:$('#generalManager').val(),
-        procurementCategory:0//代表是应急采购
-    }
-    //执行添加到后台的ajax
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "addProcurement",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                console.log(result);
-            }
-            else {
-
-                alert(result.message);
-            }
-        },error:function (result) {
-            alert("服务器异常！")
+    if($('#applyDate').val().length>0){
+        //先添加到采购表中，再添加到物资表中
+        data={
+            suppliesCategory:$('#suppliesCategory').val(),
+            applyDate:$('#applyDate').val(),
+            demandTime:$('#demandTime').val(),
+            applyDepartment:$('#applyDepartment').val(),
+            proposer:$('#proposer').val(),
+            divisionHead:$('#divisionHead').val(),
+            purchasingDirector:$('#purchasingDirector').val(),
+            generalManager:$('#generalManager').val(),
+            procurementCategory:0//代表是应急采购
         }
-    });
-    $('.myclass').each(function () {
-        var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
-        var specifications=$(this).children('td').eq(2).children('input').val();
-        var unit=$(this).children('td').eq(3).children('input').val();
-        var inventory=$(this).children('td').eq(4).children('input').val();
-        var demandQuantity=$(this).children('td').eq(5).children('input').val();
-        var purchaseQuantity=$(this).children('td').eq(6).children('input').val();
-        var note=$(this).children('td').eq(7).children('input').val();
-        var materialdata={
-            suppliesName:suppliesName,
-            specifications:specifications,
-            unit:unit,
-            inventory:inventory,
-            demandQuantity:demandQuantity,
-            purchaseQuantity:purchaseQuantity,
-            note:note,
-
-        }
+        //执行添加到后台的ajax
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "addMaterial",          // url
+            url: "addProcurement",          // url
             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: JSON.stringify(materialdata),
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success:function (result) {
@@ -517,16 +481,72 @@ function saveEmer() {
                     console.log(result);
                 }
                 else {
+
                     alert(result.message);
                 }
-            },
-            error:function (result) {
-                alert(result.message);
+            },error:function (result) {
+                alert("服务器异常！")
             }
+        });
+        $('.myclass').each(function () {
+            var suppliesName=$(this).children('td').eq(1).children('div').find('button').attr('title');
+            var specifications=$(this).children('td').eq(2).children('input').val();
+            var unit=$(this).children('td').eq(3).children('input').val();
+            var inventory=$(this).children('td').eq(4).children('input').val();
+            var demandQuantity=$(this).children('td').eq(5).children('input').val();
+            var purchaseQuantity=$(this).children('td').eq(6).children('input').val();
+            var note=$(this).children('td').eq(7).children('input').val();
+            var materialdata={
+                suppliesName:suppliesName,
+                specifications:specifications,
+                unit:unit,
+                inventory:inventory,
+                demandQuantity:demandQuantity,
+                purchaseQuantity:purchaseQuantity,
+                note:note,
+
+            }
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "addMaterial",          // url
+                async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(materialdata),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success:function (result) {
+                    if (result != undefined && result.status == "success"){
+                        console.log(result);
+                    }
+                    else {
+                        alert(result.message);
+                    }
+                },
+                error:function (result) {
+                    alert(result.message);
+                }
+
+            });
 
         });
+    }
+    else {
+        $('#applyDate').next('span').remove();
+        var span=$('<span>');
+        span.text("请输入日期！");
+        span.css('color','red');
+        $('#applyDate').after($(span));
 
-    });
+    }
+}
+
+
+function warning(item) {
+    // if($('#beginTime').val().length>0&&$('#endTime').val().length>0){
+    //    $('#endTime').parent().next('span').remove();
+    // }
+    if($(item).val().length>0){
+        $(item).next('span').remove();
+    }
 }
 
 //设置应急采购列表信息

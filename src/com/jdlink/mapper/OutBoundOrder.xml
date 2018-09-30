@@ -260,7 +260,7 @@ select  * from t_pl_materialrequisitionorder where materialRequisitionId=#{mater
     <!--添加危废出库单-->
     <insert id="addSecondary" parameterType="OutboundOrder">
         insert into t_pl_outboundorder(outboundOrderId,outboundNumber,nowTime,checkState,boundType,outboundDate,inboundOrderItemId,creator,departmentName,equipment) values
-        (#{outboundOrderId},#{outboundNumber},NOW(),'OutBounded',#{boundType},#{outboundDate},#{inboundOrderItemId},#{creator},#{departmentName},#{equipment});
+        (#{outboundOrderId},#{outboundNumber},NOW(),'OutBounded','SecondaryOutbound',#{outboundDate},#{inboundOrderItemId},#{creator},#{departmentName},#{equipment});
     </insert>
     <update id="updateSecondart" parameterType="OutboundOrder">
         update t_pl_outboundorder set

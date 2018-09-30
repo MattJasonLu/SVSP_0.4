@@ -61,7 +61,7 @@ function totalPage() {
  */
 function loadPages(totalRecord, count) {
     if (totalRecord == 0) {
-        window.alert("总记录数为0，请检查！");
+        console.log("总记录数为0，请检查！");
         return 0;
     }
     else if (totalRecord % count == 0)
@@ -523,15 +523,19 @@ function searchSec() {
             if(endDate.toString()=='Invalid Date'){
                 endDate=new Date();
             }
+            var  start=$(this).children('td').eq(2).text();
+            if(start.length==0){
+                start=startDate;
+            }
             if(!($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
             &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(7).text().indexOf(wastesName)!=-1
-                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
+                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                 $(this).hide();
             }
             if(($(this).children('td').eq(3).text().indexOf(companyName)!=-1&&$(this).children('td').eq(6).text().indexOf(handelCategory)!=-1
                 &&$(this).children('td').text().indexOf(text)!=-1 &&$(this).children('td').eq(7).text().indexOf(wastesName)!=-1
-                &&(getDateByStr($(this).children('td').eq(2).text())<=endDate&&getDateByStr($(this).children('td').eq(2).text())>=startDate)
+                &&(getDateByStr(start)<=endDate&&getDateByStr(start)>=startDate)
             )){
                array1.push($(this));
             }
