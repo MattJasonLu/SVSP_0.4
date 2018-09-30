@@ -213,7 +213,29 @@ $.ajax({
                 <li><a href="contractManage.html">合同列表</a></li>
             </ol>
         </div>
-        <h4 class="sub-header">经营合同</h4>
+        <h4 class="sub-header">经营合同变更</h4>
+        <!--<div class="row">-->
+            <!--<div>-->
+                <!--&lt;!&ndash;操作按钮&ndash;&gt;-->
+                <!--<div class="pull-left col-md-6 boo">-->
+                    <!--<a class="btn btn-primary btn-xs" id="function_139" href="#" onclick=""><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查看</a>-->
+                    <!--<a class="btn btn-primary btn-xs" id="function_140" onclick=""><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 变更</a>-->
+                    <!--&lt;!&ndash;<a class="btn btn-primary btn-xs" id="function_141" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a class="btn btn-primary btn-xs" id="function_142" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<a class="btn btn-primary btn-xs" id="function_143" href="emergencyContractInfo.html"> 应急处置意向书</a>&ndash;&gt;-->
+                <!--</div>-->
+                <!--&lt;!&ndash;查询框&ndash;&gt;-->
+                <!--<div class="input-group col-md-4 pull-right">-->
+                    <!--<input type="text" class="form-control" placeholder="搜索..." id="searchContent">-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<a class="btn btn-default"  onclick="searchContract();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>-->
+                        <!--<a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>-->
+                        <!--<a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<br>-->
         <form class="cmxform" id="commentForm" method="Post">
             <table class="table table-bordered">
             <tbody>
@@ -234,7 +256,25 @@ $.ajax({
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-center" >合同版本</td>     <!--时间，精确到秒 下同-->
+                    <td class="text-center">开始日期</td>
+                    <td class="text-center" colspan="2">
+                        <input title="" type="date" id="startDate" class="focus">
+                    </td>
+                    <td class="text-center">结束日期</td>
+                    <td class="text-center" colspan="2">
+                        <input title="" type="date" id="endDate" class="focus">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">联系人</td>
+                    <td class="text-left" colspan="2">
+                        <input type="text" class="focus" id="contactName" name="contactName" placeholder="">
+                    </td>
+                    <td class="text-center" style="width: 150px;">联系电话</td>
+                    <td class="text-left" colspan="2"> <input title="" type="text" class="focus" id="telephone" name="telephone" ></td>
+                </tr>
+                <tr>
+                    <td class="text-center" >是否公司版合同</td>     <!--时间，精确到秒 下同-->
                     <td class="text-center" colspan="2">
                         <label class="radio-inline">
                             <input type="radio" name="contractVersion" id="contractVersion" value="companyContract" onclick="Appear()" checked> 公司合同
@@ -243,54 +283,24 @@ $.ajax({
                             <input type="radio" name="contractVersion" id="contractVersion2" value="customerContract" onclick="Appear1()"  > 产废单位合同
                         </label>
                     </td>
-                    <td class="text-center">合同有效期<sub>*</sub></td>
-                    <td class="text-center form-inline"  colspan="2">
-                        <div class="input-group ">
-                            <input title="" type="date" class=" form-control" name="beginTime" id="beginTime" required="required" onchange="warning(this)">
-                        </div>
-                        <span >to</span>
-                        <div class="input-group ">
-                            <input title="" type="date" class=" form-control" name="endTime" id="endTime" required="required" onchange="warning(this)"/>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="width: 150px;">合同名称<sub>*</sub></td>
-                    <td class="text-left" colspan="2">
-                        <div class="col-xs-12" id="contractName1" >
-                            <input title="" type="text" class="focus" id="contractName" name="contractName" onchange="warning(this)">
-                        </div>
-                        <div class="col-xs-12 form-inline" id="contractType2">
-                            <select title="" class="form-control" id="contractType1" name="modelName"  onchange="warning(this)"></select>
-                            <input type="button" class="form-control" value="查看" onclick="check1(this)" >
-                        </div>
-                    </td>
-                    <!--合同类型-->
-                    <td class="text-center">合同类型</td>
-                    <td class="text-center" colspan="2"></td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="width: 150px;">联系电话</td>
-                    <td class="text-left" colspan="2"> <input title="" type="text" class="focus" id="telephone" name="telephone" ></td>
-                    <td class="text-center">联系人</td>
-                    <td class="text-left" colspan="2">
-                        <input type="text" class="focus" id="contactName" name="contactName" placeholder="">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="width: 150px;">开户行名称</td>
-                    <td class="text-left" colspan="2"><input type="text" class="focus" id="bankName" name="bankName" placeholder=""></td>
-                    <td class="text-center" style="width: 150px;">开户行账号</td>
-                    <td class="text-left" colspan="2"><input type="text" class="focus" id="bankAccount" name="bankAccount" placeholder=""></td>
-                </tr>
-                <tr>
-                    <td class="text-center" style="width: 150px;">开票税率</td>
-                    <td class="text-center" colspan="2">
-                        <select title="" class="form-control" id="taxRate1" name="ticketRate1"></select>
-                    </td>
                     <td class="text-center">合同附件</td>
                     <td class="text-center" colspan="2">
                         <input type="file" class="focus" id="contactFile" name="contactName" placeholder="">
+                    </td>
+                </tr>
+                <tr>
+                    <!--合同类型-->
+                    <td class="text-center">合同类型</td>
+                    <td class="text-center" colspan="2"></td>
+                    <!--一次性合同-->
+                    <td class="text-center" >是否一次性合同</td>     <!--时间，精确到秒 下同-->
+                    <td class="text-center" colspan="2">
+                        <label class="radio-inline">
+                            <input type="radio" name="is-one-time" id="is-one-time" onclick="" checked> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="no-one-time" id="no-one-time" onclick=""  > 否
+                        </label>
                     </td>
                 </tr>
             </tbody>
@@ -301,63 +311,104 @@ $.ajax({
                     <td colspan="13" class="text-center"><h3>合同明细</h3></td>
                 </tr>
                 <tr>
-                    <th class="text-center">序号</th>
+                    <th class="text-center" style="width: 50px">序号</th>
                     <th class="text-center">八位码</th>
                     <th class="text-center">危废名称</th>
                     <th class="text-center">包装类型</th>
                     <th class="text-center">单位</th>
-                    <th class="text-center">处置单价</th>
+                    <th class="text-center" style="width: 100px">处置单价</th>
                     <th class="text-center">处置金额</th>
                     <th class="text-center">合同量</th>
+                    <!--已入库量-->
                     <th class="text-center">运输方式</th>
+                    <th class="text-center" style="width: 100px">已入库量</th>
+                    <!--是否暂停-->
+                    <th class="text-center" style="width: 100px">是否暂停</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr id="cloneTr1" class="myclass">
                     <td class="text-center">1</td>
-                    <td class="text-center" >
+                    <td class="text-center">
                         <select title="" class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." name="wastesCode" id="wastesCode"></select>
                     </td>
-                    <td class="text-center" ><input class="focus" title=""></td>
+                    <td class="text-center"><input class="focus" title=""></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><input class="focus" title=""></td>
                     <td class="text-center"><input class="focus" title=""></td>
-                    <td class="text-center"><input class="focus" title=""></td>
+                    <td class="text-center"><input class="focus" title="" onkeyup=""></td>
                     <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
                     <td class="text-center">
                         <select class="focus" title="" id="transportType" >
                             <option value="0">0</option>
                         </select>
                     </td>
+                    <td class="text-center">
+                        <input title="" type="text" style="width: 100px">
+                    </td>
+                    <td class="text-center"><input class="focus" title="">
+                        <label class="radio-inline">
+                            <input type="radio" name="confirm" id="pause" onclick="" checked> 是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="cancel" id="cancelPause" onclick=""> 否
+                        </label>
+                    </td>
                 </tr>
                 <tr id="plusBtn">
                     <td><a class="btn btn-default btn-xs" onclick="addNewLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
                     <td></td>
-                    <td ></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td ></td>
-                    <td ></td>
-                    <td ></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 </tbody>
             </table>
             <table class="table table-bordered">
                 <tr>
-                    <td class="text-center" colspan="4"><h3>开票信息</h3></td>
+                    <td class="text-center" colspan="10"><h3>费用明细</h3></td>
                 </tr>
                 <tr>
-                    <td class="text-center">开户行名称</td>
-                    <td class="text-center"></td>
-                    <td class="text-center">开户行账号</td>
-                    <td class="text-center"></td>
+                    <td class="text-center">费用类型</td>
+                    <td class="text-center">收付类型</td>
+                    <td class="text-center">计价方式</td>
+                    <td class="text-center">是否含税</td>
+                    <td class="text-center">价格</td>
+                    <td class="text-center">税率</td>
+                    <td class="text-center">八位码</td>
+                    <td class="text-center">危废名称</td>
+                    <td class="text-center">包装类型</td>
+                    <td class="text-center">车辆类型</td>
                 </tr>
                 <tr>
-                    <td class="text-center">开票类型</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center">处置费用</td>
+                    <td class="text-center">应收</td>
+                    <td class="text-center">整单</td>
+                    <td class="text-center">是</td>
+                    <td class="text-center">15000.00</td>
+                    <td class="text-center">16%</td>
+                    <td class="text-center">20180930</td>
+                    <td class="text-center">废液</td>
+                    <td class="text-center">桶装</td>
+                    <td class="text-center">西部之星5700XE</td>
+                </tr>
+                <tr id="plusBtn1">
+                    <td><a class="btn btn-default btn-xs" onclick="addNewLine1();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             </table>
             <div class="row">
@@ -380,182 +431,182 @@ $.ajax({
             <div class="row text-center">
                 <!--<input type="submit"  value="保存"   class="btn btn-primary" onclick="contractWastesSave()"/>-->
                 <a class="btn btn-success" onclick="contractWastesSave()">保存</a>
-                <a class="btn btn-primary" onclick="contractWastesSubmit()">提交</a>
+                <!--<a class="btn btn-primary" onclick="contractWastesSubmit()">提交</a>-->
                 <a class="btn btn-danger" href="contractManage.html" id="back">返回</a>
             </div>
         </form>
-        <form method="post" id="contractInfoForm" enctype="multipart/form-data" >
+        <!--<form method="post" id="contractInfoForm" enctype="multipart/form-data" >-->
+            <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="form-horizontal col-md-4">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="col-sm-6 control-label" for="submitName">送审人员</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-6">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control"  name="reviewer" id="submitName" placeholder="***" readonly>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="form-horizontal col-md-4" >&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group"  >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="col-sm-6 control-label" for="submitDate"> 送审日期</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-6">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control"  name="reviewDate" id="submitDate" placeholder="***" readonly>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="form-horizontal col-md-4" >&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="col-sm-6 control-label" for="submitDep"> 送审部门</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-6">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
             <!--<div class="row">-->
-                <!--<div class="form-horizontal col-md-4">-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-6 control-label" for="submitName">送审人员</label>-->
-                        <!--<div class="col-xs-6">-->
-                            <!--<input type="text" class="form-control"  name="reviewer" id="submitName" placeholder="***" readonly>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-horizontal col-md-4" >-->
-                    <!--<div class="form-group"  >-->
-                        <!--<label class="col-sm-6 control-label" for="submitDate"> 送审日期</label>-->
-                        <!--<div class="col-xs-6">-->
-                            <!--<input type="text" class="form-control"  name="reviewDate" id="submitDate" placeholder="***" readonly>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-horizontal col-md-4" >-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-6 control-label" for="submitDep"> 送审部门</label>-->
-                        <!--<div class="col-xs-6">-->
-                            <!--<input type="text" class="form-control"  name="reviewDepartment" id="submitDep" placeholder="***" readonly>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <div class="row">
-                <div class="form-horizontal col-md-6">
+                <!--<div class="form-horizontal col-md-6">-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label  class="col-sm-4 control-label" for="companyName">产废单位名称</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-4">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..."  name="companyName" onchange="findClient();">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="col-sm-4 control-label" for="province">所属区域 </label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<form name="form1" method="post" action="">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="form-inline">&ndash;&gt;-->
+                         <!--&lt;!&ndash;<div class="form-group col-xs-3">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">&ndash;&gt;-->
+                                <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="form-group col-xs-3">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">&ndash;&gt;-->
+                                <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</form>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label  for="contractName" class="col-sm-4 control-label">合同名称</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-4"  >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="focus" name="contractName">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5 form-inline" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<select class="form-control"  type="text"  name="modelName"  >&ndash;&gt;-->
+                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="button" class="form-control" value="查看" onclick="check1(this)">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label  for="contactName" class="col-sm-4 control-label">联系人</label>&ndash;&gt;-->
+                         <!--&lt;!&ndash;<div class="col-xs-4" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control"  name="contactName" placeholder="">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label  for="bankName" class="col-sm-4 control-label">开户行名称</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-4" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control"  name="bankName" placeholder="">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
                     <!--<div class="form-group" >-->
-                        <!--<label  class="col-sm-4 control-label" for="companyName">产废单位名称</label>-->
-                        <!--<div class="col-xs-4">-->
-                            <!--<select class="selectpicker input-sm form-control" data-live-search="true" data-live-search-placeholder="搜索..."  name="companyName" onchange="findClient();">-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label class="col-sm-4 control-label" for="province">所属区域 </label>-->
-                        <!--<form name="form1" method="post" action="">-->
-                        <!--<div class="form-inline">-->
-                         <!--<div class="form-group col-xs-3">-->
-                                <!--<select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="province"  name="province" onchange="changeSelect(this.selectedIndex)">-->
-                                <!--</select>-->
-                            <!--</div>-->
-                            <!--<div class="form-group col-xs-3">-->
-                                <!--<select class="selectpicker input-xlarge form-control" id="city" name="city" data-live-search="true" data-live-search-placeholder="搜索...">-->
-                                <!--</select>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--</form>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="contractName" class="col-sm-4 control-label">合同名称</label>-->
-                        <!--<div class="col-xs-4"  >-->
-                            <!--<input type="text" class="focus" name="contractName">-->
-                        <!--</div>-->
-                        <!--<div class="col-xs-5 form-inline" >-->
-                            <!--<select class="form-control"  type="text"  name="modelName"  >-->
-                            <!--</select>-->
-                            <!--<input type="button" class="form-control" value="查看" onclick="check1(this)">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="contactName" class="col-sm-4 control-label">联系人</label>-->
-                         <!--<div class="col-xs-4" >-->
-                            <!--<input type="text" class="form-control"  name="contactName" placeholder="">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="bankName" class="col-sm-4 control-label">开户行名称</label>-->
                         <!--<div class="col-xs-4" >-->
-                            <!--<input type="text" class="form-control"  name="bankName" placeholder="">-->
+                            <!--<input type="hidden" class="form-control" id="company1" name="company1" placeholder="">-->
                         <!--</div>-->
-                    <!--</div>-->
-                    <div class="form-group" >
-                        <div class="col-xs-4" >
-                            <input type="hidden" class="form-control" id="company1" name="company1" placeholder="">
-                        </div>
-                    </div><!--隐藏域保存产废单位名称-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="taxRate1" class="col-sm-4 control-label">开票税率</label>-->
-                        <!--<div class="col-xs-5">-->
-                            <!--<select class="form-control"  name="ticketRate1">-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group ">-->
-                        <!--&lt;!&ndash;<label for="isFreight" class="col-sm-4 control-label">是否包含运费</label>-->
-                        <!--<div class="col-xs-5 checkbox">-->
-                            <!--<input type="checkbox" id="isFreight" name="freight">-->
-                        <!--</div>&ndash;&gt;-->
-                        <!--<label class="col-sm-2 control-label sr-only" > 1111111</label>-->
-                        <!--<label class="checkbox-inline col-xs-5" for="isFreight">-->
-                            <!--是否包含运费<input type="checkbox"  class="col-xs-3" name="freight" value="true">-->
-                        <!--</label>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<label class="col-sm-4 control-label">保存之后 </label>-->
-                        <!--<div class="col-xs-5 radio">-->
-                            <!--<label>-->
-                                <!--<input type="radio" name="addType"  value="continue" checked>-->
-                                <!--继续添加-->
-                            <!--</label>-->
-                            <!--<label>-->
-                                <!--<input type="radio" name="addType"  value="break">-->
-                                <!--返回列表-->
-                            <!--</label>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
-                <div class="form-horizontal col-md-6">
-                    <!--<div class="form-group" >-->
-                        <!--<label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>-->
-                        <!--<div class="col-xs-8" >-->
-                            <!--<label class="radio-inline">-->
-                                <!--<input type="radio" name="contractVersion"  value="companyContract" onclick="Appear()" checked> 公司合同-->
-                            <!--</label>-->
-                            <!--<label class="radio-inline">-->
-                                <!--<input type="radio" name="contractVersion"  value="customerContract" onclick="Appear1()"  > 产废单位合同-->
-                            <!--</label>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                            <!--<label class="col-sm-3 control-label">合同有效期 </label>-->
-                        <!--<div class="input-group date">-->
-                            <!--<input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>-->
-                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
-                            <!--<span class="input-group-addon">to</span>-->
-                            <!--<input type="text" class="input-sm form-control form_datetime2" name="endTime"/>-->
-                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="order1" class="col-sm-3 control-label">预计处置费</label>-->
-                        <!--<div class="col-xs-5" >-->
-                            <!--<input type="text" class="form-control" id="order1" name="order1" >-->
-                        <!--</div>-->
-                        <!--<h4>元</h4>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="telephone" class="col-sm-3 control-label">联系电话</label>-->
-                        <!--<div class="col-xs-5" >-->
-                            <!--<input type="text" class="form-control"  name="telephone" >-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label  for="bankAccount" class="col-sm-3 control-label">开户行账号</label>-->
-                        <!--<div class="col-xs-5" >-->
-                            <!--<input type="text" class="form-control" name="bankAccount" placeholder="">                        </div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>-->
-                        <!--<div class="col-xs-5">-->
-                            <!--<select class="form-control" id="taxRate2" name="ticketRate2">-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group" >-->
-                        <!--<label for="contractType" class="col-sm-3 control-label"></label>-->
-                        <!--<div class="col-xs-5">-->
-                            <!--<input class="form-control"  type="text"  name="contractType" value="Wastes" >-->
-                            <!--</input>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
-            </div>
-            <!--<div class="row text-center">-->
-                <!--<a class="btn btn-success" onclick="contractSave()">保存</a>-->
-                <!--<a class="btn btn-primary" onclick="contractSubmit()">提交</a>-->
-                <!--<a class="btn btn-danger" href="contractManage.html" id="back">返回</a>-->
+                    <!--</div>&lt;!&ndash;隐藏域保存产废单位名称&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label for="taxRate1" class="col-sm-4 control-label">开票税率</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<select class="form-control"  name="ticketRate1">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group ">&ndash;&gt;-->
+                        <!--&lt;!&ndash;&lt;!&ndash;<label for="isFreight" class="col-sm-4 control-label">是否包含运费</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5 checkbox">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="checkbox" id="isFreight" name="freight">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="col-sm-2 control-label sr-only" > 1111111</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="checkbox-inline col-xs-5" for="isFreight">&ndash;&gt;-->
+                            <!--&lt;!&ndash;是否包含运费<input type="checkbox"  class="col-xs-3" name="freight" value="true">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label class="col-sm-4 control-label">保存之后 </label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5 radio">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="radio" name="addType"  value="continue" checked>&ndash;&gt;-->
+                                <!--&lt;!&ndash;继续添加&ndash;&gt;-->
+                            <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="radio" name="addType"  value="break">&ndash;&gt;-->
+                                <!--&lt;!&ndash;返回列表&ndash;&gt;-->
+                            <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="form-horizontal col-md-6">-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label  class="col-sm-3 control-label" for="contractVersion" >合同版本</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-8" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label class="radio-inline">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="radio" name="contractVersion"  value="companyContract" onclick="Appear()" checked> 公司合同&ndash;&gt;-->
+                            <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label class="radio-inline">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input type="radio" name="contractVersion"  value="customerContract" onclick="Appear1()"  > 产废单位合同&ndash;&gt;-->
+                            <!--&lt;!&ndash;</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<label class="col-sm-3 control-label">合同有效期 </label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="input-group date">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="input-sm form-control form_datetime1" name="beginTime"/>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="input-group-addon">to</span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="input-sm form-control form_datetime2" name="endTime"/>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label for="order1" class="col-sm-3 control-label">预计处置费</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control" id="order1" name="order1" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<h4>元</h4>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label for="telephone" class="col-sm-3 control-label">联系电话</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control"  name="telephone" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label  for="bankAccount" class="col-sm-3 control-label">开户行账号</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input type="text" class="form-control" name="bankAccount" placeholder="">                        </div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label for="taxRate2" class="col-sm-3 control-label">开票税率2</label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<select class="form-control" id="taxRate2" name="ticketRate2">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="form-group" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<label for="contractType" class="col-sm-3 control-label"></label>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="col-xs-5">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<input class="form-control"  type="text"  name="contractType" value="Wastes" >&ndash;&gt;-->
+                            <!--&lt;!&ndash;</input>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
             <!--</div>-->
-        </form>
+            <!--&lt;!&ndash;<div class="row text-center">&ndash;&gt;-->
+                <!--&lt;!&ndash;<a class="btn btn-success" onclick="contractSave()">保存</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a class="btn btn-primary" onclick="contractSubmit()">提交</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a class="btn btn-danger" href="contractManage.html" id="back">返回</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</form>-->
         <!-- 日志模态框 -->
         <div class="modal fade" id="logModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
