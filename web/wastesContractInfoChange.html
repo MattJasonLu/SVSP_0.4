@@ -318,7 +318,7 @@ $.ajax({
                     <th class="text-center">单位</th>
                     <th class="text-center" style="width: 100px">处置单价</th>
                     <th class="text-center">处置金额</th>
-                    <th class="text-center">合同量</th>
+                    <th class="text-center" style="width: 100px">合同量</th>
                     <!--已入库量-->
                     <th class="text-center">运输方式</th>
                     <th class="text-center" style="width: 100px">已入库量</th>
@@ -335,18 +335,18 @@ $.ajax({
                     <td class="text-center"><input class="focus" title=""></td>
                     <td class="text-center"><select class="focus" title="" id="packageType"></select></td>
                     <td class="text-center"><input class="focus" title=""></td>
-                    <td class="text-center"><input class="focus" title=""></td>
+                    <td class="text-center"><input class="focus" style="width: 100px" title=""></td>
                     <td class="text-center"><input class="focus" title="" onkeyup=""></td>
-                    <td class="text-center"><input class="focus" title="" onkeyup="calculateTotalPrice(this)" ></td>
+                    <td class="text-center"><input class="focus" title="" style="width: 100px" onkeyup="calculateTotalPrice(this)" ></td>
                     <td class="text-center">
                         <select class="focus" title="" id="transportType" >
                             <option value="0">0</option>
                         </select>
                     </td>
                     <td class="text-center">
-                        <input title="" type="text" style="width: 100px">
+                        <input title="" class="focus" type="text" style="width: 100px">
                     </td>
-                    <td class="text-center"><input class="focus" title="">
+                    <td class="text-center">
                         <label class="radio-inline">
                             <input type="radio" name="confirm" id="pause" onclick="" checked> 是
                         </label>
