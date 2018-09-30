@@ -564,11 +564,17 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-suppierName" class="col-sm-4 control-label">处置单位名称</label>
+                                <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-suppierName" name="search-suppierName" placeholder="">
+                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
                                 </div>
                             </div>
+                            <!--<div class="form-group">-->
+                                <!--<label for="search-suppierName" class="col-sm-4 control-label">处置单位名称</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search-suppierName" name="search-suppierName" placeholder="">-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                         <div class="form-horizontal col-md-6">
                             <div class="form-group" style="margin-right: 40px">
@@ -597,12 +603,7 @@
                             <!--</div>-->
                         </div>
                         <div class="form-horizontal col-md-3">
-                            <div class="form-group">
-                                <label for="search-companyName" class="col-sm-4 control-label">产废单位名称</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-companyName" name="search-companyName" placeholder="">
-                                </div>
-                            </div>
+
                         </div>
                         <div class="form-horizontal col-md-3">
 
@@ -748,12 +749,12 @@
 <!--查看页面-->
 <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog"
      aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg" role="document" >
+        <div class="modal-content" style="width: 85%">
             <div class="client_style">
                 <h4 class="sub-header text-center">合同信息</h4>
                 <form method="post" id="contractInfoForm1" enctype="multipart/form-data" style="margin-left: -10px">
-                    <div class="row form-inline" id="print1">
+                    <div class="row form-inline" id="print1" >
                         <div class="form-horizontal col-md-6 form-inline">
                             <p class="text-left"><b>合同名称&nbsp;&nbsp;</b><span id="modal3_contractName"></span></p>
                             <p class="text-left"><b>合同状态&nbsp;&nbsp;</b><span id="modal3_contractState"></span></p>
@@ -787,38 +788,39 @@
                             <p class="text-left"><b>预计处置费&nbsp;&nbsp;</b><span id="modal3_order"></span><span>元</span>
                             </p>
                         </div>
+                        <table class="table" style="margin-left: -14px">
+                            <thead>
+                            <tr>
+                                <th colspan="9" class="text-center"><h3>报价单明细</h3></th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center" >八位码</th>
+                                <th class="text-center" >危废名称</th>
+                                <th class="text-center">包装类型</th>
+                                <th class="text-center" >单位</th>
+                                <th class="text-center" >处置单价</th>
+                                <th class="text-center">合约量</th>
+                                <th class="text-center" >处置金额</th>
+                                <th class="text-center">运输方式</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="cloneTr">
+                                <td class="text-center"></td>
+                                <td class="text-center"> </td>
+                                <td class="text-center" ></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th colspan="9" class="text-center"><h3>报价单明细</h3></th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">序号</th>
-                            <th class="text-center" >八位码</th>
-                            <th class="text-center" >危废名称</th>
-                            <th class="text-center">包装类型</th>
-                            <th class="text-center" >单位</th>
-                            <th class="text-center" >处置单价</th>
-                            <th class="text-center">合约量</th>
-                            <th class="text-center" >处置金额</th>
-                            <th class="text-center">运输方式</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id="cloneTr">
-                            <td class="text-center"></td>
-                            <td class="text-center"> </td>
-                            <td class="text-center" ></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+
                     <br> <br>
                     <div class="row text-center">
                         <a class="btn btn-primary hidden-print" onclick="" id="btn">审批</a>
@@ -1585,8 +1587,8 @@
             $("#pic").css("visibility", "visible");
             var dataUrl = canvas.toDataURL();//获取canvas对象图形的外部url
             var newImg = document.createElement("img");//创建img对象
-            newImg.style.width = "1200px";
-            newImg.style.height = "600px";
+            newImg.style.width = "850px";
+            newImg.style.height = "1000px";
             newImg.src = dataUrl;//将canvas图形url赋给img对象
             //  canvas.style.width = newImg.width+ "px";
             //  canvas.style.height = newImg.height+ "px";
