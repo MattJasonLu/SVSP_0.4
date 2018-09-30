@@ -658,38 +658,9 @@ function submitMa() {
 }
 /*作废*/
 function cancelMa() {
-    //1获得id
-    id=arrayId[0];
-    if(arrayId.length==1){
-        //2ajax后台操作
-        //3判断框是否提交
-        if(confirm("是否作废该数据?")){
-            //点击确定后操作
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "cancelByMrId",         // url
-                // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {"id":id},
-                dataType: "json",
-                //contentType: 'application/json;charset=utf-8',
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
-                        alert(result.message);
-                        window.location.reload();
-                    }
-                    else {
-                        alert(result.message);
-                    }
-                },
-                error:function (result) {
-                    alert("服务器异常！")
-                }
-            });
-        }
-    }
-    else {
-        alert("请选择数据！")
-    }
+
+
+
 }
 /*修改页面*/
 function adjustMa() {

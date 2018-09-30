@@ -590,99 +590,8 @@ function setCompatibility(result) {
          }
 
  }
- //审批
-function approval3() {
-   //1获得所选编号的数组进行遍历
-      var pwId1=arrayId[0];
-      if(arrayId.length==1){
-           pwId= getFour(pwId1);
-           //console.log(pwId);
-          //approvalPw(pwId);
-          //弹出一个模态框
-          $.ajax({
-              type: "POST",                       // 方法类型
-              url: "getByPwId2",         // url
-              // 同步：意思是当有返回值以后才会进行后面的js程序
-              data: {"pwId":pwId.toString()},
-              dataType: "json",
-              //contentType: 'application/json;charset=utf-8',
-              success:function (result) {
-                  if (result != undefined && result.status == "success"){
-                      console.log(result);
-                      var obj=result.data;
-                      console.log(obj);
-                      //开始赋值
-                      //配伍编号
-                      $("#compatibilityId").text(obj.compatibilityId);
-                      //处理类别
-                      if(obj.handleCategory!=null){
-                          $("#handleCategory").text(obj.handleCategory.name);
-                      }
-                      else {
-                          $("#compatibilityId").text("");
-                      }
-                      //形态
-                      if(obj.formType!=null){
-                          $("#formType").text(obj.formType.name);
-                      }
-                      else {
-                          ("#formType").text("");
-                      }
-                      //每日配比量
-                      $("#dailyProportions").text(obj.dailyProportions);
-                      //周需求总量
-                      $("#weeklyDemand").text(obj.weeklyDemand);
-                      //热值
-                      $("#calorific1").text(obj.calorific);
-                      //状态
-                      if(obj.checkState!=null){
-                          $("#checkState").text(obj.checkState.name);
-                      }
-                      else {
-                          $("#checkState").text("");
-                      }
-                      //序号
-                      $("#pwId").text(obj.pwId);
-                      //灰分
-                      $("#ash").text(obj.ash);
-                      //水分
-                      $("#water").text(obj.water);
-                      //氯
-                      $("#CL").text(obj.CL);
-                      //硫
-                      $("#S").text(obj.s);
-                      //磷
-                      $("#P").text(obj.p);
-                      //弗
-                      $("#F").text(obj.f);
-                      //酸碱度
-                      $("#PH").text(obj.PH);
-                      //比例
-                      $("#proportion").text(obj.proportion);
-                      //审批意见
-                      $('#advice').text(obj.approvalContent);
-                      //驳回意见
-                      $("#backContent").text(obj.backContent);
 
-                  }
-                  else {
-                      alert(result.message);
-                  }
-              },
-              error:function (result) {
-                  alert("服务器异常！")
-              }
-          });
-          //审批按钮显示
-          $('#approval').show();
-          //驳回按钮显示
-          $('#back').show();
-          $("#contractInfoForm").modal('show');
-      }
-  else {
-          alert("请选择数据！")
-      }
-}
+ 
 
 /**
  * 出现具体审批的模态框
@@ -748,25 +657,7 @@ function back1() {
         }
     });
 }
-//审批具体方法
-// function approvalPw(pwId) {
-//     $.ajax({
-//         type: "POST",                       // 方法类型
-//         url: "approvalPw",         // url
-//         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-//         data: {"pwId":pwId},
-//         dataType: "json",
-//         contentType: 'application/json;charset=utf-8',
-//         success:function (result) {
-//
-//         },
-//         error:function (result) {
-//
-//         }
-//     });
-//
-//
-// }
+
 //序号变成四位
 function getFour(pwId) {
     var pwld1=""+pwId;
@@ -779,156 +670,100 @@ function getFour(pwId) {
 /**
  * 作废方法
  */
-function cancelPw() {
-    var pwId1=arrayId[0];
-    if(arrayId.length==1){
-        pwId= getFour(pwId1);
-        //根据id信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getByPwId2",         // url
-            // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {"pwId":pwId.toString()},
-            dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    var obj=result.data;
-                  //状态判断
-                    if(obj.checkState.name=='履约中'){
-                        if(confirm("确定作废该数据?")){
-                            //点击确定后操作
-                            $.ajax({
-                                type: "POST",                       // 方法类型
-                                url: "cancelPw",         // url
-                                // 同步：意思是当有返回值以后才会进行后面的js程序
-                                data: {"pwId":pwId.toString()},
-                                dataType: "json",
-                                success:function (result) {
-                                    if(result != undefined && result.status == "success"){
-                                        alert(result.message);
-                                        window.location.reload();
-                                    }
-                                    else {
-                                        alert(result.message)
-                                    }
-                                },
-                                error:function (result) {
-                                    alert("服务器异常！")
-                                }
-
-                            });
-
-                        }
-                    }
-                    else {
-                        alert("无法作废，仅在履约状态下可操作")
-                    }
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！")
+function cancelPw(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+if(confirm("确认作废?")){
+    $.ajax({
+        type:"POST",
+        url: "cancelPw",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'compatibilityId':compatibilityId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message);
+                window.location.reload();
             }
-        });
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
 
-        
-    }
-    else {
-        alert("请选择数据！")
-    }
+    });
+}
+
+
+
 }
 
 /**
- * 查看
+ * 提交方法
  */
-function  viewPw(){
-    var pwId1=arrayId[0];
-    if(arrayId.length==1){
-        pwId= getFour(pwId1);
+function submit(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+    if(confirm("确认提交?")){
         $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getByPwId2",         // url
-            // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {"pwId":pwId.toString()},
+            type:"POST",
+            url: "submitPw",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
+            data:{'compatibilityId':compatibilityId},
+            //contentType: "application/json; charset=utf-8",
             success:function (result) {
                 if (result != undefined && result.status == "success"){
-                    console.log(result);
-                    var obj=result.data;
-                    console.log(obj);
-                    //开始赋值
-                    //配伍编号
-                    $("#compatibilityId").text(obj.compatibilityId);
-                    //处理类别
-                    if(obj.handleCategory==null){
-                        $("#handleCategory").text(" ");
-                    }
-                    else
-                    $("#handleCategory").text(obj.handleCategory.name);
-                    //形态
-                    if(obj.formType==null){
-                        $("#formType").text(" ");
-                    }
-                    else
-                    $("#formType").text(obj.formType.name);
-                    //每日配比量
-                    $("#dailyProportions").text(obj.dailyProportions);
-                    //周需求总量
-                    $("#weeklyDemand").text(obj.weeklyDemand);
-                    //热值
-                    $("#calorific1").text(obj.calorific);
-                    //状态
-                    if(obj.checkState!=null){
-                        $("#checkState").text(obj.checkState.name);
-                    }
-                    //序号
-                    $("#pwId").text(obj.pwId);
-                    //灰分
-                    $("#ash").text(obj.ash);
-                    //水分
-                    $("#water").text(obj.water);
-                    //氯
-                    $("#CL").text(obj.CL);
-                    //硫
-                    $("#S").text(obj.s);
-                    //磷
-                    $("#P").text(obj.p);
-                    //弗
-                    $("#F").text(obj.f);
-                    //酸碱度
-                    $("#PH").text(obj.PH);
-                    //比例
-                    $("#proportion").text(obj.proportion);
-                    //审批意见
-                    $('#advice').text(obj.approvalContent);
-                    //驳回意见
-                    $("#backContent").text(obj.backContent);
-
+                    alert(result.message);
+                    window.location.reload();
                 }
                 else {
                     alert(result.message);
                 }
-                //审批按钮隐藏
-                $('#approval').hide();
-                //驳回按钮隐藏
-                $('#back').hide();
-                $("#contractInfoForm").modal('show');
             },
             error:function (result) {
                 alert("服务器异常！")
             }
+
         });
     }
-    else {
-        alert("请选择数据！")
-    }
-
 
 }
+
+/**
+ * 审批方法
+ */
+function approval(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+    if(confirm("确认审批?")){
+        $.ajax({
+            type:"POST",
+            url: "approvalCompatibility",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{'compatibilityId':compatibilityId},
+            //contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+
+        });
+    }
+
+}
+
+
+
 
 /**
  * 设置高级检索的下拉框数据
@@ -1159,6 +994,40 @@ function view(item) {
     $('#appointModal2').modal('show');
 }
 
+//点击图标查看
+function view1(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+
+    $.ajax({
+        type:"POST",
+        url: "getWeekById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'compatibilityId':compatibilityId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //赋值配伍单号
+                $('#compatibilityId1').text(compatibilityId);
+                setCompatibilityItemModal(result);
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+
+    $('#appointModal2').modal('show');
+}
+
 //设置配伍明细模态框
 
 function setCompatibilityItemModal(result) {
@@ -1248,6 +1117,182 @@ $.each(result.array,function (index,item) {
    tr.hide();
 
 
+})
+
+
+}
+
+//修改模态框
+
+function adjust(item) {
+
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+
+    localStorage.compatibilityId=compatibilityId;
+    window.location.href="adjustCompatibility.html";
+
+
+
+
+}
+
+//修改页面初始化
+function adjustCom() {
+
+    var compatibilityId=localStorage['compatibilityId'];
+
+    $("#compatibilityId2").text(compatibilityId);
+
+
+
+
+
+
+    //找出物料明细
+    $.ajax({
+        type:"POST",
+        url: "getWeekById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'compatibilityId':compatibilityId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                var tr=$('#cloneTr2');
+                 $('#cloneTr2').siblings().remove();
+                $.each(result.array,function (index,item) {
+
+
+                    var obj=eval(item);
+
+                    // console.log(obj)
+
+                    var cloneTr= tr.clone();
+
+                     cloneTr.attr('class','myclass2');
+                    cloneTr.show();
+
+                    cloneTr.children('td').eq(0).html(index+1);
+
+
+                    cloneTr.children('td').eq(3).children('input').val(obj.proportion.toFixed(2));
+
+                    cloneTr.children('td').eq(4).children('input').val(obj.dailyRatio.toFixed(2));
+
+                    cloneTr.children('td').eq(5).children('input').val(obj.weeklyDemandTotal.toFixed(2));
+
+                    cloneTr.children('td').eq(6).children('input').val(obj.calorific);
+
+                    cloneTr.children('td').eq(7).children('input').val(obj.ash);
+
+                    cloneTr.children('td').eq(8).children('input').val(obj.water);
+
+                    cloneTr.children('td').eq(9).children('input').val(obj.cl);
+
+                    cloneTr.children('td').eq(10).children('input').val(obj.s);
+
+                    cloneTr.children('td').eq(11).children('input').val(obj.p);
+
+                    cloneTr.children('td').eq(12).children('input').val(obj.f);
+
+                    cloneTr.children('td').eq(13).children('input').val(obj.ph);
+
+                    if(obj.handleCategory!=null){
+                        //进料方式
+                        $.ajax({
+                            type:'POST',
+                            url:"getHandleCategory",
+                            //data:JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result){
+                                if (result != undefined){
+                                    // console.log(result);
+                                    var handelCategory=cloneTr.children('td').eq(1).children('select');
+                                    handelCategory.children().remove();
+                                    $.each(result.handleCategoryList,function (index,item) {
+                                        var option=$('<option/>');
+                                        option.val(item.index);
+                                        option.text(item.name);
+                                        handelCategory.append(option);
+                                    });
+                                    handelCategory.get(0).selectedIndex=item.handleCategory.index-1;
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error:function (result) {
+                                console.log(result);
+                            }
+
+                        });
+
+
+                    }
+                    if(item.formType!=null){
+                        //形态
+                        $.ajax({
+                            type:'POST',
+                            url:"getFormTypeAndPackageType",
+                            //data:JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result){
+                                if (result != undefined){
+                                    // console.log(result);
+                                    var formType=cloneTr.children('td').eq(2).children('select');
+                                    formType.children().remove();
+                                    $.each(result.formTypeList,function (index,item) {
+                                        var option=$('<option/>');
+                                        option.val(item.index);
+                                        option.text(item.name);
+                                        formType.append(option);
+                                    });
+                                    formType.get(0).selectedIndex=obj.formType.index-1;
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error:function (result) {
+                                console.log(result);
+                            }
+
+                        });
+                        //cloneTr.children('td').eq(2).children('select').selectedIndex=3;
+                    }
+                    console.log( cloneTr.children('td').eq(2).children('select'));
+                    // cloneTr.removeAttr('id');
+                    cloneTr.insertBefore(tr);
+                    tr.removeAttr('class');
+
+                })
+                tr.hide();
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+}
+
+//确认修改
+function adjustConfirm() {
+
+$('.myclass2').each(function () {
+    var data={
+        handleCategory:$(this).children('td').eq(1).children('select').get(0).selectedIndex,
+        formType:$(this).children('td').eq(2).children('select').get(0).selectedIndex,
+    };
+    console.log(data)
 })
 
 
