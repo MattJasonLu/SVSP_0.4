@@ -69,7 +69,8 @@
                         <li><a href="questionnaireManage.html" id="function_50" onclick="checkAuthority($(this))">危废数据调查表管理</a>
                         </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="sampleInfo.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a></li>
+                        <li><a href="sampleInfo.html" id="function_51" onclick="checkAuthority($(this))">产废单位样品登记</a>
+                        </li>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li><a href="wayBill1.html" id="function_52" onclick="checkAuthority($(this))">接运单管理</a></li>
@@ -102,13 +103,13 @@
                     </ul>
                 </li>
                 <!--<li class="dropdown">-->
-                    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
-                       <!--aria-expanded="false">价格管理<span class="caret"></span></a>-->
-                    <!--<ul class="dropdown-menu">-->
-                        <!--<li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>-->
-                        <!--<li role="separator" class="divider"></li>-->
-                        <!--<li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>-->
-                    <!--</ul>-->
+                <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"-->
+                <!--aria-expanded="false">价格管理<span class="caret"></span></a>-->
+                <!--<ul class="dropdown-menu">-->
+                <!--<li><a href="quotation.html" id="function_57" onclick="checkAuthority($(this))">报价管理</a></li>-->
+                <!--<li role="separator" class="divider"></li>-->
+                <!--<li><a href="cost.html" id="function_58" onclick="checkAuthority($(this));">成本管理</a></li>-->
+                <!--</ul>-->
                 <!--</li>-->
                 <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
                 <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
@@ -207,17 +208,17 @@
             <br>
         </div>
         <div class="row">
-            <div class="form-horizontal col-md-3" >
+            <div class="form-horizontal col-md-3">
                 <label for="modal-produceCompanyName" class="col-sm-4 control-label">产废单位</label>
                 <div class="col-sm-7">
                     <select
                             class="selectpicker input-xlarge form-control" data-live-search="true"
                             data-live-search-placeholder="搜索..." id="modal-produceCompanyName"
-                            name="modal-produceCompanyName" title="未选择" ></select>
+                            name="modal-produceCompanyName" title="未选择"></select>
                 </div>
             </div>
-            <div class="form-horizontal col-md-7" ></div>
-            <div class="form-horizontal col-md-2" >
+            <div class="form-horizontal col-md-7"></div>
+            <div class="form-horizontal col-md-2">
                 <label for="modal-founder" class="col-sm-5 control-label right">创建人</label>
                 <div class="col-sm-7">
                     <input type="text" id="modal-founder" class="text-left form-control pull-left"/>
@@ -236,7 +237,7 @@
                 <td class="text-center" style="width: 100px">单价</td>
                 <td class="text-center" style="width: 100px;">数量</td>
                 <td class="text-center">发票号码</td>
-                <td class="text-center" >接受单位经手人</td>
+                <td class="text-center">接受单位经手人</td>
                 <td class="text-center">接运单日期</td>
                 <td class="text-center">开票日期</td>
             </tr>
@@ -244,24 +245,38 @@
             <tbody>
             <tr id="addClone">
                 <td class="text-center">1</td>
-                <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="modal0-receiveCompany" name="modal0-receiveCompany" title="未选择"></select></td>
-                <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="modal0-salesman" name="modal0-salesman" title="未选择"></select></td>
-                <td class="text-center"><input title="" type="text" class="focus" id="modal0-wastesName" name="modal0-wastesName" style="width: 110px;"></td>
-                <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true" data-live-search-placeholder="搜索..." id="modal0-wastesCode" name="modal0-wastesCode" title="未选择" style="width: 130px;"></select></td>
-                <td class="text-center"><input title="" type="number" class="focus" id="modal0-wastesPrice" name="modal0-wastesPrice" style="width: 100%;"></td>
-                <td class="text-center"><input title="" type="number" class="focus" id="modal0-wasteAmount" name="modal0-wasteAmount" style="width: 100%;"></td>
-                <td class="text-center"><input title="" type="text" class="focus" id="modal0-invoiceNumber" name="modal0-invoiceNumber" style="width: 110px;"></td>
-                <td class="text-center"><input title="" type="text" class="focus" id="modal0-receiveCompanyOperator" name="modal0-receiveCompanyOperator" style="width: 70px;"></td>
+                <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true"
+                                                data-live-search-placeholder="搜索..." id="modal0-receiveCompany"
+                                                name="modal0-receiveCompany" title="未选择"></select></td>
+                <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true"
+                                                data-live-search-placeholder="搜索..." id="modal0-salesman"
+                                                name="modal0-salesman" title="未选择"></select></td>
+                <td class="text-center"><input title="" type="text" class="focus" id="modal0-wastesName"
+                                               name="modal0-wastesName" style="width: 110px;"></td>
+                <td class="text-center"><select class="selectpicker input-xlarge form-control" data-live-search="true"
+                                                data-live-search-placeholder="搜索..." id="modal0-wastesCode"
+                                                name="modal0-wastesCode" title="未选择" style="width: 130px;"></select>
+                </td>
+                <td class="text-center"><input title="" type="number" class="focus" id="modal0-wastesPrice"
+                                               name="modal0-wastesPrice" style="width: 100%;"></td>
+                <td class="text-center"><input title="" type="number" class="focus" id="modal0-wasteAmount"
+                                               name="modal0-wasteAmount" style="width: 100%;"></td>
+                <td class="text-center"><input title="" type="text" class="focus" id="modal0-invoiceNumber"
+                                               name="modal0-invoiceNumber" style="width: 110px;"></td>
+                <td class="text-center"><input title="" type="text" class="focus" id="modal0-receiveCompanyOperator"
+                                               name="modal0-receiveCompanyOperator" style="width: 70px;"></td>
                 <td class="text-center">
                     <div class="input-group date form_datetime" style="padding: 0 3% 0 2%;">
-                        <input title="" class="form-control focus" type="text" value="" name="modal0-receiveDate" id="modal0-receiveDate" readonly>
+                        <input title="" class="form-control focus" type="text" value="" name="modal0-receiveDate"
+                               id="modal0-receiveDate" readonly>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                     </div>
                 </td>
                 <td class="text-center">
                     <div class="input-group date form_datetime" style="padding: 0 3% 0 2%;">
-                        <input title="" class="form-control focus" type="text" value="" name="modal0-invoiceDate" id="modal0-invoiceDate" readonly>
+                        <input title="" class="form-control focus" type="text" value="" name="modal0-invoiceDate"
+                               id="modal0-invoiceDate" readonly>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                     </div>
@@ -269,7 +284,8 @@
             </tr>
             <tr id="plusBtn">
                 <td>
-                    <a class="btn btn-default btn-xs" onclick="addNewItemLine();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                    <a class="btn btn-default btn-xs" onclick="addNewItemLine();"><span class="glyphicon glyphicon-plus"
+                                                                                        aria-hidden="true"></span></a>
                 </td>
                 <td></td>
                 <td></td>
@@ -283,9 +299,13 @@
                 <td></td>
             </tr>
             <tr>
-                <td class="text-left" colspan="4">运费：<input title="" type="number" class="focus" id="modal-freight" style="width: 70%"></td>
-                <td class="text-left" colspan="5">产废单位经手人：<input title="" type="text" class="focus" id="modal-produceCompanyOperator" style="width: 70%"></td>
-                <td class="text-left" colspan="2">备注：<input title="" type="text" id="modal-remarks" class="focus" style="width: 70%"></td>
+                <td class="text-left" colspan="4">运费：<input title="" type="number" class="focus" id="modal-freight"
+                                                            style="width: 70%"></td>
+                <td class="text-left" colspan="5">产废单位经手人：<input title="" type="text" class="focus"
+                                                                 id="modal-produceCompanyOperator" style="width: 70%">
+                </td>
+                <td class="text-left" colspan="2">备注：<input title="" type="text" id="modal-remarks" class="focus"
+                                                            style="width: 70%"></td>
             </tr>
             </tbody>
         </table>

@@ -1025,7 +1025,17 @@ function addNewItemLine() {
  */
 function delLine(e) {
     var tr = e.parentElement.parentElement;
+    var length = $(tr.parentNode).children().length - 3;         // 行数
+    var tBody = $(tr.parentNode);                                  // 删除前获取父节点
     tr.parentNode.removeChild(tr);
+    console.log("length:"+length);
+    for (var i = 1; i < length; i++) {             // 更新序号
+        tBody.children().eq(i).children().eq(0).get(0).innerHTML = i + 1;     // 更新序号
+        // 重新加上减行按钮
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+    }
+
 }
 
 /**
