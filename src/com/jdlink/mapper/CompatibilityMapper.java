@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.Produce.Compatibility;
+import com.jdlink.domain.Produce.CompatibilityItem;
 
 import java.util.List;
 
@@ -18,4 +19,9 @@ public interface CompatibilityMapper {
     void  cancel(String pwId);
     List<Compatibility> search(Compatibility compatibility);
     void add(Compatibility compatibility);
+    void addCompatibility(Compatibility compatibility);
+    void addCompatibilityItem(CompatibilityItem compatibilityItem);
+
+    List<Compatibility>getWeekPlanList();
+    List<CompatibilityItem>getWeekById(String compatibilityId);
 }

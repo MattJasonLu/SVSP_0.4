@@ -12,104 +12,73 @@ import java.util.List;
  * 配伍周计划
  */
 public class Compatibility {
-    //序号
-    private String pwId;
-    //处理类别
-    private HandleCategory handleCategory;
-    //形态
-    private FormType formType;
-    //比例
-    private float proportion;
-    //每日配比量
-    private  float dailyProportions;
-    //每周需求总量
-    private float  weeklyDemand;
-    //热值
-    private float calorific;
-    //灰分
-    private float ash;
-    //水分
-    private float water;
-    //氯
-    private  float CL;
-    //硫
-    private  float S;
-    //磷
-    private  float P;
-    //弗
-    private  float F;
-    //PH
-    private  float PH;
+
+    //配伍主键
+    private String compatibilityId;
+
+
+   //配伍单明细
+
+    private List<CompatibilityItem> compatibilityItemList=new ArrayList<>();
+
     //每日配比量合计
-    private  float dailyProportionsTotal;
-    //周需求总量
-    private float weeklyDemandTotal;
-    //热值总量
-    private float calorificTotal;
-    //审核状态
+
+    private float totalDailyAmount;
+
+
+    //周需求合计
+
+    private  float  weeklyDemandTotalAggregate;
+
+    //热值平均
+
+    private  float calorificAvg;
+
+    //灰分平均
+
+    private  float  ashAvg;
+
+    //水分平均
+
+    private  float  waterAvg;
+
+    //氯平均
+
+    private float   clAvg;
+
+    //硫平均
+
+    private float  sAvg;
+
+    //磷平均
+
+    private float pAvg;
+
+    //氟平均
+
+    private float fAvg;
+
+    //酸碱度平均
+
+    private float phAvg;
+
+    //状态
     private CheckState checkState;
-    //配伍编号
-    //审批内容
+
+    //导入时间
+
+    private Date importDate;
+
+    //审批意见
     private String approvalContent;
-    //驳回内容
+
+
+    //驳回意见
     private String backContent;
-    //关键字
-    private  String keyword;
-    //开始日期
-    private  Date beginTime;
-    //结束日期
-    private  Date endTime;
-    //当前时间
-    private  Date nowTime;
-    //危废信息
-    private List<Wastes> wastesList=new ArrayList<>();
 
-    public List<Wastes> getWastesList() {
-        return wastesList;
-    }
-
-    public void setWastesList(List<Wastes> wastesList) {
-        this.wastesList = wastesList;
-    }
-
-    public Date getNowTime() {
-        return nowTime;
-    }
-
-    public void setNowTime(Date nowTime) {
-        this.nowTime = nowTime;
-    }
-
-    public Date getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
 
     public String getApprovalContent() {
         return approvalContent;
-    }
-
-    public void setApprovalContent(String approvalContent) {
-        this.approvalContent = approvalContent;
     }
 
     public String getBackContent() {
@@ -120,6 +89,34 @@ public class Compatibility {
         this.backContent = backContent;
     }
 
+    public void setApprovalContent(String approvalContent) {
+        this.approvalContent = approvalContent;
+    }
+
+    public float getTotalDailyAmount() {
+        return totalDailyAmount;
+    }
+
+    public void setTotalDailyAmount(float totalDailyAmount) {
+        this.totalDailyAmount = totalDailyAmount;
+    }
+
+    public float getpAvg() {
+        return pAvg;
+    }
+
+    public void setpAvg(float pAvg) {
+        this.pAvg = pAvg;
+    }
+
+    public float getfAvg() {
+        return fAvg;
+    }
+
+    public void setfAvg(float fAvg) {
+        this.fAvg = fAvg;
+    }
+
     public String getCompatibilityId() {
         return compatibilityId;
     }
@@ -128,7 +125,70 @@ public class Compatibility {
         this.compatibilityId = compatibilityId;
     }
 
-    private String compatibilityId;
+    public List<CompatibilityItem> getCompatibilityItemList() {
+        return compatibilityItemList;
+    }
+
+    public void setCompatibilityItemList(List<CompatibilityItem> compatibilityItemList) {
+        this.compatibilityItemList = compatibilityItemList;
+    }
+
+    public float getWeeklyDemandTotalAggregate() {
+        return weeklyDemandTotalAggregate;
+    }
+
+    public void setWeeklyDemandTotalAggregate(float weeklyDemandTotalAggregate) {
+        this.weeklyDemandTotalAggregate = weeklyDemandTotalAggregate;
+    }
+
+    public float getCalorificAvg() {
+        return calorificAvg;
+    }
+
+    public void setCalorificAvg(float calorificAvg) {
+        this.calorificAvg = calorificAvg;
+    }
+
+    public float getAshAvg() {
+        return ashAvg;
+    }
+
+    public void setAshAvg(float ashAvg) {
+        this.ashAvg = ashAvg;
+    }
+
+    public float getWaterAvg() {
+        return waterAvg;
+    }
+
+    public void setWaterAvg(float waterAvg) {
+        this.waterAvg = waterAvg;
+    }
+
+    public float getClAvg() {
+        return clAvg;
+    }
+
+    public void setClAvg(float clAvg) {
+        this.clAvg = clAvg;
+    }
+
+    public float getsAvg() {
+        return sAvg;
+    }
+
+    public void setsAvg(float sAvg) {
+        this.sAvg = sAvg;
+    }
+
+    public float getPhAvg() {
+        return phAvg;
+    }
+
+    public void setPhAvg(float phAvg) {
+        this.phAvg = phAvg;
+    }
+
     public CheckState getCheckState() {
         return checkState;
     }
@@ -137,162 +197,29 @@ public class Compatibility {
         this.checkState = checkState;
     }
 
-    public String getPwId() {
-        return pwId;
+    public Date getImportDate() {
+        return importDate;
     }
 
-    public void setPwId(String pwId) {
-        this.pwId = pwId;
-    }
-
-    public HandleCategory getHandleCategory() {
-        return handleCategory;
-    }
-
-    public void setHandleCategory(HandleCategory handleCategory) {
-        this.handleCategory = handleCategory;
-    }
-
-    public FormType getFormType() {
-        return formType;
-    }
-
-    public void setFormType(FormType formType) {
-        this.formType = formType;
-    }
-
-    public float getProportion() {
-        return proportion;
-    }
-
-    public void setProportion(float proportion) {
-        this.proportion = proportion;
-    }
-
-    public float getDailyProportions() {
-        return dailyProportions;
-    }
-
-    public void setDailyProportions(float dailyProportions) {
-        this.dailyProportions = dailyProportions;
-    }
-
-    public float getWeeklyDemand() {
-        return weeklyDemand;
-    }
-
-    public void setWeeklyDemand(float weeklyDemand) {
-        this.weeklyDemand = weeklyDemand;
-    }
-
-    public float getCalorific() {
-        return calorific;
-    }
-
-    public void setCalorific(float calorific) {
-        this.calorific = calorific;
-    }
-
-    public float getAsh() {
-        return ash;
-    }
-
-    public void setAsh(float ash) {
-        this.ash = ash;
-    }
-
-    public float getWater() {
-        return water;
-    }
-
-    public void setWater(float water) {
-        this.water = water;
-    }
-
-    public float getCL() {
-        return CL;
-    }
-
-    public void setCL(float CL) {
-        this.CL = CL;
-    }
-
-    public float getS() {
-        return S;
-    }
-
-    public void setS(float s) {
-        S = s;
-    }
-
-    public float getP() {
-        return P;
-    }
-
-    public void setP(float p) {
-        P = p;
-    }
-
-    public float getF() {
-        return F;
-    }
-
-    public void setF(float f) {
-        F = f;
-    }
-
-    public float getPH() {
-        return PH;
-    }
-
-    public void setPH(float PH) {
-        this.PH = PH;
-    }
-
-    public float getDailyProportionsTotal() {
-        return dailyProportionsTotal;
-    }
-
-    public void setDailyProportionsTotal(float dailyProportionsTotal) {
-        this.dailyProportionsTotal = dailyProportionsTotal;
-    }
-
-    public float getWeeklyDemandTotal() {
-        return weeklyDemandTotal;
-    }
-
-    public void setWeeklyDemandTotal(float weeklyDemandTotal) {
-        this.weeklyDemandTotal = weeklyDemandTotal;
-    }
-
-    public float getCalorificTotal() {
-        return calorificTotal;
-    }
-
-    public void setCalorificTotal(float calorificTotal) {
-        this.calorificTotal = calorificTotal;
+    public void setImportDate(Date importDate) {
+        this.importDate = importDate;
     }
 
     @Override
     public String toString() {
         return "Compatibility{" +
-                "pwId='" + pwId + '\'' +
-                ", handleCategory=" + handleCategory +
-                ", formType=" + formType +
-                ", proportion=" + proportion +
-                ", dailyProportions=" + dailyProportions +
-                ", weeklyDemand=" + weeklyDemand +
-                ", calorific=" + calorific +
-                ", ash=" + ash +
-                ", water=" + water +
-                ", CL=" + CL +
-                ", S=" + S +
-                ", P=" + P +
-                ", F=" + F +
-                ", PH=" + PH +
-                ", dailyProportionsTotal=" + dailyProportionsTotal +
-                ", weeklyDemandTotal=" + weeklyDemandTotal +
-                ", calorificTotal=" + calorificTotal +
+                "compatibilityId='" + compatibilityId + '\'' +
+                ", compatibilityItemList=" + compatibilityItemList +
+                ", totalDailyAmount=" + totalDailyAmount +
+                ", weeklyDemandTotalAggregate=" + weeklyDemandTotalAggregate +
+                ", calorificAvg=" + calorificAvg +
+                ", ashAvg=" + ashAvg +
+                ", waterAvg=" + waterAvg +
+                ", clAvg=" + clAvg +
+                ", sAvg=" + sAvg +
+                ", phAvg=" + phAvg +
+                ", checkState=" + checkState +
+                ", importDate=" + importDate +
                 '}';
     }
 }

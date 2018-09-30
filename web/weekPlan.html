@@ -104,18 +104,19 @@
                         <!--<a class="btn btn-primary btn-xs" href=""><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>-->
                         <a class="btn btn-primary btn-xs" onclick="importExcelChoose();"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
                         <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
-                        <a class="btn btn-primary btn-xs" onclick="cancelPw()"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>
-                        <a class="btn btn-primary btn-xs" onclick="approval3()"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 审批</a>
+                        <!--<a class="btn btn-primary btn-xs" onclick="cancelPw()"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> 作废</a>-->
+                        <!--<a class="btn btn-primary btn-xs" onclick="approval3()"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 审批</a>-->
                         <a class="btn btn-primary btn-xs" onclick="generate()"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成物料需求单</a>
                     </div>
-                    <!--&lt;!&ndash;查询框&ndash;&gt;-->
-                    <!--<div class="input-group col-md-3 pull-right" style="margin-right: -151px;">-->
-                        <!--<span class="input-group-btn">-->
-                            <!--<a class="btn btn-default" onclick="searchPw();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>-->
-                            <!--<a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>-->
-                            <!--<a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>-->
-                        <!--</span>-->
-                    <!--</div>-->
+                    <!--查询框-->
+                    <div class="input-group col-md-3 pull-right">
+                        <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch()">
+                        <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchPw();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+                    </div>
                 </div>
             </div>
             <br>
@@ -223,32 +224,41 @@
             </div>
             <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <table class="table table-bordered">
+                    <table class="table table-hover table-condensed">
                         <thead>
+                        <!--<tr>-->
+                            <!--<th class="text-center" colspan="15">配伍计划表(<span id="week"></span>)</th>-->
+                        <!--</tr>-->
                         <tr>
-                            <th class="text-center" colspan="15">配伍计划表(<span id="week"></span>)</th>
-                        </tr>
-                        <tr>
-                        <tr id="re">
+                        <tr  class="myclass">
+                            <th class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
+                                </label>
+                            </th>
                             <th class="text-center">序号</th>
-                            <th class="text-center">处理类别</th>
-                            <th class="text-center">形态</th>
-                            <th class="text-center">比例(%)</th>
-                            <th class="text-center">每日配比量</th>
+                            <th class="text-center">配伍计划单号</th>
+                            <th class="text-center">小计日配比量</th>
                             <th class="text-center">周需求总量</th>
-                            <th class="text-center">热值</th>
-                            <th class="text-center">灰分</th>
-                            <th class="text-center">水分</th>
-                            <th class="text-center">CL</th>
-                            <th class="text-center">S</th>
-                            <th class="text-center">P</th>
-                            <th class="text-center">F</th>
-                            <th class="text-center">PH</th>
+                            <th class="text-center">平均热值</th>
+                            <th class="text-center">平均灰分</th>
+                            <th class="text-center">平均水分</th>
+                            <th class="text-center">平均CL</th>
+                            <th class="text-center">平均S</th>
+                            <th class="text-center">平均P</th>
+                            <th class="text-center">平均F</th>
+                            <th class="text-center">平均PH</th>
                             <th class="text-center">状态</th>
+                            <th class="text-center">操作</th>
                         </tr>
                         </thead>
                         <tbody id="tbody1">
-                        <tr id="cloneTr1" onclick="selected1(this)">
+                        <tr id="cloneTr1" ondblclick="view(this)">
+                            <td class="text-center">
+                                <label>
+                                    <input class="checkbox" type="checkbox" value="option1" name="select">
+                                </label>
+                            </td>
                             <td class="text-center"></td><!--序号-->
                             <td class="text-center"></td>
                             <td class="text-center"></td>
@@ -262,32 +272,20 @@
                             <td class="text-right"></td>
                             <td class="text-right"></td>
                             <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-center"></td>
+                            <td class="text-center">
+                                <a title="查看" href="#" onclick=""><span class="glyphicon glyphicon-search"
+                                                                                    aria-hidden="true"></span> </a>
+                                <a title="修改" href="#" onclick=""><span class="glyphicon glyphicon-pencil"
+                                                                                   aria-hidden="true"></span> </a>
+                                <a title="提交" href="#" onclick=""><span class="glyphicon glyphicon-export"
+                                                                                     aria-hidden="true"></span> </a>
+                                <a title="审批" href="#" onclick=""><span class="glyphicon glyphicon-floppy-saved"
+                                                                                          aria-hidden="true"></span> </a>
+                                <a title="作废" href="#" onclick=""><span class="glyphicon glyphicon-remove-sign"
+                                                                                      aria-hidden="true"></span> </a>
+                            </td>
                         </tr>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th >合计</th>
-                            <td colspan="3"></td>
-                            <td id="dailyProportionsTotal" class="text-right"></td>
-                            <td id="weeklyDemandTotal" class="text-right"></td>
-                            <td colspan="9"></td>
-                        </tr>
-                        <tr>
-                            <th>加权平均</th>
-                            <td colspan="5"></td>
-                            <td id="calorific" class="text-right"></td><!--热值平均-->
-                            <td id="ash1" class="text-right"></td><!--灰分平均-->
-                            <td  id="water1" class="text-right"></td><!--水分平均-->
-                            <td  id="Cl1"  class="text-right"></td><!--氯平均-->
-                            <td  id="S1"  class="text-right"></td><!--硫平均-->
-                            <td id="P1"  class="text-right"></td><!--磷平均-->
-                            <td id="F1"  class="text-right"></td><!--弗平均-->
-                            <td id="PH1"  class="text-right"></td><!--PH平均-->
-                            <td  class="text-right"></td>
-                        </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -416,56 +414,101 @@
             </div>
         </div>
     </div>
+    <!--查看模态框-->
+    <div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
+            <div class="modal-content" >
+                <div class="modal-header row">
+                    <div class="col-md-3">
+                    <h4 class="modal-title">配伍周计划明细</h4></div>
+                    <div class="col-md-7"></div>
+                    <div class="col-md-2"> <p class="pull-left" >配伍计划单号&nbsp;&nbsp;&nbsp;&nbsp;</p><p id="compatibilityId1"></p></div>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                       <thead>
+                        <tr>
+                            <td class="text-center">序号</td>
+                            <td class="text-center">进料方式</td>
+                            <td class="text-center">物质形态</td>
+                            <td class="text-center">比例</td>
+                            <td class="text-center">每日配置量</td>
+                            <td class="text-center">周需求总理</td>
+                            <td class="text-center">热值</td>
+                            <td class="text-center">灰分</td>
+                            <td class="text-center">水分</td>
+                            <td class="text-center">CL</td>
+                            <td class="text-center">S</td>
+                            <td class="text-center">P</td>
+                            <td class="text-center">F</td>
+                            <td class="text-center">PH</td>
+
+                        </tr>
+                       </thead>
+                        <tbody>
+                        <tr id="cloneTr" class="myclass1">
+                            <td class="text-center modal-companyName"></td>
+                            <td class="text-center modal-einlass"></td>
+                            <td class="text-center wastesName" ></td>
+                            <td class="text-center wastesCode" ></td>
+                            <td class="text-center modal-weight" ></td>
+                            <td class="text-center modal-materialForm"></td>
+                            <td class="text-center modal-packingType" ></td>
+                            <td class="text-center modal-packingType" ></td>
+                            <td class="text-center modal-processingMethod"></td>
+                            <td class="text-center modal-KCal" ></td>
+                            <td class="text-center modal-PH" ></td>
+                            <td class="text-center modal-ashContent" ></td>
+                            <td class="text-center modal-waterContent"></td>
+                            <td class="text-center modal-CLContent"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </body>
-<!--分页格式-->
-<style type="text/css">
-    .pagination > li {
-        display: inline;
-    }
-    .inputText { float:left;
-    }
-    .showLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-    .selectLi{
-        float: left;
-        height: 38px;
-        line-height: 38px;
-    }
-</style>
 
-<!--<script type="text/javascript">-->
 
-    <!--var clientId;-->
+<!--分页-->
+<nav aria-label="Page navigation" class="text-center">
+    <ol class="pagination" style="width: 800px;">
+        <li id="current" style="display: none"><a>当前页：</a>
+        <li id="firstPage">
+            <a href='#' onclick="switchPage(0)">首 页</a>
+        </li>
+        <li id="previous">
+            <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+            </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li id="next">
+            <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+            </a>
+        </li>
+        <li id="endPage">
+            <a href='#' onclick="switchPage(-2)">尾 页</a>
+        </li>
+        <li><a id="totalPage"></a></li>
+        <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+        <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                   id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
+        <li class="showLi">每页显示:</li>
+        <li class="selectLi">
+            <select id="count" onchange="getList1();" title="">
+                <option>5</option>
+                <option selected>15</option>
+                <option>50</option>
+            </select>
+        </li>
+    </ol>
+</nav>
 
-    <!--/**-->
-     <!--* 导航问题-->
-     <!--* */-->
-    <!--$(function(){-->
-        <!--autoNav();-->
-    <!--});-->
-
-    <!--//解决底部自动导航的问题-->
-    <!--function autoNav(){-->
-        <!--//获取内容的高度-->
-        <!--var bodyHeight = $("body").height();-->
-        <!--//获取底部导航的高度-->
-        <!--var navHeight = $(".navbar").height();-->
-        <!--//获取显示屏的高度-->
-        <!--var iHeight = document.documentElement.clientHeight||document.body.clientHeight;-->
-        <!--//如果内容的高度大于（窗口的高度 - 导航的高度）,z则需要添加一个div，设置其高度-->
-        <!--if(bodyHeight > (iHeight - navHeight)){-->
-            <!--$("body").append('<div style="height: '+navHeight+'px"></div>');-->
-        <!--}-->
-    <!--}-->
-    <!--/**-->
-     <!--* 获取用户的编号-->
-     <!--* @param item-->
-     <!--* @returns {string}-->
-     <!--*/-->
-
-<!--</script>-->
 </html>

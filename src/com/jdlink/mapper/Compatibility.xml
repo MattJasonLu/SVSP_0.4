@@ -45,7 +45,7 @@
     </update>
     <!--查找配伍编号-->
     <select id="check" resultType="String">
-        select compatibilityId from  t_pr_pw order by nowTime desc ;
+        select compatibilityId from  t_pr_pw order by compatibilityId desc ;
     </select>
     <select id="check1" resultType="String">
         select compatibilityId from  t_pr_pw  where nowTime!="" order by nowTime desc ;
@@ -141,4 +141,31 @@
             (#{wastes.id},#{wastes.calorific},#{wastes.ashPercentage},#{wastes.wetPercentage},#{wastes.chlorinePercentage},#{wastes.sulfurPercentage},#{wastes.phosphorusPercentage},#{wastes.fluorinePercentage},#{wastes.ph},#{compatibilityId});
         </foreach>
     </insert>
+
+    <!--添加配伍计划单的明细-->
+    <insert id="addCompatibilityItem" parameterType="CompatibilityItem">
+        insert into t_pr_pwitem(compatibilityId, handleCategory, formType, proportion, dailyRatio, weeklyDemandTotal, calorific, ash, water, cl, s, p, f, ph) values
+        (#{compatibilityId},#{handleCategory},#{formType},#{proportion},#{dailyRatio},#{weeklyDemandTotal},#{calorific},#{ash},#{water},#{cl},#{s},#{p},#{f},#{ph});
+    </insert>
+    <!--添加配伍周计划主表-->
+    <insert id="addCompatibility" parameterType="Compatibility">
+        insert into t_pr_pw(compatibilityId, totalDailyAmount, checkState, nowTime,  approvalContent, backContent, calorificAvg, ashAvg, waterAvg, clAvg, sAvg, phAvg, importDate, weeklyDemandTotalAggregate,fAvg,pAvg) values
+        (#{compatibilityId},#{totalDailyAmount},'ToGenerated',NOW(),#{approvalContent},#{backContent},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{phAvg},NOW(),#{weeklyDemandTotalAggregate},#{fAvg},#{pAvg})
+    </insert>
+    <resultMap id="WeekPlan" type="Compatibility" autoMapping="true">
+        <result column="compatibilityId" property="compatibilityId"></result>
+        <collection property="compatibilityItemList" column="compatibilityId" select="getCompatibilityItem"></collection>
+    </resultMap>
+    <!--获取明细-->
+    <select id="getCompatibilityItem" resultType="CompatibilityItem">
+        select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
+    </select>
+    <select id="getWeekPlanList" resultMap="WeekPlan">
+        select * from t_pr_pw order by nowTime desc ;
+    </select>
+
+    <!--根据配伍编号获取明细-->
+    <select id="getWeekById" parameterType="String" resultType="CompatibilityItem">
+        select * from  t_pr_pwitem where compatibilityId=#{compatibilityId};
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.Produce.Compatibility;
+import com.jdlink.domain.Produce.CompatibilityItem;
 import com.jdlink.mapper.CompatibilityMapper;
 import com.jdlink.service.CompatibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,25 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     @Override
     public void add(Compatibility compatibility) {
         compatibilityMapper.add(compatibility);
+    }
+
+    @Override
+    public void addCompatibility(Compatibility compatibility) {
+        compatibilityMapper.addCompatibility(compatibility);
+    }
+
+    @Override
+    public void addCompatibilityItem(CompatibilityItem compatibilityItem) {
+        compatibilityMapper.addCompatibilityItem(compatibilityItem);
+    }
+
+    @Override
+    public List<Compatibility> getWeekPlanList() {
+        return compatibilityMapper.getWeekPlanList();
+    }
+
+    @Override
+    public List<CompatibilityItem> getWeekById(String compatibilityId) {
+        return compatibilityMapper.getWeekById(compatibilityId);
     }
 }
