@@ -100,15 +100,8 @@
                             <li><a href="contractTemplate.html">合同模板</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">价格管理<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="quotation.html">报价管理</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="cost.html">成本管理</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">一企一档</a></li>
+                    <li><a href="archivesManage.html" id="function_18" onclick="checkAuthority($(this));">一企一档</a></li>
+                    <li><a href="stockManage.html" id="function_19" onclick="checkAuthority($(this));">库存申报</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
