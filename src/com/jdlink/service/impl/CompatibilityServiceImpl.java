@@ -87,4 +87,24 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     public void addCompatibilityItem(CompatibilityItem compatibilityItem) {
         compatibilityMapper.addCompatibilityItem(compatibilityItem);
     }
+
+    @Override
+    public List<Compatibility> getWeekPlanList() {
+        return compatibilityMapper.getWeekPlanList();
+    }
+
+    @Override
+    public List<CompatibilityItem> getWeekById(String compatibilityId) {
+        return compatibilityMapper.getWeekById(compatibilityId);
+    }
+
+    @Override
+    public void submit(String compatibilityId) {
+        compatibilityMapper.submit(compatibilityId);
+    }
+
+    @Override
+    public void approvalCompatibility(String compatibilityId) {
+        compatibilityMapper.approvalCompatibility(compatibilityId);
+    }
 }

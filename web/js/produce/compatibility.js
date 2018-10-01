@@ -1,7 +1,10 @@
 /*********************
  * jackYang
  */
+var currentPage = 1;                          //当前页数
 var isSearch = false;
+var data1;
+
 //导入数据
 function importExcelChoose() {
     $("#importExcelModal").modal('show');
@@ -133,10 +136,310 @@ function getWeekDate() {
     return year + "年" + month + "月第" + week + "周";
 
 }
+
+
+/**
+ * 返回count值
+ * */
+function countValue() {
+    var mySelect = document.getElementById("count");
+    var index = mySelect.selectedIndex;
+    return mySelect.options[index].text;
+}
+
+/**
+ * 计算总页数
+ * */
+function totalPage() {
+    var totalRecord = 0;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalBurnOrderRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    } else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchBurnOrderTotal",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                // console.log(result);
+                if (result > 0) {
+                    totalRecord = result;
+                    console.log("总记录数为:" + result);
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
+    var count = countValue();                         // 可选
+    var total = loadPages(totalRecord, count);
+    return total;
+}
+
+/**
+ * 设置克隆页码
+ * */
+function setPageClone(result) {
+    $(".beforeClone").remove();
+    setCompatibility(result);
+    var total = totalPage();
+    $("#next").prev().hide();
+    var st = "共" + total + "页";
+    $("#totalPage").text(st);
+    var myArray = new Array();
+    for (var i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+            addAndRemoveClass(this);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
+
+}
+
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage(pageNumber) {
+    console.log("当前页：" + pageNumber);
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    addPageClass(pageNumber);           // 设置页码标蓝
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageBurnOrderList",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setBurnOrderList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    } else {
+        data['page'] = page;
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "searchBurnOrder",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    // console.log(result);
+                    setBurnOrderList(result.data);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+}
+
+/**
+ * 输入页数跳转页面
+ * */
+function inputSwitchPage() {
+    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if(pageNumber > totalPage()){
+        pageNumber = totalPage();
+    }
+    if (pageNumber == null || pageNumber == "") {
+        window.alert("跳转页数不能为空！")
+    } else {
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
+        var page = {};
+        page.count = countValue();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "loadPageBurnOrderList",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setBurnOrderList(result.data);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        } else {
+            data1['page'] = page;
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchBurnOrder",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        // console.log(result);
+                        setBurnOrderList(result.data);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        }
+    }
+}
+
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
+ */
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        console.log("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
+
 /**
  * 加载配伍周计划数据
  */
 function getList1() {
+    var pageNumber = 1;               // 显示首页
+    $("#current").find("a").text("当前页：1");
+    $("#previous").addClass("disabled");
+    $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
     $.ajax({
         type:"POST",
         url:"getList1",
@@ -145,11 +448,8 @@ function getList1() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result !== undefined && result.status === "success"){
-                console.log(result);
-                var obj=result.compatibilityList;
-                var n=result.length;
-                //console.log(n);
-                setCompatibility(obj,n);
+                console.log(result)
+             setPageClone(result);
             }
             else {
                 alert(result.message);
@@ -162,170 +462,111 @@ function getList1() {
     // 设置高级检索的下拉框数据
     setPwList();
     isSearch = false;
-   $("#week").text(getWeekDate());
+
+
 }
+
 /*加载表格数据
 * 
 */
-function setCompatibility(obj,n) {
-    arrayId=[];
-    var tr = $("#cloneTr1");//克隆一行
-    //tr.siblings().remove();
-    //每日配比量合计
+function setCompatibility(result) {
+
+    var tr=$('#cloneTr1');
+
     tr.siblings().remove();
-    dailyProportionsTotal=0;
-    //每周需求总量
-    weeklyDemandTotal=0;
-    //热值总量
-    calorificTotal=0;
-    //灰分总量
-    ashTotal=0;
-    //水分总量
-    waterTotal=0;
-    //氯总量
-    clTotal=0;
-    //硫总量
-    sTotal=0;
-    //磷总量
-    pTotal=0;
-    //弗总量
-    fTotal=0;
-    //PH总量
-    phTotal=0;
-    $.each(obj,function (index,item) {
+
+    $.each(result.compatibilityList,function (index,item) {
         var data=eval(item);
+       // console.log(obj)
+
+
         var clonedTr = tr.clone();
-        clonedTr.attr('class','myclass')
-        var wastes=eval(item.wastesList);
+
+        clonedTr.show();
+
         clonedTr.children("td").each(function (inner_index) {
+
             // 根据索引为部分td赋值
             switch (inner_index) {
                 // 序号
-                case (0):
-                    var num=parseInt(data.pwId)
-                    $(this).html(num);
-                    break;
-                //处理类别
                 case (1):
-                    // $(this).html();
-                    //判断是否是物流合同
-                    if (data.handleCategory!=null) {
-                        $(this).html(data.handleCategory.name);
-                    }
-                    else {
-                        $(this).html("");
-                    }
+                    $(this).html(index+1);
                     break;
-                // 形态
+
+                //配伍计划单号
                 case (2):
-                    if (data.formType != null)
-                        $(this).html(data.formType.name);
-                    else {
-                        $(this).html("");
-                    }
+                        $(this).html(data.compatibilityId);
                     break;
-                  //比例
+
+                // 小计日配比量
                 case (3):
-                    //num = num.toFixed(2); // 输出结果为 2.45
-                    //$(this).html(data.proportion.toFixed(1));
-                    $(this).html(((data.dailyProportions/data.weeklyDemand)*100).toFixed(1));
+                        $(this).html(data.totalDailyAmount);
                     break;
-                // 每日配比量
+
+                  //周需求总量
                 case (4):
-                    $(this).html(data.dailyProportions.toFixed(1));
-                    dailyProportionsTotal+=data.dailyProportions;
+                    $(this).html(data.weeklyDemandTotalAggregate);
                     break;
-                //周需求总量
+
+                // 平均热值
                 case (5):
-                    $(this).html(data.weeklyDemand.toFixed(1));
-                    weeklyDemandTotal+=data.weeklyDemand;
+                    $(this).html((data.calorificAvg).toFixed(1));
                     break;
-                // 热值
+
+                //平均灰分
                 case (6):
-                        $(this).html(data.wastesList[index].calorific.toFixed(1));
-                    calorificTotal+=data.wastesList[index].calorific;
+                    $(this).html(data.ashAvg.toFixed(1));
                     break;
-                   // 灰分
+
+                // 平均水分
                 case (7):
-                        $(this).html(data.wastesList[index].ashPercentage.toFixed(1));
-                        ashTotal+=data.wastesList[index].ashPercentage;
+                        $(this).html(data.waterAvg.toFixed(1));
                     break;
-                    //水分
+
+                   // 平均CL
                 case (8):
-                    $(this).html(data.wastesList[index].wetPercentage.toFixed(1));
-                    waterTotal+=data.wastesList[index].wetPercentage;
+                        $(this).html(data.clAvg.toFixed(1));
                     break;
-                //CL
+
+                    //平均S
                 case (9):
-                    $(this).html(data.wastesList[index].chlorinePercentage.toFixed(1));
-                    clTotal+=data.wastesList[index].chlorinePercentage;
+                    $(this).html(data.sAvg.toFixed(1));
                     break;
-                //S
+
+                //平均P
                 case (10):
-                    $(this).html(data.wastesList[index].sulfurPercentage.toFixed(1));
-                    sTotal+=data.wastesList[index].sulfurPercentage;
+                    $(this).html(data.pAvg.toFixed(1));
                     break;
-                //P
+
+                //平均F
                 case (11):
-                    $(this).html(data.wastesList[index].phosphorusPercentage.toFixed(1));
-                    pTotal+=data.wastesList[index].phosphorusPercentage;
+                    $(this).html(data.fAvg.toFixed(1));
                     break;
-                //F
+
+                //平均PH
                 case (12):
-                    $(this).html(data.wastesList[index].fluorinePercentage.toFixed(1));
-                    fTotal+=data.wastesList[index].fluorinePercentage;
+                    $(this).html(data.phAvg.toFixed(1));
                     break;
-                //PH
-                case (13):
-                    $(this).html(data.wastesList[index].ph.toFixed(1));
-                    phTotal+=data.wastesList[index].ph;
-                    break;
+
                 //状态
-                case (14):
-                    if (data.checkState != null) {
+                case (13):
+                    if(data.checkState!=null){
                         $(this).html(data.checkState.name);
-                    }
-                    else {
-                        $(this).html("");
                     }
                     break;
             }
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
         });
-        // 把克隆好的tr追加到原来的tr前面
-        clonedTr.removeAttr("id");
-        clonedTr.removeAttr("style");
-        clonedTr.insertBefore(tr);
+        //把克隆好的tr追加到原来的tr前面
+        // 隐藏无数据的tr
+        tr.hide();
     });
-    // 隐藏无数据的tr
-    tr.hide();
-    console.log(dailyProportionsTotal);
-    //赋值每日配比量合计
-    $("#dailyProportionsTotal").text(dailyProportionsTotal.toFixed(1));
-    //赋值周需求总量合计
-    $("#weeklyDemandTotal").text(weeklyDemandTotal.toFixed(1));
-    //计算热值平均
-    $("#calorific").text((calorificTotal/n).toFixed(1));
-    //灰分平均
-    $('#ash1').text((ashTotal/n).toFixed(1));
-    //水分平均
-    $('#water1').text((waterTotal/n).toFixed(1));
-    //氯平均
-    $('#Cl1').text((clTotal/n).toFixed(1));
-    //硫平均
-    $('#S1').text((sTotal/n).toFixed(1));
-    //磷平均
-    $('#P1').text((pTotal/n).toFixed(1));
-    //弗平均
-    $('#F1').text((fTotal/n).toFixed(1));
-    //PH平均
-    $('#PH1').text((phTotal/n).toFixed(1));
+
 }
-/*
-* 每日配比量之和*/
-function ProportionsTotal(dailyProportions) {
-    var dailyProportionsTotal=dailyProportionsTotal+dailyProportions;
-    return dailyProportionsTotal
-}
+
+
+
 /*
 * 操作行选定*/
  function selected1(item){
@@ -349,105 +590,16 @@ function ProportionsTotal(dailyProportions) {
          }
 
  }
- //审批
-function approval3() {
-   //1获得所选编号的数组进行遍历
-      var pwId1=arrayId[0];
-      if(arrayId.length==1){
-           pwId= getFour(pwId1);
-           //console.log(pwId);
-          //approvalPw(pwId);
-          //弹出一个模态框
-          $.ajax({
-              type: "POST",                       // 方法类型
-              url: "getByPwId2",         // url
-              // 同步：意思是当有返回值以后才会进行后面的js程序
-              data: {"pwId":pwId.toString()},
-              dataType: "json",
-              //contentType: 'application/json;charset=utf-8',
-              success:function (result) {
-                  if (result != undefined && result.status == "success"){
-                      console.log(result);
-                      var obj=result.data;
-                      console.log(obj);
-                      //开始赋值
-                      //配伍编号
-                      $("#compatibilityId").text(obj.compatibilityId);
-                      //处理类别
-                      if(obj.handleCategory!=null){
-                          $("#handleCategory").text(obj.handleCategory.name);
-                      }
-                      else {
-                          $("#compatibilityId").text("");
-                      }
-                      //形态
-                      if(obj.formType!=null){
-                          $("#formType").text(obj.formType.name);
-                      }
-                      else {
-                          ("#formType").text("");
-                      }
-                      //每日配比量
-                      $("#dailyProportions").text(obj.dailyProportions);
-                      //周需求总量
-                      $("#weeklyDemand").text(obj.weeklyDemand);
-                      //热值
-                      $("#calorific1").text(obj.calorific);
-                      //状态
-                      if(obj.checkState!=null){
-                          $("#checkState").text(obj.checkState.name);
-                      }
-                      else {
-                          $("#checkState").text("");
-                      }
-                      //序号
-                      $("#pwId").text(obj.pwId);
-                      //灰分
-                      $("#ash").text(obj.ash);
-                      //水分
-                      $("#water").text(obj.water);
-                      //氯
-                      $("#CL").text(obj.CL);
-                      //硫
-                      $("#S").text(obj.s);
-                      //磷
-                      $("#P").text(obj.p);
-                      //弗
-                      $("#F").text(obj.f);
-                      //酸碱度
-                      $("#PH").text(obj.PH);
-                      //比例
-                      $("#proportion").text(obj.proportion);
-                      //审批意见
-                      $('#advice').text(obj.approvalContent);
-                      //驳回意见
-                      $("#backContent").text(obj.backContent);
 
-                  }
-                  else {
-                      alert(result.message);
-                  }
-              },
-              error:function (result) {
-                  alert("服务器异常！")
-              }
-          });
-          //审批按钮显示
-          $('#approval').show();
-          //驳回按钮显示
-          $('#back').show();
-          $("#contractInfoForm").modal('show');
-      }
-  else {
-          alert("请选择数据！")
-      }
-}
+ 
+
 /**
  * 出现具体审批的模态框
  */
 function approvalModal() {
     $('#contractInfoForm2').modal('show');
 }
+
 /**
  * 出现具体驳回的模态框
  */
@@ -505,25 +657,7 @@ function back1() {
         }
     });
 }
-//审批具体方法
-// function approvalPw(pwId) {
-//     $.ajax({
-//         type: "POST",                       // 方法类型
-//         url: "approvalPw",         // url
-//         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-//         data: {"pwId":pwId},
-//         dataType: "json",
-//         contentType: 'application/json;charset=utf-8',
-//         success:function (result) {
-//
-//         },
-//         error:function (result) {
-//
-//         }
-//     });
-//
-//
-// }
+
 //序号变成四位
 function getFour(pwId) {
     var pwld1=""+pwId;
@@ -536,156 +670,100 @@ function getFour(pwId) {
 /**
  * 作废方法
  */
-function cancelPw() {
-    var pwId1=arrayId[0];
-    if(arrayId.length==1){
-        pwId= getFour(pwId1);
-        //根据id信息
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getByPwId2",         // url
-            // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {"pwId":pwId.toString()},
-            dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    var obj=result.data;
-                  //状态判断
-                    if(obj.checkState.name=='履约中'){
-                        if(confirm("确定作废该数据?")){
-                            //点击确定后操作
-                            $.ajax({
-                                type: "POST",                       // 方法类型
-                                url: "cancelPw",         // url
-                                // 同步：意思是当有返回值以后才会进行后面的js程序
-                                data: {"pwId":pwId.toString()},
-                                dataType: "json",
-                                success:function (result) {
-                                    if(result != undefined && result.status == "success"){
-                                        alert(result.message);
-                                        window.location.reload();
-                                    }
-                                    else {
-                                        alert(result.message)
-                                    }
-                                },
-                                error:function (result) {
-                                    alert("服务器异常！")
-                                }
-
-                            });
-
-                        }
-                    }
-                    else {
-                        alert("无法作废，仅在履约状态下可操作")
-                    }
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！")
+function cancelPw(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+if(confirm("确认作废?")){
+    $.ajax({
+        type:"POST",
+        url: "cancelPw",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'compatibilityId':compatibilityId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message);
+                window.location.reload();
             }
-        });
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
 
-        
-    }
-    else {
-        alert("请选择数据！")
-    }
+    });
+}
+
+
+
 }
 
 /**
- * 查看
+ * 提交方法
  */
-function  viewPw(){
-    var pwId1=arrayId[0];
-    if(arrayId.length==1){
-        pwId= getFour(pwId1);
+function submit(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+    if(confirm("确认提交?")){
         $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getByPwId2",         // url
-            // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {"pwId":pwId.toString()},
+            type:"POST",
+            url: "submitPw",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
+            data:{'compatibilityId':compatibilityId},
+            //contentType: "application/json; charset=utf-8",
             success:function (result) {
                 if (result != undefined && result.status == "success"){
-                    console.log(result);
-                    var obj=result.data;
-                    console.log(obj);
-                    //开始赋值
-                    //配伍编号
-                    $("#compatibilityId").text(obj.compatibilityId);
-                    //处理类别
-                    if(obj.handleCategory==null){
-                        $("#handleCategory").text(" ");
-                    }
-                    else
-                    $("#handleCategory").text(obj.handleCategory.name);
-                    //形态
-                    if(obj.formType==null){
-                        $("#formType").text(" ");
-                    }
-                    else
-                    $("#formType").text(obj.formType.name);
-                    //每日配比量
-                    $("#dailyProportions").text(obj.dailyProportions);
-                    //周需求总量
-                    $("#weeklyDemand").text(obj.weeklyDemand);
-                    //热值
-                    $("#calorific1").text(obj.calorific);
-                    //状态
-                    if(obj.checkState!=null){
-                        $("#checkState").text(obj.checkState.name);
-                    }
-                    //序号
-                    $("#pwId").text(obj.pwId);
-                    //灰分
-                    $("#ash").text(obj.ash);
-                    //水分
-                    $("#water").text(obj.water);
-                    //氯
-                    $("#CL").text(obj.CL);
-                    //硫
-                    $("#S").text(obj.s);
-                    //磷
-                    $("#P").text(obj.p);
-                    //弗
-                    $("#F").text(obj.f);
-                    //酸碱度
-                    $("#PH").text(obj.PH);
-                    //比例
-                    $("#proportion").text(obj.proportion);
-                    //审批意见
-                    $('#advice').text(obj.approvalContent);
-                    //驳回意见
-                    $("#backContent").text(obj.backContent);
-
+                    alert(result.message);
+                    window.location.reload();
                 }
                 else {
                     alert(result.message);
                 }
-                //审批按钮隐藏
-                $('#approval').hide();
-                //驳回按钮隐藏
-                $('#back').hide();
-                $("#contractInfoForm").modal('show');
             },
             error:function (result) {
                 alert("服务器异常！")
             }
+
         });
     }
-    else {
-        alert("请选择数据！")
-    }
-
 
 }
+
+/**
+ * 审批方法
+ */
+function approval(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+    if(confirm("确认审批?")){
+        $.ajax({
+            type:"POST",
+            url: "approvalCompatibility",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data:{'compatibilityId':compatibilityId},
+            //contentType: "application/json; charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    alert(result.message);
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
+            }
+
+        });
+    }
+
+}
+
+
+
 
 /**
  * 设置高级检索的下拉框数据
@@ -879,5 +957,343 @@ function  generate() {
 
         });
     }
+
+}
+
+//双击查看
+function view(item) {
+    var compatibilityId=$(item).children('td').eq(2).text();
+
+    $.ajax({
+        type:"POST",
+        url: "getWeekById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'compatibilityId':compatibilityId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //赋值配伍单号
+                $('#compatibilityId1').text(compatibilityId);
+                setCompatibilityItemModal(result);
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+
+    $('#appointModal2').modal('show');
+}
+
+//点击图标查看
+function view1(item) {
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+
+    $.ajax({
+        type:"POST",
+        url: "getWeekById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'compatibilityId':compatibilityId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                //赋值配伍单号
+                $('#compatibilityId1').text(compatibilityId);
+                setCompatibilityItemModal(result);
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+
+    $('#appointModal2').modal('show');
+}
+
+//设置配伍明细模态框
+
+function setCompatibilityItemModal(result) {
+    var tr=$('#cloneTr');
+
+    tr.siblings().remove();
+
+$.each(result.array,function (index,item) {
+    var obj=eval(item);
+
+    var clonedTr = tr.clone();
+
+    clonedTr.show();
+
+
+    clonedTr.children('td').each(function (inner_index) {
+
+        switch (inner_index){
+            //序号
+            case (0):
+                $(this).html(index+1);
+                break;
+
+                //处理类别
+            case (1):
+                if(obj.handleCategory!=null){
+                    $(this).html(obj.handleCategory.name);
+                }
+                break;
+
+            //物质形态
+            case (2):
+                if(obj.formType!=null){
+                    $(this).html(obj.formType.name);
+                }
+                break;
+                //比例
+            case (3):
+                    $(this).html(obj.proportion.toFixed(2));
+                break;
+               //每日配置量
+            case (4):
+                $(this).html(obj.dailyRatio);
+                break;
+                //周需求总理
+            case (5):
+                $(this).html(obj.weeklyDemandTotal);
+                break;
+                //热值
+            case (6):
+                $(this).html(obj.calorific);
+                break;
+                //灰分
+            case (7):
+                $(this).html(obj.ash);
+                break;
+                //水分
+            case (8):
+                $(this).html(obj.water);
+                break;
+                //CL
+            case (9):
+                $(this).html(obj.cl);
+                break;
+                //S
+            case (10):
+                $(this).html(obj.s);
+                break;
+                //P
+            case (11):
+                $(this).html(obj.p);
+                break;
+                //F
+            case (12):
+                $(this).html(obj.f);
+                break;
+                //PH
+            case (13):
+                $(this).html(obj.ph);
+                break;
+        }
+        clonedTr.removeAttr('id');
+        clonedTr.insertBefore(tr);
+
+    })
+
+   tr.hide();
+
+
+})
+
+
+}
+
+//修改模态框
+
+function adjust(item) {
+
+    var compatibilityId=$(item).parent().parent().children('td').eq(2).text();
+
+    localStorage.compatibilityId=compatibilityId;
+    window.location.href="adjustCompatibility.html";
+
+
+
+
+}
+
+//修改页面初始化
+function adjustCom() {
+
+    var compatibilityId=localStorage['compatibilityId'];
+
+    $("#compatibilityId2").text(compatibilityId);
+
+
+
+
+
+
+    //找出物料明细
+    $.ajax({
+        type:"POST",
+        url: "getWeekById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'compatibilityId':compatibilityId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                var tr=$('#cloneTr2');
+                 $('#cloneTr2').siblings().remove();
+                $.each(result.array,function (index,item) {
+
+
+                    var obj=eval(item);
+
+                    // console.log(obj)
+
+                    var cloneTr= tr.clone();
+
+                     cloneTr.attr('class','myclass2');
+                    cloneTr.show();
+
+                    cloneTr.children('td').eq(0).html(index+1);
+
+
+                    cloneTr.children('td').eq(3).children('input').val(obj.proportion.toFixed(2));
+
+                    cloneTr.children('td').eq(4).children('input').val(obj.dailyRatio.toFixed(2));
+
+                    cloneTr.children('td').eq(5).children('input').val(obj.weeklyDemandTotal.toFixed(2));
+
+                    cloneTr.children('td').eq(6).children('input').val(obj.calorific);
+
+                    cloneTr.children('td').eq(7).children('input').val(obj.ash);
+
+                    cloneTr.children('td').eq(8).children('input').val(obj.water);
+
+                    cloneTr.children('td').eq(9).children('input').val(obj.cl);
+
+                    cloneTr.children('td').eq(10).children('input').val(obj.s);
+
+                    cloneTr.children('td').eq(11).children('input').val(obj.p);
+
+                    cloneTr.children('td').eq(12).children('input').val(obj.f);
+
+                    cloneTr.children('td').eq(13).children('input').val(obj.ph);
+
+                    if(obj.handleCategory!=null){
+                        //进料方式
+                        $.ajax({
+                            type:'POST',
+                            url:"getHandleCategory",
+                            //data:JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result){
+                                if (result != undefined){
+                                    // console.log(result);
+                                    var handelCategory=cloneTr.children('td').eq(1).children('select');
+                                    handelCategory.children().remove();
+                                    $.each(result.handleCategoryList,function (index,item) {
+                                        var option=$('<option/>');
+                                        option.val(item.index);
+                                        option.text(item.name);
+                                        handelCategory.append(option);
+                                    });
+                                    handelCategory.get(0).selectedIndex=item.handleCategory.index-1;
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error:function (result) {
+                                console.log(result);
+                            }
+
+                        });
+
+
+                    }
+                    if(item.formType!=null){
+                        //形态
+                        $.ajax({
+                            type:'POST',
+                            url:"getFormTypeAndPackageType",
+                            //data:JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result){
+                                if (result != undefined){
+                                    // console.log(result);
+                                    var formType=cloneTr.children('td').eq(2).children('select');
+                                    formType.children().remove();
+                                    $.each(result.formTypeList,function (index,item) {
+                                        var option=$('<option/>');
+                                        option.val(item.index);
+                                        option.text(item.name);
+                                        formType.append(option);
+                                    });
+                                    formType.get(0).selectedIndex=obj.formType.index-1;
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error:function (result) {
+                                console.log(result);
+                            }
+
+                        });
+                        //cloneTr.children('td').eq(2).children('select').selectedIndex=3;
+                    }
+                    console.log( cloneTr.children('td').eq(2).children('select'));
+                    // cloneTr.removeAttr('id');
+                    cloneTr.insertBefore(tr);
+                    tr.removeAttr('class');
+
+                })
+                tr.hide();
+
+
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+}
+
+//确认修改
+function adjustConfirm() {
+
+$('.myclass2').each(function () {
+    var data={
+        handleCategory:$(this).children('td').eq(1).children('select').get(0).selectedIndex,
+        formType:$(this).children('td').eq(2).children('select').get(0).selectedIndex,
+    };
+    console.log(data)
+})
+
 
 }

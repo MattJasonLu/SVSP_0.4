@@ -63,8 +63,17 @@
         select * from t_pr_pw where pwId=#{pwId};
     </select>
     <update id="cancel" parameterType="String">
-        update t_pr_pw set checkState='Invalid',nowTime=NOW() where pwId=#{pwId}
+        update t_pr_pw set checkState='Invalid',nowTime=NOW() where compatibilityId=#{compatibilityId}
     </update>
+
+    <update id="submit" parameterType="String">
+        update t_pr_pw set checkState='ToExamine',nowTime=NOW() where compatibilityId=#{compatibilityId}
+    </update>
+
+    <update id="approvalCompatibility" parameterType="String">
+        update t_pr_pw set checkState='Approval',nowTime=NOW() where compatibilityId=#{compatibilityId}
+    </update>
+
     <select id="search" parameterType="Compatibility" resultMap="CompatibilityRM">
         select * from t_pr_pw
         <where>
@@ -145,11 +154,27 @@
     <!--添加配伍计划单的明细-->
     <insert id="addCompatibilityItem" parameterType="CompatibilityItem">
         insert into t_pr_pwitem(compatibilityId, handleCategory, formType, proportion, dailyRatio, weeklyDemandTotal, calorific, ash, water, cl, s, p, f, ph) values
-        (#{compatibility.compatibilityId},#{handleCategory},#{formType},#{proportion},#{dailyRatio},#{weeklyDemandTotal},#{calorific},#{ash},#{water},#{cl},#{s},#{p},#{f},#{ph});
+        (#{compatibilityId},#{handleCategory},#{formType},#{proportion},#{dailyRatio},#{weeklyDemandTotal},#{calorific},#{ash},#{water},#{cl},#{s},#{p},#{f},#{ph});
     </insert>
     <!--添加配伍周计划主表-->
     <insert id="addCompatibility" parameterType="Compatibility">
-        insert into t_pr_pw(compatibilityId, totalDailyAmount, checkState, nowTime,  approvalContent, backContent, calorificAvg, ashAvg, waterAvg, clAvg, sAvg, phAvg, importDate, weeklyDemandTotalAggregate) values
-        (#{compatibilityId},#{totalDailyAmount},'ToSubmit',NOW(),#{approvalContent},#{backContent},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{phAvg},NOW(),#{weeklyDemandTotalAggregate})
+        insert into t_pr_pw(compatibilityId, totalDailyAmount, checkState, nowTime,  approvalContent, backContent, calorificAvg, ashAvg, waterAvg, clAvg, sAvg, phAvg, importDate, weeklyDemandTotalAggregate,fAvg,pAvg) values
+        (#{compatibilityId},#{totalDailyAmount},'ToSubmit',NOW(),#{approvalContent},#{backContent},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{phAvg},NOW(),#{weeklyDemandTotalAggregate},#{fAvg},#{pAvg})
     </insert>
+    <resultMap id="WeekPlan" type="Compatibility" autoMapping="true">
+        <result column="compatibilityId" property="compatibilityId"></result>
+        <collection property="compatibilityItemList" column="compatibilityId" select="getCompatibilityItem"></collection>
+    </resultMap>
+    <!--获取明细-->
+    <select id="getCompatibilityItem" resultType="CompatibilityItem">
+        select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
+    </select>
+    <select id="getWeekPlanList" resultMap="WeekPlan">
+        select * from t_pr_pw order by nowTime desc ;
+    </select>
+
+    <!--根据配伍编号获取明细-->
+    <select id="getWeekById" parameterType="String" resultType="CompatibilityItem">
+        select * from  t_pr_pwitem where compatibilityId=#{compatibilityId};
+    </select>
 </mapper>

@@ -137,7 +137,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             CompatibilityItem compatibilityItem=new CompatibilityItem();
 
             //配伍主表的序号绑定
-            compatibilityItem.setCompatibility(compatibility);
+            compatibilityItem.setCompatibilityId(compatibilityId);
 
             //第二列是处理类别
 
@@ -159,13 +159,28 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                     compatibilityItem.setFormType(null);
                 }
 
-                //第五列是每日配置量
+            //第四列是比例
+
+           if(data[i][5].toString()!="null"&&data[i][4].toString()!="null"){
+                compatibilityItem.setProportion(Float.parseFloat(data[i][4].toString())/Float.parseFloat(data[i][5].toString()));
+           }
+           else {
+               compatibilityItem.setProportion(0);
+           }
+
+
+
+            //第五列是每日配置量
                 if(data[i][4].toString()!="null"){
                     compatibilityItem.setDailyRatio(Float.parseFloat(data[i][4].toString()));
                     totalDailyAmount+=Float.parseFloat(data[i][4].toString());
                 }
                 if(data[i][4].toString()=="null")
                     compatibilityItem.setDailyRatio(0);
+
+
+
+
 
             //第六列是周需求总量
                 if(data[i][5].toString()!="null"){
@@ -174,6 +189,8 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                 }
                 if(data[i][5].toString()=="null")
                     compatibilityItem.setWeeklyDemandTotal(0);
+
+
 
             //第七列是热值
             if(data[i][6].toString()!="null"){
@@ -567,17 +584,8 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     public String getList1(){
         JSONObject res=new JSONObject();
         try {
-            //1首先查找最新一期的compatibilityId
-            List<String> compatibilityIdList=compatibilityService.check1();
-            JSONArray array = JSONArray.fromArray(compatibilityIdList.toArray(new String[compatibilityIdList.size()]));
-            res.put("compatibilityIdList",array);
-            //最新的一个配伍编号
-            String compatibilityId=compatibilityIdList.get(0);
-            res.put("theNewestId",compatibilityIdList.get(0));
-            List<Compatibility> compatibilityList=compatibilityService.list(compatibilityId);
-            JSONArray array1=JSONArray.fromArray(compatibilityList.toArray(new Compatibility[compatibilityList.size()]));
-            res.put("compatibilityList",array1);
-            res.put("length",compatibilityList.size());
+         List<Compatibility> compatibilityList=compatibilityService.getWeekPlanList();
+          res.put("compatibilityList",compatibilityList);
             res.put("status", "success");
             res.put("message", "查询成功");
         }
@@ -622,13 +630,13 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         }
         return res.toString();
     }
-    //作废配屋计划
+    //作废配伍计划
     @RequestMapping("cancelPw")
     @ResponseBody
-    public String cancelPw(String pwId){
+    public String cancelPw(String compatibilityId){
         JSONObject res=new JSONObject();
         try {
-            compatibilityService.cancel(pwId);
+            compatibilityService.cancel(compatibilityId);
             res.put("status", "success");
             res.put("message", "作废成功!");
         }
@@ -639,6 +647,47 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         }
         return res.toString();
     }
+
+    //提交配伍计划
+    @RequestMapping("submitPw")
+    @ResponseBody
+    public String submitPw(String compatibilityId){
+        JSONObject res=new JSONObject();
+        try {
+            compatibilityService.submit(compatibilityId);
+            res.put("status", "success");
+            res.put("message", "提交成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败!");
+        }
+        return res.toString();
+    }
+
+    //审批配伍周计划
+    @RequestMapping("approvalCompatibility")
+    @ResponseBody
+    public String approvalCompatibility(String compatibilityId){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            compatibilityService.approvalCompatibility(compatibilityId);
+            res.put("status", "success");
+            res.put("message", "审批成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败!");
+        }
+
+        return  res.toString();
+
+    }
+
     //通过序号获得信息
     @RequestMapping("getByPwId2")
     @ResponseBody
@@ -695,6 +744,29 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 //        }
 //        return  res.toString();
 //    }
+
+    //根据配伍编号获取明细
+
+    @RequestMapping("getWeekById")
+    @ResponseBody
+    public String getWeekById(String compatibilityId){
+        JSONObject res=new JSONObject();
+        try{
+            List<CompatibilityItem> compatibilityItemList=compatibilityService.getWeekById(compatibilityId);
+            res.put("array",compatibilityItemList);
+            res.put("status", "success");
+            res.put("message", "获取明细成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取明细失败");
+        }
+
+
+        return res.toString();
+    }
+
     //获取最后一位四位编号
      public static String getId(String id){
         while (id.length()!=4){
