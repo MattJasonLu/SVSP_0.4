@@ -1,13 +1,7 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Produce.TransportPlan;
-import com.jdlink.domain.Produce.TransportPlanItem;
-import com.jdlink.domain.Produce.WayBill;
-import com.jdlink.domain.Produce.WayBillItem;
-import com.jdlink.domain.Salesman;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.TransportPlanService;
 import com.jdlink.service.WastesService;
@@ -107,6 +101,29 @@ public class TransportPlanController {
         JSONObject res = new JSONObject();
         try {
             TransportPlan transportPlan =  transportPlanService.getRecent();
+            JSONObject data = JSONObject.fromBean(transportPlan);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 通过编号获取运输计划单
+     * @param id 编号
+     * @return 运输计划单
+     */
+    @RequestMapping("getTransportPlanById")
+    @ResponseBody
+    public String getTransportPlanById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            TransportPlan transportPlan =  transportPlanService.getById(id);
             JSONObject data = JSONObject.fromBean(transportPlan);
             res.put("status", "success");
             res.put("message", "获取成功");
@@ -302,5 +319,81 @@ public class TransportPlanController {
             res.put("message", "生成失败");
         }
         return res.toString();
+    }
+
+    /**
+     * 读取运输计划单的分页数据
+     * @param page 页码
+     * @return 运输计划单数据
+     */
+    @RequestMapping("listTransportPlanByPage")
+    @ResponseBody
+    public String listTransportPlanByPage(Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<TransportPlan> transportPlanList = transportPlanService.list(page);
+            JSONArray data = JSONArray.fromArray(transportPlanList.toArray(new TransportPlan[transportPlanList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取运输单的数量
+     * @return 运输单的数量
+     */
+    @RequestMapping("transportPlanCount")
+    @ResponseBody
+    public int transportPlanCount() {
+        try {
+            return transportPlanService.count();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 查找运输计划单
+     * @param transportPlan 运输计划单
+     * @return 查询
+     */
+    @RequestMapping("searchTransportPlan")
+    @ResponseBody
+    public String searchTransportPlan(@RequestBody TransportPlan transportPlan) {
+        JSONObject res = new JSONObject();
+        try {
+            List<TransportPlan> transportPlanList = transportPlanService.search(transportPlan);
+            JSONArray data = JSONArray.fromArray(transportPlanList.toArray(new TransportPlan[transportPlanList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询运输单的数量
+     * @return 运输单的数量
+     */
+    @RequestMapping("searchTransportPlanCount")
+    @ResponseBody
+    public int searchTransportPlanCount(@RequestBody TransportPlan transportPlan) {
+        try {
+            return transportPlanService.searchCount(transportPlan);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 }

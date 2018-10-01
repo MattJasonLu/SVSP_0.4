@@ -20,8 +20,8 @@
         <association property="salesman" column="salesmanId" select="getSalesman"/>
     </resultMap>
     <insert id="add" parameterType="TransportPlan">
-        INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime, checkState)
-        VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW(), #{checkState});
+        INSERT INTO t_pr_transportplan (id, author, departmentDirector, productionDirector, `group`, nowTime, checkState, createDate)
+        VALUES (#{id}, #{author}, #{departmentDirector}, #{productionDirector}, #{group}, NOW(), #{checkState}, NOW());
         <if test="transportPlanItemList.size() > 0">
             <foreach collection="transportPlanItemList" item="transportPlanItem" index="index">
                 INSERT INTO t_pr_transportplanitem (id, produceCompanyId, handleCategory,
@@ -84,4 +84,54 @@
     <update id="setStateInvalid" parameterType="String">
         UPDATE t_pr_transportplan SET checkState='Invalid' WHERE id = #{id};
     </update>
+
+    <!--按页列出所有运输计划单-->
+    <select id="list" resultMap="TransportPlanRM">
+        SELECT * FROM t_pr_transportplan ORDER BY nowTime DESC
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--获取运输计划单的数量-->
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM t_pr_transportplan;
+    </select>
+
+    <!--搜索运输计划单-->
+    <select id="search" parameterType="TransportPlan" resultMap="TransportPlanRM">
+        SELECT * FROM t_pr_transportplan
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and id LIKE "%"#{keyword}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--搜索运输计划单数量-->
+    <select id="searchCount" parameterType="TransportPlan" resultType="int">
+        SELECT count(*) FROM t_pr_transportplan
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and id LIKE "%"#{keyword}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id LIKE "%"#{id}"%"
+            </if>
+            <if test="checkState != null and checkState != ''">
+                and checkState = #{checkState}
+            </if>
+        </where>
+    </select>
+
 </mapper>
