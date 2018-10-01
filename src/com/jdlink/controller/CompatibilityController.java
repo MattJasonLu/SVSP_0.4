@@ -630,13 +630,13 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         }
         return res.toString();
     }
-    //作废配屋计划
+    //作废配伍计划
     @RequestMapping("cancelPw")
     @ResponseBody
-    public String cancelPw(String pwId){
+    public String cancelPw(String compatibilityId){
         JSONObject res=new JSONObject();
         try {
-            compatibilityService.cancel(pwId);
+            compatibilityService.cancel(compatibilityId);
             res.put("status", "success");
             res.put("message", "作废成功!");
         }
@@ -647,6 +647,47 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         }
         return res.toString();
     }
+
+    //提交配伍计划
+    @RequestMapping("submitPw")
+    @ResponseBody
+    public String submitPw(String compatibilityId){
+        JSONObject res=new JSONObject();
+        try {
+            compatibilityService.submit(compatibilityId);
+            res.put("status", "success");
+            res.put("message", "提交成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败!");
+        }
+        return res.toString();
+    }
+
+    //审批配伍周计划
+    @RequestMapping("approvalCompatibility")
+    @ResponseBody
+    public String approvalCompatibility(String compatibilityId){
+
+        JSONObject res=new JSONObject();
+
+        try {
+            compatibilityService.approvalCompatibility(compatibilityId);
+            res.put("status", "success");
+            res.put("message", "审批成功!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "审批失败!");
+        }
+
+        return  res.toString();
+
+    }
+
     //通过序号获得信息
     @RequestMapping("getByPwId2")
     @ResponseBody

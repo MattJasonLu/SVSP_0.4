@@ -3431,6 +3431,7 @@ function loadContractSelectList() {
         }
 
     });
+
     var contractType=$('#contractType');
 
     contractType.hide();//隐藏合同类别
