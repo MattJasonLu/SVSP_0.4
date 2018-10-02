@@ -1,17 +1,13 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.Client;
-import com.jdlink.domain.Produce.TransportPlan;
-import com.jdlink.domain.Produce.TransportPlanItem;
-import com.jdlink.domain.Produce.WayBill;
-import com.jdlink.domain.Produce.WayBillItem;
-import com.jdlink.domain.Salesman;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.*;
 import com.jdlink.service.ClientService;
 import com.jdlink.service.TransportPlanService;
 import com.jdlink.service.WastesService;
 import com.jdlink.service.WayBillService;
+import com.jdlink.util.DateUtil;
+import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -20,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -107,6 +104,29 @@ public class TransportPlanController {
         JSONObject res = new JSONObject();
         try {
             TransportPlan transportPlan =  transportPlanService.getRecent();
+            JSONObject data = JSONObject.fromBean(transportPlan);
+            res.put("status", "success");
+            res.put("message", "获取成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 通过编号获取运输计划单
+     * @param id 编号
+     * @return 运输计划单
+     */
+    @RequestMapping("getTransportPlanById")
+    @ResponseBody
+    public String getTransportPlanById(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            TransportPlan transportPlan =  transportPlanService.getById(id);
             JSONObject data = JSONObject.fromBean(transportPlan);
             res.put("status", "success");
             res.put("message", "获取成功");
@@ -300,6 +320,219 @@ public class TransportPlanController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "生成失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 读取运输计划单的分页数据
+     * @param page 页码
+     * @return 运输计划单数据
+     */
+    @RequestMapping("listTransportPlanByPage")
+    @ResponseBody
+    public String listTransportPlanByPage(Page page) {
+        JSONObject res = new JSONObject();
+        try {
+            List<TransportPlan> transportPlanList = transportPlanService.list(page);
+            JSONArray data = JSONArray.fromArray(transportPlanList.toArray(new TransportPlan[transportPlanList.size()]));
+            res.put("status", "success");
+            res.put("message", "获取信息成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取信息失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 获取运输单的数量
+     * @return 运输单的数量
+     */
+    @RequestMapping("transportPlanCount")
+    @ResponseBody
+    public int transportPlanCount() {
+        try {
+            return transportPlanService.count();
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 查找运输计划单
+     * @param transportPlan 运输计划单
+     * @return 查询
+     */
+    @RequestMapping("searchTransportPlan")
+    @ResponseBody
+    public String searchTransportPlan(@RequestBody TransportPlan transportPlan) {
+        JSONObject res = new JSONObject();
+        try {
+            List<TransportPlan> transportPlanList = transportPlanService.search(transportPlan);
+            JSONArray data = JSONArray.fromArray(transportPlanList.toArray(new TransportPlan[transportPlanList.size()]));
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 查询运输单的数量
+     * @return 运输单的数量
+     */
+    @RequestMapping("searchTransportPlanCount")
+    @ResponseBody
+    public int searchTransportPlanCount(@RequestBody TransportPlan transportPlan) {
+        try {
+            return transportPlanService.searchCount(transportPlan);
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 导入运输计划单
+     * @param excelFile 文件
+     * @return 导入成功与否
+     */
+    @RequestMapping("importTransportPlan")
+    @ResponseBody
+    public String importTransportPlan(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            Object[][] excelData = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            TransportPlan transportPlan = new TransportPlan();
+            // 设置编号等属性
+            transportPlan.setId(RandomUtil.getRandomEightNumber());
+            transportPlan.setCheckState(CheckState.NewBuild);
+            transportPlan.setCreateDate(new Date());
+            List<TransportPlanItem> transportPlanItemList = new ArrayList<>();
+            for (int i = 1; i < excelData.length; i++) {
+                if (excelData[i][0] == null || excelData[i][0].equals("null")) break;
+                TransportPlanItem transportPlanItem = new TransportPlanItem();
+                transportPlanItem.setId(RandomUtil.getRandomEightNumber());
+                transportPlanItem.setApproachTime(DateUtil.getDateFromStr(excelData[i][3].toString()));
+                // 通过客户名称查询到客户，若不存在则添加，否则直接更新
+                Client client = clientService.getByName(excelData[i][2].toString());
+                if (client == null) {
+                    client = new Client();
+                    client.setClientId(clientService.getCurrentId());
+                    client.setCompanyName(excelData[i][2].toString());
+                    clientService.add(client);
+                }
+                transportPlanItem.setProduceCompany(client);
+                // 设置危废的信息
+                Wastes wastes = new Wastes();
+                // 随机编码
+                wastes.setId(RandomUtil.getRandomEightNumber());
+                // 设置进料方式
+                switch (excelData[i][11].toString()) {
+                    case "污泥":
+                        wastes.setHandleCategory(HandleCategory.Sludge);
+                        break;
+                    case "废液":
+                        wastes.setHandleCategory(HandleCategory.WasteLiquid);
+                        break;
+                    case "散装料":
+                        wastes.setHandleCategory(HandleCategory.Bulk);
+                        break;
+                    case "破碎料":
+                        wastes.setHandleCategory(HandleCategory.Crushing);
+                        break;
+                    case "精馏残渣":
+                        wastes.setHandleCategory(HandleCategory.Distillation);
+                        break;
+                    case "悬挂连":
+                        wastes.setHandleCategory(HandleCategory.Suspension);
+                        break;
+                    default:
+                        break;
+                }
+                wastes.setName(excelData[i][5].toString());
+                wastes.setWastesId(excelData[i][6].toString());
+                wastes.setWasteAmount(Float.parseFloat(excelData[i][7].toString()));
+                wastes.setUnit(excelData[i][8].toString());
+                // 设置物质形态
+                switch (excelData[i][9].toString()) {
+                    case "气体":
+                        wastes.setFormType(FormType.Gas);
+                        break;
+                    case "液体":
+                        wastes.setFormType(FormType.Liquid);
+                        break;
+                    case "固体":
+                        wastes.setFormType(FormType.Solid);
+                        break;
+                    case "半固态":
+                        wastes.setFormType(FormType.HalfSolid);
+                        break;
+                    default:
+                        break;
+                }
+                // 设置包装方式
+                switch (excelData[i][10].toString()) {
+                    case "吨袋":
+                        wastes.setPackageType(PackageType.Bag);
+                        break;
+                    case "标准箱":
+                        wastes.setPackageType(PackageType.Box);
+                        break;
+                    case "吨箱":
+                        wastes.setPackageType(PackageType.Ton);
+                        break;
+                    case "小袋":
+                        wastes.setPackageType(PackageType.Pouch);
+                        break;
+                    case "铁桶":
+                        wastes.setPackageType(PackageType.Iron);
+                        break;
+                    default:
+                        break;
+                }
+                wastes.setCalorific(Float.parseFloat(excelData[i][11].toString()));
+                wastes.setPh(Float.parseFloat(excelData[i][12].toString()));
+                wastes.setAshPercentage(Float.parseFloat(excelData[i][13].toString()));
+                wastes.setWetPercentage(Float.parseFloat(excelData[i][14].toString()));
+                wastes.setChlorinePercentage(Float.parseFloat(excelData[i][15].toString()));
+                wastes.setSulfurPercentage(Float.parseFloat(excelData[i][16].toString()));
+                wastes.setPhosphorusPercentage(Float.parseFloat(excelData[i][17].toString()));
+                wastes.setFluorinePercentage(Float.parseFloat(excelData[i][18].toString()));
+                // 设置处置方式
+                switch (excelData[i][19].toString()) {
+                    case "焚烧":
+                        wastes.setProcessWay(ProcessWay.Burning);
+                        break;
+                    case "填埋":
+                        wastes.setProcessWay(ProcessWay.Landfill);
+                        break;
+                    default:
+                        break;
+                }
+                transportPlanItem.setWastes(wastes);
+                transportPlanItemList.add(transportPlanItem);
+            }
+            transportPlan.setTransportPlanItemList(transportPlanItemList);
+            transportPlanService.add(transportPlan);
+            // 增加危废
+            for (TransportPlanItem transportPlanItem : transportPlanItemList) {
+                wastesService.add(transportPlanItem.getWastes());
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
         }
         return res.toString();
     }
