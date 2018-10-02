@@ -1676,6 +1676,7 @@ function viewData(e) {
             // 克隆tr，每次遍历都可以产生新的tr
             var clonedTr = tr.clone();
             clonedTr.show();
+            $("#weekDate").text(getWeekDate(result.createDate));
             // 循环遍历cloneTr的每一个td元素，并赋值
             clonedTr.children("td").each(function (inner_index) {
                 var obj = eval(item);
