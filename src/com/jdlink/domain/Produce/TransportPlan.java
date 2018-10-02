@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Page;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,6 +46,14 @@ public class TransportPlan {
      * 审核状态
      */
     private CheckState checkState;
+    /**
+     * 页码
+     */
+    private Page page;
+    /**
+     * 关键字
+     */
+    private String keyword;
 
     public String getId() {
         return id;
@@ -108,6 +117,22 @@ public class TransportPlan {
 
     public void setCheckState(CheckState checkState) {
         this.checkState = checkState;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     @Override

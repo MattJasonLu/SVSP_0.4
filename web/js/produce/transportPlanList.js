@@ -371,20 +371,11 @@ function searchData() {
     // 精确查询
     if ($("#senior").is(':visible')) {
         data = {
-            id: $("#search-draftId").val(),
+            id: $("#search-id").val(),
             checkState: $("#search-checkState").val(),
-            produceCompany: {
-                companyName: $("#search-produceCompanyName").val()
-            },
-            transportCompany: {
-                companyName: $("#search-transportCompanyName").val()
-            },
-            acceptCompany: {
-                companyName: $("#search-acceptCompanyName").val()
-            },
-            dispatcher: $("#search-dispatcher").val(),
-            destination: $("#search-destination").val(),
-            transferTime: $("#search-transferTime").val(),
+            departmentDirector: $("#beginTime").val(),
+            productionDirector: $("#endTime").val(),
+            author: $("#search-author").val(),
             page: page
         };
         console.log(data);
@@ -433,7 +424,7 @@ function getCheckState() {
                 var checkState = $("#search-checkState");
                 checkState.children().remove();
                 $.each(data.checkStateList, function (index, item) {
-                    if (item.index >= 1 && item.index <= 5) {
+                    if (item.index >= 11 && item.index <= 14) {
                         var option = $('<option />');
                         option.val(index);
                         option.text(item.name);

@@ -104,12 +104,29 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and id LIKE "%"#{keyword}"%"
+                or author like "%"#{keyword}"%"
+                or (DATE_FORMAT(createDate,'%Y-%m-%d') like "%"#{keyword}"%")
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
             </if>
+            <if test="author != null and author != ''">
+                and author like "%"#{author}"%"
+            </if>
             <if test="checkState != null and checkState != ''">
                 and checkState = #{checkState}
+            </if>
+            <if test="departmentDirector != null and departmentDirector != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(createDate,'%Y-%m-%d') >= #{departmentDirector})
+                ]]>
+            </if>
+            <if test="productionDirector != null and productionDirector != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(createDate,'%Y-%m-%d') <= #{productionDirector})
+                ]]>
             </if>
         </where>
         order by nowTime desc
@@ -124,12 +141,29 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and id LIKE "%"#{keyword}"%"
+                or author like "%"#{keyword}"%"
+                or (DATE_FORMAT(createDate,'%Y-%m-%d') like "%"#{keyword}"%")
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
             </if>
+            <if test="author != null and author != ''">
+                and author like "%"#{author}"%"
+            </if>
             <if test="checkState != null and checkState != ''">
                 and checkState = #{checkState}
+            </if>
+            <if test="departmentDirector != null and departmentDirector != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(createDate,'%Y-%m-%d') >= #{departmentDirector})
+                ]]>
+            </if>
+            <if test="productionDirector != null and productionDirector != ''">
+                <!--用searchDate来代装创建日期数据，防止被自动赋成日期格式的数据-->
+                <![CDATA[
+                and (DATE_FORMAT(createDate,'%Y-%m-%d') <= #{productionDirector})
+                ]]>
             </if>
         </where>
     </select>
