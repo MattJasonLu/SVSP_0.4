@@ -391,7 +391,6 @@ function count() {
             bar = 0;
         }
     }
-
 }
 
 /**

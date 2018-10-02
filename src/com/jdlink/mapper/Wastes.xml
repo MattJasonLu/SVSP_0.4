@@ -32,6 +32,10 @@
         select * from t_mixingelement where wastesId=#{id};
     </select>
 
+    <select id="getByName" parameterType="String" resultMap="WastesRM">
+        select * from t_wastes where name =#{name};
+    </select>
+
     <insert id="add">
         insert into t_wastes (id, name, wastesId, wasteAmount, unit, formType, packageType,
         calorific, ph, ashPercentage, wetPercentage, chlorinePercentage, sulfurPercentage,

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="pdf">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/pdf/pdfbox-1.8.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pdf/itext5-itextpdf-5.5.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/pdf/fontbox-1.8.15.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

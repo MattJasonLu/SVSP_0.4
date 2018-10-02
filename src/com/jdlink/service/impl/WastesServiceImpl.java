@@ -51,6 +51,9 @@ public class WastesServiceImpl implements WastesService {
     }
 
     @Override
+    public Wastes getByName(String name){ return wastesMapper.getByName(name); }
+
+    @Override
     public void add(Wastes wastes) {
         wastesMapper.add(wastes);
     }

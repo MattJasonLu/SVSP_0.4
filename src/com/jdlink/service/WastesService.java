@@ -13,6 +13,7 @@ public interface WastesService {
      * @return
      */
    List<Wastes> list();
+   Wastes getByName(String name);
 
     /**
      * 增加危废
