@@ -618,7 +618,30 @@ function generateWayBill(e) {
  */
 function adjustData(e) {
     var id = getIdByMenu(e);
-    viewData(e);
+    $("#viewModal").find('input:text').val('');
+    $("#viewModal").find('input:checkbox').prop('checked', false);
+    $.ajax({
+        type: "POST",
+        url: "getTransportPlanById",
+        async: false,
+        dataType: "json",
+        data: {
+            "id": id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                setDataList(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+    if (!$("#viewBtnGrp").hasClass("hidden")) $("#viewBtnGrp").addClass("hidden");
     if ($("#editBtnGrp").hasClass("hidden")) {
         $("#editBtnGrp").removeClass("hidden");
         $("#editBtnGrp").addClass("show");
@@ -688,6 +711,117 @@ function adjustData(e) {
                 }
             });
         });
+    }
+    $("#viewModal").modal("show");
+
+    /**
+     * 设置数据
+     * @param result
+     */
+    function setDataList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTrView");
+        tr.siblings().remove();
+        $.each(result.transportPlanItemList, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                changeId(clonedTr, index+1);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    case (0):
+                        $(this).html(index+1);
+                        break;
+                    case (2):
+                        if (obj.produceCompany != null)
+                            $(this).html(obj.produceCompany.companyName);
+                        break;
+                    case (3):
+                        if (obj.handleCategory != null)
+                            $(this).html(obj.handleCategory.name);
+                        break;
+                    case (4):
+                        $(this).html(getDateStr(obj.approachTime));
+                        break;
+                    case (5):
+                        $(this).html(obj.wastes.name);
+                        break;
+                    case (6):
+                        $(this).html(obj.wastes.wastesId);
+                        break;
+                    case (7):
+                        $(this).html(obj.wastes.wasteAmount);
+                        break;
+                    case (8):
+                        $(this).html(obj.wastes.unit);
+                        break;
+                    case (9):
+                        if (obj.wastes.formType != null)
+                            $(this).html(obj.wastes.formType.name);
+                        break;
+                    case (10):
+                        if (obj.wastes.packageType != null)
+                            $(this).html(obj.wastes.packageType.name);
+                        break;
+                    case (11):
+                        $(this).html(obj.wastes.calorific);
+                        break;
+                    case (12):
+                        $(this).html(obj.wastes.ph);
+                        break;
+                    case (13):
+                        $(this).html(obj.wastes.ashPercentage);
+                        break;
+                    case (14):
+                        $(this).html(obj.wastes.wetPercentage);
+                        break;
+                    case (15):
+                        $(this).html(obj.wastes.chlorinePercentage);
+                        break;
+                    case (16):
+                        $(this).html(obj.wastes.sulfurPercentage);
+                        break;
+                    case (17):
+                        $(this).html(obj.wastes.phosphorusPercentage);
+                        break;
+                    case (18):
+                        $(this).html(obj.wastes.fluorinePercentage);
+                        break;
+                    case (19):
+                        if (obj.wastes.processWay != null)
+                            $(this).html(obj.wastes.processWay.name);
+                        break;
+                    case (20):
+                        $(this).html(obj.id);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+        $("#id").val(result.id);
+        $("#author").val(result.author);
+        $("#departmentDirector").val(result.departmentDirector);
+        $("#group").val(result.group);
+        $("#productionDirector").val(result.productionDirector);
+
+        /**
+         * 改变id
+         * @param element
+         */
+        function changeId(element, index) {
+            element.find("td[id*='transportPlanItemList']").each(function () {
+                var oldId = $(this).prop("id");
+                var newId = oldId.replace(/[0-9]\d*/, index);
+                $(this).prop('id', newId);
+            });
+        }
     }
 }
 
