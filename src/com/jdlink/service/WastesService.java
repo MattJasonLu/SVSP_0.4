@@ -14,4 +14,10 @@ public interface WastesService {
      */
    List<Wastes> list();
 
+    /**
+     * 增加危废
+     * @param wastes
+     */
+   void add(Wastes wastes);
+
 }

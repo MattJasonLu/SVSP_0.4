@@ -7,4 +7,6 @@ import java.util.List;
 public interface WastesMapper {
 
     List<Wastes> list();
+
+    void add(Wastes wastes);
 }
