@@ -49,4 +49,9 @@ public class WastesServiceImpl implements WastesService {
         }
         return wastesList;
     }
+
+    @Override
+    public void add(Wastes wastes) {
+        wastesMapper.add(wastes);
+    }
 }

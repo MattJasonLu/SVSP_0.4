@@ -1698,51 +1698,63 @@ function viewData(e) {
                         $(this).html(getDateStr(obj.approachTime));
                         break;
                     case (5):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.name);
                         break;
                     case (6):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.wastesId);
                         break;
                     case (7):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.wasteAmount);
                         break;
                     case (8):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.unit);
                         break;
                     case (9):
-                        if (obj.wastes.formType != null)
+                        if (obj.wastes != null && obj.wastes.formType != null)
                             $(this).html(obj.wastes.formType.name);
                         break;
                     case (10):
-                        if (obj.wastes.packageType != null)
+                        if (obj.wastes != null && obj.wastes.packageType != null)
                             $(this).html(obj.wastes.packageType.name);
                         break;
                     case (11):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.calorific);
                         break;
                     case (12):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.ph);
                         break;
                     case (13):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.ashPercentage);
                         break;
                     case (14):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.wetPercentage);
                         break;
                     case (15):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.chlorinePercentage);
                         break;
                     case (16):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.sulfurPercentage);
                         break;
                     case (17):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.phosphorusPercentage);
                         break;
                     case (18):
+                        if (obj.wastes != null)
                         $(this).html(obj.wastes.fluorinePercentage);
                         break;
                     case (19):
-                        if (obj.wastes.processWay != null)
+                        if (obj.wastes != null && obj.wastes.processWay != null)
                             $(this).html(obj.wastes.processWay.name);
                         break;
                     case (20):
@@ -1804,9 +1816,9 @@ function importExcelChoose() {
  * 下载模板
  * */
 function downloadModal() {
-    var filePath = 'Files/Templates/转移联单_320046201703310001(模板).pdf';
+    var filePath = 'Files/Templates/运输计划单模板.xlsx';
     var r = confirm("是否下载模板?");
-    if (r == true) {
+    if (r) {
         window.open('downloadFile?filePath=' + filePath);
     }
 }
@@ -1823,7 +1835,7 @@ function importExcel() {
         formFile.append("excelFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "importTransferDraft",              // url
+            url: "importTransportPlan",              // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: formFile,
