@@ -1802,7 +1802,9 @@ function getIdByMenu(e) {
  * @param e
  */
 function exportExcel() {
-    alert("功能即将上线");
+    var name = 'transportplan';
+    var sqlWords = "select t_pr_transportplan.id, t_pr_transportplanitem.approachTime, t_pr_transportplanitem.handleCategory, t_wastes.name, t_wastes.wastesId, t_wastes.formType, t_wastes.calorific, t_wastes.ph, t_wastes.wetPercentage, t_wastes.sulfurPercentage, t_wastes.chlorinePercentage, t_wastes.phosphorusPercentage, t_wastes.fluorinePercentage, t_wastes.wasteAmount, t_wastes.unit, t_wastes.packageType from t_pr_transportplan join t_pr_transportplanitem, t_wastes where t_pr_transportplanitem.transportPlanId=t_pr_transportplan.id and t_wastes.transportPlanItemId=t_pr_transportplanitem.id order by transportPlanId;";
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
