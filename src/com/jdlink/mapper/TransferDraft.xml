@@ -54,7 +54,7 @@
         firstOrigin, firstStation, firstDestination, firstCarrierSign, secondCarrier, secondCarryTime, secondModel,
         secondBrand, secondTransportNumber, secondOrigin, secondStation, secondDestination, secondCarrierSign,
         acceptCompanyLicense, recipient, acceptDate, disposeIsUse, disposeIsStore, disposeIsBurn, disposeIsLandFill,
-        disposeIsOther, headSign, signDate, nowTime) values (#{id}, #{checkState}, #{produceCompany.clientId},
+        disposeIsOther, headSign, signDate, nowTime) values (#{id}, 'NewBuild', #{produceCompany.clientId},
         #{produceCompany.companyName}, #{produceCompany.phone}, #{produceCompany.location}, #{produceCompany.postCode},
         #{transportCompany.supplierId}, #{transportCompany.companyName}, #{transportCompany.phone},
         #{transportCompany.location}, #{transportCompany.postCode}, #{acceptCompany.clientId}, #{acceptCompany.companyName},

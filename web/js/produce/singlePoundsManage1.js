@@ -494,9 +494,7 @@ function downloadModal() {
  */
 function importExcel() {
     document.getElementById("excelFile").click();
-    console.log("before");
     document.getElementById("excelFile").addEventListener("change", function () {
-        console.log("导入运行！");
         var eFile = document.getElementById("excelFile").files[0];
         var formFile = new FormData();
         formFile.append("excelFile", eFile);

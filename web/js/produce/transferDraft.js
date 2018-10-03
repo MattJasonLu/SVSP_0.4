@@ -14,7 +14,6 @@ function countValue() {
     return mySelect.options[index].text;
 }
 
-
 /**
  * 计算总页数
  * */
@@ -986,7 +985,7 @@ function viewData(e) {
                     $("#wastesSignCount").val(data.wastes.signCount);
                     if (data.wastes.formType != null) $("#wastesPackageType").val(data.wastes.packageType.name);
                 }
-                $("#outwardIsTransit").prop('checked', data.outwardIsTransit)
+                $("#outwardIsTransit").prop('checked', data.outwardIsTransit);
                 $("#outwardIsUse").prop('checked', data.outwardIsUse);
                 $("#outwardIsDeal").prop('checked', data.outwardIsDeal);
                 $("#outwardIsDispose").prop('checked', data.outwardIsDispose);
@@ -1160,15 +1159,14 @@ function downloadModal() {
 }
 
 /**
- * 导入excel
+ * 导入pdf
  */
 function importExcel() {
     document.getElementById("idExcel").click();
     document.getElementById("idExcel").addEventListener("change", function () {
         var eFile = document.getElementById("idExcel").files[0];
         var formFile = new FormData();
-        formFile.append("excelFile", eFile);
-        formFile.append("excelFile", eFile);
+        formFile.append("pdfFile", eFile);
         $.ajax({
             type: "POST",                       // 方法类型
             url: "importTransferDraft",              // url
