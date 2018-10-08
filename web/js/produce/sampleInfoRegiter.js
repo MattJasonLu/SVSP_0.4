@@ -11,7 +11,6 @@ function countValue() {
     var mySelect = document.getElementById("count");
     var index = mySelect.selectedIndex;
     return mySelect.options[index].text;
-
 }
 
 /**
@@ -94,7 +93,6 @@ function setPageClone(result) {
     }
     $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
     $("#previous").next().next().eq(0).addClass("oldPageClass");
-
 }
 
 /**
@@ -103,7 +101,7 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -198,10 +196,10 @@ function enterSwitchPage() {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
-    if (pageNumber == null || pageNumber == "") {
+    if (pageNumber == null || pageNumber == undefined) {
         window.alert("跳转页数不能为空！")
     } else {
         if (pageNumber > totalPage()) {
@@ -229,8 +227,8 @@ function inputSwitchPage() {
             $("#endPage").removeClass("disabled");
         }
         currentPage = pageNumber;
-        addPageClass(pageNumber);           // 设置页码标蓝
         $("#current").find("a").text("当前页：" + pageNumber);
+        addPageClass(pageNumber);           // 设置页码标蓝
         var page = {};
         page.count = countValue();//可选
         page.pageNumber = pageNumber;
@@ -601,6 +599,7 @@ function view(sampleId) {
                     $("#model1-companyCode").text(data.companyCode);
                     $("#model1-signer").text(data.laboratorySigner);
                     console.log(data.wastesList);
+                    num = 1;
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addLine();
                         var $i = i;
@@ -623,23 +622,21 @@ function view(sampleId) {
 }
 
 function addLine() {
+    num++;
     // 获取id为plusBtn的tr元素
-    var tr = $("#cloneBefore").prev();
+    var tr = $("#addClone1");
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    var num = clonedTr.children().find("span:first").prop('id').charAt(6);
     clonedTr.children().find("span").text("");
+    clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("span").each(function () {
         var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
+        var newId = id.replace(/[0-9]\d*/, num - 1);
         $(this).prop('id', newId);
-        // var name = $(this).prop('name');
-        // var newName = name.replace(/[0-9]\d*/, parseInt(id) + 1);
-        // $(this).prop('name', newName);
     });
     clonedTr.addClass("newLine");
-    clonedTr.insertAfter(tr);
+    clonedTr.insertBefore($("#end"));
 }
 
 /**
@@ -725,15 +722,19 @@ function setSelectList() {
     });
 }
 
-var num = 0;
+var num = 1;
 
 /**
- * 预约登记-新增样品
+ * 预约登记/修改-新增样品
  */
-function addNewLine() {
+function addNewLine(item) {
     num++;
     // 获取id为plusBtn的tr元素
-    var tr = $("#addBtn").prev();
+    //var tr = $("#plusBtn").prev();
+    var tr = null;
+    if (item != null)
+        tr = $(item).parent().parent().prev();
+    else tr = $("#addBtn3").prev();end
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
@@ -741,31 +742,53 @@ function addNewLine() {
     clonedTr.children().find("input").val("");
     clonedTr.children().find("input:checkbox").prop('checked', false);
     clonedTr.children().find("select").selectpicker('val', '');
+    clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("input,select").each(function () {
         var name = $(this).prop('name');
-        var newName = name.replace(/[0-9]\d*/, num);
+        var newName = name.replace(/[0-9]\d*/, num - 1);
         $(this).prop('name', newName);
         var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, num);
+        var newId = id.replace(/[0-9]\d*/, num - 1);
         $(this).prop('id', newId);
     });
     clonedTr.addClass("newLine");
     clonedTr.insertAfter(tr);
+    clonedTr.removeAttr("id");
     //清空数据为重新初始化selectpicker
     $('.selectpicker').data('selectpicker', null);
     $('.bootstrap-select').find("button:first").remove();
     $('.selectpicker').selectpicker();
-    // var delBtn = "<div class='col-md-4'><a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;</div>";
-    // $("#addBtn").prepend(delBtn);
+    if (clonedTr.children().get(0).innerHTML != 1) {     // 将非第一行的所有行加上减行号
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        clonedTr.children("td:eq(0)").prepend(delBtn);
+    }
 }
 
 /**
  * 删除行
  */
 function delLine(item) {
-    var form = item.parents();
-    form.next().remove();
-    form.remove();
+    var tr = item.parentElement.parentElement;
+    var length = $(tr.parentNode).children().length - 2;         // 行数
+    var tBody = $(tr.parentNode);                                  // 删除前获取父节点
+    tr.parentNode.removeChild(tr);
+    console.log(tr);
+    console.log("length:" + length);
+    for (var i = 1; i < length; i++) {             // 更新序号
+        tBody.children().eq(i).children().eq(0).get(0).innerHTML = i + 1;     // 更新序号
+        // 重新加上减行按钮
+        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;";
+        tBody.children().eq(i).children("td:eq(0)").prepend(delBtn);
+        tBody.children().eq(i).children().find("input,select").each(function () {
+            var name = $(this).prop('name');
+            var newName = name.replace(/[0-9]\d*/, i);
+            $(this).prop('name', newName);
+            var id = $(this).prop('id');
+            var newId = id.replace(/[0-9]\d*/, i);
+            $(this).prop('id', newId);
+        });
+    }
+    num--;
 }
 
 /**
@@ -807,6 +830,7 @@ function checkModal(menu) {
             console.log(result);
         }
     });
+    num = 1;
     // 显示框体
     $('#checkModal').modal('show');
 }
@@ -815,20 +839,21 @@ function checkModal(menu) {
  * 显示确认收样 克隆样品数据
  */
 function addNextLine() {
+    num++;
     // 获取id为plusBtn的tr元素
-    var tr = $("#clone").prev();
+    var tr = $("#addClone2");
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    var num = clonedTr.children().find("span:first").prop('id').charAt(11);
     clonedTr.children().find("span").text("");
+    clonedTr.children().get(0).innerHTML = num;    // 设置序号
     clonedTr.children().find("span").each(function () {
         var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, parseInt(num) + 1);
+        var newId = id.replace(/[0-9]\d*/, num - 1);
         $(this).prop('id', newId);
     });
     clonedTr.addClass("newLine");
-    clonedTr.insertAfter(tr);
+    clonedTr.insertAfter($("#clone"));
 }
 
 
@@ -855,8 +880,9 @@ function adjustSample(menu) {
                 if (result.status == "success") {
                     $("#model3-companyCode").selectpicker('val', parseInt(data.companyCode));
                     $("#model3-signer").val(data.laboratorySigner);
+                    num = 1; // 重新计数
                     for (var i = 0; i < data.wastesList.length; i++) {
-                        if (i > 0) addNewLine2();
+                        if (i > 0) addNewLine(null);
                         var $i = i;
                         $("#wastes" + $i + "-wastesCode").selectpicker('val', parseInt(data.wastesList[i].code.replace(/[^0-9]/ig, "")));
                         $("input[name='wastes[" + $i + "].isPH']").prop('checked', data.wastesList[i].isPH);
@@ -883,38 +909,6 @@ function adjustSample(menu) {
             alert("服务器异常!");
         }
     });
-}
-
-/**
- * 修改新增行
- */
-function addNewLine2() {
-    num++;
-    // 获取id为plusBtn的tr元素
-    var tr = $("#addBtn3").prev();
-    // 克隆tr，每次遍历都可以产生新的tr
-    var clonedTr = tr.clone();
-    // 克隆后清空新克隆出的行数据
-    //clonedTr.children().find("input:first-child").prop('name').charAt(11);
-    clonedTr.children().find("input").val("");
-    clonedTr.children().find("input:checkbox").prop('checked', false);
-    clonedTr.children().find("select").selectpicker('val', '');
-    clonedTr.children().find("input,select").each(function () {
-        var name = $(this).prop('name');
-        var newName = name.replace(/[0-9]\d*/, num);
-        $(this).prop('name', newName);
-        var id = $(this).prop('id');
-        var newId = id.replace(/[0-9]\d*/, num);
-        $(this).prop('id', newId);
-    });
-    clonedTr.addClass("newLine");
-    clonedTr.insertAfter(tr);
-    //清空数据为重新初始化selectpicker
-    $('.selectpicker').data('selectpicker', null);
-    $('.bootstrap-select').find("button:first").remove();
-    $('.selectpicker').selectpicker();
-    // var delBtn = "<div class='col-md-4'><a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>&nbsp;</div>";
-    // $("#addBtn").prepend(delBtn);
 }
 
 function getWastesByWastesId(id) {
@@ -1058,12 +1052,12 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchSampleInfo();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchSampleInfo();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -1088,7 +1082,7 @@ function searchSampleInfo() {
             id: $.trim($("#search-id").val()),
             companyCode: $.trim($("#search-companyCode").val()),
             wastesCode: $.trim($("#search-wastesCode").val()),
-            laboratorySigner:$.trim( $("#search-signer").val()),
+            laboratorySigner: $.trim($("#search-signer").val()),
             applyState: applyState,
             isPH: $("#isPH1").prop("checked"),
             isAsh: $("#isAsh1").prop("checked"),
@@ -1362,11 +1356,11 @@ function print() {
     //打印模态框
     $("#footer").hide();
     $("#viewModal").printThis({
-        // debug: false,             // 调试模式下打印文本的渲染状态
-        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
-        // importStyle: true,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
-        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
-        // copyTagClasses: false
+        debug: false,             // 调试模式下打印文本的渲染状态
+        importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        copyTagClasses: false
     });
 
 }

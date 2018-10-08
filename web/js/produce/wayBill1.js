@@ -350,14 +350,14 @@ function setWayBillList(result) {
                     break;
                 case (2):
                     //总额
-                // {
-                //     var total = 0;
-                //     for (var i = 0; i < obj.wayBillItemList.length; i++) {
-                //         total += obj.wayBillItemList[i].wastesTotalPrice;
-                //     }
-                //     //减去总运费
-                //     obj.total = total - obj.freight;
-                // }
+                {
+                    var total = 0;
+                    for (var i = 0; i < obj.wayBillItemList.length; i++) {
+                        total += obj.wayBillItemList[i].wastesTotalPrice;
+                    }
+                    //减去总运费
+                    obj.total = total - obj.freight;
+                }
                     $(this).html(obj.total);
                     break;
                 case (3):
@@ -1040,9 +1040,6 @@ function delLine(e) {
             $(this).prop('id', newId);
         });
     }
-
-
-
 }
 
 /**
