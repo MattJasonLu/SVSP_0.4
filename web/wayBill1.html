@@ -87,9 +87,18 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">合同管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#">合同列表</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a>
+                                </li>
+                                <li><a href="experienceContract.html" id="function_336"
+                                       onclick="checkAuthority($(this))">经营合同列表</a></li>
+                            </ul>
+                        </li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
+                        <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a>
+                        </li>
                     </ul>
                 </li>
                 <!--<li class="dropdown">-->
@@ -199,15 +208,15 @@
                 <!--操作按钮-->
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" href="#" id="function_337" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addWayBillModal(e);}"><span
-                    class="glyphicon glyphicon-pencil"
+                    class="glyphicon glyphicon-plus"
                     aria-hidden="true"></span> 新增</a>
                     <a class="btn btn-primary btn-xs" href="#" id="function_121"
                        onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e);}"><span
-                            class="glyphicon glyphicon-pencil"
+                            class="glyphicon glyphicon-arrow-down"
                             aria-hidden="true"></span> 导入</a>
                     <a class="btn btn-primary btn-xs" href="#" id="function_122"
                        onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e)}"><span
-                            class="glyphicon glyphicon-pencil"
+                            class="glyphicon glyphicon-arrow-up"
                             aria-hidden="true"></span> 导出</a>
                 </div>
                 <!--查询框-->

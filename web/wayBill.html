@@ -230,43 +230,25 @@
                 <tr id="clone">
                     <td class="text-center"><span id="wastes0-id"></span></td>
                     <td class="text-center"><span id="wastes0-produceCompany"></span></td>
-                    <td class="text-center"><select class="selectpicker input-xlarge form-control"
-                                                    data-live-search="true"
-                                                    data-live-search-placeholder="搜索..."
-                                                    id="wastes0-receiveCompany"
-                                                    name="wastes0-receiveCompany" title=""></select></td>
-                    <td class="text-center"><input type="text" id="wastes0-receiveCompanyOpterator"
-                                                   class="focus" style="width: 50px"></td>
-                    <td class="text-center"><input title="" class="form-control focus" type="date"
-                                                   style="width: 150px" value="" name="wastes0-receiveDate"
-                                                   id="wastes0-receiveDate"></td>
-                    <td class="text-center"><select class="selectpicker input-xlarge form-control"
-                                                    data-live-search="true" data-live-search-placeholder="搜索..."
-                                                    id="wastes0-salesman"
-                                                    name="wastes0-salesman" title=""></select></td>
-                    <td class="text-center"><input type="text" id="wastes0-name" class="focus"
-                                                   style="width: 70px"></td>
-                    <td class="text-center"><select class="selectpicker input-xlarge form-control"
-                                                    data-live-search="true"
-                                                    data-live-search-placeholder="搜索..." id="wastes0-wasteCode"
-                                                    name="wastes0-wasteCode" title=""></select></td>
-                    <td class="text-center"><input type="text" id="wastes0-wasteAmount" class="focus"
-                                                   style="width: 50px"
-                                                   onkeyup="calculateTotalPrice(this);id1 = 1"></td>
-                    <td class="text-center"><input type="text" id="wastes0-unitPriceTax" class="focus"
-                                                   style="width: 50px"
-                                                   onkeyup="calculateTotalPrice(this);id1 = 2"></td>
+                    <td class="text-center"><select class="selectpicker" data-live-search="true" data-live-search-placeholder="搜索..." id="wastes0-receiveCompany" name="wastes0-receiveCompany" title=""></select></td>
+                    <td class="text-center"><input title="" type="text" id="wastes0-receiveCompanyOpterator" class="focus"></td>
+                    <td class="text-center"><input title="" class="focus" type="date" value="" name="wastes0-receiveDate" id="wastes0-receiveDate"></td>
+                    <td class="text-center"><select class="selectpicker" data-live-search="true" data-live-search-placeholder="搜索..." id="wastes0-salesman" name="wastes0-salesman" title=""></select></td>
+                    <td class="text-center"><input title="" type="text" id="wastes0-name" class="focus"></td>
+                    <td class="text-center"><select class="selectpicker" data-live-search="true" data-live-search-placeholder="搜索..." id="wastes0-wasteCode" name="wastes0-wasteCode" title=""></select></td>
+                    <td class="text-center"><input title="" type="text" id="wastes0-wasteAmount" class="focus" onkeyup="calculateTotalPrice(this);id1 = 1"></td>
+                    <td class="text-center"><input title="" type="text" id="wastes0-unitPriceTax" class="focus" onkeyup="calculateTotalPrice(this);id1 = 2"></td>
                     <td class="text-center"><span id="wastes0-totalPrice"></span></td>
-                    <td class="text-center"><input title="" class="form-control focus" type="date" value=""
-                                                   style="width: 150px" name="wastes0-invoiceDate"
-                                                   id="wastes0-invoiceDate"></td>
-                    <td class="text-center"><input type="text" id="wastes0-invoiceNumber" class="focus"
-                                                   style="width: 70px"></td>
+                    <td class="text-center"><input title="" class="focus" type="date" value="" name="wastes0-invoiceDate" id="wastes0-invoiceDate"></td>
+                    <td class="text-center"><input title="" type="text" id="wastes0-invoiceNumber" class="focus"></td>
                 </tr>
                 <!---->
                 <tr id="plusBtn">
-                    <td class="text-center"><a class="btn btn-default btn-xs" onclick="addNewItemLine();"><span
-                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></td>
+                    <td class="text-center">
+                        <a class="btn btn-default btn-xs" onclick="addNewItemLine();">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </a>
+                    </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
