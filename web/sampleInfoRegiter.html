@@ -386,10 +386,10 @@
                         <table class="table table-bordered">
                             <thead style="border:none">
                             <tr>
-                                <td class="text-center">序号</td>
-                                <td class="text-center">危废代码</td>
-                                <td class="text-center">基础项目</td>
-                                <td class="text-center">增加项目</td>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">基础项目</th>
+                                <th class="text-center">增加项目</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -489,10 +489,10 @@
                         <table class="table table-bordered">
                             <thead style="border:none">
                             <tr>
-                                <td class="text-center">序号</td>
-                                <td class="text-center">危废代码</td>
-                                <td class="text-center">基础项目</td>
-                                <td class="text-center">增加项目</td>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">基础项目</th>
+                                <th class="text-center">增加项目</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -502,7 +502,7 @@
                                                                 data-live-search-placeholder="搜索..." id="wastes0-wastesCode"
                                                                 name="wastes[0].wastesCode">
                                 </select></td>
-                                <td class="text-center"><label>
+                                <td class="text-center" ><label>
                                     <input type="checkbox" name="wastes[0].isPH"
                                            value="true">PH
                                 </label>
@@ -534,7 +534,7 @@
                                         <input type="checkbox" name="wastes[0].isP"
                                                value="true">磷
                                     </label></td>
-                                <td class="text-center"><label>
+                                <td class="text-center" ><label>
                                     <input type="checkbox" name="wastes[0].isFlashPoint"
                                            value="true">闪点
                                 </label>
@@ -570,21 +570,19 @@
                             <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="row">
-                                <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode"
-                                                                                           name="model1-companyCode"></span>
-                                </p>
-                                <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                        id="model1-signer" name="model1-signer"></span></p>
-
-                            </div>
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" style="border:none">
                                 <thead style="border:none">
                                 <tr>
-                                    <td class="text-center">序号</td>
-                                    <td class="text-center">危废代码</td>
-                                    <td class="text-center">基础项目</td>
-                                    <td class="text-center">增加项目</td>
+                                    <th class="text-center" style="border: none">公司代码</th>
+                                    <td class="text-center" style="border: none"><span id="model1-companyCode" ></span></td>
+                                    <th class="text-center" style="border: none">签收人</th>
+                                    <td class="text-center" style="border: none"><span id="model1-signer" ></span></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">序号</th>
+                                    <th class="text-center">危废代码</th>
+                                    <th class="text-center">基础项目</th>
+                                    <th class="text-center">增加项目</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -594,13 +592,14 @@
                                     <td class="text-center"><span id="model[0].basicItems"></span></td>
                                     <td class="text-center"><span id="model[0].addItems"></span></td>
                                 </tr>
-                                </tbody>
                                 <tr id="end" style="display: none;">
                                     <td class="text-center"></td>
                                     <td class="text-center"></td>
                                     <td class="text-center"></td>
                                     <td class="text-center"></td>
                                 </tr>
+                                </tbody>
+
                             </table>
                         </div>
                         <div class="modal-footer" id="footer">
@@ -622,20 +621,19 @@
                         <h4 class="modal-title" id="checkModalLabel">样品信息登记</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model2-companyCode"
-                                                                                       name="model2-companyCode"></span>
-                            </p>
-                            <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                    id="model2-signer" name="model1-signer"></span></p>
-                        </div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" style="border: none">
                             <thead style="border:none">
                             <tr>
-                                <td class="text-center">序号</td>
-                                <td class="text-center">危废代码</td>
-                                <td class="text-center">基础项目</td>
-                                <td class="text-center">增加项目</td>
+                                <th class="text-center" style="border: none">公司代码</th>
+                                <td class="text-center" style="border: none"><span id="model2-companyCode" ></span></td>
+                                <th class="text-center" style="border: none">签收人</th>
+                                <td class="text-center" style="border: none"><span id="model2-signer" ></span></td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">基础项目</th>
+                                <th class="text-center">增加项目</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -645,13 +643,13 @@
                                 <td class="text-center"><span id="checkModel[0].basicItems"></span></td>
                                 <td class="text-center"><span id="checkModel[0].addItems"></span></td>
                             </tr>
-                            </tbody>
-                            <tr id="clone" style="display: none;">
+                            <tr id="end1" style="display: none;">
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                                 <td class="text-center"></td>
                             </tr>
+                            </tbody>
                         </table>
                     </div>
                     <div class="modal-footer">
