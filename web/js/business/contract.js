@@ -2073,7 +2073,7 @@ function addNewLine() {
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
     // 克隆后清空新克隆出的行数据
-    clonedTr.children("td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7),td:eq(8)").find("input").val("");
+    clonedTr.children("td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7),td:eq(8),td:eq(9)").find("input").val("");
     // 获取编号
     var id = $("#plusBtn").prev().children().get(0).innerHTML;
     //console.log(id);

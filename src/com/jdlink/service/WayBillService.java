@@ -44,5 +44,6 @@ public interface WayBillService  {
      */
     WayBillItem getWayBillItemByClientIdAndWastesCode(String clientId, String code);
     WayBill getWayBillById(String id);
+    void deleteItem(String id);
 
 }

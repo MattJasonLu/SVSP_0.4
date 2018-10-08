@@ -222,6 +222,10 @@ public class Wastes {
     private Date testDate;
 
     private String id1;
+    /**
+     * 运输计划单编号
+     */
+    private String transportPlanItemId;
 
     public String getId1() {
         return id1;
@@ -679,7 +683,13 @@ public class Wastes {
         this.volatileNumber = volatileNumber;
     }
 
+    public String getTransportPlanItemId() {
+        return transportPlanItemId;
+    }
 
+    public void setTransportPlanItemId(String transportPlanItemId) {
+        this.transportPlanItemId = transportPlanItemId;
+    }
 
     @Override
     public String toString() {

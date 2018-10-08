@@ -351,6 +351,7 @@ public class PRWayBillController {
     public String addWayBillItem(@RequestBody WayBill wayBill) {
         JSONObject res = new JSONObject();
         try {
+            wayBillService.deleteItem(wayBill.getId());
             wayBillService.addItem(wayBill);
             res.put("status", "success");
             res.put("message", "添加接运单详细项目成功！");

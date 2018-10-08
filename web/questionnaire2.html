@@ -231,13 +231,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">合同管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a href="#">合同列表</a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
-                                    <li><a href="experienceContract.html" id="function_336" onclick="checkAuthority($(this))">经营合同列表</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="contractManage.html" id="function_54" onclick="checkAuthority($(this))">合同列表</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="contractTemplate.html" id="function_55" onclick="checkAuthority($(this))">合同模板</a></li>
                         </ul>
@@ -583,106 +577,106 @@
             }
         });
     }
-    function savePage2Info(e) {
-        // 获取按钮的名字
-        var btnName = e.innerHTML;
-        // 主要原料的jsonArray
-        var rawWastesList = $("#rawWastesListForm").serializeRawWastes();
-        // 工艺流程jsonArray
-        var wasteProcessList = $("#wasteProcessList").serializeWasteProcess();
-        // 特别关注物质jsonArray
-        var wasteInclusionTypeList = $("#wasteInclusionTypeListForm").serializeWasteInclusionType();
-        // json数据
-        var data = {
-            'questionnaireId': $("#questionnaireId").text(),
-            'rawWastesList': rawWastesList,
-            'wasteInclusionTypeList': wasteInclusionTypeList,
-            'wasteProcessList': wasteProcessList
-        };
-        console.log(data);
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "savePage2Info",               // url
-            async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            data: JSON.stringify(data),
-            success: function (result) {
-                if (result != undefined) {
-                    console.log(result);
-                    if (result.status == "success") {
-                        if (Request["type"] != null && Request["type"] != '') {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
-                        } else if (Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html?questionnaireId=' + Request["questionnaireId"]);
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html?questionnaireId=' + Request["questionnaireId"]);
-                        } else {
-                            if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html');
-                            else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html');
-                        }
-                    } else { }
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.log("错误信息:" + XMLHttpRequest.responseText);
-            }
-        });
-    }
-    // 序列化RawWastes到json格式
-    $.fn.serializeRawWastes=function(){
-        var json = [];
-        var map=this.serializeArray();
-        for (var i = 0; i < map.length; i+=3) {
-            var mainMaterialValue = map[i].value;
-            var auxMaterialValue = map[i+1].value;
-            var draginMaterialValue = map[i+2].value;
-            // 创建条目
-            var item = {
-                mainMaterial : mainMaterialValue,
-                auxMaterial: auxMaterialValue,
-                draginMaterial: draginMaterialValue
-            };
-            json.push(item);
-        }
-        return json;
-    };
-    // 序列化WasteInclusionType到json格式
-    $.fn.serializeWasteInclusionType=function(){
-        var json = [];
-        var map=this.serializeArray();
-        console.log(map);
-        for (var i = 0; i < map.length; i++) {
-            var value = parseInt(map[i].value) - 1;
-            json.push(value);
-        }
-        return json;
-    };
-    // 序列化DeriveWastes到json格式
-    $.fn.serializeWasteProcess=function() {
-        var json = [];
-        var map=this.serializeArray();
-        console.log(map);
-        for (var i = 0; i < map.length; i+=6) {
-            var codeValue = map[i].value;
-            var descriptionValue = map[i+1].value;
-            var quantityValue = map[i+2].value;
-            var lastProcessTimeValue = map[i+3].value;
-            var yearQuantityValue = map[i+4].value;
-            var packageSituationValue = map[i+5].value;
-            // 创建条目
-            var item = {
-                code : codeValue,
-                description: descriptionValue,
-                quantity: quantityValue,
-                lastProcessTime: lastProcessTimeValue,
-                yearQuantity: yearQuantityValue,
-                packageSituation: packageSituationValue
-            };
-            json.push(item);
-        }
-        return json;
-    };
+    // function savePage2Info(e) {
+    //     // 获取按钮的名字
+    //     var btnName = e.innerHTML;
+    //     // 主要原料的jsonArray
+    //     var rawWastesList = $("#rawWastesListForm").serializeRawWastes();
+    //     // 工艺流程jsonArray
+    //     var wasteProcessList = $("#wasteProcessList").serializeWasteProcess();
+    //     // 特别关注物质jsonArray
+    //     var wasteInclusionTypeList = $("#wasteInclusionTypeListForm").serializeWasteInclusionType();
+    //     // json数据
+    //     var data = {
+    //         'questionnaireId': $("#questionnaireId").text(),
+    //         'rawWastesList': rawWastesList,
+    //         'wasteInclusionTypeList': wasteInclusionTypeList,
+    //         'wasteProcessList': wasteProcessList
+    //     };
+    //     console.log(data);
+    //     $.ajax({
+    //         type: "POST",                            // 方法类型
+    //         url: "savePage2Info",               // url
+    //         async : false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         dataType: "json",
+    //         contentType: 'application/json;charset=utf-8',
+    //         data: JSON.stringify(data),
+    //         success: function (result) {
+    //             if (result != undefined) {
+    //                 console.log(result);
+    //                 if (result.status == "success") {
+    //                     if (Request["type"] != null && Request["type"] != '') {
+    //                         if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
+    //                         else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html?questionnaireId=' + Request["questionnaireId"] + '&type=' + Request["type"]);
+    //                     } else if (Request["questionnaireId"] != null && Request["questionnaireId"] != '') {
+    //                         if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html?questionnaireId=' + Request["questionnaireId"]);
+    //                         else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html?questionnaireId=' + Request["questionnaireId"]);
+    //                     } else {
+    //                         if (btnName == "下一页") $(location).attr('href', 'questionnaire3.html');
+    //                         else if (btnName == "上一页") $(location).attr('href', 'questionnaire1.html');
+    //                     }
+    //                 } else { }
+    //             }
+    //         },
+    //         error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //             console.log("错误信息:" + XMLHttpRequest.responseText);
+    //         }
+    //     });
+    // }
+    // // 序列化RawWastes到json格式
+    // $.fn.serializeRawWastes=function(){
+    //     var json = [];
+    //     var map=this.serializeArray();
+    //     for (var i = 0; i < map.length; i+=3) {
+    //         var mainMaterialValue = map[i].value;
+    //         var auxMaterialValue = map[i+1].value;
+    //         var draginMaterialValue = map[i+2].value;
+    //         // 创建条目
+    //         var item = {
+    //             mainMaterial : mainMaterialValue,
+    //             auxMaterial: auxMaterialValue,
+    //             draginMaterial: draginMaterialValue
+    //         };
+    //         json.push(item);
+    //     }
+    //     return json;
+    // };
+    // // 序列化WasteInclusionType到json格式
+    // $.fn.serializeWasteInclusionType=function(){
+    //     var json = [];
+    //     var map=this.serializeArray();
+    //     console.log(map);
+    //     for (var i = 0; i < map.length; i++) {
+    //         var value = parseInt(map[i].value) - 1;
+    //         json.push(value);
+    //     }
+    //     return json;
+    // };
+    // // 序列化DeriveWastes到json格式
+    // $.fn.serializeWasteProcess=function() {
+    //     var json = [];
+    //     var map=this.serializeArray();
+    //     console.log(map);
+    //     for (var i = 0; i < map.length; i+=6) {
+    //         var codeValue = map[i].value;
+    //         var descriptionValue = map[i+1].value;
+    //         var quantityValue = map[i+2].value;
+    //         var lastProcessTimeValue = map[i+3].value;
+    //         var yearQuantityValue = map[i+4].value;
+    //         var packageSituationValue = map[i+5].value;
+    //         // 创建条目
+    //         var item = {
+    //             code : codeValue,
+    //             description: descriptionValue,
+    //             quantity: quantityValue,
+    //             lastProcessTime: lastProcessTimeValue,
+    //             yearQuantity: yearQuantityValue,
+    //             packageSituation: packageSituationValue
+    //         };
+    //         json.push(item);
+    //     }
+    //     return json;
+    // };
 
     /**
      * 将数据保存(数组形式)
