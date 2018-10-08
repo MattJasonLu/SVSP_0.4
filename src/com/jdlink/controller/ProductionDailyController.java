@@ -12,6 +12,8 @@ import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -2327,6 +2331,44 @@ public class ProductionDailyController {
         productionDaily.setYearDisposalSecondaryAsh(yearDisposalSecondaryAsh);
         productionDaily.setYearDisposalThirdSlag(yearDisposalThirdSlag);
         productionDaily.setYearDisposalThirdAsh(yearDisposalThirdAsh);
+    }
+
+    /**
+     * 导出日报
+     * @param id 编号
+     * @return 成功与否
+     */
+    @RequestMapping("exportProductionDailyExcel")
+    @ResponseBody
+    public String exportProductionDailyExcel(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            ProductionDaily productionDaily = productionDailyService.getProductionDailyById(id);
+            makeProductionDailyExcel(productionDaily);
+            res.put("status", "success");
+            res.put("message", "日报导出成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "日报导出失败");
+        }
+        return res.toString();
+    }
+
+    /**
+     * 制作日报文件
+     * @param productionDaily 日报对象
+     */
+    private void makeProductionDailyExcel(ProductionDaily productionDaily) {
+        String filePath = "Files/Templates/生产日报模板.xlsx";
+        try {
+            FileInputStream excelFileInputStream = new FileInputStream(filePath);
+            XSSFWorkbook xwb = new XSSFWorkbook(excelFileInputStream);
+            XSSFSheet xSheet = xwb.getSheetAt(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

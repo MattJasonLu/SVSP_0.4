@@ -50,6 +50,18 @@ public class CompatibilityItem {
 
     private float ph;
 
+    //明细主键 用来做更新操作
+
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getCompatibilityId() {
         return compatibilityId;
     }
