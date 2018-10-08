@@ -1,5 +1,6 @@
 package com.jdlink.service.impl;
 
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.domain.Produce.CompatibilityItem;
 import com.jdlink.mapper.CompatibilityMapper;
@@ -85,8 +86,8 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     }
 
     @Override
-    public List<Compatibility> getWeekPlanList() {
-        return compatibilityMapper.getWeekPlanList();
+    public List<Compatibility> getWeekPlanList(Page page) {
+        return compatibilityMapper.getWeekPlanList(page);
     }
 
     @Override
@@ -112,5 +113,15 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     @Override
     public void updateCompatibility(Compatibility compatibility) {
         compatibilityMapper.updateCompatibility(compatibility);
+    }
+
+    @Override
+    public List<Compatibility> searchCompatibility(Compatibility compatibility) {
+        return compatibilityMapper.searchCompatibility(compatibility);
+    }
+
+    @Override
+    public int totalCompatibilityRecord() {
+        return compatibilityMapper.totalCompatibilityRecord();
     }
 }

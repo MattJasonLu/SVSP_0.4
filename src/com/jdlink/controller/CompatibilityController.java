@@ -3,6 +3,7 @@ package com.jdlink.controller;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.domain.Produce.CompatibilityItem;
 import com.jdlink.domain.Produce.HandleCategory;
@@ -581,10 +582,10 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     //加载数据
     @RequestMapping("getList1")
     @ResponseBody
-    public String getList1(){
+    public String getList1(@RequestBody Page page){
         JSONObject res=new JSONObject();
         try {
-         List<Compatibility> compatibilityList=compatibilityService.getWeekPlanList();
+         List<Compatibility> compatibilityList=compatibilityService.getWeekPlanList(page);
           res.put("compatibilityList",compatibilityList);
             res.put("status", "success");
             res.put("message", "查询成功");
@@ -792,6 +793,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
     //更新配伍周计划主表
     @RequestMapping("updateCompatibility")
     @ResponseBody
+
     public String updateCompatibility(@RequestBody Compatibility compatibility){
         JSONObject res=new JSONObject();
 
@@ -806,6 +808,28 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             res.put("status", "fail");
             res.put("message", "主表更新失败");
         }
+
+        return res.toString();
+    }
+
+
+    //配伍周计划高级查询
+    @RequestMapping("searchCompatibility")
+    @ResponseBody
+    public String searchCompatibility(@RequestBody Compatibility compatibility){
+        JSONObject res=new JSONObject();
+         try {
+             List<Compatibility> compatibilityList=compatibilityService.searchCompatibility(compatibility);
+             res.put("status", "success");
+             res.put("message", "查询成功");
+             res.put("compatibilityList", compatibilityList);
+         }
+         catch (Exception e){
+             e.printStackTrace();
+             res.put("status", "fail");
+             res.put("message", "查询失败");
+
+         }
 
         return res.toString();
     }
@@ -831,6 +855,18 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             id="0"+id;
         }
         return id;
+    }
+
+    //获取总记录数
+    @RequestMapping("totalCompatibilityRecord")
+    @ResponseBody
+    public int totalCompatibilityRecord(){
+        try {
+            return compatibilityService.totalCompatibilityRecord();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }
