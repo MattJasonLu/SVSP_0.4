@@ -33,10 +33,6 @@ public class CompatibilityServiceImpl implements CompatibilityService {
         return compatibilityMapper.check();
     }
 
-    @Override
-    public void updateCompatibility(String compatibilityId, String id, String id2) {
-        compatibilityMapper.updateCompatibility(compatibilityId,id,id2);
-    }
 
     @Override
     public List<String> check1() {
@@ -106,5 +102,15 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     @Override
     public void approvalCompatibility(String compatibilityId) {
         compatibilityMapper.approvalCompatibility(compatibilityId);
+    }
+
+    @Override
+    public void updateCompatibilityItem(CompatibilityItem compatibilityItem) {
+        compatibilityMapper.updateCompatibilityItem(compatibilityItem);
+    }
+
+    @Override
+    public void updateCompatibility(Compatibility compatibility) {
+        compatibilityMapper.updateCompatibility(compatibility);
     }
 }

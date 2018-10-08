@@ -111,7 +111,7 @@
                             <th class="text-center">序号</th>
                             <th class="text-center" style="width: 150px">进料方式</th>
                             <th class="text-center"  style="width: 150px">物质形态</th>
-                            <th class="text-center">比例</th>
+                            <th class="text-center">比例%</th>
                             <th class="text-center">每日配置量</th>
                             <th class="text-center">周需求总量</th>
                             <th class="text-center">热值</th>
@@ -130,17 +130,18 @@
                             <td class="text-center modal-companyName"></td>
                             <td class="text-center modal-einlass"><select class="focus" id="handelCategory1" name="handelCategory1" title=""></select></td>
                             <td class="text-center wastesName" ><select class="focus" id="formType1" name="formType1" title=""></select></td>
-                            <td class="text-center wastesCode" ><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-weight" ><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-materialForm"><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-packingType" ><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-packingType" ><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-processingMethod"><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-KCal" ><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-PH" ><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-ashContent" ><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-waterContent"><input type="text" class="form-control focus"></td>
-                            <td class="text-center modal-CLContent"><input type="text" class="form-control focus"></td>
+                            <td class="text-center wastesCode" ><input type="text" class="form-control focus" readonly></td>
+                            <td class="text-center modal-weight" ><input type="number" class="form-control focus" onkeyup="Calproportion(this)"></td><!--每日配置量-->
+                            <td class="text-center modal-materialForm"><input type="number" class="form-control focus" onkeyup="Calproportion1(this)"></td><!--周需求总量-->
+                            <td class="text-center modal-packingType" ><input type="number" class="form-control focus" ></td>
+                            <td class="text-center modal-packingType" ><input type="number" class="form-control focus"></td>
+                            <td class="text-center modal-processingMethod"><input type="number" class="form-control focus"></td>
+                            <td class="text-center modal-KCal" ><input type="number" class="form-control focus"></td>
+                            <td class="text-center modal-PH" ><input type="number" class="form-control focus"></td>
+                            <td class="text-center modal-ashContent" ><input type="number" class="form-control focus"></td>
+                            <td class="text-center modal-waterContent"><input type="number" class="form-control focus"></td>
+                            <td class="text-center modal-CLContent"><input type="number" class="form-control focus"></td>
+                            <td class="hidden"></td>
                         </tr>
                         </tbody>
 
