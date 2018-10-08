@@ -813,6 +813,7 @@ function checkModal(menu) {
                     $("#model2-companyCode").text(data.companyCode);
                     $("#model2-signer").text(data.laboratorySigner);
                     console.log(data.wastesList);
+                    num = 1;
                     for (var i = 0; i < data.wastesList.length; i++) {
                         if (i > 0) addNextLine();
                         var $i = i;
@@ -830,7 +831,6 @@ function checkModal(menu) {
             console.log(result);
         }
     });
-    num = 1;
     // 显示框体
     $('#checkModal').modal('show');
 }
@@ -853,7 +853,7 @@ function addNextLine() {
         $(this).prop('id', newId);
     });
     clonedTr.addClass("newLine");
-    clonedTr.insertAfter($("#clone"));
+    clonedTr.insertBefore($("#end1"));
 }
 
 
@@ -1342,25 +1342,17 @@ function exportExcel(e) {
 }
 
 /**
- * 关闭模态框并刷新
- */
-function closeModal() {
-    $("#appointModal").hide();
-    window.location.reload();
-}
-
-/**
  * 打印功能
  */
 function print() {
     //打印模态框
     $("#footer").hide();
     $("#viewModal").printThis({
-        debug: false,             // 调试模式下打印文本的渲染状态
-        importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
-        importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
-        printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
-        copyTagClasses: false
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
     });
 
 }
