@@ -39,9 +39,9 @@
     <insert id="add">
         insert into t_wastes (id, name, wastesId, wasteAmount, unit, formType, packageType,
         calorific, ph, ashPercentage, wetPercentage, chlorinePercentage, sulfurPercentage,
-        phosphorusPercentage, fluorinePercentage, processWay) values (#{id}, #{name},
+        phosphorusPercentage, fluorinePercentage, processWay, transportPlanItemId) values (#{id}, #{name},
         #{wastesId}, #{wasteAmount}, #{unit}, #{formType}, #{packageType}, #{calorific},
         #{ph}, #{ashPercentage}, #{wetPercentage}, #{chlorinePercentage}, #{sulfurPercentage},
-        #{phosphorusPercentage}, #{fluorinePercentage}, #{processWay});
+        #{phosphorusPercentage}, #{fluorinePercentage}, #{processWay}, #{transportPlanItemId});
     </insert>
 </mapper>

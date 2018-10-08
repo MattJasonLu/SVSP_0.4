@@ -421,7 +421,7 @@ public class TransportPlanController {
                 if (excelData[i][0] == null || excelData[i][0].equals("null")) break;
                 TransportPlanItem transportPlanItem = new TransportPlanItem();
                 transportPlanItem.setId(RandomUtil.getRandomEightNumber());
-                transportPlanItem.setApproachTime(DateUtil.getDateFromStr(excelData[i][3].toString()));
+                transportPlanItem.setApproachTime(DateUtil.getDateFromStr(excelData[i][4].toString()));
                 // 通过客户名称查询到客户，若不存在则添加，否则直接更新
                 Client client = clientService.getByName(excelData[i][2].toString());
                 if (client == null) {
@@ -435,8 +435,9 @@ public class TransportPlanController {
                 Wastes wastes = new Wastes();
                 // 随机编码
                 wastes.setId(RandomUtil.getRandomEightNumber());
+                wastes.setTransportPlanItemId(transportPlanItem.getId());
                 // 设置进料方式
-                switch (excelData[i][11].toString()) {
+                switch (excelData[i][3].toString()) {
                     case "污泥":
                         wastes.setHandleCategory(HandleCategory.Sludge);
                         break;
@@ -458,6 +459,8 @@ public class TransportPlanController {
                     default:
                         break;
                 }
+                // 设置进料方式
+                transportPlanItem.setHandleCategory(wastes.getHandleCategory());
                 wastes.setName(excelData[i][5].toString());
                 wastes.setWastesId(excelData[i][6].toString());
                 wastes.setWasteAmount(Float.parseFloat(excelData[i][7].toString()));
