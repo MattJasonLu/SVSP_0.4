@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
 import com.jdlink.domain.FormType;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Wastes;
 
 import java.util.ArrayList;
@@ -76,6 +77,27 @@ public class Compatibility {
     //驳回意见
     private String backContent;
 
+    //关键字
+    private String keywords;
+
+    //分页
+    private Page page;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public String getApprovalContent() {
         return approvalContent;

@@ -165,7 +165,11 @@
         select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
     <select id="getWeekPlanList" resultMap="WeekPlan">
-        select * from t_pr_pw order by nowTime desc ;
+        select * from t_pr_pw order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+
     </select>
 
     <!--根据配伍编号获取明细-->
@@ -188,4 +192,27 @@
         where compatibilityId=#{compatibilityId};
     </update>
 
+    <!--获取总记录数-->
+    <select id="totalCompatibilityRecord" resultType="int">
+          select count(*) from t_pr_pw;
+     </select>
+
+    <!--配伍周计划查询-->
+    <select id="searchCompatibility" parameterType="Compatibility" resultType="Compatibility">
+        select * from  t_pr_pw
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or compatibilityId like "%"#{keywords}"%"
+                or totalDailyAmount like "%"#{keywords}"%"
+                or  calorificAvg  like "%"#{keywords}"%"
+                or  ashAvg  like "%"#{keywords}"%"
+                or  clAvg  like "%"#{keywords}"%"
+                or  sAvg  like "%"#{keywords}"%"
+                or  phAvg  like "%"#{keywords}"%"
+                or  weeklyDemandTotalAggregate  like "%"#{keywords}"%"
+                or  fAvg  like "%"#{keywords}"%"
+                or  pAvg  like "%"#{keywords}"%"
+            </if>
+        </where>
+    </select>
 </mapper>
