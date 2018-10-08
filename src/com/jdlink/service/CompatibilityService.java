@@ -10,7 +10,6 @@ public interface CompatibilityService {
     Compatibility getByCompatibilityId(String pwId);
     int getLastId();
     List<String> check();
-    void updateCompatibility(String compatibilityId,String id,String id2);
     List<String> check1();
     List<Compatibility> list(String compatibilityId);
     Compatibility getByPwId1(String pwId);
@@ -25,4 +24,6 @@ public interface CompatibilityService {
     List<CompatibilityItem>getWeekById(String compatibilityId);
     void submit(String compatibilityId);
     void approvalCompatibility(String compatibilityId);
+    void  updateCompatibilityItem(CompatibilityItem compatibilityItem);
+    void updateCompatibility(Compatibility compatibility);
 }

@@ -1158,6 +1158,7 @@ function adjustCom() {
         //contentType: "application/json; charset=utf-8",
         success:function (result) {
             if (result != undefined && result.status == "success"){
+                console.log(result);
                 var tr=$('#cloneTr2');
                  $('#cloneTr2').siblings().remove();
                 $.each(result.array,function (index,item) {
@@ -1175,7 +1176,7 @@ function adjustCom() {
                     cloneTr.children('td').eq(0).html(index+1);
 
 
-                    cloneTr.children('td').eq(3).children('input').val(obj.proportion.toFixed(2));
+                    cloneTr.children('td').eq(3).children('input').val((obj.dailyRatio/obj.weeklyDemandTotal).toFixed(2)*100);
 
                     cloneTr.children('td').eq(4).children('input').val(obj.dailyRatio.toFixed(2));
 
@@ -1196,6 +1197,9 @@ function adjustCom() {
                     cloneTr.children('td').eq(12).children('input').val(obj.f);
 
                     cloneTr.children('td').eq(13).children('input').val(obj.ph);
+
+                    cloneTr.children('td').eq(14).html(obj.id);
+
 
                     if(obj.handleCategory!=null){
                         //进料方式
@@ -1262,7 +1266,6 @@ function adjustCom() {
                         });
                         //cloneTr.children('td').eq(2).children('select').selectedIndex=3;
                     }
-                    console.log( cloneTr.children('td').eq(2).children('select'));
                     // cloneTr.removeAttr('id');
                     cloneTr.insertBefore(tr);
                     tr.removeAttr('class');
@@ -1287,13 +1290,147 @@ function adjustCom() {
 //确认修改
 function adjustConfirm() {
 
+    var calorificSum=0;
+
+    var ashSum=0;
+
+    var waterSum=0;
+
+    var clSum=0;
+
+    var sSum=0;
+
+    var pSum=0;
+
+    var fSum=0;
+
+    var phSum=0;
+
+    var index=0;
+   var  weeklyDemandTotalAggregate=0;
+   var totalDailyAmount=0;
+
 $('.myclass2').each(function () {
+    index++;
     var data={
         handleCategory:$(this).children('td').eq(1).children('select').get(0).selectedIndex,
         formType:$(this).children('td').eq(2).children('select').get(0).selectedIndex,
+        id:$(this).children('td').eq(14).html(),
+        proportion:$(this).children('td').eq(3).children('input').val(),
+        dailyRatio:$(this).children('td').eq(4).children('input').val(),
+        weeklyDemandTotal:$(this).children('td').eq(5).children('input').val(),
+        calorific:$(this).children('td').eq(6).children('input').val(),
+        ash:$(this).children('td').eq(7).children('input').val(),
+        water:$(this).children('td').eq(8).children('input').val(),
+        cl:$(this).children('td').eq(9).children('input').val(),
+        s:$(this).children('td').eq(10).children('input').val(),
+        p:$(this).children('td').eq(11).children('input').val(),
+        f:$(this).children('td').eq(12).children('input').val(),
+        ph:$(this).children('td').eq(13).children('input').val(),
     };
-    console.log(data)
-})
+    calorificSum+=parseFloat($(this).children('td').eq(6).children('input').val());
+    ashSum+=parseFloat($(this).children('td').eq(7).children('input').val());
+    waterSum+=parseFloat($(this).children('td').eq(8).children('input').val());
+    clSum+=parseFloat($(this).children('td').eq(9).children('input').val());
+    sSum+=parseFloat($(this).children('td').eq(10).children('input').val());
+    pSum+=parseFloat($(this).children('td').eq(11).children('input').val());
+    fSum+=parseFloat($(this).children('td').eq(12).children('input').val());
+    phSum+=parseFloat($(this).children('td').eq(13).children('input').val());
+    weeklyDemandTotalAggregate+=parseFloat($(this).children('td').eq(5).children('input').val());
+    totalDailyAmount+=parseFloat($(this).children('td').eq(3).children('input').val());
+   //更新字表数据
+    $.ajax({
+        type:"POST",
+        url: "updateCompatibilityItem",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+         console.log(result)
+            }
+            else {
+                console.log(result)
+            }
+        },
+        error:function (result) {
+       console.log("服务器异常！")
+        }
 
+
+
+    });
+
+})
+    //主表数据
+
+    var data1={
+        compatibilityId:$('#compatibilityId2').text(),
+        calorificAvg:(calorificSum/index).toFixed(2),
+        ashAvg:(ashSum/index).toFixed(2),
+        waterAvg:(waterSum/index).toFixed(2),
+        clAvg:(clSum/index).toFixed(2),
+        sAvg:(sSum/index).toFixed(2),
+        pAvg:(pSum/index).toFixed(2),
+        fAvg:(fSum/index).toFixed(2),
+        phAvg:(phSum/index).toFixed(2),
+        weeklyDemandTotalAggregate:weeklyDemandTotalAggregate,
+        totalDailyAmount:totalDailyAmount,
+    };
+console.log(data1)
+    //更新主表数据
+    $.ajax({
+        type:"POST",
+        url: "updateCompatibility",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:JSON.stringify(data1),
+        contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+                alert("修改成功!");
+                window.location.href="weekPlan.html";
+            }
+            else {
+                console.log(result)
+            }
+        },
+        error:function (result) {
+            console.log("服务器异常！")
+        }
+
+
+
+    });
+
+
+
+}
+
+//修改页面计算比例==》每日配置量
+function Calproportion(item) {
+
+    var dailyRatio=$(item).val();//每日配置量
+
+    var weeklyDemandTotal=$(item).parent().next().children('input').val();//周需求总量
+
+    var proportion=((dailyRatio/weeklyDemandTotal).toFixed(2))*100;
+
+    $(item).parent().prev().children('input').val(proportion);
+
+}
+
+//修改页面计算比例==》周需求总量
+function Calproportion1(item) {
+
+    var weeklyDemandTotal=$(item).val();//周需求总量
+
+    var dailyRatio=$(item).parent().prev().children('input').val();//每日配置量
+
+    var proportion=((dailyRatio/weeklyDemandTotal).toFixed(2))*100;
+
+    $(item).parent().prev().prev().children('input').val(proportion);
 
 }

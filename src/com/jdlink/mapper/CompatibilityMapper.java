@@ -11,7 +11,6 @@ public interface CompatibilityMapper {
     int getLastId();
     List<String> check();
     List<String> check1();
-    void updateCompatibility(String compatibilityId,String id,String id2);
     List<Compatibility> list(String compatibilityId);
     Compatibility getByPwId1(String pwId);
      void  approval(String pwId,String opinion);
@@ -26,4 +25,7 @@ public interface CompatibilityMapper {
 
     List<Compatibility>getWeekPlanList();
     List<CompatibilityItem>getWeekById(String compatibilityId);
+
+    void  updateCompatibilityItem(CompatibilityItem compatibilityItem);
+    void updateCompatibility(Compatibility compatibility);
 }

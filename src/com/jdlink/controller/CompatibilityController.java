@@ -767,6 +767,48 @@ public String importCompatibilityExcel(MultipartFile excelFile){
         return res.toString();
     }
 
+    //更新配伍周计划明细
+    @RequestMapping("updateCompatibilityItem")
+    @ResponseBody
+    public String updateCompatibilityItem(@RequestBody CompatibilityItem compatibilityItem){
+        JSONObject res=new JSONObject();
+
+        try {
+            compatibilityService.updateCompatibilityItem(compatibilityItem);
+            res.put("status", "success");
+            res.put("message", "字表更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "字表更新失败");
+        }
+
+        return res.toString();
+
+
+    }
+
+    //更新配伍周计划主表
+    @RequestMapping("updateCompatibility")
+    @ResponseBody
+    public String updateCompatibility(@RequestBody Compatibility compatibility){
+        JSONObject res=new JSONObject();
+
+        try {
+         compatibilityService.updateCompatibility(compatibility);
+            res.put("status", "success");
+            res.put("message", "主表更新成功");
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "主表更新失败");
+        }
+
+        return res.toString();
+    }
     //获取最后一位四位编号
      public static String getId(String id){
         while (id.length()!=4){
