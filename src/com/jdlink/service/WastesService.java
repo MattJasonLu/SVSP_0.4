@@ -13,5 +13,12 @@ public interface WastesService {
      * @return
      */
    List<Wastes> list();
+   Wastes getByName(String name);
+
+    /**
+     * 增加危废
+     * @param wastes
+     */
+   void add(Wastes wastes);
 
 }

@@ -97,4 +97,14 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     public List<CompatibilityItem> getWeekById(String compatibilityId) {
         return compatibilityMapper.getWeekById(compatibilityId);
     }
+
+    @Override
+    public void submit(String compatibilityId) {
+        compatibilityMapper.submit(compatibilityId);
+    }
+
+    @Override
+    public void approvalCompatibility(String compatibilityId) {
+        compatibilityMapper.approvalCompatibility(compatibilityId);
+    }
 }

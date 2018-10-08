@@ -105,7 +105,7 @@ function getStdTimeStr(time) {
 /**
  * 获取年月周 返回格式：2018年8月第1周
  */
-function getWeekDate() {
+function getWeekDate(date) {
     var getMonthWeek = function (a, b, c) {
         /*
         a = d = 当前日期
@@ -129,10 +129,10 @@ function getWeekDate() {
             d = Math.round((date1.valueOf() - date2.valueOf()) / 86400000);
         return Math.ceil((d + ((date2.getDay() + 1) - 1)) / 7);
     };
-    var today = new Date(); //获取当前时间
-    var year = today.getFullYear();
-    var month = today.getMonth() + 1;
-    var day = today.getDate();
+    // var today = new Date(); //获取当前时间
+    var year = (parseInt(date.year) + 1900).toString();
+    var month = parseInt((date.month) + 1).toString();
+    var day = parseInt((date.date)).toString();
 
     //获取时间
     // var obj = new Date();
@@ -141,7 +141,7 @@ function getWeekDate() {
     // var day = obj.getDate();
     // if(day % 7 > 0)  var a = 1; else a = 0;
     // var week = parseInt(day / 7) + a;
-    return year + "年" + month + "月第" + week + "周";
+    return year + "年" + month + "月第" + getMonthWeek(year, month, day) + "周";
 
 }
 

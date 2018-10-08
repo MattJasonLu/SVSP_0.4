@@ -14,17 +14,18 @@ function loadUserList() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listUser",                  // url
-        async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setDataList(result.data);
             }
         },
-        error:function (result) {
+        error: function (result) {
             console.log(result);
         }
     });
+
     function setDataList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
@@ -112,17 +113,18 @@ function loadRoleList() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listRole",                  // url
-        async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setDataList(result.data);
             }
         },
-        error:function (result) {
+        error: function (result) {
             console.log(result);
         }
     });
+
     function setDataList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#cloneTr");
@@ -163,7 +165,7 @@ function showRoleModal(e) {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listRole",                  // url
-        async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
@@ -180,7 +182,7 @@ function showRoleModal(e) {
                 role.get(0).selectedIndex = -1;
             }
         },
-        error:function (result) {
+        error: function (result) {
             console.log(result);
         }
     });
@@ -196,7 +198,7 @@ function showRoleModal(e) {
                 userId: userId,
                 roleId: roleId
             },
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
@@ -204,7 +206,7 @@ function showRoleModal(e) {
                     window.location.reload();
                 }
             },
-            error:function (result) {
+            error: function (result) {
                 console.log(result);
             }
         });
@@ -229,17 +231,18 @@ function loadRoleAndFunction() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listRole",                  // url
-        async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setDataList(result.data);
             }
         },
-        error:function (result) {
+        error: function (result) {
             console.log(result);
         }
     });
+
     function setDataList(result) {
         // 获取id为cloneTr的tr元素
         var tr = $("#roleCloneLi");
@@ -263,24 +266,25 @@ function loadRoleAndFunction() {
     $.ajax({
         type: "POST",                       // 方法类型
         url: "listFunction",                  // url
-        async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setFunctionList(result.data);
             }
         },
-        error:function (result) {
+        error: function (result) {
             console.log(result);
         }
     });
+
     // 设置功能列表
     function setFunctionList(result) {
         var list = eval(result);
         var data = setFunctionChildren(list);
         //    $('#tree').treeview(options);  //其中options选项允许用户定制treeview的默认外观和行为。它们在初始化时作为一个对象被传递给插件
         // 显示功能列表
-        $(function() {
+        $(function () {
             $('#tree').treeview({
                 data: data, //节点数据
                 multiSelect: true, //是否可以同时选择多个节点      Boolean
@@ -291,7 +295,7 @@ function loadRoleAndFunction() {
                 selectedColor: "#000000", //当节点被选中时的前景色
                 selectedBackColor: "#ffffff", //当节点被选中时的背景色
                 onhoverColor: "#F5F5F5", //光标停在节点上激活的默认背景色      String
-                highlightSearchResults:false,//搜索结果不高亮
+                highlightSearchResults: false,//搜索结果不高亮
                 state: { //描述节点的初始状态    Object
                     checked: false, //是否选中节点
                     /*disabled: true,*/ //是否禁用节点
@@ -300,7 +304,7 @@ function loadRoleAndFunction() {
                 }
             });
         });
-        $('#tree').treeview('collapseAll', { silent: true }); // 折叠所有节点
+        $('#tree').treeview('collapseAll', {silent: true}); // 折叠所有节点
         // 设置子功能
         function setFunctionChildren(children) {
             var childList = [];
@@ -326,33 +330,15 @@ function loadRoleAndFunction() {
  * @param e
  */
 function showAuthorityById(e) {
-    setTimeout(function () {
-        var div2 = document.createElement("img");
-        div2.setAttribute('src','image/loading.gif');
-        div.appendChild(div2);
-    }, 1000);
-
     //$("#span_content").text("数据处理中...").show(1500);
     roleId = e.prop('id');
     $.ajax({
         type: "POST",
         url: "getFunctionByRoleId",
-        async: false,
+        async: true,
         dataType: "json",
-        data: { 
-            roleId: roleId 
-        },
-        beforeSend: function(){
-            e.click(
-                function () {
-                    var load = new Loading();
-                    load.init();
-                    load.start();
-                    setTimeout(function () {
-                        load.stop();
-                    },1500)
-                }
-            );
+        data: {
+            roleId: roleId
         },
         success: function (result) {
             if (result != undefined && result.status == "success") {
@@ -368,21 +354,41 @@ function showAuthorityById(e) {
             console.log(result);
         }
     });
-    /**
-     * 设置功能勾选
-     * @param result
-     */
-    function setFunctionChecked(result) {
-        uncheckAll();
-        var data = eval(result);
-        for (var i = 0; i < data.length; i++) {
-            var name = data[i].functionName;
-            var nodes = $('#tree').treeview('search', [ name, {
-                ignoreCase: true,     // case insensitive
-                exactMatch: true,    // like or equals
-                revealResults: false  // reveal matching nodes
-            }]);
-            $('#tree').treeview('selectNode', nodes[0]);
+     if(bar == 0)count();  // 滚动条加载
+}
+/**
+ * 设置功能勾选
+ * @param result
+ */
+function setFunctionChecked(result) {
+    uncheckAll();
+    var data = eval(result);
+    for (var i = 0; i < data.length; i++) {
+        var name = data[i].functionName;
+        var nodes = $('#tree').treeview('search', [name, {
+            ignoreCase: true,     // case insensitive
+            exactMatch: true,    // like or equals
+            revealResults: false,  // reveal matching nodes
+            animated: "fast"         // 设置部署速度
+        }]);
+        $('#tree').treeview('selectNode', nodes[0]);
+    }
+}
+/**
+ * 设置页面加载滚动条
+ * @type {number}
+ */
+var bar = 0;
+function count() {
+    bar = bar + 1;
+    var barp = bar + '%';
+    $("#load-id").width(barp);
+    if (bar < 101) {
+        if (bar < 100) {
+            setTimeout("count()",10);
+        }else if (bar >= 100) {
+            $("#load-id").width('0%');
+            bar = 0;
         }
     }
 }
@@ -396,7 +402,7 @@ function saveAuthority() {
         alert("未选择角色！");
         return;
     }
-    var nodes = $('#tree').treeview('getSelected', { silent: false });
+    var nodes = $('#tree').treeview('getSelected', {silent: false});
     var functionIdList = [];
     for (var i in nodes) {
         var functionId = nodes[i].id;
@@ -429,7 +435,7 @@ function saveAuthority() {
  */
 function checkAll() {
     // 获取所有未勾选上的节点
-    var nodes = $('#tree').treeview('getUnselected', { silent: false });
+    var nodes = $('#tree').treeview('getUnselected', {silent: false});
     // 遍历每个节点，调用节点勾选方法
     for (var i = 0; i < nodes.length; i++) {
         $('#tree').treeview('selectNode', nodes[i]);
@@ -441,7 +447,7 @@ function checkAll() {
  */
 function uncheckAll() {
     // 获取所有勾选上的节点
-    var nodes = $('#tree').treeview('getSelected', { silent: false });
+    var nodes = $('#tree').treeview('getSelected', {silent: false});
     // 遍历每个节点，调用节点去除勾选方法
     for (var i = 0; i < nodes.length; i++) {
         $('#tree').treeview('unselectNode', nodes[i]);
