@@ -394,13 +394,9 @@ public class TransferDraftController {
                     break;
             }
             wastes.setWastesId(str.get(15));      // 八位码
-            DecimalFormat df = new DecimalFormat("##.#####");//输出"0.00000"
-            String prepareTransferCount = df.format(Float.parseFloat(str.get(16)));
-            wastes.setPrepareTransferCount(Float.parseFloat(prepareTransferCount));
-            String transferCount = df.format(Float.parseFloat(str.get(17)));
-            wastes.setTransferCount(Float.parseFloat(transferCount));
-            String signCount = df.format(Float.parseFloat(str.get(18)));
-            wastes.setSignCount(Float.parseFloat(signCount));
+            wastes.setPrepareTransferCount(Float.parseFloat(str.get(16)));
+            wastes.setTransferCount(Float.parseFloat(str.get(17)));
+            wastes.setSignCount(Float.parseFloat(str.get(18)));
             wastes.setWastesCharacter(str.get(19));
             switch (str.get(20)) {
                 case "气体":

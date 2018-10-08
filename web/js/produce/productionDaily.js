@@ -1551,10 +1551,11 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
  * @param e
  */
 function exportExcel() {
-    console.log("export");
-    // var name = 't_pl_inboundorder';
-    // var sqlWords = "select t_pl_inboundorder.inboundOrderId, inboundDate, warehouseId, boundType, transferDraftId, (select companyName from client where clientId=produceCompanyId) as 'companyName', wastesName, wastesCode, wastesAmount, unitPriceTax, totalPrice, processWay, handleCategory, t_pl_inboundorderitem.remarks, warehouseArea from t_pl_inboundorder join t_pl_inboundorderitem where t_pl_inboundorderitem.inboundOrderId=t_pl_inboundorder.inboundOrderId and boundType='WasteInbound';";
-    // window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    var checkedItems = $("input[type='checkbox']:checked");
+    checkedItems.each(function () {
+        var id = $(this).parent().parent().parent().find("td[name='id']").text();
+        window.open('exportProductionDailyExcel?id=' + id);
+    });
 }
 
 /**

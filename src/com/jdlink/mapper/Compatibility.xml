@@ -38,11 +38,6 @@
     <select id="getLastId" resultType="int">
         select count(*) from t_pr_pw;
     </select>
-    <!--刚导入的状态-->
-    <update id="updateCompatibility">
-        update t_pr_pw set compatibilityId=#{0},nowTime=NOW(),checkState='ToExamine'
-        where  pwId between #{1} and #{2};
-    </update>
     <!--查找配伍编号-->
     <select id="check" resultType="String">
         select compatibilityId from  t_pr_pw order by compatibilityId desc ;
@@ -170,11 +165,54 @@
         select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
     <select id="getWeekPlanList" resultMap="WeekPlan">
-        select * from t_pr_pw order by nowTime desc ;
+        select * from t_pr_pw order by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+
     </select>
 
     <!--根据配伍编号获取明细-->
     <select id="getWeekById" parameterType="String" resultType="CompatibilityItem">
         select * from  t_pr_pwitem where compatibilityId=#{compatibilityId};
+    </select>
+
+    <!--更新配伍周计划明细-->
+    <update id="updateCompatibilityItem" parameterType="CompatibilityItem">
+        update t_pr_pwitem set handleCategory=#{handleCategory},formType=#{formType},
+        proportion=#{proportion},dailyRatio=#{dailyRatio},weeklyDemandTotal=#{weeklyDemandTotal},
+        calorific=#{calorific},ash=#{ash},water=#{water},cl=#{cl},p=#{p},f=#{f},ph=#{ph}
+        where id=#{id}
+    </update>
+    <!--更新配伍周计划-->
+    <update id="updateCompatibility" parameterType="Compatibility">
+        update t_pr_pw set totalDailyAmount=#{totalDailyAmount},calorificAvg=#{calorificAvg},
+        ashAvg=#{ashAvg},waterAvg=#{waterAvg},clAvg=#{clAvg},sAvg=#{sAvg},phAvg=#{phAvg},
+        weeklyDemandTotalAggregate=#{weeklyDemandTotalAggregate},fAvg=#{fAvg},pAvg=#{pAvg},nowTime=NOW()
+        where compatibilityId=#{compatibilityId};
+    </update>
+
+    <!--获取总记录数-->
+    <select id="totalCompatibilityRecord" resultType="int">
+          select count(*) from t_pr_pw;
+     </select>
+
+    <!--配伍周计划查询-->
+    <select id="searchCompatibility" parameterType="Compatibility" resultType="Compatibility">
+        select * from  t_pr_pw
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or compatibilityId like "%"#{keywords}"%"
+                or totalDailyAmount like "%"#{keywords}"%"
+                or  calorificAvg  like "%"#{keywords}"%"
+                or  ashAvg  like "%"#{keywords}"%"
+                or  clAvg  like "%"#{keywords}"%"
+                or  sAvg  like "%"#{keywords}"%"
+                or  phAvg  like "%"#{keywords}"%"
+                or  weeklyDemandTotalAggregate  like "%"#{keywords}"%"
+                or  fAvg  like "%"#{keywords}"%"
+                or  pAvg  like "%"#{keywords}"%"
+            </if>
+        </where>
     </select>
 </mapper>
