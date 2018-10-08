@@ -11,12 +11,12 @@ function loadPageWayBillDetailList() {
 
     //编辑显示按钮，查看隐藏按钮
     if (localStorage.add == 0) {
-        $("#plusBtn").css("display","none");
-        $("#saveBtn").css("display","none");
+        $("#plusBtn").css("display", "none");
+        $("#saveBtn").css("display", "none");
     }
     else {
-        $("#plusBtn").css("display","");
-        $("#saveBtn").css("display","");
+        $("#plusBtn").css("display", "");
+        $("#saveBtn").css("display", "");
     }
     $.ajax({
         type: "POST",                       // 方法类型
@@ -132,9 +132,11 @@ function setWayBillItemList(result) {
                     break;
             }
         });
-        // 添加减行按钮
-        var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'\"></span></a>&nbsp;";
-        clonedTr.children("td:eq(0)").prepend(delBtn);
+        // 编辑功能时添加减行按钮
+        if (localStorage.add != 0) {
+            var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'\"></span></a>&nbsp;";
+            clonedTr.children("td:eq(0)").prepend(delBtn);
+        }
         // 把克隆好的tr追加到原来的tr前面
         clonedTr.removeAttr("id");
         clonedTr.insertBefore(tr);
@@ -208,13 +210,13 @@ function delLine(e) {
 function calculateTotalPrice(e) {
     var amount = 0;
     var price = 0;
-    var $i = $(e).attr('id').replace(/[^0-9]/ig,"");
-    if ($("#wastes"+ $i +"-wasteAmount").val() != '')
-        amount = $("#wastes"+ $i +"-wasteAmount").val();
-    if ($("#wastes"+ $i +"-unitPriceTax").val() != '')
-        price = $("#wastes"+ $i +"-unitPriceTax").val();
+    var $i = $(e).attr('id').replace(/[^0-9]/ig, "");
+    if ($("#wastes" + $i + "-wasteAmount").val() != '')
+        amount = $("#wastes" + $i + "-wasteAmount").val();
+    if ($("#wastes" + $i + "-unitPriceTax").val() != '')
+        price = $("#wastes" + $i + "-unitPriceTax").val();
     // 给总计赋值
-    $("#wastes"+ $i +"-totalPrice").text(parseFloat(amount) * parseFloat(price));
+    $("#wastes" + $i + "-totalPrice").text(parseFloat(amount) * parseFloat(price));
 }
 
 function getSalesmanIdByName(name) {
@@ -373,8 +375,8 @@ function addWastes() {
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    if(confirm("数据保存成功，是否返回主页?"))
-                        window.location.href='wayBill1.html';
+                    if (confirm("数据保存成功，是否返回主页?"))
+                        window.location.href = 'wayBill1.html';
                     else window.location.reload();
                 } else {
                     alert(data.message);
