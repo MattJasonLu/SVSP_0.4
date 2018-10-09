@@ -976,13 +976,13 @@ function viewData(e) {
                 }
                 if (data.wastes != null) {
                     $("#wastesName").val(data.wastes.name);
-                    $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount);
+                    $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount.toFixed(4));
                     $("#wastesCharacter").val(data.wastes.wastesCharacter);
                     if (data.wastes.handleCategory != null) $("#wastesCategory").val(data.wastes.handleCategory.name);
-                    $("#wastesTransferCount").val(data.wastes.transferCount);
+                    $("#wastesTransferCount").val(data.wastes.transferCount.toFixed(4));
                     if (data.wastes.formType != null) $("#wastesFormType").val(data.wastes.formType.name);
                     $("#wastesCode").val(data.wastes.wastesId);
-                    $("#wastesSignCount").val(data.wastes.signCount);
+                    $("#wastesSignCount").val(data.wastes.signCount.toFixed(4));
                     if (data.wastes.formType != null) $("#wastesPackageType").val(data.wastes.packageType.name);
                 }
                 $("#outwardIsTransit").prop('checked', data.outwardIsTransit);

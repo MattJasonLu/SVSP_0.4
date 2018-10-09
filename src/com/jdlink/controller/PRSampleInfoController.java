@@ -205,6 +205,7 @@ public class PRSampleInfoController {
     public String updateSampleInformation(@RequestBody SampleInformation sampleInformation){
         JSONObject res = new JSONObject();
         try{
+
             sampleInformationService.update(sampleInformation);
             System.out.println("更新的数据为：");
             System.out.println(sampleInformation.getWastesList().size());

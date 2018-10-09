@@ -356,7 +356,7 @@
             </ol>
         </nav>
         <!-- 预约登记模态框 新增-->
-        <div class="modal fade" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade bs-example-modal-lg" id="appointModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -383,24 +383,26 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
-                        <div>
-                            <div class="row">
-                                <label class="col-sm-2 control-label">危废代码</label>
-                                <div class="col-sm-10">
-                                    <select class="selectpicker form-control" data-live-search="true"
-                                            data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
-                                            name="wastesList[0].wastesCode">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label class="col-sm-2 control-label">基础项目</label>
-                                <div class="checkbox col-sm-10">
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isPH"
-                                               value="true">PH
-                                    </label>
+                        <table class="table table-bordered">
+                            <thead style="border:none">
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">基础项目</th>
+                                <th class="text-center">增加项目</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="addClone">
+                                <td class="text-center">1</td>
+                                <td class="text-center"><select  class="selectpicker form-control" data-live-search="true"
+                                                                 data-live-search-placeholder="搜索..." id="wastesList0-wastesCode"
+                                                                 name="wastesList[0].wastesCode">
+                                </select></td>
+                                <td class="text-center"><label>
+                                    <input type="checkbox" name="wastesList[0].isPH"
+                                           value="true">PH
+                                </label>
                                     <label>
                                         <input type="checkbox" name="wastesList[0].isAsh"
                                                value="true">灰分
@@ -428,28 +430,26 @@
                                     <label>
                                         <input type="checkbox" name="wastesList[0].isP"
                                                value="true">磷
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label class="col-sm-2 control-label">增加项目</label>
-                                <div class="checkbox col-sm-10">
-                                    <label>
-                                        <input type="checkbox" name="wastesList[0].isFlashPoint"
-                                               value="true">闪点
-                                    </label>
+                                    </label></td>
+                                <td class="text-center"><label>
+                                    <input type="checkbox" name="wastesList[0].isFlashPoint"
+                                           value="true">闪点
+                                </label>
                                     <label>
                                         <input type="checkbox" name="wastesList[0].isViscosity"
                                                value="true">黏度
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="addBtn" class="col-md-4">
-                            <a class="btn btn-default btn-xs" onclick="addNewLine();" title="增加样品"><span
-                                    class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                        </div>
-                        <br>
+                                    </label></td>
+                            </tr>
+                            <tr id="plusBtn">
+                                <td>
+                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -459,7 +459,7 @@
             </div>
         </div>
         <!-- 修改模态框-->
-        <div class="modal fade" id="adjustModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade bs-example-modal-lg" id="adjustModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -471,39 +471,41 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group col-md-5">
-                                <label for="model3-companyCode" class="col-sm-5 control-label">公司代码</label>
+                                <label for="model-companyCode" class="col-sm-5 control-label">公司代码</label>
                                 <div class="col-sm-7">
                                     <select class="selectpicker form-control" data-live-search="true"
                                             data-live-search-placeholder="搜索..." id="model3-companyCode"
-                                            name="model-companyCode">
+                                            name="model3-companyCode">
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group col-md-7">
-                                <label for="model3-signer" class="col-sm-5 control-label">化验室签收人</label>
+                                <label for="model-signer" class="col-sm-5 control-label">化验室签收人</label>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control" id="model3-signer" name="signer" required>
                                 </div>
                             </div>
                         </div>
-                        <br>
-                        <div>
-                            <div class="row">
-                                <label class="col-sm-2 control-label">危废代码</label>
-                                <div class="col-sm-10">
-                                    <select class="selectpicker form-control" data-live-search="true"
-                                            data-live-search-placeholder="搜索..." id="wastes0-wastesCode"
-                                            name="wastes[0].wastesCode">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label class="col-sm-2 control-label">基础项目</label>
-                                <div class="checkbox col-sm-10">
-                                    <label>
-                                        <input type="checkbox" name="wastes[0].isPH"
-                                               value="true">PH
-                                    </label>
+                        <table class="table table-bordered">
+                            <thead style="border:none">
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">基础项目</th>
+                                <th class="text-center">增加项目</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="addClone3">
+                                <td class="text-center">1</td>
+                                <td class="text-center"><select class="selectpicker form-control" data-live-search="true"
+                                                                data-live-search-placeholder="搜索..." id="wastes0-wastesCode"
+                                                                name="wastes[0].wastesCode">
+                                </select></td>
+                                <td class="text-center" ><label>
+                                    <input type="checkbox" name="wastes[0].isPH"
+                                           value="true">PH
+                                </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isAsh"
                                                value="true">灰分
@@ -531,28 +533,26 @@
                                     <label>
                                         <input type="checkbox" name="wastes[0].isP"
                                                value="true">磷
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <label class="col-sm-2 control-label">增加项目</label>
-                                <div class="checkbox col-sm-10">
-                                    <label>
-                                        <input type="checkbox" name="wastes[0].isFlashPoint"
-                                               value="true">闪点
-                                    </label>
+                                    </label></td>
+                                <td class="text-center" ><label>
+                                    <input type="checkbox" name="wastes[0].isFlashPoint"
+                                           value="true">闪点
+                                </label>
                                     <label>
                                         <input type="checkbox" name="wastes[0].isViscosity"
                                                value="true">黏度
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="addBtn3" class="col-md-4">
-                            <a class="btn btn-default btn-xs" onclick="addNewLine2();" title="增加样品"><span
-                                    class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                        </div>
-                        <br>
+                                    </label></td>
+                            </tr>
+                            <tr id="addBtn3">
+                                <td>
+                                    <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -570,36 +570,37 @@
                             <h4 class="modal-title" id="myModalLabel1">登记单信息</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="row">
-                                <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model1-companyCode"
-                                                                                           name="model1-companyCode"></span>
-                                </p>
-                                <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                        id="model1-signer" name="model1-signer"></span></p>
+                            <table class="table table-bordered" style="border:none">
+                                <thead style="border:none">
+                                <tr>
+                                    <th class="text-center" style="border: none">公司代码</th>
+                                    <td class="text-center" style="border: none"><span id="model1-companyCode" ></span></td>
+                                    <th class="text-center" style="border: none">签收人</th>
+                                    <td class="text-center" style="border: none"><span id="model1-signer" ></span></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">序号</th>
+                                    <th class="text-center">危废代码</th>
+                                    <th class="text-center">基础项目</th>
+                                    <th class="text-center">增加项目</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr id="addClone1">
+                                    <td class="text-center">1</td>
+                                    <td class="text-center"><span id="model[0].wastesCode"></span></td>
+                                    <td class="text-center"><span id="model[0].basicItems"></span></td>
+                                    <td class="text-center"><span id="model[0].addItems"></span></td>
+                                </tr>
+                                <tr id="end" style="display: none;">
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                </tbody>
 
-                            </div>
-                            <div>
-                                <div>
-                                    <div class="col-sm-12 row">
-                                        <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span
-                                                id="model[0].wastesCode"></span>
-                                        </p>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span
-                                                    id="model[0].basicItems"></span></p>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span
-                                                    id="model[0].addItems"></span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="cloneBefore">
-                                </div>
-                            </div>
+                            </table>
                         </div>
                         <div class="modal-footer" id="footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -620,35 +621,36 @@
                         <h4 class="modal-title" id="checkModalLabel">样品信息登记</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
-                            <p class="text-left col-md-6"><b>公司代码&nbsp;&nbsp;</b><span id="model2-companyCode"
-                                                                                       name="model2-companyCode"></span>
-                            </p>
-                            <p class="text-left col-md-6"><b>签&nbsp;&nbsp;收&nbsp;&nbsp;人&nbsp;&nbsp;</b><span
-                                    id="model2-signer" name="model1-signer"></span></p>
-                        </div>
-                        <div>
-                            <div>
-                                <div class="col-sm-12 row">
-                                    <p class="text-left"><b>危废代码&nbsp;&nbsp;</b><span
-                                            id="checkModel[0].wastesCode"></span></p>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <p class="text-left"><b>基础项目&nbsp;&nbsp;</b><span
-                                                id="checkModel[0].basicItems"></span>
-                                        </p>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="text-left"><b>增加项目&nbsp;&nbsp;</b><span
-                                                id="checkModel[0].addItems"></span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="clone">
-                            </div>
-                        </div>
+                        <table class="table table-bordered" style="border: none">
+                            <thead style="border:none">
+                            <tr>
+                                <th class="text-center" style="border: none">公司代码</th>
+                                <td class="text-center" style="border: none"><span id="model2-companyCode" ></span></td>
+                                <th class="text-center" style="border: none">签收人</th>
+                                <td class="text-center" style="border: none"><span id="model2-signer" ></span></td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">序号</th>
+                                <th class="text-center">危废代码</th>
+                                <th class="text-center">基础项目</th>
+                                <th class="text-center">增加项目</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr id="addClone2">
+                                <td class="text-center">1</td>
+                                <td class="text-center"><span id="checkModel[0].wastesCode"></span></td>
+                                <td class="text-center"><span id="checkModel[0].basicItems"></span></td>
+                                <td class="text-center"><span id="checkModel[0].addItems"></span></td>
+                            </tr>
+                            <tr id="end1" style="display: none;">
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                                <td class="text-center"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
