@@ -28,8 +28,8 @@
     </select>
     <!--获取月季采购-->
     <select id="getProcurementList" resultMap="ProcurementRM">
-        select * from t_pl_procurement   where procurementCategory='1'order by nowTime desc
-        <if test="start != null and count != null">
+        select * from t_pl_procurement where procurementCategory='1'order by nowTime desc
+        <if test="start != null and count != null and count != 0">
             limit #{start}, #{count}
         </if>
     </select>

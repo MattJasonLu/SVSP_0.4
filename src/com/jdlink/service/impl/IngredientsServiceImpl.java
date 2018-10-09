@@ -19,7 +19,6 @@ public class IngredientsServiceImpl implements IngredientsService {
     @Autowired
     IngredientsMapper ingredientsMapper;
 
-
     ///入库单///
     @Override
     public int countInById(String id){ return ingredientsMapper.countInById(id); }
@@ -92,7 +91,7 @@ public class IngredientsServiceImpl implements IngredientsService {
     public void updateReceive(IngredientsReceive ingredientsReceive){ ingredientsMapper.updateReceive(ingredientsReceive); }
 
     @Override
-    public List<Ingredients> getAmountAndReceive(Ingredients ingredients){ return ingredientsMapper.getAmountAndReceive(ingredients); }
+    public Ingredients getAmountAndReceive(Ingredients ingredients){ return ingredientsMapper.getAmountAndReceive(ingredients); }
 
     @Override
     public List<Ingredients> getInventoryList(){ return ingredientsMapper.getInventoryList(); }

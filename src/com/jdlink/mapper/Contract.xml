@@ -234,7 +234,26 @@ telephone=#{telephone},contractType="Emergency",bankName=#{bankName},bankAccount
         or DATE_FORMAT(beginTime,'%Y%m%d') like "%"#{year}"%")
         order by beginTime asc;
     </select>
-
+    
+    <select id="searchMonthData" resultMap="ContractRM">
+        select * from t_contract
+       <where>
+           <if test="1 == 1 ">
+               and contractType='Wastes'
+           </if>
+           <if test="startDate != null and startDate != ''">
+               <![CDATA[ and DATE_FORMAT(beginTime,'%Y%m')  >= DATE_FORMAT(#{startDate},'%Y%m') ]]>
+           </if>
+           <if test="endDate != null and endDate != ''">
+               <![CDATA[ and DATE_FORMAT(beginTime,'%Y%m')  <= DATE_FORMAT(#{endDate},'%Y%m') ]]>
+           </if>
+           <if test="salesmanName != null and salesmanName != ''">
+               and clientId in (select clientId from client where salesmanId in (select salesmanId from salesman where name like "%"#{salesmanName}"%"))
+           </if>
+       </where>
+        order by beginTime asc;
+    </select>
+    
     <!--根据月份获取合同数据-->
     <select id="getContractListByMonth" parameterType="String" resultMap="ContractRM">
         select * from t_contract

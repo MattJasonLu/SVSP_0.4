@@ -22,7 +22,6 @@ public class Procurement {
      * 申请月份
      */
     private String applyMouth;
-
     /**
      * 需求时间(应急同)
      */

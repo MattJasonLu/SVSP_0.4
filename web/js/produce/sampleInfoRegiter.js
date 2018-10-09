@@ -352,26 +352,26 @@ function setSampleList(result) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 //预约单号
-                case (0):
+                case (1):
                     $(this).html(obj.id);
                     break;
                 // 公司代码
-                case (1):
+                case (2):
                     $(this).html(obj.companyCode);
                     break;
                 //危废代码
-                case (2):
+                case (3):
                     $(this).html(obj.wastesCode);
                     break;
                 // 样品状态
-                case (3):
+                case (4):
                     if (obj.applyState != null) {
                         obj.name = obj.applyState.name;
                     }
                     $(this).html(obj.name);
                     break;
                 //基础检测项目
-                case (4): {
+                case (5): {
                     var list = [];
                     if (obj.isPH === true) list.push("PH");
                     if (obj.isAsh === true) list.push("灰");
@@ -397,7 +397,7 @@ function setSampleList(result) {
                     $(this).html(obj.basicItems);
                     break;
                 // 增加检测项目
-                case (5): {
+                case (6): {
                     var list1 = [];
                     if (obj.isFlashPoint === true) list1.push("闪点");
                     if (obj.isViscosity === true) list1.push("黏度");
@@ -416,10 +416,10 @@ function setSampleList(result) {
                     $(this).html(obj.addItems);
                     break;
                 // 签收人
-                case (6):
+                case (7):
                     $(this).html(obj.laboratorySigner);
                     break;
-                case (7):
+                case (8):
                     // console.log(getDateStr(obj.samplingDate));
                     $(this).html(getDateStr(obj.samplingDate));
                     break;
@@ -547,7 +547,7 @@ function addItems(data) {
  * @returns {string}
  */
 function getSampleIdByMenu(menu) {
-    return menu.parentElement.parentElement.firstElementChild.innerHTML;
+    return menu.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -556,7 +556,7 @@ function getSampleIdByMenu(menu) {
  * @returns {string}
  */
 function getSampleIdByMenu1(menu) {
-    return menu.firstElementChild.innerHTML;
+    return menu.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -1339,14 +1339,6 @@ function exportExcel(e) {
     var name = 't_pr_sampleinformation';
     var sqlWords = "select companyCode,wastesCode,applyState,laboratorySigner,isPH,isAsh,isWater,isHeat,isSulfur,isChlorine,isFluorine,isPhosphorus,isFlashPoint,isViscosity from t_pr_sampleinformation ";
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
-}
-
-/**
- * 关闭模态框并刷新
- */
-function closeModal() {
-    $("#appointModal").hide();
-    window.location.reload();
 }
 
 /**

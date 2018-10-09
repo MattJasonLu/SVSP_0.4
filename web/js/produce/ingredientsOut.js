@@ -370,43 +370,43 @@ function setList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
+                case (1):
                     // 出库单号
                     $(this).html(obj.id);
                     break;
-                case (1):
+                case (2):
                     // 单位
                     $(this).html(obj.companyName);
                     break;
-                case (2):
+                case (3):
                     //出库单状态
                     $(this).html(obj.state.name);
                     break;
-                case (3):
+                case (4):
                     // 总数量
                     $(this).html(obj.totalAmount);
                     break;
-                case (4):
+                case (5):
                     // 总金额
                     $(this).html(obj.totalPrice);
                     break;
-                case (5):
+                case (6):
                     // 记账人
                     $(this).html(obj.bookkeeper);
                     break;
-                case (6):
+                case (7):
                     // 审批人
                     $(this).html(obj.approver);
                     break;
-                case (7):
+                case (8):
                     // 保管人
                     $(this).html(obj.keeper);
                     break;
-                case (8):
+                case (9):
                     // 经手人
                     $(this).html(obj.handlers);
                     break;
-                case (9):
+                case (10):
                     // 创建日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
@@ -629,7 +629,7 @@ function searchData() {
  * @returns {string}
  */
 function getIngredientsId1(item) {
-    return item.firstElementChild.innerHTML;
+    return item.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -638,7 +638,7 @@ function getIngredientsId1(item) {
  * @returns {*}
  */
 function getIngredientsId(item) {
-    return item.parentElement.parentElement.firstElementChild.innerHTML;
+    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -1253,15 +1253,6 @@ function setReiceveViewClone(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
-}
-
-/**
- * 全选复选框
- */
-function allSelect() {
-    var isChecked = $('#allSel1').prop('checked');
-    if (isChecked) $("input[name='select']").prop('checked', true);
-    else $("input[name='select']").prop('checked', false);
 }
 
 /**

@@ -1,6 +1,7 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.Assessment;
 import com.jdlink.mapper.ContractMapper;
 import com.jdlink.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,5 +240,8 @@ contractMapper.updateFreight2(id);
 
     @Override
     public List<Contract> getContractByClientId(String id){ return contractMapper.getContractByClientId(id); }
+
+    @Override
+    public List<Contract> searchMonthData(Assessment assessment){ return contractMapper.searchMonthData(assessment); }
 
 }

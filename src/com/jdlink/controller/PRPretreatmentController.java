@@ -81,6 +81,11 @@ public class PRPretreatmentController {
         return res.toString();
     }
 
+    /**
+     * 根据ID获取对象
+     * @param id 编号
+     * @return
+     */
     @RequestMapping("getPretreatmentById")
     @ResponseBody
     public String getPretreatmentById(String id) {
