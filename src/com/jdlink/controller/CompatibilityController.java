@@ -1,11 +1,8 @@
 package com.jdlink.controller;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.FormType;
-import com.jdlink.domain.Page;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.*;
-import com.jdlink.domain.Wastes;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.service.ThresholdService;
 import com.jdlink.util.DBUtil;
@@ -1001,19 +998,19 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                     materialRequireItem.setPackageType(Box);
                 }
                 //废液+液态==>吨箱
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="WasteLiquid"&&compatibilityItemList.get(i).getFormType().toString()=="Liquid"){
+                else if (compatibilityItemList.get(i).getHandleCategory().toString()=="WasteLiquid"&&compatibilityItemList.get(i).getFormType().toString()=="Liquid"){
                     materialRequireItem.setPackageType(Ton);
                 }
                 //散装料+固态==>吨袋
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="Bulk"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
+                else if (compatibilityItemList.get(i).getHandleCategory().toString()=="Bulk"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
                     materialRequireItem.setPackageType(Bag);
                 }
                 //破碎料+固态==>标准箱
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="Crushing"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
+                else if(compatibilityItemList.get(i).getHandleCategory().toString()=="Crushing"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
                     materialRequireItem.setPackageType(Box);
                 }
                 //精馏残渣+固态==>铁桶
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="Distillation"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
+                else if(compatibilityItemList.get(i).getHandleCategory().toString()=="Distillation"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
                     materialRequireItem.setPackageType(Iron);
                 }
                 else {

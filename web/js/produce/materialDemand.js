@@ -1128,3 +1128,225 @@ function setCompatibilityModal(result) {
 
 
 }
+
+//修改功能
+function adjust(item) {
+var materialRequireId=$(item).parent().parent().children('td').eq(2).html();
+
+    localStorage.materialRequireId = materialRequireId;
+    window.location.href = "adjustMaterialDemand.html";
+}
+
+
+//修改页面初始化
+
+function adjustMater() {
+    var materialRequireId = localStorage['materialRequireId'];
+
+    $("#materialRequireId").text(materialRequireId);
+
+    $.ajax({
+        type: "POST",
+        url: "getMaterialRequireById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': materialRequireId},
+        //contentType: "application/json; charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success") {
+                       console.log(result)
+                var tr = $('#cloneTr2');
+                $('#cloneTr2').siblings().remove();
+                $.each(result.materialRequireItemList,function (index,item) {
+                    var obj = eval(item);
+
+                    var cloneTr = tr.clone();
+
+                    cloneTr.attr('class', 'myclass2');
+                    cloneTr.show();
+
+                    cloneTr.children('td').eq(0).html(index + 1);
+
+                    cloneTr.children('td').eq(4).children('input').val(obj.weeklyDemand);
+
+                    cloneTr.children('td').eq(5).children('input').val(obj.currentInventory);
+
+                    cloneTr.children('td').eq(6).children('input').val(obj.safety);
+
+                    cloneTr.children('td').eq(7).children('input').val(obj.marketPurchases);
+
+                    cloneTr.children('td').eq(8).children('input').val(obj.calorificMax);
+
+                    cloneTr.children('td').eq(9).children('input').val(obj.calorificMin);
+
+                    cloneTr.children('td').eq(10).children('input').val(obj.ashMax);
+
+                    cloneTr.children('td').eq(11).children('input').val(obj.ashMin);
+
+                    cloneTr.children('td').eq(12).children('input').val(obj.waterMax);
+
+                    cloneTr.children('td').eq(13).children('input').val(obj.waterMin);
+
+                    cloneTr.children('td').eq(14).children('input').val(obj.clMax);
+
+                    cloneTr.children('td').eq(15).children('input').val(obj.clMin);
+
+                    cloneTr.children('td').eq(16).children('input').val(obj.sMax);
+
+                    cloneTr.children('td').eq(17).children('input').val(obj.sMin);
+
+                    cloneTr.children('td').eq(18).children('input').val(obj.pMax);
+
+                    cloneTr.children('td').eq(19).children('input').val(obj.pMin);
+
+                    cloneTr.children('td').eq(20).children('input').val(obj.fMax);
+
+                    cloneTr.children('td').eq(21).children('input').val(obj.fMin);
+
+                    cloneTr.children('td').eq(22).children('input').val(obj.phMax);
+
+                    cloneTr.children('td').eq(23).children('input').val(obj.phMin);
+
+                    if(obj.handleCategory != null){
+                        $.ajax({
+                            type: 'POST',
+                            url: "getHandleCategory",
+                            //data:JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                if (result != undefined) {
+                                    // console.log(result);
+                                    var handelCategory = cloneTr.children('td').eq(1).children('select');
+                                    handelCategory.children().remove();
+                                    $.each(result.handleCategoryList, function (index, item) {
+                                        var option = $('<option/>');
+                                        option.val(item.index);
+                                        option.text(item.name);
+                                        handelCategory.append(option);
+                                    });
+                                    handelCategory.get(0).selectedIndex = item.handleCategory.index - 1;
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+
+                        });
+                    }
+
+                    if (item.formType != null) {
+                        //形态
+                        $.ajax({
+                            type: 'POST',
+                            url: "getFormTypeAndPackageType",
+                            //data:JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                if (result != undefined) {
+                                    // console.log(result);
+                                    var formType = cloneTr.children('td').eq(2).children('select');
+                                    formType.children().remove();
+                                    $.each(result.formTypeList, function (index, item) {
+                                        var option = $('<option/>');
+                                        option.val(item.index);
+                                        option.text(item.name);
+                                        formType.append(option);
+                                    });
+                                    formType.get(0).selectedIndex = obj.formType.index - 1;
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+
+                        });
+                        //cloneTr.children('td').eq(2).children('select').selectedIndex=3;
+                    }
+
+                    if(obj.packageType!=null){
+                        //包装
+                        $.ajax({
+                            type: 'POST',
+                            url: "getFormTypeAndPackageType",
+                            //data:JSON.stringify(data),
+                            dataType: "json",
+                            contentType: "application/json;charset=utf-8",
+                            success: function (result) {
+                                if (result != undefined) {
+                                    // console.log(result);
+                                    var packageType = cloneTr.children('td').eq(3).children('select');
+                                    packageType.children().remove();
+                                    $.each(result.packageTypeList, function (index, item) {
+                                        var option = $('<option/>');
+                                        option.val(item.index);
+                                        option.text(item.name);
+                                        packageType.append(option);
+                                    });
+                                    packageType.get(0).selectedIndex = obj.packageType.index - 1;
+                                }
+                                else {
+                                    alert(result.message);
+                                }
+                            },
+                            error: function (result) {
+                                console.log(result);
+                            }
+
+                        });
+                    }
+
+                    cloneTr.children('td').eq(24).html(obj.id);
+
+                    cloneTr.insertBefore(tr);
+                    tr.removeAttr('class');
+
+
+                });
+
+                tr.hide();
+
+
+            }
+        },
+        error:function (result) {
+            alert("服务器异常！")
+        }
+
+
+    });
+
+}
+
+//确认修改
+function adjustConfirm() {
+
+    var weeklyDemandTotal=0;
+
+    var currentInventoryTotal=0;
+
+    var safetyTotal=0;
+
+    var marketPurchasesTotal=0;
+
+    $('.myclass2').each(function () {
+        var data={
+            handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
+            formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
+            packageType:$(this).children('td').eq(3).children('select').get(0).selectedIndex,
+            // weeklyDemand:$(this).children('td').eq(3).children('input').val(),
+        };
+       console.log(data)
+
+       })
+
+
+
+}

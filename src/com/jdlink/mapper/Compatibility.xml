@@ -165,7 +165,7 @@
         select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
     <select id="getWeekPlanList" resultMap="WeekPlan">
-        select * from t_pr_pw   where checkState!='Disabled' order by nowTime desc
+        select * from t_pr_pw   order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -301,7 +301,6 @@
             <if test="sEnd != null and sEnd != ''">
                 <![CDATA[   and  s <=#{sEnd} ]]>
             </if>
-
         </where>
     </select>
   <!--粗查询计数-->
