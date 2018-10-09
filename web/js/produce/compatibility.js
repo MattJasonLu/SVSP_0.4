@@ -172,30 +172,59 @@ function totalPage() {
             }
         });
     }
-        // } else {
-        //     $.ajax({
-        //         type: "POST",                       // 方法类型
-        //         url: "searchBurnOrderTotal",                  // url
-        //         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        //         data: JSON.stringify(data1),
-        //         dataType: "json",
-        //         contentType: "application/json; charset=utf-8",
-        //         success: function (result) {
-        //             // console.log(result);
-        //             if (result > 0) {
-        //                 totalRecord = result;
-        //                 console.log("总记录数为:" + result);
-        //             } else {
-        //                 console.log("fail: " + result);
-        //                 totalRecord = 0;
-        //             }
-        //         },
-        //         error: function (result) {
-        //             console.log("error: " + result);
-        //             totalRecord = 0;
-        //         }
-        //     });
-        // }
+        else {
+    console.log(data1)
+        if(data1.keywords==undefined){//高级查询
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchCompatibilityItemTotal",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result > 0) {
+                        totalRecord = result;
+                        console.log("总记录数为:" + result);
+                    } else {
+                        console.log("fail: " + result);
+                        totalRecord = 0;
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    totalRecord = 0;
+                }
+            });
+        }
+        if(data1.keywords!=undefined){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchCompatibilityTotal",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result > 0) {
+                        totalRecord = result;
+                        console.log("总记录数为:" + result);
+                    } else {
+                        console.log("fail: " + result);
+                        totalRecord = 0;
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    totalRecord = 0;
+                }
+            });
+
+        }
+        }
+
 
         var count = countValue();                         // 可选
         var total = loadPages(totalRecord, count);
@@ -299,27 +328,55 @@ function totalPage() {
                     console.log("error: " + result);
                 }
             });
-        } else {
-            data['page'] = page;
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "searchBurnOrder",         // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: JSON.stringify(data1),
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (result) {
-                    if (result != undefined) {
-                        // console.log(result);
-                        setBurnOrderList(result.data);
-                    } else {
-                        console.log("fail: " + result);
+        }
+        else {
+            data1['page'] = page;
+         if(data1.keywords==undefined){ //高级查询
+             console.log("进来了")
+             $.ajax({
+                 type: "POST",                            // 方法类型
+                 url: "searchCompatibilityItem",                 // url
+                 async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                 data: JSON.stringify(data1),
+                 dataType: "json",
+                 contentType: "application/json; charset=utf-8",
+                 success: function (result) {
+                     if (result != undefined && result.status == "success"){
+                         setCompatibility(result)
+                     } else {
+                         alert(result.message);
+
+                     }
+                 },
+                 error: function (result) {
+                     console.log(result);
+                     alert("服务器错误！");
+                 }
+             });
+
+         }
+            if(data1.keywords!=undefined){
+                $.ajax({
+                    type: "POST",                            // 方法类型
+                    url: "searchCompatibility",                 // url
+                    async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(data1),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        if (result != undefined && result.status == "success"){
+                            setCompatibility(result)
+                        } else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert("服务器错误！");
                     }
-                },
-                error: function (result) {
-                    console.log("error: " + result);
-                }
-            });
+                });
+            }
         }
     }
 
@@ -384,25 +441,54 @@ function totalPage() {
                 });
             } else {
                 data1['page'] = page;
-                $.ajax({
-                    type: "POST",                       // 方法类型
-                    url: "searchBurnOrder",         // url
-                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                    data: JSON.stringify(data1),
-                    dataType: "json",
-                    contentType: 'application/json;charset=utf-8',
-                    success: function (result) {
-                        if (result != undefined) {
-                            // console.log(result);
-                            setBurnOrderList(result.data);
-                        } else {
-                            console.log("fail: " + result);
+                if(data1.keywords==undefined){ //高级查询
+                    console.log("进来了")
+                    $.ajax({
+                        type: "POST",                            // 方法类型
+                        url: "searchCompatibilityItem",                 // url
+                        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                        data: JSON.stringify(data1),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            if (result != undefined && result.status == "success"){
+                                setCompatibility(result)
+                            } else {
+                                alert(result.message);
+
+                            }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                            alert("服务器错误！");
                         }
-                    },
-                    error: function (result) {
-                        console.log("error: " + result);
-                    }
-                });
+                    });
+
+                }
+                if(data1.keywords!=undefined){
+                    $.ajax({
+                        type: "POST",                            // 方法类型
+                        url: "searchCompatibility",                 // url
+                        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                        data: JSON.stringify(data1),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            if (result != undefined && result.status == "success"){
+                                setCompatibility(result)
+                            } else {
+                                alert(result.message);
+
+                            }
+                        },
+                        error: function (result) {
+                            console.log(result);
+                            alert("服务器错误！");
+                        }
+                    });
+                }
+
+
             }
         }
     }
@@ -811,37 +897,48 @@ function totalPage() {
     array = [];
     array1 = [];
     /**
-     * 生成物料需求单
+     * 生成物料需求单==》勾选生成
      */
     function generate() {
-        if (confirm("是否生成物料需求?")) {
-            //点击确定后操作
-            $.ajax({
-                type: "POST",
-                url: "generateSheet",                  // url
-                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (result) {
-                    if (result != undefined && result.status == "success") {
-                        console.log(result);
-                        if (confirm("是否跳转到物料需求页面?")) {
-                            window.location.href = "materialDemand.html";
-                        }
+        var items = $("input[name='select']:checked");//判断复选框是否选中
+        if(items.length>0){
+            if(confirm("是否生成物料需求?")){
+                $.each(items,function (index) {
+                    if ($(this).parent().parent().next().next().html().length > 0) {
+                        var compatibilityId = $(this).parent().parent().next().next().html();//配伍单号
+                        $.ajax({
+                            type: "POST",
+                            url: "generateSheet",                  // url
+                            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                            data: {"compatibilityId": compatibilityId},
+                            dataType: "json",
+                           // contentType: "application/json; charset=utf-8",
+                            success: function (result) {
+                                if (result != undefined && result.status == "success"){
 
+                                }
+                                else {
+                                    alert(result.message);
+
+                                }
+                            },
+                            error: function (result) {
+                                alert("服务器异常！");
+                            },
+
+
+                        });
                     }
-                    else {
-                        alert(result.message);
-                    }
-                },
-                error: function (result) {
-                    alert("服务器异常！")
-                }
-
-
-            });
+                });
+                alert("生成物料需求单成功！")
+                window.location.reload();
         }
 
+    }
+        else
+        {
+            alert("请勾选数据！")
+        }
     }
 
 //双击查看
@@ -919,6 +1016,29 @@ function totalPage() {
 
         tr.siblings().remove();
 
+        var proportionTotal=0;
+
+        var dailyRatioTotal=0;
+
+        var weeklyDemandTotalAdd=0;
+
+        var calorificTotal=0;
+
+        var ashTotal=0;
+
+        var waterTotal=0;
+
+        var clTotal=0;
+
+        var sTotal=0;
+
+        var pTotal=0;
+
+        var fTotal=0;
+
+        var phTotal=0;
+
+
         $.each(result.array, function (index, item) {
             var obj = eval(item);
 
@@ -951,46 +1071,57 @@ function totalPage() {
                     //比例
                     case (3):
                         $(this).html(obj.proportion.toFixed(2));
+                        proportionTotal+=parseFloat(obj.proportion);
                         break;
                     //每日配置量
                     case (4):
                         $(this).html(obj.dailyRatio);
+                        dailyRatioTotal+=parseFloat(obj.dailyRatio);
                         break;
                     //周需求总理
                     case (5):
                         $(this).html(obj.weeklyDemandTotal);
+                        weeklyDemandTotalAdd+=parseFloat(obj.weeklyDemandTotal);
                         break;
                     //热值
                     case (6):
                         $(this).html(obj.calorific);
+                        calorificTotal+=parseFloat(obj.calorific);
                         break;
                     //灰分
                     case (7):
                         $(this).html(obj.ash);
+                        ashTotal+=parseFloat(obj.ash);
                         break;
                     //水分
                     case (8):
                         $(this).html(obj.water);
+                        waterTotal+=parseFloat(obj.water)
                         break;
                     //CL
                     case (9):
                         $(this).html(obj.cl);
+                        clTotal+=parseFloat(obj.cl)
                         break;
                     //S
                     case (10):
                         $(this).html(obj.s);
+                        sTotal+=parseFloat(obj.s);
                         break;
                     //P
                     case (11):
                         $(this).html(obj.p);
+                        pTotal+=parseFloat(obj.p);
                         break;
                     //F
                     case (12):
                         $(this).html(obj.f);
+                        fTotal+=parseFloat(obj.f);
                         break;
                     //PH
                     case (13):
                         $(this).html(obj.ph);
+                        phTotal+=parseFloat(obj.ph);
                         break;
                 }
                 clonedTr.removeAttr('id');
@@ -1003,6 +1134,28 @@ function totalPage() {
 
         })
 
+
+        $('#proportionTotal').html(proportionTotal);
+
+        $('#dailyRatioTotal').html(dailyRatioTotal);
+
+        $('#weeklyDemandTotalAdd').html(weeklyDemandTotalAdd);
+
+        $('#calorificTotal').html(calorificTotal);
+
+        $('#ashTotal').html(ashTotal);
+
+        $('#waterTotal').html(waterTotal);
+
+        $('#clTotal').html(clTotal);
+
+        $('#sTotal').html(sTotal);
+
+        $('#pTotal').html(pTotal);
+
+        $('#fTotal').html(fTotal);
+
+        $('#phTotal').html(phTotal);
 
     }
 
@@ -1364,3 +1517,91 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 
     }
 
+/**
+ * 重置页面功能
+ */
+function reset() {
+    window.location.reload();
+}
+
+//高级查询
+function searchPw() {
+    isSearch = true;
+    var page = {};
+    var pageNumber = 1;                       // 显示首页
+    page.pageNumber = pageNumber;
+    page.count = countValue();
+    page.start = (pageNumber - 1) * page.count;
+    var formType=null;
+    var handleCategory=null;
+    if ($("#senior").is(':visible')) {
+        if($("#search-formType").val()==0)
+            formType="Gas";
+        if($("#search-formType").val()==1)
+            formType="Liquid";
+        if($("#search-formType").val()==2)
+            formType="Solid";
+        if($("#search-formType").val()==3)
+            formType="HalfSolid";
+
+        if($("#search-handleCategory").val()==0)
+            handleCategory="Sludge"
+
+        if($("#search-handleCategory").val()==1)
+            handleCategory="WasteLiquid"
+
+        if($("#search-handleCategory").val()==2)
+            handleCategory="Bulk"
+
+        if($("#search-handleCategory").val()==3)
+            handleCategory="Crushing"
+
+        if($("#search-handleCategory").val()==4)
+            handleCategory="Distillation"
+
+        if($("#search-handleCategory").val()==5)
+            handleCategory="Suspension"
+
+        data1 = {
+             compatibilityId: $.trim($("#search-pwId").val()),
+             formType: formType,
+             handleCategory:handleCategory,
+             weeklyDemandTotal:$.trim( $('#search-weeklyDemandTotalAggregate').val()),
+             calorificBeg:$.trim( $('#search-calorificBeg').val()),
+             calorificEnd:$.trim( $('#search-calorificEnd').val()),
+             fBeg:$.trim( $('#search-fBeg').val()),
+             fEnd:$.trim( $('#search-fEnd').val()),
+            clBeg:$.trim( $('#search-clBeg').val()),
+            clEnd:$.trim( $('#search-clEnd').val()),
+            sBeg:$.trim( $('#search-sBeg').val()),
+            sEnd:$.trim( $('#search-sEnd').val()),
+             page: page
+        };
+    }
+
+    if (data1 == null) alert("请点击'查询设置'输入查询内容!");
+    else {
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchCompatibilityItem",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result != undefined && result.status == "success"){
+                  // setCompatibility(result)
+                    setPageClone(result)
+                } else {
+                    alert(result.message);
+
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }
+console.log(data1)
+}
