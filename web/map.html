@@ -160,12 +160,12 @@
         var point = new BMap.Point(119.972394,31.979135);//定义一个中心点坐标
         map.centerAndZoom(point,11);//设定地图的中心点和坐标并将地图显示在地图容器中
         var marker = new BMap.Marker(point);//新建标注点
-        // function addMarker(point,index){
-        //     var myIcon = new BMap.Icon("image/mark.png", new BMap.Size(23,25),{
+        // function addMarker(point,index){                                             //该段更改标注图标
+        //     var myIcon = new BMap.Icon("image/mark.png", new BMap.Size(23,25),{      //设置图标大小
         //         anchor:new BMap.Size(10,25),
         //         imageOffset: new BMap.Size(0,0 - index * 25)
         // });
-        // var marker = new BMap.Marker(point,{icon:myIcon});
+        // var marker = new BMap.Marker(point,{icon:myIcon});                           //设置图标图片
         map.addOverlay(marker);//向地图中添加标记点
         marker.enableDragging();//允许标注拖拽功能
         marker.addEventListener("dragend",function (e) {
@@ -180,16 +180,16 @@
         map.openInfoWindow(infoWindow, map.getCenter());                                                     //打开信息窗口
         //进入全景图标位置
         var stCtrl = new BMap.PanoramaControl();
-        stCtrl.setOffset(new BMap.Size(20,20));
-        map.addControl(stCtrl);
+        stCtrl.setOffset(new BMap.Size(20,20)); //设置全景地图的级别及中心点
+        map.addControl(stCtrl);    //向地图中添加该控件
         //浏览器定位
         // var geolocation = new BMap.Geolocation();
         // geolocation.getCurrentPosition(function(r){
         //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
-        //         var mk = new BMap.Marker(r.point);
-        //         map.addOverlay(mk);
-        //         map.panTo(r.point);
-        //         alert('您的位置：'+r.point.lng+','+r.point.lat);
+        //         var mk = new BMap.Marker(r.point);             //标注点经纬度
+        //         map.addOverlay(mk);                            //添加控件
+        //         map.panTo(r.point);                            //确定中心坐标
+        //         alert('您的位置：'+r.point.lng+','+r.point.lat); //显示当前浏览器所处位置
         //     }
         //     else {
         //         alert('failed'+this.getStatus());
@@ -197,8 +197,8 @@
         // });
         //ip定位
         // function myFun(result){
-        //     var cityName = result.name;
-        //     map.setCenter(cityName);
+        //     var cityName = result.name; //城市名称
+        //     map.setCenter(cityName);    //设置城市中心
         //     alert("当前定位城市:"+cityName);
         // }
         // var myCity = new BMap.LocalCity();
@@ -216,8 +216,8 @@
     //载入全景信息
     window.onload = function () {
         var panorama = new BMap.Panorama("panorama");
-        panorama.setPosition(new BMap.Point(119.972394,31.979135));
-        panorama.setPov({heading: -40, pitch: 6});
+        panorama.setPosition(new BMap.Point(119.972394,31.979135));  //设置全景中心
+        panorama.setPov({heading: -40, pitch: 6});                 // 设置全景上下左右边距
     };
     //地图事件设置函数：
     function setMapEvent(){

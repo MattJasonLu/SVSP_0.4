@@ -108,7 +108,7 @@
                         <a class="btn btn-primary btn-xs" onclick="generate()"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成物料需求单</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right">
+                    <div class="input-group col-md-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
                         <span class="input-group-btn">
                             <a class="btn btn-default" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
@@ -124,7 +124,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-pwId" class="col-sm-4 control-label">配伍计划单号	</label>
+                                <label for="search-pwId" class="col-sm-4 control-label">配伍计&nbsp;划单号	</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-pwId" name="search-pwId" placeholder="">
                                 </div>
@@ -235,7 +235,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" style="margin-left: -95px">CL范围 </label>
+                                <label class="col-sm-3 control-label" style="margin-left: -95px">CL&nbsp;范&nbsp;围 </label>
                                 <div class="input-group">
                                     <input type="number" class="input-sm form-control" id="search-clBeg" title="" onkeydown=""/>
                                     <span class="input-group-addon">-</span>
@@ -294,7 +294,8 @@
                         <tr id="cloneTr1" ondblclick="view(this)">
                             <td class="text-center">
                                 <label>
-                                    <input class="checkbox" type="checkbox" value="option1" name="select">
+                                    <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                    <!--<input class="checkbox" type="checkbox" value="option1" name="select" id="select">-->
                                 </label>
                             </td>
                             <td class="text-center"></td><!--序号-->

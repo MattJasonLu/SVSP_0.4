@@ -233,4 +233,24 @@ public class EquipmentController {
             return 0;
         }
     }
+
+    /**
+     * 删除设备
+     */
+    @RequestMapping("deleteEquipment")
+    @ResponseBody
+    public String deleteEquipmentDate(String documentNumber) {
+        JSONObject res = new JSONObject();
+        try {
+            // 删除设备
+            equipmentService.deleteEquipment(documentNumber);
+            res.put("status", "success");
+            res.put("message", "操作成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "操作失败");
+        }
+        return res.toString();
+    }
 }

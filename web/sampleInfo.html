@@ -183,7 +183,7 @@
             <ol class="breadcrumb">
                 <li><a href="businessModel.html">商务管理</a></li>
                 <li><a href="#">产废单位管理</a></li>
-                <li class="active">样品信息管理</li>
+                <li class="active">样品登记</li>
             </ol>
         </div>
         <h4 class="sub-header">样品信息登记表</h4>
@@ -287,7 +287,7 @@
                     </div>
                     <div class="form-horizontal col-md-4">
                         <div class="form-group">
-                            <label for="search-state" class="col-sm-4 control-label">样品状态</label>
+                            <label for="search-state" class="col-sm-4 control-label">样&nbsp;&nbsp;&nbsp;品&nbsp;&nbsp;&nbsp;状&nbsp;&nbsp;态</label>
                             <div class="col-xs-7">
                                 <select class="form-control" name="search-state" id="search-state" onchange="searchSampleInfo()"></select>
                             </div>
@@ -307,6 +307,11 @@
             <table class="table table-striped table-hover table-condensed">
                 <thead>
                 <tr>
+                    <th class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                        </label>
+                    </th>
                     <th class="text-center">预约单号</th>
                     <th class="text-center">公司代码</th>
                     <th class="text-center">危废代码</th>
@@ -320,6 +325,11 @@
                 </thead>
                 <tbody id="sampleInfoData">
                 <tr id="cloneTr" ondblclick="viewSample1(this);">
+                    <td class="text-center">
+                        <label>
+                            <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                        </label>
+                    </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>

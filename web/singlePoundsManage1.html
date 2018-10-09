@@ -250,6 +250,12 @@
                 <table class="table table-striped table-hover table-condensed">
                     <thead>
                     <tr>
+                        <td class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                       id="allSel" onclick="allSelect();">
+                            </label>
+                        </td>
                         <td class="text-center" style="width: 150px;">磅单号</td>
                         <td class="text-center" style="width: 150px;">转移联单号</td>
                         <td class="text-center" style="width: 150px;">入厂车号</td>
@@ -267,6 +273,11 @@
                     </thead>
                     <tbody>
                     <tr id="clone" ondblclick="toView1(this);">
+                        <td class="text-center">
+                            <label>
+                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                            </label>
+                        </td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
                         <td class="text-center"></td>
