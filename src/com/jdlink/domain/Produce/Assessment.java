@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.Contract;
 
+import java.util.Date;
 import java.util.List;
 
 public class Assessment {
@@ -57,6 +58,42 @@ public class Assessment {
      * 公司名
      */
     private String companyName;
+    /**
+     * 查询：开始年份
+     */
+    private Date startDate;
+    /**
+     * 查询：结束年份
+     */
+    private Date endDate;
+    /**
+     * 查询关键字
+     */
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
     public String getCompanyName() {
         return companyName;

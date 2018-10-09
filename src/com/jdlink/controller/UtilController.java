@@ -100,30 +100,33 @@ public class UtilController {
 
     /**
      * 下载模板
-     *
-     * @param filePath
+     * @param filePath 文件路径
      * @param response
      */
     @RequestMapping("downloadFile")
     @ResponseBody
     public void downloadFile(String filePath, HttpServletResponse response) {
-        String fileName = "";
+        String fileName = "";   // 初始化文件名
         try {
+            // 获取文件路径，适配中文
             filePath = new String(filePath.getBytes("iso8859-1"), "utf-8");
-            String[] str = filePath.split("[/]");
-            fileName = java.net.URLEncoder.encode(str[str.length - 1], "UTF-8");
-            response.setCharacterEncoding("UTF-8");
+            String[] str = filePath.split("[/]");     // 根据“/”将字符串分割成数组
+            fileName = java.net.URLEncoder.encode(str[str.length - 1], "UTF-8");  // 设置文件名
+            response.setCharacterEncoding("UTF-8");   // 设置编码
             response.setContentType("multipart/form-data");
+            // 设置头文件
             response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            // 初始化输入流
             InputStream in = null;
             in = new FileInputStream(filePath);
             byte[] buffer = new byte[1024];
             int bytesRead = 0;
             do {
+                // 写入字节
                 bytesRead = in.read(buffer, 0, buffer.length);
                 response.getOutputStream().write(buffer, 0, bytesRead);
             } while (bytesRead == buffer.length);
-            in.close();
+            in.close();      // 关闭输入流等
             response.getOutputStream().flush();
         } catch (Exception e) {
             e.printStackTrace();

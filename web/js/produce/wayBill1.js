@@ -340,15 +340,15 @@ function setWayBillList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
+                case (1):
                     //接运单号
                     $(this).html(obj.id);
                     break;
-                case (1):
+                case (2):
                     // 废物生产单位
                     $(this).html(obj.produceCompanyName);
                     break;
-                case (2):
+                case (3):
                     //总额
                 {
                     var total = 0;
@@ -360,27 +360,27 @@ function setWayBillList(result) {
                 }
                     $(this).html(obj.total);
                     break;
-                case (3):
+                case (4):
                     //总运费
                     $(this).html(obj.freight);
                     break;
-                case (4):
+                case (5):
                     // 创建人
                     $(this).html(obj.founder);
                     break;
-                case (5):
+                case (6):
                     //接运单创建日期
                     $(this).html(getDateStr(obj.wayBillDate));
                     break;
-                case (6):
+                case (7):
                     //备注
                     $(this).html(obj.remarks);
                     break;
-                case (7):
+                case (8):
                     //危废产生单位经手人
                     $(this).html(obj.produceCompanyOperator);
                     break;
-                case (8):
+                case (9):
                     //接运单状态
                     if (obj.state != null) {
                         $(this).html(obj.state.name);
@@ -593,7 +593,7 @@ function searchWayBill() {
 }
 
 function getWayBillId(item) {
-    return item.parentElement.parentElement.firstElementChild.innerHTML;
+    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -601,7 +601,7 @@ function getWayBillId(item) {
  * @param item
  */
 function editWayBill1(item) {
-    var id = item.firstElementChild.innerHTML;
+    var id = item.firstElementChild.nextElementSibling.innerHTML;
     localStorage.id = id;
     localStorage.add = 1;
     location.href = "wayBill.html";

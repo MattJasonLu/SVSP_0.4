@@ -14,6 +14,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,7 +55,6 @@ public class AssessmentController {
                 float wayBillPrice = 0;
                 float wayBillWastesAmount = 0;
                 //获取接运单明细数据
-
                 for (QuotationItem quotationItem : quotationItemList) {
                     String code = quotationItem.getWastesCode();
                     if (code != null) {
@@ -94,6 +94,70 @@ public class AssessmentController {
         }
         return res.toString();
     }
+    /**
+     * 搜索合同数据
+     *
+     * @return
+     */
+    @RequestMapping("searchMonthData")
+    @ResponseBody
+    public String searchMonthData(@RequestBody Assessment assessment) {
+        JSONObject res = new JSONObject();
+        try {
+            //月份数据
+            Map<String, Assessment> map = new HashMap<>();
+            List<Contract> contractList = contractService.searchMonthData(assessment);
+            // 遍历合同列表，获取每个合同对应信息
+            float wayBillTotalPrice = 0;
+            float wayBillTotalWastesAmount = 0;
+            for (Contract contract : contractList) {
+                String clientId = contract.getClientId();
+                //map.put(clientId,laboratoryTest);
+                List<QuotationItem> quotationItemList = contract.getQuotationItemList();
+                List<WayBillItem> wayBillItemList = new ArrayList<>();
+                float wayBillPrice = 0;
+                float wayBillWastesAmount = 0;
+                //获取接运单明细数据
+                for (QuotationItem quotationItem : quotationItemList) {
+                    String code = quotationItem.getWastesCode();
+                    if (code != null) {
+                        WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
+                        if(wayBillItem != null) {
+                            wayBillItemList.add(wayBillItem);
+                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
+                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
+                        }
+                    }
+                }
+                Date beginDate = contract.getBeginTime();
+                String month = String.format("%tm", beginDate); // 获取合同月份
+                if (!map.keySet().contains(month)) {          // 没有该月份就添加，并初始化累加数据
+                    map.put(month, new Assessment());
+                    wayBillTotalPrice = 0;
+                    wayBillTotalWastesAmount = 0;
+                    map.get(month).setWayBillTotalWastesAmount(wayBillTotalWastesAmount);
+                    map.get(month).setWayBillTotalPrice(wayBillTotalPrice);
+                }
+                wayBillTotalPrice = map.get(month).getWayBillTotalPrice();
+                wayBillTotalWastesAmount = map.get(month).getWayBillTotalWastesAmount();
+                wayBillTotalPrice += wayBillPrice;
+                map.get(month).setWayBillTotalPrice(wayBillTotalPrice);    // 接运单总金额
+                wayBillTotalWastesAmount += wayBillWastesAmount;
+                map.get(month).setWayBillTotalWastesAmount(wayBillTotalWastesAmount);   //接运单总数量
+                map.get(month).setTotalCommission(calculateTotalCommission(wayBillTotalWastesAmount));  // 总提成
+            }
+            JSONObject jMap = JSONObject.fromMap(map);
+            res.put("data", jMap);
+            res.put("status", "success");
+            res.put("message", "获取数据成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取数据失败");
+        }
+        return res.toString();
+    }
+
 
     /**
      * 计算总提成

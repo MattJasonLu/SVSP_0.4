@@ -15,13 +15,7 @@ function setYearListSelect() {
     // sel.val(year);           // 设置默认为当前年份
 }
 
-/**
- * 搜索重置功能
- */
-function reset() {
-    // $("#senior").find("input").val("");
-    window.location.reload();
-}
+
 
 function selectedYear() {
     sel1 = true;
@@ -35,8 +29,9 @@ var year = "";
  */
 function loadMonthData() {
     $(".newLine").remove();
-    setYearListSelect();               // 设置年份下拉框
-    year = $("#selectYear").find("option:selected").text();
+    // setYearListSelect();               // 设置年份下拉框
+    // year = $("#selectYear").find("option:selected").text();
+    year = new Date().getFullYear();       // 默认显示当前年份
     console.log("year：" + year);
     $.ajax({
         type: "POST",                       // 方法类型
@@ -65,45 +60,46 @@ function setMonthDataList(result) {
     $.each(result.data, function (index, item) {
         // 克隆tr，每次遍历都可以产生新的tr
         var clonedTr = tr.clone();
+        clonedTr.addClass('myclass');
         clonedTr.show();
         // 循环遍历cloneTr的每一个td元素，并赋值
         clonedTr.children("td").each(function (inner_index) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
+                case (1):
                     // 年份
                     $(this).html(year + '年');
                     break;
-                case (1):
+                case (2):
                     // 月份
                     $(this).html(parseInt(index) + '月');
                     break;
-                case (2):
+                case (3):
                     // 接运单总金额
                     $(this).html(obj.wayBillTotalPrice);
                     break;
-                case (3):
+                case (4):
                     // 到账总金额
                     $(this).html(obj.accountTotalPrice);
                     break;
-                case (4):
+                case (5):
                     // 有效总金额
                     $(this).html(obj.effectiveTotalPrice);
                     break;
-                case (5):
+                case (6):
                     // 总提成
                     $(this).html(obj.totalCommission);
                     break;
-                case (6):
+                case (7):
                     // 当月发放总金额
                     $(this).html(obj.monthSendedTotalPrice);
                     break;
-                case (7):
+                case (8):
                     // 未发放总金额
                     $(this).html(obj.monthNotSendTotalPrice);
                     break;
-                case (8):
+                case (9):
                     // 备注
                     $(this).html(obj.remarks);
                     break;
@@ -123,10 +119,10 @@ function setMonthDataList(result) {
  * @param item
  * @returns {string}
  */
-function getMounthAndYear(item) {
+function getMonthAndYear(item) {
     var date = {};
-    date.year = item.parentElement.parentElement.firstElementChild.innerHTML;
-    date.month = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    date.year = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+    date.month = item.parentElement.parentElement.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
     return date;
 }
 
@@ -134,10 +130,10 @@ function getMounthAndYear(item) {
  * 获取月份-双击
  * @returns {string}
  */
-function getMounthAndYear1(item) {
+function getMonthAndYear1(item) {
     var date = {};
-    date.year = item.firstElementChild.innerHTML;
-    date.month = item.firstElementChild.nextElementSibling.innerHTML;
+    date.year = item.firstElementChild.nextElementSibling.innerHTML;
+    date.month = item.firstElementChild.nextElementSibling.nextElementSibling.innerHTML;
     return date;
 }
 
@@ -147,8 +143,8 @@ function getMounthAndYear1(item) {
  */
 function toView(item) {
     //获取月份
-    localStorage.month = parseInt(getMounthAndYear(item).month.replace(/[^0-9]/ig, ""));//截取数字
-    localStorage.year = parseInt(getMounthAndYear(item).year.replace(/[^0-9]/ig, ""));//截取数字
+    localStorage.month = parseInt(getMonthAndYear(item).month.replace(/[^0-9]/ig, ""));//截取数字
+    localStorage.year = parseInt(getMonthAndYear(item).year.replace(/[^0-9]/ig, ""));//截取数字
     location.href = "assessment1.html";
 }
 
@@ -158,24 +154,108 @@ function toView(item) {
  */
 function toView1(item) {
     //获取月份
-    localStorage.month = parseInt(getMounthAndYear1(item).month.replace(/[^0-9]/ig, ""));//截取数字
-    localStorage.year = parseInt(getMounthAndYear1(item).year.replace(/[^0-9]/ig, ""));//截取数字
+    localStorage.month = parseInt(getMonthAndYear1(item).month.replace(/[^0-9]/ig, ""));//截取数字
+    localStorage.year = parseInt(getMonthAndYear1(item).year.replace(/[^0-9]/ig, ""));//截取数字
     location.href = "assessment1.html";
 }
 
-//-----------------------业务员列表页面-----------------
-function reset1() {
-    // $("#senior1").find("input").val("");
-    // $("#searchContent1").val("");
-    window.location.reload();
+/**
+ * 导出功能
+ */
+function exportExcel(){
+
 }
 
+/**
+ * 回车查询
+ */
+function enterSearch2(){
+    if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+        search();      //
+    }
+}
+
+var data1 = null;        // 查询载体
+/**
+ * 查询功能
+ */
+function search(){
+    if ($("#senior").is(':visible')) {
+       // $("#searchContent").hide(); // 高级查询时隐藏模糊输入框
+        var startDate = null;
+        var endDate = null;
+        if($("#search-startDate").val() != '') startDate = $("#search-startDate").val() + "-01";
+        if($("#search-endDate").val() != '') endDate = $("#search-endDate").val() + "-01";
+        data1 = {
+            startDate: startDate,
+            endDate: endDate,
+            salesmanName: $.trim($("#search-salesmanName").val())
+        };
+        console.log(data1);
+        $.ajax({
+            type: "POST",                            // 方法类型
+            url: "searchMonthData",                 // url
+            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                console.log(result);
+                if (result.data != undefined || result.status == "success") {
+                    $(".newLine").remove();
+                    setMonthDataList(result);
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                alert("服务器错误！");
+            }
+        });
+    }else{
+      //  $("#searchContent").show();
+        $('.myclass').each(function () {
+            $(this).show();
+        });
+        $(".newLine").remove();       // 清楚之前行
+        array = [];//清空数组
+        array1 = [];
+        array.push($('.myclass'));
+        // 模糊查询
+        var text = $.trim($('#searchContent').val());
+        for (var j = 0; j < array.length; j++) {
+            $.each(array[j], function () {
+                if (($(this).children('td').text().indexOf(text) == -1)) {
+                    $(this).hide();
+                }
+                if ($(this).children('td').text().indexOf(text) != -1) {
+                    array1.push($(this));
+                }
+            });
+        }
+        for (var i = 0; i < array1.length; i++) {
+            $.each(array1[i], function () {
+                $('#tbody1').append(this);
+            });
+        }
+
+        if (text.length <= 0) {
+            $('.myclass').each(function () {
+                $(this).show();
+            })
+        }
+    }
+}
+
+
+//-----------------------业务员列表页面-----------------
 function loadMonthSalesmanData() {
     var m = localStorage.month;
     var y = localStorage.year;
     if (parseInt(m) < 10) m = "0" + m;
     var month = y + m;
-    console.log(month);
+    console.log("month:"+month);
     $(".newLine").remove();
     $.ajax({
         type: "POST",                       // 方法类型
@@ -294,6 +374,17 @@ function enterSearch(){
  */
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
     var last;
+    // 月份考核页面
+    $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
+        last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
+        setTimeout(function () {
+            if(last-event.timeStamp=== 0){
+                search();
+            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+                search();      //
+            }
+        },600);
+    });
     // 业务员列表页面
     $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
@@ -388,11 +479,6 @@ function search1() {
 }
 
 //---------------------------合同明细页面---------------
-function reset2() {
-    // $("#senior2").find("input").val("");
-    // $("#searchContent2").val("");
-    window.location.reload();
-}
 
 function loadContractListData() {
     var m = localStorage.month;

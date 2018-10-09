@@ -1,6 +1,7 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.Assessment;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -70,6 +71,13 @@ public interface ContractMapper {
      * @return
      */
     List<Contract> getContractList(String year);
+
+    /**
+     * 查询合同数据
+     * @param assessment
+     * @return
+     */
+    List<Contract> searchMonthData(Assessment assessment);
     /**
      * 合同列表的高级查询
      */

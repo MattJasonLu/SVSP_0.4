@@ -135,7 +135,6 @@
             </ul>
         </div>
     </div>
-
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
         <div class="row">
             <div>
@@ -145,24 +144,79 @@
                 </ol>
             </div>
             <h4 class="sub-header"><span class="months"></span>月份考核</h4>
+            <!--操作按钮-->
+            <div class="pull-left col-md-6">
+                <a class="btn btn-primary btn-xs" href="#" onclick="exportExcel()"><span
+                        class="glyphicon glyphicon-arrow-up"
+                        aria-hidden="true"></span> 导出</a>
+            </div>
+            <!--查询框-->
+            <div class="input-group col-md-4 pull-right" style="margin-right: 23px;">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent" onkeydown="enterSearch2()">
+                <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="search();"><span
+                                    class="glyphicon glyphicon-search"
+                                    aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span
+                                    class="glyphicon glyphicon-search" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
+                                                                                aria-hidden="true"></span> 重置</a>
+                    </span>
+            </div>
+        </div>
+        <!--查询框-->
+        <div class="panel panel-default" id="senior" style="display: none;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">年月份</label>
+                            <div class="input-group">
+                                <input type="month" class="input-sm form-control" id="search-startDate" title="" onkeydown="enterSearch2()"/>
+                                <span class="input-group-addon">-</span>
+                                <input type="month" class="input-sm form-control" id="search-endDate" title="" onkeydown="enterSearch2()"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label for="search-salesmanName" class="col-sm-4 control-label">业务员姓名</label>
+                            <div class="col-xs-7">
+                                <input type="text" class="form-control" id="search-salesmanName" name="search-salesmanName"
+                                       placeholder="" onkeydown="enterSearch2()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <table class="table table-striped table-hover table-condensed">
             <thead>
             <tr>
-                <td class="text-center" onchange="selectedYear();">年份<select id="selectYear"></select></td>
-                <td class="text-center">月份</td>
-                <td class="text-center">接运单总金额</td>
-                <td class="text-center">到账总金额</td>
-                <td class="text-center">有效总金额</td>
-                <td class="text-center">总提成</td>
-                <td class="text-center">当月发放总金额</td>
-                <td class="text-center">未发放总金额</td>
-                <td class="text-center">备注</td>
-                <td class="text-center">操作</td>
+                <th class="text-center">
+                    <label>
+                        <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                    </label>
+                </th>
+                <th class="text-center">年份</th>
+                <th class="text-center">月份</th>
+                <th class="text-center">接运单总金额</th>
+                <th class="text-center">到账总金额</th>
+                <th class="text-center">有效总金额</th>
+                <th class="text-center">总提成</th>
+                <th class="text-center">当月发放总金额</th>
+                <th class="text-center">未发放总金额</th>
+                <th class="text-center">备注</th>
+                <th class="text-center">操作</th>
             </tr>
             </thead>
             <tbody >
             <tr ondblclick="toView1(this)" id="clone">
+                <td class="text-center">
+                    <label>
+                        <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                    </label>
+                </td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
                 <td class="text-center"></td>
