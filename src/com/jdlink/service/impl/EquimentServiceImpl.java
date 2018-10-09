@@ -73,4 +73,9 @@ public class EquimentServiceImpl implements  EquipmentService {
         return equipmentMapper.searchCount(equipment);
     }
 
+    @Override
+    public void deleteEquipment(String documentNumber) {
+        equipmentMapper.deleteEquipment(documentNumber);
+    }
+
 }
