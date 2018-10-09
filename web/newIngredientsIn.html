@@ -200,11 +200,12 @@
             </div>
         </div>
         <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;月度采购申请单列表</h4>
+        <div style="height:500px; overflow-y:scroll; ">
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th class="text-center" style="width: 40px">
-                    <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();"
+                    <input class="checkbox" type="checkbox" id="allSel" onclick="allSelect();"
                            style="height: 17px;width: 17px">
                 </th>
                 <th class="text-center">申请单编号</th>
@@ -242,6 +243,7 @@
             </tr>
             </tbody>
         </table>
+        </div>
         <div class="row text-center">
             <a class="btn btn-primary" onclick="confirmInsert1();">确认</a>
         </div>

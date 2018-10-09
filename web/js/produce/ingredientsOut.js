@@ -629,7 +629,7 @@ function searchData() {
  * @returns {string}
  */
 function getIngredientsId1(item) {
-    return item.firstElementChild.innerHTML;
+    return item.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -638,7 +638,7 @@ function getIngredientsId1(item) {
  * @returns {*}
  */
 function getIngredientsId(item) {
-    return item.parentElement.parentElement.firstElementChild.innerHTML;
+    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -1253,15 +1253,6 @@ function setReiceveViewClone(result) {
     });
     // 隐藏无数据的tr
     tr.hide();
-}
-
-/**
- * 全选复选框
- */
-function allSelect() {
-    var isChecked = $('#allSel1').prop('checked');
-    if (isChecked) $("input[name='select']").prop('checked', true);
-    else $("input[name='select']").prop('checked', false);
 }
 
 /**

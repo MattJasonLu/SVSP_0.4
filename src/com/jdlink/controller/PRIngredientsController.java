@@ -523,20 +523,14 @@ public class PRIngredientsController {
                 ingredients.setUnit(data[i][12].toString());
                 ingredients.setRemarks(data[i][13].toString());
                 ingredients.setId(id);
-                float amount = 0;
-                float receiveAmount = 0;
                 //计算该物品在该仓库的总入库数和总已领取数
                 //通过仓库名和物品名查询库存量
-                for(Ingredients ingredients1 : ingredientsService.getAmountAndReceive(ingredients)){
-                    amount += ingredients1.getAmount();
-                    receiveAmount += ingredients1.getReceiveAmount();
-                }
-                //总余量=总入库数 - 总已领取数
-                float totalUseAmount = amount - receiveAmount;
-                if(ingredients.getReceiveAmount() == totalUseAmount){
+                Ingredients ingredients1 = ingredientsService.getAmountAndReceive(ingredients);
+                float amount = ingredients1.getAmount();
+                if(ingredients.getReceiveAmount() == amount){
                     //设置可领料数为0，代表全部领取
                     ingredients.setNotReceiveAmount(0);
-                }else if(ingredients.getReceiveAmount() == totalUseAmount){
+                }else if(ingredients.getReceiveAmount() < amount){
                     //设置可领料数为1，代表部分领取
                     ingredients.setNotReceiveAmount(1);
                 }
@@ -549,17 +543,11 @@ public class PRIngredientsController {
                 IngredientsReceive ingredientsReceive = map.get(key);
                 //计算每单每个物品在各个仓库的领料数是否小于库存量
                 for(Ingredients ingredients : ingredientsReceive.getIngredientsList()){
-                    float amount = 0;
-                    float receiveAmount = 0;
                     //计算该物品在该仓库的总入库数和总已领取数
                     //通过仓库名和物品名查询库存量
-                    for(Ingredients ingredients1 : ingredientsService.getAmountAndReceive(ingredients)){
-                        amount += ingredients1.getAmount();
-                        receiveAmount += ingredients1.getReceiveAmount();
-                    }
-                    //总余量=总入库数 - 总已领取数
-                    float totalUseAmount = amount - receiveAmount;
-                    if(ingredients.getReceiveAmount() > totalUseAmount){
+                    Ingredients ingredients1 = ingredientsService.getAmountAndReceive(ingredients);
+                    float amount = ingredients1.getAmount();
+                    if(ingredients.getReceiveAmount() > amount){
                         res.put("status", "fail");
                         res.put("message", ingredients.getWareHouseName()+"中"+ingredients.getName()+"库存不足,请重新确认领料数量！");
                         return res.toString();
