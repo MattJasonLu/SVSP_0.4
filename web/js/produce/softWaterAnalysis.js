@@ -449,6 +449,7 @@ function importExcel() {
                         window.location.reload();         //刷新
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },
