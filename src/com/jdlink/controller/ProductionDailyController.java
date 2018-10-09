@@ -12,6 +12,9 @@ import com.jdlink.util.ImportUtil;
 import com.jdlink.util.RandomUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
@@ -25,9 +28,12 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by matt on 2018/9/11.
@@ -2364,13 +2370,30 @@ public class ProductionDailyController {
         try {
             FileInputStream excelFileInputStream = new FileInputStream(filePath);
             XSSFWorkbook xwb = new XSSFWorkbook(excelFileInputStream);
+            excelFileInputStream.close();
             XSSFSheet xSheet = xwb.getSheetAt(0);
+            Map<String, Float> hashMap = new HashMap<>();
+            hashMap.put("C05", productionDaily.getTodayInboundMedicalWastes());
+            hashMap.put("C06", productionDaily.getTodayInboundMedicalWastesDirectDisposal());
+
+            // 迭代map赋值
+            // 定义单元格的位置
+            CellAddress cellAddress = new CellAddress("C05");
+            // 获取行
+            XSSFRow row = xSheet.getRow(cellAddress.getRow());
+            // 获取单元格
+            XSSFCell cell = row.getCell(cellAddress.getColumn());
+            cell.setCellValue(productionDaily.getTodayInboundMedicalWastes());
+
+            // 写入文件
+            FileOutputStream excelFileOutPutStream = new FileOutputStream("Files/Out/生产日报导出文件.xlsx");//写数据到这个路径上		workbook.write(excelFileOutPutStream);		excelFileOutPutStream.flush();		excelFileOutPutStream.close();
+            xwb.write(excelFileOutPutStream);
+            excelFileOutPutStream.flush();
+            excelFileOutPutStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
-
 }
 
 //
