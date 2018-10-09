@@ -2,13 +2,14 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-     <mapper namespace="com.jdlink.mapper.WasteInventoryMapper" >
+<mapper namespace="com.jdlink.mapper.WasteInventoryMapper">
     <!--查找库存信息-->
     <resultMap id="WasteInventoryRM" type="WasteInventory" autoMapping="true">
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
         <collection property="wareHouse" select="getWareHouse" column="warseHouseId" ofType="WareHouse"></collection>
         <collection property="produceCompany" column="clientId" select="getClient"></collection>
-        <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}" select="getQuotationItem"></collection>
+        <collection property="quotationItem" column="{clientId=clientId,wastesCode=wastesCode}"
+                    select="getQuotationItem"></collection>
     </resultMap>
     <!--查询报价单的信息-->
     <select id="getQuotationItem" resultType="QuotationItem">
@@ -25,8 +26,9 @@
     </resultMap>
     <!--查询配料单信息-->
     <resultMap id="BatchingOrderRM" type="BatchingOrder" autoMapping="true">
-        <result  property="inboundOrderItemId" column="inboundOrderItemId"></result>
-        <collection property="wasteInventory.inboundOrderItemId" column="inboundOrderItemId" select="getWasteInventory" javaType="WasteInventory"></collection>
+        <result property="inboundOrderItemId" column="inboundOrderItemId"></result>
+        <collection property="wasteInventory.inboundOrderItemId" column="inboundOrderItemId" select="getWasteInventory"
+                    javaType="WasteInventory"></collection>
         <collection property="wareHouse" column="wareHouseId" select="getWareHouse1" ofType="WareHouse"></collection>
     </resultMap>
     <!--查找配料单信息==>库存==>危废信息-->
@@ -35,14 +37,14 @@
     </resultMap>
     <!--查询危废库存信息-->
     <select id="list" resultMap="WasteInventoryRM">
-        select * from t_pl_wasteinventory  where boundType='WasteInbound' and  actualCount>0 order  by nowTime desc
+        select * from t_pl_wasteinventory where boundType='WasteInbound' and actualCount>0 order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
     </select>
     <!--查看次生库存信息-->
     <select id="list2" resultMap="WasteInventoryRM">
-        select * from t_pl_wasteinventory  where boundType='SecondaryInbound' order  by nowTime desc
+        select * from t_pl_wasteinventory where boundType='SecondaryInbound' order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -59,13 +61,13 @@
         select * from t_pl_warehouse where  warehouseId=#{warseHouseId}
     </select>
     <!--查找库存信息==>危废信息-->
-    <select id="getWastes" parameterType="String"  resultMap="WastesRM">
+    <select id="getWastes" parameterType="String" resultMap="WastesRM">
      select * from t_wastes where id=#{wastes.id};
     </select>
     <select id="getClient" resultType="Client">
         select * from  client where clientId=#{clientId};
     </select>
-    <select id="getBatchingOrderIdList" resultType="String"  >
+    <select id="getBatchingOrderIdList" resultType="String">
         select batchingOrderId from t_pl_batchingorder  order by batchingOrderId desc ;
 
     </select>
@@ -83,7 +85,7 @@
         update t_pl_batchingorder set id=#{wasteInventory.wastes.id} where batchingOrderId=#{batchingOrderId}
     </update>
     <!--查询配料单信息-->
-     <select id="getBatchingOrderList" resultType="BatchingOrder">
+    <select id="getBatchingOrderList" resultType="BatchingOrder">
          select * from t_pl_batchingorder order by batchingOrderId desc ;
      </select>
     <!--查找配料信
@@ -100,7 +102,7 @@
         </association>
     </resultMap>
     <!--查找配料信息==>库存信息==》危废信息-->
-    <select id="getWastes1"  resultMap="WastesRM1" parameterType="String">
+    <select id="getWastes1" resultMap="WastesRM1" parameterType="String">
         select * from t_wastes where id=#{id};
     </select>
     <select id="getClient1" resultType="Client" parameterType="String">
@@ -118,26 +120,26 @@
         select * from t_wastes where id=#{id} and handleCategory=#{wasteInventory.swastes.handleCategory}
     </select>
     <select id="searchInventory" parameterType="WasteInventory" resultMap="WasteInventoryRM">
-     select t_pl_wasteinventory.* ,t_wastes.* ,client.* from t_pl_wasteinventory  join t_wastes,client
-    <where>
-        <if test="wastes!=null">
-            <if test="wastes.handleCategory!=null and wastes.handleCategory!=''"  >
-                and  t_wastes.handleCategory=#{wastes.handleCategory} and t_wastes.id=t_pl_wasteinventory.id
-            </if>
-            <if test="wastes.wastesId!=null and wastes.wastesId!=''">
-                and t_wastes.wastesId=#{wastes.wastesId} and t_wastes.id=t_pl_wasteinventory.id
-            </if>
-        </if>
-
-        <if test="produceCompany!=null">
-            <if test="produceCompany.companyName!=null and produceCompany.companyName!=''"  >
-                and  t_wastes.clientId=#{produceCompany.companyName} and t_wastes.id=t_pl_wasteinventory.id
-                and client.clientId= #{produceCompany.companyName}
+        select t_pl_wasteinventory.* ,t_wastes.* ,client.* from t_pl_wasteinventory join t_wastes,client
+        <where>
+            <if test="wastes!=null">
+                <if test="wastes.handleCategory!=null and wastes.handleCategory!=''">
+                    and t_wastes.handleCategory=#{wastes.handleCategory} and t_wastes.id=t_pl_wasteinventory.id
+                </if>
+                <if test="wastes.wastesId!=null and wastes.wastesId!=''">
+                    and t_wastes.wastesId=#{wastes.wastesId} and t_wastes.id=t_pl_wasteinventory.id
+                </if>
             </if>
 
-        </if>
+            <if test="produceCompany!=null">
+                <if test="produceCompany.companyName!=null and produceCompany.companyName!=''">
+                    and t_wastes.clientId=#{produceCompany.companyName} and t_wastes.id=t_pl_wasteinventory.id
+                    and client.clientId= #{produceCompany.companyName}
+                </if>
 
-    </where>
+            </if>
+
+        </where>
 
     </select>
     <!--获得剩余数量-->
@@ -176,7 +178,8 @@
         update  t_pl_wasteinventory set wastesCategory=(select wastesCategory from t_pl_inboundplanorder where transferDraftId=t_pl_inboundplanorder.transferDraftId);
     </update>
     <resultMap id="BH" type="BatchingOrder">
-        <collection property="laboratoryTest"  column="{produceCompany=produceCompany,wastesCode=wastesCode}" select="getItem"></collection>
+        <collection property="laboratoryTest" column="{produceCompany=produceCompany,wastesCode=wastesCode}"
+                    select="getItem"></collection>
         <collection property="produceCompany" column="produceCompany" select="getClient2"></collection>
     </resultMap>
     <!--查找配料单的具体信息-->
@@ -202,9 +205,10 @@
         <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
         <collection property="produceCompany" column="clientId=produceCompany" select="getClient"></collection>
     </resultMap>
-    <select id="searchBatchingOrder"  resultMap="BatchingOrder1">
-        select t_pl_batchingorder.*,t_pr_laboratorytest.*,client.* from t_pl_batchingorder    join t_pr_laboratorytest,client
-      <where>
+    <select id="searchBatchingOrder" resultMap="BatchingOrder1">
+        select t_pl_batchingorder.*,t_pr_laboratorytest.*,client.* from t_pl_batchingorder join
+        t_pr_laboratorytest,client
+        <where>
             <if test="laboratoryTest != null and laboratoryTest != ''">
                 <if test="laboratoryTest.wastesName!=null and laboratoryTest.wastesName!=''">
                     and t_pr_laboratorytest.wastesName like "%"#{laboratoryTest.wastesName}"%"
@@ -212,26 +216,29 @@
             </if>
             <if test="produceCompany != null and produceCompany != ''">
                 <if test="produceCompany.companyName!=null and produceCompany.companyName!=''">
-                    and client.companyName like "%"#{produceCompany.companyName}"%" and t_pl_batchingorder.produceCompany=client.clientId and t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
+                    and client.companyName like "%"#{produceCompany.companyName}"%" and
+                    t_pl_batchingorder.produceCompany=client.clientId and
+                    t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
                 </if>
             </if>
             <if test="processWay!=null and processWay!=''">
-                and t_pl_batchingorder.processWay=#{processWay} and t_pl_batchingorder.produceCompany=client.clientId and t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
+                and t_pl_batchingorder.processWay=#{processWay} and t_pl_batchingorder.produceCompany=client.clientId
+                and t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
             </if>
-          <if test="time != null and time != ''">
+            <if test="time != null and time != ''">
 
-           and  t_pl_batchingorder.createDate=#{time}
+                and t_pl_batchingorder.createDate=#{time}
 
-          </if>
-      </where>
-            order by createDate desc
+            </if>
+        </where>
+        order by createDate desc
         <if test="page.start != null and page.count != null">
             limit #{page.start}, #{page.count}
         </if>
     </select>
     <!--获取配料单高级查询总数-->
-    <select id="searchBatchingTotal"  resultType="int">
-      select  count(*) from  t_pl_batchingorder join t_pr_laboratorytest,client
+    <select id="searchBatchingTotal" resultType="int">
+        select count(*) from t_pl_batchingorder join t_pr_laboratorytest,client
         <where>
             <if test="laboratoryTest != null and laboratoryTest != ''">
                 <if test="laboratoryTest.wastesName!=null and laboratoryTest.wastesName!=''">
@@ -244,11 +251,12 @@
                 </if>
             </if>
             <if test="processWay!=null and processWay!=''">
-                and t_pl_batchingorder.processWay=#{processWay} and t_pl_batchingorder.produceCompany=client.clientId and t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
+                and t_pl_batchingorder.processWay=#{processWay} and t_pl_batchingorder.produceCompany=client.clientId
+                and t_pl_batchingorder.laboratoryTestId=t_pr_laboratorytest.laboratorytestnumber
             </if>
             <if test="createDate != null and createDate != ''">
                 and (DATE_FORMAT(createDate,'%Y-%m-%d') like "%"#{createDate}"%"
-              or DATE_FORMAT(createDate,'%Y%m%d') like "%"#{createDate}"%")
+                or DATE_FORMAT(createDate,'%Y%m%d') like "%"#{createDate}"%")
             </if>
             order by createDate desc
         </where>
@@ -259,13 +267,13 @@
     <!--通过编号查询入库信息-->
     <resultMap id="InboundOrderItemIdRM" type="WasteInventory">
         <collection property="produceCompany" column="=clientId=clientId" select="getClient"></collection>
-   <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
+        <collection property="laboratoryTest" column="laboratoryTestId" select="getLaboratoryTest"></collection>
     </resultMap>
-    <select id="getByInboundOrderItemId"  resultMap="InboundOrderItemIdRM" parameterType="String">
+    <select id="getByInboundOrderItemId" resultMap="InboundOrderItemIdRM" parameterType="String">
         select * from t_pl_wasteinventory where inboundOrderItemId=#{inboundOrderItemId};
     </select>
     <!--寻找最新的入库日期 危废-->
-     <select id="getNewestInBoundDate" resultType="Date">
+    <select id="getNewestInBoundDate" resultType="Date">
          select  inboundDate from t_pl_wasteinventory  where  inboundDate is not null  and boundType='WasteInbound' order  by inboundDate;
      </select>
     <!--寻找最新的入库日期 次生-->

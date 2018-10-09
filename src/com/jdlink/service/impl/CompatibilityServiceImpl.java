@@ -3,6 +3,8 @@ package com.jdlink.service.impl;
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.Compatibility;
 import com.jdlink.domain.Produce.CompatibilityItem;
+import com.jdlink.domain.Produce.MaterialRequire;
+import com.jdlink.domain.Produce.MaterialRequireItem;
 import com.jdlink.mapper.CompatibilityMapper;
 import com.jdlink.service.CompatibilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +13,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CompatibilityServiceImpl implements CompatibilityService {
+public class CompatibilityServiceImpl implements CompatibilityService
+{
     @Autowired
     CompatibilityMapper compatibilityMapper;
+
+
     @Override
     public int total() {
-        return compatibilityMapper.total() ;
+        return compatibilityMapper.total();
     }
 
     @Override
@@ -33,7 +38,6 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     public List<String> check() {
         return compatibilityMapper.check();
     }
-
 
     @Override
     public List<String> check1() {
@@ -123,5 +127,45 @@ public class CompatibilityServiceImpl implements CompatibilityService {
     @Override
     public int totalCompatibilityRecord() {
         return compatibilityMapper.totalCompatibilityRecord();
+    }
+
+    @Override
+    public List<java.lang.String> searchCompatibilityItem(CompatibilityItem compatibilityItem) {
+        return compatibilityMapper.searchCompatibilityItem(compatibilityItem);
+    }
+
+    @Override
+    public int searchCount(CompatibilityItem compatibilityItem) {
+        return compatibilityMapper.searchCount(compatibilityItem);
+    }
+
+    @Override
+    public int count(Compatibility compatibility) {
+        return compatibilityMapper.count(compatibility);
+    }
+
+    @Override
+    public List<CompatibilityItem> getCompatibilityItemById(String compatibilityId) {
+        return compatibilityMapper.getCompatibilityItemById(compatibilityId);
+    }
+
+    @Override
+    public List<String> getNewestMaterialRequireId() {
+        return compatibilityMapper.getNewestMaterialRequireId();
+    }
+
+    @Override
+    public void addMaterialRequireItem(MaterialRequireItem materialRequireItem) {
+        compatibilityMapper.addMaterialRequireItem(materialRequireItem);
+    }
+
+    @Override
+    public void addMaterialRequire(MaterialRequire materialRequire) {
+        compatibilityMapper.addMaterialRequire(materialRequire);
+    }
+
+    @Override
+    public void disabledMaterialRequire(String compatibilityId) {
+        compatibilityMapper.disabledMaterialRequire(compatibilityId);
     }
 }

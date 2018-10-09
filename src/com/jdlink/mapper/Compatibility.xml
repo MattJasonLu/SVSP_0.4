@@ -32,8 +32,8 @@
     <select id="total" resultType="int">
         SELECT COUNT(*) FROM t_pr_pw;
     </select>
-    <select id="getByCompatibilityId" parameterType="String" resultMap="CompatibilityRM">
-  SELECT * FROM t_pr_pw WHERE pwId = #{pwId}
+    <select id="getByCompatibilityId" parameterType="String" resultMap="WeekPlan">
+  SELECT * FROM t_pr_pw WHERE compatibilityId = #{compatibilityId}
     </select>
     <select id="getLastId" resultType="int">
         select count(*) from t_pr_pw;
@@ -165,7 +165,7 @@
         select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
     </select>
     <select id="getWeekPlanList" resultMap="WeekPlan">
-        select * from t_pr_pw order by nowTime desc
+        select * from t_pr_pw   where checkState!='Disabled' order by nowTime desc
         <if test="start != null and count != null">
             limit #{start}, #{count}
         </if>
@@ -203,16 +203,147 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or compatibilityId like "%"#{keywords}"%"
-                or totalDailyAmount like "%"#{keywords}"%"
-                or  calorificAvg  like "%"#{keywords}"%"
-                or  ashAvg  like "%"#{keywords}"%"
-                or  clAvg  like "%"#{keywords}"%"
-                or  sAvg  like "%"#{keywords}"%"
-                or  phAvg  like "%"#{keywords}"%"
-                or  weeklyDemandTotalAggregate  like "%"#{keywords}"%"
-                or  fAvg  like "%"#{keywords}"%"
-                or  pAvg  like "%"#{keywords}"%"
+                or format(totalDailyAmount,1) like "%"#{keywords}"%"
+                or calorificAvg   like  "%"#{keywords}"%"
+                or  format(ashAvg,1)   like "%"#{keywords}"%"
+                or   format(waterAvg,1)   like "%"#{keywords}"%"
+                or   format(clAvg,1)   like "%"#{keywords}"%"
+                or  format(sAvg,1)  like "%"#{keywords}"%"
+                or   format(phAvg,1)  like "%"#{keywords}"%"
+                or  weeklyDemandTotalAggregate   like "%"#{keywords}"%"
+                or  format(fAvg,1)  like "%"#{keywords}"%"
+                or  format(pAvg,1)  like "%"#{keywords}"%"
             </if>
         </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
     </select>
+
+    <!--配伍周计划明细查询-->
+     <select id="searchCompatibilityItem" parameterType="CompatibilityItem" resultType="String">
+           select DISTINCT compatibilityId from t_pr_pwitem
+           <where>
+               <if test="formType != null and formType != ''">
+                   and formType=#{formType}
+               </if>
+               <if test="handleCategory != null and handleCategory != ''">
+                   and handleCategory=#{handleCategory}
+               </if>
+               <if test="weeklyDemandTotal != null and weeklyDemandTotal != ''">
+                   and weeklyDemandTotal =#{weeklyDemandTotal}
+               </if>
+               <if test="calorificBeg != null and calorificBeg != ''">
+               <![CDATA[   and  calorific >=#{calorificBeg} ]]>
+           </if>
+               <if test="calorificEnd != null and calorificEnd != ''">
+                   <![CDATA[   and  calorific <=#{calorificEnd} ]]>
+               </if>
+               <if test="fBeg != null and fBeg != ''">
+                   <![CDATA[   and  f >=#{fBeg} ]]>
+               </if>
+               <if test="fEnd != null and fEnd != ''">
+                   <![CDATA[   and  f <=#{fEnd} ]]>
+               </if>
+               <if test="clBeg != null and clBeg != ''">
+                   <![CDATA[   and  cl >=#{clBeg} ]]>
+               </if>
+               <if test="clEnd != null and clEnd != ''">
+                   <![CDATA[   and  cl <=#{clEnd} ]]>
+               </if>
+               <if test="sBeg != null and sBeg != ''">
+                   <![CDATA[   and  s >=#{sBeg} ]]>
+               </if>
+               <if test="sEnd != null and sEnd != ''">
+                   <![CDATA[   and  s <=#{sEnd} ]]>
+               </if>
+           </where>
+         <if test="page != null and page.start != null and page.count != null">
+             limit #{page.start}, #{page.count}
+         </if>
+     </select>
+
+    <!--高级查询计数-->
+    <select id="searchCount" parameterType="CompatibilityItem" resultType="int">
+        select count( DISTINCT compatibilityId)  from  t_pr_pwitem
+        <where>
+            <if test="formType != null and formType != ''">
+                and formType=#{formType}
+            </if>
+            <if test="handleCategory != null and handleCategory != ''">
+                and handleCategory=#{handleCategory}
+            </if>
+            <if test="weeklyDemandTotal != null and weeklyDemandTotal != ''">
+                and weeklyDemandTotal =#{weeklyDemandTotal}
+            </if>
+            <if test="calorificBeg != null and calorificBeg != ''">
+                <![CDATA[   and  calorific >=#{calorificBeg} ]]>
+            </if>
+            <if test="calorificEnd != null and calorificEnd != ''">
+                <![CDATA[   and  calorific <=#{calorificEnd} ]]>
+            </if>
+            <if test="fBeg != null and fBeg != ''">
+                <![CDATA[   and  f >=#{fBeg} ]]>
+            </if>
+            <if test="fEnd != null and fEnd != ''">
+                <![CDATA[   and  f <=#{fEnd} ]]>
+            </if>
+            <if test="clBeg != null and clBeg != ''">
+                <![CDATA[   and  cl >=#{clBeg} ]]>
+            </if>
+            <if test="clEnd != null and clEnd != ''">
+                <![CDATA[   and  cl <=#{clEnd} ]]>
+            </if>
+            <if test="sBeg != null and sBeg != ''">
+                <![CDATA[   and  s >=#{sBeg} ]]>
+            </if>
+            <if test="sEnd != null and sEnd != ''">
+                <![CDATA[   and  s <=#{sEnd} ]]>
+            </if>
+
+        </where>
+    </select>
+  <!--粗查询计数-->
+    <select id="count" parameterType="Compatibility" resultType="int">
+        select count(*) from t_pr_pw
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or compatibilityId like "%"#{keywords}"%"
+                or format(totalDailyAmount,1) like "%"#{keywords}"%"
+                or calorificAvg   like  "%"#{keywords}"%"
+                or  format(ashAvg,1)   like "%"#{keywords}"%"
+                or   format(waterAvg,1)   like "%"#{keywords}"%"
+                or   format(clAvg,1)   like "%"#{keywords}"%"
+                or  format(sAvg,1)  like "%"#{keywords}"%"
+                or   format(phAvg,1)  like "%"#{keywords}"%"
+                or  weeklyDemandTotalAggregate   like "%"#{keywords}"%"
+                or  format(fAvg,1)  like "%"#{keywords}"%"
+                or  format(pAvg,1)  like "%"#{keywords}"%"
+            </if>
+        </where>
+
+    </select>
+<!--根据配伍单号获取明细-->
+    <select id="getCompatibilityItemById" resultType="CompatibilityItem" parameterType="String">
+   select * from t_pr_pwitem where compatibilityId=#{compatibilityId};
+    </select>
+
+    <!--找出最新的物料编号-->
+<select id="getNewestMaterialRequireId" resultType="String">
+    select materialRequireId from  t_pr_materialrequire order by materialRequireId desc;
+</select>
+<!--添加物料需求明细-->
+    <insert id="addMaterialRequireItem" parameterType="MaterialRequireItem">
+        insert into t_pr_materialrequireitem(materialRequireId, handleCategory, formType, packageType, weeklyDemand, currentInventory, safety, marketPurchases, calorficMax, calorifcMin, ashMax, ashMin, waterMax, waterMin, clMax, clMin, sMax, sMin, pMax, pMin, fMax, fMin, phMax, phMin) values
+        (#{materialRequireId},#{handleCategory},#{formType},#{packageType},#{weeklyDemand},#{currentInventory},#{safety},#{marketPurchases},#{calorificMax},#{calorificMin},#{ashMax},#{ashMin},#{waterMax},#{waterMin},#{clMax},#{clMin},#{sMax},#{sMin},#{pMax},#{pMin},#{fMax},#{fMin},#{phMax},#{phMin});
+    </insert>
+    <!--添加物料需求主表-->
+    <insert id="addMaterialRequire" parameterType="MaterialRequire">
+        insert  into t_pr_materialrequire( materialRequireId, currentInventoryTotal, marketPurchasesTotal, compatibilityId, remarks, nowTime, checkState, weeklyDemandTotal, safetyTotal, calorficAvg, ashAvg, waterAvg, clAvg, sAvg, pAvg, fAvg, phAvg) values
+        (#{materialRequireId},#{currentInventoryTotal},#{marketPurchasesTotal},#{compatibilityId},#{remarks},NOW(),'ToSubmit',#{weeklyDemandTotal},#{safetyTotal},#{calorificAvg},#{ashAvg},#{waterAvg},#{clAvg},#{sAvg},#{pAvg},#{fAvg},#{phAvg});
+    </insert>
+    <update id="disabledMaterialRequire" parameterType="String">
+        update t_pr_pw set checkState='Disabled' where  compatibilityId=#{compatibilityId};
+    </update>
 </mapper>

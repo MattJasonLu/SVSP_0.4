@@ -36,7 +36,7 @@
     select count(*) from t_pr_materialrequire;
 </select>
     <insert id="addMix" parameterType="MaterialRequire">
-    insert into t_pr_materialrequire(materialRequireId,id,currentInventory,marketPurchases,remarks,compatibilityId,nowTime,safety,weeklyDemand,formType,handleCategory,packageType,checkState)
+    insert into t_pr_materialrequire(materialRequireId,id,currentInventoryTotal,marketPurchasesTotal,remarks,compatibilityId,nowTime,safetyTotal,weeklyDemandTotal,formType,handleCategory,packageType,checkState)
     values (#{materialRequireId},#{id},#{currentInventory},#{marketPurchases},#{remarks},#{compatibilityId},NOW(),#{safety},#{weeklyDemand},#{formType},#{handleCategory},#{packageType},'ToSubmit');
 <if test="wastesList.size()>0" >
 <foreach collection="wastesList" item="wastes" index="index">
@@ -74,7 +74,7 @@
         update t_pr_materialrequire set checkState='Backed',remarks=#{1},nowTime=NOW() where id=#{0};
     </update>
     <update id="updatemarketPurchases" >
-        update  t_pr_materialrequire set marketPurchases=#{1} where
+        update  t_pr_materialrequire set marketPurchasesTotal=#{1} where
         id=#{0};
     </update>
     </mapper>
