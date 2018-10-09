@@ -108,10 +108,10 @@
                         <a class="btn btn-primary btn-xs" onclick="generate()"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成物料需求单</a>
                     </div>
                     <!--查询框-->
-                    <div class="input-group col-md-3 pull-right">
+                    <div class="input-group col-md-4 pull-right">
                         <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
                         <span class="input-group-btn">
-                            <a class="btn btn-default" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="searchPw();" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                             <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
                         </span>
@@ -124,7 +124,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-pwId" class="col-sm-4 control-label">配伍计划单号	</label>
+                                <label for="search-pwId" class="col-sm-4 control-label">配伍计&nbsp;划单号	</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-pwId" name="search-pwId" placeholder="">
                                 </div>
@@ -181,9 +181,9 @@
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-weeklyDemandTotalAggregate" class="col-sm-4 control-label">周需求总量</label>
+                                <label for="search-weeklyDemandTotalAggregate" class="col-sm-4 control-label">周需求总量(明细)</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-weeklyDemandTotalAggregate" name="search-pwId" placeholder="">
+                                    <input type="number" class="form-control" id="search-weeklyDemandTotalAggregate" name="search-pwId" placeholder="">
                                 </div>
                             </div>
                             <!--<div class="form-group">-->
@@ -235,7 +235,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-6">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" style="margin-left: -95px">CL范围 </label>
+                                <label class="col-sm-3 control-label" style="margin-left: -95px">CL&nbsp;范&nbsp;围 </label>
                                 <div class="input-group">
                                     <input type="number" class="input-sm form-control" id="search-clBeg" title="" onkeydown=""/>
                                     <span class="input-group-addon">-</span>
@@ -294,22 +294,23 @@
                         <tr id="cloneTr1" ondblclick="view(this)">
                             <td class="text-center">
                                 <label>
-                                    <input class="checkbox" type="checkbox" value="option1" name="select">
+                                    <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                                    <!--<input class="checkbox" type="checkbox" value="option1" name="select" id="select">-->
                                 </label>
                             </td>
                             <td class="text-center"></td><!--序号-->
                             <td class="text-center"></td>
                             <td class="text-center"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
-                            <td class="text-right"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
                             <td class="text-center">
                                 <a title="查看" href="#" onclick="view1(this)"><span class="glyphicon glyphicon-search"
                                                                                     aria-hidden="true"></span> </a>
@@ -501,6 +502,42 @@
                             <td class="text-center modal-CLContent"></td>
                         </tr>
                         </tbody>
+                        <thead>
+                        <tr>
+                            <td class="text-center">合计</td>
+                            <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center" id="proportionTotal"></td>
+                            <td class="text-center" id="dailyRatioTotal"></td>
+                            <td class="text-center" id="weeklyDemandTotalAdd"></td>
+                            <td class="text-center" id="calorificTotal"></td>
+                            <td class="text-center" id="ashTotal"></td>
+                            <td class="text-center" id="waterTotal"></td>
+                            <td class="text-center" id="clTotal"></td>
+                            <td class="text-center" id="sTotal"></td>
+                            <td class="text-center" id="pTotal"></td>
+                            <td class="text-center" id="fTotal"></td>
+                            <td class="text-center" id="phTotal"></td>
+
+                        </tr>
+                        </thead>
+                        <tbody><tr >
+                            <td class="text-center modal-companyName"></td>
+                            <td class="text-center modal-einlass"></td>
+                            <td class="text-center wastesName" ></td>
+                            <td class="text-center wastesCode" ></td>
+                            <td class="text-center modal-weight" ></td>
+                            <td class="text-center modal-materialForm"></td>
+                            <td class="text-center modal-packingType" ></td>
+                            <td class="text-center modal-packingType" ></td>
+                            <td class="text-center modal-processingMethod"></td>
+                            <td class="text-center modal-KCal" ></td>
+                            <td class="text-center modal-PH" ></td>
+                            <td class="text-center modal-ashContent" ></td>
+                            <td class="text-center modal-waterContent"></td>
+                            <td class="text-center modal-CLContent"></td>
+                        </tr></tbody>
+
                     </table>
                 </div>
             </div>

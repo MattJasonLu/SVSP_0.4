@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.FormType;
+import com.jdlink.domain.Page;
 
 /**
  * 配伍周计划明细
@@ -53,6 +54,103 @@ public class CompatibilityItem {
     //明细主键 用来做更新操作
 
     private int id;
+
+    //分页
+    private Page page;
+
+    //热值范围
+
+    private float calorificBeg;
+
+    private float calorificEnd;
+
+    //F范围
+    private float fBeg;
+
+    private float fEnd;
+
+    //CL范围
+    private float clBeg;
+
+    private float clEnd;
+
+    //S范围
+    private float sBeg;
+
+    private float sEnd;
+
+    public float getCalorificBeg() {
+        return calorificBeg;
+    }
+
+    public void setCalorificBeg(float calorificBeg) {
+        this.calorificBeg = calorificBeg;
+    }
+
+    public float getCalorificEnd() {
+        return calorificEnd;
+    }
+
+    public void setCalorificEnd(float calorificEnd) {
+        this.calorificEnd = calorificEnd;
+    }
+
+    public float getfBeg() {
+        return fBeg;
+    }
+
+    public void setfBeg(float fBeg) {
+        this.fBeg = fBeg;
+    }
+
+    public float getfEnd() {
+        return fEnd;
+    }
+
+    public void setfEnd(float fEnd) {
+        this.fEnd = fEnd;
+    }
+
+    public float getClBeg() {
+        return clBeg;
+    }
+
+    public void setClBeg(float clBeg) {
+        this.clBeg = clBeg;
+    }
+
+    public float getClEnd() {
+        return clEnd;
+    }
+
+    public void setClEnd(float clEnd) {
+        this.clEnd = clEnd;
+    }
+
+    public float getsBeg() {
+        return sBeg;
+    }
+
+    public void setsBeg(float sBeg) {
+        this.sBeg = sBeg;
+    }
+
+    public float getsEnd() {
+        return sEnd;
+    }
+
+    public void setsEnd(float sEnd) {
+        this.sEnd = sEnd;
+    }
+
+    public Page getPage() {
+
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
 
     public int getId() {
         return id;

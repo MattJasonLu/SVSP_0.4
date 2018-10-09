@@ -9,77 +9,89 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 物料需求单
+ * 物料需求单主表
  */
 public class MaterialRequire {
     /**
      * 物料需求单编号
      */
     private String materialRequireId;
+
     /**
-     * 处置类别
+     * 配伍编号
+     *
      */
-    private  HandleCategory handleCategory;
+    private String compatibilityId;
+
+
     /**
-     * 目前库存量=====>
+     * 周生产计划量汇总
      */
-    private  float currentInventory;
+    private float weeklyDemandTotal;
+
     /**
-     * 周生产计划量
+     * 目前库存量汇总
      */
-    private float weeklyDemand;
+    private  float currentInventoryTotal;
     /**
-     * 安全库存量
+     * 安全库存量汇总
      */
-    private float safety;
+    private float safetyTotal;
     /**
-     * 市场采购量
+     * 市场采购量汇总
      */
-    private float marketPurchases;
+    private float marketPurchasesTotal;
     /**
      * 基础数据阈值表
      *
      */
     private Threshold threshold;
-    /**
-     * 序号
-     *
-     */
-    private  String id;
-    /**
-     * 物质形态
-     *
-     */
-    private FormType formType;
+
+    //热值平均
+
+    private  float calorificAvg;
+
+    //灰分平均
+
+    private  float  ashAvg;
+
+    //水分平均
+
+    private  float  waterAvg;
+
+    //氯平均
+
+    private float   clAvg;
+
+    //硫平均
+
+    private float  sAvg;
+
+    //磷平均
+
+    private float pAvg;
+
+    //氟平均
+
+    private float fAvg;
+
+    //酸碱度平均
+
+    private float phAvg;
+
     /**
      * 状态
      *
      */
     private CheckState checkState;
     /**
-     * 物料需求
-     *
-     */
-    private Compatibility compatibility;
-    /**
-     * 包装方式
-     *
-     */
-    private PackageType packageType;
-    /**
      * 备注
      *
      */
     private String remarks;
-    /**
-     * 配伍编号
-     *
-     */
-    private String compatibilityId;
-    /**
-     * 危废信息(形态、包装方式、一些物质的最大值最小值)
-     */
-    List<Wastes> wastesList = new ArrayList<>();
+
+
+
 
     public CheckState getCheckState() {
         return checkState;
@@ -89,29 +101,6 @@ public class MaterialRequire {
         this.checkState = checkState;
     }
 
-    public FormType getFormType() {
-        return formType;
-    }
-
-    public void setFormType(FormType formType) {
-        this.formType = formType;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Threshold getThreshold() {
-        return threshold;
-    }
-
-    public PackageType getPackageType() {
-        return packageType;
-    }
 
     public String getCompatibilityId() {
         return compatibilityId;
@@ -129,17 +118,6 @@ public class MaterialRequire {
         this.remarks = remarks;
     }
 
-    public void setPackageType(PackageType packageType) {
-        this.packageType = packageType;
-    }
-
-    public Compatibility getCompatibility() {
-        return compatibility;
-    }
-
-    public void setCompatibility(Compatibility compatibility) {
-        this.compatibility = compatibility;
-    }
 
     public void setThreshold(Threshold threshold) {
         this.threshold = threshold;
@@ -153,72 +131,127 @@ public class MaterialRequire {
         this.materialRequireId = materialRequireId;
     }
 
-    public HandleCategory getHandleCategory() {
-        return handleCategory;
+
+    public float getWeeklyDemandTotal() {
+        return weeklyDemandTotal;
     }
 
-    public void setHandleCategory(HandleCategory handleCategory) {
-        this.handleCategory = handleCategory;
+    public void setWeeklyDemandTotal(float weeklyDemandTotal) {
+        this.weeklyDemandTotal = weeklyDemandTotal;
     }
 
-    public float getCurrentInventory() {
-        return currentInventory;
+    public float getCurrentInventoryTotal() {
+        return currentInventoryTotal;
     }
 
-    public void setCurrentInventory(float currentInventory) {
-        this.currentInventory = currentInventory;
+    public void setCurrentInventoryTotal(float currentInventoryTotal) {
+        this.currentInventoryTotal = currentInventoryTotal;
     }
 
-    public float getWeeklyDemand() {
-        return weeklyDemand;
+    public float getSafetyTotal() {
+        return safetyTotal;
     }
 
-    public void setWeeklyDemand(float weeklyDemand) {
-        this.weeklyDemand = weeklyDemand;
+    public void setSafetyTotal(float safetyTotal) {
+        this.safetyTotal = safetyTotal;
     }
 
-    public float getSafety() {
-        return safety;
+    public float getMarketPurchasesTotal() {
+        return marketPurchasesTotal;
     }
 
-    public void setSafety(float safety) {
-        this.safety = safety;
+    public void setMarketPurchasesTotal(float marketPurchasesTotal) {
+        this.marketPurchasesTotal = marketPurchasesTotal;
     }
 
-    public float getMarketPurchases() {
-        return marketPurchases;
+    public Threshold getThreshold() {
+        return threshold;
     }
 
-    public void setMarketPurchases(float marketPurchases) {
-        this.marketPurchases = marketPurchases;
+    public float getCalorificAvg() {
+        return calorificAvg;
     }
 
-    public List<Wastes> getWastesList() {
-        return wastesList;
+    public void setCalorificAvg(float calorificAvg) {
+        this.calorificAvg = calorificAvg;
     }
 
-    public void setWastesList(List<Wastes> wastesList) {
-        this.wastesList = wastesList;
+    public float getAshAvg() {
+        return ashAvg;
+    }
+
+    public void setAshAvg(float ashAvg) {
+        this.ashAvg = ashAvg;
+    }
+
+    public float getWaterAvg() {
+        return waterAvg;
+    }
+
+    public void setWaterAvg(float waterAvg) {
+        this.waterAvg = waterAvg;
+    }
+
+    public float getClAvg() {
+        return clAvg;
+    }
+
+    public void setClAvg(float clAvg) {
+        this.clAvg = clAvg;
+    }
+
+    public float getsAvg() {
+        return sAvg;
+    }
+
+    public void setsAvg(float sAvg) {
+        this.sAvg = sAvg;
+    }
+
+    public float getpAvg() {
+        return pAvg;
+    }
+
+    public void setpAvg(float pAvg) {
+        this.pAvg = pAvg;
+    }
+
+    public float getfAvg() {
+        return fAvg;
+    }
+
+    public void setfAvg(float fAvg) {
+        this.fAvg = fAvg;
+    }
+
+    public float getPhAvg() {
+        return phAvg;
+    }
+
+    public void setPhAvg(float phAvg) {
+        this.phAvg = phAvg;
     }
 
     @Override
     public String toString() {
         return "MaterialRequire{" +
                 "materialRequireId='" + materialRequireId + '\'' +
-                ", handleCategory=" + handleCategory +
-                ", currentInventory=" + currentInventory +
-                ", weeklyDemand=" + weeklyDemand +
-                ", safety=" + safety +
-                ", marketPurchases=" + marketPurchases +
-                ", threshold=" + threshold +
-                ", id='" + id + '\'' +
-                ", formType=" + formType +
-                ", compatibility=" + compatibility +
-                ", packageType=" + packageType +
-                ", remarks='" + remarks + '\'' +
                 ", compatibilityId='" + compatibilityId + '\'' +
-                ", wastesList=" + wastesList +
+                ", weeklyDemandTotal=" + weeklyDemandTotal +
+                ", currentInventoryTotal=" + currentInventoryTotal +
+                ", safetyTotal=" + safetyTotal +
+                ", marketPurchasesTotal=" + marketPurchasesTotal +
+                ", threshold=" + threshold +
+                ", calorificAvg=" + calorificAvg +
+                ", ashAvg=" + ashAvg +
+                ", waterAvg=" + waterAvg +
+                ", clAvg=" + clAvg +
+                ", sAvg=" + sAvg +
+                ", pAvg=" + pAvg +
+                ", fAvg=" + fAvg +
+                ", phAvg=" + phAvg +
+                ", checkState=" + checkState +
+                ", remarks='" + remarks + '\'' +
                 '}';
     }
-
 }

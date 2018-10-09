@@ -102,4 +102,8 @@
             </if>
         </where>
     </select>
+
+    <delete id="deleteEquipment" parameterType="EquipmentDate" >
+        delete from t_rp_equipment where documentNumber = #{documentNumber}
+    </delete>
 </mapper>
