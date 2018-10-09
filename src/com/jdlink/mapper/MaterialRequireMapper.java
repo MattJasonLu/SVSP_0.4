@@ -1,7 +1,9 @@
 package com.jdlink.mapper;
 
 import com.jdlink.domain.MixingElement;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.MaterialRequire;
+import com.jdlink.domain.Produce.MaterialRequireItem;
 import com.jdlink.domain.Wastes;
 
 import java.util.List;
@@ -17,4 +19,6 @@ public interface MaterialRequireMapper {
     void cancel(String id);
     void  back(String id,String remarks);
     void updatemarketPurchases(String id,float marketPurchases);
+    List<MaterialRequire>getMaterialList(Page page);
+     List<MaterialRequireItem> getMaterialRequireById(String materialRequireId);
 }

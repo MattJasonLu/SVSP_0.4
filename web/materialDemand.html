@@ -220,10 +220,10 @@
                         </th>
                         <th class="text-center">序号</th>
                         <th class="text-center">物料单号</th>
-                        <th class="text-center" >周生产计划量</th>
-                        <th class="text-center" >目前库存量</th>
-                        <th class="text-center" >安全库存量</th>
-                        <th class="text-center" >市场采购量</th>
+                        <th class="text-center" >周生产计划总量</th>
+                        <th class="text-center" >目前库存总量</th>
+                        <th class="text-center" >安全库存总量</th>
+                        <th class="text-center" >市场采购总量</th>
                         <th class="text-center" >热值平均</th>
                         <th class="text-center">灰分平均</th>
                         <th class="text-center">水分平均</th>
@@ -233,6 +233,7 @@
                         <th class="text-center">F平均</th>
                         <th class="text-center">PH平均</th>
                         <th class="text-center">状态</th>
+                        <th class="text-center">操作</th>
                     </tr>
                         <tr id="cloneTr1"  class="myclass">
                             <td class="text-center">
@@ -254,6 +255,19 @@
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center"></td>
+                            <td class="text-center"></td>
+                            <td class="text-center">
+                                <a title="查看" href="#" onclick="view1(this)"><span class="glyphicon glyphicon-search"
+                                                                                   aria-hidden="true"></span> </a>
+                                <a title="修改" href="#" onclick="adjust(this)"><span class="glyphicon glyphicon-pencil"
+                                                                                    aria-hidden="true"></span> </a>
+                                <a title="提交" href="#" onclick="submit(this)"><span class="glyphicon glyphicon-export"
+                                                                                    aria-hidden="true"></span> </a>
+                                <a title="审批" href="#" onclick="approval(this)"><span class="glyphicon glyphicon-floppy-saved"
+                                                                                      aria-hidden="true"></span> </a>
+                                <a title="作废" href="#" onclick="cancelPw(this);"><span class="glyphicon glyphicon-remove-sign"
+                                                                                       aria-hidden="true"></span> </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -352,179 +366,179 @@
         </div>
     </div>
 </div>
-<!--修改模态框-->
-<div class="modal fade bs-example-modal-lg" id="adjustModel" tabindex="-1" role="dialog"
-     aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="client_style">
-                <h4 class="sub-header text-center">物料信息修改</h4>
-                <form method="post" id="materialInfoForm" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="materialRequireId1" class="col-sm-4 control-label">物料编号</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="materialRequireId1" name="materialRequireId" readonly>
-                                </div>
-                            </div><!--物料编号>
-                            <div class="form-group">
-                                <label for="formType1" class="col-sm-4 control-label">进料方式</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="formType1" name="formType">
-                                </div>
-                            </div><!--形态-->
-                            <div class="form-group">
-                                <label for="packageType1" class="col-sm-4 control-label">包装方式</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="packageType1" name="packageType">
-                                </div>
-                            </div><!--包装方式-->
-                            <div class="form-group">
-                                <label for="handleCategory1" class="col-sm-4 control-label">包装方式</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="handleCategory1" name="handleCategory">
-                                </div>
-                            </div><!--进料方式-->
-                            <div class="form-group">
-                                <label for="weeklyDemand1" class="col-sm-4 control-label">周计划生产量</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="weeklyDemand1" name="weeklyDemand">
-                                </div>
-                            </div><!--周计划生产量-->
-                            <div class="form-group">
-                                <label for="currentInventory1" class="col-sm-4 control-label">周计划生产量(T)</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="currentInventory1" name="currentInventory">
-                                </div>
-                            </div><!--目前库存量(T)-->
-                            <div class="form-group">
-                                <label for="safety1" class="col-sm-4 control-label">安全库存量(T)</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="safety1" name="safety">
-                                </div>
-                            </div><!--安全库存量(T)-->
-                            <div class="form-group">
-                                <label for="marketPurchases1" class="col-sm-4 control-label">安全库存量(T)</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="marketPurchases1" name="marketPurchases">
-                                </div>
-                            </div><!--市场采购量(T)-->
-                            <div class="form-group">
-                                <label for="calorificMax" class="col-sm-4 control-label">热值max</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="calorificMax" name="calorificMax">
-                                </div>
-                            </div> <!--热值max-->
-                            <div class="form-group">
-                                <label for="calorificMin" class="col-sm-4 control-label">热值min</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="calorificMin" name="calorificMin">
-                                </div>
-                            </div> <!--热值min-->
-                            <div class="form-group">
-                                <label for="ashMax" class="col-sm-4 control-label">灰分max</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="ashMax" name="ashMax">
-                                </div>
-                            </div> <!--灰分max-->
-                            <div class="form-group">
-                                <label for="ashMin" class="col-sm-4 control-label">灰分min</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="ashMin" name="ashMin">
-                                </div>
-                            </div> <!--灰分min-->
-                            <div class="form-group">
-                                <label for="Phmax" class="col-sm-4 control-label">Phmax</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Phmax" name="Phmax">
-                                </div>
-                            </div> <!--Phmax-->
-                        </div>
-                        <div class="form-horizontal col-md-6">
-                            <div class="form-group">
-                                <label for="id1" class="col-sm-4 control-label">序号</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="id1" name="id" readonly >
-                                </div>
-                            </div><!--序号-->
-                            <div class="form-group">
-                                <label for="waterMax" class="col-sm-4 control-label">水分max</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="waterMax" name="waterMax">
-                                </div>
-                            </div> <!--水分max-->
-                            <div class="form-group">
-                                <label for="waterMin" class="col-sm-4 control-label">水分min</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="waterMin" name="waterMin">
-                                </div>
-                            </div> <!--水分min-->
-                            <div class="form-group">
-                                <label for="Smax" class="col-sm-4 control-label">Smax</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Smax" name="Smax">
-                                </div>
-                            </div> <!--Smax-->
-                            <div class="form-group">
-                                <label for="Smin" class="col-sm-4 control-label">Smin</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Smin" name="Smin">
-                                </div>
-                            </div> <!--Smin-->
-                            <div class="form-group">
-                                <label for="Clmax" class="col-sm-4 control-label">Clmax</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Clmax" name="Clmax">
-                                </div>
-                            </div> <!--Clmax-->
-                            <div class="form-group">
-                                <label for="CLmin" class="col-sm-4 control-label">CLmin</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="CLmin" name="CLmin">
-                                </div>
-                            </div> <!--CLmin-->
-                            <div class="form-group">
-                                <label for="Pmax" class="col-sm-4 control-label">Pmax</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Pmax" name="Pmax">
-                                </div>
-                            </div> <!--Pmax-->
-                            <div class="form-group">
-                                <label for="Pmin" class="col-sm-4 control-label">Pmin</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Pmin" name="Pmin">
-                                </div>
-                            </div> <!--Pmin-->
-                            <div class="form-group">
-                                <label for="Fmax" class="col-sm-4 control-label">Fmax</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Fmax" name="Fmax">
-                                </div>
-                            </div> <!--Fmax-->
-                            <div class="form-group">
-                                <label for="Fmin" class="col-sm-4 control-label">Fmin</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Fmin" name="Fmin">
-                                </div>
-                            </div> <!--Fmin-->
-                            <div class="form-group">
-                                <label for="Phmin" class="col-sm-4 control-label">Phmin</label>
-                                <div class="col-sm-4">
-                                    <input class="form-control" id="Phmin" name="Phmin">
-                                </div>
-                            </div> <!--Phmin-->
-                        </div>
-                    </div>
-                    <div class="row text-center">
-                        <a class="btn btn-primary hidden-print" onclick="modify()" >修改</a>
-                        <a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<!--&lt;!&ndash;修改模态框&ndash;&gt;-->
+<!--<div class="modal fade bs-example-modal-lg" id="adjustModel" tabindex="-1" role="dialog"-->
+     <!--aria-labelledby="myLargeModalLabel">-->
+    <!--<div class="modal-dialog modal-lg" role="document">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="client_style">-->
+                <!--<h4 class="sub-header text-center">物料信息修改</h4>-->
+                <!--<form method="post" id="materialInfoForm" enctype="multipart/form-data">-->
+                    <!--<div class="row">-->
+                        <!--<div class="form-horizontal col-md-6">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="materialRequireId1" class="col-sm-4 control-label">物料编号</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="materialRequireId1" name="materialRequireId1" readonly>-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;物料编号>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="formType1" class="col-sm-4 control-label">进料方式</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="formType1" name="formType">-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;形态&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="packageType1" class="col-sm-4 control-label">包装方式</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="packageType1" name="packageType">-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;包装方式&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="handleCategory1" class="col-sm-4 control-label">包装方式</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="handleCategory1" name="handleCategory">-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;进料方式&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="weeklyDemand1" class="col-sm-4 control-label">周计划生产量</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="weeklyDemand1" name="weeklyDemand">-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;周计划生产量&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="currentInventory1" class="col-sm-4 control-label">周计划生产量(T)</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="currentInventory1" name="currentInventory">-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;目前库存量(T)&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="safety1" class="col-sm-4 control-label">安全库存量(T)</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="safety1" name="safety">-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;安全库存量(T)&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="marketPurchases1" class="col-sm-4 control-label">安全库存量(T)</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="marketPurchases1" name="marketPurchases">-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;市场采购量(T)&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="calorificMax" class="col-sm-4 control-label">热值max</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="calorificMax" name="calorificMax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;热值max&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="calorificMin" class="col-sm-4 control-label">热值min</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="calorificMin" name="calorificMin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;热值min&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="ashMax" class="col-sm-4 control-label">灰分max</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="ashMax" name="ashMax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;灰分max&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="ashMin" class="col-sm-4 control-label">灰分min</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="ashMin" name="ashMin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;灰分min&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Phmax" class="col-sm-4 control-label">Phmax</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Phmax" name="Phmax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Phmax&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--<div class="form-horizontal col-md-6">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="id1" class="col-sm-4 control-label">序号</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="id1" name="id" readonly >-->
+                                <!--</div>-->
+                            <!--</div>&lt;!&ndash;序号&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="waterMax" class="col-sm-4 control-label">水分max</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="waterMax" name="waterMax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;水分max&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="waterMin" class="col-sm-4 control-label">水分min</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="waterMin" name="waterMin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;水分min&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Smax" class="col-sm-4 control-label">Smax</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Smax" name="Smax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Smax&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Smin" class="col-sm-4 control-label">Smin</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Smin" name="Smin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Smin&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Clmax" class="col-sm-4 control-label">Clmax</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Clmax" name="Clmax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Clmax&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="CLmin" class="col-sm-4 control-label">CLmin</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="CLmin" name="CLmin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;CLmin&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Pmax" class="col-sm-4 control-label">Pmax</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Pmax" name="Pmax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Pmax&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Pmin" class="col-sm-4 control-label">Pmin</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Pmin" name="Pmin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Pmin&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Fmax" class="col-sm-4 control-label">Fmax</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Fmax" name="Fmax">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Fmax&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Fmin" class="col-sm-4 control-label">Fmin</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Fmin" name="Fmin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Fmin&ndash;&gt;-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="Phmin" class="col-sm-4 control-label">Phmin</label>-->
+                                <!--<div class="col-sm-4">-->
+                                    <!--<input class="form-control" id="Phmin" name="Phmin">-->
+                                <!--</div>-->
+                            <!--</div> &lt;!&ndash;Phmin&ndash;&gt;-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row text-center">-->
+                        <!--<a class="btn btn-primary hidden-print" onclick="modify()" >修改</a>-->
+                        <!--<a class="btn btn-danger hidden-print" data-dismiss="modal">关闭</a>-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 <!--导入模态框-->
 <div class="modal fade" id="importExcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -549,7 +563,151 @@
         </div>
     </div>
 </div>
+
+<!--查看模态框-->
+<div class="modal fade bs-example-modal-lg" id="appointModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document"  style="width: 85%">
+        <div class="modal-content" >
+            <div class="modal-header row">
+                <div class="col-md-3">
+                    <h4 class="modal-title">物料需求明细</h4></div>
+                <div class="col-md-7"></div>
+                <div class="col-md-2"> <p class="pull-left" >物料需求单号&nbsp;&nbsp;&nbsp;&nbsp;</p><p id="materialRequireId1"></p></div>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="text-center">序号</td>
+                        <td class="text-center">进料方式</td>
+                        <td class="text-center">物质形态</td>
+                        <td class="text-center">包装方式</td>
+                        <td class="text-center">周生产计划量</td>
+                        <td class="text-center">目前库存量</td>
+                        <td class="text-center">安全库存量</td>
+                        <td class="text-center">市场采购量</td>
+                        <td class="text-center">热值Max</td>
+                        <td class="text-center">热值Min</td>
+                        <td class="text-center">灰分Max</td>
+                        <td class="text-center">灰分Min</td>
+                        <td class="text-center">水分Max</td>
+                        <td class="text-center">水分Min</td>
+                        <td class="text-center">氯Max</td>
+                        <td class="text-center">氯Min</td>
+                        <td class="text-center">硫Max</td>
+                        <td class="text-center">硫Min</td>
+                        <td class="text-center">磷Max</td>
+                        <td class="text-center">磷Min</td>
+                        <td class="text-center">氟Max</td>
+                        <td class="text-center">氟Min</td>
+                        <td class="text-center">酸碱度Max</td>
+                        <td class="text-center">酸碱度MaxMin</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="cloneTr" class="myclass1">
+                        <td class="text-center modal-companyName"></td>
+                        <td class="text-center modal-einlass"></td>
+                        <td class="text-center wastesName" ></td>
+                        <td class="text-center wastesCode" ></td>
+                        <td class="text-center modal-weight" ></td>
+                        <td class="text-center modal-materialForm"></td>
+                        <td class="text-center modal-packingType" ></td>
+                        <td class="text-center modal-packingType" ></td>
+                        <td class="text-center modal-processingMethod"></td>
+                        <td class="text-center modal-KCal" ></td>
+                        <td class="text-center modal-PH" ></td>
+                        <td class="text-center modal-ashContent" ></td>
+                        <td class="text-center modal-waterContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+                        <td class="text-center modal-CLContent"></td>
+
+
+                    </tr>
+                    </tbody>
+                    <thead>
+                    <tr>
+                        <td class="text-center">合计</td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center" id="weeklyDemandTotal"></td>
+                        <td class="text-center" id="currentInventoryTotal"></td>
+                        <td class="text-center" id="safetyTotal"></td>
+                        <td class="text-center" id="marketPurchasesTotal"></td>
+                        <td class="text-center" id="calorificMaxTotal"></td>
+                        <td class="text-center" id="calorificMinTotal"></td>
+                        <td class="text-center" id="ashMaxTotal"></td>
+                        <td class="text-center" id="ashMinTotal"></td>
+                        <td class="text-center" id="waterMaxTotal"></td>
+                        <td class="text-center" id="waterMinTotal"></td>
+                        <td class="text-center" id="clMaxTotal"></td>
+                        <td class="text-center"  id="clMinTotal"></td>
+                        <td class="text-center" id="sMaxTotal" ></td>
+                        <td class="text-center" id="sMinTotal"></td>
+                        <td class="text-center" id="pMaxTotal" ></td>
+                        <td class="text-center" id="pMinTotal"></td>
+                        <td class="text-center" id="fMaxTotal"></td>
+                        <td class="text-center" id="fMinTotal"></td>
+                        <td class="text-center" id="phMaxTotal"></td>
+                        <td class="text-center" id="phMinTotal"></td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
+
+<!--分页-->
+<nav aria-label="Page navigation" class="text-center">
+    <ol class="pagination" style="width: 800px;">
+        <li id="current" style="display: none"><a>当前页：</a>
+        <li id="firstPage">
+            <a href='#' onclick="switchPage(0)">首 页</a>
+        </li>
+        <li id="previous">
+            <a href="#" aria-label="Previous" onclick="switchPage(parseInt(currentPage)-1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-backward"
+                                                       aria-hidden="true"></span></span>
+            </a>
+        </li>
+        <li><a href="#">1</a></li>
+        <li id="next">
+            <a href="#" aria-label="Next" onclick="switchPage(parseInt(currentPage)+1);">
+                        <span aria-hidden="true"><span class="glyphicon glyphicon-forward"
+                                                       aria-hidden="true"></span></span>
+            </a>
+        </li>
+        <li id="endPage">
+            <a href='#' onclick="switchPage(-2)">尾 页</a>
+        </li>
+        <li><a id="totalPage"></a></li>
+        <li><a href="#" onclick="inputSwitchPage();">跳转</a></li>
+        <li><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;"
+                   id="pageNumber" title="" onkeydown="enterSwitchPage();"></li>
+        <li class="showLi">每页显示:</li>
+        <li class="selectLi">
+            <select id="count" onchange="loadPageMaterialList();" title="">
+                <option>5</option>
+                <option selected>15</option>
+                <option>50</option>
+            </select>
+        </li>
+    </ol>
+</nav>
+
 <style>
     textarea {
         resize: none

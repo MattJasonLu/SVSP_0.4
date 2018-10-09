@@ -1,7 +1,9 @@
 package com.jdlink.service.impl;
 
 import com.jdlink.domain.MixingElement;
+import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.MaterialRequire;
+import com.jdlink.domain.Produce.MaterialRequireItem;
 import com.jdlink.domain.Wastes;
 import com.jdlink.mapper.MaterialRequireMapper;
 import com.jdlink.service.MaterialRequireService;
@@ -62,6 +64,16 @@ public class MaterialRequireServiceImpl implements MaterialRequireService  {
     @Override
     public void updatemarketPurchases(String id, float marketPurchases) {
         materialRequireMapper.updatemarketPurchases(id,marketPurchases);
+    }
+
+    @Override
+    public List<MaterialRequire> getMaterialList(Page page) {
+        return materialRequireMapper.getMaterialList(page);
+    }
+
+    @Override
+    public List<MaterialRequireItem> getMaterialRequireById(String materialRequireId) {
+        return materialRequireMapper.getMaterialRequireById(materialRequireId);
     }
 
 

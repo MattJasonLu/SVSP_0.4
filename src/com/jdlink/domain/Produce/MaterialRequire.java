@@ -1,9 +1,6 @@
 package com.jdlink.domain.Produce;
 
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.FormType;
-import com.jdlink.domain.PackageType;
-import com.jdlink.domain.Wastes;
+import com.jdlink.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +87,30 @@ public class MaterialRequire {
      */
     private String remarks;
 
+    //物料明细
+    private List<MaterialRequireItem> materialRequireItemList=new ArrayList<>();
 
+    /**
+     * 分页
+     * @return
+     */
+    private Page page;
 
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public List<MaterialRequireItem> getMaterialRequireItemList() {
+        return materialRequireItemList;
+    }
+
+    public void setMaterialRequireItemList(List<MaterialRequireItem> materialRequireItemList) {
+        this.materialRequireItemList = materialRequireItemList;
+    }
 
     public CheckState getCheckState() {
         return checkState;

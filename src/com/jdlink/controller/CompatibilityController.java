@@ -7,6 +7,7 @@ import com.jdlink.domain.Page;
 import com.jdlink.domain.Produce.*;
 import com.jdlink.domain.Wastes;
 import com.jdlink.service.CompatibilityService;
+import com.jdlink.service.ThresholdService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -34,6 +35,8 @@ import static com.jdlink.domain.PackageType.*;
 public class CompatibilityController {
     @Autowired
     CompatibilityService compatibilityService;
+    @Autowired
+    ThresholdService thresholdService;
 
 //    @RequestMapping("getCurrentCompatibilityId")
 //    @ResponseBody
@@ -894,7 +897,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             //1根据配伍单号获取明细
             List<CompatibilityItem> compatibilityItemList=compatibilityService.getCompatibilityItemById(compatibilityId);
 
-            Threshold threshold=new Threshold();//基础数据表对象
+            Threshold threshold=thresholdService.list().get(0);//基础数据表对象
 
             //找出最新的物料需求编号
 
@@ -977,6 +980,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                 currentInventoryTotal+=0;
                 //3安全库存量
                 materialRequireItem.setSafety(threshold.getSafety());
+                System.out.println("安全库存量"+threshold.getSafety());
                 safetyTotal+=threshold.getSafety();
                 //4市场采购量
                 materialRequireItem.setMarketPurchases(0);
