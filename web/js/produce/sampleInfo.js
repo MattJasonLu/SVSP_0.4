@@ -547,7 +547,7 @@ function addItems(data) {
  * @returns {string}
  */
 function getSampleIdByMenu(menu) {
-    return menu.parentElement.parentElement.firstElementChild.innerHTML;
+    return menu.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -556,7 +556,7 @@ function getSampleIdByMenu(menu) {
  * @returns {string}
  */
 function getSampleIdByMenu1(menu) {
-    return menu.firstElementChild.innerHTML;
+    return menu.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**

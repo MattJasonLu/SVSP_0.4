@@ -43,17 +43,15 @@ public class PdfUtil {
         String result = null;
         File pdfFile = null;
         try {
+            // 新建PDF文档
             String tempUrl = "temp.pdf";
             pdfFile = new File(tempUrl);
-            multipartFile.transferTo(pdfFile);
-            // 开始提取页数
-            int startPage = 1;
-            // 结束提取页数
-            int endPage = Integer.MAX_VALUE;
-            PDDocument document = PDDocument.load(pdfFile);
+            multipartFile.transferTo(pdfFile);  // 将MultipartFile转为FILE
+            int startPage = 1;  // 开始提取页数
+            int endPage = Integer.MAX_VALUE;  // 结束提取页数
+            PDDocument document = PDDocument.load(pdfFile);   // 加载PDF内容
             PDFTextStripper pts = new PDFTextStripper();
-            endPage = document.getNumberOfPages();         // 获取总页数
-//            System.out.println("Total Page: " + endPage);
+            endPage = document.getNumberOfPages();    // 获取总页数
             pts.setSortByPosition(true);        // 是否排序(按顺序读取pdf数据)
             pts.setStartPage(startPage);        // 设置起始页
             pts.setEndPage(endPage);            // 设置结束页
@@ -63,21 +61,17 @@ public class PdfUtil {
             e.printStackTrace();
             return null;
         } finally {
-            if (pdfFile != null) pdfFile.delete();     // 读取结束后删除文件
+            if (pdfFile != null) pdfFile.delete();   // 读取结束后删除文件
         }
         // 字符串筛选处理
         result = result.replaceAll("\r|\n", "/");
-        String res[] = result.split(" |//");           // 根据空格符将字符串分割成字符
-        List<String> res1 = new ArrayList<>();             // 将数组转为LIST
+        String res[] = result.split(" |//");    // 根据空格符将字符串分割成字符
+        List<String> res1 = new ArrayList<>();     // 将数组转为LIST
         for (int i = 0; i < res.length; i++) {
             res1.add(res[i]);
         }
-//        for (int i = 0; i < res1.size(); i++) {
-//            if (i % 7 == 0) System.out.println();
-//            System.out.print(res1.get(i) + ",");
-//        }
         List<String> newRes = new ArrayList<>();
-        newRes.add(res1.get(0));           // 转移联单号
+        newRes.add(res1.get(0));           // 设置转移联单号
         for (int i = 1; i < res1.size(); i++) {
             switch (res1.get(i)) {
                 case ("产生单位"):

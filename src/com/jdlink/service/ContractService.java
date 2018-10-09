@@ -1,6 +1,7 @@
 package com.jdlink.service;
 
 import com.jdlink.domain.*;
+import com.jdlink.domain.Produce.Assessment;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public interface ContractService {
     List<Contract> searchModel(Contract contract);
     List<Contract> getContractList(String year);
     List<Contract> getContractListByMonth(String month);
-
+    List<Contract> searchMonthData(Assessment assessment);
     List<Contract> getAllContractBySalesmanId(String salesmanId);
 
     void addQuotationItem(QuotationItem quotationItem);

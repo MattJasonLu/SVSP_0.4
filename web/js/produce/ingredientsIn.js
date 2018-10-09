@@ -15,23 +15,6 @@ function getDayDate(date) {
     return time1;
 }
 
-//全选复选框
-function allSelect() {
-    var isChecked = $('#allSel1').prop('checked');
-    if (isChecked) $("input[name='select']").prop('checked', true);
-    else $("input[name='select']").prop('checked', false);
-}
-
-/**
- * 重置功能
- */
-function reset() {
-    // $("#senior").find("input").val("");
-    // $("#senior").find("select").get(0).selectedIndex = -1;
-    // $("#searchContent").val("");
-    window.location.reload();
-}
-
 var currentPage = 1;                          //当前页数
 var isSearch = false;
 var data1;
@@ -610,7 +593,7 @@ function searchIngredientIn() {
  * @returns {string}
  */
 function getIngredientsInId1(item) {
-    return item.firstElementChild.innerHTML;
+    return item.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -619,7 +602,7 @@ function getIngredientsInId1(item) {
  * @returns {*}
  */
 function getIngredientsInId(item) {
-    return item.parentElement.parentElement.firstElementChild.innerHTML;
+    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -862,11 +845,16 @@ function getcurrentDaydate() {
 function loadProcurementList() {
     $("#view-id").text(getCurrentIngredientsInId());
     $("#creationDate").text(getcurrentDaydate());
+    var page = {};
+    page.start = 0;
+    page.count = 0;
     $.ajax({
         type: "POST",                       // 方法类型
         url: "getProcurementList",          // url
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(page),
         dataType: "json",
+        contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 setProcurementList(result);
@@ -940,7 +928,7 @@ function setProcurementList(result) {
                         break;
                     // 需求时间
                     case (3):
-                        $(this).html(getDateStr(obj.demandTime));
+                        $(this).html(obj.demandTime);
                         break;
                     // 申请部门
                     case (4):

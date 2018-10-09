@@ -215,7 +215,6 @@
     </insert>
 
     <!--领料单-->
-
     <resultMap id="IngredientsReceiveRM" type="IngredientsReceive" autoMapping="true">
         <id column="id" property="id"/>
         <collection property="ingredientsList" select="getReceiveItems" column="id"
@@ -343,7 +342,7 @@
     </select>
 
     <select id="getAmountAndReceive" parameterType="Ingredients" resultMap="ReceiveIngredientsRM">
-        select amount,receiveAmount from t_pr_ingredients where name=#{name} and wareHouseName=#{wareHouseName};
+        select * from t_pr_ingredients_inventory where name=#{name} and wareHouseName=#{wareHouseName};
     </select>
 
     <select id="getInventoryList" resultType="Ingredients">

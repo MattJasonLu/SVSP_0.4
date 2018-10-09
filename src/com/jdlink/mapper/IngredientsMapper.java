@@ -37,7 +37,7 @@ public interface IngredientsMapper {
     List<IngredientsReceive> searchReceive(IngredientsReceive ingredientsReceive);
     void invalidReceive(String id);
     void updateReceive(IngredientsReceive ingredientsReceive);
-    List<Ingredients> getAmountAndReceive(Ingredients ingredients);
+    Ingredients getAmountAndReceive(Ingredients ingredients);
     List<Ingredients> getInventoryList();
     List<Ingredients> searchInventory(Ingredients ingredients);
     void updateReceiveState(String id);
