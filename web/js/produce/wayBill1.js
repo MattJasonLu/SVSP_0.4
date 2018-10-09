@@ -479,6 +479,7 @@ function importExcel() {
                         window.location.reload();         //刷新
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },
@@ -843,6 +844,26 @@ function showAddData() {
     getCurrentWayBillId();
     $("#modal-id").text(wayBillId);
     $("#modal-creationDate").text(getcurrentDaydate());
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "getCurrentUserInfo",              // url
+        cache: false,
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                var data = eval(result.data);
+                console.log(data);
+                // 各下拉框数据填充
+                $("#modal-founder").val(data.username);  // 将创建人设置为当前登陆用户
+            } else {
+                 console.log(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 }
 
 /**
