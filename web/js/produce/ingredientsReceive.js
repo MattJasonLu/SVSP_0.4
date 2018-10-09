@@ -365,43 +365,43 @@ function setList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
+                case (1):
                     // 领料单号
                     $(this).html(obj.id);
                     break;
-                case (1):
+                case (2):
                     // 部门
                     $(this).html(obj.department);
                     break;
-                case (2):
+                case (3):
                     // 领料单状态
                     $(this).html(obj.state.name);
                     break;
-                case (3):
+                case (4):
                     // 总数量
                     $(this).html(obj.totalAmount);
                     break;
-                case (4):
+                case (5):
                     // 主管副总经理
                     $(this).html(obj.vicePresident);
                     break;
-                case (5):
+                case (6):
                     // 仓库部门主管
                     $(this).html(obj.warehouseSupervisor);
                     break;
-                case (6):
+                case (7):
                     // 保管员
                     $(this).html(obj.keeper);
                     break;
-                case (7):
+                case (8):
                     // 领料部门主管
                     $(this).html(obj.pickingSupervisor);
                     break;
-                case (8):
+                case (9):
                     // 领料人
                     $(this).html(obj.pickingMan);
                     break;
-                case (9):
+                case (10):
                     // 创建日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
