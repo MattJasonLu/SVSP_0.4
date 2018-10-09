@@ -1,6 +1,10 @@
 /*********************
  * jackYang
  */
+
+var currentPage = 1;                          //当前页数
+var isSearch = false;
+var data1;
 /**
  * 重置搜索数据
  */
@@ -30,22 +34,412 @@ function getNewest() {
         }
     });
 }
+
+
+/**
+ * 返回count值
+ * */
+function countValue() {
+    var mySelect = document.getElementById("count");
+    var index = mySelect.selectedIndex;
+    return mySelect.options[index].text;
+}
+
+/**
+ * 计算总页数
+ * */
+function totalPage() {
+    var totalRecord = 0;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "totalMaterRecord",                  // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result > 0) {
+                    totalRecord = result;
+                } else {
+                    console.log("fail: " + result);
+                    totalRecord = 0;
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                totalRecord = 0;
+            }
+        });
+    }
+    else {
+        console.log(data1)
+        if(data1.keywords==undefined){//高级查询
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchCompatibilityItemTotal",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result > 0) {
+                        totalRecord = result;
+                        console.log("总记录数为:" + result);
+                    } else {
+                        console.log("fail: " + result);
+                        totalRecord = 0;
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    totalRecord = 0;
+                }
+            });
+        }
+        if(data1.keywords!=undefined){
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "searchCompatibilityTotal",                  // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    // console.log(result);
+                    if (result > 0) {
+                        totalRecord = result;
+                        console.log("总记录数为:" + result);
+                    } else {
+                        console.log("fail: " + result);
+                        totalRecord = 0;
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                    totalRecord = 0;
+                }
+            });
+
+        }
+    }
+
+
+    var count = countValue();                         // 可选
+    var total = loadPages(totalRecord, count);
+    return total;
+}
+
+/**
+ * 设置克隆页码
+ * */
+function setPageClone(result) {
+    $(".beforeClone").remove();
+    setMaterialList(result);
+    var total = totalPage();
+    $("#next").prev().hide();
+    var st = "共" + total + "页";
+    $("#totalPage").text(st);
+    var myArray = new Array();
+    for (var i = 0; i < total; i++) {
+        var li = $("#next").prev();
+        myArray[i] = i + 1;
+        var clonedLi = li.clone();
+        clonedLi.show();
+        clonedLi.find('a:first-child').text(myArray[i]);
+        clonedLi.find('a:first-child').click(function () {
+            var num = $(this).text();
+            switchPage(num);
+            addAndRemoveClass(this);
+        });
+        clonedLi.addClass("beforeClone");
+        clonedLi.removeAttr("id");
+        clonedLi.insertAfter(li);
+    }
+    $("#previous").next().next().eq(0).addClass("active");       // 将首页页面标蓝
+    $("#previous").next().next().eq(0).addClass("oldPageClass");
+
+}
+
+/**
+ * 点击页数跳转页面
+ * @param pageNumber 跳转页数
+ * */
+function switchPage(pageNumber) {
+    console.log("当前页：" + pageNumber);
+    if (pageNumber > totalPage()) {
+        pageNumber = totalPage();
+    }
+    if (pageNumber == 0) {                 //首页
+        pageNumber = 1;
+    }
+    if (pageNumber == -2) {
+        pageNumber = totalPage();        //尾页
+    }
+    if (pageNumber == null || pageNumber == undefined) {
+        console.log("参数为空,返回首页!");
+        pageNumber = 1;
+    }
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber == 1) {
+        $("#previous").addClass("disabled");
+        $("#firstPage").addClass("disabled");
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    if (pageNumber == totalPage()) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber > 1) {
+        $("#previous").removeClass("disabled");
+        $("#firstPage").removeClass("disabled");
+    }
+    if (pageNumber < totalPage()) {
+        $("#next").removeClass("disabled");
+        $("#endPage").removeClass("disabled");
+    }
+    addPageClass(pageNumber);           // 设置页码标蓝
+    var page = {};
+    page.count = countValue();                        //可选
+    page.pageNumber = pageNumber;
+    currentPage = pageNumber;          //当前页面
+    //addClass("active");
+    page.start = (pageNumber - 1) * page.count;
+    if (!isSearch) {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getList1",         // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    setCompatibility(result);
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    }
+    else {
+        data1['page'] = page;
+        if(data1.keywords==undefined){ //高级查询
+            console.log("进来了")
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "searchCompatibilityItem",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success"){
+                        setCompatibility(result)
+                    } else {
+                        alert(result.message);
+
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器错误！");
+                }
+            });
+
+        }
+        if(data1.keywords!=undefined){
+            $.ajax({
+                type: "POST",                            // 方法类型
+                url: "searchCompatibility",                 // url
+                async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(data1),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result != undefined && result.status == "success"){
+                        setCompatibility(result)
+                    } else {
+                        alert(result.message);
+
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                    alert("服务器错误！");
+                }
+            });
+        }
+    }
+}
+
+/**
+ * 输入页数跳转页面
+ * */
+function inputSwitchPage() {
+    var pageNumber = $("#pageNumber").val();    // 获取输入框的值
+    $("#current").find("a").text("当前页：" + pageNumber);
+    if (pageNumber > totalPage()) {
+        pageNumber = totalPage();
+    }
+    if (pageNumber == null || pageNumber == "") {
+        window.alert("跳转页数不能为空！")
+    } else {
+        if (pageNumber == 1) {
+            $("#previous").addClass("disabled");
+            $("#firstPage").addClass("disabled");
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        if (pageNumber == totalPage()) {
+            $("#next").addClass("disabled");
+            $("#endPage").addClass("disabled");
+
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber > 1) {
+            $("#previous").removeClass("disabled");
+            $("#firstPage").removeClass("disabled");
+        }
+        if (pageNumber < totalPage()) {
+            $("#next").removeClass("disabled");
+            $("#endPage").removeClass("disabled");
+        }
+        currentPage = pageNumber;
+        addPageClass(pageNumber);           // 设置页码标蓝
+        var page = {};
+        page.count = countValue();//可选
+        page.pageNumber = pageNumber;
+        page.start = (pageNumber - 1) * page.count;
+        if (!isSearch) {
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "getList1",         // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify(page),
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (result) {
+                    if (result != undefined) {
+                        console.log(result);
+                        setCompatibility(result);
+                    } else {
+                        console.log("fail: " + result);
+                    }
+                },
+                error: function (result) {
+                    console.log("error: " + result);
+                }
+            });
+        } else {
+            data1['page'] = page;
+            if(data1.keywords==undefined){ //高级查询
+                console.log("进来了")
+                $.ajax({
+                    type: "POST",                            // 方法类型
+                    url: "searchCompatibilityItem",                 // url
+                    async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(data1),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        if (result != undefined && result.status == "success"){
+                            setCompatibility(result)
+                        } else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert("服务器错误！");
+                    }
+                });
+
+            }
+            if(data1.keywords!=undefined){
+                $.ajax({
+                    type: "POST",                            // 方法类型
+                    url: "searchCompatibility",                 // url
+                    async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+                    data: JSON.stringify(data1),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        if (result != undefined && result.status == "success"){
+                            setCompatibility(result)
+                        } else {
+                            alert(result.message);
+
+                        }
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert("服务器错误！");
+                    }
+                });
+            }
+
+
+        }
+    }
+}
+
+/**
+ * 计算分页总页数
+ * @param totalRecord
+ * @param count
+ * @returns {number}
+ */
+function loadPages(totalRecord, count) {
+    if (totalRecord == 0) {
+        console.log("总记录数为0，请检查！");
+        return 0;
+    }
+    else if (totalRecord % count == 0)
+        return totalRecord / count;
+    else
+        return parseInt(totalRecord / count) + 1;
+}
+
+
 /*加载物料需求列表*/
 function loadPageMaterialList() {
-    $("#td2").hide();
+    var pageNumber = 1;               // 显示首页
+    $("#current").find("a").text("当前页：1");
+    $("#previous").addClass("disabled");
+    $("#firstPage").addClass("disabled");
+    $("#next").removeClass("disabled");            // 移除上一次设置的按钮禁用
+    $("#endPage").removeClass("disabled");
+    if (totalPage() == 1) {
+        $("#next").addClass("disabled");
+        $("#endPage").addClass("disabled");
+    }
+    var page = {};
+    page.count = countValue();                                 // 可选
+    page.pageNumber = pageNumber;
+    page.start = (pageNumber - 1) * page.count;
+
     $.ajax({
         type:"POST",
         url:"getMaterialList",
         async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        data:JSON.stringify(page),
         dataType: "json",
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result !== undefined && result.status === "success"){
-                //console.log(result);
+                console.log(result);
                 var obj=result.array;
-                var n=result.length;
                 //设置下拉框数据
-                setMaterialList(obj,n);
+                setPageClone(result.array)
+                // setMaterialList(obj,n);
             }
             else {
                 alert(result.message);
@@ -55,306 +449,83 @@ function loadPageMaterialList() {
             alert("服务器异常！")
         }
     });
-    $("#week").text(getWeekDate());
+    isSearch = false;
 }
 /*加载表格数据*/
-function setMaterialList(obj,n) {
-    arrayId = [];
+function setMaterialList(result) {
     var tr = $("#cloneTr1");//克隆一行
     //tr.siblings().remove();
     //每日配比量合计
    // tr.siblings().remove();
-    dailyProportionsTotal=0;
-    //每周需求总量
-    weeklyDemandTotal=0;
-    //热值最大总量
-    calorificmaxTotal=0;
-    //热值最小总量
-    calorificminTotal=0;
-    //灰分最大总量
-    ashmaxTotal=0;
-    //灰分最小总量
-    ashminTotal=0;
-    //水分最大总量
-    watermaxTotal=0;
-    //水分最小总量
-    waterminTotal=0;
-    //氯最大总量
-    clmaxTotal=0;
-    //氯最大总量
-    clminTotal=0;
-    //硫最大总量
-    smaxTotal=0;
-    //硫最小总量
-    sminTotal=0;
-    //磷最大总量
-    pmaxTotal=0;
-    //磷最小总量
-    pminTotal=0;
-    //弗最大总量
-    fmaxTotal=0;
-    //弗最小总量
-    fminTotal=0;
-    //PH最大总量
-    phmaxTotal=0;
-    //PH最小总量
-    phminTotal=0;
-    //目前库存总量
-    currentInventoryTotal=0;
-    //安全库存总和
-    safetyTotal=0;
-    //市场采购量总和
-    marketPurchasesTotal=0;
-   // console.log(obj);
-    $.each(obj, function (index, item) {
+    $.each(result, function (index, item) {
         var data = eval(item);
-       // console.log(data);
-        //console.log(index);
         var clonedTr = tr.clone();
+        clonedTr.attr('class','myclass');
+        clonedTr.show();
         clonedTr.children("td").each(function (inner_index) {
             // 根据索引为部分td赋值
             switch (inner_index) {
                 // 序号
-                case (0):
-                    var num = parseInt(data.id)
-                    $(this).html(num);
-                    break;
-                //处理类别
                 case (1):
-                    // $(this).html();
-                    //判断是否是物流合同
-                    if (data.handleCategory != null) {
-                        $(this).html(data.handleCategory.name);
-                    }
-                    else {
-                        $(this).html("");
-                    }
+                    $(this).html(index + 1);
                     break;
-                // 包装方式
+                //物料单号
                 case (2):
-                    if (data.packageType != null)
-                        $(this).html(data.packageType.name);
-                    else {
-                        $(this).html("");
-                    }
+                    $(this).html(data.materialRequireId);
                     break;
-                //形态
+                // 周生产计划总量
                 case (3):
-                    if (data.formType != null) {
-                        $(this).html(data.formType.name);
-                    }
-                    else { $(this).html("");}
-
+                    $(this).html(data.weeklyDemandTotal);
                     break;
-                // 周生产计划量(T)
+                //目前库存总量
                 case (4):
-                    $(this).html(data.weeklyDemand);
-                    dailyProportionsTotal+=data.weeklyDemand;
+                    $(this).html(data.currentInventoryTotal);
                     break;
-                //目前库存量(T)
+                // 安全库存总量
                 case (5):
-                    $(this).html(data.currentInventory);
-                    currentInventoryTotal+=data.currentInventory;
+                    $(this).html(data.safetyTotal);
                     break;
-                // 安全库存量(T)
+                //市场采购总量
                 case (6):
-                    $(this).html(data.safety);
-                    safetyTotal+=data.safety;
+                    $(this).html(data.marketPurchasesTotal);
                     break;
-                // 市场采购量
+                // 热值平均
                 case (7):
-                    $(this).html(data.marketPurchases);
-                    marketPurchasesTotal+=data.marketPurchases;
+                    $(this).html(data.calorificAvg);
                     break;
-                //热值max
+                // 灰分平均
                 case (8):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                       var obj1=eval(item);
-                        if (obj1.parameter.name =="热值") {
-                            calorificmax=obj1.maximum;
-                           calorificmaxTotal+=obj1.maximum;
-                        }
-                    });
-                    $(this).html(calorificmax);
+                    $(this).html(data.ashAvg);
                     break;
-                //热值min
+                //水分平均
                 case (9):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="热值") {
-                            calorificmix= obj1.minimum;
-                            calorificminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(calorificmix);
+                    $(this).html(data.waterAvg);
                     break;
-                //灰分max
+                //S平均
                 case (10):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="灰分") {
-                            ascmax= obj1.maximum;
-                            ashmaxTotal+=obj1.maximum;
-
-                        }
-                    });
-                    $(this).html(ascmax);
+                    $(this).html(data.sAvg);
                     break;
-                //灰分min
+                //CL平均
                 case (11):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="灰分") {
-                            ascmix= obj1.minimum;
-                            ashminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(ascmix);
+                    $(this).html(data.clAvg);
                     break;
-                //水分max
+                //P平均
                 case (12):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="含水率") {
-                            watermax= obj1.maximum;
-                            watermaxTotal+=obj1.maximum;
-                        }
-                    });
-                    $(this).html(watermax);
+                    $(this).html(data.pAvg);
                     break;
-                //水分min
+                //F平均
                 case (13):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="含水率") {
-                            watermin= obj1.minimum;
-                            waterminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(watermin);
+                    $(this).html(data.fAvg);
                     break;
-                   //硫max
+                //PH平均
                 case (14):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="硫含量") {
-                            smax= obj1.maximum;
-                            smaxTotal+=obj1.maximum;
-                        }
-                    });
-                    $(this).html(smax);
-                    break;
-                   //硫min
-                case (15):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="硫含量") {
-                            smin= obj1.minimum;
-                            sminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(smin);
-                    break;
-                    //氯max
-                case (16):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="氯含量") {
-                            clmax= obj1.maximum;
-                            clmaxTotal+=obj1.maximum;
-                        }
-                    });
-                    $(this).html(clmax);
-                    break;
-                    //氯min
-                case (17):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="氯含量") {
-                            clmin= obj1.minimum;
-                            clminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(clmin);
-                    break;
-                //磷max
-                case (18):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="磷含量") {
-                            pmax= obj1.maximum;
-                            pmaxTotal+=obj1.maximum;
-                        }
-                    });
-                    $(this).html(pmax);
-                    break;
-                //磷min
-                case (19):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="磷含量") {
-                            pmin= obj1.minimum;
-                            pminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(pmin);
-                    break;
-                //氟max
-                case (20):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="氟含量") {
-                            fmax= obj1.maximum;
-                            fmaxTotal+=obj1.maximum;
-                        }
-                    });
-                    $(this).html(fmax);
-                    break;
-                //氟min
-                case (21):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="氟含量") {
-                            fmin= obj1.minimum;
-                            fminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(fmin);
-                    break;
-                //phmax
-                case (22):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="酸碱度") {
-                            phmax= obj1.maximum;
-                            phmaxTotal+=obj1.maximum;
-                        }
-                    });
-                    $(this).html(phmax);
-                    break;
-                //phmin
-                case (23):
-                    $.each(obj[index].wastesList[index].parameterList, function (index, item) {
-                        var obj1 = eval(item);
-                        if (obj1.parameter.name =="酸碱度") {
-                            phmin= obj1.minimum;
-                            phminTotal+=obj1.minimum;
-                        }
-                    });
-                    $(this).html(phmin);
+                    $(this).html(data.phAvg);
                     break;
                 //状态
-                case (24):
-                    if(data.checkState!=null){
+                case (15):
+                    if (data.checkState != null) {
                         $(this).html(data.checkState.name);
                     }
-                    else {
-                        $(this).html("");
-                    }
-                    break;
-                //备注
-                case (25):
-                    $(this).html(data.remarks);
                     break;
             }
         });
@@ -367,27 +538,7 @@ function setMaterialList(obj,n) {
     // 隐藏无数据的tr
     tr.hide();
     tr.removeClass("myclass")
-    //赋值
-    $("#dailyProportionsTotal").text(dailyProportionsTotal);
-    $("#currentInventoryTotal").text(currentInventoryTotal);
-    $("#safetyTotal").text(safetyTotal);
-    $("#marketPurchasesTotal").text(marketPurchasesTotal);
-    $("#calorificmaxTotal").text(calorificmaxTotal);
-    $("#calorificminTotal").text(calorificminTotal);
-    $("#ashmaxTotal").text(ashmaxTotal);
-    $("#ashminTotal").text(ashminTotal);
-    $("#watermaxTotal").text(watermaxTotal);
-    $("#waterminTotal").text(waterminTotal);
-    $("#smaxTotal").text(smaxTotal);
-    $("#sminTotal").text(sminTotal);
-    $("#clmaxTotal").text(clmaxTotal);
-    $("#clminTotal").text(clminTotal);
-    $("#pmaxTotal").text(pmaxTotal);
-    $("#pminTotal").text(pminTotal);
-    $("#fmaxTotal").text(fmaxTotal);
-    $("#fminTotal").text(fminTotal);
-    $("#phmaxTotal").text(phmaxTotal);
-    $("#phminTotal").text(phminTotal);
+
 }
 //导入数据
 function importExcelChoose() {
@@ -745,3 +896,235 @@ function modify() {
     });
 }
 
+
+/**
+ * 点击图标查看
+ */
+function view1(item) {
+    var materialRequireId=$(item).parent().parent().children('td').eq(2).html();
+
+    $.ajax({
+        type: "POST",
+        url: "getMaterialRequireById",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': materialRequireId},
+        //contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                //赋值配伍单号
+                $('#materialRequireId1').text(materialRequireId);
+                setCompatibilityModal(result.materialRequireItemList);
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+    $('#appointModal2').modal('show');
+
+}
+
+/**
+ * 设置查看模态框
+ */
+function setCompatibilityModal(result) {
+
+    var tr = $('#cloneTr');
+
+    tr.siblings().remove();
+    var weeklyDemandTotal=0;
+    var currentInventoryTotal=0;
+    var safetyTotal=0;
+    var marketPurchasesTotal=0;
+    var calorificMaxTotal=0;
+    var calorificMinTotal=0;
+    var ashMaxTotal=0;
+    var ashMinTotal=0;
+    var waterMaxTotal=0;
+    var waterMinTotal=0;
+    var clMaxTotal=0;
+    var clMinTotal=0;
+    var sMaxTotal=0;
+    var sMinTotal=0;
+    var pMaxTotal=0;
+    var pMinTotal=0;
+    var fMaxTotal=0;
+    var fMinTotal=0;
+    var phMaxTotal=0;
+    var phMinTotal=0;
+    $.each(result,function (index,item) {
+        var obj = eval(item);
+
+        var clonedTr = tr.clone();
+
+        clonedTr.show();
+
+        clonedTr.children('td').each(function (inner_index) {
+
+            switch (inner_index) {
+                //序号
+                case (0):
+                    $(this).html(index + 1);
+                    break;
+
+                //进料方式
+                case (1):
+                    if (obj.handleCategory != null) {
+                        $(this).html(obj.handleCategory.name);
+                    }
+                    break;
+
+                //物质形态
+                case (2):
+                    if (obj.formType != null) {
+                        $(this).html(obj.formType.name);
+                    }
+                    break;
+                //包装方式
+                case (3):
+                if(obj.packageType!=null){
+                    $(this).html(obj.packageType.name);
+                }
+
+                    break;
+                //周生产计划量
+                case (4):
+                    $(this).html(obj.weeklyDemand);
+                    weeklyDemandTotal+=parseFloat(obj.weeklyDemand)
+                    break;
+                //目前库存量
+                case (5):
+                    $(this).html(obj.currentInventory);
+                    currentInventoryTotal+=parseFloat(obj.currentInventory)
+                    break;
+                //安全库存量
+                case (6):
+                    $(this).html(obj.safety);
+                    safetyTotal+=parseFloat(obj.safety)
+                    break;
+                //市场采购量
+                case (7):
+                    $(this).html(obj.marketPurchases);
+                    marketPurchasesTotal+=parseFloat(obj.marketPurchases)
+                    break;
+                //热值Max
+                case (8):
+                    $(this).html(obj.calorificMax);
+                    calorificMaxTotal+=parseFloat(obj.calorificMax)
+                    break;
+                //热值Min
+                case (9):
+                    $(this).html(obj.calorificMin);
+                    calorificMinTotal+=parseFloat(obj.calorificMin)
+                    break;
+                //灰分Max
+                case (10):
+                    $(this).html(obj.ashMax);
+                    ashMaxTotal+=parseFloat(obj.ashMax)
+                    break;
+                //灰分Min
+                case (11):
+                    $(this).html(obj.ashMin);
+                    ashMinTotal+=parseFloat(obj.ashMin)
+                    break;
+                //水分Max
+                case (12):
+                    $(this).html(obj.waterMax);
+                    waterMaxTotal+=parseFloat(obj.waterMax)
+                    break;
+                //水分Min
+                case (13):
+                    $(this).html(obj.waterMin);
+                    waterMinTotal+=parseFloat(obj.waterMin)
+                    break;
+                    //氯Max
+                case (14):
+                    $(this).html(obj.clMax);
+                    clMaxTotal+=parseFloat(obj.clMax)
+                    break;
+                    //氯Min
+                case (15):
+                    $(this).html(obj.clMin);
+                    clMinTotal+=parseFloat(obj.clMin)
+                    break;
+                    //硫Max
+                case (16):
+                    $(this).html(obj.sMax);
+                    sMaxTotal+=parseFloat(obj.sMax)
+                    break;
+                    //硫Min
+                case (17):
+                    $(this).html(obj.sMin);
+                    sMinTotal+=parseFloat(obj.sMin)
+                    break;
+                    //磷Max
+                case (18):
+                    $(this).html(obj.pMax);
+                    pMaxTotal+=parseFloat(obj.pMax)
+                    break;
+                    //磷Min
+                case (19):
+                    $(this).html(obj.pMin);
+                    pMinTotal+=parseFloat(obj.pMin)
+                    break;
+                    //氟Max
+                case (20):
+                    $(this).html(obj.fMax);
+                    fMaxTotal+=parseFloat(obj.fMax)
+                    break;
+                    //氟Min
+                case (21):
+                    $(this).html(obj.fMin);
+                    fMinTotal+=parseFloat(obj.fMin)
+                    break;
+                    //酸碱度Max
+                case (22):
+                    $(this).html(obj.phMax);
+                    phMaxTotal+=parseFloat(obj.phMax)
+                    break;
+                    //酸碱度MaxMin
+                case (23):
+                    $(this).html(obj.phMin);
+                    phMinTotal+=parseFloat(obj.phMin);
+                    break;
+
+            }
+            clonedTr.removeAttr('id');
+            clonedTr.insertBefore(tr);
+
+        })
+
+        tr.hide();
+
+
+    })
+    $("#weeklyDemandTotal").html(weeklyDemandTotal);
+    $("#currentInventoryTotal").html(currentInventoryTotal);
+    $("#safetyTotal").html(safetyTotal);
+    $("#marketPurchasesTotal").html(marketPurchasesTotal);
+    $("#calorificMaxTotal").html(calorificMaxTotal);
+    $("#calorificMinTotal").html(calorificMinTotal);
+    $("#ashMaxTotal").html(ashMaxTotal);
+    $("#ashMinTotal").html(ashMinTotal);
+    $("#waterMaxTotal").html(waterMaxTotal);
+    $("#waterMinTotal").html(waterMinTotal);
+    $("#clMaxTotal").html(clMaxTotal);
+    $("#clMinTotal").html(clMinTotal);
+    $("#sMaxTotal").html(sMaxTotal);
+    $("#sMinTotal").html(sMinTotal);
+    $("#pMaxTotal").html(pMaxTotal);
+    $("#pMinTotal").html(pMinTotal);
+    $("#fMaxTotal").html(fMaxTotal);
+    $("#fMinTotal").html(fMinTotal);
+    $("#phMaxTotal").html(phMaxTotal);
+    $("#phMinTotal").html(phMinTotal);
+
+
+}
