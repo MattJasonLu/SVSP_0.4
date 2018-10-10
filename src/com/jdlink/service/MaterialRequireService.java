@@ -21,4 +21,6 @@ public interface MaterialRequireService {
     void updatemarketPurchases(String id,float marketPurchases);
     List<MaterialRequire>getMaterialList(Page page);
     List<MaterialRequireItem> getMaterialRequireById(String materialRequireId);
+    void  updateMaterialRequireItem(MaterialRequireItem materialRequireItem);
+    void updateMaterialRequire(MaterialRequire materialRequire);
 }

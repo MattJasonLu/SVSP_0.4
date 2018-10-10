@@ -475,51 +475,51 @@ function setMaterialList(result) {
                     break;
                 // 周生产计划总量
                 case (3):
-                    $(this).html(data.weeklyDemandTotal);
+                    $(this).html((data.weeklyDemandTotal).toFixed(1));
                     break;
                 //目前库存总量
                 case (4):
-                    $(this).html(data.currentInventoryTotal);
+                    $(this).html(data.currentInventoryTotal.toFixed(1));
                     break;
                 // 安全库存总量
                 case (5):
-                    $(this).html(data.safetyTotal);
+                    $(this).html(data.safetyTotal.toFixed(1));
                     break;
                 //市场采购总量
                 case (6):
-                    $(this).html(data.marketPurchasesTotal);
+                    $(this).html(data.marketPurchasesTotal.toFixed(1));
                     break;
                 // 热值平均
                 case (7):
-                    $(this).html(data.calorificAvg);
+                    $(this).html(data.calorificAvg.toFixed(1));
                     break;
                 // 灰分平均
                 case (8):
-                    $(this).html(data.ashAvg);
+                    $(this).html(data.ashAvg.toFixed(1));
                     break;
                 //水分平均
                 case (9):
-                    $(this).html(data.waterAvg);
+                    $(this).html(data.waterAvg.toFixed(1));
                     break;
                 //S平均
                 case (10):
-                    $(this).html(data.sAvg);
+                    $(this).html(data.sAvg.toFixed(1));
                     break;
                 //CL平均
                 case (11):
-                    $(this).html(data.clAvg);
+                    $(this).html(data.clAvg.toFixed(1));
                     break;
                 //P平均
                 case (12):
-                    $(this).html(data.pAvg);
+                    $(this).html(data.pAvg.toFixed(1));
                     break;
                 //F平均
                 case (13):
-                    $(this).html(data.fAvg);
+                    $(this).html(data.fAvg.toFixed(1));
                     break;
                 //PH平均
                 case (14):
-                    $(this).html(data.phAvg);
+                    $(this).html(data.phAvg.toFixed(1));
                     break;
                 //状态
                 case (15):
@@ -996,102 +996,102 @@ function setCompatibilityModal(result) {
                     break;
                 //周生产计划量
                 case (4):
-                    $(this).html(obj.weeklyDemand);
+                    $(this).html(obj.weeklyDemand.toFixed(1));
                     weeklyDemandTotal+=parseFloat(obj.weeklyDemand)
                     break;
                 //目前库存量
                 case (5):
-                    $(this).html(obj.currentInventory);
+                    $(this).html(obj.currentInventory.toFixed(1));
                     currentInventoryTotal+=parseFloat(obj.currentInventory)
                     break;
                 //安全库存量
                 case (6):
-                    $(this).html(obj.safety);
+                    $(this).html(obj.safety.toFixed(1));
                     safetyTotal+=parseFloat(obj.safety)
                     break;
                 //市场采购量
                 case (7):
-                    $(this).html(obj.marketPurchases);
+                    $(this).html(obj.marketPurchases.toFixed(1));
                     marketPurchasesTotal+=parseFloat(obj.marketPurchases)
                     break;
                 //热值Max
                 case (8):
-                    $(this).html(obj.calorificMax);
+                    $(this).html(obj.calorificMax.toFixed(1));
                     calorificMaxTotal+=parseFloat(obj.calorificMax)
                     break;
                 //热值Min
                 case (9):
-                    $(this).html(obj.calorificMin);
+                    $(this).html(obj.calorificMin.toFixed(1));
                     calorificMinTotal+=parseFloat(obj.calorificMin)
                     break;
                 //灰分Max
                 case (10):
-                    $(this).html(obj.ashMax);
+                    $(this).html(obj.ashMax.toFixed(1));
                     ashMaxTotal+=parseFloat(obj.ashMax)
                     break;
                 //灰分Min
                 case (11):
-                    $(this).html(obj.ashMin);
+                    $(this).html(obj.ashMin.toFixed(1));
                     ashMinTotal+=parseFloat(obj.ashMin)
                     break;
                 //水分Max
                 case (12):
-                    $(this).html(obj.waterMax);
+                    $(this).html(obj.waterMax.toFixed(1));
                     waterMaxTotal+=parseFloat(obj.waterMax)
                     break;
                 //水分Min
                 case (13):
-                    $(this).html(obj.waterMin);
+                    $(this).html(obj.waterMin.toFixed(1));
                     waterMinTotal+=parseFloat(obj.waterMin)
                     break;
                     //氯Max
                 case (14):
-                    $(this).html(obj.clMax);
+                    $(this).html(obj.clMax.toFixed(1));
                     clMaxTotal+=parseFloat(obj.clMax)
                     break;
                     //氯Min
                 case (15):
-                    $(this).html(obj.clMin);
+                    $(this).html(obj.clMin.toFixed(1));
                     clMinTotal+=parseFloat(obj.clMin)
                     break;
                     //硫Max
                 case (16):
-                    $(this).html(obj.sMax);
+                    $(this).html(obj.sMax.toFixed(1));
                     sMaxTotal+=parseFloat(obj.sMax)
                     break;
                     //硫Min
                 case (17):
-                    $(this).html(obj.sMin);
+                    $(this).html(obj.sMin.toFixed(1));
                     sMinTotal+=parseFloat(obj.sMin)
                     break;
                     //磷Max
                 case (18):
-                    $(this).html(obj.pMax);
+                    $(this).html(obj.pMax.toFixed(1));
                     pMaxTotal+=parseFloat(obj.pMax)
                     break;
                     //磷Min
                 case (19):
-                    $(this).html(obj.pMin);
+                    $(this).html(obj.pMin.toFixed(1));
                     pMinTotal+=parseFloat(obj.pMin)
                     break;
                     //氟Max
                 case (20):
-                    $(this).html(obj.fMax);
+                    $(this).html(obj.fMax.toFixed(1));
                     fMaxTotal+=parseFloat(obj.fMax)
                     break;
                     //氟Min
                 case (21):
-                    $(this).html(obj.fMin);
+                    $(this).html(obj.fMin.toFixed(1));
                     fMinTotal+=parseFloat(obj.fMin)
                     break;
                     //酸碱度Max
                 case (22):
-                    $(this).html(obj.phMax);
+                    $(this).html(obj.phMax.toFixed(1));
                     phMaxTotal+=parseFloat(obj.phMax)
                     break;
                     //酸碱度MaxMin
                 case (23):
-                    $(this).html(obj.phMin);
+                    $(this).html(obj.phMin.toFixed(1));
                     phMinTotal+=parseFloat(obj.phMin);
                     break;
 
@@ -1105,26 +1105,26 @@ function setCompatibilityModal(result) {
 
 
     })
-    $("#weeklyDemandTotal").html(weeklyDemandTotal);
-    $("#currentInventoryTotal").html(currentInventoryTotal);
-    $("#safetyTotal").html(safetyTotal);
-    $("#marketPurchasesTotal").html(marketPurchasesTotal);
-    $("#calorificMaxTotal").html(calorificMaxTotal);
-    $("#calorificMinTotal").html(calorificMinTotal);
-    $("#ashMaxTotal").html(ashMaxTotal);
-    $("#ashMinTotal").html(ashMinTotal);
-    $("#waterMaxTotal").html(waterMaxTotal);
-    $("#waterMinTotal").html(waterMinTotal);
-    $("#clMaxTotal").html(clMaxTotal);
-    $("#clMinTotal").html(clMinTotal);
-    $("#sMaxTotal").html(sMaxTotal);
-    $("#sMinTotal").html(sMinTotal);
-    $("#pMaxTotal").html(pMaxTotal);
-    $("#pMinTotal").html(pMinTotal);
-    $("#fMaxTotal").html(fMaxTotal);
-    $("#fMinTotal").html(fMinTotal);
-    $("#phMaxTotal").html(phMaxTotal);
-    $("#phMinTotal").html(phMinTotal);
+    $("#weeklyDemandTotal").html(weeklyDemandTotal.toFixed(1));
+    $("#currentInventoryTotal").html(currentInventoryTotal.toFixed(1));
+    $("#safetyTotal").html(safetyTotal.toFixed(1));
+    $("#marketPurchasesTotal").html(marketPurchasesTotal.toFixed(1));
+    $("#calorificMaxTotal").html(calorificMaxTotal.toFixed(1));
+    $("#calorificMinTotal").html(calorificMinTotal.toFixed(1));
+    $("#ashMaxTotal").html(ashMaxTotal.toFixed(1));
+    $("#ashMinTotal").html(ashMinTotal.toFixed(1));
+    $("#waterMaxTotal").html(waterMaxTotal.toFixed(1));
+    $("#waterMinTotal").html(waterMinTotal.toFixed(1));
+    $("#clMaxTotal").html(clMaxTotal.toFixed(1));
+    $("#clMinTotal").html(clMinTotal.toFixed(1));
+    $("#sMaxTotal").html(sMaxTotal.toFixed(1));
+    $("#sMinTotal").html(sMinTotal.toFixed(1));
+    $("#pMaxTotal").html(pMaxTotal.toFixed(1));
+    $("#pMinTotal").html(pMinTotal.toFixed(1));
+    $("#fMaxTotal").html(fMaxTotal.toFixed(1));
+    $("#fMinTotal").html(fMinTotal.toFixed(1));
+    $("#phMaxTotal").html(phMaxTotal.toFixed(1));
+    $("#phMinTotal").html(phMinTotal.toFixed(1));
 
 
 }
@@ -1337,16 +1337,76 @@ function adjustConfirm() {
     var marketPurchasesTotal=0;
 
     $('.myclass2').each(function () {
-        var data={
+        var materialRequireItem={
             handleCategory: $(this).children('td').eq(1).children('select').get(0).selectedIndex,
             formType: $(this).children('td').eq(2).children('select').get(0).selectedIndex,
             packageType:$(this).children('td').eq(3).children('select').get(0).selectedIndex,
-            // weeklyDemand:$(this).children('td').eq(3).children('input').val(),
+            weeklyDemand:$(this).children('td').eq(4).children('input').val(),
+            currentInventory:$(this).children('td').eq(5).children('input').val(),
+            safety:$(this).children('td').eq(6).children('input').val(),
+            marketPurchases:$(this).children('td').eq(7).children('input').val(),
+            id:$(this).children('td').eq(24).html(),
         };
-       console.log(data)
+        //物料明细的更新
+        $.ajax({
+            type: 'POST',
+            url: "updateMaterialRequireItem",
+            data:JSON.stringify(materialRequireItem),
+            dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    console.log(result)
+                }
+                else {
+                    alert(result.message);
+                }
 
-       })
+            },
+            error:function (result) {
+                alert("服务器异常!")
+            }
+            
+        });
 
+       console.log(materialRequireItem)//物料明细
+        weeklyDemandTotal+=parseFloat($(this).children('td').eq(4).children('input').val());
+        currentInventoryTotal+=parseFloat($(this).children('td').eq(5).children('input').val());
+        safetyTotal+=parseFloat($(this).children('td').eq(6).children('input').val());
+        marketPurchasesTotal+=parseFloat($(this).children('td').eq(7).children('input').val());
+    })
+    var materialRequire={
+        materialRequireId:$('#materialRequireId').text(),
+        weeklyDemandTotal:weeklyDemandTotal,
+        currentInventoryTotal:currentInventoryTotal,
+        safetyTotal:safetyTotal,
+        marketPurchasesTotal:marketPurchasesTotal
+    };
+  console.log(materialRequire)
+    //更新主表
+    //物料明细的更新
+    $.ajax({
+        type: 'POST',
+        url: "updateMaterialRequire",
+        data:JSON.stringify(materialRequire),
+        dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result)
+            }
+            else {
+                alert(result.message);
+            }
 
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+
+    });
+
+  alert("修改成功!")
+    window.location.href="materialDemand.html"
 
 }
