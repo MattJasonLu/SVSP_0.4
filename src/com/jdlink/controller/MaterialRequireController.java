@@ -512,6 +512,83 @@ public class MaterialRequireController {
         return  res.toString();
 
     }
+
+    //粗查询
+    @RequestMapping("searchMaterialRequire")
+    @ResponseBody
+    public String searchMaterialRequire(@RequestBody MaterialRequire materialRequire){
+        JSONObject res=new JSONObject();
+        try {
+            List<MaterialRequire> materialRequireList=materialRequireService.searchMaterialRequire(materialRequire);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("array", materialRequireList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+
+        }
+
+
+        return res.toString();
+    }
+
+    //粗查询总数
+    @RequestMapping("searchMaterialRequireCount")
+    @ResponseBody
+    public int searchMaterialRequireCount(@RequestBody MaterialRequire materialRequire){
+        try {
+            return materialRequireService.searchMaterialRequireCount(materialRequire);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+    //高级查询
+    @RequestMapping("searchMaterialRequireItem")
+    @ResponseBody
+    public String searchMaterialRequireItem(@RequestBody MaterialRequireItem materialRequireItem){
+        JSONObject res=new JSONObject();
+        List<MaterialRequire> materialRequireList=new ArrayList<>();
+        try{
+            List<String> materialRequireItemIdList=materialRequireService.searchMaterialRequireItem(materialRequireItem);
+            for(int i=0;i<materialRequireItemIdList.size();i++ ){
+                materialRequireList.add(materialRequireService.getMaterialRequireByMaterialRequireId(materialRequireItemIdList.get(i)));
+            }
+           res.put("array",materialRequireList);
+            res.put("status", "success");
+            res.put("message", "高级查询成功");
+
+
+        }
+
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "高级查询失败");
+        }
+
+
+        return res.toString();
+
+    }
+
+    //高级查询总数
+    @RequestMapping("searchMaterialRequireItemCount")
+    @ResponseBody
+    public int searchMaterialRequireItemCount(@RequestBody MaterialRequireItem materialRequireItem){
+        try {
+            return materialRequireService.searchMaterialRequireItemCount(materialRequireItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     //获取三位序列号
     public static String getString3(String id){
         while (id.length()!=3){

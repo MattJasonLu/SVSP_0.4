@@ -91,5 +91,25 @@ public class MaterialRequireServiceImpl implements MaterialRequireService  {
         return materialRequireMapper.getMaterialRequireByMaterialRequireId(materialRequireId);
     }
 
+    @Override
+    public List<MaterialRequire> searchMaterialRequire(MaterialRequire materialRequire) {
+        return materialRequireMapper.searchMaterialRequire(materialRequire);
+    }
+
+    @Override
+    public int searchMaterialRequireCount(MaterialRequire materialRequire) {
+        return materialRequireMapper.searchMaterialRequireCount(materialRequire);
+    }
+
+    @Override
+    public List<String> searchMaterialRequireItem(MaterialRequireItem materialRequireItem) {
+        return materialRequireMapper.searchMaterialRequireItem(materialRequireItem);
+    }
+
+    @Override
+    public int searchMaterialRequireItemCount(MaterialRequireItem materialRequireItem) {
+        return materialRequireMapper.searchMaterialRequireItemCount(materialRequireItem);
+    }
+
 
 }
