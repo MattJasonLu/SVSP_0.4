@@ -136,16 +136,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="search-proposer" class="col-sm-4 control-label">申购部门负责人</label>
+                                <label for="search-proposer" class="col-sm-4 control-label">申购&nbsp;部&nbsp;门&nbsp;负&nbsp;责人</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-proposer" name="search-proposer" placeholder="">
                                 </div>
                             </div>
-
                         </div>
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-applyMouth" class="col-sm-4 control-label">申请月份</label>
+                                <label for="search-applyMouth" class="col-sm-4 control-label">申&nbsp;&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;份</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-applyMouth" name="search-applyMouth" placeholder="">
                                 </div>
@@ -160,7 +159,7 @@
                         </div>
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-applyDepartment" class="col-sm-4 control-label">申请部门</label>
+                                <label for="search-applyDepartment" class="col-sm-4 control-label">申&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;门</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-applyDepartment" name="search-applyDepartment" placeholder="">
                                 </div>
@@ -183,15 +182,15 @@
                     <div class="row">
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-generalManager" class="col-sm-4 control-label">总经理</label>
+                                <label for="search-generalManager" class="col-sm-4 control-label">总&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-generalManager" name="search-generalManager" placeholder="">
                                 </div>
                             </div>
                         </div>
                         <div class="form-horizontal col-md-4">
-                            <div class="form-group" style="margin-left: -10px;">
-                                <label class="col-sm-3 control-label">创建日期 </label>
+                            <div class="form-group" style="margin-left: 20px;">
+                                <label class="col-sm-3 control-label">创&nbsp;&nbsp;&nbsp;&nbsp;建&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;期 </label>
                                 <div class="input-group">
                                     <input type="date" class="input-sm form-control" id="search-inDate" title=""/>
                                     <span class="input-group-addon">-</span>
@@ -206,6 +205,12 @@
             <table class="table table-striped table-hover table-condensed">
                 <thead>
                 <tr>
+                    <td class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                   id="allSel" onclick="allSelect();">
+                        </label>
+                    </td>
                     <th class="text-center">申请单编号</th>
                     <th class="text-center">申请月份</th>
                     <th class="text-center">需求时间</th>     <!--时间，精确到秒 下同-->
@@ -222,6 +227,11 @@
                 </thead>
                 <tbody id="tbody1">
                 <tr id="cloneTr" class="myclass" ondblclick="view(this)">
+                    <td class="text-center">
+                        <label>
+                            <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                        </label>
+                    </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>

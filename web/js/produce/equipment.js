@@ -8,6 +8,42 @@ function allSelect() {
 }
 
 /**
+ * 删除设备
+ */
+/**
+ * 删除用户
+ * @param item
+ */
+function deleteEquipment(item) {
+    var r = confirm("是否删除该设备？");
+    if (r == true) {
+        var documentNumber = getDocNumber(item);
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "deleteEquipment",               // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'documentNumber': documentNumber
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    console.log("success: " + result);
+                    alert("删除成功");
+                    window.location.reload();
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    } else {
+    }
+}
+
+/**
  * 重置搜索数据
  */
 function reset() {

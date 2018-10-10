@@ -124,7 +124,7 @@
                     <div class="row">
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-suppliesCategory" class="col-sm-4 control-label">物资类别</label>
+                                <label for="search-suppliesCategory" class="col-sm-4 control-label">物&nbsp;&nbsp;&nbsp;资&nbsp;&nbsp;&nbsp;&nbsp;类&nbsp;&nbsp;&nbsp;&nbsp;别</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-suppliesCategory" name="search-suppliesCategory" placeholder="">
                                 </div>
@@ -133,13 +133,11 @@
                         </div>
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-applyDate" class="col-sm-4 control-label">申请日期</label>
+                                <label for="search-generalManager" class="col-sm-4 control-label">总&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;经&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;理</label>
                                 <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-applyDate" name="search-applyDate" placeholder="">
+                                    <input type="text" class="form-control" id="search-generalManager" name="search-generalManager" placeholder="">
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="form-horizontal col-md-4">
                             <!--<div class="form-group">-->
@@ -176,7 +174,7 @@
                         </div>
                         <div class="form-horizontal col-md-4">
                             <div class="form-group">
-                                <label for="search-applyDepartment" class="col-sm-4 control-label">申请部门</label>
+                                <label for="search-applyDepartment" class="col-sm-4 control-label">申&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;部&nbsp;&nbsp;&nbsp;门</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-applyDepartment" name="search-applyDepartment" placeholder="">
                                 </div>
@@ -185,16 +183,8 @@
                     </div>
                     <div class="row">
                         <div class="form-horizontal col-md-4">
-                            <div class="form-group">
-                                <label for="search-generalManager" class="col-sm-4 control-label">总经理</label>
-                                <div class="col-xs-7">
-                                    <input type="text" class="form-control" id="search-generalManager" name="search-generalManager" placeholder="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-horizontal col-md-4">
                             <div class="form-group" style="margin-left: -10px;">
-                                <label class="col-sm-3 control-label">申请日期 </label>
+                                <label class="col-sm-3 control-label" style="margin-left: 31px">申&nbsp;&nbsp;&nbsp;请&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;&nbsp;&nbsp;&nbsp;期 </label>
                                 <div class="input-group">
                                     <input type="date" class="input-sm form-control" id="search-inDate" title=""/>
                                     <span class="input-group-addon">-</span>
@@ -210,6 +200,12 @@
             <table class="table table-striped table-hover table-condensed">
                 <thead>
                 <tr>
+                    <td class="text-center">
+                        <label>
+                            <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                   id="allSel" onclick="allSelect();">
+                        </label>
+                    </td>
                     <th class="text-center">申请单编号</th>
                     <th class="text-center">物资类别</th>
                     <th class="text-center">需用时间</th>
@@ -224,6 +220,11 @@
                 </thead>
                 <tbody id="tbody1">
                 <tr id="cloneTr" class="myclass" ondblclick="view(this)">
+                    <td class="text-center">
+                        <label>
+                            <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                        </label>
+                    </td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>

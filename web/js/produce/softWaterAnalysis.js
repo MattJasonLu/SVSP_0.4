@@ -175,7 +175,7 @@ function switchPage(pageNumber) {
             success: function (result) {
                 if (result != undefined) {
                     // console.log(result);
-                    setSewageList(result.data);
+                    setSoftWaterList(result.data);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -237,7 +237,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         console.log(result);
-                        setSewageList(result.data);
+                        setSoftWaterList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -258,7 +258,7 @@ function inputSwitchPage() {
                 success: function (result) {
                     if (result != undefined) {
                         // console.log(result);
-                        setSewageList(result.data);
+                        setSoftWaterList(result.data);
                     } else {
                         console.log("fail: " + result);
                     }
@@ -344,43 +344,43 @@ function setSoftWaterList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
+                case (1):
                     // 序号
                     $(this).html(serialNumber);
                     break;
-                case (1):
+                case (2):
                     // 软水接收日期
                     $(this).html(getDateStr(obj.receiveDate));
                     break;
-                case (2):
+                case (3):
                     // 软水名称
                     $(this).html(obj.name);
                     break;
-                case (3):
+                case (4):
                     // 相对碱度
                     $(this).html(obj.relativeAlkalinity);
                     break;
-                case (4):
+                case (5):
                     // 溶解固形物
                     $(this).html(obj.dissolvedSolidForm);
                     break;
-                case (5):
+                case (6):
                     // PH
                     $(this).html(obj.ph);
                     break;
-                case (6):
+                case (7):
                     // 碱度
                     $(this).html(obj.alkalinity);
                     break;
-                case (7):
+                case (8):
                     // 硬度
                     $(this).html(obj.hardness);
                     break;
-                case (8):
+                case (9):
                     // 电导率
                     $(this).html(obj.electricalConductivity);
                     break;
-                case (9):
+                case (10):
                     // 备注
                     $(this).html(obj.remarks);
                     break;
@@ -449,6 +449,7 @@ function importExcel() {
                         window.location.reload();         //刷新
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },

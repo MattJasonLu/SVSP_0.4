@@ -355,8 +355,16 @@ function setProductionPlanList(result) {
                 case (3):
                     $(this).html(obj.founder);
                     break;
+                //计划运转率
+                case(4):
+                    $(this).html(obj.transportRate);
+                    break;
+                //计划数量
+                case(5):
+                    $(this).html(obj.planQuantity);
+                    break;
                 // 状态
-                case (4):
+                case (6):
                     $(this).html(obj.state.name);
                     break;
             }

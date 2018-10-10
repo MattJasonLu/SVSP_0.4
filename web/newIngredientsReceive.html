@@ -129,7 +129,8 @@
         <div class="row">
             <!--查询框-->
             <div class="input-group col-md-4 pull-right">
-                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1" onkeydown="enterSearch1()">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent1"
+                       onkeydown="enterSearch1()">
                 <span class="input-group-btn">
                             <a class="btn btn-default" onclick="search1();"><span
                                     class="glyphicon glyphicon-search"
@@ -137,7 +138,7 @@
                             <a class="btn btn-default" onclick="$('#senior1').toggle();"><span
                                     class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询设置</a>
                             <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog"
-                                                                                 aria-hidden="true"></span> 重置</a>
+                                                                                aria-hidden="true"></span> 重置</a>
                         </span>
             </div>
         </div>
@@ -178,35 +179,37 @@
             </div>
         </div>
         <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;库存列表</h4>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th class="text-center" style="width: 40px">
-                    <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();"
-                           style="height: 17px;width: 17px">
-                </th>
-                <th class="text-center">编号</th>
-                <th class="text-center">物品名称</th>
-                <th class="text-center">所在仓库</th>
-                <th class="text-center">库存量</th>
-                <th class="text-center">单位</th>
-                <th class="text-center">规格</th>
-            </tr>
-            </thead>
-            <tbody id="ingredientsInventoryData">
-            <tr id="cloneTr1">
-                <td class="text-center" style="width: 40px">
-                    <input name="select" class="checkbox" type="checkbox" style="height: 17px;width: 17px">
-                </td>
-                <td class="text-center" name="itemId"></td>
-                <td class="text-center" name="name"></td>
-                <td class="text-center" name="wareHouseName"></td>
-                <td class="text-center" name="amount"></td>
-                <td class="text-center" name="unit"></td>
-                <td class="text-center" name="specification"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div style="height:500px; overflow-y:scroll; ">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="text-center" style="width: 40px">
+                        <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();"
+                               style="height: 17px;width: 17px">
+                    </th>
+                    <th class="text-center">编号</th>
+                    <th class="text-center">物品名称</th>
+                    <th class="text-center">所在仓库</th>
+                    <th class="text-center">库存量</th>
+                    <th class="text-center">单位</th>
+                    <th class="text-center">规格</th>
+                </tr>
+                </thead>
+                <tbody id="ingredientsInventoryData">
+                <tr id="cloneTr1">
+                    <td class="text-center" style="width: 40px">
+                        <input name="select" class="checkbox" type="checkbox" style="height: 17px;width: 17px">
+                    </td>
+                    <td class="text-center" name="itemId"></td>
+                    <td class="text-center" name="name"></td>
+                    <td class="text-center" name="wareHouseName"></td>
+                    <td class="text-center" name="amount"></td>
+                    <td class="text-center" name="unit"></td>
+                    <td class="text-center" name="specification"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="row text-center">
             <a class="btn btn-primary" onclick="confirmInsert();">确认</a>
         </div>
@@ -219,28 +222,31 @@
                 <tr>
                     <th colspan="2" class="text-left">部门:<input class="focus" type="text" title="" id="department"></th>
                     <th colspan="3" class="text-center"><span id="creationDate" class="text-left"></span></th>
-                    <th colspan="3" class="text-right">文件编号:<input title="" type="text" class="focus" value="M-TD-107-R04" id="fileId"></th>
+                    <th colspan="3" class="text-right">文件编号:<input title="" type="text" class="focus"
+                                                                   value="M-TD-107-R04" id="fileId"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr >
-                    <td class="text-center" >编号</td>
-                    <td class="text-center" >物品名称</td>
-                    <td class="text-center" >规格</td>
-                    <td class="text-center" >领料数</td>
-                    <td class="text-center" >单位</td>
-                    <td class="text-center" >库存量</td>
-                    <td class="text-center" >附注</td>
-                    <td class="text-center" >仓库</td>
+                <tr>
+                    <td class="text-center">编号</td>
+                    <td class="text-center">物品名称</td>
+                    <td class="text-center">规格</td>
+                    <td class="text-center">领料数</td>
+                    <td class="text-center">单位</td>
+                    <td class="text-center">库存量</td>
+                    <td class="text-center">附注</td>
+                    <td class="text-center">仓库</td>
                 </tr>
                 <tr id="clone3">
                     <td class="text-center" name="serialNumber"></td>
                     <td class="text-center" name="name"></td>
                     <td class="text-center" name="specification"></td>
-                    <td class="text-center" ><input class="text-center focus" name="receiveAmount" type="number" id="receiveAmount0" oninput="calculateTotalReceiveAmount()"></td>
+                    <td class="text-center"><input class="text-center focus" name="receiveAmount" type="number"
+                                                   id="receiveAmount0" oninput="calculateTotalReceiveAmount()"></td>
                     <td class="text-center" name="unit"></td>
                     <td class="text-center" name="amount"></td>
-                    <td class="text-center"><input class="text-center focus" type="text" id="remarks0" name="remarks" ></td>
+                    <td class="text-center"><input class="text-center focus" type="text" id="remarks0" name="remarks">
+                    </td>
                     <td class="text-center" name="wareHouseName"></td>
                 </tr>
                 <tr>
@@ -252,11 +258,11 @@
                     <td class="text-center">--</td>
                 </tr>
                 <tr>
-                    <td class="text-left" colspan="1">主管副总经理：<input title="" class="focus" type="text" id="vicePresident"></td>
-                    <td class="text-left" colspan="1">仓库部门主管：<input title="" class="focus" type="text" id="warehouseSupervisor"></td>
-                    <td class="text-left" colspan="2">保管员：<input title="" class="focus" type="text" id="keeper"></td>
-                    <td class="text-left" colspan="2">领料部门主管：<input title="" class="focus" type="text" id="pickingSupervisor"></td>
-                    <td class="text-left" colspan="2">领料人：<input title="" class="focus" type="text" id="pickingMan"></td>
+                    <td class="text-left" colspan="1">主管副总经理：<input style="width: 60px" maxlength="4" title="" class="focus" type="text" id="vicePresident"></td>
+                    <td class="text-left" colspan="1">仓库部门主管：<input style="width: 60px" maxlength="4" title="" class="focus" type="text" id="warehouseSupervisor"></td>
+                    <td class="text-left" colspan="2">保管员：<input style="width: 60px" maxlength="4" title="" class="focus" type="text" id="keeper"></td>
+                    <td class="text-left" colspan="2">领料部门主管：<input style="width: 60px" maxlength="4" title="" class="focus" type="text" id="pickingSupervisor"></td>
+                    <td class="text-left" colspan="2">领料人：<input style="width: 60px" maxlength="4" title="" class="focus" type="text" id="pickingMan"></td>
                 </tr>
                 </tbody>
             </table>

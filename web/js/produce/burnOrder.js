@@ -1069,39 +1069,39 @@ function setBurnOrderList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
+                case (1):
                     // 焚烧工单号
                     $(this).html(obj.id);
                     break;
-                case (1):
+                case (2):
                     // 状态
                     $(this).html(obj.state.name);
                     break;
-                case (2):
+                case (3):
                     // 创建日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
-                case (3):
+                case (4):
                     // 重量合计
                     $(this).html(obj.weightTotal);
                     break;
-                case (4):
+                case (5):
                     // 备注
                     $(this).html(obj.remarks);
                     break;
-                case (5):
+                case (6):
                     // 散装比例
                     $(this).html(obj.bulkProportion);
                     break;
-                case (6):
+                case (7):
                     // 残渣比例
                     $(this).html(obj.distillationProportion);
                     break;
-                case (7):
+                case (8):
                     // 废液比例
                     $(this).html(obj.wasteLiquidProportion);
                     break;
-                case (8):
+                case (9):
                     // 污泥比例
                     $(this).html(obj.sludgeProportion);
                     break;
@@ -1327,7 +1327,7 @@ function invalid(item) {
  * @returns {string}
  */
 function getBurnOrderId(item) {
-    return item.firstElementChild.innerHTML;
+    return item.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**
@@ -1336,7 +1336,7 @@ function getBurnOrderId(item) {
  * @returns {string}
  */
 function getBurnOrderId1(item) {
-    return item.parentElement.parentElement.firstElementChild.innerHTML;
+    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**

@@ -200,11 +200,12 @@
             </div>
         </div>
         <h4 class="text-center">&nbsp;&nbsp;&nbsp;&nbsp;月度采购申请单列表</h4>
+        <div style="height:500px; overflow-y:scroll; ">
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th class="text-center" style="width: 40px">
-                    <input class="checkbox" type="checkbox" id="allSel1" onclick="allSelect();"
+                    <input class="checkbox" type="checkbox" id="allSel" onclick="allSelect();"
                            style="height: 17px;width: 17px">
                 </th>
                 <th class="text-center">申请单编号</th>
@@ -242,6 +243,7 @@
             </tr>
             </tbody>
         </table>
+        </div>
         <div class="row text-center">
             <a class="btn btn-primary" onclick="confirmInsert1();">确认</a>
         </div>
@@ -324,11 +326,11 @@
                     <td class="text-center"></td>
                 </tr>
                 <tr>
-                    <td class="text-left" colspan="4">记账：<input title="" class="focus" type="text" id="bookkeeper"></td>
-                    <td class="text-left" colspan="2">审批：<input title="" class="focus" type="text" id="approver"></td>
-                    <td class="text-left" colspan="4">保管：<input title="" class="focus" type="text" id="keeper"></td>
-                    <td class="text-left" colspan="4">验收：<input title="" class="focus" type="text" id="acceptor"></td>
-                    <td class="text-left" colspan="4">经手：<input title="" class="focus" type="text" id="handlers"></td>
+                    <td class="text-left" colspan="4">记账人：<input style="width: 60px" title="" class="focus" type="text" maxlength="4" id="bookkeeper"></td>
+                    <td class="text-left" colspan="2">审批人：<input style="width: 60px" title="" class="focus" type="text" maxlength="4" id="approver"></td>
+                    <td class="text-left" colspan="4">保管人：<input style="width: 60px" title="" class="focus" type="text" maxlength="4" id="keeper"></td>
+                    <td class="text-left" colspan="4">验收人：<input style="width: 60px" title="" class="focus" type="text" maxlength="4" id="acceptor"></td>
+                    <td class="text-left" colspan="4">经手人：<input style="width: 60px" title="" class="focus" type="text" maxlength="4" id="handlers"></td>
                 </tr>
                 </tbody>
             </table>

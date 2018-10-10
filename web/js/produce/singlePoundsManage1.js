@@ -342,53 +342,53 @@ function setPoundsList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case(0):
+                case(1):
                     //磅单号
                     $(this).html(obj.id);
                     break;
-                case (1):
+                case (2):
                     //转移联单号
                     $(this).html(obj.transferId);
                     break;
-                case (2):
+                case (3):
                     // 入厂车号
                     $(this).html(obj.enterLicencePlate);
                     break;
-                case (3):
+                case (4):
                     $(this).html(obj.founder);
                     break;
-                case (4):
+                case (5):
                     //创建日期
                     $(this).html(getDateStr(obj.creationDate));
                     break;
-                case (5):
+                case (6):
                     // 货物名称
                     $(this).html(obj.goodsName);
                     break;
-                case (6):
+                case (7):
                     //发货单位
                     if (obj.deliveryCompany != null)
                         $(this).html(obj.deliveryCompany.companyName);
                     break;
-                case (7):
+                case (8):
                     //收货单位
                     if (obj.receiveCompany != null)
                     $(this).html(obj.receiveCompany.companyName);
                     break;
-                case (8):
+                case (9):
                     //业务类型
                     $(this).html(obj.businessType);
                     break;
-                case (9):
+                case (10):
                     //司机
                     $(this).html(obj.driver);
                     break;
-                case(10):
+                case(11):
                     //状态
                     if (obj.state != null)
                     $(this).html(obj.state.name);
                     break;
-                case(11):
+                case(12):
                     //备注
                     $(this).html(obj.remarks);
                     break;
@@ -514,6 +514,7 @@ function importExcel() {
                         window.location.reload();         //刷新
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },
@@ -634,11 +635,11 @@ function searchPounds() {
 }
 
 function getPoundsId(item) {
-    return item.parentElement.parentElement.firstElementChild.innerHTML;
+    return item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
 }
 
 function getPoundsId1(item) {
-    return item.firstElementChild.innerHTML;
+    return item.firstElementChild.nextElementSibling.innerHTML;
 }
 
 /**

@@ -342,43 +342,43 @@ function setSewageList(result) {
             var obj = eval(item);
             // 根据索引为部分td赋值
             switch (inner_index) {
-                case (0):
+                case (1):
                     // 序号
                     $(this).html(serialNumber);
                     break;
-                case (1):
+                case (2):
                     // 污水接收日期
                     $(this).html(getDateStr(obj.receiveDate));
                     break;
-                case (2):
+                case (3):
                     // 污水名称
                     $(this).html(obj.name);
                     break;
-                case (3):
+                case (4):
                     // COD
                     $(this).html(obj.cod);
                     break;
-                case (4):
+                case (5):
                     // BOD5
                     $(this).html(obj.bod5);
                     break;
-                case (5):
+                case (6):
                     // 氧
                     $(this).html(obj.oxygen);
                     break;
-                case (6):
+                case (7):
                     // 氮
                     $(this).html(obj.nitrogen);
                     break;
-                case (7):
+                case (8):
                     // 碱液
                     $(this).html(obj.lye);
                     break;
-                case (8):
+                case (9):
                     // PH
                     $(this).html(obj.ph);
                     break;
-                case (9):
+                case (10):
                     // 备注
                     $(this).html(obj.remarks);
                     break;
@@ -447,6 +447,7 @@ function importExcel() {
                         window.location.reload();         //刷新
                     } else {
                         alert(result.message);
+                        window.location.reload();
                     }
                 }
             },

@@ -180,6 +180,34 @@ public class UserController {
     }
 
     /**
+     * 获取当前的用户信息
+     * @param session
+     * @return 用户信息
+     */
+    @RequestMapping("getCurrentUserInfo")
+    @ResponseBody
+    public String getCurrentUserInfo(HttpSession session){
+        JSONObject res = new JSONObject();
+        try {
+            User userInfo = (User) session.getAttribute("user");   // 获取用户信息
+            if(userInfo == null ){
+                res.put("message","用户未正常登陆");
+                res.put("status","fail");
+            }else {
+                res.put("message","获取用户信息成功");
+                res.put("status","success");
+                res.put("data",userInfo);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            res.put("message","获取用户信息失败");
+            res.put("status","fail");
+        }
+        return res.toString();
+    }
+
+
+    /**
      * 列出所有用户
      * @return 所有用户数据
      */

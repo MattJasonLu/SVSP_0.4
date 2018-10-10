@@ -74,4 +74,9 @@ public interface EquipmentService {
      * @return 查询数量
      */
     int searchCount(Equipment equipment);
+
+    /**
+     * 删除设备
+     */
+    void deleteEquipment(String documentNumber);
 }
