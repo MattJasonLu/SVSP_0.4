@@ -69,6 +69,7 @@ public class RandomUtil {
      * @return 百分比
      */
     public static String getPercentage(float num1, float num2) {
+        if (num2 == 0) return "0.00";
         // 获取数字实例
         NumberFormat numberFormat = NumberFormat.getInstance();
         // 两位数
