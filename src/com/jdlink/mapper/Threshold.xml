@@ -40,5 +40,30 @@
     <select id="getThresholdByHandleCategoryAndFormType" resultMap="ThresholdRM">
          select * from t_pr_threshold where handleCategory=#{0} and  formType=#{1};
     </select>
-    
+
+
+
+
+
+    <update id="update" parameterType="Threshold">
+        update t_pr_threshold set handleCategory = #{handleCategory},formType =#{formType},calorificMax =#{calorificMax},
+        calorificMin =#{calorificMin},ashMax =#{ashMax},ashMin =#{ashMin},waterMax =#{waterMax},waterMin =#{waterMin},
+        sMax =#{sMax},sMin =#{sMin},clMax =#{clMax},clMin =#{clMin},pMax =#{pMax},pMin =#{pMin},fMax =#{fMax},fMin =#{fMin},
+        phMax =#{phMax},phMin =#{phMin},safety =#{safety},beginTime =#{beginTime},endTime =#{endTime}
+        where thresholdId =#{thresholdId};
+    </update>
+
+    <insert id="add" parameterType="Threshold">
+        insert into t_pr_threshold
+        (thresholdId,handleCategory,formType,calorificMax,calorificMin,ashMax,ashMin,waterMax,waterMin,sMax,sMin,clMax,
+        clMin,pMax,pMin,fMax,fMin,phMax,phMin,safety,beginTime,endTime)
+        values
+       (#{thresholdId},#{handleCategory},#{formType},#{calorificMax},#{calorificMin},#{ashMax},#{ashMin},#{waterMax},
+        #{waterMin},#{sMax},#{sMin},#{clMax},#{clMin},#{pMax},#{pMin},#{fMax},#{fMin},#{phMax},#{phMin},#{safety},#{beginTime},
+        #{endTime})
+    </insert>
+
+    <delete id="deleteAll" >
+        delete from t_pr_threshold;
+    </delete>
 </mapper>

@@ -9,4 +9,9 @@ public interface ThresholdService {
     Threshold getByHandleCategory(String handleCategory);
     float getSafety(String handleCategory);
     Threshold getThresholdByHandleCategoryAndFormType(String handleCategory,String formType);
+
+
+    void update(Threshold threshold);
+    void add(Threshold threshold);
+    void deleteAll();
 }
