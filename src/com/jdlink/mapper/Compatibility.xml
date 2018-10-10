@@ -225,6 +225,9 @@
      <select id="searchCompatibilityItem" parameterType="CompatibilityItem" resultType="String">
            select DISTINCT compatibilityId from t_pr_pwitem
            <where>
+               <if test="compatibilityId != null and compatibilityId != ''">
+                   and compatibilityId=#{compatibilityId}
+               </if>
                <if test="formType != null and formType != ''">
                    and formType=#{formType}
                </if>
@@ -268,6 +271,9 @@
     <select id="searchCount" parameterType="CompatibilityItem" resultType="int">
         select count( DISTINCT compatibilityId)  from  t_pr_pwitem
         <where>
+            <if test="compatibilityId != null and compatibilityId != ''">
+                and compatibilityId=#{compatibilityId}
+            </if>
             <if test="formType != null and formType != ''">
                 and formType=#{formType}
             </if>

@@ -60,4 +60,7 @@
     <delete id="deleteAll" >
         delete from t_pr_threshold;
     </delete>
+    <select id="getThresholdByHandleCategoryAndFormType" resultMap="ThresholdRM">
+        select * from t_pr_threshold  where handleCategory=#{0} and formType=#{1};
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.jdlink.controller;
 
 import com.jdlink.domain.*;
 import com.jdlink.service.SupplierService;
+import com.jdlink.util.ImportUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -502,6 +503,32 @@ public class SupplierController {
             res.put("message", "分页数据获取失败！");
         }
         // 返回结果
+        return res.toString();
+    }
+
+    /**
+     * 导入供应商文件
+     * @param excelFile excel文件
+     * @return 成功与否
+     */
+    @RequestMapping("importSupplierExcel")
+    @ResponseBody
+    public String importSupplierExcel(MultipartFile excelFile) {
+        JSONObject res = new JSONObject();
+        try {
+            // 获取危废入库的表格数据
+            Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+            for (int i = 1; i < data.length; i++) {
+                Supplier supplier = new Supplier();
+
+            }
+            res.put("status", "success");
+            res.put("message", "导入成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "导入失败");
+        }
         return res.toString();
     }
 }

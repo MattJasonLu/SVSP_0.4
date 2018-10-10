@@ -603,7 +603,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             //1根据配伍单号获取明细
             List<CompatibilityItem> compatibilityItemList=compatibilityService.getCompatibilityItemById(compatibilityId);
 
-            Threshold threshold=thresholdService.list().get(0);//基础数据表对象
+            //Threshold threshold=thresholdService.list().get(0);//基础数据表对象
 
             //找出最新的物料需求编号
 
@@ -673,6 +673,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
 
           //2对明细进行循环 做数据加减操作
             for(int i=0;i<compatibilityItemList.size();i++){
+                Threshold threshold=thresholdService.getThresholdByHandleCategoryAndFormType(compatibilityItemList.get(i).getHandleCategory().toString(),compatibilityItemList.get(i).getFormType().toString());
                 MaterialRequireItem materialRequireItem=new MaterialRequireItem();//创建物料明细对象
 
                 //射入外键物料编号
