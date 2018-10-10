@@ -1,12 +1,10 @@
 package com.jdlink.controller;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
-import com.jdlink.domain.CheckState;
-import com.jdlink.domain.FormType;
-import com.jdlink.domain.Page;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.*;
-import com.jdlink.domain.Wastes;
 import com.jdlink.service.CompatibilityService;
+import com.jdlink.service.ThresholdService;
 import com.jdlink.util.DBUtil;
 import com.jdlink.util.DateUtil;
 import com.jdlink.util.ImportUtil;
@@ -34,6 +32,8 @@ import static com.jdlink.domain.PackageType.*;
 public class CompatibilityController {
     @Autowired
     CompatibilityService compatibilityService;
+    @Autowired
+    ThresholdService thresholdService;
 
 //    @RequestMapping("getCurrentCompatibilityId")
 //    @ResponseBody
@@ -894,7 +894,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
             //1根据配伍单号获取明细
             List<CompatibilityItem> compatibilityItemList=compatibilityService.getCompatibilityItemById(compatibilityId);
 
-            Threshold threshold=new Threshold();//基础数据表对象
+            Threshold threshold=thresholdService.list().get(0);//基础数据表对象
 
             //找出最新的物料需求编号
 
@@ -977,6 +977,7 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                 currentInventoryTotal+=0;
                 //3安全库存量
                 materialRequireItem.setSafety(threshold.getSafety());
+                System.out.println("安全库存量"+threshold.getSafety());
                 safetyTotal+=threshold.getSafety();
                 //4市场采购量
                 materialRequireItem.setMarketPurchases(0);
@@ -997,19 +998,19 @@ public String importCompatibilityExcel(MultipartFile excelFile){
                     materialRequireItem.setPackageType(Box);
                 }
                 //废液+液态==>吨箱
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="WasteLiquid"&&compatibilityItemList.get(i).getFormType().toString()=="Liquid"){
+                else if (compatibilityItemList.get(i).getHandleCategory().toString()=="WasteLiquid"&&compatibilityItemList.get(i).getFormType().toString()=="Liquid"){
                     materialRequireItem.setPackageType(Ton);
                 }
                 //散装料+固态==>吨袋
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="Bulk"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
+                else if (compatibilityItemList.get(i).getHandleCategory().toString()=="Bulk"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
                     materialRequireItem.setPackageType(Bag);
                 }
                 //破碎料+固态==>标准箱
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="Crushing"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
+                else if(compatibilityItemList.get(i).getHandleCategory().toString()=="Crushing"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
                     materialRequireItem.setPackageType(Box);
                 }
                 //精馏残渣+固态==>铁桶
-                if(compatibilityItemList.get(i).getHandleCategory().toString()=="Distillation"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
+                else if(compatibilityItemList.get(i).getHandleCategory().toString()=="Distillation"&&compatibilityItemList.get(i).getFormType().toString()=="Solid"){
                     materialRequireItem.setPackageType(Iron);
                 }
                 else {

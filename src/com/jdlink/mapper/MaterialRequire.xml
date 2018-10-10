@@ -77,4 +77,23 @@
         update  t_pr_materialrequire set marketPurchasesTotal=#{1} where
         id=#{0};
     </update>
+    
+    <resultMap id="MaterialList" type="MaterialRequire">
+        <result property="materialRequireId" column="materialRequireId"></result>
+        <collection property="materialRequireItemList" column="materialRequireId" select="getMaterialRequireItem"></collection>
+    </resultMap>
+    <select id="getMaterialRequireItem" resultType="MaterialRequireItem" parameterType="String">
+        select * from t_pr_materialrequireitem where materialRequireId=#{materialRequireId}
+    </select>
+    <!--获取物料信息-->
+    <select id="getMaterialList" resultMap="MaterialList">
+        select  * from t_pr_materialrequire  order  by nowTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+    <!--通过编号获取物料信息-->
+    <select id="getMaterialRequireById" parameterType="String" resultType="MaterialRequireItem">
+           select  * from t_pr_materialrequireitem  where materialRequireId=#{materialRequireId};
+    </select>
     </mapper>
