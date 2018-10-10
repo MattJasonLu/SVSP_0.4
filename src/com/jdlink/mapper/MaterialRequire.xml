@@ -96,4 +96,18 @@
     <select id="getMaterialRequireById" parameterType="String" resultType="MaterialRequireItem">
            select  * from t_pr_materialrequireitem  where materialRequireId=#{materialRequireId};
     </select>
+
+
+    <!--更新物料明细信息-->
+    <update id="updateMaterialRequireItem" parameterType="MaterialRequireItem">
+        update t_pr_materialrequireitem set  handleCategory=#{handleCategory},formType=#{formType},
+        packageType=#{packageType},weeklyDemand=#{weeklyDemand},currentInventory=#{currentInventory},
+        safety=#{safety},marketPurchases=#{marketPurchases} where id=#{id};
+    </update>
+    <!--更新主表信息-->
+    <update id="updateMaterialRequire" parameterType="MaterialRequire">
+        update t_pr_materialrequire set weeklyDemandTotal=#{weeklyDemandTotal},
+        currentInventoryTotal=#{currentInventoryTotal},safetyTotal=#{safetyTotal},
+        marketPurchasesTotal=#{marketPurchasesTotal},nowTime=NOW() where  materialRequireId=#{materialRequireId}
+    </update>
     </mapper>
