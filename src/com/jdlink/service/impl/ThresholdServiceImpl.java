@@ -35,4 +35,9 @@ public class ThresholdServiceImpl implements ThresholdService {
 
     @Override
     public void deleteAll(){ thresholdMapper.deleteAll(); }
+
+    @Override
+    public Threshold getThresholdByHandleCategoryAndFormType(String handleCategory, String formType) {
+        return thresholdMapper.getThresholdByHandleCategoryAndFormType(handleCategory,formType);
+    }
 }
