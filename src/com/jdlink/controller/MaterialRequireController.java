@@ -277,31 +277,227 @@ public class MaterialRequireController {
     /*导入功能*/
      @RequestMapping("importMaterialRequireIdExcel")
      @ResponseBody
-     public String  importMaterialRequireIdExcel(MultipartFile excelFile){
+     public String  importMaterialRequireIdExcel(MultipartFile excelFile) {
          JSONObject res = new JSONObject();
          String fileName = excelFile.getOriginalFilename();
          Object[][] data = ImportUtil.getInstance().getExcelFileData(excelFile).get(0);
+
+         try {
          Calendar cal = Calendar.getInstance();
          //获取年
-         String year=String.valueOf(cal.get(Calendar.YEAR));
+         String year = String.valueOf(cal.get(Calendar.YEAR));
          //获取月
-         String mouth= getMouth(String.valueOf(cal.get(Calendar.MONTH)+1));
+         String mouth = getMouth(String.valueOf(cal.get(Calendar.MONTH) + 1));
          //序列号
          String number = "001";
-         //物料编号设置
-//         List<String> materialRequireList = materialRequireService.check();
-//         int total1 = materialRequireService.total();
-//         if (total1 == 0) {
-//             number = "001";
-//         }
-//         if (total1 != 0) {
-//             String s = materialRequireList.get(0);//原字符串
-//             String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
-//             number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
-//         }
-         //物料编号
-         String materialRequireId = year + mouth + number;
-         //进行数据绑定
+
+         List<String> materialRequireIdList = compatibilityService.getNewestMaterialRequireId();
+
+         if (materialRequireIdList.size() == 0) {
+             number = "001";
+         } else {
+             String s = materialRequireIdList.get(0);//原字符串
+             String s2 = s.substring(s.length() - 3, s.length());//最后一个3字符
+             number = getString3(String.valueOf(Integer.parseInt(s2) + 1));
+         }
+
+         String materialRequireId = year + mouth + number;//需要的物料编号
+
+         float weeklyDemandTotal = 0;
+
+         float currentInventoryTotal = 0;
+
+         float safetyTotal = 0;
+
+         float marketPurchasesTotal = 0;
+
+         //热值总量
+         float calorificMaxSum = 0;
+         float calorificMinSum = 0;
+
+         float ashMaxSum = 0;
+         float ashMinSum = 0;
+
+         float waterMaxSum = 0;
+         float waterMinSum = 0;
+
+         float clMaxSum = 0;
+         float clMinSum = 0;
+
+         float sMaxSum = 0;
+         float sMinSum = 0;
+
+         float pMaxSum = 0;
+         float pMinSum = 0;
+
+         float fMaxSum = 0;
+         float fMinSum = 0;
+
+         float phMaxSum = 0;
+         float phMinSum = 0;
+         int index = 0;
+         //主表对象
+         MaterialRequire materialRequire = new MaterialRequire();
+         for (int i = 2; i < data.length; i++) {
+             index++;
+             if (data[i][0].toString().length() > 0) {
+                 //创建明细对象
+                 MaterialRequireItem materialRequireItem = new MaterialRequireItem();
+
+                 //进料方式
+                 materialRequireItem.setHandleCategory(HandleCategory.getHandleCategory(data[i][1].toString()));
+
+                 //包装形式
+                 materialRequireItem.setPackageType(PackageType.getPackageType(data[i][2].toString()));
+
+                 //形态
+                 materialRequireItem.setFormType(FormType.getFormType(data[i][3].toString()));
+
+                 //周生产计划量
+                 if (data[i][4].toString() != "null") {
+                     materialRequireItem.setWeeklyDemand(Float.parseFloat(data[i][4].toString()));
+                     weeklyDemandTotal += Float.parseFloat(data[i][4].toString());
+                 }
+                 if (data[i][4].toString() == "null") {
+                     materialRequireItem.setWeeklyDemand(0);
+                 }
+
+
+                 //目前库存量
+                 if (data[i][5].toString() != "null") {
+                     materialRequireItem.setCurrentInventory(Float.parseFloat(data[i][5].toString()));
+                     currentInventoryTotal += Float.parseFloat(data[i][5].toString());
+                 }
+                 if (data[i][5].toString() == "null") {
+                     materialRequireItem.setCurrentInventory(0);
+                 }
+
+                 //安全库存量
+                 if (data[i][6].toString() != "null") {
+                     materialRequireItem.setSafety(Float.parseFloat(data[i][6].toString()));
+                     safetyTotal += Float.parseFloat(data[i][6].toString());
+                 }
+                 if (data[i][6].toString() == "null") {
+                     materialRequireItem.setSafety(0);
+                 }
+                 //市场采购量
+                 if (data[i][7].toString() != "null") {
+                     materialRequireItem.setMarketPurchases(Float.parseFloat(data[i][7].toString()));
+                     marketPurchasesTotal += Float.parseFloat(data[i][7].toString());
+                 }
+                 if (data[i][7].toString() == "null") {
+                     materialRequireItem.setMarketPurchases(0);
+                 }
+                 //热值max
+                 materialRequireItem.setCalorificMax(Float.parseFloat(data[i][8].toString()));
+                 calorificMaxSum += Float.parseFloat(data[i][8].toString());
+
+                 //热值Min
+                 materialRequireItem.setCalorificMin(Float.parseFloat(data[i][9].toString()));
+                 calorificMinSum += Float.parseFloat(data[i][9].toString());
+
+                 //灰分Max
+                 materialRequireItem.setAshMax(Float.parseFloat(data[i][10].toString()));
+                 ashMaxSum += Float.parseFloat(data[i][10].toString());
+
+                 //灰分Min
+                 materialRequireItem.setAshMin(Float.parseFloat(data[i][11].toString()));
+                 ashMinSum += Float.parseFloat(data[i][11].toString());
+
+                 //水分Max
+                 materialRequireItem.setWaterMax(Float.parseFloat(data[i][12].toString()));
+                 waterMaxSum += Float.parseFloat(data[i][12].toString());
+
+                 //水分Min
+                 materialRequireItem.setWaterMin(Float.parseFloat(data[i][13].toString()));
+                 waterMinSum += Float.parseFloat(data[i][13].toString());
+
+                 //硫Max
+                 materialRequireItem.setsMax(Float.parseFloat(data[i][14].toString()));
+                 sMaxSum += Float.parseFloat(data[i][14].toString());
+
+                 //硫Min
+                 materialRequireItem.setsMin(Float.parseFloat(data[i][15].toString()));
+                 sMinSum += Float.parseFloat(data[i][15].toString());
+
+                 //CLMax
+                 materialRequireItem.setClMax(Float.parseFloat(data[i][16].toString()));
+                 clMaxSum += Float.parseFloat(data[i][16].toString());
+
+                 //CLMin
+                 materialRequireItem.setClMin(Float.parseFloat(data[i][17].toString()));
+                 clMinSum += Float.parseFloat(data[i][17].toString());
+
+                 //PMax
+                 materialRequireItem.setpMax(Float.parseFloat(data[i][18].toString()));
+                 pMaxSum += Float.parseFloat(data[i][18].toString());
+
+                 //PMin
+                 materialRequireItem.setpMin(Float.parseFloat(data[i][19].toString()));
+                 pMinSum += Float.parseFloat(data[i][19].toString());
+
+                 //FMax
+                 materialRequireItem.setfMax(Float.parseFloat(data[i][20].toString()));
+                 fMaxSum += Float.parseFloat(data[i][20].toString());
+
+                 //FMin
+                 materialRequireItem.setfMin(Float.parseFloat(data[i][21].toString()));
+                 fMinSum += Float.parseFloat(data[i][21].toString());
+
+                 //PHMax
+                 materialRequireItem.setPhMax(Float.parseFloat(data[i][22].toString()));
+                 phMaxSum += Float.parseFloat(data[i][22].toString());
+
+                 //PHMin
+                 materialRequireItem.setPhMin(Float.parseFloat(data[i][23].toString()));
+                 phMinSum += Float.parseFloat(data[i][23].toString());
+
+                 materialRequireItem.setMaterialRequireId(materialRequireId);
+
+                 compatibilityService.addMaterialRequireItem(materialRequireItem);
+             }
+
+
+         }
+             materialRequire.setMaterialRequireId(materialRequireId);
+
+             materialRequire.setWeeklyDemandTotal(weeklyDemandTotal);
+
+             materialRequire.setCurrentInventoryTotal(currentInventoryTotal);
+
+             materialRequire.setSafetyTotal(safetyTotal);
+
+             materialRequire.setMarketPurchasesTotal(marketPurchasesTotal);
+
+             materialRequire.setCalorificAvg((calorificMaxSum + calorificMinSum) / 2);
+
+             materialRequire.setAshAvg((ashMaxSum + ashMinSum) / 2);
+
+             materialRequire.setWaterAvg((waterMaxSum + waterMinSum) / 2);
+
+             materialRequire.setClAvg((clMaxSum + clMinSum) / 2);
+
+             materialRequire.setsAvg((sMaxSum + sMinSum) / 2);
+
+             materialRequire.setpAvg((pMaxSum + pMinSum) / 2);
+
+             materialRequire.setfAvg((fMaxSum + fMinSum) / 2);
+
+             materialRequire.setPhAvg((phMaxSum + phMinSum) / 2);
+
+             compatibilityService.addMaterialRequire(materialRequire);
+             res.put("status", "success");
+             res.put("message", "物料需求导入成功");
+
+     }
+
+    catch (Exception e){
+        e.printStackTrace();
+        res.put("status", "fail");
+        res.put("message", "物料需求导入失败");
+         }
+
+
 
 
          return res.toString();
