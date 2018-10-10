@@ -618,49 +618,66 @@ function selected2(item) {
         }
     }
 }
+
 /*
 * 审批*/
-function approvalMa(){
-id=arrayId[0];
-$("#back1").hide();
-$("#confirm").show();
-console.log(id);
-    if(arrayId.length==1){
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "getByMrId",         // url
-            // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {"id":id.toString()},
-            dataType: "json",
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    console.log(result);
-                    var obj=result.data;
-                    console.log(obj);
-                    //赋值
-                    //物料编号
-                    $("#materialRequireId").text(obj.materialRequireId);
-                    //序号
-                    $("#id").text(obj.id);
-                    $('#advice').text(obj.approvalContent);
-                    //驳回意见
-                    $("#remarks").text(obj.remarks);
-                    $("#contractInfoForm2").modal('show');
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error:function (result) {
-                alert("服务器异常！")
+function approvalMa(item){
+
+
+    $.ajax({
+        type: "POST",
+        url: "getMaterialRequireByMaterialRequireId",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': $(item).parent().parent().children('td').eq(2).html()},
+        //contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                //赋值配伍单号
+             $("#remarks").val(result.data.opinion);
             }
-        });
-    }
-    else {
-        alert("请选择数据！")
-    }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+
+    });
+
+    $('#materialRequireId').text($(item).parent().parent().children('td').eq(2).html())
+
+
+
+    $('#contractInfoForm2').modal('show');
+
+
+    // $.ajax({
+    //     type: "POST",
+    //     url: "backMa",
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     data: {'id': id, 'remarks': remarks,},
+    //     success: function (result) {
+    //         if(result != undefined && result.status == "success"){
+    //             alert(result.message);
+    //             console.log(result);
+    //             window.location.reload();
+    //         }
+    //         else {
+    //             alert(result.message)
+    //         }
+    //     },
+    //     error: function (result) {
+    //         alert("服务器异常！")
+    //     }
+    // });
+
+
 }
+
 /*驳回*/
 function backMa() {
     id=arrayId[0];
@@ -702,15 +719,17 @@ function backMa() {
         alert("请选择数据！")
     }
 }
+
 //把按钮功能分出来做这个是审批
 function confirm2() {
-    remarks = $('#remarks').val();
+    var materialRequireId=$('#materialRequireId').text();
+    var opinion=$('#remarks').val();
     $.ajax({
         type: "POST",
         url: "approvalMa",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'id': id, 'remarks': remarks,},
+        data: {'materialRequireId': materialRequireId, 'opinion': opinion,},
         success: function (result) {
             if(result != undefined && result.status == "success"){
                 alert(result.message);
@@ -725,7 +744,10 @@ function confirm2() {
             alert("服务器异常！")
         }
     });
+
+
 }
+
 //把按钮功能分出来做这个是驳回
 function back2() {
     remarks = $('#remarks').val();
@@ -751,6 +773,7 @@ function back2() {
     });
 
 }
+
 /*时间显示*/
 function getWeekDate() {
     //获取时间
@@ -773,43 +796,75 @@ function getWeekDate() {
 
 /*提交功能*/
 function submitMa() {
-    //1获得id
-    id=arrayId[0];
-    if(arrayId.length==1){
-        //2ajax后台操作
-        //3判断框是否提交
-        if(confirm("确定提交?")){
-            //点击确定后操作
-            $.ajax({
-                type: "POST",                       // 方法类型
-                url: "submitByMrId",         // url
-                // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {"id":id},
-                dataType: "json",
-                //contentType: 'application/json;charset=utf-8',
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
-                        alert(result.message);
-                        window.location.reload();
-                    }
-                    else {
-                        alert(result.message);
-                    }
-                },
-                error:function (result) {
-                    alert("服务器异常！")
+    var items = $("input[name='select']:checked");//判断复选框是否选中
+
+    if(items.length>0){
+        if(confirm("确认提交?")){
+            $.each(items,function () {
+                if($(this).parent().parent().next().next().html().length>0){
+                   var materialRequireId=$(this).parent().parent().next().next().html();
+                   //提交方法
+                    $.ajax({
+                        type: "POST",
+                        url: "submitByMrId",
+                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                        dataType: "json",
+                        data: {'materialRequireId': materialRequireId},
+                        success: function (result) {
+                            if(result != undefined && result.status == "success"){
+                                console.log(result);
+                            }
+                            else {
+                                alert(result.message)
+                            }
+                        },
+                        error: function (result) {
+                            alert("服务器异常！")
+                        }
+                    });
                 }
-            });
+            })
+
+
         }
+        alert('提交成功!')
+        window.location.reload();
     }
     else {
-        alert("请选择数据！")
+        alert("请勾选数据！")
     }
+
+
 
 }
 /*作废*/
-function cancelMa() {
+function cancelMa(item) {
 
+    var materialRequireId=$(item).parent().parent().children('td').eq(2).html();
+    if(confirm("确认作废?")){
+     //作废方法
+        $.ajax({
+            type: "POST",
+            url: "cancelByMrId",
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'materialRequireId': materialRequireId},
+            success: function (result) {
+                if(result != undefined && result.status == "success"){
+                    console.log(result);
+                    alert(result.message)
+                    window.location.reload();
+                }
+                else {
+                    alert(result.message)
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+
+    }
 
 
 }
