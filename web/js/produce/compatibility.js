@@ -904,7 +904,8 @@ function totalPage() {
         if(items.length>0){
             if(confirm("是否生成物料需求?")){
                 $.each(items,function (index) {
-                    if ($(this).parent().parent().next().next().html().length > 0) {
+
+                    if  ($(this).parent().parent().next().next().html().length > 0&&$(this).parent().parent().parent().children('td').eq(13).html()!='已失效') {
                         var compatibilityId = $(this).parent().parent().next().next().html();//配伍单号
                         $.ajax({
                             type: "POST",
@@ -931,7 +932,12 @@ function totalPage() {
                     }
                 });
                 alert("生成物料需求单成功！")
-                window.location.reload();
+                if(confirm("是否跳转到物料需求页面?")){
+                    window.location.href="materialDemand.html"
+                }
+
+
+
         }
 
     }
@@ -1502,7 +1508,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     console.log(result);
-                    if (result.data != undefined || result.status == "success") {
+                    if (result != undefined && result.status == "success") {
                        setPageClone(result)
                     } else {
                         console.log(result.message);

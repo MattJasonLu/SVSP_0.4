@@ -168,6 +168,9 @@
     <select id="searchMaterialRequireItem" parameterType="MaterialRequireItem" resultType="String">
         select DISTINCT materialRequireId from t_pr_materialrequireitem
         <where>
+            <if test="materialRequireId != null and materialRequireId != ''">
+                and materialRequireId=#{materialRequireId}
+            </if>
             <if test="formType != null and formType != ''">
                 and formType=#{formType}
             </if>
@@ -213,6 +216,9 @@
     <select id="searchMaterialRequireItemCount" parameterType="MaterialRequireItem" resultType="int">
          select count( DISTINCT materialRequireId)  from t_pr_materialrequireitem
         <where>
+            <if test="materialRequireId != null and materialRequireId != ''">
+                and materialRequireId=#{materialRequireId}
+            </if>
             <if test="formType != null and formType != ''">
                 and formType=#{formType}
             </if>
