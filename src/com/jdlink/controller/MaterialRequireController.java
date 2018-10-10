@@ -346,10 +346,10 @@ public class MaterialRequireController {
     //驳回物料
     @RequestMapping("approvalMa")
     @ResponseBody
-    public String approvalMa(String id,String remarks){
+    public String approvalMa(String materialRequireId,String opinion){
         JSONObject res=new JSONObject();
         try {
-            materialRequireService.approval(id,remarks);
+            materialRequireService.approval(materialRequireId,opinion);
             res.put("status", "success");
             res.put("message", "审批通过!");
         }
@@ -363,10 +363,10 @@ public class MaterialRequireController {
     //提交至审批
     @RequestMapping("submitByMrId")
     @ResponseBody
-    public  String submitByMrId(String id){
+    public  String submitByMrId(String materialRequireId){
         JSONObject res=new JSONObject();
         try {
-            materialRequireService.submit(id);
+            materialRequireService.submit(materialRequireId);
             res.put("status", "success");
             res.put("message", "提交成功");
 
@@ -382,10 +382,10 @@ public class MaterialRequireController {
     //作废
     @RequestMapping("cancelByMrId")
     @ResponseBody
-    public  String cancelByMrId(String id){
+    public  String cancelByMrId(String materialRequireId){
         JSONObject res=new JSONObject();
         try {
-            materialRequireService.cancel(id);
+            materialRequireService.cancel(materialRequireId);
             res.put("status", "success");
             res.put("message", "作废成功");
 
@@ -448,6 +448,28 @@ public class MaterialRequireController {
         return  res.toString();
 
 
+    }
+
+    //根据编号查看物料主表信息
+    @RequestMapping("getMaterialRequireByMaterialRequireId")
+    @ResponseBody
+    public String getMaterialRequireByMaterialRequireId(String materialRequireId){
+        JSONObject res=new JSONObject();
+
+        try{
+            MaterialRequire materialRequire=materialRequireService.getMaterialRequireByMaterialRequireId(materialRequireId);
+            res.put("status", "success");
+            res.put("message", "查询成功");
+            res.put("data", materialRequire);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "查询失败");
+        }
+
+        return res.toString();
     }
 
    //物料需求明细修改
