@@ -26,4 +26,9 @@ public class ThresholdServiceImpl implements ThresholdService {
     public float getSafety(String handleCategory) {
         return thresholdMapper.getSafety(handleCategory);
     }
+
+    @Override
+    public Threshold getThresholdByHandleCategoryAndFormType(String handleCategory, String formType) {
+        return thresholdMapper.getThresholdByHandleCategoryAndFormType(handleCategory, formType);
+    }
 }

@@ -8,4 +8,5 @@ public interface ThresholdService {
     List<Threshold> list();
     Threshold getByHandleCategory(String handleCategory);
     float getSafety(String handleCategory);
+    Threshold getThresholdByHandleCategoryAndFormType(String handleCategory,String formType);
 }

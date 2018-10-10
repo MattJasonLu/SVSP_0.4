@@ -37,4 +37,8 @@
     <select id="getSafety" parameterType="String" resultType="float">
         select Safety from t_pr_threshold where  handleCategory=#{handleCategory}
     </select>
+    <select id="getThresholdByHandleCategoryAndFormType" resultMap="ThresholdRM">
+         select * from t_pr_threshold where handleCategory=#{0} and  formType=#{1};
+    </select>
+    
 </mapper>
