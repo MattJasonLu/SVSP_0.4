@@ -95,6 +95,24 @@ public class MaterialRequire {
      */
     private String opinion;
 
+    /**
+     * 分页
+     * @return
+     */
+    /**
+     * 关键字
+     * @return
+     */
+    private String keywords;
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public String getOpinion() {
         return opinion;
     }
@@ -102,11 +120,6 @@ public class MaterialRequire {
     public void setOpinion(String opinion) {
         this.opinion = opinion;
     }
-
-    /**
-     * 分页
-     * @return
-     */
     private Page page;
 
     public Page getPage() {
