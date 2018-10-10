@@ -202,12 +202,15 @@ public class AssessmentController {
                 String month1 = String.format("%tm", beginDate); // 获取合同月份
                 //获取并设置业务员ID和姓名
                 Client client = clientService.getByClientId(clientId);
-                String salesmanId = client.getSalesman().getSalesmanId();
-                String salesmanName = client.getSalesman().getName();
+                String salesmanId = "";
+                String salesmanName = "";
+                if(client != null && client.getSalesman() != null) {
+                    salesmanId = client.getSalesman().getSalesmanId();
+                    salesmanName = client.getSalesman().getName();
+                }
                 contract.setSalesmanId(salesmanId);
                 contract.setSalesmanName(salesmanName);
                 //map.put(clientId,laboratoryTest);
-
                 List<QuotationItem> quotationItemList = contract.getQuotationItemList();
                 List<Hazardous> hazardousList = contract.getHazardousList();
                 List<WayBillItem> wayBillItemList = new ArrayList<>();
@@ -220,8 +223,10 @@ public class AssessmentController {
                         WayBillItem wayBillItem = wayBillService.getWayBillItemByClientIdAndWastesCode(clientId, code);
                         if(wayBillItem != null) {
                             wayBillItemList.add(wayBillItem);
-                            wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
-                            wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
+                            if(wayBillItem.getWastesTotalPrice() != 0)
+                               wayBillPrice += wayBillItem.getWastesTotalPrice(); //计算接运单明细总额
+                            if(wayBillItem.getWastesAmount() != 0)
+                               wayBillWastesAmount += wayBillItem.getWastesAmount();  // 计算危废总数量
                         }
                     }
                 }
@@ -354,6 +359,26 @@ public class AssessmentController {
             res.put("contactInfo", jMap2);                // 联系人信息
             res.put("assessmentInfo", jMap3);              // 总额信息
             res.put("wayBillInfo", jMap4);              // 接运单信息
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取失败");
+        }
+        return res.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping("getContractByMonth")
+    public String getContractByMonth(String month){
+        JSONObject res = new JSONObject();
+        try {
+            // 获取该时间内的所有合同
+            List<Contract> contractList = contractService.getContractByMonth(month);
+            // 危废信息
+            JSONArray data = JSONArray.fromArray(contractList.toArray(new Contract[contractList.size()]));
+            res.put("data",data);
+            res.put("status", "success");
+            res.put("message", "获取成功");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");

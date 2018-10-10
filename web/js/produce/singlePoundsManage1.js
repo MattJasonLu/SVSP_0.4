@@ -440,7 +440,22 @@ function setSeniorSelectedList() {
  */
 function exportExcel() {
     var name = 't_pr_pounds';
-    var sqlWords = "select  id as '磅单号',transferId as '转移联单号',enterLicencePlate as '入厂车号',goodsName as '货物名',grossWeight as '毛重',netWeight as '净重',tare as '皮重',(select companyName from client where clientId = deliveryCompanyId) as '发货公司',(select companyName from client where clientId = receiveCompanyId) as '收货公司',businessType as '业务类型',enterTime as '入厂时间',outTime as '出厂时间',driver as '司机',weighman as '司磅员',remarks as '备注',outLicencePlate as '出厂车号',state as '状态',founder as '磅单创建人',creationDate as '创建时间' from t_pr_pounds;";
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += idArry[i] + ",";
+            else if (i == idArry.length - 1) sql += idArry[i] + ");"
+        }
+        sqlWords = "select id as '磅单号',transferId as '转移联单号',enterLicencePlate as '入厂车号',goodsName as '货物名',grossWeight as '毛重',netWeight as '净重',tare as '皮重',(select companyName from client where clientId = deliveryCompanyId) as '发货公司',(select companyName from client where clientId = receiveCompanyId) as '收货公司',businessType as '业务类型',enterTime as '入厂时间',outTime as '出厂时间',driver as '司机',weighman as '司磅员',remarks as '备注',outLicencePlate as '出厂车号',state as '状态',founder as '磅单创建人',creationDate as '创建时间' from t_pr_pounds where id" + sql;
+    }else{
+        sqlWords = "select id as '磅单号',transferId as '转移联单号',enterLicencePlate as '入厂车号',goodsName as '货物名',grossWeight as '毛重',netWeight as '净重',tare as '皮重',(select companyName from client where clientId = deliveryCompanyId) as '发货公司',(select companyName from client where clientId = receiveCompanyId) as '收货公司',businessType as '业务类型',enterTime as '入厂时间',outTime as '出厂时间',driver as '司机',weighman as '司磅员',remarks as '备注',outLicencePlate as '出厂车号',state as '状态',founder as '磅单创建人',creationDate as '创建时间' from t_pr_pounds;";
+    }
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
