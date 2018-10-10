@@ -125,7 +125,7 @@ function setPageClone(result) {
  * */
 function switchPage(pageNumber) {
     console.log("当前页：" + pageNumber);
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     if (pageNumber == 0) {                 //首页
@@ -186,7 +186,7 @@ function switchPage(pageNumber) {
             }
         });
     } else {
-        data['page'] = page;
+        data1['page'] = page;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "searchPretreatment",         // url
@@ -214,7 +214,7 @@ function switchPage(pageNumber) {
  * */
 function inputSwitchPage() {
     var pageNumber = $("#pageNumber").val();    // 获取输入框的值
-    if(pageNumber > totalPage()){
+    if (pageNumber > totalPage()) {
         pageNumber = totalPage();
     }
     $("#current").find("a").text("当前页：" + pageNumber);
@@ -461,9 +461,25 @@ function setSeniorSelectedList() {
  */
 function exportExcel() {
     var name = 't_pr_pretreatment';
-    var sqlWords = "select * from t_pr_pretreatment join t_pr_pretreatmentitem where pretreatmentId = id;";
-    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"), function (index, item) {
+        idArry.push(item.parentElement.parentElement.nextElementSibling.innerHTML);        // 将选中项的编号存到集合中
+    });
+    var sqlWords = '';
+    var sql = ' in (';
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += "'" + idArry[i] + "'" + ",";
+            else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
+        }
+        sqlWords = "select * from t_pr_pretreatment join t_pr_pretreatmentitem where pretreatmentId = id and id" + sql;
 
+    } else {
+        sqlWords = "select * from t_pr_pretreatment join t_pr_pretreatmentitem where pretreatmentId = id";
+    }
+    console.log(sqlWords);
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**
@@ -525,7 +541,7 @@ function importExcel() {
 /**
  * 回车查询
  */
-function enterSearch(){
+function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchPretreatment();      //
     }
@@ -540,23 +556,23 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
     $('#searchContent1').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchPretreatment();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchPretreatment();      //
             }
-        },600);
+        }, 600);
     });
     // 新增页面
     $('#searchContent').keyup(function (event) { //给Input赋予onkeyup事件
         last = event.timeStamp;//利用event的timeStamp来标记时间，这样每次的keyup事件都会修改last的值，注意last必需为全局变量
         setTimeout(function () {
-            if(last-event.timeStamp=== 0){
+            if (last - event.timeStamp === 0) {
                 searchOutBoundOrder();
-            }else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
+            } else if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
                 searchOutBoundOrder();      //
             }
-        },600);
+        }, 600);
     });
 });
 
@@ -582,22 +598,42 @@ function searchPretreatment() {
             state: state,
             page: page
         };
-    }else{
+    } else {
         var keywords = $.trim($("#searchContent1").val());
-        switch (keywords){
-            case("新建"): keywords = "NewBuild";break;
-            case("待审批"): keywords = "ToExamine";break;
-            case("审批中"): keywords = "Examining";break;
-            case("审批通过"): keywords = "Approval";break;
-            case("已驳回"): keywords = "Backed";break;
-            case("驳回"): keywords = "Backed";break;
-            case("已作废"): keywords = "Invalid";break;
-            case("作废"): keywords = "Invalid";break;
-            case("已确认"): keywords = "Confirm";break;
-            case("确认"): keywords = "Confirm";break;
+        switch (keywords) {
+            case("新建"):
+                keywords = "NewBuild";
+                break;
+            case("待审批"):
+                keywords = "ToExamine";
+                break;
+            case("审批中"):
+                keywords = "Examining";
+                break;
+            case("审批通过"):
+                keywords = "Approval";
+                break;
+            case("已驳回"):
+                keywords = "Backed";
+                break;
+            case("驳回"):
+                keywords = "Backed";
+                break;
+            case("已作废"):
+                keywords = "Invalid";
+                break;
+            case("作废"):
+                keywords = "Invalid";
+                break;
+            case("已确认"):
+                keywords = "Confirm";
+                break;
+            case("确认"):
+                keywords = "Confirm";
+                break;
         }
-        data1={
-            page:page,
+        data1 = {
+            page: page,
             keywords: keywords
         }
     }
@@ -1128,7 +1164,7 @@ function setOutBoundOrderList(result) {
     tr.siblings().remove();
     $.each(result, function (index, item) {
         //已作废的数据不显示
-        if(item.checkState.name === '已作废' || item.checkState.name === "已处理"){
+        if (item.checkState.name === '已作废' || item.checkState.name === "已处理") {
             return true;
         }
         // 克隆tr，每次遍历都可以产生新的tr
@@ -1153,17 +1189,17 @@ function setOutBoundOrderList(result) {
                     break;
                 case (4):
                     // 仓库号
-                    if(obj.wareHouse != null)
-                    $(this).html(obj.wareHouse.wareHouseId);
+                    if (obj.wareHouse != null)
+                        $(this).html(obj.wareHouse.wareHouseId);
                     break;
                 case (5):
                     // 记录状态
-                    if(obj.recordState != null)
-                    $(this).html(obj.recordState.name);
+                    if (obj.recordState != null)
+                        $(this).html(obj.recordState.name);
                     break;
                 case (6):
                     // 单据状态
-                    if(obj.checkState != null)
+                    if (obj.checkState != null)
                         $(this).html(obj.checkState.name);
                     break;
                 case (7):
@@ -1172,13 +1208,13 @@ function setOutBoundOrderList(result) {
                     break;
                 case (8):
                     // 产废单位
-                    if(obj.client != null)
-                    $(this).html(obj.client.companyName);
+                    if (obj.client != null)
+                        $(this).html(obj.client.companyName);
                     break;
                 case (9):
                     // 危废名称
-                    if(obj.laboratoryTest != null)
-                    $(this).html(obj.laboratoryTest.wastesName);
+                    if (obj.laboratoryTest != null)
+                        $(this).html(obj.laboratoryTest.wastesName);
                     break;
                 case(10):
                     // 危废重量
@@ -1190,13 +1226,13 @@ function setOutBoundOrderList(result) {
                     break;
                 case(12):
                     // 处置方式
-                    if(obj.processWay != null)
-                     $(this).html(obj.processWay.name);
+                    if (obj.processWay != null)
+                        $(this).html(obj.processWay.name);
                     break;
                 case(13):
                     // 进料方式
-                    if(obj.handelCategory != null)
-                    $(this).html(obj.handelCategory.name);
+                    if (obj.handelCategory != null)
+                        $(this).html(obj.handelCategory.name);
                     break;
             }
         });
@@ -1510,8 +1546,8 @@ function save() {
         success: function (result) {
             if (result.status == "success") {
                 console.log(result.message);
-                if(confirm("预处理单添加成功，是否返回主页？"))
-                   window.location.href = "pretreatmentList.html";
+                if (confirm("预处理单添加成功，是否返回主页？"))
+                    window.location.href = "pretreatmentList.html";
                 // else window.location.reload();
             } else alert(result.message);
         },
@@ -1525,7 +1561,7 @@ function save() {
 /**
  * 回车查询
  */
-function enterSearchItem(){
+function enterSearchItem() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchOutBoundOrder();      //
     }
@@ -1563,29 +1599,65 @@ function searchOutBoundOrder() {
             transferDraftId: $.trim($("#search1-transferDraftId").val()),
             client: client
         };
-    }else {
+    } else {
         var keywords = $.trim($("#searchContent").val());
-        switch (keywords){
-            case("删除"): keywords = "Delete";break;
-            case("可用"): keywords = "Usable";break;
-            case("不可用"): keywords = "Disabled";break;
-            case("新建"): keywords = "NewBuild";break;
-            case("待领料"): keywords = "ToPick";break;
-            case("已领料"): keywords = "Picked";break;
-            case("已出库"): keywords = "OutBounded";break;
-            case("出库"): keywords = "OutBounded";break;
-            case("已作废"): keywords = "Invalid";break;
-            case("作废"): keywords = "Invalid";break;
-            case("污泥"): keywords = "Sludge";break;
-            case("废液"): keywords = "WasteLiquid";break;
-            case("散装料"): keywords = "Bulk";break;
-            case("破碎料"): keywords = "Crushing";break;
-            case("精馏残渣"): keywords = "Distillation";break;
-            case("悬挂连"): keywords = "Suspension";break;
-            case("焚烧"): keywords = "Burning";break;
-            case("填埋"): keywords = "Landfill";break;
+        switch (keywords) {
+            case("删除"):
+                keywords = "Delete";
+                break;
+            case("可用"):
+                keywords = "Usable";
+                break;
+            case("不可用"):
+                keywords = "Disabled";
+                break;
+            case("新建"):
+                keywords = "NewBuild";
+                break;
+            case("待领料"):
+                keywords = "ToPick";
+                break;
+            case("已领料"):
+                keywords = "Picked";
+                break;
+            case("已出库"):
+                keywords = "OutBounded";
+                break;
+            case("出库"):
+                keywords = "OutBounded";
+                break;
+            case("已作废"):
+                keywords = "Invalid";
+                break;
+            case("作废"):
+                keywords = "Invalid";
+                break;
+            case("污泥"):
+                keywords = "Sludge";
+                break;
+            case("废液"):
+                keywords = "WasteLiquid";
+                break;
+            case("散装料"):
+                keywords = "Bulk";
+                break;
+            case("破碎料"):
+                keywords = "Crushing";
+                break;
+            case("精馏残渣"):
+                keywords = "Distillation";
+                break;
+            case("悬挂连"):
+                keywords = "Suspension";
+                break;
+            case("焚烧"):
+                keywords = "Burning";
+                break;
+            case("填埋"):
+                keywords = "Landfill";
+                break;
         }
-        data={
+        data = {
             keywords: keywords
         }
     }
