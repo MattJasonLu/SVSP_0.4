@@ -86,5 +86,10 @@ public class MaterialRequireServiceImpl implements MaterialRequireService  {
         materialRequireMapper.updateMaterialRequire(materialRequire);
     }
 
+    @Override
+    public MaterialRequire getMaterialRequireByMaterialRequireId(String materialRequireId) {
+        return materialRequireMapper.getMaterialRequireByMaterialRequireId(materialRequireId);
+    }
+
 
 }

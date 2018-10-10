@@ -2775,52 +2775,61 @@
      * 签收问卷
      */
     function signInQuestionnaire(item) {
-        var id = getQuestionnaireId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "signInQuestionnaire",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'questionnaireId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    alert("签收成功");
-                    window.location.reload();
-                } else { }
-            },
-            error:function (result) {
-                console.log(result);
-            }
-        });
+        var r = confirm("确认签收吗?");
+        if (r) {
+            var id = getQuestionnaireId(item);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "signInQuestionnaire",               // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: {
+                    'questionnaireId': id
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        alert(result.message);
+                        window.location.reload();
+                    } else {
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        }
     }
     /**
      * 退回问卷
      * @param item
      */
     function backQuestionnaire(item) {
-        var id = getQuestionnaireId(item);
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "backQuestionnaire",               // url
-            async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                'questionnaireId': id
-            },
-            dataType: "json",
-            success: function (result) {
-                console.log(result);
-                if (result != undefined) {
-                    alert("退回成功");
-                    window.location.reload();
-                } else { }
-            },
-            error:function (result) {
-                console.log(result);
-            }
-        });
+        var r = confirm("确认退回吗?");
+        if (r) {
+            var id = getQuestionnaireId(item);
+            $.ajax({
+                type: "POST",                       // 方法类型
+                url: "backQuestionnaire",               // url
+                async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+                data: JSON.stringify({
+                    'questionnaireId': id
+                }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result);
+                    if (result != undefined) {
+                        alert(result.message);
+                        window.location.reload();
+                    } else {
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        }
     }
     /**
      * 签收勾选问卷
@@ -2846,12 +2855,15 @@
             });
         }
         if (items.length > 0) {
-            items.each(function () {
-                var id = getIdByCheckBox($(this));
-                signInQuestionnaireById(id);
-            });
-            alert("签收成功");
-            window.location.reload();
+            var r = confirm("确认签收吗?");
+            if (r) {
+                items.each(function () {
+                    var id = getIdByCheckBox($(this));
+                    signInQuestionnaireById(id);
+                });
+                alert("签收成功");
+                window.location.reload();
+            }
         } else {
             alert("未选择任何调查表");
         }
@@ -2867,10 +2879,11 @@
                 type: "POST",                       // 方法类型
                 url: "backQuestionnaire",           // url
                 async : false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                data: {
+                data: JSON.stringify({
                     'questionnaireId': id
-                },
+                }),
                 dataType: "json",
+                contentType: "application/json; charset=utf-8",
                 success: function (result) {
                     console.log(result);
                 },
@@ -2880,13 +2893,16 @@
             });
         }
         if (items.length > 0) {
-            items.each(function () {
-                var id = getIdByCheckBox($(this));
-                console.log(id);
-                backQuestionnaireById(id);
-            });
-            alert("退回成功");
-            window.location.reload();
+            var r = confirm("确认退回吗?");
+            if (r) {
+                items.each(function () {
+                    var id = getIdByCheckBox($(this));
+                    console.log(id);
+                    backQuestionnaireById(id);
+                });
+                alert("退回成功");
+                window.location.reload();
+            }
         } else {
             alert("未选择任何调查表");
         }

@@ -23,4 +23,5 @@ public interface MaterialRequireMapper {
      List<MaterialRequireItem> getMaterialRequireById(String materialRequireId);
      void  updateMaterialRequireItem(MaterialRequireItem materialRequireItem);
      void updateMaterialRequire(MaterialRequire materialRequire);
+ MaterialRequire  getMaterialRequireByMaterialRequireId(String materialRequireId);
 }
