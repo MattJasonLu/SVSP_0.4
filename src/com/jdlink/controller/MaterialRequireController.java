@@ -1,10 +1,7 @@
 package com.jdlink.controller;
 
-import com.jdlink.domain.FormType;
-import com.jdlink.domain.MixingElement;
-import com.jdlink.domain.PackageType;
+import com.jdlink.domain.*;
 import com.jdlink.domain.Produce.*;
-import com.jdlink.domain.Wastes;
 import com.jdlink.service.CompatibilityService;
 import com.jdlink.service.MaterialRequireService;
 import com.jdlink.service.MixingElementService;
@@ -15,6 +12,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -239,18 +237,13 @@ public class MaterialRequireController {
 //////        //4保存在数据库
 //////        return res.toString();
 //////    }
-////    @RequestMapping("getMaterialList")
-////    @ResponseBody
-     public String getMaterialList(){
+    @RequestMapping("getMaterialList")
+    @ResponseBody
+     public String getMaterialList(@RequestBody Page page){
         JSONObject res=new JSONObject();
-        //1首先获得最新的物料编号
-        List<String> theNewestId=materialRequireService.check();
-        //2根据最新的物料单号查询信息
         try {
-            List<MaterialRequire> materialRequireList = materialRequireService.list(theNewestId.get(0));
-            JSONArray array = JSONArray.fromObject(materialRequireList);
-            res.put("length",materialRequireList.size());
-            res.put("array",array);
+         List<MaterialRequire> materialRequireList=materialRequireService.getMaterialList(page);
+            res.put("array", materialRequireList);
             res.put("status", "success");
             res.put("message", "查询成功");
         }
@@ -261,7 +254,27 @@ public class MaterialRequireController {
         }
         return  res.toString();
       }
-      /*导入功能*/
+
+    /**
+     * 计算物料条数
+     * @param
+     * @return
+     */
+    @RequestMapping("totalMaterRecord")
+    @ResponseBody
+    public int totalMaterRecord(){
+        try {
+            return materialRequireService.total();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+
+
+    /*导入功能*/
      @RequestMapping("importMaterialRequireIdExcel")
      @ResponseBody
      public String  importMaterialRequireIdExcel(MultipartFile excelFile){
@@ -412,6 +425,33 @@ public class MaterialRequireController {
      }
         return  res.toString();
     }
+
+    //图标点击查看物料明细
+    @RequestMapping("getMaterialRequireById")
+    @ResponseBody
+    public String getMaterialRequireById(String materialRequireId){
+        JSONObject res=new JSONObject();
+        try{
+            List<MaterialRequireItem> materialRequireItemList=materialRequireService.getMaterialRequireById(materialRequireId);
+            res.put("status", "success");
+            res.put("message", "获取明细成功");
+            res.put("materialRequireItemList", materialRequireItemList);
+                     }
+
+                     catch (Exception e){
+                         e.printStackTrace();
+                         res.put("status", "fail");
+                         res.put("message", "获取明细失败");
+                     }
+
+
+        return  res.toString();
+
+
+    }
+
+
+
     //获取三位序列号
     public static String getString3(String id){
         while (id.length()!=3){
