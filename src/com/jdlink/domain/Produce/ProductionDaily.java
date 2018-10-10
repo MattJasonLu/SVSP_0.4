@@ -1,6 +1,7 @@
 package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
 import com.jdlink.domain.Page;
@@ -22,6 +23,10 @@ public class ProductionDaily {
      * 日期
      */
     private Date date;
+    /**
+     * 客户
+     */
+    private Client client;
     // 本日医废信息
     // 医废入库信息
     /**
@@ -3874,6 +3879,14 @@ public class ProductionDaily {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public float getTodayInboundMedicalWastes() {

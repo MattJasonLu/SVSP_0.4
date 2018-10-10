@@ -311,7 +311,7 @@
         todayEquipmentA2RunningTime, todayEquipmentB2RunningTime, todayEquipmentPrepare2RunningTime, todayEquipmentSecondaryRunningTime, todayEquipmentThirdRunningTime,
         todayEquipmentA2StopTime, todayEquipmentB2StopTime, todayEquipmentPrepare2StopTime, todayEquipmentSecondaryStopTime, todayEquipmentThirdStopTime, todayEquipmentA2RunningRate,
         todayEquipmentB2RunningRate, todayEquipmentPrepare2RunningRate, todayEquipmentSecondaryRunningRate, todayEquipmentThirdRunningRate, todayDisposalSecondarySlag, todayDisposalSecondaryAsh,
-        todayDisposalThirdSlag, todayDisposalThirdAsh, todayInboundSecondWastesSlag, todayInboundSecondWastesAsh)
+        todayDisposalThirdSlag, todayDisposalThirdAsh, todayInboundSecondWastesSlag, todayInboundSecondWastesAsh, clientId, companyName)
         VALUES (#{id}, #{date}, #{checkState}, #{todayDisposalMedicalWastes},
         #{todayDisposalMedicalWastesDisposalDirect}, #{todayDisposalMedicalWastesCooking}, #{todayDisposalMedicalWastesAfterCooking},
         #{todayDisposalMedicalWastesAfterCookingInbound}, #{todayDisposalMedicalWastesAfterCookingSend}, #{todayDisposalMedicalWastesErrorNumber},
@@ -350,7 +350,8 @@
         #{todayEquipmentA2RunningTime}, #{todayEquipmentB2RunningTime}, #{todayEquipmentPrepare2RunningTime}, #{todayEquipmentSecondaryRunningTime}, #{todayEquipmentThirdRunningTime},
         #{todayEquipmentA2StopTime}, #{todayEquipmentB2StopTime}, #{todayEquipmentPrepare2StopTime}, #{todayEquipmentSecondaryStopTime}, #{todayEquipmentThirdStopTime},
         #{todayEquipmentA2RunningRate}, #{todayEquipmentB2RunningRate}, #{todayEquipmentPrepare2RunningRate}, #{todayEquipmentSecondaryRunningRate}, #{todayEquipmentThirdRunningRate},
-        #{todayDisposalSecondarySlag}, #{todayDisposalSecondaryAsh}, #{todayDisposalThirdSlag}, #{todayDisposalThirdAsh}, #{todayInboundSecondWastesSlag}, #{todayInboundSecondWastesAsh});
+        #{todayDisposalSecondarySlag}, #{todayDisposalSecondaryAsh}, #{todayDisposalThirdSlag}, #{todayDisposalThirdAsh}, #{todayInboundSecondWastesSlag}, #{todayInboundSecondWastesAsh},
+        #{client.clientId}, #{client.companyName});
 
         <if test="inboundOrderItemList.size() > 0">
             <foreach collection="inboundOrderItemList" item="inboundOrderItem" index="index">
@@ -417,6 +418,7 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and (DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
+                or companyName like "%"#{keyword}"%"
                 or checkState=#{keyword}
             </if>
             <if test="parkingReason != null and parkingReason != ''">
@@ -447,6 +449,7 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and (DATE_FORMAT(date,'%Y-%m-%d') like "%"#{keyword}"%")
+                or companyName like "%"#{keyword}"%"
                 or checkState=#{keyword}
             </if>
             <if test="parkingReason != null and parkingReason != ''">

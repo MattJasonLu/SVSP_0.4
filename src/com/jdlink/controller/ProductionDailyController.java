@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -50,6 +51,8 @@ public class ProductionDailyController {
     EquipmentService equipmentService;
     @Autowired
     ProductionDailyService productionDailyService;
+    @Autowired
+    ClientService clientService;
 
     /**
      * 获取总记录数
@@ -196,6 +199,9 @@ public class ProductionDailyController {
         Date now = new Date();
         // 创建一个新的生产日报
         ProductionDaily productionDaily = new ProductionDaily();
+        // 设置公司为常州北控
+        Client client = clientService.getByClientId("0038");
+        productionDaily.setClient(client);
         // 设置编号
         productionDaily.setId(productionDailyService.getProductionDailyId());
         // 设置时间
