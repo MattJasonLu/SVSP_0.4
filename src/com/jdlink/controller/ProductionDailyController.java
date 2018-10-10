@@ -1,6 +1,7 @@
 package com.jdlink.controller;
 
 import com.jdlink.domain.CheckState;
+import com.jdlink.domain.Client;
 import com.jdlink.domain.Inventory.BoundType;
 import com.jdlink.domain.Inventory.InboundOrderItem;
 import com.jdlink.domain.Inventory.OutboundOrder;
@@ -27,9 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import sun.plugin2.os.windows.FLASHWINFO;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -52,6 +51,8 @@ public class ProductionDailyController {
     EquipmentService equipmentService;
     @Autowired
     ProductionDailyService productionDailyService;
+    @Autowired
+    ClientService clientService;
 
     /**
      * 获取总记录数
@@ -198,6 +199,9 @@ public class ProductionDailyController {
         Date now = new Date();
         // 创建一个新的生产日报
         ProductionDaily productionDaily = new ProductionDaily();
+        // 设置公司为常州北控
+        Client client = clientService.getByClientId("0038");
+        productionDaily.setClient(client);
         // 设置编号
         productionDaily.setId(productionDailyService.getProductionDailyId());
         // 设置时间
@@ -2344,19 +2348,35 @@ public class ProductionDailyController {
      */
     @RequestMapping("exportProductionDailyExcel")
     @ResponseBody
-    public String exportProductionDailyExcel(int id) {
-        JSONObject res = new JSONObject();
+    public void exportProductionDailyExcel(int id, HttpServletResponse response) {
+        String filePath = "Files/Out/生产日报导出文件.xlsx";
+        String fileName = "";   // 初始化文件名
         try {
             ProductionDaily productionDaily = productionDailyService.getProductionDailyById(id);
             makeProductionDailyExcel(productionDaily);
-            res.put("status", "success");
-            res.put("message", "日报导出成功");
+            // 获取文件路径，适配中文
+//            filePath = new String(filePath.getBytes("iso8859-1"), "utf-8");
+            String[] str = filePath.split("[/]");     // 根据“/”将字符串分割成数组
+            fileName = java.net.URLEncoder.encode(str[str.length - 1], "UTF-8");  // 设置文件名
+            response.setCharacterEncoding("UTF-8");   // 设置编码
+            response.setContentType("multipart/form-data");
+            // 设置头文件
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            // 初始化输入流
+            InputStream in = null;
+            in = new FileInputStream(filePath);
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            do {
+                // 写入字节
+                bytesRead = in.read(buffer, 0, buffer.length);
+                response.getOutputStream().write(buffer, 0, bytesRead);
+            } while (bytesRead == buffer.length);
+            in.close();      // 关闭输入流等
+            response.getOutputStream().flush();
         } catch (Exception e) {
             e.printStackTrace();
-            res.put("status", "fail");
-            res.put("message", "日报导出失败");
         }
-        return res.toString();
     }
 
     /**
@@ -2371,6 +2391,7 @@ public class ProductionDailyController {
             excelFileInputStream.close();
             XSSFSheet xSheet = xwb.getSheetAt(0);
             Map<String, Object> hashMap = new HashMap<>();
+            hashMap.put("E02", DateUtil.getDateStr(productionDaily.getDate()));
             // 危废进厂数量
             hashMap.put("C05", productionDaily.getTodayInboundMedicalWastes());
             hashMap.put("C06", productionDaily.getTodayInboundMedicalWastesDirectDisposal());

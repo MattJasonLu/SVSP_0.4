@@ -639,9 +639,14 @@ public class QuestionnaireController {
     public String examineQuestionnaire(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
-            questionnaireService.examine(questionnaire);
+            Questionnaire questionnaire1 = questionnaireService.getById(questionnaire.getQuestionnaireId());
+            if (questionnaire1.getApplyState() == ApplyState.ToSignIn) questionnaireService.examine(questionnaire);
+            else throw new RuntimeException("已签收");
             res.put("status", "success");
             res.put("message", "审批成功!");
+        } catch (RuntimeException e) {
+            res.put("status", "fail");
+            res.put("message", "该表已签收，无法审批!");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -662,9 +667,15 @@ public class QuestionnaireController {
     public String backQuestionnaire(@RequestBody Questionnaire questionnaire) {
         JSONObject res = new JSONObject();
         try {
+            Questionnaire oldQuestionnaire = questionnaireService.getById(questionnaire.getQuestionnaireId());
+            if (oldQuestionnaire.getApplyState() == ApplyState.ToSignIn) throw new RuntimeException("未审批");
             questionnaireService.back(questionnaire);
             res.put("status", "success");
             res.put("message", "驳回成功!");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "该表未审批，无法驳回!");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
@@ -1428,9 +1439,16 @@ public class QuestionnaireController {
     public String signInQuestionnaire(String questionnaireId) {
         JSONObject res = new JSONObject();
         try {
-            questionnaireService.signIn(questionnaireId);
+            Questionnaire questionnaire = questionnaireService.getById(questionnaireId);
+            if (questionnaire.getApplyState() == ApplyState.Examining) questionnaireService.signIn(questionnaireId);
+            else if (questionnaire.getApplyState() == ApplyState.SignedIn) throw new RuntimeException("已签收");
+            else throw new RuntimeException("未审批");
             res.put("status", "success");
             res.put("message", "签收成功!");
+        } catch (RuntimeException e) {
+            res.put("status", "fail");
+            if (e.getMessage().contains("未审批")) res.put("message", "该表未审批，无法签收！");
+            else if (e.getMessage().contains("已签收")) res.put("message", "该表已签收！");
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
