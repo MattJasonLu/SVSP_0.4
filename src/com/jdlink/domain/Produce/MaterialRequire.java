@@ -91,6 +91,19 @@ public class MaterialRequire {
     private List<MaterialRequireItem> materialRequireItemList=new ArrayList<>();
 
     /**
+     * 意见
+     */
+    private String opinion;
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
+    }
+
+    /**
      * 分页
      * @return
      */
