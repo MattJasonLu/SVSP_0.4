@@ -11,4 +11,5 @@ public interface ThresholdService {
     void update(Threshold threshold);
     void add(Threshold threshold);
     void deleteAll();
+    Threshold getThresholdByHandleCategoryAndFormType(String handleCategory,String formType);
 }
