@@ -113,6 +113,144 @@
 
     <!--根据编号查看物料主表信息-->
     <select id="getMaterialRequireByMaterialRequireId" parameterType="String" resultType="MaterialRequire">
-        select opinion from t_pr_materialrequire where materialRequireId=#{materialRequireId};
+        select * from t_pr_materialrequire where materialRequireId=#{materialRequireId};
     </select>
-    </mapper>
+
+    <!--粗查询-->
+    <select id="searchMaterialRequire" parameterType="MaterialRequire" resultType="MaterialRequire">
+          select * from t_pr_materialrequire
+          <where>
+              <if test="keywords != null and keywords != ''">
+                  or materialRequireId like "%"#{keywords}"%"
+                  or weeklyDemandTotal like "%"#{keywords}"%"
+                  or  currentInventoryTotal  like "%"#{keywords}"%"
+                  or  safetyTotal  like  "%"#{keywords}"%"
+                  or   marketPurchasesTotal   like "%"#{keywords}"%"
+                  or   calorificAvg   like "%"#{keywords}"%"
+                  or  ashAvg like "%"#{keywords}"%"
+                  or   waterAvg  like "%"#{keywords}"%"
+                  or  clAvg  like "%"#{keywords}"%"
+                  or  sAvg  like "%"#{keywords}"%"
+                  or  pAvg  like "%"#{keywords}"%"
+                  or  fAvg  like "%"#{keywords}"%"
+                  or  phAvg  like "%"#{keywords}"%"
+              </if>
+          </where>
+        order by nowTime desc
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--粗查询总数-->
+    <select id="searchMaterialRequireCount" parameterType="MaterialRequire" resultType="int">
+    select count(*) from t_pr_materialrequire
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or materialRequireId like "%"#{keywords}"%"
+                or weeklyDemandTotal like "%"#{keywords}"%"
+                or  currentInventoryTotal  like "%"#{keywords}"%"
+                or  safetyTotal  like  "%"#{keywords}"%"
+                or   marketPurchasesTotal   like "%"#{keywords}"%"
+                or   calorificAvg   like "%"#{keywords}"%"
+                or  ashAvg like "%"#{keywords}"%"
+                or   waterAvg  like "%"#{keywords}"%"
+                or  clAvg  like "%"#{keywords}"%"
+                or  sAvg  like "%"#{keywords}"%"
+                or  pAvg  like "%"#{keywords}"%"
+                or  fAvg  like "%"#{keywords}"%"
+                or  phAvg  like "%"#{keywords}"%"
+            </if>
+        </where>
+    </select>
+
+    <!--高级查询-->
+    <select id="searchMaterialRequireItem" parameterType="MaterialRequireItem" resultType="String">
+        select DISTINCT materialRequireId from t_pr_materialrequireitem
+        <where>
+            <if test="formType != null and formType != ''">
+                and formType=#{formType}
+            </if>
+            <if test="handleCategory != null and handleCategory != ''">
+                and handleCategory=#{handleCategory}
+            </if>
+            <if test="packageType != null and packageType != ''">
+                and packageType=#{packageType}
+            </if>
+            <if test="weeklyDemandBeg != null and weeklyDemandBeg != ''">
+                <![CDATA[   and  weeklyDemand >=#{weeklyDemandBeg} ]]>
+            </if>
+            <if test="weeklyDemandEnd != null and weeklyDemandEnd != ''">
+                <![CDATA[   and  weeklyDemand <=#{weeklyDemandEnd} ]]>
+            </if>
+            <if test="currentInventoryBeg != null and currentInventoryBeg != ''">
+                <![CDATA[   and  currentInventory >=#{currentInventoryBeg} ]]>
+            </if>
+            <if test="currentInventoryEnd != null and currentInventoryEnd != ''">
+                <![CDATA[   and  currentInventory <=#{currentInventoryEnd} ]]>
+            </if>
+
+            <if test="safetyBeg != null and safetyBeg != ''">
+                <![CDATA[   and  safety >=#{safetyBeg} ]]>
+            </if>
+            <if test="safetyEnd != null and safetyEnd != ''">
+                <![CDATA[   and  safety <=#{safetyEnd} ]]>
+            </if>
+
+            <if test="marketPurchasesBeg != null and marketPurchasesBeg != ''">
+                <![CDATA[   and  marketPurchases >=#{marketPurchasesBeg} ]]>
+            </if>
+            <if test="marketPurchasesEnd != null and marketPurchasesEnd != ''">
+                <![CDATA[   and  marketPurchases <=#{marketPurchasesEnd} ]]>
+            </if>
+        </where>
+        <if test="page != null and page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--高级查询总数-->
+    <select id="searchMaterialRequireItemCount" parameterType="MaterialRequireItem" resultType="int">
+         select count( DISTINCT materialRequireId)  from t_pr_materialrequireitem
+        <where>
+            <if test="formType != null and formType != ''">
+                and formType=#{formType}
+            </if>
+            <if test="handleCategory != null and handleCategory != ''">
+                and handleCategory=#{handleCategory}
+            </if>
+            <if test="packageType != null and packageType != ''">
+                and packageType=#{packageType}
+            </if>
+            <if test="weeklyDemandBeg != null and weeklyDemandBeg != ''">
+                <![CDATA[   and  weeklyDemand >=#{weeklyDemandBeg} ]]>
+            </if>
+            <if test="weeklyDemandEnd != null and weeklyDemandEnd != ''">
+                <![CDATA[   and  weeklyDemand <=#{weeklyDemandEnd} ]]>
+            </if>
+            <if test="currentInventoryBeg != null and currentInventoryBeg != ''">
+                <![CDATA[   and  currentInventory >=#{currentInventoryBeg} ]]>
+            </if>
+            <if test="currentInventoryEnd != null and currentInventoryEnd != ''">
+                <![CDATA[   and  currentInventory <=#{currentInventoryEnd} ]]>
+            </if>
+
+            <if test="safetyBeg != null and safetyBeg != ''">
+                <![CDATA[   and  safety >=#{safetyBeg} ]]>
+            </if>
+            <if test="safetyEnd != null and safetyEnd != ''">
+                <![CDATA[   and  safety <=#{safetyEnd} ]]>
+            </if>
+
+            <if test="marketPurchasesBeg != null and marketPurchasesBeg != ''">
+                <![CDATA[   and  marketPurchases >=#{marketPurchasesBeg} ]]>
+            </if>
+            <if test="marketPurchasesEnd != null and marketPurchasesEnd != ''">
+                <![CDATA[   and  marketPurchases <=#{marketPurchasesEnd} ]]>
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

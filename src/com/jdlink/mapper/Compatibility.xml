@@ -203,16 +203,16 @@
         <where>
             <if test="keywords != null and keywords != ''">
                 or compatibilityId like "%"#{keywords}"%"
-                or format(totalDailyAmount,1) like "%"#{keywords}"%"
-                or calorificAvg   like  "%"#{keywords}"%"
-                or  format(ashAvg,1)   like "%"#{keywords}"%"
-                or   format(waterAvg,1)   like "%"#{keywords}"%"
-                or   format(clAvg,1)   like "%"#{keywords}"%"
-                or  format(sAvg,1)  like "%"#{keywords}"%"
-                or   format(phAvg,1)  like "%"#{keywords}"%"
+                or totalDailyAmount like "%"#{keywords}"%"
+                or  ashAvg   like "%"#{keywords}"%"
+                or  calorificAvg like  "%"#{keywords}"%"
+                or   waterAvg   like "%"#{keywords}"%"
+                or   clAvg   like "%"#{keywords}"%"
+                or  sAvg  like "%"#{keywords}"%"
+                or   phAvg like "%"#{keywords}"%"
                 or  weeklyDemandTotalAggregate   like "%"#{keywords}"%"
-                or  format(fAvg,1)  like "%"#{keywords}"%"
-                or  format(pAvg,1)  like "%"#{keywords}"%"
+                or  fAvg  like "%"#{keywords}"%"
+                or  pAvg  like "%"#{keywords}"%"
             </if>
         </where>
         order by nowTime desc

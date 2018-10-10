@@ -2,6 +2,7 @@ package com.jdlink.domain.Produce;
 
 import com.jdlink.domain.FormType;
 import com.jdlink.domain.PackageType;
+import com.jdlink.domain.Page;
 
 /**
  * 物料需求单明细 字表
@@ -13,7 +14,7 @@ public class MaterialRequireItem {
      */
     private String materialRequireId;
 
-    //处置类别
+    //进料方式
     private HandleCategory handleCategory;
 
     //形态
@@ -27,18 +28,44 @@ public class MaterialRequireItem {
      */
     private float weeklyDemand;
 
+    //周生产计划量开始
+    private float weeklyDemandBeg;
+
+    //周生产计划量结束
+    private float weeklyDemandEnd;
+
     /**
      * 目前库存量
      */
     private  float currentInventory;
+
+    //目前库存量开始
+    private  float currentInventoryBeg;
+
+    //目前库存量结束
+    private  float currentInventoryEnd;
     /**
      * 安全库存量
      */
     private float safety;
+
+    //安全库存量开始
+    private float safetyBeg;
+
+    //安全库存量结束
+    private float safetyEnd;
+
+
     /**
      * 市场采购量
      */
     private float marketPurchases;
+
+    //市场采购量开始
+    private float marketPurchasesBeg;
+
+    //市场采购量结束
+    private float marketPurchasesEnd;
 
     //热值Max
     private float calorificMax;
@@ -89,6 +116,82 @@ public class MaterialRequireItem {
     private  float phMin;
 
     private String id;
+
+    //分页
+    private Page page;
+
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+    }
+
+    public float getWeeklyDemandBeg() {
+        return weeklyDemandBeg;
+    }
+
+    public void setWeeklyDemandBeg(float weeklyDemandBeg) {
+        this.weeklyDemandBeg = weeklyDemandBeg;
+    }
+
+    public float getWeeklyDemandEnd() {
+        return weeklyDemandEnd;
+    }
+
+    public void setWeeklyDemandEnd(float weeklyDemandEnd) {
+        this.weeklyDemandEnd = weeklyDemandEnd;
+    }
+
+    public float getCurrentInventoryBeg() {
+        return currentInventoryBeg;
+    }
+
+    public void setCurrentInventoryBeg(float currentInventoryBeg) {
+        this.currentInventoryBeg = currentInventoryBeg;
+    }
+
+    public float getCurrentInventoryEnd() {
+        return currentInventoryEnd;
+    }
+
+    public void setCurrentInventoryEnd(float currentInventoryEnd) {
+        this.currentInventoryEnd = currentInventoryEnd;
+    }
+
+    public float getSafetyBeg() {
+        return safetyBeg;
+    }
+
+    public void setSafetyBeg(float safetyBeg) {
+        this.safetyBeg = safetyBeg;
+    }
+
+    public float getSafetyEnd() {
+        return safetyEnd;
+    }
+
+    public void setSafetyEnd(float safetyEnd) {
+        this.safetyEnd = safetyEnd;
+    }
+
+    public float getMarketPurchasesBeg() {
+        return marketPurchasesBeg;
+    }
+
+    public void setMarketPurchasesBeg(float marketPurchasesBeg) {
+        this.marketPurchasesBeg = marketPurchasesBeg;
+    }
+
+    public float getMarketPurchasesEnd() {
+        return marketPurchasesEnd;
+    }
+
+    public void setMarketPurchasesEnd(float marketPurchasesEnd) {
+        this.marketPurchasesEnd = marketPurchasesEnd;
+    }
 
     public String getId() {
         return id;

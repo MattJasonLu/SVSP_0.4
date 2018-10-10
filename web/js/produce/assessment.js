@@ -163,7 +163,50 @@ function toView1(item) {
  * 导出功能
  */
 function exportExcel(){
-
+    var name = 'assessment';
+    // 获取勾选项
+    var idArry = [];
+    $.each($("input[name='select']:checked"),function(index,item){
+        var year = item.parentElement.parentElement.nextElementSibling.innerHTML.replace(/[^0-9]/ig, "");
+        var month = item.parentElement.parentElement.nextElementSibling.nextElementSibling.innerHTML.replace(/[^0-9]/ig, "");
+        if (parseInt(month) < 10) month = "0" + month;
+        month = year + month;
+        $.ajax({           // 根据年月份获取合同ID
+            type: "POST",                       // 方法类型
+            url: "getContractByMonth",                  // url
+            data: {
+                month: month
+            },
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            success: function (result) {
+                if (result != null) {
+                    console.log(result);
+                    if (result.status === "success"){
+                        var data = result.data;
+                         for(var i = 0; i < data.length; i++)
+                             idArry.push(data[i].contractId);        // 将选中项包含的合同编号存到集合中
+                    }
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+    });
+    var sqlWords = '';
+    var sql = " in (";
+    if (idArry.length > 0) {
+        for (var i = 0; i < idArry.length; i++) {          // 设置sql条件语句
+            if (i < idArry.length - 1) sql += idArry[i]+ ",";
+            else if (i == idArry.length - 1) sql += idArry[i] + ") order by beginTime asc;";
+        }
+        sqlWords = "select a.beginTime,d.salesmanId,d.name,c.companyName,b.total,b.remarks from t_contract as a join t_pr_waybill as b join client as c join salesman as d where contractType='Wastes' and a.clientId = c.clientId and c.salesmanId = d.salesmanId and a.clientId = b.produceCompanyId and a.contractId" + sql;
+    }else {          // 若无勾选项则导出全部
+        sqlWords = "select a.beginTime,d.salesmanId,d.name,c.companyName,b.total,b.remarks from t_contract as a join t_pr_waybill as b join client as c join salesman as d where contractType='Wastes' and a.clientId = c.clientId and c.salesmanId = d.salesmanId and a.clientId = b.produceCompanyId order by beginTime asc;";
+    }
+    console.log("sql:"+sqlWords);
+    window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
 /**

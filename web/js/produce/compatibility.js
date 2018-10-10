@@ -1503,7 +1503,7 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
                 success: function (result) {
                     console.log(result);
                     if (result.data != undefined || result.status == "success") {
-                       setCompatibility(result)
+                       setPageClone(result)
                     } else {
                         console.log(result.message);
                     }

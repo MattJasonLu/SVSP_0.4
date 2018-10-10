@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.ThresholdMapper" >
+<mapper namespace="com.jdlink.mapper.ThresholdMapper">
     <resultMap id="ThresholdRM" type="Threshold" autoMapping="true">
         <result property="thresholdId" column="thresholdId"></result>
         <result property="handleCategory" column="handleCategory" javaType="HandleCategory"></result>
@@ -28,13 +28,36 @@
         <result property="ashMin" column="ashmin"></result>
     </resultMap>
     <select id="list" resultMap="ThresholdRM">
-    select  * from t_pr_threshold;
-</select>
+        select  * from t_pr_threshold;
+    </select>
+
     <select id="getByHandleCategory" parameterType="String" resultMap="ThresholdRM">
         select * from t_pr_threshold where handleCategory=#{handleCategory};
-
     </select>
+
     <select id="getSafety" parameterType="String" resultType="float">
         select Safety from t_pr_threshold where  handleCategory=#{handleCategory}
     </select>
+
+    <update id="update" parameterType="Threshold">
+        update t_pr_threshold set handleCategory = #{handleCategory},formType =#{formType},calorificMax =#{calorificMax},
+        calorificMin =#{calorificMin},ashMax =#{ashMax},ashMin =#{ashMin},waterMax =#{waterMax},waterMin =#{waterMin},
+        sMax =#{sMax},sMin =#{sMin},clMax =#{clMax},clMin =#{clMin},pMax =#{pMax},pMin =#{pMin},fMax =#{fMax},fMin =#{fMin},
+        phMax =#{phMax},phMin =#{phMin},safety =#{safety},beginTime =#{beginTime},endTime =#{endTime}
+        where thresholdId =#{thresholdId};
+    </update>
+
+    <insert id="add" parameterType="Threshold">
+        insert into t_pr_threshold
+        (thresholdId,handleCategory,formType,calorificMax,calorificMin,ashMax,ashMin,waterMax,waterMin,sMax,sMin,clMax,
+        clMin,pMax,pMin,fMax,fMin,phMax,phMin,safety,beginTime,endTime)
+        values
+       (#{thresholdId},#{handleCategory},#{formType},#{calorificMax},#{calorificMin},#{ashMax},#{ashMin},#{waterMax},
+        #{waterMin},#{sMax},#{sMin},#{clMax},#{clMin},#{pMax},#{pMin},#{fMax},#{fMin},#{phMax},#{phMin},#{safety},#{beginTime},
+        #{endTime})
+    </insert>
+
+    <delete id="deleteAll" >
+        delete from t_pr_threshold;
+    </delete>
 </mapper>

@@ -148,18 +148,15 @@
                 <a class="btn btn-primary btn-xs" onclick="exportExcel();"><span class="glyphicon glyphicon-arrow-up"
                                                                    aria-hidden="true"></span> 导出</a>
             </div>
-            <!--&lt;!&ndash;查询框&ndash;&gt;-->
-            <!--<div class="col-md-3"><span></span></div>-->
-            <!--<div class="col-md-3 pull-right" style="margin-right: -180px;">-->
-                    <!--<span class="input-group-btn">-->
-                        <!--<a class="btn btn-default" onclick="searchTest();"><span class="glyphicon glyphicon-search"-->
-                                                                                 <!--aria-hidden="true"></span> 查询</a>-->
-                        <!--<a class="btn btn-default" onclick="$('#senior').toggle();"><span-->
-                                <!--class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级</a>-->
-                        <!--<a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-refresh"-->
-                                                                    <!--aria-hidden="true"></span> 重置</a>-->
-                    <!--</span>-->
-            <!--</div>-->
+            <!--查询框-->
+            <div class="input-group col-md-4 pull-right">
+                <input type="text" class="form-control" placeholder="搜索..." id="searchContent" >
+                <span class="input-group-btn">
+                            <a class="btn btn-default" onclick="searchMa();" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                            <a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>
+                            <a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>
+                        </span>
+            </div>
         </div>
         <br>
         <div class="panel panel-default" id="senior" style="display: none;">
@@ -167,41 +164,140 @@
                 <div class="row">
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-orderNumber" class="col-sm-4 control-label">序号</label>
+                            <label for="search-materialRequireId" class="col-sm-4 control-label">物料需求单号</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-orderNumber"
-                                       name="search-orderNumber" placeholder="">
+                                <input type="text" class="form-control" id="search-materialRequireId" name="search-materialRequireId" placeholder="">
                             </div>
                         </div>
                     </div>
                     <div class="form-horizontal col-md-3">
                         <div class="form-group">
-                            <label for="search-processingCategory" class="col-sm-4 control-label">进料方式</label>
+                            <label for="search-formType" class="col-sm-4 control-label">形态</label>
                             <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-processingCategory"
-                                       name="search-processingCategory" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-packingType" class="col-sm-4 control-label">包装方式</label>
-                            <div class="col-xs-7">
-                                <input type="text" class="form-control" id="search-packingType"
-                                       name="search-packingType" placeholder="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-horizontal col-md-3">
-                        <div class="form-group">
-                            <label for="search-type" class="col-sm-4 control-label">形态</label>
-                            <div class="col-xs-7">
-                                <select class="form-control" name="search-type" id="search-type">
-                                    <option value="0"></option>
+                                <select class="form-control" name="search-formType" id="search-formType">
                                 </select>
                             </div>
                         </div>
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-calorific" class="col-sm-4 control-label">热值</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-calorific" name="search-calorific" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-CL" class="col-sm-4 control-label">CL</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-CL" name="search-CL" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+
                     </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-handleCategory" class="col-sm-4 control-label">进料方式</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" name="search-handleCategory" id="search-handleCategory">
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-ash" class="col-sm-4 control-label">灰分</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-ash" name="search-ash" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-S" class="col-sm-4 control-label">S</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-S" name="search-S" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-dailyProportions" class="col-sm-4 control-label">每日配比量</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-dailyProportions" name="search-dailyProportions" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                    <div class="form-horizontal col-md-3">
+                        <div class="form-group">
+                            <label for="search-packageType" class="col-sm-4 control-label">包装方式</label>
+                            <div class="col-xs-7">
+                                <select class="form-control" name="search-packageType" id="search-packageType">
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-ash" class="col-sm-4 control-label">灰分</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-ash" name="search-ash" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-S" class="col-sm-4 control-label">S</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-S" name="search-S" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label for="search-dailyProportions" class="col-sm-4 control-label">每日配比量</label>-->
+                        <!--<div class="col-xs-7">-->
+                        <!--<input type="text" class="form-control" id="search-dailyProportions" name="search-dailyProportions" placeholder="">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">周生产计划量范围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-weeklyDemandBeg" title="" onkeydown=""/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-weeklyDemandEnd" title="" onkeydown=""/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">目前库存量范围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-currentInventoryBeg" title="" onkeydown=""/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-currentInventoryEnd" title="" onkeydown=""/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">安全库存量范围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-safetyBeg" title="" onkeydown=""/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-safetyEnd" title="" onkeydown=""/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-horizontal col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" style="margin-left: -95px">市场采购量范围 </label>
+                            <div class="input-group">
+                                <input type="number" class="input-sm form-control" id="search-marketPurchasesBeg" title="" onkeydown=""/>
+                                <span class="input-group-addon">-</span>
+                                <input type="number" class="input-sm form-control" id="search-marketPurchasesEnd" title="" onkeydown=""/>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -210,8 +306,6 @@
             <div class="form-horizontal col-md-12">
                 <table class="table table-hover table-condensed">
                     <thead>
-                    </thead>
-                    <tbody>
                     <tr>
                         <th class="text-center">
                             <label>
@@ -235,6 +329,8 @@
                         <th class="text-center">状态</th>
                         <th class="text-center">操作</th>
                     </tr>
+                    </thead>
+                    <tbody>
                         <tr id="cloneTr1"  class="myclass">
                             <td class="text-center">
                                 <label>
@@ -518,6 +614,7 @@
 
 </body>
 
+<!--分页-->
 <!--分页-->
 <nav aria-label="Page navigation" class="text-center">
     <ol class="pagination" style="width: 800px;">

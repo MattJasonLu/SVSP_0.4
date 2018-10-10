@@ -21,23 +21,6 @@ public class Threshold {
     private float ashMin;
     //水分最大值
     private float waterMax;
-
-    public float getWaterMax() {
-        return waterMax;
-    }
-
-    public void setWaterMax(float waterMax) {
-        this.waterMax = waterMax;
-    }
-
-    public float getWaterMin() {
-        return waterMin;
-    }
-
-    public void setWaterMin(float waterMin) {
-        this.waterMin = waterMin;
-    }
-
     //水分最小值
     private float waterMin;
     //硫最大值
@@ -56,15 +39,6 @@ public class Threshold {
     private float fMax;
     //弗最小值
     private float fMin;
-
-    public float getpMax() {
-        return pMax;
-    }
-
-    public void setpMax(float pMax) {
-        this.pMax = pMax;
-    }
-
     //PH最大值
     private  float phMax;
     //PH最小值
@@ -75,6 +49,30 @@ public class Threshold {
     private Date beginTime;
     //结束日期
     private Date endTime;
+
+    public float getpMax() {
+        return pMax;
+    }
+
+    public void setpMax(float pMax) {
+        this.pMax = pMax;
+    }
+
+    public float getWaterMax() {
+        return waterMax;
+    }
+
+    public void setWaterMax(float waterMax) {
+        this.waterMax = waterMax;
+    }
+
+    public float getWaterMin() {
+        return waterMin;
+    }
+
+    public void setWaterMin(float waterMin) {
+        this.waterMin = waterMin;
+    }
 
     public Date getEndTime() {
         return endTime;
