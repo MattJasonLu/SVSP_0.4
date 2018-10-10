@@ -450,8 +450,46 @@ public class MaterialRequireController {
 
     }
 
+   //物料需求明细修改
+    @RequestMapping("updateMaterialRequireItem")
+    @ResponseBody
+    public String updateMaterialRequireItem(@RequestBody MaterialRequireItem materialRequireItem){
+        JSONObject res=new JSONObject();
+        try{
+          materialRequireService.updateMaterialRequireItem(materialRequireItem);
+            res.put("status", "success");
+            res.put("message", "明细更新成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "明细更新失败");
+
+        }
+        return  res.toString();
+    }
+
+    //物料需求主表更新
+    @RequestMapping("updateMaterialRequire")
+    @ResponseBody
+    public String updateMaterialRequire(@RequestBody MaterialRequire materialRequire){
+        JSONObject res=new JSONObject();
+            try{
+                materialRequireService.updateMaterialRequire(materialRequire);
+                res.put("status", "success");
+                res.put("message", "主表更新成功");
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                res.put("status", "fail");
+                res.put("message", "主表更新失败");
+
+            }
 
 
+        return  res.toString();
+
+    }
     //获取三位序列号
     public static String getString3(String id){
         while (id.length()!=3){
