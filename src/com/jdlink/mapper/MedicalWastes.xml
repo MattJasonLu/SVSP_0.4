@@ -5,11 +5,11 @@
 <mapper namespace="com.jdlink.mapper.MedicalWastesMapper" >
     <!--获取最新的医废出入库编号-->
     <select id="getNewId" resultType="String">
-        select medicalWastesId from t_pl_medicalwastes order by medicalWastesId desc ;
+        select medicalWastesId from t_pl_medicalwastes order by (CAST(medicalWastesId AS SIGNED) )desc ;
     </select>
     <insert id="addMedicalWastes" parameterType="MedicalWastes">
         insert into  t_pl_medicalwastes(medicalWastesId, department, departmentName, adjustName, adjustDate, dateTime, thisMonthWastes, directDisposal, cookingWastes, afterCookingNumber, afterCookingInbound, thisMonthSendCooking, errorNumber, wetNumber, nowTime,equipment,checkState)
-        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},#{dateTime},#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment},'Enabled')
+        values(#{medicalWastesId},#{department},#{departmentName},#{adjustName},#{adjustDate},Now(),#{thisMonthWastes},#{directDisposal},#{cookingWastes},#{afterCookingNumber},#{afterCookingInbound},#{thisMonthSendCooking},#{errorNumber},#{wetNumber},NOW(),#{equipment},'Enabled')
     </insert>
     <select id="loadMedicalWastesList" resultType="MedicalWastes">
         select  * from t_pl_medicalwastes  order by nowTime desc
